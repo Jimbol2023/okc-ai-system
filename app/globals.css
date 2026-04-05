@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f5f3ee;
+  --foreground: #12202a;
+  --surface: #fffdf8;
+  --surface-strong: #ffffff;
+  --border: rgba(18, 32, 42, 0.12);
+  --muted: #5d6a72;
+  --primary: #16394a;
+  --primary-strong: #0f2833;
+  --accent: #bf8b30;
+  --success: #2d6a4f;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-strong: var(--surface-strong);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-primary: var(--primary);
+  --color-primary-strong: var(--primary-strong);
+  --color-accent: var(--accent);
+  --color-success: var(--success);
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(191, 139, 48, 0.15), transparent 30%),
+    linear-gradient(180deg, #f7f4ee 0%, #f5f3ee 40%, #eef2f3 100%);
+  color: var(--foreground);
+  font-family: var(--font-sans), sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+input,
+select,
+textarea {
+  outline: none;
+}
+
+::selection {
+  background: rgba(22, 57, 74, 0.18);
+}
+
+.container-shell {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1200px;
+  padding-inline: 1rem;
+}
+
+@media (min-width: 768px) {
+  .container-shell {
+    padding-inline: 1.5rem;
+  }
+}
