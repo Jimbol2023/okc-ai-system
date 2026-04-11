@@ -1,5 +1,5 @@
 import { promises as fs } from "node:fs";
-import { fileURLToPath } from "node:url";
+import path from "node:path";
 
 export type SecuritySeverity = "high" | "medium" | "low";
 
@@ -16,16 +16,17 @@ export type SecurityReport = {
   findings: SecurityFinding[];
 };
 
-const DASHBOARD_LAYOUT_PATH = fileURLToPath(new URL("../app/(dashboard)/dashboard/layout.tsx", import.meta.url));
-const LEADS_STORAGE_PATH = fileURLToPath(new URL("../lib/leads-storage.ts", import.meta.url));
-const LEAD_ROUTE_PATH = fileURLToPath(new URL("../app/api/leads/route.ts", import.meta.url));
-const LEAD_DETAIL_CLIENT_PATH = fileURLToPath(new URL("../components/dashboard/lead-detail-client.tsx", import.meta.url));
-const LEAD_VALIDATION_PATH = fileURLToPath(new URL("../lib/validations/lead.ts", import.meta.url));
-const OVERVIEW_PAGE_PATH = fileURLToPath(new URL("../app/(dashboard)/dashboard/page.tsx", import.meta.url));
-const LEADS_PAGE_PATH = fileURLToPath(new URL("../app/(dashboard)/dashboard/leads/page.tsx", import.meta.url));
+const DASHBOARD_LAYOUT_PATH = path.join(process.cwd(), "app", "(dashboard)", "dashboard", "layout.tsx");
+const LEADS_STORAGE_PATH = path.join(process.cwd(), "lib", "leads-storage.ts");
+const LEAD_ROUTE_PATH = path.join(process.cwd(), "app", "api", "leads", "route.ts");
+const LEAD_DETAIL_CLIENT_PATH = path.join(process.cwd(), "components", "dashboard", "lead-detail-client.tsx");
+const LEAD_VALIDATION_PATH = path.join(process.cwd(), "lib", "validations", "lead.ts");
+const OVERVIEW_PAGE_PATH = path.join(process.cwd(), "app", "(dashboard)", "dashboard", "page.tsx");
+const LEADS_PAGE_PATH = path.join(process.cwd(), "app", "(dashboard)", "dashboard", "leads", "page.tsx");
+
 const ENV_PATHS = [
-  { file: ".env", absolutePath: fileURLToPath(new URL("../.env", import.meta.url)) },
-  { file: ".env.example", absolutePath: fileURLToPath(new URL("../.env.example", import.meta.url)) }
+  { file: ".env", absolutePath: path.join(process.cwd(), ".env") },
+  { file: ".env.example", absolutePath: path.join(process.cwd(), ".env.example") }
 ];
 
 function hasAnyPattern(content: string, patterns: string[]) {

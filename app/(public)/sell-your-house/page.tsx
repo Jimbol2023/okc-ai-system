@@ -7,16 +7,16 @@ export default function SellYourHousePage() {
       <div className="grid gap-8 md:grid-cols-[1fr_420px]">
         <div className="space-y-6">
           <SectionHeading
-            eyebrow="Seller Intake"
-            title="Fast homeowner intake form"
-            description="This route is prepared for motivated seller conversion. Inputs are validated and every submission includes a tracked source."
+            eyebrow="Sell Your House"
+            title="Talk to a local buyer about your options"
+            description="Use this short form to start a no-pressure conversation. Inputs are validated, and every submission keeps its source for clean follow-up."
           />
           <div className="rounded-[1.5rem] border border-border bg-surface p-6">
-            <h2 className="text-xl font-semibold text-primary">What this page is designed for</h2>
+            <h2 className="text-xl font-semibold text-primary">A simple path for stressed or uncertain sellers</h2>
             <ul className="mt-4 space-y-3 text-sm leading-6 text-muted">
-              <li>Simple mobile-first lead submission for homeowners.</li>
-              <li>Clear source attribution for direct mail, PPC, referrals, and organic traffic.</li>
-              <li>Future handoff to acquisitions follow-up and CRM automation.</li>
+              <li>Quick mobile-first intake for Oklahoma City homeowners and nearby areas.</li>
+              <li>Clear next steps without pressure, obligation, or repair requirements.</li>
+              <li>Tracked source attribution for direct mail, PPC, referrals, and organic traffic.</li>
             </ul>
           </div>
         </div>

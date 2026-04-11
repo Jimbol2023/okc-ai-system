@@ -7,8 +7,8 @@ export default function ContactPage() {
       <div className="mx-auto max-w-3xl space-y-8">
         <SectionHeading
           eyebrow="Contact"
-          title="Talk to the acquisitions team"
-          description="Use this page for direct outreach or general intake before routing a contact into the CRM."
+          title="Talk to a local buyer in Oklahoma City"
+          description="Reach out with questions, property details, or your timeline. This is a simple no-obligation way to explore your options before deciding anything."
           align="center"
         />
         <LeadCaptureForm source="contact-page" />

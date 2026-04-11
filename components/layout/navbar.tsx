@@ -42,7 +42,7 @@ export function Navbar() {
             href="/sell-your-house"
             className="inline-flex min-h-11 items-center justify-center rounded-full bg-[#d89a42] px-4 py-2.5 text-sm font-bold text-[#102437] shadow-[0_10px_25px_rgba(216,154,66,0.22)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#e5a64f] sm:px-5"
           >
-            Get Offer
+            See My Options
           </Link>
         </div>
       </div>

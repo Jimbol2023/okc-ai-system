@@ -79,11 +79,17 @@ export function LeadCaptureForm({ source }: LeadCaptureFormProps) {
       className="rounded-[1.75rem] border border-border bg-surface p-5 shadow-[0_18px_60px_rgba(18,32,42,0.08)] md:p-6"
     >
       <div className="space-y-2">
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-muted">Property Details</p>
-        <h2 className="text-2xl font-semibold text-primary">Get my cash offer</h2>
+        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-muted">No-Pressure Property Review</p>
+        <h2 className="text-2xl font-semibold text-primary">Start with a simple conversation</h2>
         <p className="text-sm leading-6 text-muted">
-          Tell us about your house and we&apos;ll review the best next step with you.
+          Tell us a little about the property and we&apos;ll follow up with clear next steps. There&apos;s no obligation,
+          and you can simply use this form to explore your options.
         </p>
+      </div>
+
+      <div className="mt-4 rounded-2xl border border-[#e7ddd0] bg-[#fbf7ef] px-4 py-3 text-sm leading-6 text-[#4d5f6e]">
+        We work with Oklahoma City homeowners and nearby areas. No repairs, no pressure, and no commitment required to
+        see whether an offer makes sense.
       </div>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -149,7 +155,7 @@ export function LeadCaptureForm({ source }: LeadCaptureFormProps) {
             onChange={(event) => updateField("message", event.target.value)}
             rows={4}
             className="w-full rounded-2xl border border-border bg-white px-4 py-3 text-sm text-foreground"
-            placeholder="Tell us about the property, timeline, or condition."
+            placeholder="Optional: tell us about the property, repairs needed, or your timeline."
           />
           {fieldErrors.message?.[0] ? <p className="mt-2 text-xs text-red-700">{fieldErrors.message[0]}</p> : null}
         </label>
@@ -159,15 +165,25 @@ export function LeadCaptureForm({ source }: LeadCaptureFormProps) {
 
       {formError ? <p className="mt-4 text-sm text-red-700">{formError}</p> : null}
       {submitted ? (
-        <p className="mt-4 text-sm text-success">Lead captured successfully. Your information has been saved.</p>
+        <p className="mt-4 text-sm text-success">
+          Thanks. We&apos;ve received your information and will follow up with a simple, no-pressure next step.
+        </p>
       ) : null}
+
+      <p className="mt-4 text-sm leading-6 text-muted">
+        Prefer to talk first?{" "}
+        <a className="font-semibold text-primary" href="tel:5807455374">
+          (580) 745-5374
+        </a>
+        .
+      </p>
 
       <button
         type="submit"
         disabled={isPending}
         className="mt-6 inline-flex min-h-14 w-full items-center justify-center rounded-full bg-[#d89a42] px-6 py-4 text-base font-bold text-[#102437] shadow-[0_16px_35px_rgba(216,154,66,0.28)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#e5a64f] hover:shadow-[0_22px_45px_rgba(216,154,66,0.38)] disabled:cursor-not-allowed disabled:opacity-70"
       >
-        {isPending ? "Submitting..." : "Get My Cash Offer"}
+        {isPending ? "Sending..." : "See My Options"}
       </button>
     </form>
   );
