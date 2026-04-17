@@ -88,6 +88,9 @@ Prisma.NullTypes = {
  * Enums
  */
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
+  ReadUncommitted: 'ReadUncommitted',
+  ReadCommitted: 'ReadCommitted',
+  RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
 });
 
@@ -109,6 +112,11 @@ exports.Prisma.LeadScalarFieldEnum = {
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
 };
 
 exports.Prisma.NullsOrder = {
@@ -158,8 +166,7 @@ const config = {
   "datasourceNames": [
     "db"
   ],
-  "activeProvider": "sqlite",
-  "postinstall": false,
+  "activeProvider": "postgresql",
   "inlineDatasources": {
     "db": {
       "url": {
@@ -168,8 +175,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Lead {\n  id              String   @id\n  name            String\n  phone           String\n  propertyAddress String\n  source          String\n  status          String   @default(\"new\")\n  score           Int      @default(0)\n  priority        String   @default(\"Low\")\n  notes           String?\n  payload         String?\n  createdAt       DateTime @default(now())\n  updatedAt       DateTime @updatedAt\n\n  @@unique([propertyAddress, phone])\n  @@index([createdAt])\n  @@index([score, createdAt])\n}\n",
-  "inlineSchemaHash": "8ab9c298d03b40704498ba9f0e0dc8f33441d1541a0fa827d723064da5736cb2",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider  = \"postgresql\"\n  url       = env(\"DATABASE_URL\")\n  directUrl = env(\"DIRECT_URL\")\n}\n\nmodel Lead {\n  id              String   @id\n  name            String\n  phone           String\n  propertyAddress String\n  source          String\n  status          String   @default(\"new\")\n  score           Int      @default(0)\n  priority        String   @default(\"Low\")\n  notes           String?\n  payload         String?\n  createdAt       DateTime @default(now())\n  updatedAt       DateTime @updatedAt\n\n  @@unique([propertyAddress, phone])\n  @@index([createdAt])\n  @@index([score, createdAt])\n}\n",
+  "inlineSchemaHash": "5f7e5fe00afb0259425fc93b0d88dbf19bf4ef4a1ef23e094d0932fd7f61c2d4",
   "copyEngine": true
 }
 

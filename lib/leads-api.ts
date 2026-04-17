@@ -38,7 +38,7 @@ export async function fetchLeadById(leadId: string) {
 }
 
 export async function createLeadFromIntake(lead: LeadIntakeInput) {
-  const response = await fetch("/api/public/leads", {
+  const response = await fetch("/api/leads", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
