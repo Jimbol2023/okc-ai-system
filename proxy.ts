@@ -5,16 +5,23 @@ import { isAuthenticatedRequest } from "@/lib/auth";
 export async function proxy(request: NextRequest) {
   const isAuthenticated = await isAuthenticatedRequest(request);
   const { pathname, search } = request.nextUrl;
+  const method = request.method.toUpperCase();
 
-  if (isAuthenticated) {
+  const isPublicLeadIntakeRoute =
+    pathname === "/api/leads" && method === "POST";
+
+  if (isAuthenticated || isPublicLeadIntakeRoute) {
     return NextResponse.next();
   }
 
-  if (pathname.startsWith("/api/leads") || pathname === "/api/security-review") {
+  if (
+    pathname.startsWith("/api/leads") ||
+    pathname === "/api/security-review"
+  ) {
     return NextResponse.json(
       {
         ok: false,
-        error: "Unauthorized"
+        error: "Unauthorized",
       },
       { status: 401 }
     );
@@ -28,5 +35,10 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/api/leads/:path*", "/api/security-review"]
+  matcher: [
+    "/dashboard/:path*",
+    "/api/leads",
+    "/api/leads/:path*",
+    "/api/security-review",
+  ],
 };
