@@ -30,14 +30,28 @@ export async function GET(request: Request) {
     );
   }
 }
-
 export async function POST(request: Request) {
   try {
+    const payload = await request.json();
+
+    // Public intake should be allowed without auth
+    const parsedIntakeLead = parseLeadIntakePayload(payload);
+
+    if (parsedIntakeLead.success) {
+      const result = await createDbLead(leadIntakeToStoredLead(parsedIntakeLead.data));
+
+      return NextResponse.json({
+        ok: true,
+        lead: result.lead,
+        leadId: result.lead.id,
+        created: result.created
+      });
+    }
+
+    // Everything else below this line is protected
     if (!(await isAuthenticatedRequest(request))) {
       return getUnauthorizedApiResponse();
     }
-
-    const payload = await request.json();
 
     if (Array.isArray(payload)) {
       const parsedLeads = storedLeadArraySchema.safeParse(payload);
@@ -52,7 +66,9 @@ export async function POST(request: Request) {
         );
       }
 
-      const results = await Promise.all(parsedLeads.data.map((lead) => createDbLead(lead)));
+      const results = await Promise.all(
+        parsedLeads.data.map((lead) => createDbLead(lead))
+      );
 
       return NextResponse.json({
         ok: true,
@@ -60,19 +76,6 @@ export async function POST(request: Request) {
         addedLeads: results.filter((result) => result.created).map((result) => result.lead),
         addedCount: results.filter((result) => result.created).length,
         skippedCount: results.filter((result) => !result.created).length
-      });
-    }
-
-    const parsedIntakeLead = parseLeadIntakePayload(payload);
-
-    if (parsedIntakeLead.success) {
-      const result = await createDbLead(leadIntakeToStoredLead(parsedIntakeLead.data));
-
-      return NextResponse.json({
-        ok: true,
-        lead: result.lead,
-        leadId: result.lead.id,
-        created: result.created
       });
     }
 
