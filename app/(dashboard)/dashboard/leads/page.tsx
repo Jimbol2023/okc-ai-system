@@ -1,6 +1,5 @@
 "use client";
 
-import PipelineBoard from "@/components/dashboard/pipeline-board";
 import type { Route } from "next";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -289,11 +288,7 @@ export default function DashboardLeadsPage() {
           No leads yet. Submit the homepage form to see new homeowner inquiries here.
         </div>
       ) : (
-        <>
-          <div className="mb-6">
-            <p className="text-red-500 font-bold">PIPELINE DEBUG</p>
-            <PipelineBoard leads={leads} />
-          </div>
+        
 
           <div className="rounded-[1.5rem] border border-border bg-surface shadow-[0_18px_40px_rgba(17,37,52,0.05)]">
             <div className="hidden overflow-x-auto md:block">
