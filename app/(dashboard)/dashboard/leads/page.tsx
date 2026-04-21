@@ -1,5 +1,6 @@
 "use client";
 
+import PipelineBoard from "@/components/dashboard/pipeline-board";
 import type { Route } from "next";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -19,7 +20,7 @@ function formatLeadTimestamp(timestamp: string) {
 
   return new Intl.DateTimeFormat("en-US", {
     dateStyle: "medium",
-    timeStyle: "short"
+    timeStyle: "short",
   }).format(date);
 }
 
@@ -48,8 +49,8 @@ function getPendingFollowUps(leads: StoredLead[]) {
           propertyAddress: lead.propertyAddress,
           type: followUp.type,
           date: followUp.date,
-          message: followUp.message
-        }))
+          message: followUp.message,
+        })),
     )
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 }
@@ -90,18 +91,20 @@ export default function DashboardLeadsPage() {
 
   async function handleToggleStatus(lead: StoredLead) {
     const nextStatus = lead.status === "new" ? "contacted" : "new";
+
     setLeads(
       sortLeads(
-        leads.map((currentLead) => (currentLead.id === lead.id ? { ...currentLead, status: nextStatus } : currentLead))
-      )
+        leads.map((currentLead) => (currentLead.id === lead.id ? { ...currentLead, status: nextStatus } : currentLead)),
+      ),
     );
+
     const updatedLead = await updateLead({
       ...lead,
-      status: nextStatus
+      status: nextStatus,
     });
 
     setLeads((currentLeads) =>
-      sortLeads(currentLeads.map((currentLead) => (currentLead.id === updatedLead.id ? updatedLead : currentLead)))
+      sortLeads(currentLeads.map((currentLead) => (currentLead.id === updatedLead.id ? updatedLead : currentLead))),
     );
   }
 
@@ -122,7 +125,7 @@ export default function DashboardLeadsPage() {
       setDealFinderMessage(
         result.skippedCount > 0
           ? `${result.addedCount} new leads found. ${result.skippedCount} duplicates skipped.`
-          : `${result.addedCount} new leads found.`
+          : `${result.addedCount} new leads found.`,
       );
     } finally {
       setIsRunningDealFinder(false);
@@ -141,7 +144,7 @@ export default function DashboardLeadsPage() {
       setRealLeadsMessage(
         result.skippedCount > 0
           ? `${result.addedCount} real leads fetched. ${result.skippedCount} duplicates skipped.`
-          : `${result.addedCount} real leads fetched.`
+          : `${result.addedCount} real leads fetched.`,
       );
     } catch {
       setRealLeadsError("Failed to fetch leads.");
@@ -162,7 +165,9 @@ export default function DashboardLeadsPage() {
   }, [sortMode]);
 
   const pendingFollowUps = getPendingFollowUps(leads);
-  const highlightedFollowUps = pendingFollowUps.filter((followUp) => isOverdue(followUp.date) || isDueWithinNext72Hours(followUp.date));
+  const highlightedFollowUps = pendingFollowUps.filter(
+    (followUp) => isOverdue(followUp.date) || isDueWithinNext72Hours(followUp.date),
+  );
 
   return (
     <div className="space-y-6">
@@ -173,6 +178,7 @@ export default function DashboardLeadsPage() {
             Local browser-stored leads ranked with simple opportunity scoring on top of the existing distress signals.
           </p>
         </div>
+
         <div className="flex flex-wrap gap-2">
           <button
             type="button"
@@ -182,6 +188,7 @@ export default function DashboardLeadsPage() {
           >
             {isFetchingRealLeads ? "Fetching..." : "Fetch Real Leads"}
           </button>
+
           <button
             type="button"
             onClick={() => void handleRunDealFinder()}
@@ -190,6 +197,7 @@ export default function DashboardLeadsPage() {
           >
             {isRunningDealFinder ? "Running..." : "Run Deal Finder"}
           </button>
+
           <button
             type="button"
             onClick={() => handleSortModeChange("score")}
@@ -201,6 +209,7 @@ export default function DashboardLeadsPage() {
           >
             Highest Score
           </button>
+
           <button
             type="button"
             onClick={() => handleSortModeChange("newest")}
@@ -222,7 +231,9 @@ export default function DashboardLeadsPage() {
       <section className="rounded-[1.5rem] border border-border bg-surface p-5 shadow-[0_18px_40px_rgba(17,37,52,0.05)] md:p-6">
         <div className="space-y-2">
           <h2 className="text-2xl font-semibold text-primary">Upcoming Follow-Ups</h2>
-          <p className="text-sm leading-6 text-muted">Pending follow-ups due soon in the next 72 hours, plus any that are already overdue.</p>
+          <p className="text-sm leading-6 text-muted">
+            Pending follow-ups due soon in the next 72 hours, plus any that are already overdue.
+          </p>
         </div>
 
         {highlightedFollowUps.length === 0 ? (
@@ -241,7 +252,10 @@ export default function DashboardLeadsPage() {
                 <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                   <div className="space-y-2">
                     <div className="flex flex-wrap items-center gap-2">
-                      <Link href={getLeadDetailHref(followUp.leadId)} className="text-sm font-semibold text-primary transition hover:text-primary-strong hover:underline">
+                      <Link
+                        href={getLeadDetailHref(followUp.leadId)}
+                        className="text-sm font-semibold text-primary transition hover:text-primary-strong hover:underline"
+                      >
                         {followUp.leadName}
                       </Link>
                       <span
@@ -252,6 +266,7 @@ export default function DashboardLeadsPage() {
                         {isOverdue(followUp.date) ? "Overdue" : "Due Soon"}
                       </span>
                     </div>
+
                     <p className="text-sm text-muted">
                       {followUp.type.toUpperCase()} for {followUp.propertyAddress}
                     </p>
@@ -275,6 +290,11 @@ export default function DashboardLeadsPage() {
         </div>
       ) : (
         <>
+          <div className="mb-6">
+            <p className="text-red-500 font-bold">PIPELINE DEBUG</p>
+            <PipelineBoard leads={leads} />
+          </div>
+
           <div className="rounded-[1.5rem] border border-border bg-surface shadow-[0_18px_40px_rgba(17,37,52,0.05)]">
             <div className="hidden overflow-x-auto md:block">
               <table className="min-w-full border-collapse">
@@ -291,11 +311,15 @@ export default function DashboardLeadsPage() {
                     <th className="px-5 py-4 text-right">Actions</th>
                   </tr>
                 </thead>
+
                 <tbody>
                   {leads.map((lead) => (
                     <tr key={lead.id} className="border-b border-border/70 text-sm text-[#173447] last:border-b-0">
                       <td className="px-5 py-4 font-semibold">
-                        <Link href={getLeadDetailHref(lead.id)} className="transition hover:text-primary-strong hover:underline">
+                        <Link
+                          href={getLeadDetailHref(lead.id)}
+                          className="transition hover:text-primary-strong hover:underline"
+                        >
                           {lead.firstName} {lead.lastName}
                         </Link>
                       </td>
@@ -361,81 +385,6 @@ export default function DashboardLeadsPage() {
                 </tbody>
               </table>
             </div>
-
-            <div className="space-y-4 p-4 md:hidden">
-              {leads.map((lead) => (
-                <article key={lead.id} className="rounded-2xl border border-border bg-white p-4 shadow-sm">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <h2 className="text-base font-semibold text-primary">
-                        <Link href={getLeadDetailHref(lead.id)} className="transition hover:text-primary-strong hover:underline">
-                          {lead.firstName} {lead.lastName}
-                        </Link>
-                      </h2>
-                      <p className="mt-1 text-sm text-muted">{formatLeadTimestamp(lead.timestamp)}</p>
-                      <div className="mt-2 flex flex-wrap items-center gap-2">
-                        <span className="text-sm font-bold text-primary">Score {lead.score}</span>
-                        <PriorityBadge priority={lead.priority} />
-                      </div>
-                    </div>
-                    <span
-                      className={`inline-flex rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] ${
-                        lead.status === "contacted" ? "bg-[#dcefe3] text-[#2d6a4f]" : "bg-[#f6e8cc] text-[#9a6a1a]"
-                      }`}
-                    >
-                      {lead.status}
-                    </span>
-                  </div>
-
-                  <div className="mt-4 space-y-2 text-sm text-[#173447]">
-                    <p>
-                      <span className="font-semibold">Phone:</span> {lead.phone}
-                    </p>
-                    <p>
-                      <span className="font-semibold">Email:</span> {lead.email}
-                    </p>
-                    <p>
-                      <span className="font-semibold">Property:</span> {lead.propertyAddress}
-                    </p>
-                    <p>
-                      <span className="font-semibold">Location:</span> {lead.city}, {lead.state}
-                    </p>
-                    <div className="flex flex-wrap gap-2 pt-1">
-                      {getActiveDistressFlags(lead.distressFlags).length > 0 ? (
-                        getActiveDistressFlags(lead.distressFlags).slice(0, 3).map((flag) => (
-                          <FlagBadge key={flag.key} label={flag.label} />
-                        ))
-                      ) : (
-                        <span className="text-xs text-muted">No distress signals</span>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    <Link
-                      href={getLeadDetailHref(lead.id)}
-                      className="rounded-full border border-border bg-white px-3 py-2 text-xs font-semibold text-primary transition hover:border-primary/30 hover:text-primary-strong"
-                    >
-                      View Lead
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={() => void handleToggleStatus(lead)}
-                      className="rounded-full border border-border bg-white px-3 py-2 text-xs font-semibold text-primary transition hover:border-primary/30 hover:text-primary-strong"
-                    >
-                      {lead.status === "new" ? "Mark Contacted" : "Mark New"}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => void handleDeleteLead(lead.id)}
-                      className="rounded-full border border-[#ead7d7] bg-white px-3 py-2 text-xs font-semibold text-[#8a3d3d] transition hover:border-[#d9b0b0] hover:text-[#6d2f2f]"
-                    >
-                      Delete Lead
-                    </button>
-                  </div>
-                </article>
-              ))}
-            </div>
           </div>
         </>
       )}
@@ -458,7 +407,15 @@ function PriorityBadge({ priority }: { priority: StoredLead["priority"] }) {
       : priority === "Medium"
         ? "bg-[#f6e8cc] text-[#9a6a1a]"
         : "bg-[#e7eef5] text-[#355066]";
-  const label = priority === "High" ? "🔥 High" : priority === "Medium" ? "⚠️ Medium" : "Low";
 
-  return <span className={`inline-flex rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] ${className}`}>{label}</span>;
+  const label =
+    priority === "High" ? "🔥 High" : priority === "Medium" ? "⚠️ Medium" : "Low";
+
+  return (
+    <span
+      className={`inline-flex rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] ${className}`}
+    >
+      {label}
+    </span>
+  );
 }
