@@ -279,138 +279,112 @@ export default function DashboardLeadsPage() {
         )}
       </section>
 
-      {isLoadingLeads ? (
-        <div className="rounded-[1.5rem] border border-dashed border-border bg-surface p-6 text-sm leading-6 text-muted">
-          Loading leads...
-        </div>
-      ) : leads.length === 0 ? (
-        <div className="rounded-[1.5rem] border border-dashed border-border bg-surface p-6 text-sm leading-6 text-muted">
-          No leads yet. Submit the homepage form to see new homeowner inquiries here.
-        </div>
-      ) : (
-        
+    {isLoadingLeads ? (
+  <div className="rounded-[1.5rem] border border-dashed border-border bg-surface p-6 text-sm leading-6 text-muted">
+    Loading leads...
+  </div>
+) : leads.length === 0 ? (
+  <div className="rounded-[1.5rem] border border-dashed border-border bg-surface p-6 text-sm leading-6 text-muted">
+    No leads yet. Submit the homepage form to see new homeowner inquiries here.
+  </div>
+) : (
+  <div className="rounded-[1.5rem] border border-border bg-surface shadow-[0_18px_40px_rgba(17,37,52,0.05)]">
+    <div className="hidden overflow-x-auto md:block">
+      <table className="min-w-full border-collapse">
+        <thead>
+          <tr className="border-b border-border bg-[#f7f3ea] text-left text-xs font-semibold uppercase tracking-[0.16em] text-[#4f6376]">
+            <th className="px-5 py-4">Full Name</th>
+            <th className="px-5 py-4">Phone</th>
+            <th className="px-5 py-4">Email</th>
+            <th className="px-5 py-4">Property Address</th>
+            <th className="px-5 py-4">City / State</th>
+            <th className="px-5 py-4">Submitted</th>
+            <th className="px-5 py-4">Score</th>
+            <th className="px-5 py-4">Status</th>
+            <th className="px-5 py-4 text-right">Actions</th>
+          </tr>
+        </thead>
 
-          <div className="rounded-[1.5rem] border border-border bg-surface shadow-[0_18px_40px_rgba(17,37,52,0.05)]">
-            <div className="hidden overflow-x-auto md:block">
-              <table className="min-w-full border-collapse">
-                <thead>
-                  <tr className="border-b border-border bg-[#f7f3ea] text-left text-xs font-semibold uppercase tracking-[0.16em] text-[#4f6376]">
-                    <th className="px-5 py-4">Full Name</th>
-                    <th className="px-5 py-4">Phone</th>
-                    <th className="px-5 py-4">Email</th>
-                    <th className="px-5 py-4">Property Address</th>
-                    <th className="px-5 py-4">City / State</th>
-                    <th className="px-5 py-4">Submitted</th>
-                    <th className="px-5 py-4">Score</th>
-                    <th className="px-5 py-4">Status</th>
-                    <th className="px-5 py-4 text-right">Actions</th>
-                  </tr>
-                </thead>
+        <tbody>
+          {leads.map((lead) => (
+            <tr key={lead.id} className="border-b border-border/70 text-sm text-[#173447] last:border-b-0">
+              <td className="px-5 py-4 font-semibold">
+                <Link
+                  href={getLeadDetailHref(lead.id)}
+                  className="transition hover:text-primary-strong hover:underline"
+                >
+                  {lead.firstName} {lead.lastName}
+                </Link>
+              </td>
+              <td className="px-5 py-4">{lead.phone}</td>
+              <td className="px-5 py-4">{lead.email}</td>
+              <td className="px-5 py-4">{lead.propertyAddress}</td>
+              <td className="px-5 py-4">
+                {lead.city}, {lead.state}
+              </td>
+              <td className="px-5 py-4 text-[#5d6a72]">
+                {formatLeadTimestamp(lead.timestamp)}
+              </td>
+              <td className="px-5 py-4">
+                <div className="space-y-2">
+                  <p className="text-base font-bold text-primary">{lead.score}</p>
+                  <PriorityBadge priority={lead.priority} />
+                </div>
+              </td>
+              <td className="px-5 py-4">
+                <span
+                  className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] ${
+                    lead.status === "contacted"
+                      ? "bg-[#dcefe3] text-[#2d6a4f]"
+                      : "bg-[#f6e8cc] text-[#9a6a1a]"
+                  }`}
+                >
+                  {lead.status}
+                </span>
 
-                <tbody>
-                  {leads.map((lead) => (
-                    <tr key={lead.id} className="border-b border-border/70 text-sm text-[#173447] last:border-b-0">
-                      <td className="px-5 py-4 font-semibold">
-                        <Link
-                          href={getLeadDetailHref(lead.id)}
-                          className="transition hover:text-primary-strong hover:underline"
-                        >
-                          {lead.firstName} {lead.lastName}
-                        </Link>
-                      </td>
-                      <td className="px-5 py-4">{lead.phone}</td>
-                      <td className="px-5 py-4">{lead.email}</td>
-                      <td className="px-5 py-4">{lead.propertyAddress}</td>
-                      <td className="px-5 py-4">
-                        {lead.city}, {lead.state}
-                      </td>
-                      <td className="px-5 py-4 text-[#5d6a72]">{formatLeadTimestamp(lead.timestamp)}</td>
-                      <td className="px-5 py-4">
-                        <div className="space-y-2">
-                          <p className="text-base font-bold text-primary">{lead.score}</p>
-                          <PriorityBadge priority={lead.priority} />
-                        </div>
-                      </td>
-                      <td className="px-5 py-4">
-                        <span
-                          className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] ${
-                            lead.status === "contacted"
-                              ? "bg-[#dcefe3] text-[#2d6a4f]"
-                              : "bg-[#f6e8cc] text-[#9a6a1a]"
-                          }`}
-                        >
-                          {lead.status}
-                        </span>
-                        <div className="mt-2 flex flex-wrap gap-2">
-                          {getActiveDistressFlags(lead.distressFlags).length > 0 ? (
-                            getActiveDistressFlags(lead.distressFlags).slice(0, 3).map((flag) => (
-                              <FlagBadge key={flag.key} label={flag.label} />
-                            ))
-                          ) : (
-                            <span className="text-xs text-muted">No distress signals</span>
-                          )}
-                        </div>
-                      </td>
-                      <td className="px-5 py-4">
-                        <div className="flex justify-end gap-2">
-                          <Link
-                            href={getLeadDetailHref(lead.id)}
-                            className="rounded-full border border-border bg-white px-3 py-2 text-xs font-semibold text-primary transition hover:border-primary/30 hover:text-primary-strong"
-                          >
-                            View Lead
-                          </Link>
-                          <button
-                            type="button"
-                            onClick={() => void handleToggleStatus(lead)}
-                            className="rounded-full border border-border bg-white px-3 py-2 text-xs font-semibold text-primary transition hover:border-primary/30 hover:text-primary-strong"
-                          >
-                            {lead.status === "new" ? "Mark Contacted" : "Mark New"}
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => void handleDeleteLead(lead.id)}
-                            className="rounded-full border border-[#ead7d7] bg-white px-3 py-2 text-xs font-semibold text-[#8a3d3d] transition hover:border-[#d9b0b0] hover:text-[#6d2f2f]"
-                          >
-                            Delete Lead
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </>
-      )}
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {getActiveDistressFlags(lead.distressFlags).length > 0 ? (
+                    getActiveDistressFlags(lead.distressFlags)
+                      .slice(0, 3)
+                      .map((flag) => (
+                        <FlagBadge key={flag.key} label={flag.label} />
+                      ))
+                  ) : (
+                    <span className="text-xs text-muted">No distress signals</span>
+                  )}
+                </div>
+              </td>
+
+              <td className="px-5 py-4">
+                <div className="flex justify-end gap-2">
+                  <Link
+                    href={getLeadDetailHref(lead.id)}
+                    className="rounded-full border border-border bg-white px-3 py-2 text-xs font-semibold text-primary transition hover:border-primary/30 hover:text-primary-strong"
+                  >
+                    View Lead
+                  </Link>
+
+                  <button
+                    type="button"
+                    onClick={() => void handleToggleStatus(lead)}
+                    className="rounded-full border border-border bg-white px-3 py-2 text-xs font-semibold text-primary transition hover:border-primary/30 hover:text-primary-strong"
+                  >
+                    {lead.status === "new" ? "Mark Contacted" : "Mark New"}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => void handleDeleteLead(lead.id)}
+                    className="rounded-full border border-[#ead7d7] bg-white px-3 py-2 text-xs font-semibold text-[#8a3d3d] transition hover:border-[#d9b0b0] hover:text-[#6d2f2f]"
+                  >
+                    Delete Lead
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
-  );
-}
-
-function FlagBadge({ label }: { label: string }) {
-  return (
-    <span className="inline-flex rounded-full bg-[#eef3f8] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#355066]">
-      {label}
-    </span>
-  );
-}
-
-function PriorityBadge({ priority }: { priority: StoredLead["priority"] }) {
-  const className =
-    priority === "High"
-      ? "bg-[#f7ddd7] text-[#9f3a22]"
-      : priority === "Medium"
-        ? "bg-[#f6e8cc] text-[#9a6a1a]"
-        : "bg-[#e7eef5] text-[#355066]";
-
-  const label =
-    priority === "High" ? "🔥 High" : priority === "Medium" ? "⚠️ Medium" : "Low";
-
-  return (
-    <span
-      className={`inline-flex rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] ${className}`}
-    >
-      {label}
-    </span>
-  );
-}
+  </div>
+)}
