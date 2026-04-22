@@ -4,17 +4,8 @@ import type { Route } from "next";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-type StoredLead = {
-  id: string;
-  firstName: string;
-  lastName: string;
-  phone: string;
-  email: string;
-  propertyAddress: string;
-  timestamp: string;
-  priority: "High" | "Medium" | "Low";
-  status: "new" | "contacted";
-};
+import { deleteLead, fetchLeads, updateLead } from "@/lib/leads-api";
+import type { StoredLead } from "@/lib/leads-storage";
 
 function getLeadNextAction(lead: StoredLead) {
   if (lead.priority === "High" && lead.status === "new") {
@@ -30,19 +21,6 @@ function getLeadNextAction(lead: StoredLead) {
 
 function getLeadDetailHref(id: string) {
   return `/dashboard/leads/${id}` as Route;
-}
-
-// Mock APIs (safe placeholders)
-async function fetchLeads(): Promise<StoredLead[]> {
-  return [];
-}
-
-async function deleteLead(id: string): Promise<StoredLead[]> {
-  return [];
-}
-
-async function updateLead(lead: StoredLead): Promise<StoredLead> {
-  return lead;
 }
 
 function formatLeadTimestamp(timestamp: string) {
@@ -85,12 +63,9 @@ export default function DashboardLeadsPage() {
       status: lead.status === "new" ? "contacted" : "new",
     });
 
-    setLeads((prev) =>
-      prev.map((l) => (l.id === updated.id ? updated : l))
-    );
+    setLeads((prev) => prev.map((l) => (l.id === updated.id ? updated : l)));
   }
 
-  // 🔥 HOT LEADS
   const hotLeads = leads.filter(
     (lead) => lead.priority === "High" && lead.status === "new"
   );
@@ -104,7 +79,7 @@ export default function DashboardLeadsPage() {
           <div className="p-6 text-gray-500">Loading leads...</div>
         ) : (
           <>
-            {/* 🔥 HOT LEADS SECTION */}
+            {/* HOT LEADS */}
             {hotLeads.length > 0 && (
               <div className="mb-6 p-4 border rounded-lg bg-red-50">
                 <h2 className="text-lg font-semibold text-red-600">
@@ -158,7 +133,6 @@ export default function DashboardLeadsPage() {
             ) : (
               <div className="border rounded-lg overflow-hidden">
                 <table className="min-w-full text-sm">
-
                   <thead>
                     <tr className="text-xs uppercase text-gray-500 border-b">
                       <th className="p-4">Name</th>
@@ -176,7 +150,6 @@ export default function DashboardLeadsPage() {
                   <tbody>
                     {leads.map((lead) => (
                       <tr key={lead.id} className="border-b">
-
                         <td className="p-4 font-semibold">
                           <Link href={getLeadDetailHref(lead.id)}>
                             {lead.firstName} {lead.lastName}
@@ -212,7 +185,9 @@ export default function DashboardLeadsPage() {
                             onClick={() => void handleToggleStatus(lead)}
                             className="text-xs border px-2 py-1 rounded"
                           >
-                            Toggle
+                            {lead.status === "new"
+                              ? "Mark Contacted"
+                              : "Mark New"}
                           </button>
 
                           <button
@@ -222,11 +197,9 @@ export default function DashboardLeadsPage() {
                             Delete
                           </button>
                         </td>
-
                       </tr>
                     ))}
                   </tbody>
-
                 </table>
               </div>
             )}
