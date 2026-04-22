@@ -16,7 +16,6 @@ type StoredLead = {
   status: "new" | "contacted";
 };
 
-// ✅ FIXED (Type-safe + simple)
 function getLeadNextAction(lead: StoredLead) {
   if (lead.priority === "High" && lead.status === "new") {
     return "Call Now";
@@ -29,12 +28,11 @@ function getLeadNextAction(lead: StoredLead) {
   return "Monitor";
 }
 
-// ✅ FIXED Route typing
 function getLeadDetailHref(id: string) {
   return `/dashboard/leads/${id}` as Route;
 }
 
-// Mock API (safe placeholders)
+// Mock APIs (safe placeholders)
 async function fetchLeads(): Promise<StoredLead[]> {
   return [];
 }
@@ -92,6 +90,11 @@ export default function DashboardLeadsPage() {
     );
   }
 
+  // 🔥 HOT LEADS
+  const hotLeads = leads.filter(
+    (lead) => lead.priority === "High" && lead.status === "new"
+  );
+
   return (
     <div className="p-6">
       <section>
@@ -99,85 +102,135 @@ export default function DashboardLeadsPage() {
 
         {isLoadingLeads ? (
           <div className="p-6 text-gray-500">Loading leads...</div>
-        ) : leads.length === 0 ? (
-          <div className="p-6 text-gray-500">No leads yet.</div>
         ) : (
-          <div className="border rounded-lg overflow-hidden">
-            <table className="min-w-full text-sm">
+          <>
+            {/* 🔥 HOT LEADS SECTION */}
+            {hotLeads.length > 0 && (
+              <div className="mb-6 p-4 border rounded-lg bg-red-50">
+                <h2 className="text-lg font-semibold text-red-600">
+                  🔥 Hot Leads
+                </h2>
+                <p className="text-sm text-gray-600 mb-3">
+                  High-priority leads that need immediate action
+                </p>
 
-              {/* HEADER */}
-              <thead>
-                <tr className="text-xs uppercase text-gray-500 border-b">
-                  <th className="p-4">Name</th>
-                  <th className="p-4">Phone</th>
-                  <th className="p-4">Email</th>
-                  <th className="p-4">Address</th>
-                  <th className="p-4">Date</th>
-                  <th className="p-4">Score</th>
-                  <th className="p-4">Status</th>
-                  <th className="p-4">Next Action</th>
-                  <th className="p-4 text-right">Actions</th>
-                </tr>
-              </thead>
+                <div className="space-y-2">
+                  {hotLeads.map((lead) => (
+                    <div
+                      key={lead.id}
+                      className="flex justify-between items-center p-3 bg-white border rounded"
+                    >
+                      <div>
+                        <p className="font-semibold">
+                          {lead.firstName} {lead.lastName}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {lead.propertyAddress}
+                        </p>
+                      </div>
 
-              {/* BODY */}
-              <tbody>
-                {leads.map((lead) => (
-                  <tr key={lead.id} className="border-b">
+                      <div className="flex items-center gap-3">
+                        <PriorityBadge priority={lead.priority} />
 
-                    <td className="p-4 font-semibold">
-                      <Link href={getLeadDetailHref(lead.id)}>
-                        {lead.firstName} {lead.lastName}
-                      </Link>
-                    </td>
+                        <Link
+                          href={getLeadDetailHref(lead.id)}
+                          className="text-xs underline"
+                        >
+                          View
+                        </Link>
 
-                    <td className="p-4">{lead.phone}</td>
-                    <td className="p-4">{lead.email}</td>
-                    <td className="p-4">{lead.propertyAddress}</td>
+                        <button
+                          onClick={() => void handleToggleStatus(lead)}
+                          className="text-xs bg-red-600 text-white px-2 py-1 rounded"
+                        >
+                          Call Now
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
-                    <td className="p-4">
-                      {formatLeadTimestamp(lead.timestamp)}
-                    </td>
+            {/* TABLE */}
+            {leads.length === 0 ? (
+              <div className="p-6 text-gray-500">No leads yet.</div>
+            ) : (
+              <div className="border rounded-lg overflow-hidden">
+                <table className="min-w-full text-sm">
 
-                    <td className="p-4">
-                      <PriorityBadge priority={lead.priority} />
-                    </td>
+                  <thead>
+                    <tr className="text-xs uppercase text-gray-500 border-b">
+                      <th className="p-4">Name</th>
+                      <th className="p-4">Phone</th>
+                      <th className="p-4">Email</th>
+                      <th className="p-4">Address</th>
+                      <th className="p-4">Date</th>
+                      <th className="p-4">Score</th>
+                      <th className="p-4">Status</th>
+                      <th className="p-4">Next Action</th>
+                      <th className="p-4 text-right">Actions</th>
+                    </tr>
+                  </thead>
 
-                    <td className="p-4">
-                      <span className="text-xs font-bold">
-                        {lead.status}
-                      </span>
-                    </td>
+                  <tbody>
+                    {leads.map((lead) => (
+                      <tr key={lead.id} className="border-b">
 
-                    {/* ✅ NEXT ACTION */}
-                    <td className="p-4">
-                      <span className="text-xs bg-gray-100 px-2 py-1 rounded">
-                        {getLeadNextAction(lead)}
-                      </span>
-                    </td>
+                        <td className="p-4 font-semibold">
+                          <Link href={getLeadDetailHref(lead.id)}>
+                            {lead.firstName} {lead.lastName}
+                          </Link>
+                        </td>
 
-                    <td className="p-4 text-right space-x-2">
-                      <button
-                        onClick={() => void handleToggleStatus(lead)}
-                        className="text-xs border px-2 py-1 rounded"
-                      >
-                        Toggle
-                      </button>
+                        <td className="p-4">{lead.phone}</td>
+                        <td className="p-4">{lead.email}</td>
+                        <td className="p-4">{lead.propertyAddress}</td>
 
-                      <button
-                        onClick={() => void handleDeleteLead(lead.id)}
-                        className="text-xs border px-2 py-1 rounded text-red-600"
-                      >
-                        Delete
-                      </button>
-                    </td>
+                        <td className="p-4">
+                          {formatLeadTimestamp(lead.timestamp)}
+                        </td>
 
-                  </tr>
-                ))}
-              </tbody>
+                        <td className="p-4">
+                          <PriorityBadge priority={lead.priority} />
+                        </td>
 
-            </table>
-          </div>
+                        <td className="p-4">
+                          <span className="text-xs font-bold">
+                            {lead.status}
+                          </span>
+                        </td>
+
+                        <td className="p-4">
+                          <span className="text-xs bg-gray-100 px-2 py-1 rounded">
+                            {getLeadNextAction(lead)}
+                          </span>
+                        </td>
+
+                        <td className="p-4 text-right space-x-2">
+                          <button
+                            onClick={() => void handleToggleStatus(lead)}
+                            className="text-xs border px-2 py-1 rounded"
+                          >
+                            Toggle
+                          </button>
+
+                          <button
+                            onClick={() => void handleDeleteLead(lead.id)}
+                            className="text-xs border px-2 py-1 rounded text-red-600"
+                          >
+                            Delete
+                          </button>
+                        </td>
+
+                      </tr>
+                    ))}
+                  </tbody>
+
+                </table>
+              </div>
+            )}
+          </>
         )}
       </section>
     </div>
