@@ -5,18 +5,34 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { deleteLead, fetchLeads } from "@/lib/leads-api";
-import type { StoredLead } from "@/lib/leads-storage";
+import type { LeadStatus, StoredLead } from "@/lib/leads-storage";
 
 function getLeadNextAction(lead: StoredLead) {
-  if (lead.priority === "High" && lead.status === "new") {
-    return "Call Now";
-  }
-
-  if (lead.status === "contacted") {
-    return "Follow Up";
-  }
+  if (lead.priority === "High" && lead.status === "new") return "Call Now";
+  if (lead.status === "contacted") return "Follow Up";
+  if (lead.status === "negotiating") return "Negotiate";
+  if (lead.status === "under_contract") return "Close Deal";
+  if (lead.status === "closed") return "Closed";
 
   return "Monitor";
+}
+
+function getPipelineButtonLabel(status: LeadStatus) {
+  if (status === "new") return "Mark Contacted";
+  if (status === "contacted") return "Start Negotiation";
+  if (status === "negotiating") return "Mark Under Contract";
+  if (status === "under_contract") return "Mark Closed";
+
+  return "Closed";
+}
+
+function getNextPipelineStatus(status: LeadStatus): LeadStatus {
+  if (status === "new") return "contacted";
+  if (status === "contacted") return "negotiating";
+  if (status === "negotiating") return "under_contract";
+  if (status === "under_contract") return "closed";
+
+  return "closed";
 }
 
 function getLeadDetailHref(id: string) {
@@ -40,32 +56,34 @@ function PriorityBadge({ priority }: { priority: string }) {
   return <span className={`text-xs font-bold ${color}`}>{priority}</span>;
 }
 
-type LeadStatus = "new" | "contacted" | "negotiating" | "under_contract" | "closed";
+function StatusBadge({ status }: { status: LeadStatus }) {
+  const color =
+    status === "closed"
+      ? "bg-green-100 text-green-700"
+      : status === "under_contract"
+        ? "bg-blue-100 text-blue-700"
+        : status === "negotiating"
+          ? "bg-purple-100 text-purple-700"
+          : status === "contacted"
+            ? "bg-yellow-100 text-yellow-700"
+            : "bg-gray-100 text-gray-700";
+
+  return (
+    <span className={`rounded px-2 py-1 text-xs font-bold ${color}`}>
+      {status.replace("_", " ")}
+    </span>
+  );
+}
 
 async function patchLeadStatus(id: string, status: LeadStatus) {
-  const payload = { status };
-
-  // Try the dedicated status route first
-  let res = await fetch(`/api/leads/${id}/status`, {
+  const res = await fetch(`/api/leads/${id}/status`, {
     method: "PATCH",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(payload),
-    credentials: "include",
+    body: JSON.stringify({ status }),
+    credentials: "include"
   });
-
-  // Fallback in case your project is using PATCH /api/leads/[id]
-  if (res.status === 404) {
-    res = await fetch(`/api/leads/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-      credentials: "include",
-    });
-  }
 
   if (!res.ok) {
     let message = "Failed to update lead status.";
@@ -81,9 +99,7 @@ async function patchLeadStatus(id: string, status: LeadStatus) {
   }
 
   const data = await res.json();
-
-  // Support either { lead: ... } or direct object return shapes
-  return (data?.lead ?? data) as StoredLead;
+  return data.lead as StoredLead;
 }
 
 export default function DashboardLeadsPage() {
@@ -118,8 +134,8 @@ export default function DashboardLeadsPage() {
     }
   }
 
-  async function handleToggleStatus(lead: StoredLead) {
-    const nextStatus: LeadStatus = lead.status === "new" ? "contacted" : "new";
+  async function handleAdvancePipeline(lead: StoredLead) {
+    const nextStatus = getNextPipelineStatus(lead.status);
 
     try {
       setUpdatingLeadId(lead.id);
@@ -160,38 +176,44 @@ export default function DashboardLeadsPage() {
                 </p>
 
                 <div className="space-y-2">
-                  {hotLeads.map((lead) => (
-                    <div
-                      key={lead.id}
-                      className="flex items-center justify-between rounded border bg-white p-3"
-                    >
-                      <div>
-                        <p className="font-semibold">
-                          {lead.firstName} {lead.lastName}
-                        </p>
-                        <p className="text-xs text-gray-500">{lead.propertyAddress}</p>
+                  {hotLeads.map((lead) => {
+                    const isUpdating = updatingLeadId === lead.id;
+
+                    return (
+                      <div
+                        key={lead.id}
+                        className="flex items-center justify-between rounded border bg-white p-3"
+                      >
+                        <div>
+                          <p className="font-semibold">
+                            {lead.firstName} {lead.lastName}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            {lead.propertyAddress}
+                          </p>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          <PriorityBadge priority={lead.priority} />
+
+                          <Link
+                            href={getLeadDetailHref(lead.id)}
+                            className="text-xs underline"
+                          >
+                            View
+                          </Link>
+
+                          <button
+                            onClick={() => void handleAdvancePipeline(lead)}
+                            disabled={isUpdating || lead.status === "closed"}
+                            className="rounded bg-red-600 px-2 py-1 text-xs text-white disabled:cursor-not-allowed disabled:opacity-50"
+                          >
+                            {isUpdating ? "Updating..." : "Call Now"}
+                          </button>
+                        </div>
                       </div>
-
-                      <div className="flex items-center gap-3">
-                        <PriorityBadge priority={lead.priority} />
-
-                        <Link
-                          href={getLeadDetailHref(lead.id)}
-                          className="text-xs underline"
-                        >
-                          View
-                        </Link>
-
-                        <button
-                          onClick={() => void handleToggleStatus(lead)}
-                          disabled={updatingLeadId === lead.id}
-                          className="rounded bg-red-600 px-2 py-1 text-xs text-white disabled:cursor-not-allowed disabled:opacity-50"
-                        >
-                          {updatingLeadId === lead.id ? "Updating..." : "Call Now"}
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -219,6 +241,7 @@ export default function DashboardLeadsPage() {
                     {leads.map((lead) => {
                       const action = getLeadNextAction(lead);
                       const isUpdating = updatingLeadId === lead.id;
+                      const isClosed = lead.status === "closed";
 
                       return (
                         <tr key={lead.id} className="border-b">
@@ -231,7 +254,6 @@ export default function DashboardLeadsPage() {
                           <td className="p-4">{lead.phone}</td>
                           <td className="p-4">{lead.email}</td>
                           <td className="p-4">{lead.propertyAddress}</td>
-
                           <td className="p-4">{formatLeadTimestamp(lead.timestamp)}</td>
 
                           <td className="p-4">
@@ -239,34 +261,24 @@ export default function DashboardLeadsPage() {
                           </td>
 
                           <td className="p-4">
-                            <span className="text-xs font-bold">{lead.status}</span>
+                            <StatusBadge status={lead.status} />
                           </td>
 
                           <td className="p-4">
-                            <span
-                              className={`rounded px-2 py-1 text-xs font-semibold ${
-                                action === "Call Now"
-                                  ? "bg-red-100 text-red-700"
-                                  : action === "Follow Up"
-                                    ? "bg-yellow-100 text-yellow-700"
-                                    : "bg-gray-100 text-gray-600"
-                              }`}
-                            >
+                            <span className="rounded bg-gray-100 px-2 py-1 text-xs font-semibold text-gray-700">
                               {action}
                             </span>
                           </td>
 
                           <td className="space-x-2 p-4 text-right">
                             <button
-                              onClick={() => void handleToggleStatus(lead)}
-                              disabled={isUpdating}
+                              onClick={() => void handleAdvancePipeline(lead)}
+                              disabled={isUpdating || isClosed}
                               className="rounded border px-2 py-1 text-xs disabled:cursor-not-allowed disabled:opacity-50"
                             >
                               {isUpdating
                                 ? "Updating..."
-                                : lead.status === "new"
-                                  ? "Mark Contacted"
-                                  : "Mark New"}
+                                : getPipelineButtonLabel(lead.status)}
                             </button>
 
                             <button
