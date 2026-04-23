@@ -1,5 +1,13 @@
 import { z } from "zod";
 
+export const leadStatusSchema = z.enum([
+  "new",
+  "contacted",
+  "negotiating",
+  "under_contract",
+  "closed"
+]);
+
 const leadNoteSchema = z.object({
   id: z.string().min(1),
   body: z.string(),
@@ -49,7 +57,7 @@ export const storedLeadSchema = z.object({
   parcelId: z.string(),
   situationDetails: z.string(),
   source: z.string().min(1),
-  status: z.enum(["new", "contacted"]),
+  status: leadStatusSchema,
   notes: z.array(leadNoteSchema),
   followUps: z.array(leadFollowUpSchema),
   analyzer: leadAnalyzerSchema,
@@ -63,3 +71,4 @@ export const storedLeadSchema = z.object({
 export const storedLeadArraySchema = z.array(storedLeadSchema);
 
 export type StoredLeadInput = z.infer<typeof storedLeadSchema>;
+export type LeadStatusInput = z.infer<typeof leadStatusSchema>;

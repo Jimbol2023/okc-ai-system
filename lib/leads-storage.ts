@@ -15,6 +15,13 @@ import type { LeadIntakeInput } from "@/lib/validations/lead";
 
 export const OKC_WHOLESALE_LEADS_KEY = "okcWholesaleLeads";
 
+export type LeadStatus =
+  | "new"
+  | "contacted"
+  | "negotiating"
+  | "under_contract"
+  | "closed";
+
 export type LeadNote = {
   id: string;
   body: string;
@@ -53,7 +60,7 @@ export type StoredLead = {
   parcelId: string;
   situationDetails: string;
   source: string;
-  status: "new" | "contacted";
+  status: LeadStatus;
   notes: LeadNote[];
   followUps: LeadFollowUp[];
   analyzer: LeadAnalyzer;
@@ -63,6 +70,22 @@ export type StoredLead = {
   priority: "High" | "Medium" | "Low";
   scoreBreakdown: string;
 };
+
+const ALLOWED_LEAD_STATUSES: readonly LeadStatus[] = [
+  "new",
+  "contacted",
+  "negotiating",
+  "under_contract",
+  "closed"
+] as const;
+
+function isLeadStatus(value: unknown): value is LeadStatus {
+  return typeof value === "string" && ALLOWED_LEAD_STATUSES.includes(value as LeadStatus);
+}
+
+function normalizeLeadStatus(value: unknown): LeadStatus {
+  return isLeadStatus(value) ? value : "new";
+}
 
 function writeStoredLeads(leads: StoredLead[]) {
   if (typeof window === "undefined") {
@@ -92,6 +115,7 @@ function readStoredLeads(): StoredLead[] {
         followUps?: LeadFollowUp[];
         analyzer?: Partial<LeadAnalyzer>;
         distressFlags?: Partial<DistressFlags>;
+        status?: unknown;
       }
     >;
 
@@ -114,7 +138,7 @@ function readStoredLeads(): StoredLead[] {
 
       return {
         ...lead,
-        status: lead.status === "contacted" ? "contacted" : "new",
+        status: normalizeLeadStatus(lead.status),
         ownerName: lead.ownerName ?? "",
         mailingAddress,
         county: lead.county ?? "",
@@ -453,10 +477,7 @@ export function addGeneratedLeadsToLocalStorage(generatedLeads: GeneratedLeadInp
       source: lead.source
     })
   );
-  const nextLeads = [
-    ...existingLeads,
-    ...addedLeads
-  ];
+  const nextLeads = [...existingLeads, ...addedLeads];
 
   writeStoredLeads(nextLeads);
   return {

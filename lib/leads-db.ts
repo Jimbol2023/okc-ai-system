@@ -1,10 +1,16 @@
 import { Prisma } from "@/generated/prisma";
 
-import { generatedLeadToStoredLead, importedLeadToStoredLead, leadIntakeToStoredLead, dbLeadToStoredLead, storedLeadToDbData } from "@/lib/lead-record";
-import { prisma } from "@/lib/prisma";
+import {
+  dbLeadToStoredLead,
+  generatedLeadToStoredLead,
+  importedLeadToStoredLead,
+  leadIntakeToStoredLead,
+  storedLeadToDbData
+} from "@/lib/lead-record";
 import type { GeneratedLeadInput } from "@/lib/lead-generator";
 import type { ImportedLeadDraft } from "@/lib/list-importer";
 import type { StoredLead } from "@/lib/leads-storage";
+import { prisma } from "@/lib/prisma";
 import { leadIntakeSchema, type LeadIntakeInput } from "@/lib/validations/lead";
 
 function isPrismaUniqueError(error: unknown) {
@@ -102,6 +108,19 @@ export async function updateDbLead(storedLead: StoredLead) {
       id: storedLead.id
     },
     data: storedLeadToDbData(storedLead)
+  });
+
+  return dbLeadToStoredLead(updatedLead);
+}
+
+export async function updateDbLeadStatus(leadId: string, status: StoredLead["status"]) {
+  const updatedLead = await prisma.lead.update({
+    where: {
+      id: leadId
+    },
+    data: {
+      status
+    }
   });
 
   return dbLeadToStoredLead(updatedLead);
