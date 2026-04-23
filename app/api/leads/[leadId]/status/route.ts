@@ -30,11 +30,15 @@ export async function PATCH(request: Request, context: RouteContext) {
     }
 
     const { leadId } = await context.params;
+
     const existingLead = await getDbLeadById(leadId);
 
     if (!existingLead) {
       return NextResponse.json(
-        { ok: false, error: "Lead not found." },
+        {
+          ok: false,
+          error: "Lead not found."
+        },
         { status: 404 }
       );
     }
@@ -47,12 +51,18 @@ export async function PATCH(request: Request, context: RouteContext) {
       !ALLOWED_STATUSES.includes(nextStatus as LeadStatus)
     ) {
       return NextResponse.json(
-        { ok: false, error: "Invalid status value." },
+        {
+          ok: false,
+          error: "Invalid status value."
+        },
         { status: 400 }
       );
     }
 
-    const updatedLead = await updateDbLeadStatus(leadId, nextStatus as LeadStatus);
+    const updatedLead = await updateDbLeadStatus(
+      leadId,
+      nextStatus as LeadStatus
+    );
 
     return NextResponse.json({
       ok: true,
@@ -62,7 +72,10 @@ export async function PATCH(request: Request, context: RouteContext) {
     console.error("Lead status PATCH error:", error);
 
     return NextResponse.json(
-      { ok: false, error: "Failed to update lead status." },
+      {
+        ok: false,
+        error: "Failed to update lead status."
+      },
       { status: 500 }
     );
   }
