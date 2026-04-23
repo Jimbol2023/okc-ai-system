@@ -27,40 +27,6 @@ function getPipelineButtonLabel(status: LeadStatus) {
   return "Closed";
 }
 
-function getLeadNextAction(lead: StoredLead) {
-  if (lead.priority === "High" && lead.status === "new") return "Call Now";
-  if (lead.status === "contacted") return "Follow Up";
-  if (lead.status === "negotiating") return "Negotiate";
-  if (lead.status === "under_contract") return "Close Deal";
-  if (lead.status === "closed") return "Closed";
-  return "Monitor";
-}
-
-/* =========================
-   HELPERS
-========================= */
-
-function getLeadDetailHref(id: string) {
-  return `/dashboard/leads/${id}` as Route;
-}
-
-function formatLeadTimestamp(timestamp: string) {
-  const date = new Date(timestamp);
-  if (Number.isNaN(date.getTime())) return "Unknown";
-  return date.toLocaleString();
-}
-
-function PriorityBadge({ priority }: { priority: string }) {
-  const color =
-    priority === "High"
-      ? "text-red-600"
-      : priority === "Medium"
-        ? "text-yellow-600"
-        : "text-gray-500";
-
-  return <span className={`text-xs font-bold ${color}`}>{priority}</span>;
-}
-
 function StatusBadge({ status }: { status: LeadStatus }) {
   const color =
     status === "closed"
@@ -113,141 +79,115 @@ async function patchLeadStatus(id: string, status: LeadStatus) {
 
 export default function DashboardLeadsPage() {
   const [leads, setLeads] = useState<StoredLead[]>([]);
-  const [isLoadingLeads, setIsLoadingLeads] = useState(true);
-  const [updatingLeadId, setUpdatingLeadId] = useState<string | null>(null);
-  const [pageError, setPageError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function loadLeads() {
+    async function load() {
       try {
-        setPageError(null);
+        setError(null);
         const data = await fetchLeads();
         setLeads(data);
-      } catch (error) {
-        console.error(error);
-        setPageError("Unable to load leads.");
+      } catch {
+        setError("Failed to load leads.");
       } finally {
-        setIsLoadingLeads(false);
+        setIsLoading(false);
       }
     }
 
-    void loadLeads();
+    void load();
   }, []);
 
-  async function handleDeleteLead(id: string) {
+  async function handleDelete(id: string) {
     try {
       setLeads(await deleteLead(id));
     } catch {
-      alert("Failed to delete lead.");
+      alert("Delete failed");
     }
   }
 
-  async function handleAdvancePipeline(lead: StoredLead) {
-    const nextStatus = getNextPipelineStatus(lead.status);
+  async function handleAdvance(lead: StoredLead) {
+    const next = getNextPipelineStatus(lead.status);
 
     try {
-      setUpdatingLeadId(lead.id);
-
-      const updatedLead = await patchLeadStatus(lead.id, nextStatus);
+      setUpdatingId(lead.id);
+      const updated = await patchLeadStatus(lead.id, next);
 
       setLeads((prev) =>
-        prev.map((l) => (l.id === updatedLead.id ? updatedLead : l))
+        prev.map((l) => (l.id === updated.id ? updated : l))
       );
-    } catch (error) {
-      alert(error instanceof Error ? error.message : "Update failed.");
+    } catch (e) {
+      alert(e instanceof Error ? e.message : "Update failed");
     } finally {
-      setUpdatingLeadId(null);
+      setUpdatingId(null);
     }
   }
 
-  const hotLeads = leads.filter(
-    (lead) => lead.priority === "High" && lead.status === "new"
-  );
+  if (isLoading) return <div className="p-6">Loading...</div>;
+  if (error) return <div className="p-6 text-red-600">{error}</div>;
 
   return (
     <div className="p-6">
       <h1 className="mb-4 text-2xl font-semibold">Leads</h1>
 
-      {isLoadingLeads ? (
-        <div>Loading leads...</div>
-      ) : pageError ? (
-        <div className="text-red-600">{pageError}</div>
+      {leads.length === 0 ? (
+        <div>No leads yet.</div>
       ) : (
-        <>
-          {/* HOT LEADS */}
-          {hotLeads.length > 0 && (
-            <div className="mb-6 rounded border bg-red-50 p-4">
-              <h2 className="text-red-600 font-semibold">🔥 Hot Leads</h2>
+        <table className="w-full border text-sm">
+          <thead>
+            <tr className="border-b text-xs uppercase text-gray-500">
+              <th className="p-3">Name</th>
+              <th className="p-3">Phone</th>
+              <th className="p-3">Address</th>
+              <th className="p-3">Status</th>
+              <th className="p-3 text-right">Actions</th>
+            </tr>
+          </thead>
 
-              {hotLeads.map((lead) => {
-                const isUpdating = updatingLeadId === lead.id;
+          <tbody>
+            {leads.map((lead) => {
+              const isUpdating = updatingId === lead.id;
+              const isClosed = lead.status === "closed";
 
-                return (
-                  <div key={lead.id} className="flex justify-between p-2">
-                    <div>
+              return (
+                <tr key={lead.id} className="border-b">
+                  <td className="p-3 font-semibold">
+                    <Link href={`/dashboard/leads/${lead.id}` as Route}>
                       {lead.firstName} {lead.lastName}
-                    </div>
+                    </Link>
+                  </td>
+
+                  <td className="p-3">{lead.phone}</td>
+                  <td className="p-3">{lead.propertyAddress}</td>
+
+                  <td className="p-3">
+                    <StatusBadge status={lead.status} />
+                  </td>
+
+                  <td className="p-3 text-right space-x-2">
+                    <button
+                      onClick={() => handleAdvance(lead)}
+                      disabled={isUpdating || isClosed}
+                      className="border px-2 py-1 text-xs rounded disabled:opacity-50"
+                    >
+                      {isUpdating
+                        ? "Updating..."
+                        : getPipelineButtonLabel(lead.status)}
+                    </button>
 
                     <button
-                      onClick={() => handleAdvancePipeline(lead)}
-                      disabled={isUpdating}
-                      className="bg-red-600 text-white px-2 py-1 text-xs rounded"
+                      onClick={() => handleDelete(lead.id)}
+                      className="border px-2 py-1 text-xs text-red-600 rounded"
                     >
-                      {isUpdating ? "Updating..." : "Call Now"}
+                      Delete
                     </button>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-
-          {/* TABLE */}
-          <table className="w-full border">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {leads.map((lead) => {
-                const isUpdating = updatingLeadId === lead.id;
-                const isClosed = lead.status === "closed";
-
-                return (
-                  <tr key={lead.id}>
-                    <td>
-                      <Link href={getLeadDetailHref(lead.id)}>
-                        {lead.firstName} {lead.lastName}
-                      </Link>
-                    </td>
-
-                    <td>
-                      <StatusBadge status={lead.status} />
-                    </td>
-
-                    <td>
-                      <button
-                        onClick={() => handleAdvancePipeline(lead)}
-                        disabled={isUpdating || isClosed}
-                      >
-                        {isUpdating
-                          ? "Updating..."
-                          : getPipelineButtonLabel(lead.status)}
-                      </button>
-
-                      <button onClick={() => handleDeleteLead(lead.id)}>
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       )}
     </div>
   );
