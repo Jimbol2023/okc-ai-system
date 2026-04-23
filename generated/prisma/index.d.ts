@@ -20,6 +20,26 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 export type Lead = $Result.DefaultSelection<Prisma.$LeadPayload>
 
 /**
+ * Enums
+ */
+export namespace $Enums {
+  export const LeadStatus: {
+  new: 'new',
+  contacted: 'contacted',
+  negotiating: 'negotiating',
+  under_contract: 'under_contract',
+  closed: 'closed'
+};
+
+export type LeadStatus = (typeof LeadStatus)[keyof typeof LeadStatus]
+
+}
+
+export type LeadStatus = $Enums.LeadStatus
+
+export const LeadStatus: typeof $Enums.LeadStatus
+
+/**
  * ##  Prisma Client ʲˢ
  *
  * Type-safe database client for TypeScript & Node.js
@@ -887,7 +907,7 @@ export namespace Prisma {
     phone: string | null
     propertyAddress: string | null
     source: string | null
-    status: string | null
+    status: $Enums.LeadStatus | null
     score: number | null
     priority: string | null
     notes: string | null
@@ -902,7 +922,7 @@ export namespace Prisma {
     phone: string | null
     propertyAddress: string | null
     source: string | null
-    status: string | null
+    status: $Enums.LeadStatus | null
     score: number | null
     priority: string | null
     notes: string | null
@@ -1074,7 +1094,7 @@ export namespace Prisma {
     phone: string
     propertyAddress: string
     source: string
-    status: string
+    status: $Enums.LeadStatus
     score: number
     priority: string
     notes: string | null
@@ -1173,7 +1193,7 @@ export namespace Prisma {
       phone: string
       propertyAddress: string
       source: string
-      status: string
+      status: $Enums.LeadStatus
       score: number
       priority: string
       notes: string | null
@@ -1608,7 +1628,7 @@ export namespace Prisma {
     readonly phone: FieldRef<"Lead", 'String'>
     readonly propertyAddress: FieldRef<"Lead", 'String'>
     readonly source: FieldRef<"Lead", 'String'>
-    readonly status: FieldRef<"Lead", 'String'>
+    readonly status: FieldRef<"Lead", 'LeadStatus'>
     readonly score: FieldRef<"Lead", 'Int'>
     readonly priority: FieldRef<"Lead", 'String'>
     readonly notes: FieldRef<"Lead", 'String'>
@@ -2057,6 +2077,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'LeadStatus'
+   */
+  export type EnumLeadStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LeadStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'LeadStatus[]'
+   */
+  export type ListEnumLeadStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LeadStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -2110,7 +2144,7 @@ export namespace Prisma {
     phone?: StringFilter<"Lead"> | string
     propertyAddress?: StringFilter<"Lead"> | string
     source?: StringFilter<"Lead"> | string
-    status?: StringFilter<"Lead"> | string
+    status?: EnumLeadStatusFilter<"Lead"> | $Enums.LeadStatus
     score?: IntFilter<"Lead"> | number
     priority?: StringFilter<"Lead"> | string
     notes?: StringNullableFilter<"Lead"> | string | null
@@ -2144,7 +2178,7 @@ export namespace Prisma {
     phone?: StringFilter<"Lead"> | string
     propertyAddress?: StringFilter<"Lead"> | string
     source?: StringFilter<"Lead"> | string
-    status?: StringFilter<"Lead"> | string
+    status?: EnumLeadStatusFilter<"Lead"> | $Enums.LeadStatus
     score?: IntFilter<"Lead"> | number
     priority?: StringFilter<"Lead"> | string
     notes?: StringNullableFilter<"Lead"> | string | null
@@ -2182,7 +2216,7 @@ export namespace Prisma {
     phone?: StringWithAggregatesFilter<"Lead"> | string
     propertyAddress?: StringWithAggregatesFilter<"Lead"> | string
     source?: StringWithAggregatesFilter<"Lead"> | string
-    status?: StringWithAggregatesFilter<"Lead"> | string
+    status?: EnumLeadStatusWithAggregatesFilter<"Lead"> | $Enums.LeadStatus
     score?: IntWithAggregatesFilter<"Lead"> | number
     priority?: StringWithAggregatesFilter<"Lead"> | string
     notes?: StringNullableWithAggregatesFilter<"Lead"> | string | null
@@ -2197,7 +2231,7 @@ export namespace Prisma {
     phone: string
     propertyAddress: string
     source: string
-    status?: string
+    status?: $Enums.LeadStatus
     score?: number
     priority?: string
     notes?: string | null
@@ -2212,7 +2246,7 @@ export namespace Prisma {
     phone: string
     propertyAddress: string
     source: string
-    status?: string
+    status?: $Enums.LeadStatus
     score?: number
     priority?: string
     notes?: string | null
@@ -2227,7 +2261,7 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     propertyAddress?: StringFieldUpdateOperationsInput | string
     source?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
     score?: IntFieldUpdateOperationsInput | number
     priority?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -2242,7 +2276,7 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     propertyAddress?: StringFieldUpdateOperationsInput | string
     source?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
     score?: IntFieldUpdateOperationsInput | number
     priority?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -2257,7 +2291,7 @@ export namespace Prisma {
     phone: string
     propertyAddress: string
     source: string
-    status?: string
+    status?: $Enums.LeadStatus
     score?: number
     priority?: string
     notes?: string | null
@@ -2272,7 +2306,7 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     propertyAddress?: StringFieldUpdateOperationsInput | string
     source?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
     score?: IntFieldUpdateOperationsInput | number
     priority?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -2287,7 +2321,7 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     propertyAddress?: StringFieldUpdateOperationsInput | string
     source?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
     score?: IntFieldUpdateOperationsInput | number
     priority?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
@@ -2309,6 +2343,13 @@ export namespace Prisma {
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     mode?: QueryMode
     not?: NestedStringFilter<$PrismaModel> | string
+  }
+
+  export type EnumLeadStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.LeadStatus | EnumLeadStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.LeadStatus[] | ListEnumLeadStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LeadStatus[] | ListEnumLeadStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumLeadStatusFilter<$PrismaModel> | $Enums.LeadStatus
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -2429,6 +2470,16 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type EnumLeadStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LeadStatus | EnumLeadStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.LeadStatus[] | ListEnumLeadStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LeadStatus[] | ListEnumLeadStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumLeadStatusWithAggregatesFilter<$PrismaModel> | $Enums.LeadStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumLeadStatusFilter<$PrismaModel>
+    _max?: NestedEnumLeadStatusFilter<$PrismaModel>
+  }
+
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -2481,6 +2532,10 @@ export namespace Prisma {
     set?: string
   }
 
+  export type EnumLeadStatusFieldUpdateOperationsInput = {
+    set?: $Enums.LeadStatus
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -2509,6 +2564,13 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringFilter<$PrismaModel> | string
+  }
+
+  export type NestedEnumLeadStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.LeadStatus | EnumLeadStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.LeadStatus[] | ListEnumLeadStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LeadStatus[] | ListEnumLeadStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumLeadStatusFilter<$PrismaModel> | $Enums.LeadStatus
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -2562,6 +2624,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type NestedEnumLeadStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LeadStatus | EnumLeadStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.LeadStatus[] | ListEnumLeadStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LeadStatus[] | ListEnumLeadStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumLeadStatusWithAggregatesFilter<$PrismaModel> | $Enums.LeadStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumLeadStatusFilter<$PrismaModel>
+    _max?: NestedEnumLeadStatusFilter<$PrismaModel>
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {

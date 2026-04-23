@@ -9,19 +9,27 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+enum LeadStatus {
+  new
+  contacted
+  negotiating
+  under_contract
+  closed
+}
+
 model Lead {
-  id              String   @id
+  id              String     @id
   name            String
   phone           String
   propertyAddress String
   source          String
-  status          String   @default("new")
-  score           Int      @default(0)
-  priority        String   @default("Low")
+  status          LeadStatus @default(new)
+  score           Int        @default(0)
+  priority        String     @default("Low")
   notes           String?
   payload         String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
 
   @@unique([propertyAddress, phone])
   @@index([createdAt])

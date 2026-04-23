@@ -150,7 +150,13 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-
+exports.LeadStatus = exports.$Enums.LeadStatus = {
+  new: 'new',
+  contacted: 'contacted',
+  negotiating: 'negotiating',
+  under_contract: 'under_contract',
+  closed: 'closed'
+};
 
 exports.Prisma.ModelName = {
   Lead: 'Lead'
