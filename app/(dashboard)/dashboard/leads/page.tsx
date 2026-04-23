@@ -4,7 +4,7 @@ import type { Route } from "next";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { deleteLead, fetchLeads, updateLead } from "@/lib/leads-api";
+import { deleteLead, fetchLeads } from "@/lib/leads-api";
 import type { StoredLead } from "@/lib/leads-storage";
 
 function getLeadNextAction(lead: StoredLead) {
@@ -40,30 +40,101 @@ function PriorityBadge({ priority }: { priority: string }) {
   return <span className={`text-xs font-bold ${color}`}>{priority}</span>;
 }
 
+type LeadStatus = "new" | "contacted" | "negotiating" | "under_contract" | "closed";
+
+async function patchLeadStatus(id: string, status: LeadStatus) {
+  const payload = { status };
+
+  // Try the dedicated status route first
+  let res = await fetch(`/api/leads/${id}/status`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+    credentials: "include",
+  });
+
+  // Fallback in case your project is using PATCH /api/leads/[id]
+  if (res.status === 404) {
+    res = await fetch(`/api/leads/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+      credentials: "include",
+    });
+  }
+
+  if (!res.ok) {
+    let message = "Failed to update lead status.";
+
+    try {
+      const data = await res.json();
+      if (data?.error) message = data.error;
+    } catch {
+      // ignore json parse failure
+    }
+
+    throw new Error(message);
+  }
+
+  const data = await res.json();
+
+  // Support either { lead: ... } or direct object return shapes
+  return (data?.lead ?? data) as StoredLead;
+}
+
 export default function DashboardLeadsPage() {
   const [leads, setLeads] = useState<StoredLead[]>([]);
   const [isLoadingLeads, setIsLoadingLeads] = useState(true);
+  const [updatingLeadId, setUpdatingLeadId] = useState<string | null>(null);
+  const [pageError, setPageError] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadLeads() {
-      const data = await fetchLeads();
-      setLeads(data);
-      setIsLoadingLeads(false);
+      try {
+        setPageError(null);
+        const data = await fetchLeads();
+        setLeads(data);
+      } catch (error) {
+        console.error("Failed to load leads:", error);
+        setPageError("Unable to load leads right now.");
+      } finally {
+        setIsLoadingLeads(false);
+      }
     }
+
     void loadLeads();
   }, []);
 
   async function handleDeleteLead(id: string) {
-    setLeads(await deleteLead(id));
+    try {
+      setLeads(await deleteLead(id));
+    } catch (error) {
+      console.error("Delete lead error:", error);
+      alert("Failed to delete lead.");
+    }
   }
 
   async function handleToggleStatus(lead: StoredLead) {
-    const updated = await updateLead({
-      ...lead,
-      status: lead.status === "new" ? "contacted" : "new",
-    });
+    const nextStatus: LeadStatus = lead.status === "new" ? "contacted" : "new";
 
-    setLeads((prev) => prev.map((l) => (l.id === updated.id ? updated : l)));
+    try {
+      setUpdatingLeadId(lead.id);
+
+      const updatedLead = await patchLeadStatus(lead.id, nextStatus);
+
+      setLeads((prev) =>
+        prev.map((l) => (l.id === updatedLead.id ? updatedLead : l))
+      );
+    } catch (error) {
+      console.error("Status update error:", error);
+      alert(error instanceof Error ? error.message : "Failed to update lead status.");
+    } finally {
+      setUpdatingLeadId(null);
+    }
   }
 
   const hotLeads = leads.filter(
@@ -77,6 +148,8 @@ export default function DashboardLeadsPage() {
 
         {isLoadingLeads ? (
           <div className="p-6 text-gray-500">Loading leads...</div>
+        ) : pageError ? (
+          <div className="p-6 text-red-600">{pageError}</div>
         ) : (
           <>
             {hotLeads.length > 0 && (
@@ -111,9 +184,10 @@ export default function DashboardLeadsPage() {
 
                         <button
                           onClick={() => void handleToggleStatus(lead)}
-                          className="rounded bg-red-600 px-2 py-1 text-xs text-white"
+                          disabled={updatingLeadId === lead.id}
+                          className="rounded bg-red-600 px-2 py-1 text-xs text-white disabled:cursor-not-allowed disabled:opacity-50"
                         >
-                          Call Now
+                          {updatingLeadId === lead.id ? "Updating..." : "Call Now"}
                         </button>
                       </div>
                     </div>
@@ -144,6 +218,7 @@ export default function DashboardLeadsPage() {
                   <tbody>
                     {leads.map((lead) => {
                       const action = getLeadNextAction(lead);
+                      const isUpdating = updatingLeadId === lead.id;
 
                       return (
                         <tr key={lead.id} className="border-b">
@@ -184,14 +259,20 @@ export default function DashboardLeadsPage() {
                           <td className="space-x-2 p-4 text-right">
                             <button
                               onClick={() => void handleToggleStatus(lead)}
-                              className="rounded border px-2 py-1 text-xs"
+                              disabled={isUpdating}
+                              className="rounded border px-2 py-1 text-xs disabled:cursor-not-allowed disabled:opacity-50"
                             >
-                              {lead.status === "new" ? "Mark Contacted" : "Mark New"}
+                              {isUpdating
+                                ? "Updating..."
+                                : lead.status === "new"
+                                  ? "Mark Contacted"
+                                  : "Mark New"}
                             </button>
 
                             <button
                               onClick={() => void handleDeleteLead(lead.id)}
-                              className="rounded border px-2 py-1 text-xs text-red-600"
+                              disabled={isUpdating}
+                              className="rounded border px-2 py-1 text-xs text-red-600 disabled:cursor-not-allowed disabled:opacity-50"
                             >
                               Delete
                             </button>
