@@ -13,8 +13,25 @@ import type { ImportedLeadDraft } from "@/lib/list-importer";
 import type { LeadStatus, StoredLead } from "@/lib/leads-storage";
 import { leadIntakeSchema, type LeadIntakeInput } from "@/lib/validations/lead";
 
+type AutomationStoredLead = StoredLead & {
+  lastContactedAt?: Date | string | null;
+  nextFollowUpAt?: Date | string | null;
+  followUpCount?: number;
+  lastFollowUpMessage?: string | null;
+  automationStatus?: string;
+  isHot?: boolean;
+};
+
 function isPrismaUniqueError(error: unknown) {
   return error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002";
+}
+
+function toDateOrNull(value: Date | string | null | undefined) {
+  if (!value) return null;
+
+  const date = value instanceof Date ? value : new Date(value);
+
+  return Number.isNaN(date.getTime()) ? null : date;
 }
 
 async function findExistingLead(lead: Pick<StoredLead, "propertyAddress" | "phone">) {
@@ -58,18 +75,18 @@ export async function createDbLead(storedLead: StoredLead) {
 
   try {
     const dbData = storedLeadToDbData(storedLead);
+    const leadWithAutomation = storedLead as AutomationStoredLead;
 
     const createdLead = await prisma.lead.create({
       data: {
         ...dbData,
 
-        // IMPORTANT: preserve automation values passed from route.ts
-        lastContactedAt: storedLead.lastContactedAt ?? null,
-        nextFollowUpAt: storedLead.nextFollowUpAt ?? null,
-        followUpCount: storedLead.followUpCount ?? 0,
-        lastFollowUpMessage: storedLead.lastFollowUpMessage ?? null,
-        automationStatus: storedLead.automationStatus ?? "idle",
-        isHot: storedLead.isHot ?? false
+        lastContactedAt: toDateOrNull(leadWithAutomation.lastContactedAt),
+        nextFollowUpAt: toDateOrNull(leadWithAutomation.nextFollowUpAt),
+        followUpCount: leadWithAutomation.followUpCount ?? 0,
+        lastFollowUpMessage: leadWithAutomation.lastFollowUpMessage ?? null,
+        automationStatus: leadWithAutomation.automationStatus ?? "idle",
+        isHot: leadWithAutomation.isHot ?? false
       }
     });
 
@@ -116,6 +133,7 @@ export async function createManyDbLeads(leads: StoredLead[]) {
 
 export async function updateDbLead(storedLead: StoredLead) {
   const dbData = storedLeadToDbData(storedLead);
+  const leadWithAutomation = storedLead as AutomationStoredLead;
 
   const updatedLead = await prisma.lead.update({
     where: {
@@ -124,12 +142,12 @@ export async function updateDbLead(storedLead: StoredLead) {
     data: {
       ...dbData,
 
-      lastContactedAt: storedLead.lastContactedAt ?? null,
-      nextFollowUpAt: storedLead.nextFollowUpAt ?? null,
-      followUpCount: storedLead.followUpCount ?? 0,
-      lastFollowUpMessage: storedLead.lastFollowUpMessage ?? null,
-      automationStatus: storedLead.automationStatus ?? "idle",
-      isHot: storedLead.isHot ?? false
+      lastContactedAt: toDateOrNull(leadWithAutomation.lastContactedAt),
+      nextFollowUpAt: toDateOrNull(leadWithAutomation.nextFollowUpAt),
+      followUpCount: leadWithAutomation.followUpCount ?? 0,
+      lastFollowUpMessage: leadWithAutomation.lastFollowUpMessage ?? null,
+      automationStatus: leadWithAutomation.automationStatus ?? "idle",
+      isHot: leadWithAutomation.isHot ?? false
     }
   });
 
