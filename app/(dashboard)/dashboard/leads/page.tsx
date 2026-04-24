@@ -37,6 +37,18 @@ function getNextPipelineStatus(status: LeadStatus): LeadStatus {
   return "closed";
 }
 
+function getNextAction(status: LeadStatus) {
+  if (status === "new") return "Call Now";
+  if (status === "contacted") return "Follow Up";
+  if (status === "negotiating") return "Send Offer";
+  if (status === "under_contract") return "Close Deal";
+  return "Done";
+}
+
+function shouldAutoFollowUp(lead: StoredLead) {
+  return lead.status === "contacted" && lead.priority === "High";
+}
+
 function formatStatus(status: LeadStatus) {
   return status.replace("_", " ");
 }
@@ -232,7 +244,11 @@ export default function DashboardLeadsPage() {
                                 ref={dragProvided.innerRef}
                                 {...dragProvided.draggableProps}
                                 {...dragProvided.dragHandleProps}
-                                className="rounded border bg-white p-3 shadow-sm"
+                                className={`rounded border bg-white p-3 shadow-sm ${
+                                  lead.priority === "High"
+                                    ? "border-red-500"
+                                    : ""
+                                }`}
                               >
                                 <Link
                                   href={`/dashboard/leads/${lead.id}` as Route}
@@ -248,6 +264,16 @@ export default function DashboardLeadsPage() {
                                 <div className="mt-3">
                                   <StatusBadge status={lead.status} />
                                 </div>
+
+                                <p className="mt-2 text-xs font-semibold text-blue-600">
+                                  Next: {getNextAction(lead.status)}
+                                </p>
+
+                                {shouldAutoFollowUp(lead) && (
+                                  <p className="mt-2 text-xs font-bold text-green-600">
+                                    🔥 Auto Follow-Up Ready
+                                  </p>
+                                )}
 
                                 <button
                                   onClick={() => handleAdvance(lead)}
@@ -280,6 +306,7 @@ export default function DashboardLeadsPage() {
               <th className="p-3">Phone</th>
               <th className="p-3">Address</th>
               <th className="p-3">Status</th>
+              <th className="p-3">Next Action</th>
               <th className="p-3 text-right">Actions</th>
             </tr>
           </thead>
@@ -302,6 +329,10 @@ export default function DashboardLeadsPage() {
 
                   <td className="p-3">
                     <StatusBadge status={lead.status} />
+                  </td>
+
+                  <td className="p-3 text-xs font-semibold text-blue-600">
+                    {getNextAction(lead.status)}
                   </td>
 
                   <td className="space-x-2 p-3 text-right">
