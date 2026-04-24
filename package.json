@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-"build": "next build",
+    "build": "next build",
     "start": "next start",
     "lint": "eslint app components lib --ext .ts,.tsx",
     "postinstall": "prisma generate",
@@ -13,6 +13,7 @@
     "prisma:studio": "prisma studio"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^18.0.1",
     "@prisma/client": "^6.15.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.542.0",

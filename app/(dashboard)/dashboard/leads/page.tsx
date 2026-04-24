@@ -3,6 +3,12 @@
 import type { Route } from "next";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  type DropResult
+} from "@hello-pangea/dnd";
 
 import { deleteLead, fetchLeads } from "@/lib/leads-api";
 import type { LeadStatus, StoredLead } from "@/lib/leads-storage";
@@ -15,20 +21,20 @@ const PIPELINE_STATUSES: LeadStatus[] = [
   "closed"
 ];
 
-function getNextPipelineStatus(status: LeadStatus): LeadStatus {
-  if (status === "new") return "contacted";
-  if (status === "contacted") return "negotiating";
-  if (status === "negotiating") return "under_contract";
-  if (status === "under_contract") return "closed";
-  return "closed";
-}
-
 function getPipelineButtonLabel(status: LeadStatus) {
   if (status === "new") return "Mark Contacted";
   if (status === "contacted") return "Start Negotiation";
   if (status === "negotiating") return "Mark Under Contract";
   if (status === "under_contract") return "Mark Closed";
   return "Closed";
+}
+
+function getNextPipelineStatus(status: LeadStatus): LeadStatus {
+  if (status === "new") return "contacted";
+  if (status === "contacted") return "negotiating";
+  if (status === "negotiating") return "under_contract";
+  if (status === "under_contract") return "closed";
+  return "closed";
 }
 
 function formatStatus(status: LeadStatus) {
@@ -125,6 +131,29 @@ export default function DashboardLeadsPage() {
     }
   }
 
+  async function handleDragEnd(result: DropResult) {
+    if (!result.destination) return;
+
+    const leadId = result.draggableId;
+    const nextStatus = result.destination.droppableId as LeadStatus;
+
+    const lead = leads.find((item) => item.id === leadId);
+    if (!lead || lead.status === nextStatus) return;
+
+    try {
+      setUpdatingId(leadId);
+      const updated = await patchLeadStatus(leadId, nextStatus);
+
+      setLeads((prev) =>
+        prev.map((item) => (item.id === updated.id ? updated : item))
+      );
+    } catch {
+      alert("Drag update failed.");
+    } finally {
+      setUpdatingId(null);
+    }
+  }
+
   const groupedLeads = PIPELINE_STATUSES.map((status) => ({
     status,
     leads: leads.filter((lead) => lead.status === status)
@@ -162,65 +191,87 @@ export default function DashboardLeadsPage() {
       {leads.length === 0 ? (
         <div>No leads yet.</div>
       ) : viewMode === "pipeline" ? (
-        <div className="flex gap-4 overflow-x-auto pb-4">
-          {groupedLeads.map((group) => (
-            <div
-              key={group.status}
-              className="min-w-[240px] rounded border bg-gray-50 p-3"
-            >
-              <div className="mb-3 flex items-center justify-between">
-                <h2 className="text-sm font-bold capitalize">
-                  {formatStatus(group.status)}
-                </h2>
-                <span className="rounded bg-white px-2 py-1 text-xs font-semibold">
-                  {group.leads.length}
-                </span>
-              </div>
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <div className="flex gap-4 overflow-x-auto pb-4">
+            {groupedLeads.map((group) => (
+              <Droppable droppableId={group.status} key={group.status}>
+                {(provided) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    className="min-w-[240px] rounded border bg-gray-50 p-3"
+                  >
+                    <div className="mb-3 flex items-center justify-between">
+                      <h2 className="text-sm font-bold capitalize">
+                        {formatStatus(group.status)}
+                      </h2>
+                      <span className="rounded bg-white px-2 py-1 text-xs font-semibold">
+                        {group.leads.length}
+                      </span>
+                    </div>
 
-              <div className="space-y-3">
-                {group.leads.length === 0 ? (
-                  <div className="rounded border border-dashed bg-white p-3 text-xs text-gray-400">
-                    No leads
-                  </div>
-                ) : (
-                  group.leads.map((lead) => {
-                    const isUpdating = updatingId === lead.id;
-                    const isClosed = lead.status === "closed";
-
-                    return (
-                      <div key={lead.id} className="rounded border bg-white p-3">
-                        <Link
-                          href={`/dashboard/leads/${lead.id}` as Route}
-                          className="font-semibold"
-                        >
-                          {lead.firstName} {lead.lastName}
-                        </Link>
-
-                        <p className="mt-1 text-xs text-gray-500">
-                          {lead.propertyAddress}
-                        </p>
-
-                        <div className="mt-3">
-                          <StatusBadge status={lead.status} />
+                    <div className="space-y-3">
+                      {group.leads.length === 0 && (
+                        <div className="rounded border border-dashed bg-white p-3 text-xs text-gray-400">
+                          No leads
                         </div>
+                      )}
 
-                        <button
-                          onClick={() => handleAdvance(lead)}
-                          disabled={isUpdating || isClosed}
-                          className="mt-3 w-full rounded border px-2 py-1 text-xs disabled:opacity-50"
-                        >
-                          {isUpdating
-                            ? "Updating..."
-                            : getPipelineButtonLabel(lead.status)}
-                        </button>
-                      </div>
-                    );
-                  })
+                      {group.leads.map((lead, index) => {
+                        const isUpdating = updatingId === lead.id;
+                        const isClosed = lead.status === "closed";
+
+                        return (
+                          <Draggable
+                            key={lead.id}
+                            draggableId={lead.id}
+                            index={index}
+                          >
+                            {(dragProvided) => (
+                              <div
+                                ref={dragProvided.innerRef}
+                                {...dragProvided.draggableProps}
+                                {...dragProvided.dragHandleProps}
+                                className="rounded border bg-white p-3 shadow-sm"
+                              >
+                                <Link
+                                  href={`/dashboard/leads/${lead.id}` as Route}
+                                  className="font-semibold"
+                                >
+                                  {lead.firstName} {lead.lastName}
+                                </Link>
+
+                                <p className="mt-1 text-xs text-gray-500">
+                                  {lead.propertyAddress}
+                                </p>
+
+                                <div className="mt-3">
+                                  <StatusBadge status={lead.status} />
+                                </div>
+
+                                <button
+                                  onClick={() => handleAdvance(lead)}
+                                  disabled={isUpdating || isClosed}
+                                  className="mt-3 w-full rounded border px-2 py-1 text-xs disabled:opacity-50"
+                                >
+                                  {isUpdating
+                                    ? "Updating..."
+                                    : getPipelineButtonLabel(lead.status)}
+                                </button>
+                              </div>
+                            )}
+                          </Draggable>
+                        );
+                      })}
+
+                      {provided.placeholder}
+                    </div>
+                  </div>
                 )}
-              </div>
-            </div>
-          ))}
-        </div>
+              </Droppable>
+            ))}
+          </div>
+        </DragDropContext>
       ) : (
         <table className="w-full border text-sm">
           <thead>
