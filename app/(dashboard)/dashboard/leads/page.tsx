@@ -45,6 +45,24 @@ function getNextAction(status: LeadStatus) {
   return "Done";
 }
 
+function isFollowUpDue(lead: StoredLead) {
+  const leadWithDates = lead as StoredLead & {
+    lastContactedAt?: string;
+    updatedAt?: string;
+  };
+
+  const dateToCheck = leadWithDates.lastContactedAt ?? leadWithDates.updatedAt;
+
+  if (!dateToCheck || lead.status !== "contacted") return false;
+
+  const last = new Date(dateToCheck).getTime();
+  if (Number.isNaN(last)) return false;
+
+  const hoursSince = (Date.now() - last) / (1000 * 60 * 60);
+
+  return hoursSince > 24;
+}
+
 function shouldAutoFollowUp(lead: StoredLead) {
   return lead.status === "contacted" && lead.priority === "High";
 }
@@ -268,6 +286,12 @@ export default function DashboardLeadsPage() {
                                 <p className="mt-2 text-xs font-semibold text-blue-600">
                                   Next: {getNextAction(lead.status)}
                                 </p>
+
+                                {isFollowUpDue(lead) && (
+                                  <p className="mt-2 text-xs font-bold text-orange-600">
+                                    ⏰ Follow-Up Overdue
+                                  </p>
+                                )}
 
                                 {shouldAutoFollowUp(lead) && (
                                   <p className="mt-2 text-xs font-bold text-green-600">
