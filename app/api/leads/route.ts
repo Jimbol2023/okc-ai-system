@@ -8,6 +8,16 @@ import { storedLeadArraySchema, storedLeadSchema } from "@/lib/validations/store
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
+function addInitialAutomationSchedule<T extends { status?: string }>(lead: T) {
+  return {
+    ...lead,
+    status: "new" as const,
+    nextFollowUpAt: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
+    automationStatus: "scheduled",
+    followUpCount: 0
+  };
+}
+
 export async function GET(request: Request) {
   try {
     if (!(await isAuthenticatedRequest(request))) {
@@ -30,6 +40,7 @@ export async function GET(request: Request) {
     );
   }
 }
+
 export async function POST(request: Request) {
   try {
     const payload = await request.json();
@@ -38,7 +49,9 @@ export async function POST(request: Request) {
     const parsedIntakeLead = parseLeadIntakePayload(payload);
 
     if (parsedIntakeLead.success) {
-      const result = await createDbLead(leadIntakeToStoredLead(parsedIntakeLead.data));
+      const storedLead = leadIntakeToStoredLead(parsedIntakeLead.data);
+      const scheduledLead = addInitialAutomationSchedule(storedLead);
+      const result = await createDbLead(scheduledLead);
 
       return NextResponse.json({
         ok: true,
@@ -67,7 +80,7 @@ export async function POST(request: Request) {
       }
 
       const results = await Promise.all(
-        parsedLeads.data.map((lead) => createDbLead(lead))
+        parsedLeads.data.map((lead) => createDbLead(addInitialAutomationSchedule(lead)))
       );
 
       return NextResponse.json({
@@ -91,7 +104,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const result = await createDbLead(parsedLead.data);
+    const result = await createDbLead(addInitialAutomationSchedule(parsedLead.data));
 
     return NextResponse.json({
       ok: true,
@@ -99,7 +112,9 @@ export async function POST(request: Request) {
       leadId: result.lead.id,
       created: result.created
     });
-  } catch {
+  } catch (error) {
+    console.error("Lead POST error:", error);
+
     return NextResponse.json(
       {
         ok: false,

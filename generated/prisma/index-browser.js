@@ -137,6 +137,7 @@ exports.Prisma.LeadScalarFieldEnum = {
   followUpCount: 'followUpCount',
   lastFollowUpMessage: 'lastFollowUpMessage',
   automationStatus: 'automationStatus',
+  isHot: 'isHot',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

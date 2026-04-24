@@ -919,6 +919,7 @@ export namespace Prisma {
     followUpCount: number | null
     lastFollowUpMessage: string | null
     automationStatus: string | null
+    isHot: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -939,6 +940,7 @@ export namespace Prisma {
     followUpCount: number | null
     lastFollowUpMessage: string | null
     automationStatus: string | null
+    isHot: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -959,6 +961,7 @@ export namespace Prisma {
     followUpCount: number
     lastFollowUpMessage: number
     automationStatus: number
+    isHot: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -991,6 +994,7 @@ export namespace Prisma {
     followUpCount?: true
     lastFollowUpMessage?: true
     automationStatus?: true
+    isHot?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1011,6 +1015,7 @@ export namespace Prisma {
     followUpCount?: true
     lastFollowUpMessage?: true
     automationStatus?: true
+    isHot?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1031,6 +1036,7 @@ export namespace Prisma {
     followUpCount?: true
     lastFollowUpMessage?: true
     automationStatus?: true
+    isHot?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -1138,6 +1144,7 @@ export namespace Prisma {
     followUpCount: number
     lastFollowUpMessage: string | null
     automationStatus: string
+    isHot: boolean
     createdAt: Date
     updatedAt: Date
     _count: LeadCountAggregateOutputType | null
@@ -1177,6 +1184,7 @@ export namespace Prisma {
     followUpCount?: boolean
     lastFollowUpMessage?: boolean
     automationStatus?: boolean
+    isHot?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["lead"]>
@@ -1197,6 +1205,7 @@ export namespace Prisma {
     followUpCount?: boolean
     lastFollowUpMessage?: boolean
     automationStatus?: boolean
+    isHot?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["lead"]>
@@ -1217,6 +1226,7 @@ export namespace Prisma {
     followUpCount?: boolean
     lastFollowUpMessage?: boolean
     automationStatus?: boolean
+    isHot?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["lead"]>
@@ -1237,11 +1247,12 @@ export namespace Prisma {
     followUpCount?: boolean
     lastFollowUpMessage?: boolean
     automationStatus?: boolean
+    isHot?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type LeadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "phone" | "propertyAddress" | "source" | "status" | "score" | "priority" | "notes" | "payload" | "lastContactedAt" | "nextFollowUpAt" | "followUpCount" | "lastFollowUpMessage" | "automationStatus" | "createdAt" | "updatedAt", ExtArgs["result"]["lead"]>
+  export type LeadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "phone" | "propertyAddress" | "source" | "status" | "score" | "priority" | "notes" | "payload" | "lastContactedAt" | "nextFollowUpAt" | "followUpCount" | "lastFollowUpMessage" | "automationStatus" | "isHot" | "createdAt" | "updatedAt", ExtArgs["result"]["lead"]>
 
   export type $LeadPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Lead"
@@ -1262,6 +1273,7 @@ export namespace Prisma {
       followUpCount: number
       lastFollowUpMessage: string | null
       automationStatus: string
+      isHot: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["lead"]>
@@ -1702,6 +1714,7 @@ export namespace Prisma {
     readonly followUpCount: FieldRef<"Lead", 'Int'>
     readonly lastFollowUpMessage: FieldRef<"Lead", 'String'>
     readonly automationStatus: FieldRef<"Lead", 'String'>
+    readonly isHot: FieldRef<"Lead", 'Boolean'>
     readonly createdAt: FieldRef<"Lead", 'DateTime'>
     readonly updatedAt: FieldRef<"Lead", 'DateTime'>
   }
@@ -2100,6 +2113,7 @@ export namespace Prisma {
     followUpCount: 'followUpCount',
     lastFollowUpMessage: 'lastFollowUpMessage',
     automationStatus: 'automationStatus',
+    isHot: 'isHot',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -2193,6 +2207,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -2228,6 +2249,7 @@ export namespace Prisma {
     followUpCount?: IntFilter<"Lead"> | number
     lastFollowUpMessage?: StringNullableFilter<"Lead"> | string | null
     automationStatus?: StringFilter<"Lead"> | string
+    isHot?: BoolFilter<"Lead"> | boolean
     createdAt?: DateTimeFilter<"Lead"> | Date | string
     updatedAt?: DateTimeFilter<"Lead"> | Date | string
   }
@@ -2248,6 +2270,7 @@ export namespace Prisma {
     followUpCount?: SortOrder
     lastFollowUpMessage?: SortOrderInput | SortOrder
     automationStatus?: SortOrder
+    isHot?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -2272,6 +2295,7 @@ export namespace Prisma {
     followUpCount?: IntFilter<"Lead"> | number
     lastFollowUpMessage?: StringNullableFilter<"Lead"> | string | null
     automationStatus?: StringFilter<"Lead"> | string
+    isHot?: BoolFilter<"Lead"> | boolean
     createdAt?: DateTimeFilter<"Lead"> | Date | string
     updatedAt?: DateTimeFilter<"Lead"> | Date | string
   }, "id" | "propertyAddress_phone">
@@ -2292,6 +2316,7 @@ export namespace Prisma {
     followUpCount?: SortOrder
     lastFollowUpMessage?: SortOrderInput | SortOrder
     automationStatus?: SortOrder
+    isHot?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: LeadCountOrderByAggregateInput
@@ -2320,6 +2345,7 @@ export namespace Prisma {
     followUpCount?: IntWithAggregatesFilter<"Lead"> | number
     lastFollowUpMessage?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     automationStatus?: StringWithAggregatesFilter<"Lead"> | string
+    isHot?: BoolWithAggregatesFilter<"Lead"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Lead"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Lead"> | Date | string
   }
@@ -2340,6 +2366,7 @@ export namespace Prisma {
     followUpCount?: number
     lastFollowUpMessage?: string | null
     automationStatus?: string
+    isHot?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -2360,6 +2387,7 @@ export namespace Prisma {
     followUpCount?: number
     lastFollowUpMessage?: string | null
     automationStatus?: string
+    isHot?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -2380,6 +2408,7 @@ export namespace Prisma {
     followUpCount?: IntFieldUpdateOperationsInput | number
     lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
     automationStatus?: StringFieldUpdateOperationsInput | string
+    isHot?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -2400,6 +2429,7 @@ export namespace Prisma {
     followUpCount?: IntFieldUpdateOperationsInput | number
     lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
     automationStatus?: StringFieldUpdateOperationsInput | string
+    isHot?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -2420,6 +2450,7 @@ export namespace Prisma {
     followUpCount?: number
     lastFollowUpMessage?: string | null
     automationStatus?: string
+    isHot?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -2440,6 +2471,7 @@ export namespace Prisma {
     followUpCount?: IntFieldUpdateOperationsInput | number
     lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
     automationStatus?: StringFieldUpdateOperationsInput | string
+    isHot?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -2460,6 +2492,7 @@ export namespace Prisma {
     followUpCount?: IntFieldUpdateOperationsInput | number
     lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
     automationStatus?: StringFieldUpdateOperationsInput | string
+    isHot?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -2523,6 +2556,11 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -2560,6 +2598,7 @@ export namespace Prisma {
     followUpCount?: SortOrder
     lastFollowUpMessage?: SortOrder
     automationStatus?: SortOrder
+    isHot?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -2585,6 +2624,7 @@ export namespace Prisma {
     followUpCount?: SortOrder
     lastFollowUpMessage?: SortOrder
     automationStatus?: SortOrder
+    isHot?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -2605,6 +2645,7 @@ export namespace Prisma {
     followUpCount?: SortOrder
     lastFollowUpMessage?: SortOrder
     automationStatus?: SortOrder
+    isHot?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -2690,6 +2731,14 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -2726,6 +2775,10 @@ export namespace Prisma {
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -2787,6 +2840,11 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -2894,6 +2952,14 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
