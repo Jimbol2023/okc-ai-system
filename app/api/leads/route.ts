@@ -8,11 +8,10 @@ import { storedLeadArraySchema, storedLeadSchema } from "@/lib/validations/store
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-function addInitialAutomationSchedule<T extends { status?: string }>(lead: T) {
+function buildInitialAutomationFields() {
   return {
-    ...lead,
     status: "new" as const,
-    nextFollowUpAt: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
+    nextFollowUpAt: new Date(Date.now() + 5 * 60 * 1000),
     automationStatus: "scheduled",
     followUpCount: 0
   };
@@ -30,7 +29,9 @@ export async function GET(request: Request) {
       ok: true,
       leads
     });
-  } catch {
+  } catch (error) {
+    console.error("Lead GET error:", error);
+
     return NextResponse.json(
       {
         ok: false,
@@ -50,8 +51,11 @@ export async function POST(request: Request) {
 
     if (parsedIntakeLead.success) {
       const storedLead = leadIntakeToStoredLead(parsedIntakeLead.data);
-      const scheduledLead = addInitialAutomationSchedule(storedLead);
-      const result = await createDbLead(scheduledLead);
+
+      const result = await createDbLead({
+        ...storedLead,
+        ...buildInitialAutomationFields()
+      });
 
       return NextResponse.json({
         ok: true,
@@ -80,7 +84,12 @@ export async function POST(request: Request) {
       }
 
       const results = await Promise.all(
-        parsedLeads.data.map((lead) => createDbLead(addInitialAutomationSchedule(lead)))
+        parsedLeads.data.map((lead) =>
+          createDbLead({
+            ...lead,
+            ...buildInitialAutomationFields()
+          })
+        )
       );
 
       return NextResponse.json({
@@ -104,7 +113,10 @@ export async function POST(request: Request) {
       );
     }
 
-    const result = await createDbLead(addInitialAutomationSchedule(parsedLead.data));
+    const result = await createDbLead({
+      ...parsedLead.data,
+      ...buildInitialAutomationFields()
+    });
 
     return NextResponse.json({
       ok: true,
