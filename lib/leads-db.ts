@@ -7,10 +7,10 @@ import {
   leadIntakeToStoredLead,
   storedLeadToDbData
 } from "@/lib/lead-record";
+import { prisma } from "@/lib/prisma";
 import type { GeneratedLeadInput } from "@/lib/lead-generator";
 import type { ImportedLeadDraft } from "@/lib/list-importer";
-import type { StoredLead } from "@/lib/leads-storage";
-import { prisma } from "@/lib/prisma";
+import type { LeadStatus, StoredLead } from "@/lib/leads-storage";
 import { leadIntakeSchema, type LeadIntakeInput } from "@/lib/validations/lead";
 
 function isPrismaUniqueError(error: unknown) {
@@ -57,8 +57,20 @@ export async function createDbLead(storedLead: StoredLead) {
   }
 
   try {
+    const dbData = storedLeadToDbData(storedLead);
+
     const createdLead = await prisma.lead.create({
-      data: storedLeadToDbData(storedLead)
+      data: {
+        ...dbData,
+
+        // IMPORTANT: preserve automation values passed from route.ts
+        lastContactedAt: storedLead.lastContactedAt ?? null,
+        nextFollowUpAt: storedLead.nextFollowUpAt ?? null,
+        followUpCount: storedLead.followUpCount ?? 0,
+        lastFollowUpMessage: storedLead.lastFollowUpMessage ?? null,
+        automationStatus: storedLead.automationStatus ?? "idle",
+        isHot: storedLead.isHot ?? false
+      }
     });
 
     return {
@@ -103,23 +115,63 @@ export async function createManyDbLeads(leads: StoredLead[]) {
 }
 
 export async function updateDbLead(storedLead: StoredLead) {
+  const dbData = storedLeadToDbData(storedLead);
+
   const updatedLead = await prisma.lead.update({
     where: {
       id: storedLead.id
     },
-    data: storedLeadToDbData(storedLead)
+    data: {
+      ...dbData,
+
+      lastContactedAt: storedLead.lastContactedAt ?? null,
+      nextFollowUpAt: storedLead.nextFollowUpAt ?? null,
+      followUpCount: storedLead.followUpCount ?? 0,
+      lastFollowUpMessage: storedLead.lastFollowUpMessage ?? null,
+      automationStatus: storedLead.automationStatus ?? "idle",
+      isHot: storedLead.isHot ?? false
+    }
   });
 
   return dbLeadToStoredLead(updatedLead);
 }
 
-export async function updateDbLeadStatus(leadId: string, status: StoredLead["status"]) {
+export async function updateDbLeadStatus(leadId: string, status: LeadStatus) {
+  let nextFollowUpAt: Date | null = null;
+  let automationStatus = "idle";
+
+  if (status === "new") {
+    nextFollowUpAt = new Date(Date.now() + 5 * 60 * 1000);
+    automationStatus = "scheduled";
+  }
+
+  if (status === "contacted") {
+    nextFollowUpAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    automationStatus = "scheduled";
+  }
+
+  if (status === "negotiating") {
+    nextFollowUpAt = new Date(Date.now() + 12 * 60 * 60 * 1000);
+    automationStatus = "scheduled";
+  }
+
+  if (status === "under_contract" || status === "closed") {
+    nextFollowUpAt = null;
+    automationStatus = "idle";
+  }
+
   const updatedLead = await prisma.lead.update({
     where: {
       id: leadId
     },
     data: {
-      status
+      status,
+      lastContactedAt: new Date(),
+      nextFollowUpAt,
+      followUpCount: {
+        increment: 1
+      },
+      automationStatus
     }
   });
 
