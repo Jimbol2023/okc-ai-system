@@ -7,9 +7,13 @@ import { useEffect, useState } from "react";
 import { deleteLead, fetchLeads } from "@/lib/leads-api";
 import type { LeadStatus, StoredLead } from "@/lib/leads-storage";
 
-/* =========================
-   PIPELINE LOGIC
-========================= */
+const PIPELINE_STATUSES: LeadStatus[] = [
+  "new",
+  "contacted",
+  "negotiating",
+  "under_contract",
+  "closed"
+];
 
 function getNextPipelineStatus(status: LeadStatus): LeadStatus {
   if (status === "new") return "contacted";
@@ -27,6 +31,10 @@ function getPipelineButtonLabel(status: LeadStatus) {
   return "Closed";
 }
 
+function formatStatus(status: LeadStatus) {
+  return status.replace("_", " ");
+}
+
 function StatusBadge({ status }: { status: LeadStatus }) {
   const color =
     status === "closed"
@@ -41,14 +49,10 @@ function StatusBadge({ status }: { status: LeadStatus }) {
 
   return (
     <span className={`rounded px-2 py-1 text-xs font-bold ${color}`}>
-      {status.replace("_", " ")}
+      {formatStatus(status)}
     </span>
   );
 }
-
-/* =========================
-   API
-========================= */
 
 async function patchLeadStatus(id: string, status: LeadStatus) {
   const res = await fetch(`/api/leads/${id}/status`, {
@@ -73,12 +77,9 @@ async function patchLeadStatus(id: string, status: LeadStatus) {
   return data.lead as StoredLead;
 }
 
-/* =========================
-   MAIN COMPONENT
-========================= */
-
 export default function DashboardLeadsPage() {
   const [leads, setLeads] = useState<StoredLead[]>([]);
+  const [viewMode, setViewMode] = useState<"table" | "pipeline">("table");
   const [isLoading, setIsLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -124,15 +125,102 @@ export default function DashboardLeadsPage() {
     }
   }
 
+  const groupedLeads = PIPELINE_STATUSES.map((status) => ({
+    status,
+    leads: leads.filter((lead) => lead.status === status)
+  }));
+
   if (isLoading) return <div className="p-6">Loading...</div>;
   if (error) return <div className="p-6 text-red-600">{error}</div>;
 
   return (
     <div className="p-6">
-      <h1 className="mb-4 text-2xl font-semibold">Leads</h1>
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <h1 className="text-2xl font-semibold">Leads</h1>
+
+        <div className="flex gap-2">
+          <button
+            onClick={() => setViewMode("table")}
+            className={`rounded border px-3 py-1 text-xs ${
+              viewMode === "table" ? "bg-gray-900 text-white" : "bg-white"
+            }`}
+          >
+            Table View
+          </button>
+
+          <button
+            onClick={() => setViewMode("pipeline")}
+            className={`rounded border px-3 py-1 text-xs ${
+              viewMode === "pipeline" ? "bg-gray-900 text-white" : "bg-white"
+            }`}
+          >
+            Pipeline View
+          </button>
+        </div>
+      </div>
 
       {leads.length === 0 ? (
         <div>No leads yet.</div>
+      ) : viewMode === "pipeline" ? (
+        <div className="flex gap-4 overflow-x-auto pb-4">
+          {groupedLeads.map((group) => (
+            <div
+              key={group.status}
+              className="min-w-[240px] rounded border bg-gray-50 p-3"
+            >
+              <div className="mb-3 flex items-center justify-between">
+                <h2 className="text-sm font-bold capitalize">
+                  {formatStatus(group.status)}
+                </h2>
+                <span className="rounded bg-white px-2 py-1 text-xs font-semibold">
+                  {group.leads.length}
+                </span>
+              </div>
+
+              <div className="space-y-3">
+                {group.leads.length === 0 ? (
+                  <div className="rounded border border-dashed bg-white p-3 text-xs text-gray-400">
+                    No leads
+                  </div>
+                ) : (
+                  group.leads.map((lead) => {
+                    const isUpdating = updatingId === lead.id;
+                    const isClosed = lead.status === "closed";
+
+                    return (
+                      <div key={lead.id} className="rounded border bg-white p-3">
+                        <Link
+                          href={`/dashboard/leads/${lead.id}` as Route}
+                          className="font-semibold"
+                        >
+                          {lead.firstName} {lead.lastName}
+                        </Link>
+
+                        <p className="mt-1 text-xs text-gray-500">
+                          {lead.propertyAddress}
+                        </p>
+
+                        <div className="mt-3">
+                          <StatusBadge status={lead.status} />
+                        </div>
+
+                        <button
+                          onClick={() => handleAdvance(lead)}
+                          disabled={isUpdating || isClosed}
+                          className="mt-3 w-full rounded border px-2 py-1 text-xs disabled:opacity-50"
+                        >
+                          {isUpdating
+                            ? "Updating..."
+                            : getPipelineButtonLabel(lead.status)}
+                        </button>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
       ) : (
         <table className="w-full border text-sm">
           <thead>
@@ -165,11 +253,11 @@ export default function DashboardLeadsPage() {
                     <StatusBadge status={lead.status} />
                   </td>
 
-                  <td className="p-3 text-right space-x-2">
+                  <td className="space-x-2 p-3 text-right">
                     <button
                       onClick={() => handleAdvance(lead)}
                       disabled={isUpdating || isClosed}
-                      className="border px-2 py-1 text-xs rounded disabled:opacity-50"
+                      className="rounded border px-2 py-1 text-xs disabled:opacity-50"
                     >
                       {isUpdating
                         ? "Updating..."
@@ -178,7 +266,7 @@ export default function DashboardLeadsPage() {
 
                     <button
                       onClick={() => handleDelete(lead.id)}
-                      className="border px-2 py-1 text-xs text-red-600 rounded"
+                      className="rounded border px-2 py-1 text-xs text-red-600"
                     >
                       Delete
                     </button>
