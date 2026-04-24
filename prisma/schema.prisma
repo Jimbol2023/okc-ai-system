@@ -18,20 +18,37 @@ enum LeadStatus {
 }
 
 model Lead {
-  id              String     @id
-  name            String
-  phone           String
-  propertyAddress String
-  source          String
-  status          LeadStatus @default(new)
-  score           Int        @default(0)
-  priority        String     @default("Low")
-  notes           String?
-  payload         String?
-  createdAt       DateTime   @default(now())
-  updatedAt       DateTime   @updatedAt
+  id                  String     @id @default(uuid())
+  name                String
+  phone               String
+  propertyAddress     String
+  source              String
+
+  // PIPELINE STATUS
+  status              LeadStatus @default(new)
+
+  // SCORING SYSTEM
+  score               Int        @default(0)
+  priority            String     @default("Low")
+
+  // NOTES / RAW DATA
+  notes               String?
+  payload             String?
+
+  // 🔥 AUTOMATION ENGINE (NEW)
+  lastContactedAt     DateTime?
+  nextFollowUpAt      DateTime?
+  followUpCount       Int        @default(0)
+  lastFollowUpMessage String?
+  automationStatus    String     @default("idle") // idle | scheduled | sent | responded
+
+  // SYSTEM TIMESTAMPS
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
 
   @@unique([propertyAddress, phone])
   @@index([createdAt])
   @@index([score, createdAt])
+  @@index([status])
+  @@index([nextFollowUpAt])
 }

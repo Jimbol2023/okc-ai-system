@@ -895,10 +895,12 @@ export namespace Prisma {
 
   export type LeadAvgAggregateOutputType = {
     score: number | null
+    followUpCount: number | null
   }
 
   export type LeadSumAggregateOutputType = {
     score: number | null
+    followUpCount: number | null
   }
 
   export type LeadMinAggregateOutputType = {
@@ -912,6 +914,11 @@ export namespace Prisma {
     priority: string | null
     notes: string | null
     payload: string | null
+    lastContactedAt: Date | null
+    nextFollowUpAt: Date | null
+    followUpCount: number | null
+    lastFollowUpMessage: string | null
+    automationStatus: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -927,6 +934,11 @@ export namespace Prisma {
     priority: string | null
     notes: string | null
     payload: string | null
+    lastContactedAt: Date | null
+    nextFollowUpAt: Date | null
+    followUpCount: number | null
+    lastFollowUpMessage: string | null
+    automationStatus: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -942,6 +954,11 @@ export namespace Prisma {
     priority: number
     notes: number
     payload: number
+    lastContactedAt: number
+    nextFollowUpAt: number
+    followUpCount: number
+    lastFollowUpMessage: number
+    automationStatus: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -950,10 +967,12 @@ export namespace Prisma {
 
   export type LeadAvgAggregateInputType = {
     score?: true
+    followUpCount?: true
   }
 
   export type LeadSumAggregateInputType = {
     score?: true
+    followUpCount?: true
   }
 
   export type LeadMinAggregateInputType = {
@@ -967,6 +986,11 @@ export namespace Prisma {
     priority?: true
     notes?: true
     payload?: true
+    lastContactedAt?: true
+    nextFollowUpAt?: true
+    followUpCount?: true
+    lastFollowUpMessage?: true
+    automationStatus?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -982,6 +1006,11 @@ export namespace Prisma {
     priority?: true
     notes?: true
     payload?: true
+    lastContactedAt?: true
+    nextFollowUpAt?: true
+    followUpCount?: true
+    lastFollowUpMessage?: true
+    automationStatus?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -997,6 +1026,11 @@ export namespace Prisma {
     priority?: true
     notes?: true
     payload?: true
+    lastContactedAt?: true
+    nextFollowUpAt?: true
+    followUpCount?: true
+    lastFollowUpMessage?: true
+    automationStatus?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -1099,6 +1133,11 @@ export namespace Prisma {
     priority: string
     notes: string | null
     payload: string | null
+    lastContactedAt: Date | null
+    nextFollowUpAt: Date | null
+    followUpCount: number
+    lastFollowUpMessage: string | null
+    automationStatus: string
     createdAt: Date
     updatedAt: Date
     _count: LeadCountAggregateOutputType | null
@@ -1133,6 +1172,11 @@ export namespace Prisma {
     priority?: boolean
     notes?: boolean
     payload?: boolean
+    lastContactedAt?: boolean
+    nextFollowUpAt?: boolean
+    followUpCount?: boolean
+    lastFollowUpMessage?: boolean
+    automationStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["lead"]>
@@ -1148,6 +1192,11 @@ export namespace Prisma {
     priority?: boolean
     notes?: boolean
     payload?: boolean
+    lastContactedAt?: boolean
+    nextFollowUpAt?: boolean
+    followUpCount?: boolean
+    lastFollowUpMessage?: boolean
+    automationStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["lead"]>
@@ -1163,6 +1212,11 @@ export namespace Prisma {
     priority?: boolean
     notes?: boolean
     payload?: boolean
+    lastContactedAt?: boolean
+    nextFollowUpAt?: boolean
+    followUpCount?: boolean
+    lastFollowUpMessage?: boolean
+    automationStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["lead"]>
@@ -1178,11 +1232,16 @@ export namespace Prisma {
     priority?: boolean
     notes?: boolean
     payload?: boolean
+    lastContactedAt?: boolean
+    nextFollowUpAt?: boolean
+    followUpCount?: boolean
+    lastFollowUpMessage?: boolean
+    automationStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type LeadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "phone" | "propertyAddress" | "source" | "status" | "score" | "priority" | "notes" | "payload" | "createdAt" | "updatedAt", ExtArgs["result"]["lead"]>
+  export type LeadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "phone" | "propertyAddress" | "source" | "status" | "score" | "priority" | "notes" | "payload" | "lastContactedAt" | "nextFollowUpAt" | "followUpCount" | "lastFollowUpMessage" | "automationStatus" | "createdAt" | "updatedAt", ExtArgs["result"]["lead"]>
 
   export type $LeadPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Lead"
@@ -1198,6 +1257,11 @@ export namespace Prisma {
       priority: string
       notes: string | null
       payload: string | null
+      lastContactedAt: Date | null
+      nextFollowUpAt: Date | null
+      followUpCount: number
+      lastFollowUpMessage: string | null
+      automationStatus: string
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["lead"]>
@@ -1633,6 +1697,11 @@ export namespace Prisma {
     readonly priority: FieldRef<"Lead", 'String'>
     readonly notes: FieldRef<"Lead", 'String'>
     readonly payload: FieldRef<"Lead", 'String'>
+    readonly lastContactedAt: FieldRef<"Lead", 'DateTime'>
+    readonly nextFollowUpAt: FieldRef<"Lead", 'DateTime'>
+    readonly followUpCount: FieldRef<"Lead", 'Int'>
+    readonly lastFollowUpMessage: FieldRef<"Lead", 'String'>
+    readonly automationStatus: FieldRef<"Lead", 'String'>
     readonly createdAt: FieldRef<"Lead", 'DateTime'>
     readonly updatedAt: FieldRef<"Lead", 'DateTime'>
   }
@@ -2026,6 +2095,11 @@ export namespace Prisma {
     priority: 'priority',
     notes: 'notes',
     payload: 'payload',
+    lastContactedAt: 'lastContactedAt',
+    nextFollowUpAt: 'nextFollowUpAt',
+    followUpCount: 'followUpCount',
+    lastFollowUpMessage: 'lastFollowUpMessage',
+    automationStatus: 'automationStatus',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -2149,6 +2223,11 @@ export namespace Prisma {
     priority?: StringFilter<"Lead"> | string
     notes?: StringNullableFilter<"Lead"> | string | null
     payload?: StringNullableFilter<"Lead"> | string | null
+    lastContactedAt?: DateTimeNullableFilter<"Lead"> | Date | string | null
+    nextFollowUpAt?: DateTimeNullableFilter<"Lead"> | Date | string | null
+    followUpCount?: IntFilter<"Lead"> | number
+    lastFollowUpMessage?: StringNullableFilter<"Lead"> | string | null
+    automationStatus?: StringFilter<"Lead"> | string
     createdAt?: DateTimeFilter<"Lead"> | Date | string
     updatedAt?: DateTimeFilter<"Lead"> | Date | string
   }
@@ -2164,6 +2243,11 @@ export namespace Prisma {
     priority?: SortOrder
     notes?: SortOrderInput | SortOrder
     payload?: SortOrderInput | SortOrder
+    lastContactedAt?: SortOrderInput | SortOrder
+    nextFollowUpAt?: SortOrderInput | SortOrder
+    followUpCount?: SortOrder
+    lastFollowUpMessage?: SortOrderInput | SortOrder
+    automationStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -2183,6 +2267,11 @@ export namespace Prisma {
     priority?: StringFilter<"Lead"> | string
     notes?: StringNullableFilter<"Lead"> | string | null
     payload?: StringNullableFilter<"Lead"> | string | null
+    lastContactedAt?: DateTimeNullableFilter<"Lead"> | Date | string | null
+    nextFollowUpAt?: DateTimeNullableFilter<"Lead"> | Date | string | null
+    followUpCount?: IntFilter<"Lead"> | number
+    lastFollowUpMessage?: StringNullableFilter<"Lead"> | string | null
+    automationStatus?: StringFilter<"Lead"> | string
     createdAt?: DateTimeFilter<"Lead"> | Date | string
     updatedAt?: DateTimeFilter<"Lead"> | Date | string
   }, "id" | "propertyAddress_phone">
@@ -2198,6 +2287,11 @@ export namespace Prisma {
     priority?: SortOrder
     notes?: SortOrderInput | SortOrder
     payload?: SortOrderInput | SortOrder
+    lastContactedAt?: SortOrderInput | SortOrder
+    nextFollowUpAt?: SortOrderInput | SortOrder
+    followUpCount?: SortOrder
+    lastFollowUpMessage?: SortOrderInput | SortOrder
+    automationStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: LeadCountOrderByAggregateInput
@@ -2221,12 +2315,17 @@ export namespace Prisma {
     priority?: StringWithAggregatesFilter<"Lead"> | string
     notes?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     payload?: StringNullableWithAggregatesFilter<"Lead"> | string | null
+    lastContactedAt?: DateTimeNullableWithAggregatesFilter<"Lead"> | Date | string | null
+    nextFollowUpAt?: DateTimeNullableWithAggregatesFilter<"Lead"> | Date | string | null
+    followUpCount?: IntWithAggregatesFilter<"Lead"> | number
+    lastFollowUpMessage?: StringNullableWithAggregatesFilter<"Lead"> | string | null
+    automationStatus?: StringWithAggregatesFilter<"Lead"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Lead"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Lead"> | Date | string
   }
 
   export type LeadCreateInput = {
-    id: string
+    id?: string
     name: string
     phone: string
     propertyAddress: string
@@ -2236,12 +2335,17 @@ export namespace Prisma {
     priority?: string
     notes?: string | null
     payload?: string | null
+    lastContactedAt?: Date | string | null
+    nextFollowUpAt?: Date | string | null
+    followUpCount?: number
+    lastFollowUpMessage?: string | null
+    automationStatus?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type LeadUncheckedCreateInput = {
-    id: string
+    id?: string
     name: string
     phone: string
     propertyAddress: string
@@ -2251,6 +2355,11 @@ export namespace Prisma {
     priority?: string
     notes?: string | null
     payload?: string | null
+    lastContactedAt?: Date | string | null
+    nextFollowUpAt?: Date | string | null
+    followUpCount?: number
+    lastFollowUpMessage?: string | null
+    automationStatus?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -2266,6 +2375,11 @@ export namespace Prisma {
     priority?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     payload?: NullableStringFieldUpdateOperationsInput | string | null
+    lastContactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
+    lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    automationStatus?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -2281,12 +2395,17 @@ export namespace Prisma {
     priority?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     payload?: NullableStringFieldUpdateOperationsInput | string | null
+    lastContactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
+    lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    automationStatus?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LeadCreateManyInput = {
-    id: string
+    id?: string
     name: string
     phone: string
     propertyAddress: string
@@ -2296,6 +2415,11 @@ export namespace Prisma {
     priority?: string
     notes?: string | null
     payload?: string | null
+    lastContactedAt?: Date | string | null
+    nextFollowUpAt?: Date | string | null
+    followUpCount?: number
+    lastFollowUpMessage?: string | null
+    automationStatus?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -2311,6 +2435,11 @@ export namespace Prisma {
     priority?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     payload?: NullableStringFieldUpdateOperationsInput | string | null
+    lastContactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
+    lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    automationStatus?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -2326,6 +2455,11 @@ export namespace Prisma {
     priority?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     payload?: NullableStringFieldUpdateOperationsInput | string | null
+    lastContactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
+    lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    automationStatus?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -2378,6 +2512,17 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -2410,12 +2555,18 @@ export namespace Prisma {
     priority?: SortOrder
     notes?: SortOrder
     payload?: SortOrder
+    lastContactedAt?: SortOrder
+    nextFollowUpAt?: SortOrder
+    followUpCount?: SortOrder
+    lastFollowUpMessage?: SortOrder
+    automationStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type LeadAvgOrderByAggregateInput = {
     score?: SortOrder
+    followUpCount?: SortOrder
   }
 
   export type LeadMaxOrderByAggregateInput = {
@@ -2429,6 +2580,11 @@ export namespace Prisma {
     priority?: SortOrder
     notes?: SortOrder
     payload?: SortOrder
+    lastContactedAt?: SortOrder
+    nextFollowUpAt?: SortOrder
+    followUpCount?: SortOrder
+    lastFollowUpMessage?: SortOrder
+    automationStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -2444,12 +2600,18 @@ export namespace Prisma {
     priority?: SortOrder
     notes?: SortOrder
     payload?: SortOrder
+    lastContactedAt?: SortOrder
+    nextFollowUpAt?: SortOrder
+    followUpCount?: SortOrder
+    lastFollowUpMessage?: SortOrder
+    automationStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type LeadSumOrderByAggregateInput = {
     score?: SortOrder
+    followUpCount?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -2514,6 +2676,20 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -2546,6 +2722,10 @@ export namespace Prisma {
 
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -2596,6 +2776,17 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -2689,6 +2880,20 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {

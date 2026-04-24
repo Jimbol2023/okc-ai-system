@@ -132,6 +132,11 @@ exports.Prisma.LeadScalarFieldEnum = {
   priority: 'priority',
   notes: 'notes',
   payload: 'payload',
+  lastContactedAt: 'lastContactedAt',
+  nextFollowUpAt: 'nextFollowUpAt',
+  followUpCount: 'followUpCount',
+  lastFollowUpMessage: 'lastFollowUpMessage',
+  automationStatus: 'automationStatus',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
