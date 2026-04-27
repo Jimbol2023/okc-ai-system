@@ -18,7 +18,7 @@ type AutomationStoredLead = StoredLead & {
   nextFollowUpAt?: Date | string | null;
   followUpCount?: number;
   lastFollowUpMessage?: string | null;
-  automationStatus?: string;
+  automationStatus?: string | null;
   isHot?: boolean;
 };
 
@@ -32,6 +32,10 @@ function toDateOrNull(value: Date | string | null | undefined) {
   const date = value instanceof Date ? value : new Date(value);
 
   return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function getDefaultNextFollowUpAt() {
+  return new Date(Date.now() + 5 * 60 * 1000);
 }
 
 async function findExistingLead(lead: Pick<StoredLead, "propertyAddress" | "phone">) {
@@ -82,10 +86,11 @@ export async function createDbLead(storedLead: StoredLead) {
         ...dbData,
 
         lastContactedAt: toDateOrNull(leadWithAutomation.lastContactedAt),
-        nextFollowUpAt: toDateOrNull(leadWithAutomation.nextFollowUpAt),
+        nextFollowUpAt:
+          toDateOrNull(leadWithAutomation.nextFollowUpAt) ?? getDefaultNextFollowUpAt(),
         followUpCount: leadWithAutomation.followUpCount ?? 0,
         lastFollowUpMessage: leadWithAutomation.lastFollowUpMessage ?? null,
-        automationStatus: leadWithAutomation.automationStatus ?? "idle",
+        automationStatus: leadWithAutomation.automationStatus ?? "scheduled",
         isHot: leadWithAutomation.isHot ?? false
       }
     });
