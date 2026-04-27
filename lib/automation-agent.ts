@@ -1,7 +1,6 @@
-"use client";
-
 import { generateLeads } from "@/lib/lead-generator";
-import { createGeneratedLeads } from "@/lib/leads-api";
+import { createDbLeadFromGenerated } from "@/lib/leads-db";
+import { prisma } from "@/lib/prisma";
 import { fetchRealLeads } from "@/lib/real-leads";
 
 export type AutomationCycleResult = {
@@ -9,12 +8,30 @@ export type AutomationCycleResult = {
   addedCount: number;
   skippedCount: number;
   highPriorityCount: number;
+  overdueFollowUpCount: number;
   summary: string;
 };
 
+export async function findOverdueFollowUpLeads() {
+  const now = new Date();
+
+  return prisma.lead.findMany({
+    where: {
+      automationStatus: "scheduled",
+      nextFollowUpAt: {
+        lte: now
+      }
+    },
+    orderBy: {
+      nextFollowUpAt: "asc"
+    },
+    take: 25
+  });
+}
+
 export async function runAutomationCycle(): Promise<AutomationCycleResult> {
   const generatedLeads = generateLeads();
-  let externalLeads = [] as ReturnType<typeof generateLeads>;
+  let externalLeads: ReturnType<typeof generateLeads> = [];
 
   try {
     externalLeads = await fetchRealLeads();
@@ -22,22 +39,31 @@ export async function runAutomationCycle(): Promise<AutomationCycleResult> {
     externalLeads = [];
   }
 
-  const generatedResult = await createGeneratedLeads(generatedLeads);
-  const externalResult = await createGeneratedLeads(externalLeads);
-  const addedLeads = [...generatedResult.addedLeads, ...externalResult.addedLeads];
-  const addedCount = generatedResult.addedCount + externalResult.addedCount;
-  const skippedCount = generatedResult.skippedCount + externalResult.skippedCount;
+  const allLeads = [...generatedLeads, ...externalLeads];
+
+  const results = await Promise.all(allLeads.map((lead) => createDbLeadFromGenerated(lead)));
+
+  const addedLeads = results.filter((result) => result.created).map((result) => result.lead);
+  const addedCount = results.filter((result) => result.created).length;
+  const skippedCount = results.filter((result) => !result.created).length;
   const highPriorityCount = addedLeads.filter((lead) => lead.priority === "High").length;
-  const summary =
-    highPriorityCount > 0
-      ? `${addedCount} leads added. ${highPriorityCount} high-priority opportunities found.`
-      : `${addedCount} leads added. ${skippedCount} duplicates skipped.`;
+
+  const overdueFollowUpLeads = await findOverdueFollowUpLeads();
+  const overdueFollowUpCount = overdueFollowUpLeads.length;
+
+  const summaryParts = [
+    `${addedCount} leads added`,
+    `${skippedCount} duplicates skipped`,
+    `${highPriorityCount} high-priority opportunities found`,
+    `${overdueFollowUpCount} overdue follow-ups detected`
+  ];
 
   return {
     ranAt: new Date().toISOString(),
     addedCount,
     skippedCount,
     highPriorityCount,
-    summary
+    overdueFollowUpCount,
+    summary: summaryParts.join(". ") + "."
   };
 }
