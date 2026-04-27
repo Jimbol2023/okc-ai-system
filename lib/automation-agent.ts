@@ -9,6 +9,7 @@ export type AutomationCycleResult = {
   skippedCount: number;
   highPriorityCount: number;
   overdueFollowUpCount: number;
+  processedFollowUpCount: number;
   summary: string;
 };
 
@@ -27,6 +28,46 @@ export async function findOverdueFollowUpLeads() {
     },
     take: 25
   });
+}
+
+async function processOverdueLeads() {
+  const now = new Date();
+  const overdueLeads = await findOverdueFollowUpLeads();
+
+  let processedCount = 0;
+
+  for (const lead of overdueLeads) {
+    await prisma.lead.update({
+      where: {
+        id: lead.id
+      },
+      data: {
+        automationStatus: "processing"
+      }
+    });
+
+    console.log(`Processing follow-up for lead: ${lead.id}`);
+
+    const nextFollowUpAt = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+
+    await prisma.lead.update({
+      where: {
+        id: lead.id
+      },
+      data: {
+        lastContactedAt: now,
+        nextFollowUpAt,
+        followUpCount: {
+          increment: 1
+        },
+        automationStatus: "scheduled"
+      }
+    });
+
+    processedCount++;
+  }
+
+  return processedCount;
 }
 
 export async function runAutomationCycle(): Promise<AutomationCycleResult> {
@@ -50,12 +91,14 @@ export async function runAutomationCycle(): Promise<AutomationCycleResult> {
 
   const overdueFollowUpLeads = await findOverdueFollowUpLeads();
   const overdueFollowUpCount = overdueFollowUpLeads.length;
+  const processedFollowUpCount = await processOverdueLeads();
 
   const summaryParts = [
     `${addedCount} leads added`,
     `${skippedCount} duplicates skipped`,
     `${highPriorityCount} high-priority opportunities found`,
-    `${overdueFollowUpCount} overdue follow-ups detected`
+    `${overdueFollowUpCount} overdue follow-ups detected`,
+    `${processedFollowUpCount} follow-ups processed`
   ];
 
   return {
@@ -64,6 +107,7 @@ export async function runAutomationCycle(): Promise<AutomationCycleResult> {
     skippedCount,
     highPriorityCount,
     overdueFollowUpCount,
+    processedFollowUpCount,
     summary: summaryParts.join(". ") + "."
   };
 }
