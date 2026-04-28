@@ -5,12 +5,17 @@ import { createDbLeadFromGenerated } from "@/lib/leads-db";
 import { prisma } from "@/lib/prisma";
 import { fetchRealLeads } from "@/lib/real-leads";
 
+const MAX_OUTREACH_PER_CYCLE = 5;
+const MIN_HOURS_BETWEEN_CONTACT = 12;
+
 export type AutomationCycleResult = {
   ranAt: string;
   addedCount: number;
   skippedCount: number;
   highPriorityCount: number;
   overdueFollowUpCount: number;
+  safeFollowUpCount: number;
+  skippedUnsafeFollowUpCount: number;
   processedFollowUpCount: number;
   smsSentCount: number;
   smsFailedCount: number;
@@ -23,6 +28,8 @@ type SmsResult = {
   sentCount: number;
   failedCount: number;
 };
+
+type FollowUpLead = Awaited<ReturnType<typeof findOverdueFollowUpLeads>>[number];
 
 export async function findOverdueFollowUpLeads() {
   const now = new Date();
@@ -38,6 +45,37 @@ export async function findOverdueFollowUpLeads() {
       nextFollowUpAt: "asc"
     },
     take: 25
+  });
+}
+
+function isValidPhone(phone: string | null) {
+  if (!phone) return false;
+
+  return /^\+\d{10,15}$/.test(phone);
+}
+
+function wasContactedTooRecently(lastContactedAt: Date | string | null) {
+  if (!lastContactedAt) return false;
+
+  const now = new Date();
+  const lastContactedDate =
+    lastContactedAt instanceof Date ? lastContactedAt : new Date(lastContactedAt);
+
+  if (Number.isNaN(lastContactedDate.getTime())) return false;
+
+  const hoursSinceLastContact =
+    (now.getTime() - lastContactedDate.getTime()) / (1000 * 60 * 60);
+
+  return hoursSinceLastContact < MIN_HOURS_BETWEEN_CONTACT;
+}
+
+function filterSafeLeads(leads: FollowUpLead[]) {
+  return leads.filter((lead) => {
+    if (!isValidPhone(lead.phone)) return false;
+
+    if (wasContactedTooRecently(lead.lastContactedAt)) return false;
+
+    return true;
   });
 }
 
@@ -71,7 +109,7 @@ async function sendSms({
   phone: string;
   message: string;
 }): Promise<SmsResult> {
-  if (!phone) {
+  if (!phone || !isValidPhone(phone)) {
     return {
       success: false,
       sentCount: 0,
@@ -132,12 +170,14 @@ async function sendSms({
 async function processOverdueLeads() {
   const now = new Date();
   const overdueLeads = await findOverdueFollowUpLeads();
+  const safeLeads = filterSafeLeads(overdueLeads);
+  const leadsToProcess = safeLeads.slice(0, MAX_OUTREACH_PER_CYCLE);
 
   let processedCount = 0;
   let smsSentCount = 0;
   let smsFailedCount = 0;
 
-  for (const lead of overdueLeads) {
+  for (const lead of leadsToProcess) {
     await prisma.lead.update({
       where: {
         id: lead.id
@@ -181,6 +221,9 @@ async function processOverdueLeads() {
   }
 
   return {
+    overdueFollowUpCount: overdueLeads.length,
+    safeFollowUpCount: safeLeads.length,
+    skippedUnsafeFollowUpCount: overdueLeads.length - safeLeads.length,
     processedCount,
     smsSentCount,
     smsFailedCount
@@ -206,15 +249,22 @@ export async function runAutomationCycle(): Promise<AutomationCycleResult> {
   const skippedCount = results.filter((result) => !result.created).length;
   const highPriorityCount = addedLeads.filter((lead) => lead.priority === "High").length;
 
-  const overdueFollowUpLeads = await findOverdueFollowUpLeads();
-  const overdueFollowUpCount = overdueFollowUpLeads.length;
-  const { processedCount, smsSentCount, smsFailedCount } = await processOverdueLeads();
+  const {
+    overdueFollowUpCount,
+    safeFollowUpCount,
+    skippedUnsafeFollowUpCount,
+    processedCount,
+    smsSentCount,
+    smsFailedCount
+  } = await processOverdueLeads();
 
   const summaryParts = [
     `${addedCount} leads added`,
     `${skippedCount} duplicates skipped`,
     `${highPriorityCount} high-priority opportunities found`,
     `${overdueFollowUpCount} overdue follow-ups detected`,
+    `${safeFollowUpCount} safe follow-ups eligible`,
+    `${skippedUnsafeFollowUpCount} unsafe follow-ups skipped`,
     `${processedCount} follow-ups processed`,
     `${smsSentCount} SMS messages sent or prepared`,
     `${smsFailedCount} SMS messages failed`
@@ -226,6 +276,8 @@ export async function runAutomationCycle(): Promise<AutomationCycleResult> {
     skippedCount,
     highPriorityCount,
     overdueFollowUpCount,
+    safeFollowUpCount,
+    skippedUnsafeFollowUpCount,
     processedFollowUpCount: processedCount,
     smsSentCount,
     smsFailedCount,
