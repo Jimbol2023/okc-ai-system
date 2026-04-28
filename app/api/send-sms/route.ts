@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import twilio from "twilio";
 
 type SendSmsPayload = {
   phoneNumbers?: string[];
@@ -6,6 +7,11 @@ type SendSmsPayload = {
   dealId?: string;
   dealAddress?: string;
 };
+
+const client = twilio(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN
+);
 
 export async function POST(request: Request) {
   try {
@@ -33,26 +39,40 @@ export async function POST(request: Request) {
       Boolean(process.env.TWILIO_AUTH_TOKEN) &&
       Boolean(process.env.TWILIO_PHONE_NUMBER);
 
+    // 🔒 SAFETY: fallback to mock if config missing
     if (!hasTwilioConfig) {
       return NextResponse.json({
         success: true,
         mocked: true,
         provider: "mock",
         sentCount: phoneNumbers.length,
-        dealId: payload.dealId ?? null,
-        dealAddress: payload.dealAddress ?? null,
         message
       });
     }
 
+    let sentCount = 0;
+
+    for (const phone of phoneNumbers) {
+      await client.messages.create({
+        body: message,
+        from: process.env.TWILIO_PHONE_NUMBER,
+        to: phone
+      });
+
+      sentCount++;
+    }
+
     return NextResponse.json({
-      success: false,
-      error: "Twilio config detected, but real Twilio sending is not connected yet."
+      success: true,
+      provider: "twilio",
+      sentCount
     });
-  } catch {
+  } catch (error) {
+    console.error("SMS ERROR:", error);
+
     return NextResponse.json(
-      { success: false, error: "Invalid SMS request." },
-      { status: 400 }
+      { success: false, error: "Failed to send SMS." },
+      { status: 500 }
     );
   }
 }

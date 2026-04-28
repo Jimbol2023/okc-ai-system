@@ -1,3 +1,5 @@
+import twilio from "twilio";
+
 import { generateLeads } from "@/lib/lead-generator";
 import { createDbLeadFromGenerated } from "@/lib/leads-db";
 import { prisma } from "@/lib/prisma";
@@ -10,7 +12,16 @@ export type AutomationCycleResult = {
   highPriorityCount: number;
   overdueFollowUpCount: number;
   processedFollowUpCount: number;
+  smsSentCount: number;
+  smsFailedCount: number;
   summary: string;
+};
+
+type SmsResult = {
+  success: boolean;
+  mocked?: boolean;
+  sentCount: number;
+  failedCount: number;
 };
 
 export async function findOverdueFollowUpLeads() {
@@ -30,11 +41,84 @@ export async function findOverdueFollowUpLeads() {
   });
 }
 
+function buildFollowUpMessage(lead: { name: string | null; propertyAddress: string }) {
+  const firstName = lead.name?.split(" ")[0] || "there";
+
+  return `Hi ${firstName}, this is OKC Wholesale AI following up about ${lead.propertyAddress}. Are you still open to reviewing your selling options?`;
+}
+
+async function sendSms({
+  phone,
+  message
+}: {
+  phone: string;
+  message: string;
+}): Promise<SmsResult> {
+  if (!phone) {
+    return {
+      success: false,
+      sentCount: 0,
+      failedCount: 1
+    };
+  }
+
+  const hasTwilioConfig =
+    Boolean(process.env.TWILIO_ACCOUNT_SID) &&
+    Boolean(process.env.TWILIO_AUTH_TOKEN) &&
+    Boolean(process.env.TWILIO_PHONE_NUMBER);
+
+  if (!hasTwilioConfig) {
+    console.log("Mock-safe SMS prepared:", {
+      phone,
+      message
+    });
+
+    return {
+      success: true,
+      mocked: true,
+      sentCount: 1,
+      failedCount: 0
+    };
+  }
+
+  const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+
+  try {
+    await client.messages.create({
+      body: message,
+      from: process.env.TWILIO_PHONE_NUMBER,
+      to: phone
+    });
+
+    console.log("Twilio SMS sent:", {
+      phone
+    });
+
+    return {
+      success: true,
+      mocked: false,
+      sentCount: 1,
+      failedCount: 0
+    };
+  } catch (error) {
+    console.error("Twilio SMS failed:", error);
+
+    return {
+      success: false,
+      mocked: false,
+      sentCount: 0,
+      failedCount: 1
+    };
+  }
+}
+
 async function processOverdueLeads() {
   const now = new Date();
   const overdueLeads = await findOverdueFollowUpLeads();
 
   let processedCount = 0;
+  let smsSentCount = 0;
+  let smsFailedCount = 0;
 
   for (const lead of overdueLeads) {
     await prisma.lead.update({
@@ -46,7 +130,18 @@ async function processOverdueLeads() {
       }
     });
 
-    console.log(`Processing follow-up for lead: ${lead.id}`);
+    const message = buildFollowUpMessage({
+      name: lead.name,
+      propertyAddress: lead.propertyAddress
+    });
+
+    const smsResult = await sendSms({
+      phone: lead.phone,
+      message
+    });
+
+    smsSentCount += smsResult.sentCount;
+    smsFailedCount += smsResult.failedCount;
 
     const nextFollowUpAt = new Date(now.getTime() + 24 * 60 * 60 * 1000);
 
@@ -60,6 +155,7 @@ async function processOverdueLeads() {
         followUpCount: {
           increment: 1
         },
+        lastFollowUpMessage: message,
         automationStatus: "scheduled"
       }
     });
@@ -67,7 +163,11 @@ async function processOverdueLeads() {
     processedCount++;
   }
 
-  return processedCount;
+  return {
+    processedCount,
+    smsSentCount,
+    smsFailedCount
+  };
 }
 
 export async function runAutomationCycle(): Promise<AutomationCycleResult> {
@@ -91,14 +191,16 @@ export async function runAutomationCycle(): Promise<AutomationCycleResult> {
 
   const overdueFollowUpLeads = await findOverdueFollowUpLeads();
   const overdueFollowUpCount = overdueFollowUpLeads.length;
-  const processedFollowUpCount = await processOverdueLeads();
+  const { processedCount, smsSentCount, smsFailedCount } = await processOverdueLeads();
 
   const summaryParts = [
     `${addedCount} leads added`,
     `${skippedCount} duplicates skipped`,
     `${highPriorityCount} high-priority opportunities found`,
     `${overdueFollowUpCount} overdue follow-ups detected`,
-    `${processedFollowUpCount} follow-ups processed`
+    `${processedCount} follow-ups processed`,
+    `${smsSentCount} SMS messages sent or prepared`,
+    `${smsFailedCount} SMS messages failed`
   ];
 
   return {
@@ -107,7 +209,9 @@ export async function runAutomationCycle(): Promise<AutomationCycleResult> {
     skippedCount,
     highPriorityCount,
     overdueFollowUpCount,
-    processedFollowUpCount,
+    processedFollowUpCount: processedCount,
+    smsSentCount,
+    smsFailedCount,
     summary: summaryParts.join(". ") + "."
   };
 }
