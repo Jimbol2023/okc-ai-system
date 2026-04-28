@@ -42,9 +42,26 @@ export async function findOverdueFollowUpLeads() {
 }
 
 function buildFollowUpMessage(lead: { name: string | null; propertyAddress: string }) {
-  const firstName = lead.name?.split(" ")[0] || "there";
+  const firstName = lead.name?.split(" ")[0] || "";
 
-  return `Hi ${firstName}, this is OKC Wholesale AI following up about ${lead.propertyAddress}. Are you still open to reviewing your selling options?`;
+  const greetings = [`Hi ${firstName},`, `Hey ${firstName},`, "Hi,"];
+
+  const intros = [
+    `I was reaching out about the property on ${lead.propertyAddress}.`,
+    `Quick question about ${lead.propertyAddress}.`,
+    `I came across your property on ${lead.propertyAddress}.`
+  ];
+
+  const closings = [
+    "Would you consider an offer if it made sense?",
+    "Is that something you'd be open to?",
+    "Not sure if you’ve thought about selling, but curious.",
+    "Any interest in selling it?"
+  ];
+
+  const random = (items: string[]) => items[Math.floor(Math.random() * items.length)];
+
+  return `${random(greetings)} ${random(intros)} ${random(closings)}`;
 }
 
 async function sendSms({
