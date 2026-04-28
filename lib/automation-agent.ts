@@ -11,8 +11,6 @@ import { fetchRealLeads } from "@/lib/real-leads";
 
 const MAX_OUTREACH_PER_CYCLE = 5;
 const MIN_HOURS_BETWEEN_CONTACT = 12;
-
-// Prevents over-texting one lead
 const MAX_FOLLOW_UP_ATTEMPTS = 4;
 
 export type AutomationCycleResult = {
@@ -48,6 +46,7 @@ export async function findOverdueFollowUpLeads() {
   return prisma.lead.findMany({
     where: {
       automationStatus: "scheduled",
+      doNotContact: false,
       nextFollowUpAt: {
         lte: now
       }
@@ -66,7 +65,6 @@ export async function findOverdueFollowUpLeads() {
 function isValidPhone(phone: string | null) {
   if (!phone) return false;
 
-  // E.164 phone format, example: +14051234567
   return /^\+\d{10,15}$/.test(phone);
 }
 
@@ -87,10 +85,16 @@ function wasContactedTooRecently(lastContactedAt: Date | string | null) {
 
 function filterSafeLeads(leads: FollowUpLead[]) {
   return leads.filter((lead) => {
+    // Skip invalid phone numbers
     if (!isValidPhone(lead.phone)) return false;
 
+    // Step 2B.6 — DNC / Opt-Out Protection Agent
+    if (lead.doNotContact === true) return false;
+
+    // Skip if contacted too recently
     if (wasContactedTooRecently(lead.lastContactedAt)) return false;
 
+    // Skip if max follow-ups reached
     if ((lead.followUpCount ?? 0) >= MAX_FOLLOW_UP_ATTEMPTS) return false;
 
     return true;
@@ -109,27 +113,22 @@ function buildFollowUpMessage(lead: {
   const firstName = lead.name?.split(" ")[0] || "";
   const followUpCount = lead.followUpCount ?? 0;
 
-  // Hard stop after max follow-ups
   if (followUpCount >= MAX_FOLLOW_UP_ATTEMPTS) {
     return null;
   }
 
-  // First message
   if (followUpCount === 0) {
     return `Hi ${firstName}, I came across your property at ${lead.propertyAddress}. Would you consider an offer if it made sense?`;
   }
 
-  // Friendly reminder
   if (followUpCount === 1) {
     return `Hey ${firstName}, just following up on ${lead.propertyAddress}. Let me know if you'd be open to discussing a possible offer.`;
   }
 
-  // Value-driven follow-up
   if (followUpCount === 2) {
     return `Hi ${firstName}, I wanted to reach out again about ${lead.propertyAddress}. I can put together a quick offer if you're even slightly considering selling.`;
   }
 
-  // Final soft exit
   if (followUpCount === 3) {
     return `Hey ${firstName}, I haven’t heard back regarding ${lead.propertyAddress}, so I’ll assume it’s not a good time. If anything changes, feel free to reach out anytime.`;
   }
@@ -184,9 +183,7 @@ async function sendSms({
       to: phone
     });
 
-    console.log("Twilio SMS sent:", {
-      phone
-    });
+    console.log("Twilio SMS sent:", { phone });
 
     return {
       success: true,
@@ -223,9 +220,7 @@ async function processOverdueLeads() {
 
   for (const lead of leadsToProcess) {
     await prisma.lead.update({
-      where: {
-        id: lead.id
-      },
+      where: { id: lead.id },
       data: {
         automationStatus: "processing"
       }
@@ -239,9 +234,7 @@ async function processOverdueLeads() {
 
     if (!message) {
       await prisma.lead.update({
-        where: {
-          id: lead.id
-        },
+        where: { id: lead.id },
         data: {
           automationStatus: "idle"
         }
@@ -261,9 +254,7 @@ async function processOverdueLeads() {
     const nextFollowUpAt = new Date(now.getTime() + 24 * 60 * 60 * 1000);
 
     await prisma.lead.update({
-      where: {
-        id: lead.id
-      },
+      where: { id: lead.id },
       data: {
         lastContactedAt: now,
         nextFollowUpAt,

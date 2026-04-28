@@ -110,6 +110,9 @@ exports.Prisma.LeadScalarFieldEnum = {
   lastFollowUpMessage: 'lastFollowUpMessage',
   automationStatus: 'automationStatus',
   isHot: 'isHot',
+  doNotContact: 'doNotContact',
+  optOutReason: 'optOutReason',
+  optOutAt: 'optOutAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -178,7 +181,6 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -187,13 +189,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider  = \"postgresql\"\n  url       = env(\"DATABASE_URL\")\n  directUrl = env(\"DIRECT_URL\")\n}\n\nenum LeadStatus {\n  new\n  contacted\n  negotiating\n  under_contract\n  closed\n}\n\nmodel Lead {\n  id              String @id @default(uuid())\n  name            String\n  phone           String\n  propertyAddress String\n  source          String\n\n  status   LeadStatus @default(new)\n  score    Int        @default(0)\n  priority String     @default(\"Low\")\n\n  notes   String?\n  payload String?\n\n  lastContactedAt     DateTime?\n  nextFollowUpAt      DateTime?\n  followUpCount       Int       @default(0)\n  lastFollowUpMessage String?\n  automationStatus    String    @default(\"idle\")\n  isHot               Boolean   @default(false)\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@unique([propertyAddress, phone])\n  @@index([createdAt])\n  @@index([score, createdAt])\n  @@index([status])\n  @@index([nextFollowUpAt])\n  @@index([isHot])\n}\n",
-  "inlineSchemaHash": "ebf16cabc9298fe221261d928865e9fdbd5c3aba5a87af91bfb24c57fecad669",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider  = \"postgresql\"\n  url       = env(\"DATABASE_URL\")\n  directUrl = env(\"DIRECT_URL\")\n}\n\nenum LeadStatus {\n  new\n  contacted\n  negotiating\n  under_contract\n  closed\n}\n\nmodel Lead {\n  id              String @id @default(uuid())\n  name            String\n  phone           String\n  propertyAddress String\n  source          String\n\n  status   LeadStatus @default(new)\n  score    Int        @default(0)\n  priority String     @default(\"Low\")\n\n  notes   String?\n  payload String?\n\n  lastContactedAt     DateTime?\n  nextFollowUpAt      DateTime?\n  followUpCount       Int       @default(0)\n  lastFollowUpMessage String?\n  automationStatus    String    @default(\"idle\")\n  isHot               Boolean   @default(false)\n\n  // Step 2B.6 — DNC / Opt-Out Protection Agent\n  doNotContact Boolean   @default(false)\n  optOutReason String?\n  optOutAt     DateTime?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@unique([propertyAddress, phone])\n  @@index([createdAt])\n  @@index([score, createdAt])\n  @@index([status])\n  @@index([nextFollowUpAt])\n  @@index([isHot])\n  @@index([doNotContact])\n}\n",
+  "inlineSchemaHash": "b18fed58f083a1aafbfaec8bccb23c588d3abb616f0624223a407813307c4211",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Lead\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"propertyAddress\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"source\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"LeadStatus\"},{\"name\":\"score\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"priority\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"notes\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"payload\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastContactedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"nextFollowUpAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"followUpCount\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"lastFollowUpMessage\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"automationStatus\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isHot\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Lead\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"propertyAddress\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"source\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"LeadStatus\"},{\"name\":\"score\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"priority\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"notes\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"payload\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastContactedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"nextFollowUpAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"followUpCount\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"lastFollowUpMessage\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"automationStatus\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isHot\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"doNotContact\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"optOutReason\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"optOutAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),

@@ -138,6 +138,9 @@ exports.Prisma.LeadScalarFieldEnum = {
   lastFollowUpMessage: 'lastFollowUpMessage',
   automationStatus: 'automationStatus',
   isHot: 'isHot',
+  doNotContact: 'doNotContact',
+  optOutReason: 'optOutReason',
+  optOutAt: 'optOutAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

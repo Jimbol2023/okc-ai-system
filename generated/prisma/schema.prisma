@@ -38,6 +38,11 @@ model Lead {
   automationStatus    String    @default("idle")
   isHot               Boolean   @default(false)
 
+  // Step 2B.6 — DNC / Opt-Out Protection Agent
+  doNotContact Boolean   @default(false)
+  optOutReason String?
+  optOutAt     DateTime?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -47,4 +52,5 @@ model Lead {
   @@index([status])
   @@index([nextFollowUpAt])
   @@index([isHot])
+  @@index([doNotContact])
 }
