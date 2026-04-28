@@ -5,8 +5,15 @@ import { createDbLeadFromGenerated } from "@/lib/leads-db";
 import { prisma } from "@/lib/prisma";
 import { fetchRealLeads } from "@/lib/real-leads";
 
+// =====================================================
+// STEP 2B.4 — OUTREACH SAFETY + THROTTLE AGENT
+// =====================================================
+
 const MAX_OUTREACH_PER_CYCLE = 5;
 const MIN_HOURS_BETWEEN_CONTACT = 12;
+
+// Prevents over-texting one lead
+const MAX_FOLLOW_UP_ATTEMPTS = 4;
 
 export type AutomationCycleResult = {
   ranAt: string;
@@ -31,6 +38,10 @@ type SmsResult = {
 
 type FollowUpLead = Awaited<ReturnType<typeof findOverdueFollowUpLeads>>[number];
 
+// =====================================================
+// STEP 2B.1 — FIND OVERDUE FOLLOW-UP LEADS
+// =====================================================
+
 export async function findOverdueFollowUpLeads() {
   const now = new Date();
 
@@ -48,9 +59,14 @@ export async function findOverdueFollowUpLeads() {
   });
 }
 
+// =====================================================
+// SAFETY HELPERS
+// =====================================================
+
 function isValidPhone(phone: string | null) {
   if (!phone) return false;
 
+  // E.164 phone format, example: +14051234567
   return /^\+\d{10,15}$/.test(phone);
 }
 
@@ -75,32 +91,55 @@ function filterSafeLeads(leads: FollowUpLead[]) {
 
     if (wasContactedTooRecently(lead.lastContactedAt)) return false;
 
+    if ((lead.followUpCount ?? 0) >= MAX_FOLLOW_UP_ATTEMPTS) return false;
+
     return true;
   });
 }
 
-function buildFollowUpMessage(lead: { name: string | null; propertyAddress: string }) {
+// =====================================================
+// STEP 2B.5 — MULTI-STAGE MESSAGE ENGINE
+// =====================================================
+
+function buildFollowUpMessage(lead: {
+  name: string | null;
+  propertyAddress: string;
+  followUpCount?: number | null;
+}) {
   const firstName = lead.name?.split(" ")[0] || "";
+  const followUpCount = lead.followUpCount ?? 0;
 
-  const greetings = [`Hi ${firstName},`, `Hey ${firstName},`, "Hi,"];
+  // Hard stop after max follow-ups
+  if (followUpCount >= MAX_FOLLOW_UP_ATTEMPTS) {
+    return null;
+  }
 
-  const intros = [
-    `I was reaching out about the property on ${lead.propertyAddress}.`,
-    `Quick question about ${lead.propertyAddress}.`,
-    `I came across your property on ${lead.propertyAddress}.`
-  ];
+  // First message
+  if (followUpCount === 0) {
+    return `Hi ${firstName}, I came across your property at ${lead.propertyAddress}. Would you consider an offer if it made sense?`;
+  }
 
-  const closings = [
-    "Would you consider an offer if it made sense?",
-    "Is that something you'd be open to?",
-    "Not sure if you’ve thought about selling, but curious.",
-    "Any interest in selling it?"
-  ];
+  // Friendly reminder
+  if (followUpCount === 1) {
+    return `Hey ${firstName}, just following up on ${lead.propertyAddress}. Let me know if you'd be open to discussing a possible offer.`;
+  }
 
-  const random = (items: string[]) => items[Math.floor(Math.random() * items.length)];
+  // Value-driven follow-up
+  if (followUpCount === 2) {
+    return `Hi ${firstName}, I wanted to reach out again about ${lead.propertyAddress}. I can put together a quick offer if you're even slightly considering selling.`;
+  }
 
-  return `${random(greetings)} ${random(intros)} ${random(closings)}`;
+  // Final soft exit
+  if (followUpCount === 3) {
+    return `Hey ${firstName}, I haven’t heard back regarding ${lead.propertyAddress}, so I’ll assume it’s not a good time. If anything changes, feel free to reach out anytime.`;
+  }
+
+  return null;
 }
+
+// =====================================================
+// SMS SENDER — MOCK SAFE + TWILIO SAFE
+// =====================================================
 
 async function sendSms({
   phone,
@@ -167,8 +206,13 @@ async function sendSms({
   }
 }
 
+// =====================================================
+// STEP 2B.2 — PROCESS OVERDUE LEADS SAFELY
+// =====================================================
+
 async function processOverdueLeads() {
   const now = new Date();
+
   const overdueLeads = await findOverdueFollowUpLeads();
   const safeLeads = filterSafeLeads(overdueLeads);
   const leadsToProcess = safeLeads.slice(0, MAX_OUTREACH_PER_CYCLE);
@@ -189,8 +233,22 @@ async function processOverdueLeads() {
 
     const message = buildFollowUpMessage({
       name: lead.name,
-      propertyAddress: lead.propertyAddress
+      propertyAddress: lead.propertyAddress,
+      followUpCount: lead.followUpCount
     });
+
+    if (!message) {
+      await prisma.lead.update({
+        where: {
+          id: lead.id
+        },
+        data: {
+          automationStatus: "idle"
+        }
+      });
+
+      continue;
+    }
 
     const smsResult = await sendSms({
       phone: lead.phone,
@@ -229,6 +287,10 @@ async function processOverdueLeads() {
     smsFailedCount
   };
 }
+
+// =====================================================
+// MAIN AUTOMATION CYCLE
+// =====================================================
 
 export async function runAutomationCycle(): Promise<AutomationCycleResult> {
   const generatedLeads = generateLeads();
