@@ -38,7 +38,9 @@ model Lead {
   automationStatus    String    @default("idle")
   isHot               Boolean   @default(false)
 
-  // Step 2B.6 — DNC / Opt-Out Protection Agent
+  // ============================
+  // 🔐 DNC / OPT-OUT PROTECTION
+  // ============================
   doNotContact Boolean   @default(false)
   optOutReason String?
   optOutAt     DateTime?

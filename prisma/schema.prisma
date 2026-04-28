@@ -18,33 +18,35 @@ enum LeadStatus {
 }
 
 model Lead {
-  id              String @id @default(uuid())
+  id              String     @id @default(uuid())
   name            String
   phone           String
   propertyAddress String
   source          String
 
-  status   LeadStatus @default(new)
-  score    Int        @default(0)
-  priority String     @default("Low")
+  status          LeadStatus @default(new)
+  score           Int        @default(0)
+  priority        String     @default("Low")
 
-  notes   String?
-  payload String?
+  notes           String?
+  payload         String?
 
   lastContactedAt     DateTime?
   nextFollowUpAt      DateTime?
-  followUpCount       Int       @default(0)
+  followUpCount       Int        @default(0)
   lastFollowUpMessage String?
-  automationStatus    String    @default("idle")
-  isHot               Boolean   @default(false)
+  automationStatus    String     @default("idle")
+  isHot               Boolean    @default(false)
 
-  // Step 2B.6 — DNC / Opt-Out Protection Agent
-  doNotContact Boolean   @default(false)
-  optOutReason String?
-  optOutAt      DateTime?
+  // ============================
+  // 🔐 DNC / OPT-OUT PROTECTION
+  // ============================
+  doNotContact   Boolean   @default(false)
+  optOutReason   String?
+  optOutAt       DateTime?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
 
   @@unique([propertyAddress, phone])
   @@index([createdAt])
