@@ -34,7 +34,7 @@ export function detectOptOut(message: string | null | undefined) {
   );
 
   return {
-    isOptOut: Boolean(matchedKeyword),
+    isOptOut: !!matchedKeyword,
     reason: matchedKeyword ?? null
   };
 }
