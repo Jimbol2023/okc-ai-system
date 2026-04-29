@@ -31,6 +31,9 @@ model Lead {
   notes           String?
   payload         String?
 
+  // ============================
+  // 📞 FOLLOW-UP AUTOMATION CORE
+  // ============================
   lastContactedAt     DateTime?
   nextFollowUpAt      DateTime?
   followUpCount       Int        @default(0)
@@ -39,15 +42,31 @@ model Lead {
   isHot               Boolean    @default(false)
 
   // ============================
+  // 🤖 AI REPLY BRAIN (Step 2B.7G)
+  // ============================
+  lastSellerReply           String?
+  lastSellerReplyAt         DateTime?
+  lastSellerReplyIntent     String?
+  lastSellerReplyConfidence Float?
+  suggestedReply            String?
+  requiresHumanApproval     Boolean   @default(false)
+
+  // ============================
   // 🔐 DNC / OPT-OUT PROTECTION
   // ============================
   doNotContact   Boolean   @default(false)
   optOutReason   String?
   optOutAt       DateTime?
 
+  // ============================
+  // 📊 SYSTEM TIMESTAMPS
+  // ============================
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
 
+  // ============================
+  // ⚡ INDEXES (PERFORMANCE)
+  // ============================
   @@unique([propertyAddress, phone])
   @@index([createdAt])
   @@index([score, createdAt])
@@ -55,4 +74,7 @@ model Lead {
   @@index([nextFollowUpAt])
   @@index([isHot])
   @@index([doNotContact])
+
+  // NEW: helpful for AI-driven queries later
+  @@index([lastSellerReplyIntent])
 }

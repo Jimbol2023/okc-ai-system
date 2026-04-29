@@ -2,20 +2,20 @@ import { NextResponse } from "next/server";
 
 import { classifySellerReply } from "@/lib/ai/seller-reply-brain";
 import { detectOptOut } from "@/lib/opt-out-detector";
-import { normalizePhone } from "@/lib/utils"; // ✅ NEW
 import { prisma } from "@/lib/prisma";
+import { normalizePhone } from "@/lib/utils";
 
 export const runtime = "nodejs";
 
 // =====================================================
-// STEP 2B.7E — TWILIO INBOUND SMS WEBHOOK (FINAL SAFE VERSION)
+// STEP 2B.7G — TWILIO INBOUND SMS WEBHOOK
 //
-// FIXES INCLUDED:
-// - Phone normalization (Twilio vs DB mismatch FIXED)
-// - Updates ONLY newest lead (same number safe)
-// - DNC protection preserved
-// - AI Reply Brain active
-// - No auto-send yet
+// SAFE VERSION:
+// - Normalizes Twilio phone number
+// - Finds newest matching lead only
+// - Preserves DNC / STOP protection
+// - Stores AI Reply Brain intelligence
+// - Does NOT auto-send replies yet
 // =====================================================
 
 export async function POST(request: Request) {
@@ -25,13 +25,8 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData();
 
-    // =====================================================
-    // STEP 0 — Normalize phone (CRITICAL FIX)
-    // =====================================================
-
     const rawPhone = String(formData.get("From") ?? "").trim();
     const fromPhone = normalizePhone(rawPhone);
-
     const messageBody = String(formData.get("Body") ?? "").trim();
 
     console.log("Incoming SMS:", {
@@ -51,10 +46,7 @@ export async function POST(request: Request) {
       });
     }
 
-    // =====================================================
-    // STEP 1 — Find newest matching lead
-    // =====================================================
-
+    // Find newest matching lead only.
     const lead = await prisma.lead.findFirst({
       where: {
         phone: fromPhone,
@@ -75,10 +67,7 @@ export async function POST(request: Request) {
       });
     }
 
-    // =====================================================
-    // STEP 2 — DNC / OPT-OUT PROTECTION
-    // =====================================================
-
+    // DNC / opt-out protection must run before AI Reply Brain.
     const optOutResult = detectOptOut(messageBody);
 
     if (optOutResult.isOptOut) {
@@ -95,10 +84,19 @@ export async function POST(request: Request) {
           doNotContact: true,
           optOutReason: optOutResult.reason,
           optOutAt: new Date(),
+
           automationStatus: "idle",
           lastContactedAt: new Date(),
           lastFollowUpMessage: messageBody,
           isHot: false,
+
+          // Step 2B.7G — Persist opt-out reply intelligence
+          lastSellerReply: messageBody,
+          lastSellerReplyAt: new Date(),
+          lastSellerReplyIntent: "stop",
+          lastSellerReplyConfidence: 0.99,
+          suggestedReply: null,
+          requiresHumanApproval: false,
         },
       });
 
@@ -110,10 +108,7 @@ export async function POST(request: Request) {
       });
     }
 
-    // =====================================================
-    // SAFETY — Do NOT reactivate DNC leads
-    // =====================================================
-
+    // Never reactivate a DNC lead.
     if (lead.doNotContact) {
       console.log("Lead is already do-not-contact. No AI processing:", {
         leadId: lead.id,
@@ -128,10 +123,7 @@ export async function POST(request: Request) {
       });
     }
 
-    // =====================================================
-    // STEP 3 — AI REPLY BRAIN
-    // =====================================================
-
+    // AI Reply Brain classification only. No auto-send.
     const replyBrain = classifySellerReply(messageBody);
 
     console.log("Seller Reply Brain:", {
@@ -142,10 +134,6 @@ export async function POST(request: Request) {
       requiresHumanApproval: replyBrain.requiresHumanApproval,
     });
 
-    // =====================================================
-    // STEP 4 — Update lead (ONLY this one)
-    // =====================================================
-
     await prisma.lead.update({
       where: {
         id: lead.id,
@@ -153,6 +141,14 @@ export async function POST(request: Request) {
       data: {
         lastContactedAt: new Date(),
         lastFollowUpMessage: messageBody,
+
+        // Step 2B.7G — Persist AI Reply Brain intelligence
+        lastSellerReply: messageBody,
+        lastSellerReplyAt: new Date(),
+        lastSellerReplyIntent: replyBrain.intent,
+        lastSellerReplyConfidence: replyBrain.confidence,
+        suggestedReply: replyBrain.suggestedReply,
+        requiresHumanApproval: replyBrain.requiresHumanApproval,
 
         automationStatus:
           replyBrain.intent === "interested" ||

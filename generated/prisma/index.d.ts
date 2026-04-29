@@ -896,11 +896,13 @@ export namespace Prisma {
   export type LeadAvgAggregateOutputType = {
     score: number | null
     followUpCount: number | null
+    lastSellerReplyConfidence: number | null
   }
 
   export type LeadSumAggregateOutputType = {
     score: number | null
     followUpCount: number | null
+    lastSellerReplyConfidence: number | null
   }
 
   export type LeadMinAggregateOutputType = {
@@ -920,6 +922,12 @@ export namespace Prisma {
     lastFollowUpMessage: string | null
     automationStatus: string | null
     isHot: boolean | null
+    lastSellerReply: string | null
+    lastSellerReplyAt: Date | null
+    lastSellerReplyIntent: string | null
+    lastSellerReplyConfidence: number | null
+    suggestedReply: string | null
+    requiresHumanApproval: boolean | null
     doNotContact: boolean | null
     optOutReason: string | null
     optOutAt: Date | null
@@ -944,6 +952,12 @@ export namespace Prisma {
     lastFollowUpMessage: string | null
     automationStatus: string | null
     isHot: boolean | null
+    lastSellerReply: string | null
+    lastSellerReplyAt: Date | null
+    lastSellerReplyIntent: string | null
+    lastSellerReplyConfidence: number | null
+    suggestedReply: string | null
+    requiresHumanApproval: boolean | null
     doNotContact: boolean | null
     optOutReason: string | null
     optOutAt: Date | null
@@ -968,6 +982,12 @@ export namespace Prisma {
     lastFollowUpMessage: number
     automationStatus: number
     isHot: number
+    lastSellerReply: number
+    lastSellerReplyAt: number
+    lastSellerReplyIntent: number
+    lastSellerReplyConfidence: number
+    suggestedReply: number
+    requiresHumanApproval: number
     doNotContact: number
     optOutReason: number
     optOutAt: number
@@ -980,11 +1000,13 @@ export namespace Prisma {
   export type LeadAvgAggregateInputType = {
     score?: true
     followUpCount?: true
+    lastSellerReplyConfidence?: true
   }
 
   export type LeadSumAggregateInputType = {
     score?: true
     followUpCount?: true
+    lastSellerReplyConfidence?: true
   }
 
   export type LeadMinAggregateInputType = {
@@ -1004,6 +1026,12 @@ export namespace Prisma {
     lastFollowUpMessage?: true
     automationStatus?: true
     isHot?: true
+    lastSellerReply?: true
+    lastSellerReplyAt?: true
+    lastSellerReplyIntent?: true
+    lastSellerReplyConfidence?: true
+    suggestedReply?: true
+    requiresHumanApproval?: true
     doNotContact?: true
     optOutReason?: true
     optOutAt?: true
@@ -1028,6 +1056,12 @@ export namespace Prisma {
     lastFollowUpMessage?: true
     automationStatus?: true
     isHot?: true
+    lastSellerReply?: true
+    lastSellerReplyAt?: true
+    lastSellerReplyIntent?: true
+    lastSellerReplyConfidence?: true
+    suggestedReply?: true
+    requiresHumanApproval?: true
     doNotContact?: true
     optOutReason?: true
     optOutAt?: true
@@ -1052,6 +1086,12 @@ export namespace Prisma {
     lastFollowUpMessage?: true
     automationStatus?: true
     isHot?: true
+    lastSellerReply?: true
+    lastSellerReplyAt?: true
+    lastSellerReplyIntent?: true
+    lastSellerReplyConfidence?: true
+    suggestedReply?: true
+    requiresHumanApproval?: true
     doNotContact?: true
     optOutReason?: true
     optOutAt?: true
@@ -1163,6 +1203,12 @@ export namespace Prisma {
     lastFollowUpMessage: string | null
     automationStatus: string
     isHot: boolean
+    lastSellerReply: string | null
+    lastSellerReplyAt: Date | null
+    lastSellerReplyIntent: string | null
+    lastSellerReplyConfidence: number | null
+    suggestedReply: string | null
+    requiresHumanApproval: boolean
     doNotContact: boolean
     optOutReason: string | null
     optOutAt: Date | null
@@ -1206,6 +1252,12 @@ export namespace Prisma {
     lastFollowUpMessage?: boolean
     automationStatus?: boolean
     isHot?: boolean
+    lastSellerReply?: boolean
+    lastSellerReplyAt?: boolean
+    lastSellerReplyIntent?: boolean
+    lastSellerReplyConfidence?: boolean
+    suggestedReply?: boolean
+    requiresHumanApproval?: boolean
     doNotContact?: boolean
     optOutReason?: boolean
     optOutAt?: boolean
@@ -1230,6 +1282,12 @@ export namespace Prisma {
     lastFollowUpMessage?: boolean
     automationStatus?: boolean
     isHot?: boolean
+    lastSellerReply?: boolean
+    lastSellerReplyAt?: boolean
+    lastSellerReplyIntent?: boolean
+    lastSellerReplyConfidence?: boolean
+    suggestedReply?: boolean
+    requiresHumanApproval?: boolean
     doNotContact?: boolean
     optOutReason?: boolean
     optOutAt?: boolean
@@ -1254,6 +1312,12 @@ export namespace Prisma {
     lastFollowUpMessage?: boolean
     automationStatus?: boolean
     isHot?: boolean
+    lastSellerReply?: boolean
+    lastSellerReplyAt?: boolean
+    lastSellerReplyIntent?: boolean
+    lastSellerReplyConfidence?: boolean
+    suggestedReply?: boolean
+    requiresHumanApproval?: boolean
     doNotContact?: boolean
     optOutReason?: boolean
     optOutAt?: boolean
@@ -1278,6 +1342,12 @@ export namespace Prisma {
     lastFollowUpMessage?: boolean
     automationStatus?: boolean
     isHot?: boolean
+    lastSellerReply?: boolean
+    lastSellerReplyAt?: boolean
+    lastSellerReplyIntent?: boolean
+    lastSellerReplyConfidence?: boolean
+    suggestedReply?: boolean
+    requiresHumanApproval?: boolean
     doNotContact?: boolean
     optOutReason?: boolean
     optOutAt?: boolean
@@ -1285,7 +1355,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type LeadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "phone" | "propertyAddress" | "source" | "status" | "score" | "priority" | "notes" | "payload" | "lastContactedAt" | "nextFollowUpAt" | "followUpCount" | "lastFollowUpMessage" | "automationStatus" | "isHot" | "doNotContact" | "optOutReason" | "optOutAt" | "createdAt" | "updatedAt", ExtArgs["result"]["lead"]>
+  export type LeadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "phone" | "propertyAddress" | "source" | "status" | "score" | "priority" | "notes" | "payload" | "lastContactedAt" | "nextFollowUpAt" | "followUpCount" | "lastFollowUpMessage" | "automationStatus" | "isHot" | "lastSellerReply" | "lastSellerReplyAt" | "lastSellerReplyIntent" | "lastSellerReplyConfidence" | "suggestedReply" | "requiresHumanApproval" | "doNotContact" | "optOutReason" | "optOutAt" | "createdAt" | "updatedAt", ExtArgs["result"]["lead"]>
 
   export type $LeadPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Lead"
@@ -1307,6 +1377,12 @@ export namespace Prisma {
       lastFollowUpMessage: string | null
       automationStatus: string
       isHot: boolean
+      lastSellerReply: string | null
+      lastSellerReplyAt: Date | null
+      lastSellerReplyIntent: string | null
+      lastSellerReplyConfidence: number | null
+      suggestedReply: string | null
+      requiresHumanApproval: boolean
       doNotContact: boolean
       optOutReason: string | null
       optOutAt: Date | null
@@ -1751,6 +1827,12 @@ export namespace Prisma {
     readonly lastFollowUpMessage: FieldRef<"Lead", 'String'>
     readonly automationStatus: FieldRef<"Lead", 'String'>
     readonly isHot: FieldRef<"Lead", 'Boolean'>
+    readonly lastSellerReply: FieldRef<"Lead", 'String'>
+    readonly lastSellerReplyAt: FieldRef<"Lead", 'DateTime'>
+    readonly lastSellerReplyIntent: FieldRef<"Lead", 'String'>
+    readonly lastSellerReplyConfidence: FieldRef<"Lead", 'Float'>
+    readonly suggestedReply: FieldRef<"Lead", 'String'>
+    readonly requiresHumanApproval: FieldRef<"Lead", 'Boolean'>
     readonly doNotContact: FieldRef<"Lead", 'Boolean'>
     readonly optOutReason: FieldRef<"Lead", 'String'>
     readonly optOutAt: FieldRef<"Lead", 'DateTime'>
@@ -2153,6 +2235,12 @@ export namespace Prisma {
     lastFollowUpMessage: 'lastFollowUpMessage',
     automationStatus: 'automationStatus',
     isHot: 'isHot',
+    lastSellerReply: 'lastSellerReply',
+    lastSellerReplyAt: 'lastSellerReplyAt',
+    lastSellerReplyIntent: 'lastSellerReplyIntent',
+    lastSellerReplyConfidence: 'lastSellerReplyConfidence',
+    suggestedReply: 'suggestedReply',
+    requiresHumanApproval: 'requiresHumanApproval',
     doNotContact: 'doNotContact',
     optOutReason: 'optOutReason',
     optOutAt: 'optOutAt',
@@ -2292,6 +2380,12 @@ export namespace Prisma {
     lastFollowUpMessage?: StringNullableFilter<"Lead"> | string | null
     automationStatus?: StringFilter<"Lead"> | string
     isHot?: BoolFilter<"Lead"> | boolean
+    lastSellerReply?: StringNullableFilter<"Lead"> | string | null
+    lastSellerReplyAt?: DateTimeNullableFilter<"Lead"> | Date | string | null
+    lastSellerReplyIntent?: StringNullableFilter<"Lead"> | string | null
+    lastSellerReplyConfidence?: FloatNullableFilter<"Lead"> | number | null
+    suggestedReply?: StringNullableFilter<"Lead"> | string | null
+    requiresHumanApproval?: BoolFilter<"Lead"> | boolean
     doNotContact?: BoolFilter<"Lead"> | boolean
     optOutReason?: StringNullableFilter<"Lead"> | string | null
     optOutAt?: DateTimeNullableFilter<"Lead"> | Date | string | null
@@ -2316,6 +2410,12 @@ export namespace Prisma {
     lastFollowUpMessage?: SortOrderInput | SortOrder
     automationStatus?: SortOrder
     isHot?: SortOrder
+    lastSellerReply?: SortOrderInput | SortOrder
+    lastSellerReplyAt?: SortOrderInput | SortOrder
+    lastSellerReplyIntent?: SortOrderInput | SortOrder
+    lastSellerReplyConfidence?: SortOrderInput | SortOrder
+    suggestedReply?: SortOrderInput | SortOrder
+    requiresHumanApproval?: SortOrder
     doNotContact?: SortOrder
     optOutReason?: SortOrderInput | SortOrder
     optOutAt?: SortOrderInput | SortOrder
@@ -2344,6 +2444,12 @@ export namespace Prisma {
     lastFollowUpMessage?: StringNullableFilter<"Lead"> | string | null
     automationStatus?: StringFilter<"Lead"> | string
     isHot?: BoolFilter<"Lead"> | boolean
+    lastSellerReply?: StringNullableFilter<"Lead"> | string | null
+    lastSellerReplyAt?: DateTimeNullableFilter<"Lead"> | Date | string | null
+    lastSellerReplyIntent?: StringNullableFilter<"Lead"> | string | null
+    lastSellerReplyConfidence?: FloatNullableFilter<"Lead"> | number | null
+    suggestedReply?: StringNullableFilter<"Lead"> | string | null
+    requiresHumanApproval?: BoolFilter<"Lead"> | boolean
     doNotContact?: BoolFilter<"Lead"> | boolean
     optOutReason?: StringNullableFilter<"Lead"> | string | null
     optOutAt?: DateTimeNullableFilter<"Lead"> | Date | string | null
@@ -2368,6 +2474,12 @@ export namespace Prisma {
     lastFollowUpMessage?: SortOrderInput | SortOrder
     automationStatus?: SortOrder
     isHot?: SortOrder
+    lastSellerReply?: SortOrderInput | SortOrder
+    lastSellerReplyAt?: SortOrderInput | SortOrder
+    lastSellerReplyIntent?: SortOrderInput | SortOrder
+    lastSellerReplyConfidence?: SortOrderInput | SortOrder
+    suggestedReply?: SortOrderInput | SortOrder
+    requiresHumanApproval?: SortOrder
     doNotContact?: SortOrder
     optOutReason?: SortOrderInput | SortOrder
     optOutAt?: SortOrderInput | SortOrder
@@ -2400,6 +2512,12 @@ export namespace Prisma {
     lastFollowUpMessage?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     automationStatus?: StringWithAggregatesFilter<"Lead"> | string
     isHot?: BoolWithAggregatesFilter<"Lead"> | boolean
+    lastSellerReply?: StringNullableWithAggregatesFilter<"Lead"> | string | null
+    lastSellerReplyAt?: DateTimeNullableWithAggregatesFilter<"Lead"> | Date | string | null
+    lastSellerReplyIntent?: StringNullableWithAggregatesFilter<"Lead"> | string | null
+    lastSellerReplyConfidence?: FloatNullableWithAggregatesFilter<"Lead"> | number | null
+    suggestedReply?: StringNullableWithAggregatesFilter<"Lead"> | string | null
+    requiresHumanApproval?: BoolWithAggregatesFilter<"Lead"> | boolean
     doNotContact?: BoolWithAggregatesFilter<"Lead"> | boolean
     optOutReason?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     optOutAt?: DateTimeNullableWithAggregatesFilter<"Lead"> | Date | string | null
@@ -2424,6 +2542,12 @@ export namespace Prisma {
     lastFollowUpMessage?: string | null
     automationStatus?: string
     isHot?: boolean
+    lastSellerReply?: string | null
+    lastSellerReplyAt?: Date | string | null
+    lastSellerReplyIntent?: string | null
+    lastSellerReplyConfidence?: number | null
+    suggestedReply?: string | null
+    requiresHumanApproval?: boolean
     doNotContact?: boolean
     optOutReason?: string | null
     optOutAt?: Date | string | null
@@ -2448,6 +2572,12 @@ export namespace Prisma {
     lastFollowUpMessage?: string | null
     automationStatus?: string
     isHot?: boolean
+    lastSellerReply?: string | null
+    lastSellerReplyAt?: Date | string | null
+    lastSellerReplyIntent?: string | null
+    lastSellerReplyConfidence?: number | null
+    suggestedReply?: string | null
+    requiresHumanApproval?: boolean
     doNotContact?: boolean
     optOutReason?: string | null
     optOutAt?: Date | string | null
@@ -2472,6 +2602,12 @@ export namespace Prisma {
     lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
     automationStatus?: StringFieldUpdateOperationsInput | string
     isHot?: BoolFieldUpdateOperationsInput | boolean
+    lastSellerReply?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSellerReplyIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    suggestedReply?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresHumanApproval?: BoolFieldUpdateOperationsInput | boolean
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2496,6 +2632,12 @@ export namespace Prisma {
     lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
     automationStatus?: StringFieldUpdateOperationsInput | string
     isHot?: BoolFieldUpdateOperationsInput | boolean
+    lastSellerReply?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSellerReplyIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    suggestedReply?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresHumanApproval?: BoolFieldUpdateOperationsInput | boolean
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2520,6 +2662,12 @@ export namespace Prisma {
     lastFollowUpMessage?: string | null
     automationStatus?: string
     isHot?: boolean
+    lastSellerReply?: string | null
+    lastSellerReplyAt?: Date | string | null
+    lastSellerReplyIntent?: string | null
+    lastSellerReplyConfidence?: number | null
+    suggestedReply?: string | null
+    requiresHumanApproval?: boolean
     doNotContact?: boolean
     optOutReason?: string | null
     optOutAt?: Date | string | null
@@ -2544,6 +2692,12 @@ export namespace Prisma {
     lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
     automationStatus?: StringFieldUpdateOperationsInput | string
     isHot?: BoolFieldUpdateOperationsInput | boolean
+    lastSellerReply?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSellerReplyIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    suggestedReply?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresHumanApproval?: BoolFieldUpdateOperationsInput | boolean
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2568,6 +2722,12 @@ export namespace Prisma {
     lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
     automationStatus?: StringFieldUpdateOperationsInput | string
     isHot?: BoolFieldUpdateOperationsInput | boolean
+    lastSellerReply?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSellerReplyIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    suggestedReply?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresHumanApproval?: BoolFieldUpdateOperationsInput | boolean
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2639,6 +2799,17 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -2677,6 +2848,12 @@ export namespace Prisma {
     lastFollowUpMessage?: SortOrder
     automationStatus?: SortOrder
     isHot?: SortOrder
+    lastSellerReply?: SortOrder
+    lastSellerReplyAt?: SortOrder
+    lastSellerReplyIntent?: SortOrder
+    lastSellerReplyConfidence?: SortOrder
+    suggestedReply?: SortOrder
+    requiresHumanApproval?: SortOrder
     doNotContact?: SortOrder
     optOutReason?: SortOrder
     optOutAt?: SortOrder
@@ -2687,6 +2864,7 @@ export namespace Prisma {
   export type LeadAvgOrderByAggregateInput = {
     score?: SortOrder
     followUpCount?: SortOrder
+    lastSellerReplyConfidence?: SortOrder
   }
 
   export type LeadMaxOrderByAggregateInput = {
@@ -2706,6 +2884,12 @@ export namespace Prisma {
     lastFollowUpMessage?: SortOrder
     automationStatus?: SortOrder
     isHot?: SortOrder
+    lastSellerReply?: SortOrder
+    lastSellerReplyAt?: SortOrder
+    lastSellerReplyIntent?: SortOrder
+    lastSellerReplyConfidence?: SortOrder
+    suggestedReply?: SortOrder
+    requiresHumanApproval?: SortOrder
     doNotContact?: SortOrder
     optOutReason?: SortOrder
     optOutAt?: SortOrder
@@ -2730,6 +2914,12 @@ export namespace Prisma {
     lastFollowUpMessage?: SortOrder
     automationStatus?: SortOrder
     isHot?: SortOrder
+    lastSellerReply?: SortOrder
+    lastSellerReplyAt?: SortOrder
+    lastSellerReplyIntent?: SortOrder
+    lastSellerReplyConfidence?: SortOrder
+    suggestedReply?: SortOrder
+    requiresHumanApproval?: SortOrder
     doNotContact?: SortOrder
     optOutReason?: SortOrder
     optOutAt?: SortOrder
@@ -2740,6 +2930,7 @@ export namespace Prisma {
   export type LeadSumOrderByAggregateInput = {
     score?: SortOrder
     followUpCount?: SortOrder
+    lastSellerReplyConfidence?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -2826,6 +3017,22 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -2866,6 +3073,14 @@ export namespace Prisma {
 
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
+  }
+
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -2932,6 +3147,17 @@ export namespace Prisma {
   export type NestedBoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -3047,6 +3273,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
