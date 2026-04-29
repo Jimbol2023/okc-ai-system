@@ -7,7 +7,7 @@ import {
   DragDropContext,
   Draggable,
   Droppable,
-  type DropResult
+  type DropResult,
 } from "@hello-pangea/dnd";
 
 import { deleteLead, fetchLeads } from "@/lib/leads-api";
@@ -18,8 +18,65 @@ const PIPELINE_STATUSES: LeadStatus[] = [
   "contacted",
   "negotiating",
   "under_contract",
-  "closed"
+  "closed",
 ];
+
+/* =====================================================
+   STEP 2B.8C — PIPELINE AI BADGE LAYER
+   -----------------------------------------------------
+   PURPOSE:
+   - Show AI/Seller status directly on pipeline cards
+   - Make it easy to see which leads need human review
+   - Keep lead cards linked to detail page
+   - Do NOT auto-send anything
+===================================================== */
+
+type LeadWithAIStatus = StoredLead & {
+  requiresHumanApproval?: boolean | null;
+  lastSellerReply?: string | null;
+  doNotContact?: boolean | null;
+  isHot?: boolean | null;
+};
+
+function getAIStatusBadges(lead: StoredLead) {
+  const l = lead as LeadWithAIStatus;
+
+  const badges: { label: string; color: string }[] = [];
+
+  if (l.doNotContact) {
+    badges.push({
+      label: "DNC",
+      color: "bg-red-100 text-red-700",
+    });
+  }
+
+  if (l.requiresHumanApproval) {
+    badges.push({
+      label: "Needs AI Reply",
+      color: "bg-orange-100 text-orange-700",
+    });
+  }
+
+  if (l.lastSellerReply) {
+    badges.push({
+      label: "Seller Replied",
+      color: "bg-green-100 text-green-700",
+    });
+  }
+
+  if (l.isHot) {
+    badges.push({
+      label: "Hot Lead",
+      color: "bg-purple-100 text-purple-700",
+    });
+  }
+
+  return badges;
+}
+
+/* =====================================================
+   PIPELINE HELPERS
+===================================================== */
 
 function getPipelineButtonLabel(status: LeadStatus) {
   if (status === "new") return "Mark Contacted";
@@ -47,8 +104,8 @@ function getNextAction(status: LeadStatus) {
 
 function isFollowUpDue(lead: StoredLead) {
   const leadWithDates = lead as StoredLead & {
-    lastContactedAt?: string;
-    updatedAt?: string;
+    lastContactedAt?: string | null;
+    updatedAt?: string | null;
   };
 
   const dateToCheck = leadWithDates.lastContactedAt ?? leadWithDates.updatedAt;
@@ -71,6 +128,10 @@ function formatStatus(status: LeadStatus) {
   return status.replace("_", " ");
 }
 
+/* =====================================================
+   UI BADGES
+===================================================== */
+
 function StatusBadge({ status }: { status: LeadStatus }) {
   const color =
     status === "closed"
@@ -90,12 +151,24 @@ function StatusBadge({ status }: { status: LeadStatus }) {
   );
 }
 
+function AIBadge({ label, color }: { label: string; color: string }) {
+  return (
+    <span className={`rounded px-2 py-1 text-xs font-bold ${color}`}>
+      {label}
+    </span>
+  );
+}
+
+/* =====================================================
+   API HELPERS
+===================================================== */
+
 async function patchLeadStatus(id: string, status: LeadStatus) {
   const res = await fetch(`/api/leads/${id}/status`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ status }),
-    credentials: "include"
+    credentials: "include",
   });
 
   if (!res.ok) {
@@ -104,7 +177,9 @@ async function patchLeadStatus(id: string, status: LeadStatus) {
     try {
       const data = await res.json();
       if (data?.error) message = data.error;
-    } catch {}
+    } catch {
+      // Keep default error message.
+    }
 
     throw new Error(message);
   }
@@ -112,6 +187,10 @@ async function patchLeadStatus(id: string, status: LeadStatus) {
   const data = await res.json();
   return data.lead as StoredLead;
 }
+
+/* =====================================================
+   PAGE COMPONENT
+===================================================== */
 
 export default function DashboardLeadsPage() {
   const [leads, setLeads] = useState<StoredLead[]>([]);
@@ -152,7 +231,7 @@ export default function DashboardLeadsPage() {
       const updated = await patchLeadStatus(lead.id, next);
 
       setLeads((prev) =>
-        prev.map((l) => (l.id === updated.id ? updated : l))
+        prev.map((item) => (item.id === updated.id ? updated : item)),
       );
     } catch (e) {
       alert(e instanceof Error ? e.message : "Update failed");
@@ -175,7 +254,7 @@ export default function DashboardLeadsPage() {
       const updated = await patchLeadStatus(leadId, nextStatus);
 
       setLeads((prev) =>
-        prev.map((item) => (item.id === updated.id ? updated : item))
+        prev.map((item) => (item.id === updated.id ? updated : item)),
       );
     } catch {
       alert("Drag update failed.");
@@ -186,7 +265,7 @@ export default function DashboardLeadsPage() {
 
   const groupedLeads = PIPELINE_STATUSES.map((status) => ({
     status,
-    leads: leads.filter((lead) => lead.status === status)
+    leads: leads.filter((lead) => lead.status === status),
   }));
 
   if (isLoading) return <div className="p-6">Loading...</div>;
@@ -194,11 +273,16 @@ export default function DashboardLeadsPage() {
 
   return (
     <div className="p-6">
+      {/* =====================================================
+          PAGE HEADER / VIEW TOGGLE
+      ===================================================== */}
+
       <div className="mb-4 flex items-center justify-between gap-4">
         <h1 className="text-2xl font-semibold">Leads</h1>
 
         <div className="flex gap-2">
           <button
+            type="button"
             onClick={() => setViewMode("table")}
             className={`rounded border px-3 py-1 text-xs ${
               viewMode === "table" ? "bg-gray-900 text-white" : "bg-white"
@@ -208,6 +292,7 @@ export default function DashboardLeadsPage() {
           </button>
 
           <button
+            type="button"
             onClick={() => setViewMode("pipeline")}
             className={`rounded border px-3 py-1 text-xs ${
               viewMode === "pipeline" ? "bg-gray-900 text-white" : "bg-white"
@@ -235,21 +320,23 @@ export default function DashboardLeadsPage() {
                       <h2 className="text-sm font-bold capitalize">
                         {formatStatus(group.status)}
                       </h2>
+
                       <span className="rounded bg-white px-2 py-1 text-xs font-semibold">
                         {group.leads.length}
                       </span>
                     </div>
 
                     <div className="space-y-3">
-                      {group.leads.length === 0 && (
+                      {group.leads.length === 0 ? (
                         <div className="rounded border border-dashed bg-white p-3 text-xs text-gray-400">
                           No leads
                         </div>
-                      )}
+                      ) : null}
 
                       {group.leads.map((lead, index) => {
                         const isUpdating = updatingId === lead.id;
                         const isClosed = lead.status === "closed";
+                        const aiBadges = getAIStatusBadges(lead);
 
                         return (
                           <Draggable
@@ -268,38 +355,58 @@ export default function DashboardLeadsPage() {
                                     : ""
                                 }`}
                               >
+                                {/* =====================================================
+                                    CLICKABLE LEAD DETAIL LINK
+                                ===================================================== */}
+
                                 <Link
                                   href={`/dashboard/leads/${lead.id}` as Route}
-                                  className="font-semibold"
+                                  className="block font-semibold hover:underline"
                                 >
                                   {lead.firstName} {lead.lastName}
                                 </Link>
 
-                                <p className="mt-1 text-xs text-gray-500">
+                                <Link
+                                  href={`/dashboard/leads/${lead.id}` as Route}
+                                  className="mt-1 block text-xs text-gray-500 hover:underline"
+                                >
                                   {lead.propertyAddress}
-                                </p>
+                                </Link>
 
-                                <div className="mt-3">
+                                {/* =====================================================
+                                    STATUS + AI BADGES
+                                ===================================================== */}
+
+                                <div className="mt-3 flex flex-wrap gap-2">
                                   <StatusBadge status={lead.status} />
+
+                                  {aiBadges.map((badge) => (
+                                    <AIBadge
+                                      key={`${lead.id}-${badge.label}`}
+                                      label={badge.label}
+                                      color={badge.color}
+                                    />
+                                  ))}
                                 </div>
 
                                 <p className="mt-2 text-xs font-semibold text-blue-600">
                                   Next: {getNextAction(lead.status)}
                                 </p>
 
-                                {isFollowUpDue(lead) && (
+                                {isFollowUpDue(lead) ? (
                                   <p className="mt-2 text-xs font-bold text-orange-600">
                                     ⏰ Follow-Up Overdue
                                   </p>
-                                )}
+                                ) : null}
 
-                                {shouldAutoFollowUp(lead) && (
+                                {shouldAutoFollowUp(lead) ? (
                                   <p className="mt-2 text-xs font-bold text-green-600">
                                     🔥 Auto Follow-Up Ready
                                   </p>
-                                )}
+                                ) : null}
 
                                 <button
+                                  type="button"
                                   onClick={() => handleAdvance(lead)}
                                   disabled={isUpdating || isClosed}
                                   className="mt-3 w-full rounded border px-2 py-1 text-xs disabled:opacity-50"
@@ -326,11 +433,12 @@ export default function DashboardLeadsPage() {
         <table className="w-full border text-sm">
           <thead>
             <tr className="border-b text-xs uppercase text-gray-500">
-              <th className="p-3">Name</th>
-              <th className="p-3">Phone</th>
-              <th className="p-3">Address</th>
-              <th className="p-3">Status</th>
-              <th className="p-3">Next Action</th>
+              <th className="p-3 text-left">Name</th>
+              <th className="p-3 text-left">Phone</th>
+              <th className="p-3 text-left">Address</th>
+              <th className="p-3 text-left">Status</th>
+              <th className="p-3 text-left">AI Status</th>
+              <th className="p-3 text-left">Next Action</th>
               <th className="p-3 text-right">Actions</th>
             </tr>
           </thead>
@@ -339,20 +447,48 @@ export default function DashboardLeadsPage() {
             {leads.map((lead) => {
               const isUpdating = updatingId === lead.id;
               const isClosed = lead.status === "closed";
+              const aiBadges = getAIStatusBadges(lead);
 
               return (
                 <tr key={lead.id} className="border-b">
                   <td className="p-3 font-semibold">
-                    <Link href={`/dashboard/leads/${lead.id}` as Route}>
+                    <Link
+                      href={`/dashboard/leads/${lead.id}` as Route}
+                      className="hover:underline"
+                    >
                       {lead.firstName} {lead.lastName}
                     </Link>
                   </td>
 
                   <td className="p-3">{lead.phone}</td>
-                  <td className="p-3">{lead.propertyAddress}</td>
+
+                  <td className="p-3">
+                    <Link
+                      href={`/dashboard/leads/${lead.id}` as Route}
+                      className="hover:underline"
+                    >
+                      {lead.propertyAddress}
+                    </Link>
+                  </td>
 
                   <td className="p-3">
                     <StatusBadge status={lead.status} />
+                  </td>
+
+                  <td className="p-3">
+                    <div className="flex flex-wrap gap-2">
+                      {aiBadges.length > 0 ? (
+                        aiBadges.map((badge) => (
+                          <AIBadge
+                            key={`${lead.id}-${badge.label}`}
+                            label={badge.label}
+                            color={badge.color}
+                          />
+                        ))
+                      ) : (
+                        <span className="text-xs text-gray-400">—</span>
+                      )}
+                    </div>
                   </td>
 
                   <td className="p-3 text-xs font-semibold text-blue-600">
@@ -361,6 +497,7 @@ export default function DashboardLeadsPage() {
 
                   <td className="space-x-2 p-3 text-right">
                     <button
+                      type="button"
                       onClick={() => handleAdvance(lead)}
                       disabled={isUpdating || isClosed}
                       className="rounded border px-2 py-1 text-xs disabled:opacity-50"
@@ -371,6 +508,7 @@ export default function DashboardLeadsPage() {
                     </button>
 
                     <button
+                      type="button"
                       onClick={() => handleDelete(lead.id)}
                       className="rounded border px-2 py-1 text-xs text-red-600"
                     >
