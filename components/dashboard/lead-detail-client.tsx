@@ -8,6 +8,29 @@ import { fetchLeadById, updateLead } from "@/lib/leads-api";
 import { type LeadAnalyzer, type LeadFollowUp, type StoredLead } from "@/lib/leads-storage";
 import { sendSMS } from "@/lib/outreach";
 
+/* =====================================================
+   STEP 2B.8 — AI REPLY REVIEW TYPE EXTENSION
+   -----------------------------------------------------
+   PURPOSE:
+   - Allows this page to safely read the new AI Reply Brain fields.
+   - Keeps existing StoredLead type untouched for now.
+   - Prevents TypeScript errors while we continue upgrading cleanly.
+===================================================== */
+
+type LeadWithAIReply = StoredLead & {
+  doNotContact?: boolean | null;
+  lastSellerReply?: string | null;
+  lastSellerReplyAt?: string | null;
+  lastSellerReplyIntent?: string | null;
+  lastSellerReplyConfidence?: number | null;
+  suggestedReply?: string | null;
+  requiresHumanApproval?: boolean | null;
+};
+
+/* =====================================================
+   FORMAT HELPERS
+===================================================== */
+
 function formatLeadTimestamp(timestamp: string) {
   const date = new Date(timestamp);
 
@@ -36,6 +59,10 @@ function parseCurrencyInput(value: string) {
   return Number.isFinite(parsedValue) ? parsedValue : 0;
 }
 
+/* =====================================================
+   DEAL ANALYZER HELPERS
+===================================================== */
+
 function getAnalyzerMetrics(analyzer: LeadAnalyzer) {
   const arv = parseCurrencyInput(analyzer.arv);
   const estimatedRepairs = parseCurrencyInput(analyzer.estimatedRepairs);
@@ -53,6 +80,10 @@ function getAnalyzerMetrics(analyzer: LeadAnalyzer) {
     dealRating
   };
 }
+
+/* =====================================================
+   FOLLOW-UP MESSAGE HELPERS
+===================================================== */
 
 function getSuggestedFollowUpMessage(
   type: LeadFollowUp["type"],
@@ -169,9 +200,14 @@ If it makes sense, I can walk you through a simple cash-offer process and next s
   };
 }
 
+/* =====================================================
+   MAIN LEAD DETAIL CLIENT COMPONENT
+===================================================== */
+
 export function LeadDetailClient({ leadId }: { leadId: string }) {
-  const initialLead: StoredLead | null = null;
-  const [lead, setLead] = useState<StoredLead | null>(initialLead);
+  const initialLead: LeadWithAIReply | null = null;
+
+  const [lead, setLead] = useState<LeadWithAIReply | null>(initialLead);
   const [noteBody, setNoteBody] = useState("");
   const [noteError, setNoteError] = useState<string | null>(null);
   const [messageVersion, setMessageVersion] = useState(0);
@@ -185,13 +221,30 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
   const [sendSmsError, setSendSmsError] = useState<string | null>(null);
   const [isLoadingLead, setIsLoadingLead] = useState(true);
 
+  /* =====================================================
+     STEP 2B.8 — AI REPLY REVIEW STATE
+     -----------------------------------------------------
+     PURPOSE:
+     - Stores editable AI suggested reply.
+     - Tracks manual approval send status.
+     - Keeps AI reply send flow separate from normal follow-up SMS.
+  ===================================================== */
+
+  const [aiReplyText, setAiReplyText] = useState("");
+  const [aiReplySendState, setAiReplySendState] = useState<"idle" | "sending" | "sent">("idle");
+  const [aiReplyError, setAiReplyError] = useState<string | null>(null);
+
   useEffect(() => {
     async function loadLead() {
       try {
-        const nextLead = await fetchLeadById(leadId);
+        const nextLead = (await fetchLeadById(leadId)) as LeadWithAIReply;
+
         setLead(nextLead);
         setSmsPhone(nextLead.phone);
         setFollowUpMessage(getSuggestedFollowUpMessage("sms", buildFollowUpMessages(nextLead, 0)));
+
+        // STEP 2B.8 — Load AI suggested reply into editable textbox.
+        setAiReplyText(nextLead.suggestedReply ?? "");
       } finally {
         setIsLoadingLead(false);
       }
@@ -200,10 +253,10 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
     void loadLead();
   }, [leadId]);
 
-  async function persistLead(nextLead: StoredLead) {
+  async function persistLead(nextLead: LeadWithAIReply) {
     setLead(nextLead);
 
-    const savedLead = await updateLead(nextLead);
+    const savedLead = (await updateLead(nextLead)) as LeadWithAIReply;
     setLead(savedLead);
 
     return savedLead;
@@ -230,6 +283,7 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
         }
       ]
     });
+
     setNoteBody("");
     setNoteError(null);
   }
@@ -335,6 +389,7 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
         }
       ]
     });
+
     setFollowUpDate("");
     setFollowUpMessage(getSuggestedFollowUpMessage(followUpType, followUpMessages));
     setFollowUpError(null);
@@ -402,7 +457,9 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
           }
         ]
       });
+
       setSendSmsState("sent");
+
       window.setTimeout(() => {
         setSendSmsState((current) => (current === "sent" ? "idle" : current));
       }, 2000);
@@ -412,8 +469,85 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
     }
   }
 
+  /* =====================================================
+     STEP 2B.8 — HUMAN-APPROVED AI REPLY SEND HANDLER
+     -----------------------------------------------------
+     PURPOSE:
+     - Sends only after human clicks button.
+     - Uses existing sendSMS helper.
+     - Logs the AI-approved reply as completed follow-up.
+     - Does NOT auto-send anything.
+  ===================================================== */
+
+  async function handleSendApprovedAIReply() {
+    if (!lead) {
+      return;
+    }
+
+    const currentLead = lead;
+    const phoneToUse = (currentLead.phone.trim() || smsPhone.trim()).trim();
+    const messageToSend = aiReplyText.trim();
+
+    if (!phoneToUse) {
+      setAiReplyError("Add a phone number before sending the AI reply.");
+      return;
+    }
+
+    if (!messageToSend) {
+      setAiReplyError("AI reply message is empty.");
+      return;
+    }
+
+    if (currentLead.doNotContact) {
+      setAiReplyError("This lead is marked Do Not Contact. Message was not sent.");
+      return;
+    }
+
+    setAiReplyError(null);
+    setAiReplySendState("sending");
+
+    try {
+      const result = await sendSMS(phoneToUse, messageToSend);
+
+      if (!result.ok) {
+        throw new Error("AI reply SMS send failed.");
+      }
+
+      await persistLead({
+        ...currentLead,
+        phone: phoneToUse,
+        suggestedReply: messageToSend,
+        requiresHumanApproval: false,
+        followUps: [
+          ...currentLead.followUps,
+          {
+            id: crypto.randomUUID?.() ?? `follow-up-${Date.now()}`,
+            date: result.sentAt,
+            type: "sms",
+            message: messageToSend,
+            status: "completed",
+            completedAt: result.sentAt
+          }
+        ]
+      });
+
+      setAiReplySendState("sent");
+
+      window.setTimeout(() => {
+        setAiReplySendState((current) => (current === "sent" ? "idle" : current));
+      }, 2000);
+    } catch {
+      setAiReplySendState("idle");
+      setAiReplyError("Unable to send the AI-approved reply right now.");
+    }
+  }
+
   return (
     <div className="space-y-6">
+      {/* =====================================================
+          PAGE HEADER
+      ===================================================== */}
+
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-2">
           <Link href="/dashboard/leads" className="inline-flex text-sm font-semibold text-primary transition hover:text-primary-strong">
@@ -422,7 +556,9 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
           <h1 className="text-3xl font-semibold text-primary">
             {lead.firstName} {lead.lastName}
           </h1>
-          <p className="text-sm leading-6 text-muted md:text-base">Lead details, notes, and follow-ups now persist through the database-backed lead system.</p>
+          <p className="text-sm leading-6 text-muted md:text-base">
+            Lead details, notes, and follow-ups now persist through the database-backed lead system.
+          </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <PriorityBadge priority={lead.priority} />
@@ -435,6 +571,10 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
           </span>
         </div>
       </div>
+
+      {/* =====================================================
+          LEAD SCORE SECTION
+      ===================================================== */}
 
       <section className="rounded-[1.5rem] border border-border bg-surface p-5 shadow-[0_18px_40px_rgba(17,37,52,0.05)] md:p-6">
         <div className="space-y-2">
@@ -453,6 +593,10 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
           <p className="mt-2 text-sm leading-6 text-[#40576b]">{lead.scoreBreakdown}</p>
         </div>
       </section>
+
+      {/* =====================================================
+          LEAD INFORMATION SECTION
+      ===================================================== */}
 
       <section className="rounded-[1.5rem] border border-border bg-surface p-5 shadow-[0_18px_40px_rgba(17,37,52,0.05)] md:p-6">
         <div className="grid gap-4 md:grid-cols-2">
@@ -473,6 +617,97 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
           </p>
         </div>
       </section>
+
+      {/* =====================================================
+          STEP 2B.8 — AI REPLY REVIEW & HUMAN APPROVAL PANEL
+      ===================================================== */}
+
+      {lead.lastSellerReply ? (
+        <section className="rounded-[1.5rem] border border-[#d8e8f8] bg-[#f7fbff] p-5 shadow-[0_18px_40px_rgba(17,37,52,0.05)] md:p-6">
+          <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+            <div className="space-y-2">
+              <h2 className="text-2xl font-semibold text-primary">AI Seller Reply Analysis</h2>
+              <p className="text-sm leading-6 text-muted">
+                The AI Reply Brain reviewed the seller response. Human approval is required before sending any reply.
+              </p>
+            </div>
+
+            <span className="inline-flex w-fit rounded-full bg-[#e7eef5] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#355066]">
+              Human Review
+            </span>
+          </div>
+
+          <div className="mt-5 rounded-2xl border border-border bg-white px-4 py-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">Seller Reply</p>
+            <p className="mt-2 text-sm leading-6 text-[#173447]">{lead.lastSellerReply}</p>
+            {lead.lastSellerReplyAt ? (
+              <p className="mt-2 text-xs font-medium uppercase tracking-[0.12em] text-muted">
+                Received {formatLeadTimestamp(lead.lastSellerReplyAt)}
+              </p>
+            ) : null}
+          </div>
+
+          <div className="mt-5 grid gap-4 md:grid-cols-3">
+            <DetailItem label="AI Intent" value={lead.lastSellerReplyIntent || "Unknown"} />
+            <DetailItem
+              label="Confidence"
+              value={typeof lead.lastSellerReplyConfidence === "number" ? lead.lastSellerReplyConfidence.toFixed(2) : "Unknown"}
+            />
+            <DetailItem label="Approval Required" value={lead.requiresHumanApproval ? "YES" : "NO"} />
+          </div>
+
+          <div className="mt-5">
+            <label className="block">
+              <span className="mb-2 block text-sm font-medium text-primary">AI Suggested Reply / Editable Human Reply</span>
+              <textarea
+                value={aiReplyText}
+                onChange={(event) => setAiReplyText(event.target.value)}
+                rows={5}
+                placeholder="No suggested reply yet. Type a safe human-approved reply here."
+                className="w-full rounded-2xl border border-border bg-white px-4 py-3 text-sm text-foreground"
+              />
+            </label>
+
+            <div className="mt-4 flex flex-wrap gap-3">
+              <button
+                type="button"
+                onClick={handleSendApprovedAIReply}
+                disabled={aiReplySendState === "sending" || Boolean(lead.doNotContact)}
+                className="inline-flex min-h-11 items-center justify-center rounded-full bg-[#d89a42] px-5 py-2.5 text-sm font-bold text-[#102437] shadow-[0_10px_25px_rgba(216,154,66,0.22)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#e5a64f] disabled:cursor-not-allowed disabled:opacity-70"
+              >
+                {aiReplySendState === "sending" ? "Sending..." : "Send Approved Reply"}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setAiReplyText(lead.suggestedReply ?? "")}
+                className="inline-flex min-h-11 items-center justify-center rounded-full border border-border bg-white px-5 py-2.5 text-sm font-semibold text-primary transition hover:border-primary/30 hover:text-primary-strong"
+              >
+                Reset to AI Suggestion
+              </button>
+            </div>
+
+            {lead.requiresHumanApproval ? (
+              <p className="mt-3 text-sm font-medium text-[#9f3a22]">
+                Human approval required. Review or edit the message before sending.
+              </p>
+            ) : null}
+
+            {lead.doNotContact ? (
+              <p className="mt-3 text-sm font-medium text-red-700">
+                This lead is marked Do Not Contact. Sending is disabled.
+              </p>
+            ) : null}
+
+            {aiReplyError ? <p className="mt-3 text-sm text-red-700">{aiReplyError}</p> : null}
+            {aiReplySendState === "sent" ? <p className="mt-3 text-sm text-success">AI-approved reply sent ✅</p> : null}
+          </div>
+        </section>
+      ) : null}
+
+      {/* =====================================================
+          DISTRESS SIGNALS SECTION
+      ===================================================== */}
 
       <section className="rounded-[1.5rem] border border-border bg-surface p-5 shadow-[0_18px_40px_rgba(17,37,52,0.05)] md:p-6">
         <div className="space-y-2">
@@ -500,6 +735,10 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
           )}
         </div>
       </section>
+
+      {/* =====================================================
+          DEAL ANALYZER SECTION
+      ===================================================== */}
 
       <section className="rounded-[1.5rem] border border-border bg-surface p-5 shadow-[0_18px_40px_rgba(17,37,52,0.05)] md:p-6">
         <div className="space-y-2">
@@ -547,6 +786,10 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
         </div>
       </section>
 
+      {/* =====================================================
+          FOLLOW-UP ASSISTANT SECTION
+      ===================================================== */}
+
       <section className="rounded-[1.5rem] border border-border bg-surface p-5 shadow-[0_18px_40px_rgba(17,37,52,0.05)] md:p-6">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
@@ -590,6 +833,7 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
               </div>
             }
           />
+
           {!lead.phone.trim() ? (
             <label className="block rounded-2xl border border-border bg-white px-4 py-4 shadow-sm">
               <span className="mb-2 block text-sm font-medium text-primary">Phone number for SMS</span>
@@ -602,8 +846,10 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
               />
             </label>
           ) : null}
+
           {sendSmsError ? <p className="text-sm text-red-700">{sendSmsError}</p> : null}
           {sendSmsState === "sent" ? <p className="text-sm text-success">Message Sent ✅</p> : null}
+
           <MessageCard
             title="Email Message"
             content={`Subject: ${followUpMessages.emailSubject}\n\n${followUpMessages.emailBody}`}
@@ -612,6 +858,7 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
               handleCopyMessage("Email", `Subject: ${followUpMessages.emailSubject}\n\n${followUpMessages.emailBody}`)
             }
           />
+
           <MessageCard
             title="Call Script"
             content={followUpMessages.callScript}
@@ -620,6 +867,10 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
           />
         </div>
       </section>
+
+      {/* =====================================================
+          FOLLOW-UP SCHEDULER SECTION
+      ===================================================== */}
 
       <section className="rounded-[1.5rem] border border-border bg-surface p-5 shadow-[0_18px_40px_rgba(17,37,52,0.05)] md:p-6">
         <div className="space-y-2">
@@ -741,6 +992,10 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
         </div>
       </section>
 
+      {/* =====================================================
+          NOTES SECTION
+      ===================================================== */}
+
       <section className="rounded-[1.5rem] border border-border bg-surface p-5 shadow-[0_18px_40px_rgba(17,37,52,0.05)] md:p-6">
         <div className="space-y-2">
           <h2 className="text-2xl font-semibold text-primary">Notes</h2>
@@ -798,6 +1053,10 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
     </div>
   );
 }
+
+/* =====================================================
+   SMALL UI COMPONENTS
+===================================================== */
 
 function DetailItem({ label, value }: { label: string; value: string }) {
   return (
