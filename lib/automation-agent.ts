@@ -1,5 +1,3 @@
-import twilio from "twilio";
-
 import { generateLeads } from "@/lib/lead-generator";
 import { createDbLeadFromGenerated } from "@/lib/leads-db";
 import { prisma } from "@/lib/prisma";
@@ -64,7 +62,6 @@ export async function findOverdueFollowUpLeads() {
 
 function isValidPhone(phone: string | null) {
   if (!phone) return false;
-
   return /^\+\d{10,15}$/.test(phone);
 }
 
@@ -85,16 +82,9 @@ function wasContactedTooRecently(lastContactedAt: Date | string | null) {
 
 function filterSafeLeads(leads: FollowUpLead[]) {
   return leads.filter((lead) => {
-    // Skip invalid phone numbers
     if (!isValidPhone(lead.phone)) return false;
-
-    // Step 2B.6 — DNC / Opt-Out Protection Agent
     if (lead.doNotContact === true) return false;
-
-    // Skip if contacted too recently
     if (wasContactedTooRecently(lead.lastContactedAt)) return false;
-
-    // Skip if max follow-ups reached
     if ((lead.followUpCount ?? 0) >= MAX_FOLLOW_UP_ATTEMPTS) return false;
 
     return true;
@@ -138,6 +128,7 @@ function buildFollowUpMessage(lead: {
 
 // =====================================================
 // SMS SENDER — MOCK SAFE + TWILIO SAFE
+// Dynamic import prevents Vercel fs build errors.
 // =====================================================
 
 async function sendSms({
@@ -174,9 +165,15 @@ async function sendSms({
     };
   }
 
-  const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-
   try {
+    const twilioModule = await import("twilio");
+    const twilio = twilioModule.default;
+
+    const client = twilio(
+      process.env.TWILIO_ACCOUNT_SID,
+      process.env.TWILIO_AUTH_TOKEN
+    );
+
     await client.messages.create({
       body: message,
       from: process.env.TWILIO_PHONE_NUMBER,
