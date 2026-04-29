@@ -2,13 +2,17 @@
 
 /* =====================================================
    LEAD DETAIL CLIENT — SAFE PRO VERSION
-   - Fixes missing export issue
-   - Fixes JSX type errors
-   - Keeps AI Reply + Human Approval system
+   -----------------------------------------------------
+   FIXES:
+   - Correctly reads API response: { ok: true, lead }
+   - Restores LeadDetailClient named export
+   - Shows AI Reply Panel when lastSellerReply exists
+   - Keeps human approval before sending
    - Keeps DNC protection
-   - Clean + production safe
+   - Uses existing /api/send-sms route safely
 ===================================================== */
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 /* =============================
@@ -32,6 +36,12 @@ type Lead = {
   doNotContact?: boolean | null;
 };
 
+type LeadApiResponse = {
+  ok: boolean;
+  lead?: Lead;
+  error?: string;
+};
+
 /* =============================
    COMPONENT
 ============================= */
@@ -39,6 +49,7 @@ type Lead = {
 export function LeadDetailClient({ leadId }: { leadId: string }) {
   const [lead, setLead] = useState<Lead | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   const [aiReplyText, setAiReplyText] = useState("");
   const [aiReplySendState, setAiReplySendState] =
@@ -52,22 +63,34 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
   useEffect(() => {
     async function loadLead() {
       try {
-        const res = await fetch(`/api/leads/${leadId}`);
-        const data = await res.json();
+        setLoading(true);
+        setLoadError(null);
 
-        setLead(data);
+        const res = await fetch(`/api/leads/${leadId}`, {
+          method: "GET",
+          cache: "no-store",
+        });
 
-        if (data?.suggestedReply) {
-          setAiReplyText(data.suggestedReply);
+        const data = (await res.json()) as LeadApiResponse;
+
+        if (!res.ok || !data.ok || !data.lead) {
+          setLead(null);
+          setLoadError(data.error || "Unable to load lead.");
+          return;
         }
-      } catch (err) {
-        console.error("Failed to load lead:", err);
+
+        setLead(data.lead);
+        setAiReplyText(data.lead.suggestedReply ?? "");
+      } catch (error) {
+        console.error("Failed to load lead:", error);
+        setLead(null);
+        setLoadError("Failed to load lead.");
       } finally {
         setLoading(false);
       }
     }
 
-    loadLead();
+    void loadLead();
   }, [leadId]);
 
   /* =============================
@@ -78,9 +101,17 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
     if (!lead) return;
 
     if (lead.doNotContact) {
-      setAiReplyError(
-        "This lead is marked Do Not Contact. Message was not sent."
-      );
+      setAiReplyError("This lead is marked Do Not Contact. Message was not sent.");
+      return;
+    }
+
+    if (!lead.phone) {
+      setAiReplyError("Lead phone number is missing.");
+      return;
+    }
+
+    if (!aiReplyText.trim()) {
+      setAiReplyError("Reply message is empty.");
       return;
     }
 
@@ -88,18 +119,26 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
       setAiReplySendState("sending");
       setAiReplyError(null);
 
-      await fetch("/api/send-sms", {
+      const res = await fetch("/api/send-sms", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           phoneNumbers: [lead.phone],
-          message: aiReplyText,
-          leadId: lead.id,
+          message: aiReplyText.trim(),
+          dealId: lead.id,
         }),
       });
 
+      if (!res.ok) {
+        throw new Error("SMS send failed.");
+      }
+
       setAiReplySendState("sent");
-    } catch (err) {
-      setAiReplyError("Failed to send reply");
+    } catch (error) {
+      console.error("Failed to send approved AI reply:", error);
+      setAiReplyError("Failed to send reply.");
       setAiReplySendState("idle");
     }
   }
@@ -110,7 +149,14 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
 
   function formatDate(date?: string | null) {
     if (!date) return "Unknown";
-    return new Date(date).toLocaleString();
+
+    const parsedDate = new Date(date);
+
+    if (Number.isNaN(parsedDate.getTime())) {
+      return "Unknown";
+    }
+
+    return parsedDate.toLocaleString();
   }
 
   /* =============================
@@ -119,16 +165,34 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
 
   if (loading) {
     return (
-      <div className="p-6 text-sm text-muted">
-        Loading lead details...
+      <div className="space-y-6 p-6">
+        <Link
+          href="/dashboard/leads"
+          className="inline-flex text-sm font-semibold text-primary"
+        >
+          ← Back to leads
+        </Link>
+
+        <div className="rounded-xl border bg-white p-6 text-sm text-muted">
+          Loading lead details...
+        </div>
       </div>
     );
   }
 
   if (!lead) {
     return (
-      <div className="p-6 text-sm text-red-600">
-        Lead not found
+      <div className="space-y-6 p-6">
+        <Link
+          href="/dashboard/leads"
+          className="inline-flex text-sm font-semibold text-primary"
+        >
+          ← Back to leads
+        </Link>
+
+        <div className="rounded-xl border bg-white p-6 text-sm text-red-600">
+          {loadError || "Lead not found."}
+        </div>
       </div>
     );
   }
@@ -140,15 +204,32 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
   return (
     <div className="space-y-6 p-6">
       {/* ============================================
+          BACK LINK
+      ============================================ */}
+
+      <Link
+        href="/dashboard/leads"
+        className="inline-flex text-sm font-semibold text-primary"
+      >
+        ← Back to leads
+      </Link>
+
+      {/* ============================================
           BASIC LEAD INFO
       ============================================ */}
 
-      <section className="border rounded-xl p-4 bg-white">
-        <h2 className="text-lg font-bold mb-2">Lead Info</h2>
+      <section className="rounded-xl border bg-white p-4">
+        <h2 className="mb-2 text-lg font-bold">Lead Info</h2>
 
-        <p><strong>Name:</strong> {lead.name || "N/A"}</p>
-        <p><strong>Phone:</strong> {lead.phone || "N/A"}</p>
-        <p><strong>Address:</strong> {lead.propertyAddress || "N/A"}</p>
+        <p>
+          <strong>Name:</strong> {lead.name || "N/A"}
+        </p>
+        <p>
+          <strong>Phone:</strong> {lead.phone || "N/A"}
+        </p>
+        <p>
+          <strong>Address:</strong> {lead.propertyAddress || "N/A"}
+        </p>
       </section>
 
       {/* ============================================
@@ -156,39 +237,39 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
       ============================================ */}
 
       {lead.lastSellerReply ? (
-        <section className="border rounded-xl p-5 bg-[#f7fbff]">
-          <h2 className="text-xl font-bold mb-2">
+        <section className="rounded-xl border-2 border-blue-300 bg-[#f7fbff] p-5">
+          <h2 className="mb-2 text-xl font-bold text-blue-950">
             AI Seller Reply Analysis
           </h2>
 
-          <p className="text-sm mb-4">
+          <p className="mb-4 text-sm text-gray-600">
             Human approval required before sending any reply.
           </p>
 
           {/* Seller Message */}
-          <div className="border p-3 rounded mb-4 bg-white">
-            <p className="text-xs text-gray-500 mb-1">Seller Reply</p>
+          <div className="mb-4 rounded border bg-white p-3">
+            <p className="mb-1 text-xs text-gray-500">Seller Reply</p>
             <p>{lead.lastSellerReply}</p>
-            <p className="text-xs mt-2 text-gray-400">
+            <p className="mt-2 text-xs text-gray-400">
               {formatDate(lead.lastSellerReplyAt)}
             </p>
           </div>
 
           {/* AI Insights */}
-          <div className="grid grid-cols-3 gap-3 mb-4 text-sm">
-            <div>
+          <div className="mb-4 grid gap-3 text-sm md:grid-cols-3">
+            <div className="rounded border bg-white p-3">
               <strong>Intent:</strong>{" "}
               {lead.lastSellerReplyIntent || "Unknown"}
             </div>
 
-            <div>
+            <div className="rounded border bg-white p-3">
               <strong>Confidence:</strong>{" "}
               {typeof lead.lastSellerReplyConfidence === "number"
-                ? lead.lastSellerReplyConfidence.toFixed(2)
+                ? `${(lead.lastSellerReplyConfidence * 100).toFixed(0)}%`
                 : "Unknown"}
             </div>
 
-            <div>
+            <div className="rounded border bg-white p-3">
               <strong>Approval:</strong>{" "}
               {lead.requiresHumanApproval ? "YES" : "NO"}
             </div>
@@ -197,20 +278,19 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
           {/* Editable Reply */}
           <textarea
             value={aiReplyText}
-            onChange={(e) => setAiReplyText(e.target.value)}
+            onChange={(event) => setAiReplyText(event.target.value)}
             rows={5}
-            className="w-full border rounded p-3 mb-3"
+            className="mb-3 w-full rounded border p-3"
             placeholder="Edit or approve AI reply..."
           />
 
           {/* Buttons */}
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-3">
             <button
+              type="button"
               onClick={handleSendApprovedAIReply}
-              disabled={
-                aiReplySendState === "sending" || !!lead.doNotContact
-              }
-              className="bg-orange-500 text-white px-4 py-2 rounded disabled:opacity-50"
+              disabled={aiReplySendState === "sending" || !!lead.doNotContact}
+              className="rounded bg-orange-500 px-4 py-2 text-white disabled:opacity-50"
             >
               {aiReplySendState === "sending"
                 ? "Sending..."
@@ -218,33 +298,39 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
             </button>
 
             <button
-              onClick={() =>
-                setAiReplyText(lead.suggestedReply || "")
-              }
-              className="border px-4 py-2 rounded"
+              type="button"
+              onClick={() => setAiReplyText(lead.suggestedReply || "")}
+              className="rounded border px-4 py-2"
             >
               Reset
             </button>
           </div>
 
           {/* Status Messages */}
-          {lead.doNotContact && (
-            <p className="text-red-600 mt-2">
+          {lead.doNotContact ? (
+            <p className="mt-2 text-red-600">
               Do Not Contact — sending disabled
             </p>
-          )}
+          ) : null}
 
-          {aiReplyError && (
-            <p className="text-red-600 mt-2">{aiReplyError}</p>
-          )}
+          {aiReplyError ? (
+            <p className="mt-2 text-red-600">{aiReplyError}</p>
+          ) : null}
 
-          {aiReplySendState === "sent" && (
-            <p className="text-green-600 mt-2">
-              Reply sent successfully
+          {aiReplySendState === "sent" ? (
+            <p className="mt-2 text-green-600">
+              Reply sent successfully.
             </p>
-          )}
+          ) : null}
         </section>
-      ) : null}
+      ) : (
+        <section className="rounded-xl border bg-white p-5">
+          <h2 className="mb-2 text-lg font-bold">AI Seller Reply Analysis</h2>
+          <p className="text-sm text-gray-600">
+            No seller reply has been captured for this lead yet.
+          </p>
+        </section>
+      )}
     </div>
   );
 }
