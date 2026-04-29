@@ -1,5 +1,15 @@
 import { NextResponse } from "next/server";
-import twilio from "twilio";
+
+export const runtime = "nodejs";
+
+// =====================================================
+// STEP 2B.4 + 2B.5 — SAFE SMS SEND ROUTE (TWILIO)
+// Includes:
+// - Node runtime fix (prevents fs error)
+// - Dynamic Twilio import (prevents Vercel build crash)
+// - Safe fallback (mock mode)
+// - Error isolation per number
+// =====================================================
 
 type SendSmsPayload = {
   phoneNumbers?: string[];
@@ -8,11 +18,6 @@ type SendSmsPayload = {
   dealAddress?: string;
 };
 
-const client = twilio(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
-);
-
 export async function POST(request: Request) {
   try {
     const payload = (await request.json()) as SendSmsPayload;
@@ -20,6 +25,9 @@ export async function POST(request: Request) {
     const phoneNumbers = payload.phoneNumbers?.filter(Boolean) ?? [];
     const message = payload.message?.trim();
 
+    // ============================
+    // INPUT VALIDATION
+    // ============================
     if (phoneNumbers.length === 0) {
       return NextResponse.json(
         { success: false, error: "At least one phone number is required." },
@@ -34,13 +42,20 @@ export async function POST(request: Request) {
       );
     }
 
+    // ============================
+    // CHECK TWILIO CONFIG
+    // ============================
     const hasTwilioConfig =
-      Boolean(process.env.TWILIO_ACCOUNT_SID) &&
-      Boolean(process.env.TWILIO_AUTH_TOKEN) &&
-      Boolean(process.env.TWILIO_PHONE_NUMBER);
+      process.env.TWILIO_ACCOUNT_SID &&
+      process.env.TWILIO_AUTH_TOKEN &&
+      process.env.TWILIO_PHONE_NUMBER;
 
-    // 🔒 SAFETY: fallback to mock if config missing
+    // ============================
+    // SAFE MOCK MODE (NO CONFIG)
+    // ============================
     if (!hasTwilioConfig) {
+      console.log("⚠️ Mock SMS mode (Twilio not configured)");
+
       return NextResponse.json({
         success: true,
         mocked: true,
@@ -50,25 +65,50 @@ export async function POST(request: Request) {
       });
     }
 
+    // ============================
+    // ✅ SAFE DYNAMIC IMPORT (KEY FIX)
+    // ============================
+    const twilioModule = await import("twilio");
+    const twilio = twilioModule.default;
+
+    const client = twilio(
+      process.env.TWILIO_ACCOUNT_SID,
+      process.env.TWILIO_AUTH_TOKEN
+    );
+
     let sentCount = 0;
+    let failedCount = 0;
 
+    // ============================
+    // SEND SMS (SAFE LOOP)
+    // ============================
     for (const phone of phoneNumbers) {
-      await client.messages.create({
-        body: message,
-        from: process.env.TWILIO_PHONE_NUMBER,
-        to: phone
-      });
+      try {
+        await client.messages.create({
+          body: message,
+          from: process.env.TWILIO_PHONE_NUMBER,
+          to: phone
+        });
 
-      sentCount++;
+        sentCount++;
+      } catch (err) {
+        console.error("❌ Failed to send to:", phone, err);
+        failedCount++;
+      }
     }
 
+    // ============================
+    // RESPONSE
+    // ============================
     return NextResponse.json({
       success: true,
       provider: "twilio",
-      sentCount
+      sentCount,
+      failedCount
     });
+
   } catch (error) {
-    console.error("SMS ERROR:", error);
+    console.error("🔥 SMS ROUTE ERROR:", error);
 
     return NextResponse.json(
       { success: false, error: "Failed to send SMS." },
