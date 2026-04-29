@@ -2,21 +2,46 @@ import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
-// =====================================================
-// STEP 2B.4 + 2B.5 — SAFE SMS SEND ROUTE (TWILIO)
-// Includes:
-// - Node runtime fix (prevents fs error)
-// - Dynamic Twilio import (prevents Vercel build crash)
-// - Safe fallback (mock mode)
-// - Error isolation per number
-// =====================================================
-
 type SendSmsPayload = {
   phoneNumbers?: string[];
   message?: string;
-  dealId?: string;
-  dealAddress?: string;
 };
+
+async function sendTwilioSms(phone: string, message: string) {
+  const accountSid = process.env.TWILIO_ACCOUNT_SID;
+  const authToken = process.env.TWILIO_AUTH_TOKEN;
+  const fromNumber = process.env.TWILIO_PHONE_NUMBER;
+
+  if (!accountSid || !authToken || !fromNumber) {
+    return { success: true, mocked: true };
+  }
+
+  const auth = Buffer.from(`${accountSid}:${authToken}`).toString("base64");
+
+  const response = await fetch(
+    `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Basic ${auth}`,
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: new URLSearchParams({
+        From: fromNumber,
+        To: phone,
+        Body: message
+      })
+    }
+  );
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error("Twilio REST SMS failed:", errorText);
+    return { success: false, mocked: false };
+  }
+
+  return { success: true, mocked: false };
+}
 
 export async function POST(request: Request) {
   try {
@@ -25,9 +50,6 @@ export async function POST(request: Request) {
     const phoneNumbers = payload.phoneNumbers?.filter(Boolean) ?? [];
     const message = payload.message?.trim();
 
-    // ============================
-    // INPUT VALIDATION
-    // ============================
     if (phoneNumbers.length === 0) {
       return NextResponse.json(
         { success: false, error: "At least one phone number is required." },
@@ -42,73 +64,27 @@ export async function POST(request: Request) {
       );
     }
 
-    // ============================
-    // CHECK TWILIO CONFIG
-    // ============================
-    const hasTwilioConfig =
-      process.env.TWILIO_ACCOUNT_SID &&
-      process.env.TWILIO_AUTH_TOKEN &&
-      process.env.TWILIO_PHONE_NUMBER;
-
-    // ============================
-    // SAFE MOCK MODE (NO CONFIG)
-    // ============================
-    if (!hasTwilioConfig) {
-      console.log("⚠️ Mock SMS mode (Twilio not configured)");
-
-      return NextResponse.json({
-        success: true,
-        mocked: true,
-        provider: "mock",
-        sentCount: phoneNumbers.length,
-        message
-      });
-    }
-
-    // ============================
-    // ✅ SAFE DYNAMIC IMPORT (KEY FIX)
-    // ============================
-    const twilioModule = await import("twilio");
-    const twilio = twilioModule.default;
-
-    const client = twilio(
-      process.env.TWILIO_ACCOUNT_SID,
-      process.env.TWILIO_AUTH_TOKEN
-    );
-
     let sentCount = 0;
     let failedCount = 0;
 
-    // ============================
-    // SEND SMS (SAFE LOOP)
-    // ============================
     for (const phone of phoneNumbers) {
-      try {
-        await client.messages.create({
-          body: message,
-          from: process.env.TWILIO_PHONE_NUMBER,
-          to: phone
-        });
+      const result = await sendTwilioSms(phone, message);
 
+      if (result.success) {
         sentCount++;
-      } catch (err) {
-        console.error("❌ Failed to send to:", phone, err);
+      } else {
         failedCount++;
       }
     }
 
-    // ============================
-    // RESPONSE
-    // ============================
     return NextResponse.json({
       success: true,
-      provider: "twilio",
+      provider: "twilio-rest",
       sentCount,
       failedCount
     });
-
   } catch (error) {
-    console.error("🔥 SMS ROUTE ERROR:", error);
+    console.error("SMS ROUTE ERROR:", error);
 
     return NextResponse.json(
       { success: false, error: "Failed to send SMS." },

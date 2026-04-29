@@ -103,9 +103,7 @@ function buildFollowUpMessage(lead: {
   const firstName = lead.name?.split(" ")[0] || "";
   const followUpCount = lead.followUpCount ?? 0;
 
-  if (followUpCount >= MAX_FOLLOW_UP_ATTEMPTS) {
-    return null;
-  }
+  if (followUpCount >= MAX_FOLLOW_UP_ATTEMPTS) return null;
 
   if (followUpCount === 0) {
     return `Hi ${firstName}, I came across your property at ${lead.propertyAddress}. Would you consider an offer if it made sense?`;
@@ -127,8 +125,8 @@ function buildFollowUpMessage(lead: {
 }
 
 // =====================================================
-// SMS SENDER — MOCK SAFE + TWILIO SAFE
-// Dynamic import prevents Vercel fs build errors.
+// SMS SENDER — TWILIO REST API SAFE VERSION
+// No Twilio npm package. Prevents Vercel fs build error.
 // =====================================================
 
 async function sendSms({
@@ -139,23 +137,15 @@ async function sendSms({
   message: string;
 }): Promise<SmsResult> {
   if (!phone || !isValidPhone(phone)) {
-    return {
-      success: false,
-      sentCount: 0,
-      failedCount: 1
-    };
+    return { success: false, sentCount: 0, failedCount: 1 };
   }
 
-  const hasTwilioConfig =
-    Boolean(process.env.TWILIO_ACCOUNT_SID) &&
-    Boolean(process.env.TWILIO_AUTH_TOKEN) &&
-    Boolean(process.env.TWILIO_PHONE_NUMBER);
+  const accountSid = process.env.TWILIO_ACCOUNT_SID;
+  const authToken = process.env.TWILIO_AUTH_TOKEN;
+  const fromNumber = process.env.TWILIO_PHONE_NUMBER;
 
-  if (!hasTwilioConfig) {
-    console.log("Mock-safe SMS prepared:", {
-      phone,
-      message
-    });
+  if (!accountSid || !authToken || !fromNumber) {
+    console.log("Mock-safe SMS prepared:", { phone, message });
 
     return {
       success: true,
@@ -166,21 +156,37 @@ async function sendSms({
   }
 
   try {
-    const twilioModule = await import("twilio");
-    const twilio = twilioModule.default;
+    const auth = Buffer.from(`${accountSid}:${authToken}`).toString("base64");
 
-    const client = twilio(
-      process.env.TWILIO_ACCOUNT_SID,
-      process.env.TWILIO_AUTH_TOKEN
+    const response = await fetch(
+      `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Basic ${auth}`,
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams({
+          From: fromNumber,
+          To: phone,
+          Body: message
+        })
+      }
     );
 
-    await client.messages.create({
-      body: message,
-      from: process.env.TWILIO_PHONE_NUMBER,
-      to: phone
-    });
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Twilio REST SMS failed:", errorText);
 
-    console.log("Twilio SMS sent:", { phone });
+      return {
+        success: false,
+        mocked: false,
+        sentCount: 0,
+        failedCount: 1
+      };
+    }
+
+    console.log("Twilio REST SMS sent:", { phone });
 
     return {
       success: true,
@@ -189,7 +195,7 @@ async function sendSms({
       failedCount: 0
     };
   } catch (error) {
-    console.error("Twilio SMS failed:", error);
+    console.error("Twilio REST SMS error:", error);
 
     return {
       success: false,
@@ -218,9 +224,7 @@ async function processOverdueLeads() {
   for (const lead of leadsToProcess) {
     await prisma.lead.update({
       where: { id: lead.id },
-      data: {
-        automationStatus: "processing"
-      }
+      data: { automationStatus: "processing" }
     });
 
     const message = buildFollowUpMessage({
@@ -232,9 +236,7 @@ async function processOverdueLeads() {
     if (!message) {
       await prisma.lead.update({
         where: { id: lead.id },
-        data: {
-          automationStatus: "idle"
-        }
+        data: { automationStatus: "idle" }
       });
 
       continue;
