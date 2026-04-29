@@ -7,9 +7,14 @@ import { prisma } from "@/lib/prisma";
 export const runtime = "nodejs";
 
 // =====================================================
-// STEP 2B.7B — TWILIO INBOUND SMS WEBHOOK + AI REPLY BRAIN
-// Handles seller replies, detects opt-outs, classifies intent,
-// and safely updates lead intelligence.
+// STEP 2B.7C — TWILIO INBOUND SMS WEBHOOK
+// Safe version for testing with the SAME phone number
+//
+// IMPORTANT:
+// - Finds the newest lead with this phone number
+// - Updates ONLY that one lead by ID
+// - Preserves DNC / STOP protection
+// - Does NOT auto-send AI replies
 // =====================================================
 
 export async function POST(request: Request) {
@@ -27,9 +32,9 @@ export async function POST(request: Request) {
       messageBody,
     });
 
-    // Safety check: if Twilio sends an empty phone/body, do nothing but return 200.
     if (!fromPhone || !messageBody) {
       console.log("Inbound SMS missing phone or message body.");
+
       return new NextResponse(twimlResponse, {
         status: 200,
         headers: {
@@ -39,18 +44,47 @@ export async function POST(request: Request) {
     }
 
     // =====================================================
-    // STEP 2B.6D — DNC / OPT-OUT PROTECTION
-    // This must run BEFORE AI reply classification.
+    // STEP 1 — Find newest matching lead
+    // This prevents one shared test number from updating
+    // every lead in the database.
+    // =====================================================
+
+    const lead = await prisma.lead.findFirst({
+      where: {
+        phone: fromPhone,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    if (!lead) {
+      console.log("No matching lead found for inbound SMS:", fromPhone);
+
+      return new NextResponse(twimlResponse, {
+        status: 200,
+        headers: {
+          "Content-Type": "text/xml",
+        },
+      });
+    }
+
+    // =====================================================
+    // STEP 2 — DNC / OPT-OUT PROTECTION
+    // STOP must run before AI Reply Brain.
     // =====================================================
 
     const optOutResult = detectOptOut(messageBody);
 
     if (optOutResult.isOptOut) {
-      console.log("Opt-out detected:", optOutResult.reason);
+      console.log("Opt-out detected:", {
+        leadId: lead.id,
+        reason: optOutResult.reason,
+      });
 
-      await prisma.lead.updateMany({
+      await prisma.lead.update({
         where: {
-          phone: fromPhone,
+          id: lead.id,
         },
         data: {
           doNotContact: true,
@@ -63,7 +97,21 @@ export async function POST(request: Request) {
         },
       });
 
-      // Stop here. Do not classify or prepare replies after opt-out.
+      return new NextResponse(twimlResponse, {
+        status: 200,
+        headers: {
+          "Content-Type": "text/xml",
+        },
+      });
+    }
+
+    // If this newest lead is already DNC, do not reactivate it.
+    if (lead.doNotContact) {
+      console.log("Lead is already do-not-contact. No AI processing:", {
+        leadId: lead.id,
+        fromPhone,
+      });
+
       return new NextResponse(twimlResponse, {
         status: 200,
         headers: {
@@ -73,14 +121,15 @@ export async function POST(request: Request) {
     }
 
     // =====================================================
-    // STEP 2B.7 — AI REPLY BRAIN
-    // Safe rule-based classification only.
+    // STEP 3 — AI REPLY BRAIN
+    // Classify seller reply safely.
     // No auto-send yet.
     // =====================================================
 
     const replyBrain = classifySellerReply(messageBody);
 
     console.log("Seller Reply Brain:", {
+      leadId: lead.id,
       fromPhone,
       intent: replyBrain.intent,
       confidence: replyBrain.confidence,
@@ -89,15 +138,13 @@ export async function POST(request: Request) {
     });
 
     // =====================================================
-    // STEP 2B.7B — SAFE LEAD UPDATE
-    // We update existing lead intelligence only.
-    // We do NOT send an automatic reply here.
+    // STEP 4 — Safe lead update
+    // Updates ONLY this lead by ID.
     // =====================================================
 
-    await prisma.lead.updateMany({
+    await prisma.lead.update({
       where: {
-        phone: fromPhone,
-        doNotContact: false,
+        id: lead.id,
       },
       data: {
         lastContactedAt: new Date(),
@@ -124,7 +171,6 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Inbound SMS webhook failed:", error);
 
-    // Always return 200 to Twilio so it does not keep retrying aggressively.
     return new NextResponse(twimlResponse, {
       status: 200,
       headers: {
