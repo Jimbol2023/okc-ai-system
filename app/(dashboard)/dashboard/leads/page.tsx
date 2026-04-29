@@ -25,9 +25,9 @@ const PIPELINE_STATUSES: LeadStatus[] = [
    STEP 2B.8C — PIPELINE AI BADGE LAYER
    -----------------------------------------------------
    PURPOSE:
-   - Show AI/Seller status directly on pipeline cards
-   - Make it easy to see which leads need human review
-   - Keep lead cards linked to detail page
+   - Show AI/seller status directly on pipeline + table
+   - Make AI replies visible before opening lead detail
+   - Keep cards linked to detail page
    - Do NOT auto-send anything
 ===================================================== */
 
@@ -38,36 +38,40 @@ type LeadWithAIStatus = StoredLead & {
   isHot?: boolean | null;
 };
 
-function getAIStatusBadges(lead: StoredLead) {
-  const l = lead as LeadWithAIStatus;
+type AIBadgeData = {
+  label: string;
+  className: string;
+};
 
-  const badges: { label: string; color: string }[] = [];
+function getAIStatusBadges(lead: StoredLead): AIBadgeData[] {
+  const l = lead as LeadWithAIStatus;
+  const badges: AIBadgeData[] = [];
 
   if (l.doNotContact) {
     badges.push({
       label: "DNC",
-      color: "bg-red-100 text-red-700",
+      className: "border-red-300 bg-red-100 text-red-700",
     });
   }
 
   if (l.requiresHumanApproval) {
     badges.push({
       label: "Needs AI Reply",
-      color: "bg-orange-100 text-orange-700",
+      className: "border-orange-300 bg-orange-100 text-orange-800",
     });
   }
 
   if (l.lastSellerReply) {
     badges.push({
       label: "Seller Replied",
-      color: "bg-green-100 text-green-700",
+      className: "border-green-300 bg-green-100 text-green-700",
     });
   }
 
   if (l.isHot) {
     badges.push({
       label: "Hot Lead",
-      color: "bg-purple-100 text-purple-700",
+      className: "border-purple-300 bg-purple-100 text-purple-700",
     });
   }
 
@@ -145,16 +149,16 @@ function StatusBadge({ status }: { status: LeadStatus }) {
             : "bg-gray-100 text-gray-700";
 
   return (
-    <span className={`rounded px-2 py-1 text-xs font-bold ${color}`}>
+    <span className={`rounded border px-2 py-1 text-xs font-bold ${color}`}>
       {formatStatus(status)}
     </span>
   );
 }
 
-function AIBadge({ label, color }: { label: string; color: string }) {
+function AIBadge({ badge }: { badge: AIBadgeData }) {
   return (
-    <span className={`rounded px-2 py-1 text-xs font-bold ${color}`}>
-      {label}
+    <span className={`rounded border px-2 py-1 text-xs font-bold ${badge.className}`}>
+      {badge.label}
     </span>
   );
 }
@@ -314,7 +318,7 @@ export default function DashboardLeadsPage() {
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    className="min-w-[240px] rounded border bg-gray-50 p-3"
+                    className="min-w-[260px] rounded border bg-gray-50 p-3"
                   >
                     <div className="mb-3 flex items-center justify-between">
                       <h2 className="text-sm font-bold capitalize">
@@ -355,9 +359,7 @@ export default function DashboardLeadsPage() {
                                     : ""
                                 }`}
                               >
-                                {/* =====================================================
-                                    CLICKABLE LEAD DETAIL LINK
-                                ===================================================== */}
+                                {/* CLICKABLE LEAD DETAIL LINKS */}
 
                                 <Link
                                   href={`/dashboard/leads/${lead.id}` as Route}
@@ -373,9 +375,7 @@ export default function DashboardLeadsPage() {
                                   {lead.propertyAddress}
                                 </Link>
 
-                                {/* =====================================================
-                                    STATUS + AI BADGES
-                                ===================================================== */}
+                                {/* STATUS + AI BADGES */}
 
                                 <div className="mt-3 flex flex-wrap gap-2">
                                   <StatusBadge status={lead.status} />
@@ -383,11 +383,16 @@ export default function DashboardLeadsPage() {
                                   {aiBadges.map((badge) => (
                                     <AIBadge
                                       key={`${lead.id}-${badge.label}`}
-                                      label={badge.label}
-                                      color={badge.color}
+                                      badge={badge}
                                     />
                                   ))}
                                 </div>
+
+                                {aiBadges.length > 0 ? (
+                                  <p className="mt-2 text-[11px] font-semibold text-orange-700">
+                                    AI attention needed
+                                  </p>
+                                ) : null}
 
                                 <p className="mt-2 text-xs font-semibold text-blue-600">
                                   Next: {getNextAction(lead.status)}
@@ -481,8 +486,7 @@ export default function DashboardLeadsPage() {
                         aiBadges.map((badge) => (
                           <AIBadge
                             key={`${lead.id}-${badge.label}`}
-                            label={badge.label}
-                            color={badge.color}
+                            badge={badge}
                           />
                         ))
                       ) : (
