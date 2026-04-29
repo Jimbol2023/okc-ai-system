@@ -2,19 +2,20 @@ import { NextResponse } from "next/server";
 
 import { classifySellerReply } from "@/lib/ai/seller-reply-brain";
 import { detectOptOut } from "@/lib/opt-out-detector";
+import { normalizePhone } from "@/lib/utils"; // ✅ NEW
 import { prisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
 
 // =====================================================
-// STEP 2B.7C — TWILIO INBOUND SMS WEBHOOK
-// Safe version for testing with the SAME phone number
+// STEP 2B.7E — TWILIO INBOUND SMS WEBHOOK (FINAL SAFE VERSION)
 //
-// IMPORTANT:
-// - Finds the newest lead with this phone number
-// - Updates ONLY that one lead by ID
-// - Preserves DNC / STOP protection
-// - Does NOT auto-send AI replies
+// FIXES INCLUDED:
+// - Phone normalization (Twilio vs DB mismatch FIXED)
+// - Updates ONLY newest lead (same number safe)
+// - DNC protection preserved
+// - AI Reply Brain active
+// - No auto-send yet
 // =====================================================
 
 export async function POST(request: Request) {
@@ -24,11 +25,18 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData();
 
-    const fromPhone = String(formData.get("From") ?? "").trim();
+    // =====================================================
+    // STEP 0 — Normalize phone (CRITICAL FIX)
+    // =====================================================
+
+    const rawPhone = String(formData.get("From") ?? "").trim();
+    const fromPhone = normalizePhone(rawPhone);
+
     const messageBody = String(formData.get("Body") ?? "").trim();
 
     console.log("Incoming SMS:", {
-      fromPhone,
+      rawPhone,
+      normalizedPhone: fromPhone,
       messageBody,
     });
 
@@ -45,8 +53,6 @@ export async function POST(request: Request) {
 
     // =====================================================
     // STEP 1 — Find newest matching lead
-    // This prevents one shared test number from updating
-    // every lead in the database.
     // =====================================================
 
     const lead = await prisma.lead.findFirst({
@@ -71,7 +77,6 @@ export async function POST(request: Request) {
 
     // =====================================================
     // STEP 2 — DNC / OPT-OUT PROTECTION
-    // STOP must run before AI Reply Brain.
     // =====================================================
 
     const optOutResult = detectOptOut(messageBody);
@@ -105,7 +110,10 @@ export async function POST(request: Request) {
       });
     }
 
-    // If this newest lead is already DNC, do not reactivate it.
+    // =====================================================
+    // SAFETY — Do NOT reactivate DNC leads
+    // =====================================================
+
     if (lead.doNotContact) {
       console.log("Lead is already do-not-contact. No AI processing:", {
         leadId: lead.id,
@@ -122,15 +130,12 @@ export async function POST(request: Request) {
 
     // =====================================================
     // STEP 3 — AI REPLY BRAIN
-    // Classify seller reply safely.
-    // No auto-send yet.
     // =====================================================
 
     const replyBrain = classifySellerReply(messageBody);
 
     console.log("Seller Reply Brain:", {
       leadId: lead.id,
-      fromPhone,
       intent: replyBrain.intent,
       confidence: replyBrain.confidence,
       reason: replyBrain.reason,
@@ -138,8 +143,7 @@ export async function POST(request: Request) {
     });
 
     // =====================================================
-    // STEP 4 — Safe lead update
-    // Updates ONLY this lead by ID.
+    // STEP 4 — Update lead (ONLY this one)
     // =====================================================
 
     await prisma.lead.update({
