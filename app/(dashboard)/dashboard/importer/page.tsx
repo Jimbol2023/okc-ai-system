@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import { createImportedLeads, fetchLeads } from "@/lib/leads-api";
 import type { StoredLead } from "@/lib/leads-storage";
-import { parseLeadImportCsv, type ImportedLeadPreview } from "@/lib/list-importer";
+import { hasRequiredImportedLeadFields, parseLeadImportCsv, type ImportedLeadPreview } from "@/lib/list-importer";
 
 function getImportLeadStatus(lead: ImportedLeadPreview) {
   if (lead.validationErrors.length > 0) {
@@ -41,7 +41,11 @@ export default function DashboardImporterPage() {
 
   const duplicateCount = previewLeads.filter((lead) => lead.duplicate).length;
   const invalidCount = previewLeads.filter((lead) => lead.validationErrors.length > 0).length;
-  const importableLeads = previewLeads.filter((lead) => !lead.duplicate && lead.validationErrors.length === 0);
+  const importableLeads = previewLeads.filter((lead) => {
+    const requiredFields = hasRequiredImportedLeadFields(lead);
+
+    return !lead.duplicate && lead.validationErrors.length === 0 && requiredFields.phone && requiredFields.propertyAddress;
+  });
 
   async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];

@@ -133,16 +133,24 @@ function normalizePhone(value: string) {
 
 export function validateImportedLeadDraft(lead: ImportedLeadDraft) {
   const errors: string[] = [];
+  const requiredFields = hasRequiredImportedLeadFields(lead);
 
-  if (!lead.propertyAddress.trim()) {
+  if (!requiredFields.propertyAddress) {
     errors.push("Property address is required.");
   }
 
-  if (!sanitizeImportedLeadPhone(lead.phone)) {
+  if (!requiredFields.phone) {
     errors.push("Phone is required.");
   }
 
   return errors;
+}
+
+export function hasRequiredImportedLeadFields(lead: ImportedLeadDraft) {
+  return {
+    phone: sanitizeImportedLeadPhone(lead.phone).length > 0,
+    propertyAddress: lead.propertyAddress.trim().length > 0
+  };
 }
 
 function sanitizeImportedLeadDraft(lead: ImportedLeadDraft): ImportedLeadDraft {

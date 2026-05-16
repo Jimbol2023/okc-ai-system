@@ -1,8 +1,9 @@
 "use client";
 
 import { createStoredLead, deleteLeadFromLocalStorage, replaceLeadsInLocalStorage, type StoredLead, upsertLeadInLocalStorage } from "@/lib/leads-storage";
+import { importedLeadToStoredLead } from "@/lib/lead-record";
 import type { GeneratedLeadInput } from "@/lib/lead-generator";
-import { sanitizeImportedLeadPhone, validateImportedLeadDraft, type ImportedLeadDraft } from "@/lib/list-importer";
+import { hasRequiredImportedLeadFields, sanitizeImportedLeadPhone, validateImportedLeadDraft, type ImportedLeadDraft } from "@/lib/list-importer";
 import type { LeadIntakeInput } from "@/lib/validations/lead";
 
 async function parseJsonResponse<T>(response: Response): Promise<T> {
@@ -92,30 +93,17 @@ export async function createImportedLeads(importedLeads: ImportedLeadDraft[]) {
     phone: sanitizeImportedLeadPhone(lead.phone),
     propertyAddress: lead.propertyAddress.trim()
   }));
-  const invalidLeads = sanitizedLeads.filter((lead) => validateImportedLeadDraft(lead).length > 0);
+  const invalidLeads = sanitizedLeads.filter((lead) => {
+    const requiredFields = hasRequiredImportedLeadFields(lead);
+
+    return validateImportedLeadDraft(lead).length > 0 || !requiredFields.phone || !requiredFields.propertyAddress;
+  });
 
   if (invalidLeads.length > 0) {
     throw new Error("Imported leads must include a property address and phone.");
   }
 
-  const payload = sanitizedLeads.map((lead) =>
-    createStoredLead({
-      firstName: lead.firstName,
-      lastName: lead.lastName,
-      email: lead.email,
-      phone: lead.phone,
-      propertyAddress: lead.propertyAddress,
-      city: lead.city,
-      state: lead.state,
-      zipCode: lead.zipCode,
-      ownerName: lead.ownerName,
-      mailingAddress: lead.mailingAddress,
-      county: lead.county,
-      parcelId: lead.parcelId,
-      situationDetails: lead.situationDetails,
-      source: "county-import"
-    })
-  );
+  const payload = sanitizedLeads.map((lead) => importedLeadToStoredLead(lead));
 
   return createLeadBatch(payload);
 }
