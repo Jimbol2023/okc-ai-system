@@ -1,4 +1,5 @@
 import type { CorridorScoreBreakdown, CorridorWarning } from "./corridor-intelligence-types";
+import type { PhaseRSurvivabilityIntelligenceRecord } from "./phase-r-survivability-intelligence-contract";
 import { calculateCorridorConfidence, createCorridorWarning, normalizeCorridorScore } from "./corridor-intelligence-utils";
 
 export type EconomicShockResilienceClassification = "fragile" | "exposed" | "selective" | "resilient" | "institutional_grade";
@@ -633,3 +634,10 @@ export function analyzeEconomicShockResilienceIntelligence(input: EconomicShockR
 }
 
 export const getEconomicShockResilienceIntelligence = analyzeEconomicShockResilienceIntelligence;
+
+export type EconomicShockSurvivabilityContractRecord =
+  PhaseRSurvivabilityIntelligenceRecord & {
+    readonly aggregationMetadata: PhaseRSurvivabilityIntelligenceRecord["aggregationMetadata"] & {
+      readonly moduleName: "economic-shock-resilience-intelligence";
+    };
+  };
