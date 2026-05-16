@@ -1,4 +1,5 @@
 import type { CorridorScoreBreakdown, CorridorWarning } from "./corridor-intelligence-types";
+import type { PhaseRSurvivabilityIntelligenceRecord } from "./phase-r-survivability-intelligence-contract";
 import { calculateCorridorConfidence, createCorridorWarning, normalizeCorridorScore } from "./corridor-intelligence-utils";
 
 export type PortfolioRiskConcentrationLevel = "low" | "balanced" | "watchlist" | "elevated" | "high";
@@ -578,5 +579,12 @@ export function analyzePortfolioRiskBalancingIntelligence(input: PortfolioRiskBa
     readOnly: true,
   };
 }
+
+export type PortfolioRiskSurvivabilityContractRecord =
+  PhaseRSurvivabilityIntelligenceRecord & {
+    readonly aggregationMetadata: PhaseRSurvivabilityIntelligenceRecord["aggregationMetadata"] & {
+      readonly moduleName: "portfolio-risk-balancing-intelligence";
+    };
+  };
 
 export const getPortfolioRiskBalancingIntelligence = analyzePortfolioRiskBalancingIntelligence;
