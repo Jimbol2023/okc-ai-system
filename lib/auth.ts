@@ -135,7 +135,14 @@ export function clearAuthCookie(response: NextResponse) {
 }
 
 export async function isAuthenticatedRequest(request: NextRequest | Request) {
-  const token = "cookies" in request && typeof request.cookies.get === "function"
+  const token = getRequestAuthToken(request);
+  const payload = await verifySessionToken(token);
+
+  return Boolean(payload);
+}
+
+function getRequestAuthToken(request: NextRequest | Request) {
+  return "cookies" in request && typeof request.cookies.get === "function"
     ? request.cookies.get(AUTH_COOKIE_NAME)?.value
     : request.headers
         .get("cookie")
@@ -145,10 +152,23 @@ export async function isAuthenticatedRequest(request: NextRequest | Request) {
         ?.split("=")
         .slice(1)
         .join("=");
+}
 
-  const payload = await verifySessionToken(token);
+export async function isAdminRequest(request: NextRequest | Request) {
+  try {
+    const token = getRequestAuthToken(request);
+    const payload = await verifySessionToken(token);
 
-  return Boolean(payload);
+    if (!payload?.email) {
+      return false;
+    }
+
+    const { adminEmail } = getAuthConfig();
+
+    return payload.email.trim().toLowerCase() === adminEmail;
+  } catch {
+    return false;
+  }
 }
 
 export async function getAuthenticatedAdmin() {
