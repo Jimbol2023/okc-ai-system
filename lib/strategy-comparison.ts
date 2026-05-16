@@ -10,6 +10,7 @@ import {
 type StrategyBreakdownItem = StrategyScoreBreakdown[keyof StrategyScoreBreakdown];
 
 export type RecommendationStrength = "weak" | "moderate" | "strong" | "very_strong";
+export type DecisionPressureLevel = "low" | "medium" | "high" | "urgent";
 
 export type StrategyCategory =
   | "quick_cash"
@@ -100,6 +101,9 @@ export type StrategyComparisonResult = {
   };
   investorSummary: string;
   confidenceExplanation: string;
+  decisionPressureScore: number;
+  decisionPressureLevel: DecisionPressureLevel;
+  decisionPressureExplanation: string;
   comparisons: StrategyPairComparison[];
   dominance: StrategyDominanceResult[];
   summary: string;
@@ -736,6 +740,77 @@ export function generateInvestorSummary(result: StrategyComparisonResult) {
   }Volatility is ${best.volatilityScore}/100 because ${best.volatilityExplanation.toLowerCase()}. Confidence is ${confidenceBand}; ${reviewNeeded ? "human review is recommended before execution." : "the comparison is clear enough for internal decision review."}`;
 }
 
+function getRecommendationStrengthPressure(strength: RecommendationStrength) {
+  switch (strength) {
+    case "very_strong":
+      return 100;
+    case "strong":
+      return 75;
+    case "moderate":
+      return 50;
+    case "weak":
+      return 25;
+  }
+}
+
+function getDominanceGapPressure(gap: number) {
+  if (gap >= 25) return 100;
+  if (gap >= 15) return 75;
+  if (gap >= 7) return 50;
+  return 25;
+}
+
+function getDecisionPressureLevel(score: number): DecisionPressureLevel {
+  if (score >= 80) return "urgent";
+  if (score >= 65) return "high";
+  if (score >= 45) return "medium";
+  return "low";
+}
+
+function getDecisionPressureExplanation(level: DecisionPressureLevel) {
+  if (level === "urgent" || level === "high") {
+    return "Decision pressure is high because the top strategy has strong dominance, acceptable risk, and enough confidence to justify fast review. This is read-only analysis and does not trigger action.";
+  }
+
+  if (level === "medium") {
+    return "Decision pressure is moderate because the strategy is promising, but confidence gaps, volatility, or close alternatives suggest review before action. This is read-only analysis and does not trigger action.";
+  }
+
+  return "Decision pressure is low because the recommendation is weak, confidence is limited, or risk/volatility remains too high. This is read-only analysis and does not trigger action.";
+}
+
+export function calculateDecisionPressure(result: Pick<StrategyComparisonResult, "recommendationStrength" | "viableStrategies" | "strategies" | "dominance">) {
+  const topStrategy = result.viableStrategies[0] ?? result.strategies[0];
+  const viableConfidenceScores = result.viableStrategies.map((strategy) => strategy.confidenceScore);
+  const averageViableConfidence =
+    viableConfidenceScores.length > 0
+      ? viableConfidenceScores.reduce((total, score) => total + score, 0) / viableConfidenceScores.length
+      : 50;
+  const confidenceScore = topStrategy?.confidenceScore ?? averageViableConfidence;
+  const dominanceGap =
+    result.dominance.length >= 2
+      ? result.dominance[0].dominanceScore - result.dominance[1].dominanceScore
+      : 0;
+  const recommendationStrengthScore = getRecommendationStrengthPressure(result.recommendationStrength);
+  const dominanceGapScore = getDominanceGapPressure(dominanceGap);
+  const inverseRiskScore = topStrategy ? 100 - topStrategy.riskScore : 50;
+  const inverseVolatilityScore = topStrategy ? 100 - topStrategy.volatilityScore : 50;
+  const decisionPressureScore = clampScore(
+    recommendationStrengthScore * 0.3 +
+      confidenceScore * 0.25 +
+      dominanceGapScore * 0.2 +
+      inverseRiskScore * 0.15 +
+      inverseVolatilityScore * 0.1,
+  );
+  const decisionPressureLevel = getDecisionPressureLevel(decisionPressureScore);
+
+  return {
+    decisionPressureScore,
+    decisionPressureLevel,
+    decisionPressureExplanation: getDecisionPressureExplanation(decisionPressureLevel),
+  };
+}
+
 export function compareStrategies(input: StrategyComparisonInput): StrategyComparisonResult {
   const decision = input.strategyDecision ?? decideStrategy(input);
   const scoreSource = input.strategyScores ?? decision.strategyScores ?? {};
@@ -776,6 +851,13 @@ export function compareStrategies(input: StrategyComparisonInput): StrategyCompa
   const categoryWinners = calculateCategoryWinners(viableStrategies);
   const scenarios = runStrategyScenarios(comparisonStrategies, input);
   const confidenceExplanation = generateConfidenceExplanation(comparisonStrategies, input);
+  const dominance = getDominance(comparisonStrategies);
+  const decisionPressure = calculateDecisionPressure({
+    recommendationStrength,
+    viableStrategies,
+    strategies,
+    dominance,
+  });
   const result: StrategyComparisonResult = {
     leadId: input.leadId,
     bestStrategy,
@@ -787,8 +869,9 @@ export function compareStrategies(input: StrategyComparisonInput): StrategyCompa
     scenarios,
     investorSummary: "",
     confidenceExplanation,
+    ...decisionPressure,
     comparisons,
-    dominance: getDominance(comparisonStrategies),
+    dominance,
     summary,
     warnings,
   };

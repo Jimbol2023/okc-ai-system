@@ -104,6 +104,9 @@ type StrategyComparison = {
   }>;
   investorSummary: string;
   confidenceExplanation: string;
+  decisionPressureScore: number;
+  decisionPressureLevel: string;
+  decisionPressureExplanation: string;
   comparisons: Array<{
     strategyA: string;
     strategyB: string;
@@ -497,6 +500,13 @@ export function AssetClassificationPanel() {
           <div className="space-y-1 md:col-span-3">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted">Confidence explanation</p>
             <p className="text-sm leading-6 text-muted">{strategyComparison.confidenceExplanation}</p>
+          </div>
+          <div className="space-y-1 md:col-span-3">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted">Decision pressure</p>
+            <p className="text-lg font-semibold text-primary">
+              {formatLabel(strategyComparison.decisionPressureLevel)} | {strategyComparison.decisionPressureScore}/100
+            </p>
+            <p className="text-sm leading-6 text-muted">{strategyComparison.decisionPressureExplanation}</p>
           </div>
           <div>
             <p className="text-xs font-semibold uppercase tracking-wide text-muted">Viable strategies</p>
