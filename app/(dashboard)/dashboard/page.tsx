@@ -8,6 +8,7 @@ import { createGeneratedLeads, fetchLeads } from "@/lib/leads-api";
 import { fetchRealLeads } from "@/lib/real-leads";
 import type { StoredLead } from "@/lib/leads-storage";
 import { StatCard } from "@/components/shared/stat-card";
+import SystemReadinessPanel from "@/components/dashboard/system-readiness-panel";
 import BuyerIntelligencePanel from "@/components/dashboard/buyer-intelligence-panel";
 
 const queue = [
@@ -166,6 +167,8 @@ export default function DashboardPage() {
       {dealFinderMessage ? <p className="text-sm font-medium text-success">{dealFinderMessage}</p> : null}
       {realLeadsMessage ? <p className="text-sm font-medium text-success">{realLeadsMessage}</p> : null}
       {realLeadsError ? <p className="text-sm font-medium text-red-700">{realLeadsError}</p> : null}
+
+      <SystemReadinessPanel />
 
       <section className="rounded-[1.5rem] border border-border bg-surface p-6">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
