@@ -9,7 +9,7 @@
    - Shows AI Reply Panel when lastSellerReply exists
    - Keeps human approval before sending
    - Keeps DNC protection
-   - Uses existing /api/send-sms route safely
+   - Approves/rejects AI replies without sending SMS or email
 ===================================================== */
 
 import Link from "next/link";
@@ -34,11 +34,21 @@ type Lead = {
   suggestedReply?: string | null;
 
   doNotContact?: boolean | null;
+  automationStatus?: string | null;
 };
 
 type LeadApiResponse = {
   ok: boolean;
   lead?: Lead;
+  error?: string;
+};
+
+type ApprovalApiResponse = {
+  ok: boolean;
+  action?: "approve" | "reject";
+  sent?: boolean;
+  message?: string;
+  lead?: Partial<Lead>;
   error?: string;
 };
 
@@ -53,8 +63,9 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
 
   const [aiReplyText, setAiReplyText] = useState("");
   const [aiReplySendState, setAiReplySendState] =
-    useState<"idle" | "sending" | "sent">("idle");
+    useState<"idle" | "saving" | "approved" | "rejected">("idle");
   const [aiReplyError, setAiReplyError] = useState<string | null>(null);
+  const [aiReplyStatusMessage, setAiReplyStatusMessage] = useState<string | null>(null);
 
   /* =============================
      FETCH LEAD
@@ -94,51 +105,67 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
   }, [leadId]);
 
   /* =============================
-     SEND APPROVED REPLY
+     APPROVE OR REJECT AI REPLY
   ============================= */
 
-  async function handleSendApprovedAIReply() {
+  async function submitApproval(action: "approve" | "reject") {
     if (!lead) return;
 
-    if (lead.doNotContact) {
-      setAiReplyError("This lead is marked Do Not Contact. Message was not sent.");
+    if (action === "approve" && lead.doNotContact) {
+      setAiReplyError("This lead is marked Do Not Contact. Approval was blocked.");
       return;
     }
 
-    if (!lead.phone) {
-      setAiReplyError("Lead phone number is missing.");
-      return;
-    }
-
-    if (!aiReplyText.trim()) {
-      setAiReplyError("Reply message is empty.");
+    if (action === "approve" && !aiReplyText.trim()) {
+      setAiReplyError("Approved reply message is empty.");
       return;
     }
 
     try {
-      setAiReplySendState("sending");
+      setAiReplySendState("saving");
       setAiReplyError(null);
+      setAiReplyStatusMessage(null);
 
-      const res = await fetch("/api/send-sms", {
+      const res = await fetch(`/api/leads/${lead.id}/approval`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
         body: JSON.stringify({
-          phoneNumbers: [lead.phone],
+          action,
           message: aiReplyText.trim(),
-          dealId: lead.id,
         }),
       });
 
-      if (!res.ok) {
-        throw new Error("SMS send failed.");
+      const data = (await res.json()) as ApprovalApiResponse;
+
+      if (!res.ok || !data.ok) {
+        throw new Error(data.error || "Approval update failed.");
       }
 
-      setAiReplySendState("sent");
+      if (data.lead) {
+        setLead((currentLead) =>
+          currentLead
+            ? {
+                ...currentLead,
+                ...data.lead,
+              }
+            : currentLead,
+        );
+      }
+
+      if (data.lead?.suggestedReply !== undefined) {
+        setAiReplyText(data.lead.suggestedReply ?? "");
+      }
+
+      setAiReplySendState(action === "approve" ? "approved" : "rejected");
+      setAiReplyStatusMessage(data.message || "Approval updated. No SMS or email was sent.");
     } catch (error) {
-      console.error("Failed to send approved AI reply:", error);
-      setAiReplyError("Failed to send reply.");
+      console.error("Failed to update AI reply approval:", error);
+      setAiReplyError(
+        error instanceof Error ? error.message : "Failed to update approval.",
+      );
       setAiReplySendState("idle");
     }
   }
@@ -243,7 +270,7 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
           </h2>
 
           <p className="mb-4 text-sm text-gray-600">
-            Human approval required before sending any reply.
+            Human approval is required before any SMS or email can be sent.
           </p>
 
           {/* Seller Message */}
@@ -288,13 +315,22 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
           <div className="flex flex-wrap gap-3">
             <button
               type="button"
-              onClick={handleSendApprovedAIReply}
-              disabled={aiReplySendState === "sending" || !!lead.doNotContact}
+              onClick={() => submitApproval("approve")}
+              disabled={aiReplySendState === "saving" || !!lead.doNotContact}
               className="rounded bg-orange-500 px-4 py-2 text-white disabled:opacity-50"
             >
-              {aiReplySendState === "sending"
-                ? "Sending..."
-                : "Send Approved Reply"}
+              {aiReplySendState === "saving"
+                ? "Saving..."
+                : "Approve Reply"}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => submitApproval("reject")}
+              disabled={aiReplySendState === "saving"}
+              className="rounded border border-red-200 px-4 py-2 text-red-700 disabled:opacity-50"
+            >
+              Reject
             </button>
 
             <button
@@ -317,9 +353,9 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
             <p className="mt-2 text-red-600">{aiReplyError}</p>
           ) : null}
 
-          {aiReplySendState === "sent" ? (
+          {aiReplyStatusMessage ? (
             <p className="mt-2 text-green-600">
-              Reply sent successfully.
+              {aiReplyStatusMessage}
             </p>
           ) : null}
         </section>
