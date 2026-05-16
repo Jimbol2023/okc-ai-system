@@ -18,32 +18,28 @@ enum LeadStatus {
 }
 
 model Lead {
-  id              String     @id @default(uuid())
+  id              String @id @default(uuid())
   name            String
   phone           String
   propertyAddress String
   source          String
 
-  status          LeadStatus @default(new)
-  score           Int        @default(0)
-  priority        String     @default("Low")
+  status   LeadStatus @default(new)
+  score    Int        @default(0)
+  priority String     @default("Low")
 
-  notes           String?
-  payload         String?
+  notes   String?
+  payload String?
 
-  // ============================
-  // 📞 FOLLOW-UP AUTOMATION CORE
-  // ============================
+  // FOLLOW-UP AUTOMATION CORE
   lastContactedAt     DateTime?
   nextFollowUpAt      DateTime?
-  followUpCount       Int        @default(0)
+  followUpCount       Int       @default(0)
   lastFollowUpMessage String?
-  automationStatus    String     @default("idle")
-  isHot               Boolean    @default(false)
+  automationStatus    String    @default("idle")
+  isHot               Boolean   @default(false)
 
-  // ============================
-  // 🤖 AI REPLY BRAIN (Step 2B.7G)
-  // ============================
+  // AI REPLY BRAIN
   lastSellerReply           String?
   lastSellerReplyAt         DateTime?
   lastSellerReplyIntent     String?
@@ -51,22 +47,16 @@ model Lead {
   suggestedReply            String?
   requiresHumanApproval     Boolean   @default(false)
 
-  // ============================
-  // 🔐 DNC / OPT-OUT PROTECTION
-  // ============================
-  doNotContact   Boolean   @default(false)
-  optOutReason   String?
-  optOutAt       DateTime?
+  // DNC / OPT-OUT PROTECTION
+  doNotContact Boolean   @default(false)
+  optOutReason String?
+  optOutAt     DateTime?
 
-  // ============================
-  // 📊 SYSTEM TIMESTAMPS
-  // ============================
-  createdAt       DateTime   @default(now())
-  updatedAt       DateTime   @updatedAt
+  // SYSTEM TIMESTAMPS
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  // ============================
-  // ⚡ INDEXES (PERFORMANCE)
-  // ============================
+  // INDEXES
   @@unique([propertyAddress, phone])
   @@index([createdAt])
   @@index([score, createdAt])
@@ -74,7 +64,211 @@ model Lead {
   @@index([nextFollowUpAt])
   @@index([isHot])
   @@index([doNotContact])
-
-  // NEW: helpful for AI-driven queries later
   @@index([lastSellerReplyIntent])
+}
+
+model AiPerformanceMetric {
+  id   String   @id @default(uuid())
+  date DateTime @unique
+
+  totalLeads         Int @default(0)
+  newLeads           Int @default(0)
+  contactedLeads     Int @default(0)
+  negotiatingLeads   Int @default(0)
+  underContractLeads Int @default(0)
+  closedLeads        Int @default(0)
+
+  sellerReplies     Int   @default(0)
+  aiClassifications Int   @default(0)
+  avgConfidence     Float @default(0)
+
+  humanApprovalsNeeded Int @default(0)
+  suggestedReplies     Int @default(0)
+  dncCount             Int @default(0)
+  hotLeads             Int @default(0)
+
+  automationScheduled Int @default(0)
+  automationIdle      Int @default(0)
+
+  staleNewLeads    Int @default(0)
+  overdueFollowUps Int @default(0)
+
+  systemWarnings Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([date])
+  @@index([createdAt])
+}
+
+model AiJob {
+  id           String    @id @default(uuid())
+  status       String    @default("started")
+  startedAt    DateTime  @default(now())
+  completedAt  DateTime?
+  errorMessage String?
+
+  actions AiJobAction[]
+  logs    AiJobLog[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([startedAt])
+  @@index([completedAt])
+}
+
+model AiJobAction {
+  id        String   @id @default(uuid())
+  jobId     String
+  action    String
+  count     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  job AiJob @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@index([jobId])
+  @@index([action])
+}
+
+model AiJobLog {
+  id        String   @id @default(uuid())
+  jobId     String
+  level     String   @default("info")
+  message   String
+  createdAt DateTime @default(now())
+
+  job AiJob @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@index([jobId])
+  @@index([createdAt])
+}
+
+model AiMemoryEvent {
+  id                 String   @id @default(uuid())
+  leadId             String?
+  jobId              String?
+  actionId           String?
+  eventType          String
+  source             String
+  sellerReply        String?
+  aiSuggestedReply   String?
+  humanFinalReply    String?
+  approvalDecision   String?
+  messageChannel     String?
+  messageStatus      String?
+  sellerIntent       String?
+  sellerSentiment    String?
+  confidence         Float?
+  outcome            String?
+  metadata           Json?
+  createdAt          DateTime @default(now())
+
+  @@index([leadId])
+  @@index([jobId])
+  @@index([actionId])
+  @@index([eventType])
+  @@index([source])
+  @@index([createdAt])
+}
+
+model AiLearningRecommendation {
+  id                 String    @id @default(uuid())
+  type               String
+  title              String
+  description        String
+  recommendationData Json?
+  applicationPlan    Json?
+  confidence         Float     @default(0)
+  status             String    @default("pending")
+  createdAt          DateTime  @default(now())
+  reviewedAt         DateTime?
+  appliedAt          DateTime?
+  autoPromotable     Boolean   @default(false)
+  promotedAt         DateTime?
+
+  @@index([type])
+  @@index([status])
+  @@index([createdAt])
+  @@index([promotedAt])
+}
+
+enum BuyerActivityEventType {
+  deal_sent
+  deal_viewed
+  deal_opened
+  link_clicked
+  responded
+  replied
+  requested_details
+  offer_made
+  deal_closed
+  deal_passed
+  unsubscribed_or_inactive
+}
+
+enum BuyerTier {
+  A
+  B
+  C
+  D
+}
+
+model Buyer {
+  id                 String @id @default(uuid())
+  name               String
+  phone              String?
+  email              String?
+  preferredLocations Json?
+  priceRangeMin      Int?
+  priceRangeMax      Int?
+  propertyTypes      Json?
+  financingType      String?
+  tier               BuyerTier @default(D)
+  preferredDealSize  Int?
+  preferredCondition String?
+  source             String?
+  tags               Json?
+  buyerQualityScore  Int @default(0)
+  lastActiveAt       DateTime?
+  activityCount      Int @default(0)
+  meaningfulActivityCount Int @default(0)
+  lastMeaningfulActivityAt DateTime?
+  isActive           Boolean @default(false)
+  qualityReasons     Json?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  activities BuyerActivity[]
+
+  @@index([createdAt])
+  @@index([phone])
+  @@index([email])
+  @@index([priceRangeMin, priceRangeMax])
+  @@index([financingType])
+  @@index([tier])
+  @@index([preferredDealSize])
+  @@index([source])
+  @@index([buyerQualityScore])
+  @@index([lastActiveAt])
+  @@index([lastMeaningfulActivityAt])
+  @@index([isActive])
+}
+
+model BuyerActivity {
+  id        String                 @id @default(uuid())
+  buyerId   String
+  dealId    String?
+  eventType BuyerActivityEventType
+  metadata  Json?
+  createdAt DateTime               @default(now())
+
+  buyer Buyer @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+
+  @@index([buyerId])
+  @@index([dealId])
+  @@index([eventType])
+  @@index([createdAt])
 }

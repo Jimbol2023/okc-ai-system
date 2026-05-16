@@ -151,9 +151,137 @@ exports.Prisma.LeadScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.AiPerformanceMetricScalarFieldEnum = {
+  id: 'id',
+  date: 'date',
+  totalLeads: 'totalLeads',
+  newLeads: 'newLeads',
+  contactedLeads: 'contactedLeads',
+  negotiatingLeads: 'negotiatingLeads',
+  underContractLeads: 'underContractLeads',
+  closedLeads: 'closedLeads',
+  sellerReplies: 'sellerReplies',
+  aiClassifications: 'aiClassifications',
+  avgConfidence: 'avgConfidence',
+  humanApprovalsNeeded: 'humanApprovalsNeeded',
+  suggestedReplies: 'suggestedReplies',
+  dncCount: 'dncCount',
+  hotLeads: 'hotLeads',
+  automationScheduled: 'automationScheduled',
+  automationIdle: 'automationIdle',
+  staleNewLeads: 'staleNewLeads',
+  overdueFollowUps: 'overdueFollowUps',
+  systemWarnings: 'systemWarnings',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AiJobScalarFieldEnum = {
+  id: 'id',
+  status: 'status',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  errorMessage: 'errorMessage',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AiJobActionScalarFieldEnum = {
+  id: 'id',
+  jobId: 'jobId',
+  action: 'action',
+  count: 'count',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AiJobLogScalarFieldEnum = {
+  id: 'id',
+  jobId: 'jobId',
+  level: 'level',
+  message: 'message',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AiMemoryEventScalarFieldEnum = {
+  id: 'id',
+  leadId: 'leadId',
+  jobId: 'jobId',
+  actionId: 'actionId',
+  eventType: 'eventType',
+  source: 'source',
+  sellerReply: 'sellerReply',
+  aiSuggestedReply: 'aiSuggestedReply',
+  humanFinalReply: 'humanFinalReply',
+  approvalDecision: 'approvalDecision',
+  messageChannel: 'messageChannel',
+  messageStatus: 'messageStatus',
+  sellerIntent: 'sellerIntent',
+  sellerSentiment: 'sellerSentiment',
+  confidence: 'confidence',
+  outcome: 'outcome',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AiLearningRecommendationScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  title: 'title',
+  description: 'description',
+  recommendationData: 'recommendationData',
+  applicationPlan: 'applicationPlan',
+  confidence: 'confidence',
+  status: 'status',
+  createdAt: 'createdAt',
+  reviewedAt: 'reviewedAt',
+  appliedAt: 'appliedAt',
+  autoPromotable: 'autoPromotable',
+  promotedAt: 'promotedAt'
+};
+
+exports.Prisma.BuyerScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  phone: 'phone',
+  email: 'email',
+  preferredLocations: 'preferredLocations',
+  priceRangeMin: 'priceRangeMin',
+  priceRangeMax: 'priceRangeMax',
+  propertyTypes: 'propertyTypes',
+  financingType: 'financingType',
+  tier: 'tier',
+  preferredDealSize: 'preferredDealSize',
+  preferredCondition: 'preferredCondition',
+  source: 'source',
+  tags: 'tags',
+  buyerQualityScore: 'buyerQualityScore',
+  lastActiveAt: 'lastActiveAt',
+  activityCount: 'activityCount',
+  meaningfulActivityCount: 'meaningfulActivityCount',
+  lastMeaningfulActivityAt: 'lastMeaningfulActivityAt',
+  isActive: 'isActive',
+  qualityReasons: 'qualityReasons',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.BuyerActivityScalarFieldEnum = {
+  id: 'id',
+  buyerId: 'buyerId',
+  dealId: 'dealId',
+  eventType: 'eventType',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -165,6 +293,12 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
 exports.LeadStatus = exports.$Enums.LeadStatus = {
   new: 'new',
   contacted: 'contacted',
@@ -173,8 +307,37 @@ exports.LeadStatus = exports.$Enums.LeadStatus = {
   closed: 'closed'
 };
 
+exports.BuyerTier = exports.$Enums.BuyerTier = {
+  A: 'A',
+  B: 'B',
+  C: 'C',
+  D: 'D'
+};
+
+exports.BuyerActivityEventType = exports.$Enums.BuyerActivityEventType = {
+  deal_sent: 'deal_sent',
+  deal_viewed: 'deal_viewed',
+  deal_opened: 'deal_opened',
+  link_clicked: 'link_clicked',
+  responded: 'responded',
+  replied: 'replied',
+  requested_details: 'requested_details',
+  offer_made: 'offer_made',
+  deal_closed: 'deal_closed',
+  deal_passed: 'deal_passed',
+  unsubscribed_or_inactive: 'unsubscribed_or_inactive'
+};
+
 exports.Prisma.ModelName = {
-  Lead: 'Lead'
+  Lead: 'Lead',
+  AiPerformanceMetric: 'AiPerformanceMetric',
+  AiJob: 'AiJob',
+  AiJobAction: 'AiJobAction',
+  AiJobLog: 'AiJobLog',
+  AiMemoryEvent: 'AiMemoryEvent',
+  AiLearningRecommendation: 'AiLearningRecommendation',
+  Buyer: 'Buyer',
+  BuyerActivity: 'BuyerActivity'
 };
 
 /**

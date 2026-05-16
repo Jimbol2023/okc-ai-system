@@ -123,9 +123,137 @@ exports.Prisma.LeadScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.AiPerformanceMetricScalarFieldEnum = {
+  id: 'id',
+  date: 'date',
+  totalLeads: 'totalLeads',
+  newLeads: 'newLeads',
+  contactedLeads: 'contactedLeads',
+  negotiatingLeads: 'negotiatingLeads',
+  underContractLeads: 'underContractLeads',
+  closedLeads: 'closedLeads',
+  sellerReplies: 'sellerReplies',
+  aiClassifications: 'aiClassifications',
+  avgConfidence: 'avgConfidence',
+  humanApprovalsNeeded: 'humanApprovalsNeeded',
+  suggestedReplies: 'suggestedReplies',
+  dncCount: 'dncCount',
+  hotLeads: 'hotLeads',
+  automationScheduled: 'automationScheduled',
+  automationIdle: 'automationIdle',
+  staleNewLeads: 'staleNewLeads',
+  overdueFollowUps: 'overdueFollowUps',
+  systemWarnings: 'systemWarnings',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AiJobScalarFieldEnum = {
+  id: 'id',
+  status: 'status',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  errorMessage: 'errorMessage',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AiJobActionScalarFieldEnum = {
+  id: 'id',
+  jobId: 'jobId',
+  action: 'action',
+  count: 'count',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AiJobLogScalarFieldEnum = {
+  id: 'id',
+  jobId: 'jobId',
+  level: 'level',
+  message: 'message',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AiMemoryEventScalarFieldEnum = {
+  id: 'id',
+  leadId: 'leadId',
+  jobId: 'jobId',
+  actionId: 'actionId',
+  eventType: 'eventType',
+  source: 'source',
+  sellerReply: 'sellerReply',
+  aiSuggestedReply: 'aiSuggestedReply',
+  humanFinalReply: 'humanFinalReply',
+  approvalDecision: 'approvalDecision',
+  messageChannel: 'messageChannel',
+  messageStatus: 'messageStatus',
+  sellerIntent: 'sellerIntent',
+  sellerSentiment: 'sellerSentiment',
+  confidence: 'confidence',
+  outcome: 'outcome',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AiLearningRecommendationScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  title: 'title',
+  description: 'description',
+  recommendationData: 'recommendationData',
+  applicationPlan: 'applicationPlan',
+  confidence: 'confidence',
+  status: 'status',
+  createdAt: 'createdAt',
+  reviewedAt: 'reviewedAt',
+  appliedAt: 'appliedAt',
+  autoPromotable: 'autoPromotable',
+  promotedAt: 'promotedAt'
+};
+
+exports.Prisma.BuyerScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  phone: 'phone',
+  email: 'email',
+  preferredLocations: 'preferredLocations',
+  priceRangeMin: 'priceRangeMin',
+  priceRangeMax: 'priceRangeMax',
+  propertyTypes: 'propertyTypes',
+  financingType: 'financingType',
+  tier: 'tier',
+  preferredDealSize: 'preferredDealSize',
+  preferredCondition: 'preferredCondition',
+  source: 'source',
+  tags: 'tags',
+  buyerQualityScore: 'buyerQualityScore',
+  lastActiveAt: 'lastActiveAt',
+  activityCount: 'activityCount',
+  meaningfulActivityCount: 'meaningfulActivityCount',
+  lastMeaningfulActivityAt: 'lastMeaningfulActivityAt',
+  isActive: 'isActive',
+  qualityReasons: 'qualityReasons',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.BuyerActivityScalarFieldEnum = {
+  id: 'id',
+  buyerId: 'buyerId',
+  dealId: 'dealId',
+  eventType: 'eventType',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -137,6 +265,12 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
 exports.LeadStatus = exports.$Enums.LeadStatus = {
   new: 'new',
   contacted: 'contacted',
@@ -145,8 +279,37 @@ exports.LeadStatus = exports.$Enums.LeadStatus = {
   closed: 'closed'
 };
 
+exports.BuyerActivityEventType = exports.$Enums.BuyerActivityEventType = {
+  deal_sent: 'deal_sent',
+  deal_viewed: 'deal_viewed',
+  deal_opened: 'deal_opened',
+  link_clicked: 'link_clicked',
+  responded: 'responded',
+  replied: 'replied',
+  requested_details: 'requested_details',
+  offer_made: 'offer_made',
+  deal_closed: 'deal_closed',
+  deal_passed: 'deal_passed',
+  unsubscribed_or_inactive: 'unsubscribed_or_inactive'
+};
+
+exports.BuyerTier = exports.$Enums.BuyerTier = {
+  A: 'A',
+  B: 'B',
+  C: 'C',
+  D: 'D'
+};
+
 exports.Prisma.ModelName = {
-  Lead: 'Lead'
+  Lead: 'Lead',
+  AiPerformanceMetric: 'AiPerformanceMetric',
+  AiJob: 'AiJob',
+  AiJobAction: 'AiJobAction',
+  AiJobLog: 'AiJobLog',
+  AiMemoryEvent: 'AiMemoryEvent',
+  AiLearningRecommendation: 'AiLearningRecommendation',
+  Buyer: 'Buyer',
+  BuyerActivity: 'BuyerActivity'
 };
 /**
  * Create the Client
@@ -187,6 +350,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -195,13 +359,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider  = \"postgresql\"\n  url       = env(\"DATABASE_URL\")\n  directUrl = env(\"DIRECT_URL\")\n}\n\nenum LeadStatus {\n  new\n  contacted\n  negotiating\n  under_contract\n  closed\n}\n\nmodel Lead {\n  id              String @id @default(uuid())\n  name            String\n  phone           String\n  propertyAddress String\n  source          String\n\n  status   LeadStatus @default(new)\n  score    Int        @default(0)\n  priority String     @default(\"Low\")\n\n  notes   String?\n  payload String?\n\n  // ============================\n  // 📞 FOLLOW-UP AUTOMATION CORE\n  // ============================\n  lastContactedAt     DateTime?\n  nextFollowUpAt      DateTime?\n  followUpCount       Int       @default(0)\n  lastFollowUpMessage String?\n  automationStatus    String    @default(\"idle\")\n  isHot               Boolean   @default(false)\n\n  // ============================\n  // 🤖 AI REPLY BRAIN (Step 2B.7G)\n  // ============================\n  lastSellerReply           String?\n  lastSellerReplyAt         DateTime?\n  lastSellerReplyIntent     String?\n  lastSellerReplyConfidence Float?\n  suggestedReply            String?\n  requiresHumanApproval     Boolean   @default(false)\n\n  // ============================\n  // 🔐 DNC / OPT-OUT PROTECTION\n  // ============================\n  doNotContact Boolean   @default(false)\n  optOutReason String?\n  optOutAt     DateTime?\n\n  // ============================\n  // 📊 SYSTEM TIMESTAMPS\n  // ============================\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  // ============================\n  // ⚡ INDEXES (PERFORMANCE)\n  // ============================\n  @@unique([propertyAddress, phone])\n  @@index([createdAt])\n  @@index([score, createdAt])\n  @@index([status])\n  @@index([nextFollowUpAt])\n  @@index([isHot])\n  @@index([doNotContact])\n  // NEW: helpful for AI-driven queries later\n  @@index([lastSellerReplyIntent])\n}\n",
-  "inlineSchemaHash": "00d74fe545c97da05182eb5af859acaab99afbcf4d7d6c897632df10a34aaacf",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider  = \"postgresql\"\n  url       = env(\"DATABASE_URL\")\n  directUrl = env(\"DIRECT_URL\")\n}\n\nenum LeadStatus {\n  new\n  contacted\n  negotiating\n  under_contract\n  closed\n}\n\nmodel Lead {\n  id              String @id @default(uuid())\n  name            String\n  phone           String\n  propertyAddress String\n  source          String\n\n  status   LeadStatus @default(new)\n  score    Int        @default(0)\n  priority String     @default(\"Low\")\n\n  notes   String?\n  payload String?\n\n  // FOLLOW-UP AUTOMATION CORE\n  lastContactedAt     DateTime?\n  nextFollowUpAt      DateTime?\n  followUpCount       Int       @default(0)\n  lastFollowUpMessage String?\n  automationStatus    String    @default(\"idle\")\n  isHot               Boolean   @default(false)\n\n  // AI REPLY BRAIN\n  lastSellerReply           String?\n  lastSellerReplyAt         DateTime?\n  lastSellerReplyIntent     String?\n  lastSellerReplyConfidence Float?\n  suggestedReply            String?\n  requiresHumanApproval     Boolean   @default(false)\n\n  // DNC / OPT-OUT PROTECTION\n  doNotContact Boolean   @default(false)\n  optOutReason String?\n  optOutAt     DateTime?\n\n  // SYSTEM TIMESTAMPS\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  // INDEXES\n  @@unique([propertyAddress, phone])\n  @@index([createdAt])\n  @@index([score, createdAt])\n  @@index([status])\n  @@index([nextFollowUpAt])\n  @@index([isHot])\n  @@index([doNotContact])\n  @@index([lastSellerReplyIntent])\n}\n\nmodel AiPerformanceMetric {\n  id   String   @id @default(uuid())\n  date DateTime @unique\n\n  totalLeads         Int @default(0)\n  newLeads           Int @default(0)\n  contactedLeads     Int @default(0)\n  negotiatingLeads   Int @default(0)\n  underContractLeads Int @default(0)\n  closedLeads        Int @default(0)\n\n  sellerReplies     Int   @default(0)\n  aiClassifications Int   @default(0)\n  avgConfidence     Float @default(0)\n\n  humanApprovalsNeeded Int @default(0)\n  suggestedReplies     Int @default(0)\n  dncCount             Int @default(0)\n  hotLeads             Int @default(0)\n\n  automationScheduled Int @default(0)\n  automationIdle      Int @default(0)\n\n  staleNewLeads    Int @default(0)\n  overdueFollowUps Int @default(0)\n\n  systemWarnings Json?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@index([date])\n  @@index([createdAt])\n}\n\nmodel AiJob {\n  id           String    @id @default(uuid())\n  status       String    @default(\"started\")\n  startedAt    DateTime  @default(now())\n  completedAt  DateTime?\n  errorMessage String?\n\n  actions AiJobAction[]\n  logs    AiJobLog[]\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@index([status])\n  @@index([startedAt])\n  @@index([completedAt])\n}\n\nmodel AiJobAction {\n  id        String   @id @default(uuid())\n  jobId     String\n  action    String\n  count     Int      @default(0)\n  createdAt DateTime @default(now())\n\n  job AiJob @relation(fields: [jobId], references: [id], onDelete: Cascade)\n\n  @@index([jobId])\n  @@index([action])\n}\n\nmodel AiJobLog {\n  id        String   @id @default(uuid())\n  jobId     String\n  level     String   @default(\"info\")\n  message   String\n  createdAt DateTime @default(now())\n\n  job AiJob @relation(fields: [jobId], references: [id], onDelete: Cascade)\n\n  @@index([jobId])\n  @@index([createdAt])\n}\n\nmodel AiMemoryEvent {\n  id               String   @id @default(uuid())\n  leadId           String?\n  jobId            String?\n  actionId         String?\n  eventType        String\n  source           String\n  sellerReply      String?\n  aiSuggestedReply String?\n  humanFinalReply  String?\n  approvalDecision String?\n  messageChannel   String?\n  messageStatus    String?\n  sellerIntent     String?\n  sellerSentiment  String?\n  confidence       Float?\n  outcome          String?\n  metadata         Json?\n  createdAt        DateTime @default(now())\n\n  @@index([leadId])\n  @@index([jobId])\n  @@index([actionId])\n  @@index([eventType])\n  @@index([source])\n  @@index([createdAt])\n}\n\nmodel AiLearningRecommendation {\n  id                 String    @id @default(uuid())\n  type               String\n  title              String\n  description        String\n  recommendationData Json?\n  applicationPlan    Json?\n  confidence         Float     @default(0)\n  status             String    @default(\"pending\")\n  createdAt          DateTime  @default(now())\n  reviewedAt         DateTime?\n  appliedAt          DateTime?\n  autoPromotable     Boolean   @default(false)\n  promotedAt         DateTime?\n\n  @@index([type])\n  @@index([status])\n  @@index([createdAt])\n  @@index([promotedAt])\n}\n\nenum BuyerActivityEventType {\n  deal_sent\n  deal_viewed\n  deal_opened\n  link_clicked\n  responded\n  replied\n  requested_details\n  offer_made\n  deal_closed\n  deal_passed\n  unsubscribed_or_inactive\n}\n\nenum BuyerTier {\n  A\n  B\n  C\n  D\n}\n\nmodel Buyer {\n  id                       String    @id @default(uuid())\n  name                     String\n  phone                    String?\n  email                    String?\n  preferredLocations       Json?\n  priceRangeMin            Int?\n  priceRangeMax            Int?\n  propertyTypes            Json?\n  financingType            String?\n  tier                     BuyerTier @default(D)\n  preferredDealSize        Int?\n  preferredCondition       String?\n  source                   String?\n  tags                     Json?\n  buyerQualityScore        Int       @default(0)\n  lastActiveAt             DateTime?\n  activityCount            Int       @default(0)\n  meaningfulActivityCount  Int       @default(0)\n  lastMeaningfulActivityAt DateTime?\n  isActive                 Boolean   @default(false)\n  qualityReasons           Json?\n  createdAt                DateTime  @default(now())\n  updatedAt                DateTime  @updatedAt\n\n  activities BuyerActivity[]\n\n  @@index([createdAt])\n  @@index([phone])\n  @@index([email])\n  @@index([priceRangeMin, priceRangeMax])\n  @@index([financingType])\n  @@index([tier])\n  @@index([preferredDealSize])\n  @@index([source])\n  @@index([buyerQualityScore])\n  @@index([lastActiveAt])\n  @@index([lastMeaningfulActivityAt])\n  @@index([isActive])\n}\n\nmodel BuyerActivity {\n  id        String                 @id @default(uuid())\n  buyerId   String\n  dealId    String?\n  eventType BuyerActivityEventType\n  metadata  Json?\n  createdAt DateTime               @default(now())\n\n  buyer Buyer @relation(fields: [buyerId], references: [id], onDelete: Cascade)\n\n  @@index([buyerId])\n  @@index([dealId])\n  @@index([eventType])\n  @@index([createdAt])\n}\n",
+  "inlineSchemaHash": "949128568423a4564fbbd9e1f7bde01c578cc76858703a5639866cdf980e2165",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Lead\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"propertyAddress\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"source\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"LeadStatus\"},{\"name\":\"score\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"priority\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"notes\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"payload\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastContactedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"nextFollowUpAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"followUpCount\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"lastFollowUpMessage\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"automationStatus\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isHot\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"lastSellerReply\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastSellerReplyAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"lastSellerReplyIntent\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastSellerReplyConfidence\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"suggestedReply\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"requiresHumanApproval\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"doNotContact\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"optOutReason\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"optOutAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Lead\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"propertyAddress\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"source\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"LeadStatus\"},{\"name\":\"score\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"priority\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"notes\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"payload\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastContactedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"nextFollowUpAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"followUpCount\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"lastFollowUpMessage\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"automationStatus\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isHot\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"lastSellerReply\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastSellerReplyAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"lastSellerReplyIntent\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastSellerReplyConfidence\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"suggestedReply\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"requiresHumanApproval\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"doNotContact\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"optOutReason\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"optOutAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"AiPerformanceMetric\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"totalLeads\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"newLeads\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"contactedLeads\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"negotiatingLeads\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"underContractLeads\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"closedLeads\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"sellerReplies\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"aiClassifications\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"avgConfidence\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"humanApprovalsNeeded\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"suggestedReplies\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"dncCount\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"hotLeads\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"automationScheduled\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"automationIdle\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"staleNewLeads\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"overdueFollowUps\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"systemWarnings\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"AiJob\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"startedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"completedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"errorMessage\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"actions\",\"kind\":\"object\",\"type\":\"AiJobAction\",\"relationName\":\"AiJobToAiJobAction\"},{\"name\":\"logs\",\"kind\":\"object\",\"type\":\"AiJobLog\",\"relationName\":\"AiJobToAiJobLog\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"AiJobAction\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"jobId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"action\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"count\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"job\",\"kind\":\"object\",\"type\":\"AiJob\",\"relationName\":\"AiJobToAiJobAction\"}],\"dbName\":null},\"AiJobLog\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"jobId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"level\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"message\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"job\",\"kind\":\"object\",\"type\":\"AiJob\",\"relationName\":\"AiJobToAiJobLog\"}],\"dbName\":null},\"AiMemoryEvent\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"leadId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"jobId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"actionId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"eventType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"source\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sellerReply\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"aiSuggestedReply\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"humanFinalReply\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"approvalDecision\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"messageChannel\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"messageStatus\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sellerIntent\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sellerSentiment\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"confidence\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"outcome\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"metadata\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"AiLearningRecommendation\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"recommendationData\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"applicationPlan\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"confidence\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"reviewedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"appliedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"autoPromotable\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"promotedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Buyer\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"preferredLocations\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"priceRangeMin\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"priceRangeMax\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"propertyTypes\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"financingType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tier\",\"kind\":\"enum\",\"type\":\"BuyerTier\"},{\"name\":\"preferredDealSize\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"preferredCondition\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"source\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tags\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"buyerQualityScore\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"lastActiveAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"activityCount\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"meaningfulActivityCount\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"lastMeaningfulActivityAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"qualityReasons\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"activities\",\"kind\":\"object\",\"type\":\"BuyerActivity\",\"relationName\":\"BuyerToBuyerActivity\"}],\"dbName\":null},\"BuyerActivity\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"buyerId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"dealId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"eventType\",\"kind\":\"enum\",\"type\":\"BuyerActivityEventType\"},{\"name\":\"metadata\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"buyer\",\"kind\":\"object\",\"type\":\"Buyer\",\"relationName\":\"BuyerToBuyerActivity\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),
