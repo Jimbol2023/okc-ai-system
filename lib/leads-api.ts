@@ -2,7 +2,7 @@
 
 import { createStoredLead, deleteLeadFromLocalStorage, replaceLeadsInLocalStorage, type StoredLead, upsertLeadInLocalStorage } from "@/lib/leads-storage";
 import type { GeneratedLeadInput } from "@/lib/lead-generator";
-import type { ImportedLeadDraft } from "@/lib/list-importer";
+import { sanitizeImportedLeadPhone, validateImportedLeadDraft, type ImportedLeadDraft } from "@/lib/list-importer";
 import type { LeadIntakeInput } from "@/lib/validations/lead";
 
 async function parseJsonResponse<T>(response: Response): Promise<T> {
@@ -87,7 +87,18 @@ export async function createGeneratedLeads(generatedLeads: GeneratedLeadInput[])
 }
 
 export async function createImportedLeads(importedLeads: ImportedLeadDraft[]) {
-  const payload = importedLeads.map((lead) =>
+  const sanitizedLeads = importedLeads.map((lead) => ({
+    ...lead,
+    phone: sanitizeImportedLeadPhone(lead.phone),
+    propertyAddress: lead.propertyAddress.trim()
+  }));
+  const invalidLeads = sanitizedLeads.filter((lead) => validateImportedLeadDraft(lead).length > 0);
+
+  if (invalidLeads.length > 0) {
+    throw new Error("Imported leads must include a property address and phone.");
+  }
+
+  const payload = sanitizedLeads.map((lead) =>
     createStoredLead({
       firstName: lead.firstName,
       lastName: lead.lastName,

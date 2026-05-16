@@ -6,6 +6,22 @@ import { createImportedLeads, fetchLeads } from "@/lib/leads-api";
 import type { StoredLead } from "@/lib/leads-storage";
 import { parseLeadImportCsv, type ImportedLeadPreview } from "@/lib/list-importer";
 
+function getImportLeadStatus(lead: ImportedLeadPreview) {
+  if (lead.validationErrors.length > 0) {
+    return "Invalid";
+  }
+
+  return lead.duplicate ? "Duplicate" : "Ready";
+}
+
+function getImportLeadStatusClass(lead: ImportedLeadPreview) {
+  if (lead.validationErrors.length > 0) {
+    return "bg-[#f8d7da] text-[#9f1d2f]";
+  }
+
+  return lead.duplicate ? "bg-[#f6e8cc] text-[#9a6a1a]" : "bg-[#dcefe3] text-[#2d6a4f]";
+}
+
 export default function DashboardImporterPage() {
   const [fileName, setFileName] = useState("");
   const [previewLeads, setPreviewLeads] = useState<ImportedLeadPreview[]>([]);
@@ -24,7 +40,8 @@ export default function DashboardImporterPage() {
   }, []);
 
   const duplicateCount = previewLeads.filter((lead) => lead.duplicate).length;
-  const importableLeads = previewLeads.filter((lead) => !lead.duplicate);
+  const invalidCount = previewLeads.filter((lead) => lead.validationErrors.length > 0).length;
+  const importableLeads = previewLeads.filter((lead) => !lead.duplicate && lead.validationErrors.length === 0);
 
   async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -47,6 +64,8 @@ export default function DashboardImporterPage() {
 
       if (parsedLeads.length === 0) {
         setFormError("No usable rows were found in that CSV file.");
+      } else if (parsedLeads.some((lead) => lead.validationErrors.length > 0)) {
+        setFormError("Some rows are missing a property address or phone. Fix those rows before importing them.");
       }
     } catch {
       setFormError("Unable to read that CSV file. Please try another file.");
@@ -57,7 +76,7 @@ export default function DashboardImporterPage() {
 
   async function handleImportLeads() {
     if (importableLeads.length === 0) {
-      setFormError("There are no importable leads in the current preview.");
+      setFormError("There are no valid importable leads in the current preview.");
       return;
     }
 
@@ -122,6 +141,7 @@ export default function DashboardImporterPage() {
             <span className="rounded-full bg-[#e7eef5] px-3 py-1 text-[#355066]">Rows: {previewLeads.length}</span>
             <span className="rounded-full bg-[#dcefe3] px-3 py-1 text-[#2d6a4f]">Importing: {importableLeads.length}</span>
             <span className="rounded-full bg-[#f6e8cc] px-3 py-1 text-[#9a6a1a]">Duplicates: {duplicateCount}</span>
+            <span className="rounded-full bg-[#f8d7da] px-3 py-1 text-[#9f1d2f]">Invalid: {invalidCount}</span>
           </div>
         </div>
 
@@ -159,12 +179,19 @@ export default function DashboardImporterPage() {
                       <td className="px-4 py-3">{lead.parcelId || "—"}</td>
                       <td className="px-4 py-3">
                         <span
-                          className={`inline-flex rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] ${
-                            lead.duplicate ? "bg-[#f6e8cc] text-[#9a6a1a]" : "bg-[#dcefe3] text-[#2d6a4f]"
-                          }`}
+                          className={`inline-flex rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] ${getImportLeadStatusClass(
+                            lead
+                          )}`}
                         >
-                          {lead.duplicate ? "Duplicate" : "Ready"}
+                          {getImportLeadStatus(lead)}
                         </span>
+                        {lead.validationErrors.length > 0 ? (
+                          <ul className="mt-2 space-y-1 text-xs leading-5 text-red-700">
+                            {lead.validationErrors.map((error) => (
+                              <li key={error}>{error}</li>
+                            ))}
+                          </ul>
+                        ) : null}
                       </td>
                     </tr>
                   ))}
@@ -183,13 +210,20 @@ export default function DashboardImporterPage() {
                       <p className="mt-1 text-sm text-muted">{lead.propertyAddress || "No property address provided"}</p>
                     </div>
                     <span
-                      className={`inline-flex rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] ${
-                        lead.duplicate ? "bg-[#f6e8cc] text-[#9a6a1a]" : "bg-[#dcefe3] text-[#2d6a4f]"
-                      }`}
+                      className={`inline-flex rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] ${getImportLeadStatusClass(
+                        lead
+                      )}`}
                     >
-                      {lead.duplicate ? "Duplicate" : "Ready"}
+                      {getImportLeadStatus(lead)}
                     </span>
                   </div>
+                  {lead.validationErrors.length > 0 ? (
+                    <ul className="mt-3 space-y-1 text-xs leading-5 text-red-700">
+                      {lead.validationErrors.map((error) => (
+                        <li key={error}>{error}</li>
+                      ))}
+                    </ul>
+                  ) : null}
 
                   <div className="mt-4 space-y-2 text-sm text-[#173447]">
                     <p>

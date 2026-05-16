@@ -36,6 +36,7 @@ export type ImportedLeadDraft = {
 
 export type ImportedLeadPreview = ImportedLeadDraft & {
   duplicate: boolean;
+  validationErrors: string[];
 };
 
 function normalizeHeader(header: string) {
@@ -122,8 +123,34 @@ function normalizePropertyAddress(value: string) {
   return value.trim().toLowerCase();
 }
 
+export function sanitizeImportedLeadPhone(value: string) {
+  return value.trim().replace(/\D/g, "");
+}
+
 function normalizePhone(value: string) {
-  return value.replace(/\D/g, "");
+  return sanitizeImportedLeadPhone(value);
+}
+
+export function validateImportedLeadDraft(lead: ImportedLeadDraft) {
+  const errors: string[] = [];
+
+  if (!lead.propertyAddress.trim()) {
+    errors.push("Property address is required.");
+  }
+
+  if (!sanitizeImportedLeadPhone(lead.phone)) {
+    errors.push("Phone is required.");
+  }
+
+  return errors;
+}
+
+function sanitizeImportedLeadDraft(lead: ImportedLeadDraft): ImportedLeadDraft {
+  return {
+    ...lead,
+    propertyAddress: lead.propertyAddress.trim(),
+    phone: sanitizeImportedLeadPhone(lead.phone)
+  };
 }
 
 export function isImportedLeadDuplicate(existingLeads: StoredLead[], importedLead: ImportedLeadDraft) {
@@ -185,9 +212,12 @@ export function parseLeadImportCsv(csvText: string, existingLeads: StoredLead[])
         importedLead.lastName = importedLead.lastName || splitName.lastName;
       }
 
+      const sanitizedLead = sanitizeImportedLeadDraft(importedLead);
+
       return {
-        ...importedLead,
-        duplicate: isImportedLeadDuplicate(existingLeads, importedLead)
+        ...sanitizedLead,
+        duplicate: isImportedLeadDuplicate(existingLeads, sanitizedLead),
+        validationErrors: validateImportedLeadDraft(sanitizedLead)
       } satisfies ImportedLeadPreview;
     })
     .filter((lead) =>
