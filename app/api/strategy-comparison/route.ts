@@ -39,6 +39,7 @@ const strategyComparisonSchema = z.object({
   askingPrice: optionalNumberSchema.refine((value) => value === null || value >= 0, "Asking price cannot be negative."),
   arv: optionalNumberSchema.refine((value) => value === null || value >= 0, "ARV cannot be negative."),
   estimatedRepairs: optionalNumberSchema.refine((value) => value === null || value >= 0, "Estimated repairs cannot be negative."),
+  availableCapital: optionalNumberSchema.refine((value) => value === null || value >= 0, "Available capital cannot be negative."),
   monthlyRent: optionalNumberSchema.refine((value) => value === null || value >= 0, "Monthly rent cannot be negative."),
   mortgageBalance: optionalNumberSchema.refine((value) => value === null || value >= 0, "Mortgage balance cannot be negative."),
   sellerMotivation: optionalTextSchema,

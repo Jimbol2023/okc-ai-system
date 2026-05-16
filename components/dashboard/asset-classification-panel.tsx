@@ -59,11 +59,11 @@ type StrategyDecision = {
   portfolioFit: string;
 };
 
-type StrategyComparison = {
-  bestStrategy: string | null;
-  recommendationStrength: string;
-  strategies: Array<{
+type StrategyComparisonStrategy = {
     strategy: string;
+    isViable: boolean;
+    viabilityReason: string;
+    category: string;
     score: number;
     roiScore: number;
     riskScore: number;
@@ -71,11 +71,39 @@ type StrategyComparison = {
     capitalEfficiencyScore: number;
     executionDifficultyScore: number;
     confidenceScore: number;
+    volatilityScore: number;
+    volatilityExplanation: string;
+    confidenceExplanation: string;
     totalComparisonScore: number;
     pros: string[];
     cons: string[];
     tradeOffs: string[];
+};
+
+type StrategyComparison = {
+  bestStrategy: string | null;
+  recommendationStrength: string;
+  strategies: StrategyComparisonStrategy[];
+  viableStrategies: StrategyComparisonStrategy[];
+  excludedStrategies: StrategyComparisonStrategy[];
+  categoryWinners: Array<{
+    category: string;
+    bestStrategy: string | null;
+    explanation: string;
   }>;
+  scenarios: Record<string, {
+    name: string;
+    bestStrategy: string | null;
+    recommendationStrength: string;
+    topStrategies: Array<{
+      strategy: string;
+      adjustedScore: number;
+      explanation: string;
+    }>;
+    warnings: string[];
+  }>;
+  investorSummary: string;
+  confidenceExplanation: string;
   comparisons: Array<{
     strategyA: string;
     strategyB: string;
@@ -462,6 +490,66 @@ export function AssetClassificationPanel() {
             <p className="text-xs font-semibold uppercase tracking-wide text-muted">Comparison summary</p>
             <p className="text-sm leading-6 text-muted">{strategyComparison.summary}</p>
           </div>
+          <div className="space-y-1 md:col-span-3">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted">Investor summary</p>
+            <p className="text-sm leading-6 text-muted">{strategyComparison.investorSummary}</p>
+          </div>
+          <div className="space-y-1 md:col-span-3">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted">Confidence explanation</p>
+            <p className="text-sm leading-6 text-muted">{strategyComparison.confidenceExplanation}</p>
+          </div>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted">Viable strategies</p>
+            <div className="mt-2 space-y-2">
+              {strategyComparison.viableStrategies.slice(0, 4).map((strategy) => (
+                <div key={strategy.strategy} className="rounded-md border border-border px-3 py-2 text-sm">
+                  <p className="font-medium text-[#173447]">{formatLabel(strategy.strategy)}</p>
+                  <p className="text-muted">{formatLabel(strategy.category)} | Volatility {strategy.volatilityScore}/100</p>
+                </div>
+              ))}
+              {strategyComparison.viableStrategies.length === 0 ? <p className="text-sm text-muted">None passed the viability filter.</p> : null}
+            </div>
+          </div>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted">Excluded strategies</p>
+            <div className="mt-2 space-y-2">
+              {strategyComparison.excludedStrategies.slice(0, 4).map((strategy) => (
+                <div key={strategy.strategy} className="rounded-md border border-border px-3 py-2 text-sm">
+                  <p className="font-medium text-[#173447]">{formatLabel(strategy.strategy)}</p>
+                  <p className="text-muted">{strategy.viabilityReason}</p>
+                </div>
+              ))}
+              {strategyComparison.excludedStrategies.length === 0 ? <p className="text-sm text-muted">None excluded.</p> : null}
+            </div>
+          </div>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted">Category winners</p>
+            <div className="mt-2 space-y-2">
+              {strategyComparison.categoryWinners.filter((winner) => winner.bestStrategy).slice(0, 4).map((winner) => (
+                <div key={winner.category} className="rounded-md border border-border px-3 py-2 text-sm">
+                  <p className="font-medium text-[#173447]">{formatLabel(winner.category)}</p>
+                  <p className="text-muted">{winner.bestStrategy ? formatLabel(winner.bestStrategy) : "None"}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="md:col-span-3">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted">Scenario simulation</p>
+            <div className="mt-2 grid gap-2 md:grid-cols-3">
+              {Object.values(strategyComparison.scenarios).map((scenario) => (
+                <div key={scenario.name} className="rounded-md border border-border px-3 py-2 text-sm">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="font-medium text-[#173447]">{formatLabel(scenario.name)}</p>
+                    <span className="text-muted">{formatLabel(scenario.recommendationStrength)}</span>
+                  </div>
+                  <p className="text-muted">Best: {scenario.bestStrategy ? formatLabel(scenario.bestStrategy) : "None"}</p>
+                  {scenario.topStrategies[0] ? (
+                    <p className="text-muted">Adjusted score {scenario.topStrategies[0].adjustedScore}/100</p>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          </div>
           <div className="md:col-span-3">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted">Top strategy comparison</p>
             <div className="mt-2 grid gap-2 md:grid-cols-3">
@@ -473,6 +561,7 @@ export function AssetClassificationPanel() {
                   </div>
                   <p className="text-muted">ROI {strategy.roiScore} | Risk {strategy.riskScore} | Speed {strategy.speedScore}</p>
                   <p className="text-muted">Capital {strategy.capitalEfficiencyScore} | Confidence {strategy.confidenceScore}</p>
+                  <p className="text-muted">Volatility {strategy.volatilityScore} | {strategy.isViable ? "Viable" : "Excluded"}</p>
                 </div>
               ))}
             </div>
