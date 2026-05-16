@@ -1,3 +1,5 @@
+import { AssetClassificationPanel } from "@/components/dashboard/asset-classification-panel";
+
 export default function DashboardAnalyzerPage() {
   return (
     <div className="space-y-4">
@@ -5,6 +7,7 @@ export default function DashboardAnalyzerPage() {
       <p className="max-w-2xl text-sm leading-6 text-muted md:text-base">
         This route is reserved for underwriting inputs, repair estimates, MAO calculations, and assignment fee analysis.
       </p>
+      <AssetClassificationPanel />
     </div>
   );
 }
