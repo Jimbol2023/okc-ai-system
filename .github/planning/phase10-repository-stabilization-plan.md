@@ -55,4 +55,5 @@ Reason: unrelated runtime/application modifications, generated Prisma diffs, man
 - Stabilization review is evidence and gating only.
 - Broad commit is not ready while unrelated runtime/app and generated artifact risks remain.
 - Docs-only staging may become ready only with explicit path isolation and staged-diff review.
+- Absorb-group planning candidates covering CI scope, execution boundaries, human approval, legacy runtime separation, runtime enablement/migration, and survivability remain subordinate to this stabilization canon; they are disposition inputs only and do not gain canon status, cleanup authority, runtime authority, CI authority, provider authority, deployment authority, or execution authority.
 - Do not include: runtime enablement, app/runtime fixes, providers, adapters, deployment paths, credentials, OAuth, APIs, fetch/axios, Prisma/Supabase changes, background jobs, autonomous repository mutation, automatic staging, automatic commits, destructive cleanup, or execution systems.
