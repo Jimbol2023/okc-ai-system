@@ -4,6 +4,7 @@ import {
   getUnauthorizedApiResponse,
   isAuthenticatedRequest
 } from "@/lib/auth";
+import { logDealOutcomeMemory, logAiMemoryEvent } from "@/lib/ai-memory-logger";
 import { getDbLeadById, updateDbLeadStatus } from "@/lib/leads-db";
 import type { LeadStatus } from "@/lib/leads-storage";
 
@@ -63,6 +64,38 @@ export async function PATCH(request: Request, context: RouteContext) {
       leadId,
       nextStatus as LeadStatus
     );
+    await logDealOutcomeMemory({
+      leadId,
+      outcome: nextStatus,
+      source: "lead_status_update",
+      metadata: {
+        whatHappened: "Lead pipeline status changed.",
+        previousStatus: existingLead.status,
+        nextStatus,
+        result: nextStatus,
+        nextBestAction:
+          nextStatus === "closed"
+            ? "analyze_conversion"
+            : nextStatus === "under_contract"
+              ? "track_contract_progress"
+              : "continue_pipeline_follow_up",
+      },
+    });
+
+    if (nextStatus === "contacted") {
+      await logAiMemoryEvent({
+        leadId,
+        eventType: "follow_up_completed",
+        source: "lead_status_update",
+        outcome: "contacted",
+        metadata: {
+          whatHappened: "Lead was marked contacted.",
+          previousStatus: existingLead.status,
+          nextStatus,
+          nextBestAction: "monitor_seller_response",
+        },
+      });
+    }
 
     return NextResponse.json({
       ok: true,
