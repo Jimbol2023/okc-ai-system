@@ -1,4 +1,5 @@
 import type { CorridorScoreBreakdown, CorridorWarning } from "./corridor-intelligence-types";
+import type { PhaseRSurvivabilityIntelligenceRecord } from "./phase-r-survivability-intelligence-contract";
 import { calculateCorridorConfidence, createCorridorWarning, normalizeCorridorScore } from "./corridor-intelligence-utils";
 
 export type StrategicTerritoryDefenseClassification = "fragile" | "exposed" | "defensible" | "resilient" | "institutional_grade";
@@ -49,6 +50,12 @@ export type StrategicTerritoryDefenseExplainability = {
   weaknesses: string[];
   risks: string[];
   assumptions: string[];
+};
+
+export type StrategicTerritoryDefenseSurvivabilityContractRecord = PhaseRSurvivabilityIntelligenceRecord & {
+  readonly aggregationMetadata: PhaseRSurvivabilityIntelligenceRecord["aggregationMetadata"] & {
+    readonly moduleName: "strategic-territory-defense-intelligence";
+  };
 };
 
 export type StrategicTerritoryDefenseResult = {
