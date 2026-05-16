@@ -8,6 +8,7 @@ import { createGeneratedLeads, fetchLeads } from "@/lib/leads-api";
 import { fetchRealLeads } from "@/lib/real-leads";
 import type { StoredLead } from "@/lib/leads-storage";
 import { StatCard } from "@/components/shared/stat-card";
+import BuyerIntelligencePanel from "@/components/dashboard/buyer-intelligence-panel";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -205,6 +206,8 @@ export default function DashboardPage() {
         <StatCard label="Tracked properties" value={String(openLeadCount)} helper="Lead-linked opportunities under review" />
         <StatCard label="Lead sources" value="6" helper="Website, imports, and AI-generated discovery" />
       </div>
+
+      <BuyerIntelligencePanel />
 
       <section className="rounded-[1.5rem] border border-border bg-surface p-6">
         <h2 className="text-xl font-semibold text-primary">Suggested operator workflow</h2>
