@@ -174,9 +174,9 @@ const buildAreaAssessments = (
       baseScore: input.auditPreview ? 72 : 44,
       description: "Evaluates whether existing read-only dashboard preview context supports durable governance visibility.",
       visibleSignals: [
-        ...(input.auditPreview ? [input.auditPreview.previewNotice, input.auditPreview.sourceLabel] : []),
-        ...(auditResult ? [`Audit classification visible: ${auditResult.auditClassification}.`] : []),
-      ],
+              ...(input.auditPreview ? [input.auditPreview.previewNotice, input.auditPreview.sourceLabel] : []),
+              ...(auditResult ? [`Audit classification visible: ${auditResult.auditClassification}.`] : []),
+            ].filter((signal): signal is string => typeof signal === "string" && signal.length > 0),
       blindSpots: input.auditPreview ? [] : ["Read-only governance audit preview was not supplied."],
       recommendedHumanReview: "Review dashboard preview visibility before future dashboard growth.",
       factors: [`Audit preview supplied: ${Boolean(input.auditPreview)}.`],

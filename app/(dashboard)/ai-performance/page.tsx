@@ -17,6 +17,8 @@ import {
   type AiPerformanceRate,
 } from "@/lib/ai-performance-engine";
 
+export const dynamic = "force-dynamic";
+
 function getSeverityStyles(severity: string) {
   switch (severity) {
     case "critical":
