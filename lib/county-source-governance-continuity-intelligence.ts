@@ -367,7 +367,7 @@ const getRecommendations = (
     });
   }
 
-  if (classification !== "durable_continuity" && classification !== "stable_with_monitoring") {
+  if (classification !== "stable_with_monitoring") {
     recommendations.push({
       recommendationType: "restrict_planning",
       description: "Restrict advisory planning while continuity remains unverified, fragile, or churn-prone.",
