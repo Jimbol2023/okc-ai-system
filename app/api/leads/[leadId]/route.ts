@@ -110,6 +110,7 @@ export async function GET(request: Request, context: RouteContext) {
       followUpCount: dbLead.followUpCount,
       lastFollowUpMessage: dbLead.lastFollowUpMessage,
       automationStatus: dbLead.automationStatus,
+      approvalStatus: dbLead.approvalStatus,
       isHot: dbLead.isHot,
     };
 
@@ -225,6 +226,7 @@ export async function PATCH(request: Request, context: RouteContext) {
           followUpCount: dbLead.followUpCount,
           lastFollowUpMessage: dbLead.lastFollowUpMessage,
           automationStatus: dbLead.automationStatus,
+          approvalStatus: dbLead.approvalStatus,
           isHot: dbLead.isHot,
         }
       : updatedLead;
