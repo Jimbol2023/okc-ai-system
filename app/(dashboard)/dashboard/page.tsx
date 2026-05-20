@@ -11,6 +11,7 @@ import { StatCard } from "@/components/shared/stat-card";
 import SystemReadinessPanel from "@/components/dashboard/system-readiness-panel";
 import BuyerIntelligencePanel from "@/components/dashboard/buyer-intelligence-panel";
 import { SystemHealthSafetyBar } from "@/components/dashboard/system-health-safety-bar";
+import { ActivityAuditPreviewPanel } from "@/components/dashboard/activity-audit-preview-panel";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -130,6 +131,12 @@ export default function DashboardPage() {
         pendingFollowUpCount={pendingFollowUpCount}
         isLoadingLeads={isLoadingLeads}
         isAutomationRunning={isAutomationRunning}
+      />
+
+      <ActivityAuditPreviewPanel
+        leadCount={openLeadCount}
+        pendingFollowUpCount={pendingFollowUpCount}
+        isLoadingLeads={isLoadingLeads}
       />
 
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
