@@ -1,12 +1,13 @@
 import type { Route } from "next";
 import Link from "next/link";
-import { BarChart3, Building2, HousePlus, LayoutGrid, Lock, Search, Shield, Upload, Users } from "lucide-react";
+import { BarChart3, Building2, ClipboardCheck, HousePlus, LayoutGrid, Lock, Search, Shield, Upload, Users } from "lucide-react";
 
 import { getAuthenticatedAdmin } from "@/lib/auth";
 
 const navItems = [
   { href: "/dashboard" as Route, label: "Overview", icon: LayoutGrid },
   { href: "/dashboard/leads" as Route, label: "Leads", icon: Users },
+  { href: "/dashboard/approvals" as Route, label: "Approvals", icon: ClipboardCheck },
   { href: "/dashboard/research" as Route, label: "Research", icon: Search },
   { href: "/dashboard/security-review" as Route, label: "Security", icon: Shield },
   { href: "/dashboard/production-readiness" as Route, label: "Hardening", icon: Lock },
