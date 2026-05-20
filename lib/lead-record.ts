@@ -61,8 +61,19 @@ function createDefaultStoredLead(record: PrismaLead): StoredLead {
 }
 
 export function dbLeadToStoredLead(record: PrismaLead): StoredLead {
+  const approvalMetadataFields = {
+    suggestedReply: record.suggestedReply,
+    approvalStatus: record.approvalStatus,
+    doNotContact: record.doNotContact,
+    requiresHumanApproval: record.requiresHumanApproval,
+    lastSellerReply: record.lastSellerReply
+  };
+
   if (!record.payload) {
-    return createDefaultStoredLead(record);
+    return {
+      ...createDefaultStoredLead(record),
+      ...approvalMetadataFields
+    };
   }
 
   try {
@@ -76,10 +87,14 @@ export function dbLeadToStoredLead(record: PrismaLead): StoredLead {
       source: record.source,
       status: record.status === "contacted" ? "contacted" : "new",
       score: record.score,
-      priority: record.priority === "High" || record.priority === "Medium" ? record.priority : "Low"
+      priority: record.priority === "High" || record.priority === "Medium" ? record.priority : "Low",
+      ...approvalMetadataFields
     };
   } catch {
-    return createDefaultStoredLead(record);
+    return {
+      ...createDefaultStoredLead(record),
+      ...approvalMetadataFields
+    };
   }
 }
 
