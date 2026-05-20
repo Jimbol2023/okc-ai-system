@@ -1,3 +1,4 @@
+import { LEAD_SOURCE_TAGS, normalizeLeadSourceTag } from "@/lib/lead-source";
 import type { StoredLead } from "@/lib/leads-storage";
 
 const SUPPORTED_IMPORT_COLUMNS = [
@@ -13,7 +14,8 @@ const SUPPORTED_IMPORT_COLUMNS = [
   "mailingAddress",
   "county",
   "parcelId",
-  "situationDetails"
+  "situationDetails",
+  "source"
 ] as const;
 
 type SupportedImportColumn = (typeof SUPPORTED_IMPORT_COLUMNS)[number];
@@ -32,6 +34,7 @@ export type ImportedLeadDraft = {
   county: string;
   parcelId: string;
   situationDetails: string;
+  source: string;
 };
 
 export type ImportedLeadPreview = ImportedLeadDraft & {
@@ -115,7 +118,8 @@ function createEmptyImportedLeadDraft(): ImportedLeadDraft {
     mailingAddress: "",
     county: "",
     parcelId: "",
-    situationDetails: ""
+    situationDetails: "",
+    source: "manual_import"
   };
 }
 
@@ -157,7 +161,8 @@ function sanitizeImportedLeadDraft(lead: ImportedLeadDraft): ImportedLeadDraft {
   return {
     ...lead,
     propertyAddress: lead.propertyAddress.trim(),
-    phone: sanitizeImportedLeadPhone(lead.phone)
+    phone: sanitizeImportedLeadPhone(lead.phone),
+    source: normalizeLeadSourceTag(lead.source)
   };
 }
 
@@ -242,7 +247,10 @@ export function parseLeadImportCsv(csvText: string, existingLeads: StoredLead[])
         lead.mailingAddress,
         lead.county,
         lead.parcelId,
-        lead.situationDetails
+        lead.situationDetails,
+        lead.source
       ].some((value) => value.trim())
     );
 }
+
+export { LEAD_SOURCE_TAGS };

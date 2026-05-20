@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { createImportedLeads, fetchLeads } from "@/lib/leads-api";
+import { formatLeadSourceTag, LEAD_SOURCE_TAGS, type LeadSourceTag } from "@/lib/lead-source";
 import type { StoredLead } from "@/lib/leads-storage";
 import { hasRequiredImportedLeadFields, parseLeadImportCsv, type ImportedLeadPreview } from "@/lib/list-importer";
 
@@ -29,6 +30,7 @@ export default function DashboardImporterPage() {
   const [formError, setFormError] = useState<string | null>(null);
   const [isImporting, setIsImporting] = useState(false);
   const [existingLeads, setExistingLeads] = useState<StoredLead[]>([]);
+  const [defaultSource, setDefaultSource] = useState<LeadSourceTag>("manual_import");
 
   useEffect(() => {
     async function loadLeads() {
@@ -61,7 +63,10 @@ export default function DashboardImporterPage() {
 
     try {
       const csvText = await file.text();
-      const parsedLeads = parseLeadImportCsv(csvText, existingLeads);
+      const parsedLeads = parseLeadImportCsv(csvText, existingLeads).map((lead) => ({
+        ...lead,
+        source: lead.source === "manual_import" ? defaultSource : lead.source
+      }));
 
       setFileName(file.name);
       setPreviewLeads(parsedLeads);
@@ -128,6 +133,21 @@ export default function DashboardImporterPage() {
           />
         </label>
 
+        <label className="mt-4 block">
+          <span className="mb-2 block text-sm font-medium text-primary">Default source for rows without a source column</span>
+          <select
+            value={defaultSource}
+            onChange={(event) => setDefaultSource(event.target.value as LeadSourceTag)}
+            className="w-full rounded-2xl border border-border bg-white px-4 py-3 text-sm text-foreground"
+          >
+            {LEAD_SOURCE_TAGS.map((source) => (
+              <option key={source} value={source}>
+                {formatLeadSourceTag(source)}
+              </option>
+            ))}
+          </select>
+        </label>
+
         {fileName ? <p className="mt-3 text-sm text-[#173447]">Loaded file: {fileName}</p> : null}
         {formError ? <p className="mt-3 text-sm text-red-700">{formError}</p> : null}
         {importMessage ? <p className="mt-3 text-sm text-success">{importMessage}</p> : null}
@@ -163,6 +183,7 @@ export default function DashboardImporterPage() {
                     <th className="px-4 py-3">Phone</th>
                     <th className="px-4 py-3">Email</th>
                     <th className="px-4 py-3">Property Address</th>
+                    <th className="px-4 py-3">Source</th>
                     <th className="px-4 py-3">City / State</th>
                     <th className="px-4 py-3">County</th>
                     <th className="px-4 py-3">Parcel ID</th>
@@ -178,6 +199,7 @@ export default function DashboardImporterPage() {
                       <td className="px-4 py-3">{lead.phone || "—"}</td>
                       <td className="px-4 py-3">{lead.email || "—"}</td>
                       <td className="px-4 py-3">{lead.propertyAddress || "—"}</td>
+                      <td className="px-4 py-3">{formatLeadSourceTag(lead.source)}</td>
                       <td className="px-4 py-3">{[lead.city, lead.state].filter(Boolean).join(", ") || "—"}</td>
                       <td className="px-4 py-3">{lead.county || "—"}</td>
                       <td className="px-4 py-3">{lead.parcelId || "—"}</td>
@@ -235,6 +257,9 @@ export default function DashboardImporterPage() {
                     </p>
                     <p>
                       <span className="font-semibold">Email:</span> {lead.email || "—"}
+                    </p>
+                    <p>
+                      <span className="font-semibold">Source:</span> {formatLeadSourceTag(lead.source)}
                     </p>
                     <p>
                       <span className="font-semibold">Location:</span> {[lead.city, lead.state, lead.zipCode].filter(Boolean).join(" ") || "—"}
