@@ -10,8 +10,11 @@ import {
   type DropResult,
 } from "@hello-pangea/dnd";
 
+import { getActiveDistressFlags } from "@/lib/distress-flags";
 import { deleteLead, fetchLeads } from "@/lib/leads-api";
+import { formatLeadSourceTag } from "@/lib/lead-source";
 import type { LeadStatus, StoredLead } from "@/lib/leads-storage";
+import { analyzeRevenuePipelineLead } from "@/lib/revenue-pipeline";
 
 const PIPELINE_STATUSES: LeadStatus[] = [
   "new",
@@ -36,12 +39,45 @@ type LeadWithAIStatus = StoredLead & {
   lastSellerReply?: string | null;
   doNotContact?: boolean | null;
   isHot?: boolean | null;
+  approvalStatus?: string | null;
+  nextFollowUpAt?: string | null;
+  automationStatus?: string | null;
 };
 
 type AIBadgeData = {
   label: string;
   className: string;
 };
+
+type LeadFilter =
+  | "all"
+  | "high_score"
+  | "hot"
+  | "needs_review"
+  | "overdue_high_score"
+  | "approved_not_contacted"
+  | "blocked_dnc"
+  | "low_quality";
+
+type LeadSort = "score_desc" | "newest" | "follow_up_due" | "priority";
+
+const LEAD_FILTERS: Array<{ value: LeadFilter; label: string }> = [
+  { value: "all", label: "All" },
+  { value: "high_score", label: "High Score" },
+  { value: "hot", label: "Hot" },
+  { value: "needs_review", label: "Needs Review" },
+  { value: "overdue_high_score", label: "Overdue High Score" },
+  { value: "approved_not_contacted", label: "Approved Not Contacted" },
+  { value: "blocked_dnc", label: "Blocked / DNC" },
+  { value: "low_quality", label: "Low Quality" },
+];
+
+const LEAD_SORTS: Array<{ value: LeadSort; label: string }> = [
+  { value: "score_desc", label: "Score Descending" },
+  { value: "newest", label: "Newest" },
+  { value: "follow_up_due", label: "Follow-Up Due" },
+  { value: "priority", label: "Priority" },
+];
 
 function getAIStatusBadges(lead: StoredLead): AIBadgeData[] {
   const l = lead as LeadWithAIStatus;
@@ -72,6 +108,20 @@ function getAIStatusBadges(lead: StoredLead): AIBadgeData[] {
     badges.push({
       label: "Hot Lead",
       className: "border-purple-300 bg-purple-100 text-purple-700",
+    });
+  }
+
+  if (l.approvalStatus === "approved_for_outreach") {
+    badges.push({
+      label: "Approved",
+      className: "border-blue-300 bg-blue-100 text-blue-700",
+    });
+  }
+
+  if (l.approvalStatus === "rejected") {
+    badges.push({
+      label: "Rejected",
+      className: "border-gray-300 bg-gray-100 text-gray-700",
     });
   }
 
@@ -108,9 +158,16 @@ function getNextAction(status: LeadStatus) {
 
 function isFollowUpDue(lead: StoredLead) {
   const leadWithDates = lead as StoredLead & {
-    lastContactedAt?: string | null;
+    lastContactedAt?: Date | string | null;
+    nextFollowUpAt?: Date | string | null;
     updatedAt?: string | null;
   };
+
+  if (leadWithDates.nextFollowUpAt) {
+    const nextFollowUp = new Date(leadWithDates.nextFollowUpAt).getTime();
+
+    return !Number.isNaN(nextFollowUp) && nextFollowUp <= Date.now();
+  }
 
   const dateToCheck = leadWithDates.lastContactedAt ?? leadWithDates.updatedAt;
 
@@ -126,6 +183,90 @@ function isFollowUpDue(lead: StoredLead) {
 
 function shouldAutoFollowUp(lead: StoredLead) {
   return lead.status === "contacted" && lead.priority === "High";
+}
+
+function needsReview(lead: StoredLead) {
+  return lead.approvalStatus === "pending_review" || lead.approvalStatus === "needs_human_review" || Boolean(lead.requiresHumanApproval);
+}
+
+function isOutreachBlocked(lead: StoredLead) {
+  return Boolean(lead.doNotContact) || lead.automationStatus === "idle" || lead.approvalStatus === "rejected";
+}
+
+function isHighScore(lead: StoredLead) {
+  return lead.score >= 70 || lead.priority === "High";
+}
+
+function isLowQuality(lead: StoredLead) {
+  return lead.score < 40 && lead.priority === "Low";
+}
+
+function isApprovedNotContacted(lead: StoredLead) {
+  return lead.approvalStatus === "approved_for_outreach" && lead.status === "new";
+}
+
+function shouldWorkFirst(lead: StoredLead) {
+  return !isOutreachBlocked(lead) && (isHighScore(lead) || Boolean(lead.isHot)) && (needsReview(lead) || isFollowUpDue(lead) || lead.status === "new");
+}
+
+function getPriorityRank(lead: StoredLead) {
+  if (lead.priority === "High") return 3;
+  if (lead.priority === "Medium") return 2;
+  return 1;
+}
+
+function getTime(value?: Date | string | null) {
+  if (!value) return 0;
+  const time = new Date(value).getTime();
+  return Number.isNaN(time) ? 0 : time;
+}
+
+function getScoreTone(lead: StoredLead) {
+  if (lead.score >= 70) return "border-red-200 bg-red-50 text-red-700";
+  if (lead.score >= 40) return "border-amber-200 bg-amber-50 text-amber-700";
+  return "border-slate-200 bg-slate-50 text-slate-600";
+}
+
+function getCompactScoreExplanation(lead: StoredLead) {
+  const flags = getActiveDistressFlags(lead.distressFlags);
+
+  if (flags.length > 0) {
+    return flags.slice(0, 3).map((flag) => flag.label).join(", ");
+  }
+
+  return lead.scoreBreakdown || "No distress signals captured yet.";
+}
+
+function getMissingDataLabels(lead: StoredLead) {
+  return [
+    !lead.phone ? "phone" : "",
+    !lead.propertyAddress ? "address" : "",
+    !lead.city ? "city" : "",
+    !lead.zipCode ? "ZIP" : "",
+    !lead.source ? "source" : "",
+  ].filter(Boolean);
+}
+
+function matchesFilter(lead: StoredLead, filter: LeadFilter) {
+  if (filter === "high_score") return isHighScore(lead);
+  if (filter === "hot") return lead.priority === "High" || Boolean(lead.isHot);
+  if (filter === "needs_review") return needsReview(lead);
+  if (filter === "overdue_high_score") return isHighScore(lead) && isFollowUpDue(lead);
+  if (filter === "approved_not_contacted") return isApprovedNotContacted(lead);
+  if (filter === "blocked_dnc") return Boolean(lead.doNotContact) || isOutreachBlocked(lead);
+  if (filter === "low_quality") return isLowQuality(lead);
+
+  return true;
+}
+
+function sortLeads(leads: StoredLead[], sort: LeadSort) {
+  return [...leads].sort((a, b) => {
+    if (sort === "newest") return getTime(b.timestamp) - getTime(a.timestamp);
+    if (sort === "follow_up_due") return getTime(a.nextFollowUpAt) - getTime(b.nextFollowUpAt);
+    if (sort === "priority") return getPriorityRank(b) - getPriorityRank(a) || b.score - a.score;
+
+    return b.score - a.score;
+  });
 }
 
 function formatStatus(status: LeadStatus) {
@@ -160,6 +301,28 @@ function AIBadge({ badge }: { badge: AIBadgeData }) {
     <span className={`rounded border px-2 py-1 text-xs font-bold ${badge.className}`}>
       {badge.label}
     </span>
+  );
+}
+
+function ScoreBadge({ lead }: { lead: StoredLead }) {
+  return (
+    <span className={`rounded border px-2 py-1 text-xs font-bold ${getScoreTone(lead)}`}>
+      Lead Score {lead.score}
+    </span>
+  );
+}
+
+function RevenueActionSummary({ lead }: { lead: StoredLead }) {
+  const revenueLead = analyzeRevenuePipelineLead(lead);
+
+  return (
+    <div className="rounded border border-blue-100 bg-blue-50 px-3 py-2 text-xs leading-5 text-blue-950">
+      <p className="font-bold">Next money action: {revenueLead.nextMoneyAction.label}</p>
+      <p className="mt-1">{revenueLead.bucket.replaceAll("_", " ")} | Rank {revenueLead.monetizationRank}</p>
+      {revenueLead.blockers.length > 0 ? (
+        <p className="mt-1 font-semibold text-[#9f3a22]">Blocked: {revenueLead.blockers.slice(0, 2).join(", ")}</p>
+      ) : null}
+    </div>
   );
 }
 
@@ -199,6 +362,8 @@ async function patchLeadStatus(id: string, status: LeadStatus) {
 export default function DashboardLeadsPage() {
   const [leads, setLeads] = useState<StoredLead[]>([]);
   const [viewMode, setViewMode] = useState<"table" | "pipeline">("table");
+  const [activeFilter, setActiveFilter] = useState<LeadFilter>("all");
+  const [activeSort, setActiveSort] = useState<LeadSort>("score_desc");
   const [isLoading, setIsLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -267,10 +432,23 @@ export default function DashboardLeadsPage() {
     }
   }
 
+  const visibleLeads = sortLeads(
+    leads.filter((lead) => matchesFilter(lead, activeFilter)),
+    activeSort,
+  );
   const groupedLeads = PIPELINE_STATUSES.map((status) => ({
     status,
-    leads: leads.filter((lead) => lead.status === status),
+    leads: visibleLeads.filter((lead) => lead.status === status),
   }));
+  const newLeadCount = leads.filter((lead) => lead.status === "new").length;
+  const overdueLeadCount = leads.filter(isFollowUpDue).length;
+  const hotLeadCount = leads.filter((lead) => lead.priority === "High" || lead.isHot).length;
+  const needsReviewCount = leads.filter(needsReview).length;
+  const blockedOutreachCount = leads.filter(isOutreachBlocked).length;
+  const approvalPendingCount = leads.filter((lead) => lead.approvalStatus === "pending_review").length;
+  const workFirstCount = leads.filter(shouldWorkFirst).length;
+  const highPriorityCount = leads.filter(isHighScore).length;
+  const dncCount = leads.filter((lead) => lead.doNotContact).length;
 
   if (isLoading) return <div className="p-6">Loading...</div>;
   if (error) return <div className="p-6 text-red-600">{error}</div>;
@@ -307,8 +485,61 @@ export default function DashboardLeadsPage() {
         </div>
       </div>
 
+      <div className="mb-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {[
+          ["Work First", workFirstCount],
+          ["High Priority", highPriorityCount],
+          ["New", newLeadCount],
+          ["Overdue", overdueLeadCount],
+          ["Hot", hotLeadCount],
+          ["Needs Review", needsReviewCount],
+          ["Blocked", blockedOutreachCount],
+          ["DNC", dncCount],
+          ["Approval Pending", approvalPendingCount],
+        ].map(([label, value]) => (
+          <div key={label} className="rounded border bg-white p-3">
+            <p className="text-xs font-semibold uppercase text-gray-500">{label}</p>
+            <p className="mt-1 text-2xl font-semibold text-gray-900">{value}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="mb-4 grid gap-3 rounded border bg-white p-3 md:grid-cols-[1fr_240px]">
+        <div className="flex flex-wrap gap-2">
+          {LEAD_FILTERS.map((filter) => (
+            <button
+              key={filter.value}
+              type="button"
+              onClick={() => setActiveFilter(filter.value)}
+              className={`rounded border px-3 py-2 text-xs font-semibold ${
+                activeFilter === filter.value ? "border-gray-900 bg-gray-900 text-white" : "bg-white text-gray-700"
+              }`}
+            >
+              {filter.label}
+            </button>
+          ))}
+        </div>
+
+        <label className="block">
+          <span className="mb-1 block text-xs font-semibold uppercase text-gray-500">Sort</span>
+          <select
+            value={activeSort}
+            onChange={(event) => setActiveSort(event.target.value as LeadSort)}
+            className="w-full rounded border px-3 py-2 text-sm"
+          >
+            {LEAD_SORTS.map((sort) => (
+              <option key={sort.value} value={sort.value}>
+                {sort.label}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+
       {leads.length === 0 ? (
         <div>No leads yet.</div>
+      ) : visibleLeads.length === 0 ? (
+        <div className="rounded border bg-white p-4 text-sm text-gray-500">No leads match the current filter.</div>
       ) : viewMode === "pipeline" ? (
         <DragDropContext onDragEnd={handleDragEnd}>
           <div className="flex gap-4 overflow-x-auto pb-4">
@@ -378,7 +609,14 @@ export default function DashboardLeadsPage() {
                                 {/* STATUS + AI BADGES */}
 
                                 <div className="mt-3 flex flex-wrap gap-2">
+                                  <ScoreBadge lead={lead} />
+                                  <span className="rounded border border-gray-200 bg-white px-2 py-1 text-xs font-bold text-gray-700">
+                                    {lead.priority} Priority
+                                  </span>
                                   <StatusBadge status={lead.status} />
+                                  <span className="rounded border border-gray-200 bg-gray-50 px-2 py-1 text-xs font-bold text-gray-600">
+                                    {formatLeadSourceTag(lead.source)}
+                                  </span>
 
                                   {aiBadges.map((badge) => (
                                     <AIBadge
@@ -394,9 +632,23 @@ export default function DashboardLeadsPage() {
                                   </p>
                                 ) : null}
 
+                                <p className="mt-2 text-xs leading-5 text-gray-600">
+                                  {getCompactScoreExplanation(lead)}
+                                </p>
+
+                                {getMissingDataLabels(lead).length > 0 ? (
+                                  <p className="mt-2 text-[11px] font-semibold text-gray-500">
+                                    Missing: {getMissingDataLabels(lead).join(", ")}
+                                  </p>
+                                ) : null}
+
                                 <p className="mt-2 text-xs font-semibold text-blue-600">
                                   Next: {getNextAction(lead.status)}
                                 </p>
+
+                                <div className="mt-2">
+                                  <RevenueActionSummary lead={lead} />
+                                </div>
 
                                 {isFollowUpDue(lead) ? (
                                   <p className="mt-2 text-xs font-bold text-orange-600">
@@ -441,18 +693,24 @@ export default function DashboardLeadsPage() {
               <th className="p-3 text-left">Name</th>
               <th className="p-3 text-left">Phone</th>
               <th className="p-3 text-left">Address</th>
+              <th className="p-3 text-left">Lead Score</th>
+              <th className="p-3 text-left">Source</th>
               <th className="p-3 text-left">Status</th>
+              <th className="p-3 text-left">Approval</th>
+              <th className="p-3 text-left">Score Explanation</th>
               <th className="p-3 text-left">AI Status</th>
               <th className="p-3 text-left">Next Action</th>
+              <th className="p-3 text-left">Revenue Action</th>
               <th className="p-3 text-right">Actions</th>
             </tr>
           </thead>
 
           <tbody>
-            {leads.map((lead) => {
+            {visibleLeads.map((lead) => {
               const isUpdating = updatingId === lead.id;
               const isClosed = lead.status === "closed";
               const aiBadges = getAIStatusBadges(lead);
+              const missingData = getMissingDataLabels(lead);
 
               return (
                 <tr key={lead.id} className="border-b">
@@ -477,7 +735,29 @@ export default function DashboardLeadsPage() {
                   </td>
 
                   <td className="p-3">
+                    <div className="flex flex-col gap-1">
+                      <ScoreBadge lead={lead} />
+                      <span className="text-xs font-semibold text-gray-500">{lead.priority} Priority</span>
+                    </div>
+                  </td>
+
+                  <td className="p-3 text-xs font-semibold text-gray-600">
+                    {formatLeadSourceTag(lead.source)}
+                  </td>
+
+                  <td className="p-3">
                     <StatusBadge status={lead.status} />
+                  </td>
+
+                  <td className="p-3 text-xs font-semibold text-gray-600">
+                    {lead.approvalStatus?.replaceAll("_", " ") ?? "pending review"}
+                  </td>
+
+                  <td className="max-w-[260px] p-3 text-xs leading-5 text-gray-600">
+                    <p>{getCompactScoreExplanation(lead)}</p>
+                    {missingData.length > 0 ? (
+                      <p className="mt-1 font-semibold text-gray-500">Missing: {missingData.join(", ")}</p>
+                    ) : null}
                   </td>
 
                   <td className="p-3">
@@ -497,6 +777,10 @@ export default function DashboardLeadsPage() {
 
                   <td className="p-3 text-xs font-semibold text-blue-600">
                     {getNextAction(lead.status)}
+                  </td>
+
+                  <td className="max-w-[260px] p-3">
+                    <RevenueActionSummary lead={lead} />
                   </td>
 
                   <td className="space-x-2 p-3 text-right">
