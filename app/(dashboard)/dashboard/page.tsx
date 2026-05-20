@@ -221,8 +221,8 @@ export default function DashboardPage() {
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard label="Open leads" value={String(openLeadCount)} helper="Includes submitted, imported, and AI-generated leads" />
         <StatCard label="Follow-up tasks" value={String(pendingFollowUpCount)} helper="Pending scheduled outreach items" />
-        <StatCard label="Tracked properties" value={String(openLeadCount)} helper="Lead-linked opportunities under review" />
-        <StatCard label="Lead sources" value="6" helper="Website, imports, and AI-generated discovery" />
+        <StatCard label="Tracked opportunities" value={String(openLeadCount)} helper="Lead-linked opportunities under review" />
+        <StatCard label="Source coverage" value="6" helper="Website, imports, and AI-generated discovery" />
       </div>
 
       <BuyerIntelligencePanel />
