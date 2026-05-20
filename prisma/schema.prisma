@@ -37,6 +37,7 @@ model Lead {
   followUpCount       Int       @default(0)
   lastFollowUpMessage String?
   automationStatus    String    @default("idle")
+  approvalStatus      String    @default("pending_review")
   isHot               Boolean   @default(false)
 
   // AI REPLY BRAIN
@@ -62,9 +63,30 @@ model Lead {
   @@index([score, createdAt])
   @@index([status])
   @@index([nextFollowUpAt])
+  @@index([approvalStatus])
   @@index([isHot])
   @@index([doNotContact])
   @@index([lastSellerReplyIntent])
+}
+
+model SellerCallOutcome {
+  id                       String   @id @default(uuid())
+  leadId                   String
+  outcome                  String
+  callCompletedAt          DateTime
+  operatorSummary          String
+  sellerMotivationSignal   String
+  sellerTimelineSignal     String
+  propertyConditionSignal  String
+  priceExpectationSignal   String
+  manualNextStep           String
+  safetyFlags              Json
+  createdAt                DateTime @default(now())
+
+  @@index([leadId])
+  @@index([outcome])
+  @@index([callCompletedAt])
+  @@index([createdAt])
 }
 
 model AiPerformanceMetric {

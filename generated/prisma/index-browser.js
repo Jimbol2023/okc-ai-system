@@ -137,6 +137,7 @@ exports.Prisma.LeadScalarFieldEnum = {
   followUpCount: 'followUpCount',
   lastFollowUpMessage: 'lastFollowUpMessage',
   automationStatus: 'automationStatus',
+  approvalStatus: 'approvalStatus',
   isHot: 'isHot',
   lastSellerReply: 'lastSellerReply',
   lastSellerReplyAt: 'lastSellerReplyAt',
@@ -149,6 +150,21 @@ exports.Prisma.LeadScalarFieldEnum = {
   optOutAt: 'optOutAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SellerCallOutcomeScalarFieldEnum = {
+  id: 'id',
+  leadId: 'leadId',
+  outcome: 'outcome',
+  callCompletedAt: 'callCompletedAt',
+  operatorSummary: 'operatorSummary',
+  sellerMotivationSignal: 'sellerMotivationSignal',
+  sellerTimelineSignal: 'sellerTimelineSignal',
+  propertyConditionSignal: 'propertyConditionSignal',
+  priceExpectationSignal: 'priceExpectationSignal',
+  manualNextStep: 'manualNextStep',
+  safetyFlags: 'safetyFlags',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.AiPerformanceMetricScalarFieldEnum = {
@@ -279,6 +295,10 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
+};
+
 exports.Prisma.NullableJsonNullValueInput = {
   DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull
@@ -330,6 +350,7 @@ exports.BuyerActivityEventType = exports.$Enums.BuyerActivityEventType = {
 
 exports.Prisma.ModelName = {
   Lead: 'Lead',
+  SellerCallOutcome: 'SellerCallOutcome',
   AiPerformanceMetric: 'AiPerformanceMetric',
   AiJob: 'AiJob',
   AiJobAction: 'AiJobAction',
