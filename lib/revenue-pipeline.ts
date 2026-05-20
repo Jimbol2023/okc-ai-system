@@ -77,6 +77,14 @@ export type RevenuePipelineSummary = {
   buckets: Record<RevenueBucket, RevenuePipelineLead[]>;
 };
 
+type RevenuePipelinePayloadFields = StoredLead & {
+  doNotContact?: unknown;
+  approvalStatus?: unknown;
+  isHot?: unknown;
+  nextFollowUpAt?: Date | string | null;
+  lastContactedAt?: Date | string | null;
+};
+
 const REVENUE_BUCKETS: RevenueBucket[] = [
   "work_first",
   "hot_opportunities",
@@ -97,13 +105,13 @@ function getTime(value?: Date | string | null) {
   return Number.isNaN(time) ? 0 : time;
 }
 
-function isFollowUpDue(lead: StoredLead) {
+function isFollowUpDue(lead: RevenuePipelinePayloadFields) {
   const nextFollowUp = getTime(lead.nextFollowUpAt);
 
   return nextFollowUp > 0 && nextFollowUp <= Date.now();
 }
 
-function isFollowUpStale(lead: StoredLead) {
+function isFollowUpStale(lead: RevenuePipelinePayloadFields) {
   if (isFollowUpDue(lead)) return true;
 
   const lastContacted = getTime(lead.lastContactedAt);
@@ -183,7 +191,7 @@ function getMissingValueReasons(lead: StoredLead) {
   ].filter(Boolean);
 }
 
-function getBlockers(lead: StoredLead) {
+function getBlockers(lead: RevenuePipelinePayloadFields) {
   return [
     lead.doNotContact ? "DNC protection active" : "",
     lead.approvalStatus === "rejected" ? "Lead rejected" : "",
@@ -194,25 +202,25 @@ function getBlockers(lead: StoredLead) {
   ].filter(Boolean);
 }
 
-function isBlocked(lead: StoredLead, blockers = getBlockers(lead)) {
+function isBlocked(lead: RevenuePipelinePayloadFields, blockers = getBlockers(lead)) {
   return blockers.some((blocker) =>
     ["DNC protection active", "Lead rejected", "Missing phone", "Invalid phone"].includes(blocker),
   );
 }
 
-function isHighOpportunity(lead: StoredLead) {
+function isHighOpportunity(lead: RevenuePipelinePayloadFields) {
   return lead.score >= 70 || lead.priority === "High" || Boolean(lead.isHot);
 }
 
-function isBuyerReady(lead: StoredLead, blocked: boolean) {
+function isBuyerReady(lead: RevenuePipelinePayloadFields, blocked: boolean) {
   return !blocked && lead.approvalStatus === "approved_for_outreach" && isHighOpportunity(lead);
 }
 
-function isNearContract(lead: StoredLead, blocked: boolean) {
+function isNearContract(lead: RevenuePipelinePayloadFields, blocked: boolean) {
   return !blocked && (lead.status === "negotiating" || (isHighOpportunity(lead) && lead.approvalStatus === "approved_for_outreach"));
 }
 
-function getBottlenecks(lead: StoredLead, blockers: string[], missingValueReasons: string[]) {
+function getBottlenecks(lead: RevenuePipelinePayloadFields, blockers: string[], missingValueReasons: string[]) {
   const closingReadiness = analyzeClosingReadiness(lead);
 
   return [
@@ -227,7 +235,7 @@ function getBottlenecks(lead: StoredLead, blockers: string[], missingValueReason
   ].filter(Boolean);
 }
 
-function getNextMoneyAction(lead: StoredLead, blockers: string[], missingValueReasons: string[]): NextMoneyAction {
+function getNextMoneyAction(lead: RevenuePipelinePayloadFields, blockers: string[], missingValueReasons: string[]): NextMoneyAction {
   const safetyNote = "Guidance only. No outreach sent. Approval is not execution.";
   const closingReadiness = analyzeClosingReadiness(lead);
 
@@ -347,7 +355,7 @@ function getNextMoneyAction(lead: StoredLead, blockers: string[], missingValueRe
   };
 }
 
-function getBucket(lead: StoredLead, blocked: boolean, buyerReady: boolean, nearContract: boolean, bottlenecks: string[]): RevenueBucket {
+function getBucket(lead: RevenuePipelinePayloadFields, blocked: boolean, buyerReady: boolean, nearContract: boolean, bottlenecks: string[]): RevenueBucket {
   const closingReadiness = analyzeClosingReadiness(lead);
 
   if (blocked) return "blocked";
@@ -363,7 +371,7 @@ function getBucket(lead: StoredLead, blocked: boolean, buyerReady: boolean, near
   return "nurture";
 }
 
-function getRank(lead: StoredLead, bucket: RevenueBucket, blockers: string[], missingValueReasons: string[]) {
+function getRank(lead: RevenuePipelinePayloadFields, bucket: RevenueBucket, blockers: string[], missingValueReasons: string[]) {
   const bucketBoost: Record<RevenueBucket, number> = {
     under_contract: 115,
     closing_blocked: 105,
@@ -384,17 +392,18 @@ function getRank(lead: StoredLead, bucket: RevenueBucket, blockers: string[], mi
 }
 
 export function analyzeRevenuePipelineLead(lead: StoredLead): RevenuePipelineLead {
-  const closingReadiness = analyzeClosingReadiness(lead);
-  const blockers = getBlockers(lead);
-  const blocked = isBlocked(lead, blockers);
-  const missingValueReasons = getMissingValueReasons(lead);
-  const buyerReady = isBuyerReady(lead, blocked);
-  const nearContract = isNearContract(lead, blocked);
-  const bottlenecks = getBottlenecks(lead, blockers, missingValueReasons);
-  const bucket = getBucket(lead, blocked, buyerReady, nearContract, bottlenecks);
-  const nextMoneyAction = getNextMoneyAction(lead, blockers, missingValueReasons);
-  const estimatedValue = getEstimatedValue(lead);
-  const monetizationRank = getRank(lead, bucket, blockers, missingValueReasons);
+  const revenueLead = lead as RevenuePipelinePayloadFields;
+  const closingReadiness = analyzeClosingReadiness(revenueLead);
+  const blockers = getBlockers(revenueLead);
+  const blocked = isBlocked(revenueLead, blockers);
+  const missingValueReasons = getMissingValueReasons(revenueLead);
+  const buyerReady = isBuyerReady(revenueLead, blocked);
+  const nearContract = isNearContract(revenueLead, blocked);
+  const bottlenecks = getBottlenecks(revenueLead, blockers, missingValueReasons);
+  const bucket = getBucket(revenueLead, blocked, buyerReady, nearContract, bottlenecks);
+  const nextMoneyAction = getNextMoneyAction(revenueLead, blockers, missingValueReasons);
+  const estimatedValue = getEstimatedValue(revenueLead);
+  const monetizationRank = getRank(revenueLead, bucket, blockers, missingValueReasons);
 
   return {
     lead,

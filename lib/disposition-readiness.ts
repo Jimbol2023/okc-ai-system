@@ -42,6 +42,11 @@ export type DispositionReadiness = {
   safetyNotes: string[];
 };
 
+type DispositionPayloadFields = StoredLead & {
+  doNotContact?: unknown;
+  approvalStatus?: unknown;
+};
+
 function parseMoney(value?: string | number | null) {
   if (typeof value === "number") {
     return Number.isFinite(value) && value > 0 ? value : null;
@@ -73,7 +78,7 @@ function checklistItem(key: string, label: string, complete: boolean, reason: st
   };
 }
 
-function getChecklist(lead: StoredLead): DispositionChecklistItem[] {
+function getChecklist(lead: DispositionPayloadFields): DispositionChecklistItem[] {
   const arv = parseMoney(lead.analyzer?.arv);
   const repairs = parseMoney(lead.analyzer?.estimatedRepairs);
   const desiredProfit = parseMoney(lead.analyzer?.desiredProfit);
@@ -95,7 +100,7 @@ function getMissingFields(checklist: DispositionChecklistItem[]) {
   return checklist.filter((item) => item.status === "missing").map((item) => item.label);
 }
 
-function getBlockers(lead: StoredLead) {
+function getBlockers(lead: DispositionPayloadFields) {
   return [
     lead.doNotContact ? "DNC protection active" : "",
     lead.approvalStatus === "rejected" ? "Lead rejected" : "",
@@ -104,7 +109,7 @@ function getBlockers(lead: StoredLead) {
   ].filter(Boolean);
 }
 
-function getBottlenecks(lead: StoredLead, checklist: DispositionChecklistItem[], blockers: string[]) {
+function getBottlenecks(lead: DispositionPayloadFields, checklist: DispositionChecklistItem[], blockers: string[]) {
   const missing = getMissingFields(checklist);
 
   return [
@@ -120,7 +125,7 @@ function getBottlenecks(lead: StoredLead, checklist: DispositionChecklistItem[],
   ].filter(Boolean);
 }
 
-function getAssignmentReadiness(lead: StoredLead, blockers: string[], missingFields: string[]): AssignmentReadinessState {
+function getAssignmentReadiness(lead: DispositionPayloadFields, blockers: string[], missingFields: string[]): AssignmentReadinessState {
   if (blockers.length > 0) return "blocked";
   if (lead.status !== "under_contract" && lead.status !== "closed") return "needs_contract";
   if (missingFields.includes("ARV") || missingFields.includes("Repair estimate") || missingFields.includes("Estimated spread / assignment assumption")) return "needs_price_validation";
@@ -130,7 +135,7 @@ function getAssignmentReadiness(lead: StoredLead, blockers: string[], missingFie
   return "needs_buyer_match";
 }
 
-function scoreReadiness(lead: StoredLead, checklist: DispositionChecklistItem[], blockers: string[]) {
+function scoreReadiness(lead: DispositionPayloadFields, checklist: DispositionChecklistItem[], blockers: string[]) {
   const revenueLead = analyzeRevenuePipelineLead(lead);
   const completeItems = checklist.filter((item) => item.status === "complete").length;
   const reviewItems = checklist.filter((item) => item.status === "review_needed").length;
@@ -151,7 +156,7 @@ function getBuyerReadiness(score: number, blockers: string[], missingFields: str
 }
 
 function getNextAction(
-  lead: StoredLead,
+  lead: DispositionPayloadFields,
   buyerReadiness: BuyerReadinessState,
   assignmentReadiness: AssignmentReadinessState,
   blockers: string[],
@@ -237,14 +242,15 @@ function getNextAction(
 }
 
 export function analyzeDispositionReadiness(lead: StoredLead): DispositionReadiness {
-  const checklist = getChecklist(lead);
+  const dispositionLead = lead as DispositionPayloadFields;
+  const checklist = getChecklist(dispositionLead);
   const missingFields = getMissingFields(checklist);
-  const blockers = getBlockers(lead);
-  const bottlenecks = getBottlenecks(lead, checklist, blockers);
-  const assignmentReadiness = getAssignmentReadiness(lead, blockers, missingFields);
-  const buyerReadinessScore = scoreReadiness(lead, checklist, blockers);
+  const blockers = getBlockers(dispositionLead);
+  const bottlenecks = getBottlenecks(dispositionLead, checklist, blockers);
+  const assignmentReadiness = getAssignmentReadiness(dispositionLead, blockers, missingFields);
+  const buyerReadinessScore = scoreReadiness(dispositionLead, checklist, blockers);
   const buyerReadiness = getBuyerReadiness(buyerReadinessScore, blockers, missingFields);
-  const buyerSideNextAction = getNextAction(lead, buyerReadiness, assignmentReadiness, blockers, missingFields);
+  const buyerSideNextAction = getNextAction(dispositionLead, buyerReadiness, assignmentReadiness, blockers, missingFields);
 
   return {
     buyerReadiness,

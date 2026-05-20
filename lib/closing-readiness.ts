@@ -42,6 +42,8 @@ export type ClosingReadiness = {
 };
 
 type ClosingPayloadFields = StoredLead & {
+  doNotContact?: unknown;
+  approvalStatus?: unknown;
   sellerAgreementStatus?: unknown;
   sellerContractStatus?: unknown;
   contractStatus?: unknown;
