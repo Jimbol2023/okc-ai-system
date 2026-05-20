@@ -10,6 +10,7 @@ import type { StoredLead } from "@/lib/leads-storage";
 import { StatCard } from "@/components/shared/stat-card";
 import SystemReadinessPanel from "@/components/dashboard/system-readiness-panel";
 import BuyerIntelligencePanel from "@/components/dashboard/buyer-intelligence-panel";
+import { SystemHealthSafetyBar } from "@/components/dashboard/system-health-safety-bar";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -124,6 +125,13 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8">
+      <SystemHealthSafetyBar
+        leadCount={openLeadCount}
+        pendingFollowUpCount={pendingFollowUpCount}
+        isLoadingLeads={isLoadingLeads}
+        isAutomationRunning={isAutomationRunning}
+      />
+
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div className="space-y-3">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-muted">Internal Dashboard</p>
