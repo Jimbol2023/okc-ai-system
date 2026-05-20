@@ -43,6 +43,31 @@ export type LeadAnalyzer = {
   desiredProfit: string;
 };
 
+export type ApprovalHistoryItem = {
+  action: string;
+  fromStatus: string;
+  toStatus: string;
+  note?: string;
+  at: string;
+};
+
+export type MockOutreachHistoryItem = {
+  id: string;
+  at: string;
+  provider: "mock" | "not_called";
+  mode: "simulation" | "live_disabled";
+  simulated: boolean;
+  blocked: boolean;
+  sent: false;
+  wouldSend: false;
+  providerCalled?: false;
+  targetPhone?: string | null;
+  messagePreview?: string | null;
+  reasonCodes: string[];
+  reasons: string[];
+  missingRequirements: string[];
+};
+
 export type StoredLead = {
   id: string;
   timestamp: string;
@@ -69,6 +94,26 @@ export type StoredLead = {
   score: number;
   priority: "High" | "Medium" | "Low";
   scoreBreakdown: string;
+  lastContactedAt?: Date | string | null;
+  nextFollowUpAt?: Date | string | null;
+  followUpCount?: number;
+  lastFollowUpMessage?: string | null;
+  suggestedReply?: string | null;
+  automationStatus?: string | null;
+  approvalStatus?: "pending_review" | "approved_for_outreach" | "rejected" | "needs_human_review" | "follow_up_only" | string | null;
+  doNotContact?: boolean | null;
+  requiresHumanApproval?: boolean | null;
+  lastSellerReply?: string | null;
+  isHot?: boolean | null;
+  latestApprovalAction?: string | null;
+  latestApprovalNote?: string | null;
+  latestApprovalAt?: string | null;
+  approvalHistory?: ApprovalHistoryItem[];
+  latestMockOutreachAt?: string | null;
+  latestMockOutreachResult?: string | null;
+  latestMockOutreachMessage?: string | null;
+  latestMockOutreachBlockedReasons?: string[];
+  mockOutreachHistory?: MockOutreachHistoryItem[];
 };
 
 const ALLOWED_LEAD_STATUSES: readonly LeadStatus[] = [
