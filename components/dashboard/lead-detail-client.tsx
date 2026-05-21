@@ -65,6 +65,188 @@ type SellerCallOutcomesApiResponse = {
   error?: string;
 };
 
+type LeadDetailObservabilitySummary = {
+  revenueReadiness: string;
+  missingCriticalData: string[];
+  sellerCallStatus: string;
+  followUpSummary: string;
+  buyerPackageSummary: string;
+  blockedSummary: string;
+  humanReviewSummary: string;
+  opportunitySummary: string;
+  manualNextStep: string;
+};
+
+function hasValue(value?: string | null) {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+function formatSignal(value?: string | null) {
+  const normalizedValue = value?.trim();
+
+  return normalizedValue ? normalizedValue.replaceAll("_", " ") : "Not captured";
+}
+
+function getLatestSellerCallOutcome(outcomes: SellerCallOutcomeHistoryItem[]) {
+  return outcomes[0] ?? null;
+}
+
+function getMissingCriticalData(lead: Lead, latestOutcome: SellerCallOutcomeHistoryItem | null) {
+  const missing: string[] = [];
+
+  if (!hasValue(lead.propertyAddress)) missing.push("property address");
+  if (!hasValue(lead.phone)) missing.push("seller contact");
+  if (!hasValue(lead.source)) missing.push("lead source");
+  if (!latestOutcome || latestOutcome.sellerMotivationSignal === "not_captured") missing.push("seller motivation");
+  if (!latestOutcome || latestOutcome.sellerTimelineSignal === "not_captured") missing.push("seller timeline");
+
+  return missing;
+}
+
+function deriveLeadDetailObservability(
+  lead: Lead,
+  outcomes: SellerCallOutcomeHistoryItem[],
+): LeadDetailObservabilitySummary {
+  const latestOutcome = getLatestSellerCallOutcome(outcomes);
+  const missingCriticalData = getMissingCriticalData(lead, latestOutcome);
+  const dncOrGovernanceBlocked = lead.doNotContact === true || lead.approvalStatus === "rejected";
+  const humanReviewRequired =
+    lead.requiresHumanApproval === true ||
+    lead.approvalStatus === "needs_human_review" ||
+    lead.approvalStatus === "pending_review" ||
+    !lead.approvalStatus;
+  const strongSellerSignals =
+    latestOutcome?.outcome === "wants_offer" ||
+    latestOutcome?.outcome === "appointment_set" ||
+    latestOutcome?.sellerTimelineSignal === "strong" ||
+    latestOutcome?.sellerMotivationSignal === "strong";
+
+  return {
+    revenueReadiness: dncOrGovernanceBlocked
+      ? "Blocked for manual review"
+      : missingCriticalData.length > 0
+        ? "Needs missing data review"
+        : "Ready for manual operator review",
+    missingCriticalData,
+    sellerCallStatus: latestOutcome
+      ? `${formatSignal(latestOutcome.outcome)} captured; motivation ${formatSignal(latestOutcome.sellerMotivationSignal)}, timeline ${formatSignal(latestOutcome.sellerTimelineSignal)}.`
+      : "No seller call outcome captured yet.",
+    followUpSummary: latestOutcome
+      ? `Manual next step: ${formatSignal(latestOutcome.manualNextStep)}.`
+      : "No manual follow-up step captured yet.",
+    buyerPackageSummary:
+      lead.approvalStatus === "approved_for_outreach"
+        ? "Buyer package still requires human completeness review before sharing."
+        : "Buyer package readiness has not been confirmed.",
+    blockedSummary: dncOrGovernanceBlocked
+      ? "Do-not-proceed visibility: DNC, opt-out, rejected, or governance-blocked state is present."
+      : "No DNC or governance-blocked state is visible from current lead data.",
+    humanReviewSummary: humanReviewRequired
+      ? "Human review required before any seller or buyer-facing action."
+      : "Human review remains required for external-facing action even when this advisory status looks favorable.",
+    opportunitySummary: strongSellerSignals
+      ? "Near-contract or near-close advisory signal may exist; verify manually before next steps."
+      : "No near-contract or near-close advisory signal is visible from current lead data.",
+    manualNextStep: dncOrGovernanceBlocked
+      ? "Pause and review compliance or governance blockers before any external action."
+      : missingCriticalData.length > 0
+        ? "Fill missing critical lead data, then update seller call context manually."
+        : "Review seller context, buyer package completeness, and next manual follow-up outside automated execution.",
+  };
+}
+
+function LeadDetailObservabilityPanel({
+  lead,
+  outcomes,
+}: {
+  lead: Lead;
+  outcomes: SellerCallOutcomeHistoryItem[];
+}) {
+  const summary = deriveLeadDetailObservability(lead, outcomes);
+
+  return (
+    <section
+      aria-labelledby="lead-detail-observability-heading"
+      className="rounded-xl border border-slate-200 bg-white p-5"
+    >
+      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
+            Read-only observability
+          </p>
+          <h2 id="lead-detail-observability-heading" className="mt-1 text-xl font-bold text-slate-950">
+            Lead detail observability
+          </h2>
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+            Advisory lead-specific summary only. No message delivery, provider call, automation, persistence, or
+            runtime action is enabled by this panel.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+          <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-800">
+            Read only
+          </span>
+          <span className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-blue-800">
+            Advisory only
+          </span>
+          <span className="rounded-full border border-red-200 bg-red-50 px-3 py-1 text-red-800">
+            External action blocked
+          </span>
+        </div>
+      </div>
+
+      <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <div className="rounded border border-slate-200 bg-slate-50 p-3">
+          <p className="text-xs font-bold uppercase text-slate-500">Revenue readiness</p>
+          <p className="mt-1 text-sm font-semibold text-slate-900">{summary.revenueReadiness}</p>
+        </div>
+        <div className="rounded border border-slate-200 bg-slate-50 p-3">
+          <p className="text-xs font-bold uppercase text-slate-500">Seller call status</p>
+          <p className="mt-1 text-sm text-slate-700">{summary.sellerCallStatus}</p>
+        </div>
+        <div className="rounded border border-slate-200 bg-slate-50 p-3">
+          <p className="text-xs font-bold uppercase text-slate-500">Buyer package</p>
+          <p className="mt-1 text-sm text-slate-700">{summary.buyerPackageSummary}</p>
+        </div>
+        <div className="rounded border border-slate-200 bg-slate-50 p-3">
+          <p className="text-xs font-bold uppercase text-slate-500">Human review</p>
+          <p className="mt-1 text-sm text-slate-700">{summary.humanReviewSummary}</p>
+        </div>
+      </div>
+
+      <div className="mt-4 grid gap-3 text-sm lg:grid-cols-[1fr_1fr_1.2fr]">
+        <div className="rounded border border-amber-200 bg-amber-50 p-3 text-amber-950">
+          <p className="font-bold">Missing critical data</p>
+          {summary.missingCriticalData.length > 0 ? (
+            <ul className="mt-2 space-y-1" aria-label="Missing critical lead data">
+              {summary.missingCriticalData.map((item) => (
+                <li key={item}>! {item}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-2">No critical missing data is visible from current lead data.</p>
+          )}
+        </div>
+
+        <div className="rounded border border-red-200 bg-red-50 p-3 text-red-950">
+          <p className="font-bold">Blocked-state visibility</p>
+          <p className="mt-2">{summary.blockedSummary}</p>
+        </div>
+
+        <div className="rounded border border-slate-200 bg-slate-50 p-3 text-slate-800">
+          <p className="font-bold">Manual next step</p>
+          <p className="mt-2">{summary.followUpSummary}</p>
+          <p className="mt-2">{summary.opportunitySummary}</p>
+          <p className="mt-2 font-semibold">{summary.manualNextStep}</p>
+          <p className="mt-2 text-xs font-bold uppercase tracking-[0.08em] text-slate-500">
+            readOnly:true providerCalled:false sent:false liveExecutionAllowed:false
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* =============================
    COMPONENT
 ============================= */
@@ -308,6 +490,8 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
           </div>
         </div>
       </section>
+
+      <LeadDetailObservabilityPanel lead={lead} outcomes={sellerCallOutcomes} />
 
       <section className="rounded-xl border bg-white p-4">
         <h2 className="mb-2 text-lg font-bold">Lead Info</h2>
