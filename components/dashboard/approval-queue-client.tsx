@@ -107,6 +107,20 @@ type PendingConfirmation = {
   action: ApprovalQueueAction;
 };
 
+type ApprovalQueueObservabilitySummary = {
+  totalQueueItems: number;
+  reviewBacklogCount: number;
+  blockedCount: number;
+  governanceReviewRequiredCount: number;
+  humanReviewRequiredCount: number;
+  missingDataCount: number;
+  safetyReasonCount: number;
+  workloadSummary: string;
+  reviewReasonSummary: string;
+  safetyReasonSummary: string;
+  queueClassification: string;
+};
+
 const emptyDistressFlags: DistressFlags = {
   taxDelinquent: false,
   inheritedProperty: false,
@@ -189,6 +203,124 @@ function needsReview(lead: ApprovalQueueLead) {
 
 function shouldWorkFirst(lead: ApprovalQueueLead) {
   return !isBlocked(lead) && isHighScore(lead) && (needsReview(lead) || isFollowUpDue(lead) || lead.status === "new");
+}
+
+function hasMissingApprovalQueueData(lead: ApprovalQueueLead) {
+  return !lead.propertyAddress || !lead.phone || !lead.source;
+}
+
+function hasSafetyReason(lead: ApprovalQueueLead) {
+  return isBlocked(lead) || (lead.latestMockOutreachBlockedReasons?.length ?? 0) > 0;
+}
+
+function deriveApprovalQueueObservability(leads: ApprovalQueueLead[]): ApprovalQueueObservabilitySummary {
+  const reviewBacklogCount = leads.filter(
+    (lead) => needsReview(lead) || lead.approvalStatus === "pending_review" || lead.approvalStatus === "follow_up_only",
+  ).length;
+  const blockedCount = leads.filter(isBlocked).length;
+  const governanceReviewRequiredCount = leads.filter(
+    (lead) => lead.approvalStatus === "needs_human_review" || lead.requiresHumanApproval === true,
+  ).length;
+  const humanReviewRequiredCount = leads.filter(needsReview).length;
+  const missingDataCount = leads.filter(hasMissingApprovalQueueData).length;
+  const safetyReasonCount = leads.filter(hasSafetyReason).length;
+  const workFirstCount = leads.filter(shouldWorkFirst).length;
+  const overdueCount = leads.filter(isFollowUpDue).length;
+
+  return {
+    totalQueueItems: leads.length,
+    reviewBacklogCount,
+    blockedCount,
+    governanceReviewRequiredCount,
+    humanReviewRequiredCount,
+    missingDataCount,
+    safetyReasonCount,
+    workloadSummary:
+      leads.length === 0
+        ? "No approval queue records are visible."
+        : `${reviewBacklogCount} records need manual review across ${leads.length} queue records.`,
+    reviewReasonSummary:
+      workFirstCount > 0 || overdueCount > 0
+        ? `${workFirstCount} work-first records and ${overdueCount} overdue manual follow-ups are visible.`
+        : "No work-first or overdue manual follow-up pressure is visible.",
+    safetyReasonSummary:
+      blockedCount > 0 || safetyReasonCount > 0
+        ? `${blockedCount} blocked records and ${safetyReasonCount} safety reason summaries are visible as do-not-proceed signals.`
+        : "No blocked or safety reason summary is visible from current queue data.",
+    queueClassification:
+      blockedCount > 0 || governanceReviewRequiredCount > 0 || missingDataCount > 0
+        ? "Non-actionable review workload: resolve blockers, missing data, and governance review manually."
+        : "Non-actionable review workload: continue human review before any seller or buyer-facing action.",
+  };
+}
+
+function ApprovalQueueObservabilityPanel({ leads }: { leads: ApprovalQueueLead[] }) {
+  const summary = deriveApprovalQueueObservability(leads);
+  const metricItems = [
+    ["Review backlog", summary.reviewBacklogCount],
+    ["Blocked records", summary.blockedCount],
+    ["Governance review", summary.governanceReviewRequiredCount],
+    ["Missing data", summary.missingDataCount],
+  ];
+
+  return (
+    <section
+      aria-labelledby="approval-queue-observability-heading"
+      className="rounded-xl border border-slate-200 bg-white p-4"
+    >
+      <div className="grid gap-4 lg:grid-cols-[1.1fr_1fr]">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
+            Read-only observability
+          </p>
+          <h2 id="approval-queue-observability-heading" className="mt-1 text-lg font-bold text-slate-950">
+            Approval queue observability
+          </h2>
+          <p className="mt-2 text-sm leading-6 text-slate-600">
+            Approval review does not send messages, activate providers, or grant execution permission.
+            Human review remains required before any seller or buyer-facing action.
+          </p>
+        </div>
+
+        <div className="rounded border border-red-200 bg-red-50 p-3 text-sm text-red-950">
+          <p className="font-bold">Do-not-proceed visibility</p>
+          <p className="mt-2">
+            DNC, opt-out, blocked, rejected, incomplete-data, and governance-risk signals remain manual review
+            blockers. This panel adds no controls and performs no state changes.
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {metricItems.map(([label, value]) => (
+          <div key={label} className="rounded border border-slate-200 bg-slate-50 p-3">
+            <p className="text-xs font-bold uppercase text-slate-500">{label}</p>
+            <p className="mt-1 text-2xl font-semibold text-slate-950">{value}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-4 grid gap-3 text-sm lg:grid-cols-3">
+        <div className="rounded border border-slate-200 bg-slate-50 p-3 text-slate-800">
+          <p className="font-bold">Advisory workload</p>
+          <p className="mt-2">{summary.workloadSummary}</p>
+          <p className="mt-2">{summary.reviewReasonSummary}</p>
+        </div>
+        <div className="rounded border border-amber-200 bg-amber-50 p-3 text-amber-950">
+          <p className="font-bold">Safety reasons</p>
+          <p className="mt-2">{summary.safetyReasonSummary}</p>
+          <p className="mt-2">{summary.humanReviewRequiredCount} records currently show human-review-required visibility.</p>
+        </div>
+        <div className="rounded border border-blue-200 bg-blue-50 p-3 text-blue-950">
+          <p className="font-bold">Queue classification</p>
+          <p className="mt-2">{summary.queueClassification}</p>
+          <p className="mt-2 text-xs font-bold uppercase tracking-[0.08em] text-blue-900">
+            readOnly:true advisoryOnly:true simulationOnly:true approvalGrantsExecution:false
+          </p>
+        </div>
+      </div>
+    </section>
+  );
 }
 
 function getPriorityRank(lead: ApprovalQueueLead) {
@@ -348,6 +480,8 @@ export function ApprovalQueueClient() {
     <div className="space-y-6">
       {statusMessage ? <p className="rounded border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800">{statusMessage}</p> : null}
       {error ? <p className="rounded border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">{error}</p> : null}
+
+      <ApprovalQueueObservabilityPanel leads={leads} />
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {summaryItems.map(([label, value]) => (
