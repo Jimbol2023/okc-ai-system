@@ -267,6 +267,48 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
         &lt;- Back to leads
       </Link>
 
+      <section
+        aria-labelledby="lead-detail-manual-sop-heading"
+        className="rounded-xl border border-blue-100 bg-blue-50 p-4"
+      >
+        <div className="grid gap-4 lg:grid-cols-[1.1fr_1fr_1fr]">
+          <div>
+            <h2
+              id="lead-detail-manual-sop-heading"
+              className="text-lg font-bold text-blue-950"
+            >
+              Manual lead review only
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-blue-950">
+              Call sellers manually outside the app, then record the outcome here.
+              Human review is required before any seller or buyer-facing action.
+            </p>
+          </div>
+
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.12em] text-blue-900">
+              Do not proceed if
+            </p>
+            <ul className="mt-2 space-y-1 text-sm leading-6 text-blue-950" aria-label="Lead detail do not proceed conditions">
+              <li>! Lead data is incomplete.</li>
+              <li>! DNC or opt-out risk exists.</li>
+              <li>! Motivation or timeline is unclear.</li>
+              <li>! Buyer package is incomplete.</li>
+            </ul>
+          </div>
+
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.12em] text-blue-900">
+              Next safe manual action
+            </p>
+            <p className="mt-2 text-sm leading-6 text-blue-950">
+              Review missing data, confirm DNC/opt-out status, prepare seller call notes,
+              and prepare disposition packages manually after confirming buyer readiness.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section className="rounded-xl border bg-white p-4">
         <h2 className="mb-2 text-lg font-bold">Lead Info</h2>
 
