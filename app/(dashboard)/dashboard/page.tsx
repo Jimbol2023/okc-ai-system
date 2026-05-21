@@ -47,13 +47,18 @@ type AutomationDryRunPreview = {
 
 function getPendingFollowUpCount(leads: StoredLead[]) {
   return leads.reduce(
-    (count, lead) => count + lead.followUps.filter((followUp) => followUp.status === "pending").length,
+    (count, lead) => count + getLeadFollowUps(lead).filter((followUp) => followUp.status === "pending").length,
     0
   );
 }
 
+function getLeadFollowUps(lead: StoredLead) {
+  return Array.isArray(lead.followUps) ? lead.followUps : [];
+}
+
 function toManualRevenueMetricInput(lead: StoredLead) {
-  const pendingFollowUp = lead.followUps.find((followUp) => followUp.status === "pending");
+  const followUps = getLeadFollowUps(lead);
+  const pendingFollowUp = followUps.find((followUp) => followUp.status === "pending");
 
   return {
     ...lead,
@@ -63,7 +68,7 @@ function toManualRevenueMetricInput(lead: StoredLead) {
     timeline: lead.nextFollowUpAt ?? pendingFollowUp?.date ?? "",
     nextFollowUpAt: lead.nextFollowUpAt ?? pendingFollowUp?.date,
     manuallyReviewed: lead.approvalStatus !== "pending_review" && lead.approvalStatus !== "needs_human_review",
-    manualSellerCallRecorded: lead.followUps.some((followUp) => followUp.type === "call" && followUp.status === "completed"),
+    manualSellerCallRecorded: followUps.some((followUp) => followUp.type === "call" && followUp.status === "completed"),
     sellerOutcome: lead.lastSellerReply ?? lead.latestApprovalNote ?? "",
     buyerReady: lead.status === "under_contract" || lead.approvalStatus === "approved_for_outreach",
     buyerPackageComplete: lead.status === "under_contract" || lead.status === "closed",
