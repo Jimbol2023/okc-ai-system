@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 
-import { runAutomationCycle } from "@/lib/automation-agent";
 import { generateLeads } from "@/lib/lead-generator";
 import { createGeneratedLeads, fetchLeads } from "@/lib/leads-api";
 import { fetchRealLeads } from "@/lib/real-leads";
@@ -20,6 +19,31 @@ const queue = [
   "Create follow-up tasks for inactive prospects."
 ];
 
+type AutomationDryRunPreview = {
+  ok: boolean;
+  dryRun: true;
+  automationExecuted: false;
+  providerCalled: false;
+  sent: false;
+  wouldSendSms: false;
+  wouldSendEmail: false;
+  wouldMutateLead: false;
+  wouldCreateLeads: false;
+  reason: string;
+  safety: {
+    readOnly: true;
+    smsBlocked: true;
+    emailBlocked: true;
+    providerBlocked: true;
+    dbWritesBlocked: true;
+    leadCreationBlocked: true;
+    liveAutomationBlocked: true;
+  };
+  queuedAutomationActions: unknown[];
+  summary: string;
+  ranAt: string;
+};
+
 function getPendingFollowUpCount(leads: StoredLead[]) {
   return leads.reduce(
     (count, lead) => count + lead.followUps.filter((followUp) => followUp.status === "pending").length,
@@ -35,11 +59,9 @@ export default function DashboardPage() {
   const [realLeadsMessage, setRealLeadsMessage] = useState<string | null>(null);
   const [realLeadsError, setRealLeadsError] = useState<string | null>(null);
   const [isFetchingRealLeads, setIsFetchingRealLeads] = useState(false);
-  const [isAutomationRunning, setIsAutomationRunning] = useState(false);
-  const [automationLastRun, setAutomationLastRun] = useState<string | null>(null);
-  const [automationAddedCount, setAutomationAddedCount] = useState(0);
-  const [automationStatusMessage, setAutomationStatusMessage] = useState<string | null>(null);
-  const [automationHighPriorityCount, setAutomationHighPriorityCount] = useState(0);
+  const [isAutomationPreviewing, setIsAutomationPreviewing] = useState(false);
+  const [automationPreview, setAutomationPreview] = useState<AutomationDryRunPreview | null>(null);
+  const [automationPreviewError, setAutomationPreviewError] = useState<string | null>(null);
   const [isLoadingLeads, setIsLoadingLeads] = useState(true);
 
   async function refreshLeadCounts() {
@@ -98,31 +120,40 @@ export default function DashboardPage() {
     void refreshLeadCounts();
   }, []);
 
-  useEffect(() => {
-    if (!isAutomationRunning) {
-      return;
+  async function handlePreviewAutomationDryRun() {
+    setIsAutomationPreviewing(true);
+    setAutomationPreviewError(null);
+
+    try {
+      const response = await fetch("/api/automation", {
+        method: "POST",
+        cache: "no-store",
+        headers: {
+          Accept: "application/json",
+        },
+      });
+      const result = (await response.json()) as AutomationDryRunPreview;
+
+      if (
+        !response.ok ||
+        result.dryRun !== true ||
+        result.automationExecuted !== false ||
+        result.providerCalled !== false ||
+        result.sent !== false
+      ) {
+        throw new Error("Automation dry-run preview returned an unsafe response.");
+      }
+
+      setAutomationPreview(result);
+    } catch (error) {
+      setAutomationPreview(null);
+      setAutomationPreviewError(
+        error instanceof Error ? error.message : "Automation dry-run preview failed.",
+      );
+    } finally {
+      setIsAutomationPreviewing(false);
     }
-
-    async function runCycle() {
-      const result = await runAutomationCycle();
-      const leads = await refreshLeadCounts();
-
-      setOpenLeadCount(leads.length);
-      setPendingFollowUpCount(getPendingFollowUpCount(leads));
-      setAutomationLastRun(result.ranAt);
-      setAutomationAddedCount(result.addedCount);
-      setAutomationHighPriorityCount(result.highPriorityCount);
-      setAutomationStatusMessage(result.summary);
-    }
-
-    void runCycle();
-
-    const intervalId = window.setInterval(() => {
-      void runCycle();
-    }, 15000);
-
-    return () => window.clearInterval(intervalId);
-  }, [isAutomationRunning]);
+  }
 
   return (
     <div className="space-y-8">
@@ -130,7 +161,7 @@ export default function DashboardPage() {
         leadCount={openLeadCount}
         pendingFollowUpCount={pendingFollowUpCount}
         isLoadingLeads={isLoadingLeads}
-        isAutomationRunning={isAutomationRunning}
+        isAutomationRunning={isAutomationPreviewing}
       />
 
       <ActivityAuditPreviewPanel
@@ -151,14 +182,11 @@ export default function DashboardPage() {
         <div className="flex flex-wrap gap-2">
           <button
             type="button"
-            onClick={() => setIsAutomationRunning((current) => !current)}
-            className={`inline-flex min-h-11 items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold transition ${
-              isAutomationRunning
-                ? "border border-[#e8b7ae] bg-white text-[#9f3a22] hover:border-[#d19a8f]"
-                : "border border-border bg-white text-primary hover:border-primary/30 hover:text-primary-strong"
-            }`}
+            onClick={() => void handlePreviewAutomationDryRun()}
+            disabled={isAutomationPreviewing}
+            className="inline-flex min-h-11 items-center justify-center rounded-full border border-border bg-white px-5 py-2.5 text-sm font-semibold text-primary transition hover:border-primary/30 hover:text-primary-strong disabled:cursor-not-allowed disabled:opacity-70"
           >
-            {isAutomationRunning ? "Stop Automation" : "Start Automation"}
+            {isAutomationPreviewing ? "Previewing..." : "Preview Automation Dry Run"}
           </button>
           <button
             type="button"
@@ -190,31 +218,56 @@ export default function DashboardPage() {
           <div className="space-y-2">
             <h2 className="text-xl font-semibold text-primary">Automation Agent</h2>
             <p className="text-sm leading-6 text-muted">
-              Simulated background task runner for lead discovery and prioritization on a repeating cycle.
+              Manual dry-run preview for automation boundaries. No polling, live automation, provider call, SMS, email, or database mutation is executed here.
             </p>
           </div>
-          <span
-            className={`inline-flex w-fit rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] ${
-              isAutomationRunning ? "bg-[#dcefe3] text-[#2d6a4f]" : "bg-[#e7eef5] text-[#355066]"
-            }`}
-          >
-            {isAutomationRunning ? "Automation Running..." : "Automation Stopped"}
+          <span className="inline-flex w-fit rounded-full bg-[#e7eef5] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#355066]">
+            Dry Run Only
           </span>
         </div>
 
-        <div className="mt-5 grid gap-4 md:grid-cols-3">
+        <div className="mt-5 grid gap-4 md:grid-cols-4">
           <StatCard
-            label="Last Run"
-            value={automationLastRun ? new Intl.DateTimeFormat("en-US", { dateStyle: "short", timeStyle: "short" }).format(new Date(automationLastRun)) : "Not yet"}
-            helper="Most recent automation cycle"
+            label="Last Preview"
+            value={automationPreview ? new Intl.DateTimeFormat("en-US", { dateStyle: "short", timeStyle: "short" }).format(new Date(automationPreview.ranAt)) : "Not yet"}
+            helper="Manual dry-run preview only"
           />
-          <StatCard label="Leads Added" value={String(automationAddedCount)} helper="Added on the most recent cycle" />
-          <StatCard label="High Priority" value={String(automationHighPriorityCount)} helper="High-priority leads found last cycle" />
+          <StatCard
+            label="Automation Executed"
+            value="false"
+            helper="No live automation runs from this panel"
+          />
+          <StatCard
+            label="Provider Called"
+            value="false"
+            helper="No provider or Twilio call is allowed"
+          />
+          <StatCard
+            label="SMS Sent"
+            value="false"
+            helper="No SMS or email is sent"
+          />
         </div>
 
-        {automationStatusMessage ? <p className="mt-4 text-sm font-medium text-success">{automationStatusMessage}</p> : null}
-        {automationHighPriorityCount > 0 ? (
-          <p className="mt-2 text-sm font-medium text-[#9f3a22]">High-priority opportunities were detected in the latest cycle.</p>
+        {automationPreview ? (
+          <div className="mt-4 rounded-xl border border-blue-100 bg-blue-50 p-4 text-sm text-blue-950">
+            <p className="font-semibold">Advisory dry-run result</p>
+            <p className="mt-1 leading-6">{automationPreview.summary}</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <span className="rounded border border-blue-200 bg-white px-2 py-1 text-xs font-bold">dryRun:true</span>
+              <span className="rounded border border-blue-200 bg-white px-2 py-1 text-xs font-bold">automationExecuted:false</span>
+              <span className="rounded border border-blue-200 bg-white px-2 py-1 text-xs font-bold">providerCalled:false</span>
+              <span className="rounded border border-blue-200 bg-white px-2 py-1 text-xs font-bold">sent:false</span>
+              <span className="rounded border border-blue-200 bg-white px-2 py-1 text-xs font-bold">liveExecutionAllowed:false</span>
+              <span className="rounded border border-blue-200 bg-white px-2 py-1 text-xs font-bold">simulationOnly:true</span>
+            </div>
+          </div>
+        ) : null}
+
+        {automationPreviewError ? (
+          <p className="mt-4 rounded-xl border border-red-100 bg-red-50 p-3 text-sm font-semibold text-red-700">
+            {automationPreviewError}
+          </p>
         ) : null}
       </section>
 
