@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { createSessionToken, isValidAdminLogin, setAuthCookie } from "@/lib/auth";
+import { createSessionToken, isSecureRequest, isValidAdminLogin, setAuthCookie } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -27,7 +27,9 @@ export async function POST(request: Request) {
       ok: true
     });
 
-    setAuthCookie(response, token);
+    setAuthCookie(response, token, {
+      secure: isSecureRequest(request)
+    });
 
     return response;
   } catch {

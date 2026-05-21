@@ -114,11 +114,21 @@ export function isValidAdminLogin(email: string, password: string) {
   return email.trim().toLowerCase() === adminEmail && password === adminPassword;
 }
 
-export function setAuthCookie(response: NextResponse, token: string) {
+export function isSecureRequest(request: NextRequest | Request) {
+  const forwardedProto = request.headers.get("x-forwarded-proto")?.split(",")[0]?.trim().toLowerCase();
+
+  if (forwardedProto) {
+    return forwardedProto === "https";
+  }
+
+  return new URL(request.url).protocol === "https:";
+}
+
+export function setAuthCookie(response: NextResponse, token: string, options: { secure?: boolean } = {}) {
   response.cookies.set(AUTH_COOKIE_NAME, token, {
     httpOnly: true,
     sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    secure: options.secure ?? (process.env.NODE_ENV === "production"),
     path: "/",
     maxAge: SESSION_DURATION_MS / 1000
   });
