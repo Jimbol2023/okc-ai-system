@@ -29,6 +29,27 @@ type SendSmsPayload = {
 };
 
 const boundaryMessage = "No SMS was sent. Provider execution is disabled.";
+const baseSafetyReasonCodes = ["simulation_only", "provider_disabled", "live_execution_blocked"];
+const maxSafetyReasonCodes = 40;
+const maxSafetyReasonCodeLength = 80;
+
+function normalizeSafetyReasonCode(reasonCode: string) {
+  return reasonCode.trim().slice(0, maxSafetyReasonCodeLength);
+}
+
+function createSafetyEnvelope(reasonCodes: string[] = []) {
+  const boundedReasonCodes = [...baseSafetyReasonCodes, ...reasonCodes]
+    .map(normalizeSafetyReasonCode)
+    .filter(Boolean);
+
+  return {
+    mode: "simulation_only" as const,
+    executionBlocked: true,
+    providerDisabled: true,
+    liveExecutionEnabled: false,
+    reasonCodes: Array.from(new Set(boundedReasonCodes)).slice(0, maxSafetyReasonCodes),
+  };
+}
 
 function createSendRouteActionFingerprint({
   dealId,
@@ -60,7 +81,9 @@ function invalidPayload(error: string) {
       dryRun: true,
       simulated: true,
       reason: "invalid_request",
+      reasonCodes: ["invalid_request"],
       error,
+      safetyEnvelope: createSafetyEnvelope(["invalid_request"]),
     },
     { status: 400 },
   );
@@ -163,6 +186,7 @@ export async function POST(request: Request) {
       mode: "live_disabled",
       reason: "mock_only_boundary",
       message: boundaryMessage,
+      safetyEnvelope: createSafetyEnvelope(["mock_only_boundary", ...readinessSummary.reasonCodes]),
       wouldSend: false,
       liveOutreachDisabled: true,
       requestedRecipientCount: phoneNumbers.length,
@@ -271,7 +295,9 @@ export async function POST(request: Request) {
         dryRun: true,
         simulated: true,
         reason: "invalid_json",
+        reasonCodes: ["invalid_json"],
         error: "Invalid request body.",
+        safetyEnvelope: createSafetyEnvelope(["invalid_json"]),
       },
       { status: 400 },
     );
