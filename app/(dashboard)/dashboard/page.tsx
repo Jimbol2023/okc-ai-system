@@ -12,6 +12,7 @@ import SystemReadinessPanel from "@/components/dashboard/system-readiness-panel"
 import BuyerIntelligencePanel from "@/components/dashboard/buyer-intelligence-panel";
 import { SystemHealthSafetyBar } from "@/components/dashboard/system-health-safety-bar";
 import { ActivityAuditPreviewPanel } from "@/components/dashboard/activity-audit-preview-panel";
+import { ManualRevenueWorkdaySummary } from "@/components/dashboard/manual-revenue-workday-summary";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -319,6 +320,8 @@ export default function DashboardPage() {
         <StatCard label="Tracked opportunities" value={String(openLeadCount)} helper="Lead-linked opportunities under review" />
         <StatCard label="Source coverage" value="6" helper="Website, imports, and AI-generated discovery" />
       </div>
+
+      <ManualRevenueWorkdaySummary metrics={manualRevenueMetrics} />
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
