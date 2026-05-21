@@ -6,6 +6,7 @@ import { generateLeads } from "@/lib/lead-generator";
 import { createGeneratedLeads, fetchLeads } from "@/lib/leads-api";
 import { fetchRealLeads } from "@/lib/real-leads";
 import type { StoredLead } from "@/lib/leads-storage";
+import { deriveManualRevenueMetrics, type R53ManualRevenueMetricsResult } from "@/lib/r53-manual-revenue-metrics-helper";
 import { StatCard } from "@/components/shared/stat-card";
 import SystemReadinessPanel from "@/components/dashboard/system-readiness-panel";
 import BuyerIntelligencePanel from "@/components/dashboard/buyer-intelligence-panel";
@@ -51,6 +52,36 @@ function getPendingFollowUpCount(leads: StoredLead[]) {
   );
 }
 
+function toManualRevenueMetricInput(lead: StoredLead) {
+  const pendingFollowUp = lead.followUps.find((followUp) => followUp.status === "pending");
+
+  return {
+    ...lead,
+    source: lead.source,
+    address: lead.propertyAddress,
+    motivation: lead.situationDetails,
+    timeline: lead.nextFollowUpAt ?? pendingFollowUp?.date ?? "",
+    nextFollowUpAt: lead.nextFollowUpAt ?? pendingFollowUp?.date,
+    manuallyReviewed: lead.approvalStatus !== "pending_review" && lead.approvalStatus !== "needs_human_review",
+    manualSellerCallRecorded: lead.followUps.some((followUp) => followUp.type === "call" && followUp.status === "completed"),
+    sellerOutcome: lead.lastSellerReply ?? lead.latestApprovalNote ?? "",
+    buyerReady: lead.status === "under_contract" || lead.approvalStatus === "approved_for_outreach",
+    buyerPackageComplete: lead.status === "under_contract" || lead.status === "closed",
+    stage: lead.status,
+    blocked: lead.approvalStatus === "rejected",
+    governanceBlocked: lead.doNotContact === true || lead.approvalStatus === "rejected",
+    humanReviewRequired: lead.requiresHumanApproval === true || lead.approvalStatus === "needs_human_review",
+    dnc: lead.doNotContact === true,
+  };
+}
+
+function deriveDashboardManualRevenueMetrics(leads: StoredLead[]) {
+  return deriveManualRevenueMetrics({
+    leads: leads.map(toManualRevenueMetricInput),
+    maxRecords: 500,
+  });
+}
+
 export default function DashboardPage() {
   const [openLeadCount, setOpenLeadCount] = useState(0);
   const [pendingFollowUpCount, setPendingFollowUpCount] = useState(0);
@@ -63,12 +94,16 @@ export default function DashboardPage() {
   const [automationPreview, setAutomationPreview] = useState<AutomationDryRunPreview | null>(null);
   const [automationPreviewError, setAutomationPreviewError] = useState<string | null>(null);
   const [isLoadingLeads, setIsLoadingLeads] = useState(true);
+  const [manualRevenueMetrics, setManualRevenueMetrics] = useState<R53ManualRevenueMetricsResult>(() =>
+    deriveDashboardManualRevenueMetrics([])
+  );
 
   async function refreshLeadCounts() {
     const leads = await fetchLeads();
 
     setOpenLeadCount(leads.length);
     setPendingFollowUpCount(getPendingFollowUpCount(leads));
+    setManualRevenueMetrics(deriveDashboardManualRevenueMetrics(leads));
     setIsLoadingLeads(false);
 
     return leads;
@@ -84,6 +119,7 @@ export default function DashboardPage() {
 
       setOpenLeadCount(result.leads.length);
       setPendingFollowUpCount(getPendingFollowUpCount(result.leads));
+      setManualRevenueMetrics(deriveDashboardManualRevenueMetrics(result.leads));
       setDealFinderMessage(
         result.skippedCount > 0
           ? `${result.addedCount} new leads found. ${result.skippedCount} duplicates skipped.`
@@ -104,6 +140,7 @@ export default function DashboardPage() {
 
       setOpenLeadCount(result.leads.length);
       setPendingFollowUpCount(getPendingFollowUpCount(result.leads));
+      setManualRevenueMetrics(deriveDashboardManualRevenueMetrics(result.leads));
       setRealLeadsMessage(
         result.skippedCount > 0
           ? `${result.addedCount} real leads fetched. ${result.skippedCount} duplicates skipped.`
@@ -277,6 +314,81 @@ export default function DashboardPage() {
         <StatCard label="Tracked opportunities" value={String(openLeadCount)} helper="Lead-linked opportunities under review" />
         <StatCard label="Source coverage" value="6" helper="Website, imports, and AI-generated discovery" />
       </div>
+
+      <section
+        aria-labelledby="manual-revenue-metrics-heading"
+        className="rounded-[1.5rem] border border-border bg-surface p-6"
+      >
+        <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+          <div className="space-y-2">
+            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-muted">Read-only observability</p>
+            <h2 id="manual-revenue-metrics-heading" className="text-xl font-semibold text-primary">
+              Manual revenue metrics
+            </h2>
+            <p className="max-w-3xl text-sm leading-6 text-muted">
+              In-memory dashboard summary for manual operator review only. No polling, persistence, provider call, SMS,
+              email, automation, or live execution is enabled by these metrics.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+            <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-800">
+              Read only
+            </span>
+            <span className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-blue-800">
+              Simulation only
+            </span>
+            <span className="rounded-full border border-red-200 bg-red-50 px-3 py-1 text-red-800">
+              Providers blocked
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <StatCard
+            label="Needs manual review"
+            value={String(manualRevenueMetrics.metricValues.leads_needing_review)}
+            helper="Review queue signal only; no approval or outreach is triggered"
+          />
+          <StatCard
+            label="Seller calls recorded"
+            value={String(manualRevenueMetrics.metricValues.manual_seller_calls_recorded)}
+            helper="Manual call outcomes recorded in lead data"
+          />
+          <StatCard
+            label="Buyer-ready leads"
+            value={String(manualRevenueMetrics.metricValues.buyer_ready_leads)}
+            helper="Requires human package review before sharing"
+          />
+          <StatCard
+            label="Blocked leads"
+            value={String(manualRevenueMetrics.metricValues.blocked_leads)}
+            helper="Do-not-proceed visibility, not an override control"
+          />
+        </div>
+
+        <div className="mt-4 grid gap-3 text-sm md:grid-cols-3">
+          <div className="rounded-2xl border border-border bg-white p-4">
+            <p className="font-semibold text-primary">Manual follow-up load</p>
+            <p className="mt-1 text-muted">
+              {manualRevenueMetrics.metricValues.manual_follow_ups_due} due,{" "}
+              {manualRevenueMetrics.metricValues.manual_follow_ups_overdue} overdue.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-border bg-white p-4">
+            <p className="font-semibold text-primary">Critical data risk</p>
+            <p className="mt-1 text-muted">
+              {manualRevenueMetrics.metricValues.missing_critical_data_count} leads have missing source, address,
+              contact, motivation, or timeline data.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-border bg-white p-4">
+            <p className="font-semibold text-primary">Safety boundary</p>
+            <p className="mt-1 text-muted">
+              readOnly:true, providerCalled:false, sent:false, automationExecuted:false.
+            </p>
+          </div>
+        </div>
+      </section>
 
       <BuyerIntelligencePanel />
 
