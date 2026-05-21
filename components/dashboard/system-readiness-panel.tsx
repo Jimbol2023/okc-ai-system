@@ -26,12 +26,38 @@ type RiskFlag = {
   recommendedAction: string;
 };
 
+type GovernanceStatus = {
+  phase: "R49_read_only_visibility";
+  status:
+    | "stack_incomplete"
+    | "activation_prohibited"
+    | "remediation_required"
+    | "operator_review_required"
+    | "simulation_stack_complete"
+    | "planning_stack_complete";
+  conclusion: string;
+  advisoryOnly: true;
+  simulationOnly: true;
+  activationExecuted: false;
+  providerActivationAllowed: false;
+  liveExecutionAllowed: false;
+  sent: false;
+  providerCalled: false;
+  canSendNow: false;
+  liveTestReady: false;
+  persistenceAllowedNow: false;
+  remainingBlockers: string[];
+  requiredOperatorActions: string[];
+  reasonCodes: string[];
+};
+
 type ReadinessResponse = {
   success?: boolean;
   systemHealth?: SystemHealth;
   revenueReadiness?: RevenueReadiness;
   riskFlags?: RiskFlag[];
   recommendedNextActions?: string[];
+  governanceStatus?: GovernanceStatus;
   error?: string;
 };
 
@@ -82,6 +108,18 @@ function getSeverityClass(severity: RiskFlag["severity"]) {
   return "border-slate-200 bg-slate-50 text-slate-700";
 }
 
+function getGovernanceStatusClass(status: GovernanceStatus["status"]) {
+  if (status === "activation_prohibited" || status === "stack_incomplete") {
+    return "border-red-200 bg-red-50 text-red-800";
+  }
+
+  if (status === "remediation_required" || status === "operator_review_required") {
+    return "border-yellow-200 bg-yellow-50 text-yellow-800";
+  }
+
+  return "border-blue-200 bg-blue-50 text-blue-900";
+}
+
 function formatItem(value: string) {
   return value
     .split("_")
@@ -105,6 +143,7 @@ export default function SystemReadinessPanel() {
     useState<RevenueReadiness | null>(null);
   const [riskFlags, setRiskFlags] = useState<RiskFlag[]>([]);
   const [recommendedNextActions, setRecommendedNextActions] = useState<string[]>([]);
+  const [governanceStatus, setGovernanceStatus] = useState<GovernanceStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -127,6 +166,7 @@ export default function SystemReadinessPanel() {
       setRevenueReadiness(data.revenueReadiness);
       setRiskFlags(data.riskFlags ?? []);
       setRecommendedNextActions(data.recommendedNextActions ?? []);
+      setGovernanceStatus(data.governanceStatus ?? null);
       setError("");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load system readiness.");
@@ -245,6 +285,105 @@ export default function SystemReadinessPanel() {
               </div>
             </div>
           </div>
+
+          {governanceStatus ? (
+            <div className="mt-5 rounded-2xl border border-border bg-white p-4">
+              <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                <div>
+                  <h3 className="font-semibold text-primary">Governance Visibility</h3>
+                  <p className="mt-1 text-sm leading-6 text-muted">
+                    {governanceStatus.conclusion}
+                  </p>
+                </div>
+                <span
+                  className={`inline-flex w-fit rounded-full border px-3 py-2 text-xs font-bold uppercase tracking-[0.12em] ${getGovernanceStatusClass(
+                    governanceStatus.status,
+                  )}`}
+                >
+                  {formatItem(governanceStatus.status)}
+                </span>
+              </div>
+
+              <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+                <div className="rounded-xl border border-blue-100 bg-blue-50 p-3 text-sm text-blue-900">
+                  <p className="text-xs font-semibold uppercase">Advisory Status</p>
+                  <p className="mt-1 font-bold">Advisory only</p>
+                </div>
+                <div className="rounded-xl border border-blue-100 bg-blue-50 p-3 text-sm text-blue-900">
+                  <p className="text-xs font-semibold uppercase">Simulation-Only</p>
+                  <p className="mt-1 font-bold">Simulation-only</p>
+                </div>
+                <div className="rounded-xl border border-red-100 bg-red-50 p-3 text-sm text-red-800">
+                  <p className="text-xs font-semibold uppercase">Provider Activation</p>
+                  <p className="mt-1 font-bold">Provider activation blocked</p>
+                </div>
+                <div className="rounded-xl border border-red-100 bg-red-50 p-3 text-sm text-red-800">
+                  <p className="text-xs font-semibold uppercase">Live Execution</p>
+                  <p className="mt-1 font-bold">Live execution blocked</p>
+                </div>
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700">
+                  <p className="text-xs font-semibold uppercase">Execution Permission</p>
+                  <p className="mt-1 font-bold">Unavailable</p>
+                </div>
+              </div>
+
+              <div className="mt-4 grid gap-4 xl:grid-cols-3">
+                <div>
+                  <p className="text-xs font-semibold uppercase text-muted">Remaining Blockers</p>
+                  <div className="mt-2 space-y-2">
+                    {governanceStatus.remainingBlockers.length > 0 ? (
+                      governanceStatus.remainingBlockers.map((blocker) => (
+                        <p key={blocker} className="rounded-xl bg-slate-50 p-3 text-sm text-muted">
+                          {blocker}
+                        </p>
+                      ))
+                    ) : (
+                      <p className="rounded-xl bg-slate-50 p-3 text-sm text-muted">
+                        No governance blockers reported for visibility.
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  <p className="text-xs font-semibold uppercase text-muted">Required Operator Actions</p>
+                  <div className="mt-2 space-y-2">
+                    {governanceStatus.requiredOperatorActions.length > 0 ? (
+                      governanceStatus.requiredOperatorActions.map((action) => (
+                        <p key={action} className="rounded-xl bg-slate-50 p-3 text-sm text-muted">
+                          {action}
+                        </p>
+                      ))
+                    ) : (
+                      <p className="rounded-xl bg-slate-50 p-3 text-sm text-muted">
+                        No operator actions reported for governance visibility.
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  <p className="text-xs font-semibold uppercase text-muted">Reason Codes</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {governanceStatus.reasonCodes.length > 0 ? (
+                      governanceStatus.reasonCodes.map((code) => (
+                        <span
+                          key={code}
+                          className="rounded border border-slate-200 bg-slate-50 px-2 py-1 text-xs font-semibold text-slate-700"
+                        >
+                          {code}
+                        </span>
+                      ))
+                    ) : (
+                      <span className="rounded border border-slate-200 bg-slate-50 px-2 py-1 text-xs font-semibold text-slate-700">
+                        no_reason_codes
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : null}
         </>
       ) : null}
     </section>
