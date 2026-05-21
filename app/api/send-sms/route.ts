@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 
+import { createAuditPersistencePlanning } from "@/lib/audit-persistence-planning";
+import { createLiveTestReadinessSummary } from "@/lib/live-test-readiness-summary-contract";
 import { createLiveTestRuntimeContractPreview } from "@/lib/live-test-runtime-contract-adapter";
+import { createOperatorConfirmationRuntimeDesign } from "@/lib/operator-confirmation-runtime-design";
 import type { ExecutionMode } from "@/lib/execution-policy";
 import type { LiveTestAllowlistMode } from "@/lib/live-test-allowlist-policy";
 import type { ProviderMode } from "@/lib/provider-boundary";
@@ -27,6 +30,23 @@ type SendSmsPayload = {
 
 const boundaryMessage = "No SMS was sent. Provider execution is disabled.";
 
+function createSendRouteActionFingerprint({
+  dealId,
+  recipient,
+  message,
+}: {
+  dealId?: string;
+  recipient: string;
+  message: string;
+}) {
+  const normalizedRecipient = recipient.trim().toLowerCase();
+  const normalizedDealId = dealId?.trim() || "no-deal-id";
+
+  return `send-sms:${normalizedDealId}:recipient-length-${normalizedRecipient.length}:recipient-suffix-${normalizedRecipient.slice(
+    -4,
+  )}:message-length-${message.length}`;
+}
+
 function invalidPayload(error: string) {
   return NextResponse.json(
     {
@@ -36,6 +56,7 @@ function invalidPayload(error: string) {
       providerCalled: false,
       canSendNow: false,
       simulationOnly: true,
+      liveTestReady: false,
       dryRun: true,
       simulated: true,
       reason: "invalid_request",
@@ -76,6 +97,56 @@ export async function POST(request: Request) {
       providerMode: payload.providerMode,
       operatorId: payload.operatorId,
     });
+    const actionFingerprint = createSendRouteActionFingerprint({
+      dealId: payload.dealId,
+      recipient: phoneNumbers[0],
+      message,
+    });
+    const operatorConfirmation = createOperatorConfirmationRuntimeDesign({
+      runtimeContract,
+      confirmationRequested: payload.operatorConfirmed === true,
+      operatorConfirmed: payload.operatorConfirmed,
+      operatorId: payload.operatorId,
+      expectedActionFingerprint: actionFingerprint,
+      confirmationActionFingerprint: "",
+    });
+    const auditPersistence = createAuditPersistencePlanning({
+      configuredForFuturePersistence: true,
+      eventType: "send_sms_route_readiness_summary",
+      actionFingerprint,
+      leadId: payload.dealId,
+      dealId: payload.dealId,
+      operatorConfirmationState: operatorConfirmation.state,
+      runtimeContractState: runtimeContract.ok ? "runtime_contract_ok" : "runtime_contract_blocked",
+      simulationOnly: true,
+      sent: false,
+      providerCalled: false,
+      canSendNow: false,
+      reasonCodes: runtimeContract.reasonCodes,
+      metadata: {
+        routeSimulationOnly: true,
+        requestedRecipientCount: phoneNumbers.length,
+        providerCalled: false,
+        sent: false,
+        canSendNow: false,
+      },
+    });
+    const readinessSummary = createLiveTestReadinessSummary({
+      runtimeContract,
+      operatorConfirmation,
+      auditPersistence,
+      executionPolicy: runtimeContract.controlledSimulation.policyDecision,
+      providerBoundary: runtimeContract.controlledSimulation.providerDecision,
+      approvalStatus: payload.approvalStatus,
+      doNotContact: payload.doNotContact,
+      optOutReason: payload.optOutReason,
+      allowlistAllowed: runtimeContract.allowlistDecision.allowed,
+      killSwitchAllowed: runtimeContract.killSwitchDecision.allowed,
+      killSwitchActive: runtimeContract.killSwitchDecision.killSwitchActive,
+      emergencyStopActive: runtimeContract.killSwitchDecision.emergencyStopActive,
+      simulationOnly: true,
+      reasonCodes: runtimeContract.reasonCodes,
+    });
 
     return NextResponse.json({
       ok: runtimeContract.ok,
@@ -84,6 +155,7 @@ export async function POST(request: Request) {
       providerCalled: false,
       canSendNow: false,
       simulationOnly: true,
+      liveTestReady: false,
       dryRun: true,
       simulated: true,
       mocked: true,
@@ -98,6 +170,19 @@ export async function POST(request: Request) {
       failedCount: 0,
       dealId: payload.dealId ?? null,
       dealAddress: payload.dealAddress ?? null,
+      readinessSummary: {
+        readinessLevel: readinessSummary.readinessLevel,
+        liveTestReady: readinessSummary.liveTestReady,
+        canSendNow: readinessSummary.canSendNow,
+        sent: readinessSummary.sent,
+        providerCalled: readinessSummary.providerCalled,
+        simulationOnly: readinessSummary.simulationOnly,
+        reasonCodes: readinessSummary.reasonCodes,
+        blockingFactors: readinessSummary.blockingFactors,
+        advisoryFactors: readinessSummary.advisoryFactors,
+        requiredNextHumanActions: readinessSummary.requiredNextHumanActions,
+        summary: readinessSummary.summary,
+      },
       runtimeContract: {
         ok: runtimeContract.ok,
         adapterOnly: runtimeContract.adapterOnly,
@@ -137,6 +222,31 @@ export async function POST(request: Request) {
           simulationOnly: runtimeContract.controlledSimulation.simulationOnly,
           reasonCodes: runtimeContract.controlledSimulation.reasonCodes,
         },
+        operatorConfirmation: {
+          operatorConfirmed: operatorConfirmation.operatorConfirmed,
+          confirmationValid: operatorConfirmation.confirmationValid,
+          state: operatorConfirmation.state,
+          canProceedToLiveTest: operatorConfirmation.canProceedToLiveTest,
+          sent: operatorConfirmation.sent,
+          providerCalled: operatorConfirmation.providerCalled,
+          canSendNow: operatorConfirmation.canSendNow,
+          simulationOnly: operatorConfirmation.simulationOnly,
+          reasonCodes: operatorConfirmation.reasonCodes,
+          auditSummary: operatorConfirmation.auditSummary,
+        },
+        auditPersistence: {
+          persistencePlanned: auditPersistence.persistencePlanned,
+          persistenceExecuted: auditPersistence.persistenceExecuted,
+          dbWriteAttempted: auditPersistence.dbWriteAttempted,
+          readinessState: auditPersistence.readinessState,
+          sent: auditPersistence.sent,
+          providerCalled: auditPersistence.providerCalled,
+          canSendNow: auditPersistence.canSendNow,
+          simulationOnly: auditPersistence.simulationOnly,
+          reasonCodes: auditPersistence.reasonCodes,
+          forbiddenFieldsDetected: auditPersistence.forbiddenFieldsDetected,
+          safetySummary: auditPersistence.safetySummary,
+        },
         auditEvents: runtimeContract.auditEvents.map((auditEvent) => ({
           ok: auditEvent.ok,
           eventType: auditEvent.eventType,
@@ -157,6 +267,7 @@ export async function POST(request: Request) {
         providerCalled: false,
         canSendNow: false,
         simulationOnly: true,
+        liveTestReady: false,
         dryRun: true,
         simulated: true,
         reason: "invalid_json",
