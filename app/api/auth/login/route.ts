@@ -11,6 +11,19 @@ export async function POST(request: Request) {
       email?: string;
       password?: string;
     };
+    const submittedEmail = payload.email ?? "";
+    const submittedPassword = payload.password ?? "";
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const adminPassword = process.env.ADMIN_PASSWORD;
+
+    console.log("[auth-debug]", {
+      hasAdminEmail: Boolean(adminEmail),
+      hasAdminPassword: Boolean(adminPassword),
+      normalizedEmailMatch: submittedEmail.trim().toLowerCase() === adminEmail?.trim().toLowerCase(),
+      submittedEmailLength: submittedEmail.trim().length,
+      adminEmailLength: adminEmail?.trim().length ?? 0,
+      passwordLengthMatch: submittedPassword.length === (adminPassword?.length ?? -1)
+    });
 
     if (!payload.email || !payload.password || !isValidAdminLogin(payload.email, payload.password)) {
       return NextResponse.json(
