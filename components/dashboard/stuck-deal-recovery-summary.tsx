@@ -154,30 +154,7 @@ export function StuckDealRecoverySummary({ leads, metrics }: StuckDealRecoverySu
         </div>
       </div>
 
-      <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard
-          label="Recovery signals"
-          value={String(getRecoverySummaryCount(sections))}
-          helper="Read-only stuck-deal signals from existing dashboard data"
-        />
-        <StatCard
-          label="Human review"
-          value={String(sections[0]?.count ?? 0)}
-          helper="Review required; no permission or execution implied"
-        />
-        <StatCard
-          label="Near-close friction"
-          value={String(sections[1]?.count ?? 0)}
-          helper="Late-stage blockers for manual review only"
-        />
-        <StatCard
-          label="Revenue leakage"
-          value={String(leakageIndicators[0]?.value ?? 0)}
-          helper="Advisory attention indicator, not a forecast"
-        />
-      </div>
-
-      <div className="mt-4 grid gap-3 lg:grid-cols-3">
+      <div className="mt-5 grid gap-3 lg:grid-cols-3">
         {sections.map((section) => (
           <article key={section.title} className="rounded-2xl border border-border bg-white p-4">
             <div className="flex items-start justify-between gap-3">
@@ -200,6 +177,29 @@ export function StuckDealRecoverySummary({ leads, metrics }: StuckDealRecoverySu
             <p className="mt-1 text-sm leading-6 text-[#69420f]">{indicator.helper}</p>
           </article>
         ))}
+      </div>
+
+      <div className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-4" aria-label="Stuck-deal recovery summary">
+        <StatCard
+          label="Recovery signals"
+          value={String(getRecoverySummaryCount(sections))}
+          helper="Read-only stuck-deal signals from existing dashboard data"
+        />
+        <StatCard
+          label="Human review"
+          value={String(sections[0]?.count ?? 0)}
+          helper="Review required; no permission or execution implied"
+        />
+        <StatCard
+          label="Near-close friction"
+          value={String(sections[1]?.count ?? 0)}
+          helper="Late-stage blockers for manual review only"
+        />
+        <StatCard
+          label="Revenue leakage"
+          value={String(leakageIndicators[0]?.value ?? 0)}
+          helper="Advisory attention indicator, not a forecast"
+        />
       </div>
 
       <div className="mt-4 rounded-2xl border border-blue-100 bg-blue-50 p-4 text-sm leading-6 text-blue-950">
