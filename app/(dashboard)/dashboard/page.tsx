@@ -23,6 +23,7 @@ import { OperatorWorkQueueIntelligenceSummary } from "@/components/dashboard/ope
 import { DrivingForDollarsIntelligenceSummary } from "@/components/dashboard/driving-for-dollars-intelligence-summary";
 import { LeadQualityIntelligenceSummary } from "@/components/dashboard/lead-quality-intelligence-summary";
 import { ControlledExecutionReadinessSummary } from "@/components/dashboard/controlled-execution-readiness-summary";
+import { AutomationLastGovernanceSummary } from "@/components/dashboard/automation-last-governance-summary";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -356,6 +357,8 @@ export default function DashboardPage() {
       <LeadQualityIntelligenceSummary leads={dashboardLeads} metrics={manualRevenueMetrics} />
 
       <ControlledExecutionReadinessSummary />
+
+      <AutomationLastGovernanceSummary />
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
