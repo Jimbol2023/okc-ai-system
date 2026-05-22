@@ -210,7 +210,7 @@ export function AcquisitionDailyCallPrioritySummary({
         </div>
       </div>
 
-      <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+      <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5">
         {sections.map((section) => (
           <article key={section.title} className="min-w-0 rounded-2xl border border-border bg-white p-4">
             <div className="flex min-w-0 flex-wrap items-start justify-between gap-3">

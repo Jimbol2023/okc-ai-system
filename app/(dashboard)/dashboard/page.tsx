@@ -214,7 +214,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-w-0 space-y-8">
+    <div className="min-w-0 space-y-7 xl:space-y-8">
       <SystemHealthSafetyBar
         leadCount={openLeadCount}
         pendingFollowUpCount={pendingFollowUpCount}
@@ -237,7 +237,7 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        <div className="flex max-w-full flex-wrap gap-2">
+        <div className="flex max-w-full flex-wrap gap-2 xl:justify-end">
           <button
             type="button"
             onClick={() => void handlePreviewAutomationDryRun()}
@@ -284,7 +284,7 @@ export default function DashboardPage() {
           </span>
         </div>
 
-        <div className="mt-5 grid gap-4 md:grid-cols-4">
+        <div className="mt-5 grid gap-4 sm:grid-cols-2 2xl:grid-cols-4">
           <StatCard
             label="Last Preview"
             value={automationPreview ? new Intl.DateTimeFormat("en-US", { dateStyle: "short", timeStyle: "short" }).format(new Date(automationPreview.ranAt)) : "Not yet"}
@@ -329,7 +329,7 @@ export default function DashboardPage() {
         ) : null}
       </section>
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 2xl:grid-cols-4">
         <StatCard label="Open leads" value={String(openLeadCount)} helper="Includes submitted, imported, and AI-generated leads" />
         <StatCard label="Follow-up tasks" value={String(pendingFollowUpCount)} helper="Pending scheduled outreach items" />
         <StatCard label="Tracked opportunities" value={String(openLeadCount)} helper="Lead-linked opportunities under review" />
@@ -388,7 +388,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-5 grid gap-4 sm:grid-cols-2 2xl:grid-cols-4">
           <StatCard
             label="Needs manual review"
             value={String(manualRevenueMetrics.metricValues.leads_needing_review)}
@@ -411,7 +411,7 @@ export default function DashboardPage() {
           />
         </div>
 
-        <div className="mt-4 grid gap-3 text-sm md:grid-cols-3">
+        <div className="mt-4 grid gap-3 text-sm md:grid-cols-2 2xl:grid-cols-3">
           <div className="min-w-0 rounded-2xl border border-border bg-white p-4">
             <p className="break-words font-semibold text-primary">Manual follow-up load</p>
             <p className="mt-1 break-words text-muted">

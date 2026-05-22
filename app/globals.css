@@ -67,8 +67,25 @@ textarea {
   padding-inline: 1rem;
 }
 
+.dashboard-container-shell {
+  margin-inline: auto;
+  width: 100%;
+  max-width: min(1760px, calc(100vw - 1rem));
+  padding-inline: 0.5rem;
+}
+
 @media (min-width: 768px) {
   .container-shell {
+    padding-inline: 1.5rem;
+  }
+
+  .dashboard-container-shell {
+    padding-inline: 1rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .dashboard-container-shell {
     padding-inline: 1.5rem;
   }
 }
