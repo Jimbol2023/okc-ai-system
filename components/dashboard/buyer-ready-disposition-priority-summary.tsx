@@ -188,7 +188,7 @@ function getPrioritySections(leads: StoredLead[], metrics: R53ManualRevenueMetri
       title: "Blocked buyer disposition",
       count: governanceStopCount + leads.filter((lead) => !hasGovernanceStopSignal(lead) && getPackageGaps(lead).length >= 5).length,
       status: "Governance stop signals must be resolved first.",
-      detail: "Blocked buyer disposition cannot become approval, release, provider use, or outreach execution.",
+      detail: "Blocked buyer disposition remains review-only and cannot approve any buyer-facing action.",
     },
   ];
 }
@@ -290,8 +290,8 @@ export function BuyerReadyDispositionPrioritySummary({
           Governance stop signals must be resolved first. Then review buyer-ready disposition priority,
           near-buyer-ready review, ready-to-package deal labels, incomplete buyer package gaps, buyer-fit review
           needed, buyer demand alignment review, high-probability buyer review, disposition bottlenecks, and blocked
-          buyer disposition. Guidance is advisory text only and does not send, blast, email, SMS, persist, poll,
-          activate providers, launch campaigns, negotiate, or execute workflows.
+          buyer disposition. Guidance is advisory text only and does not create buyer-facing action, use communication
+          systems, persist, poll, negotiate, or execute workflows.
         </p>
       </div>
 
