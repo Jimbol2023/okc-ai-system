@@ -31,6 +31,7 @@ import { ControlledHumanOutreachSummary } from "@/components/dashboard/controlle
 import { RevenueCommandCenterSummary } from "@/components/dashboard/revenue-command-center-summary";
 import { ProviderActivationReadinessSummary } from "@/components/dashboard/provider-activation-readiness-summary";
 import { HitlRevenueExecutionSummary } from "@/components/dashboard/hitl-revenue-execution-summary";
+import { VirtualDrivingForDollarsSummary } from "@/components/dashboard/virtual-driving-for-dollars-summary";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -380,6 +381,8 @@ export default function DashboardPage() {
       <ProviderActivationReadinessSummary />
 
       <HitlRevenueExecutionSummary />
+
+      <VirtualDrivingForDollarsSummary />
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
