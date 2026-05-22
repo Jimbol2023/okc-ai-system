@@ -36,6 +36,7 @@ import { DistressPropertyIntelligenceSummary } from "@/components/dashboard/dist
 import { AcquisitionOpportunityScoringSummary } from "@/components/dashboard/acquisition-opportunity-scoring-summary";
 import { BuyerDemandAlignmentSummary } from "@/components/dashboard/buyer-demand-alignment-summary";
 import { NeighborhoodOpportunityClusteringSummary } from "@/components/dashboard/neighborhood-opportunity-clustering-summary";
+import { AcquisitionResearchWorkbenchSummary } from "@/components/dashboard/acquisition-research-workbench-summary";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -395,6 +396,8 @@ export default function DashboardPage() {
       <BuyerDemandAlignmentSummary />
 
       <NeighborhoodOpportunityClusteringSummary />
+
+      <AcquisitionResearchWorkbenchSummary />
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
