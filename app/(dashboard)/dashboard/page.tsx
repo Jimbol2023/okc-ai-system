@@ -19,6 +19,7 @@ import { OperatorWorkQueueSummary } from "@/components/dashboard/operator-work-q
 import { AcquisitionDailyCallPrioritySummary } from "@/components/dashboard/acquisition-daily-call-priority-summary";
 import { BuyerReadyDispositionPrioritySummary } from "@/components/dashboard/buyer-ready-disposition-priority-summary";
 import { BuyerDispositionOperationalIntelligenceSummary } from "@/components/dashboard/buyer-disposition-operational-intelligence-summary";
+import { OperatorWorkQueueIntelligenceSummary } from "@/components/dashboard/operator-work-queue-intelligence-summary";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -344,6 +345,8 @@ export default function DashboardPage() {
       <BuyerReadyDispositionPrioritySummary leads={dashboardLeads} metrics={manualRevenueMetrics} />
 
       <BuyerDispositionOperationalIntelligenceSummary leads={dashboardLeads} metrics={manualRevenueMetrics} />
+
+      <OperatorWorkQueueIntelligenceSummary leads={dashboardLeads} metrics={manualRevenueMetrics} />
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
