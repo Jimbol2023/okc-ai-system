@@ -17,6 +17,7 @@ import { StuckDealRecoverySummary } from "@/components/dashboard/stuck-deal-reco
 import { NearCloseRevenueRecoverySummary } from "@/components/dashboard/near-close-revenue-recovery-summary";
 import { OperatorWorkQueueSummary } from "@/components/dashboard/operator-work-queue-summary";
 import { AcquisitionDailyCallPrioritySummary } from "@/components/dashboard/acquisition-daily-call-priority-summary";
+import { BuyerReadyDispositionPrioritySummary } from "@/components/dashboard/buyer-ready-disposition-priority-summary";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -338,6 +339,8 @@ export default function DashboardPage() {
       <OperatorWorkQueueSummary leads={dashboardLeads} metrics={manualRevenueMetrics} />
 
       <AcquisitionDailyCallPrioritySummary leads={dashboardLeads} metrics={manualRevenueMetrics} />
+
+      <BuyerReadyDispositionPrioritySummary leads={dashboardLeads} metrics={manualRevenueMetrics} />
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
