@@ -33,6 +33,7 @@ import { ProviderActivationReadinessSummary } from "@/components/dashboard/provi
 import { HitlRevenueExecutionSummary } from "@/components/dashboard/hitl-revenue-execution-summary";
 import { VirtualDrivingForDollarsSummary } from "@/components/dashboard/virtual-driving-for-dollars-summary";
 import { DistressPropertyIntelligenceSummary } from "@/components/dashboard/distress-property-intelligence-summary";
+import { AcquisitionOpportunityScoringSummary } from "@/components/dashboard/acquisition-opportunity-scoring-summary";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -386,6 +387,8 @@ export default function DashboardPage() {
       <VirtualDrivingForDollarsSummary />
 
       <DistressPropertyIntelligenceSummary />
+
+      <AcquisitionOpportunityScoringSummary />
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
