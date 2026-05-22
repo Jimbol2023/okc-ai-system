@@ -16,6 +16,7 @@ import { ManualRevenueWorkdaySummary } from "@/components/dashboard/manual-reven
 import { StuckDealRecoverySummary } from "@/components/dashboard/stuck-deal-recovery-summary";
 import { NearCloseRevenueRecoverySummary } from "@/components/dashboard/near-close-revenue-recovery-summary";
 import { OperatorWorkQueueSummary } from "@/components/dashboard/operator-work-queue-summary";
+import { AcquisitionDailyCallPrioritySummary } from "@/components/dashboard/acquisition-daily-call-priority-summary";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -335,6 +336,8 @@ export default function DashboardPage() {
       <NearCloseRevenueRecoverySummary leads={dashboardLeads} metrics={manualRevenueMetrics} />
 
       <OperatorWorkQueueSummary leads={dashboardLeads} metrics={manualRevenueMetrics} />
+
+      <AcquisitionDailyCallPrioritySummary leads={dashboardLeads} metrics={manualRevenueMetrics} />
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
