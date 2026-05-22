@@ -14,6 +14,7 @@ import { SystemHealthSafetyBar } from "@/components/dashboard/system-health-safe
 import { ActivityAuditPreviewPanel } from "@/components/dashboard/activity-audit-preview-panel";
 import { ManualRevenueWorkdaySummary } from "@/components/dashboard/manual-revenue-workday-summary";
 import { StuckDealRecoverySummary } from "@/components/dashboard/stuck-deal-recovery-summary";
+import { NearCloseRevenueRecoverySummary } from "@/components/dashboard/near-close-revenue-recovery-summary";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -329,6 +330,8 @@ export default function DashboardPage() {
       <ManualRevenueWorkdaySummary metrics={manualRevenueMetrics} />
 
       <StuckDealRecoverySummary leads={dashboardLeads} metrics={manualRevenueMetrics} />
+
+      <NearCloseRevenueRecoverySummary leads={dashboardLeads} metrics={manualRevenueMetrics} />
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
