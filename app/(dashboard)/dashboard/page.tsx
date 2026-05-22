@@ -24,6 +24,7 @@ import { DrivingForDollarsIntelligenceSummary } from "@/components/dashboard/dri
 import { LeadQualityIntelligenceSummary } from "@/components/dashboard/lead-quality-intelligence-summary";
 import { ControlledExecutionReadinessSummary } from "@/components/dashboard/controlled-execution-readiness-summary";
 import { AutomationLastGovernanceSummary } from "@/components/dashboard/automation-last-governance-summary";
+import { ExecutionSimulationIntelligenceSummary } from "@/components/dashboard/execution-simulation-intelligence-summary";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -359,6 +360,8 @@ export default function DashboardPage() {
       <ControlledExecutionReadinessSummary />
 
       <AutomationLastGovernanceSummary />
+
+      <ExecutionSimulationIntelligenceSummary />
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
