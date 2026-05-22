@@ -57,36 +57,36 @@ export function ControlledExecutionReadinessSummary() {
     <section
       aria-labelledby="controlled-execution-readiness-heading"
       aria-describedby="controlled-execution-readiness-summary"
-      className="rounded-[1.5rem] border border-border bg-surface p-6"
+      className="overflow-hidden rounded-[1.5rem] border border-border bg-surface p-5 sm:p-6"
     >
-      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-        <div className="space-y-2">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-muted">
+      <div className="flex min-w-0 flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        <div className="min-w-0 space-y-2">
+          <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-muted">
             Controlled execution readiness
           </p>
-          <h2 id="controlled-execution-readiness-heading" className="text-xl font-semibold text-primary">
+          <h2 id="controlled-execution-readiness-heading" className="break-words text-xl font-semibold text-primary">
             Read-only execution boundary summary
           </h2>
-          <p id="controlled-execution-readiness-summary" className="max-w-3xl text-sm leading-6 text-muted">
+          <p id="controlled-execution-readiness-summary" className="max-w-3xl break-words text-sm leading-6 text-muted">
             Controlled execution readiness is advisory only. Execution remains blocked. Approval does not grant
             execution. Provider activation remains blocked. Governance stop signals must be resolved first.
           </p>
         </div>
-        <div className="flex flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+        <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
           {safetyBadges.map((badge) => (
-            <span key={badge} className="rounded-full border border-border bg-white px-3 py-1 text-primary">
+            <span key={badge} className="max-w-full break-words rounded-full border border-border bg-white px-3 py-1 text-center leading-5 text-primary">
               {badge}
             </span>
           ))}
         </div>
       </div>
 
-      <div className="mt-5 grid gap-3 lg:grid-cols-4">
+      <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         {readinessItems.map((item) => (
-          <article key={item.title} className="rounded-2xl border border-border bg-white p-4">
-            <h3 className="text-sm font-semibold text-primary">{item.title}</h3>
-            <p className="mt-2 text-sm font-medium text-primary">{item.status}</p>
-            <p className="mt-1 text-sm leading-6 text-muted">{item.detail}</p>
+          <article key={item.title} className="min-w-0 rounded-2xl border border-border bg-white p-4">
+            <h3 className="break-words text-sm font-semibold text-primary">{item.title}</h3>
+            <p className="mt-2 break-words text-sm font-medium text-primary">{item.status}</p>
+            <p className="mt-1 break-words text-sm leading-6 text-muted">{item.detail}</p>
           </article>
         ))}
       </div>
@@ -99,25 +99,25 @@ export function ControlledExecutionReadinessSummary() {
       </div>
 
       <div className="mt-4 rounded-2xl border border-blue-100 bg-blue-50 p-4 text-sm leading-6 text-blue-950">
-        <h3 className="font-semibold text-blue-950">Controlled execution boundary</h3>
-        <p className="mt-1">
+        <h3 className="break-words font-semibold text-blue-950">Controlled execution boundary</h3>
+        <p className="mt-1 break-words">
           This surface is advisory text only and does not create send controls, provider controls, approval-to-send
           controls, runtime activation, polling, campaign controls, execution queues, workflow execution, background
           jobs, autonomous routing, autonomous outreach, autonomous negotiation, persistence, or hidden execution state.
         </p>
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-2 text-xs font-bold">
-        <span className="rounded border border-blue-200 bg-white px-2 py-1 text-blue-950">readOnly:true</span>
-        <span className="rounded border border-blue-200 bg-white px-2 py-1 text-blue-950">advisoryOnly:true</span>
-        <span className="rounded border border-blue-200 bg-white px-2 py-1 text-blue-950">simulationOnly:true</span>
-        <span className="rounded border border-blue-200 bg-white px-2 py-1 text-blue-950">providerCalled:false</span>
-        <span className="rounded border border-blue-200 bg-white px-2 py-1 text-blue-950">sent:false</span>
-        <span className="rounded border border-blue-200 bg-white px-2 py-1 text-blue-950">pollingAllowed:false</span>
-        <span className="rounded border border-blue-200 bg-white px-2 py-1 text-blue-950">
+      <div className="mt-4 flex max-w-full flex-wrap gap-2 text-xs font-bold">
+        <span className="max-w-full break-words rounded border border-blue-200 bg-white px-2 py-1 leading-5 text-blue-950">readOnly:true</span>
+        <span className="max-w-full break-words rounded border border-blue-200 bg-white px-2 py-1 leading-5 text-blue-950">advisoryOnly:true</span>
+        <span className="max-w-full break-words rounded border border-blue-200 bg-white px-2 py-1 leading-5 text-blue-950">simulationOnly:true</span>
+        <span className="max-w-full break-words rounded border border-blue-200 bg-white px-2 py-1 leading-5 text-blue-950">providerCalled:false</span>
+        <span className="max-w-full break-words rounded border border-blue-200 bg-white px-2 py-1 leading-5 text-blue-950">sent:false</span>
+        <span className="max-w-full break-words rounded border border-blue-200 bg-white px-2 py-1 leading-5 text-blue-950">pollingAllowed:false</span>
+        <span className="max-w-full break-words rounded border border-blue-200 bg-white px-2 py-1 leading-5 text-blue-950">
           runtimeActivationAllowed:false
         </span>
-        <span className="rounded border border-blue-200 bg-white px-2 py-1 text-blue-950">
+        <span className="max-w-full break-words rounded border border-blue-200 bg-white px-2 py-1 leading-5 text-blue-950">
           approvalGrantsExecution:false
         </span>
       </div>

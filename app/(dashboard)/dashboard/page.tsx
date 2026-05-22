@@ -213,7 +213,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="min-w-0 space-y-8">
       <SystemHealthSafetyBar
         leadCount={openLeadCount}
         pendingFollowUpCount={pendingFollowUpCount}
@@ -227,16 +227,16 @@ export default function DashboardPage() {
         isLoadingLeads={isLoadingLeads}
       />
 
-      <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-        <div className="space-y-3">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-muted">Internal Dashboard</p>
-          <h1 className="text-3xl font-semibold text-primary md:text-4xl">Operations overview</h1>
-          <p className="max-w-2xl text-sm leading-6 text-muted md:text-base">
+      <div className="flex min-w-0 flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div className="min-w-0 space-y-3">
+          <p className="break-words text-sm font-semibold uppercase tracking-[0.2em] text-muted">Internal Dashboard</p>
+          <h1 className="break-words text-3xl font-semibold text-primary md:text-4xl">Operations overview</h1>
+          <p className="max-w-2xl break-words text-sm leading-6 text-muted md:text-base">
             This internal area is structured for CRM activity, property review, underwriting, and future list-management workflows.
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-2">
+        <div className="flex max-w-full flex-wrap gap-2">
           <button
             type="button"
             onClick={() => void handlePreviewAutomationDryRun()}
@@ -270,15 +270,15 @@ export default function DashboardPage() {
 
       <SystemReadinessPanel />
 
-      <section className="rounded-[1.5rem] border border-border bg-surface p-6">
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <div className="space-y-2">
-            <h2 className="text-xl font-semibold text-primary">Automation Agent</h2>
-            <p className="text-sm leading-6 text-muted">
+      <section className="overflow-hidden rounded-[1.5rem] border border-border bg-surface p-5 sm:p-6">
+        <div className="flex min-w-0 flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div className="min-w-0 space-y-2">
+            <h2 className="break-words text-xl font-semibold text-primary">Automation Agent</h2>
+            <p className="break-words text-sm leading-6 text-muted">
               Manual dry-run preview for automation boundaries. No polling, live automation, provider call, SMS, email, or database mutation is executed here.
             </p>
           </div>
-          <span className="inline-flex w-fit rounded-full bg-[#e7eef5] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#355066]">
+          <span className="inline-flex max-w-full break-words rounded-full bg-[#e7eef5] px-3 py-1 text-center text-xs font-semibold uppercase leading-5 tracking-[0.12em] text-[#355066]">
             Dry Run Only
           </span>
         </div>
@@ -308,21 +308,21 @@ export default function DashboardPage() {
 
         {automationPreview ? (
           <div className="mt-4 rounded-xl border border-blue-100 bg-blue-50 p-4 text-sm text-blue-950">
-            <p className="font-semibold">Advisory dry-run result</p>
-            <p className="mt-1 leading-6">{automationPreview.summary}</p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              <span className="rounded border border-blue-200 bg-white px-2 py-1 text-xs font-bold">dryRun:true</span>
-              <span className="rounded border border-blue-200 bg-white px-2 py-1 text-xs font-bold">automationExecuted:false</span>
-              <span className="rounded border border-blue-200 bg-white px-2 py-1 text-xs font-bold">providerCalled:false</span>
-              <span className="rounded border border-blue-200 bg-white px-2 py-1 text-xs font-bold">sent:false</span>
-              <span className="rounded border border-blue-200 bg-white px-2 py-1 text-xs font-bold">liveExecutionAllowed:false</span>
-              <span className="rounded border border-blue-200 bg-white px-2 py-1 text-xs font-bold">simulationOnly:true</span>
+            <p className="break-words font-semibold">Advisory dry-run result</p>
+            <p className="mt-1 break-words leading-6">{automationPreview.summary}</p>
+            <div className="mt-3 flex max-w-full flex-wrap gap-2">
+              <span className="max-w-full break-words rounded border border-blue-200 bg-white px-2 py-1 text-xs font-bold leading-5">dryRun:true</span>
+              <span className="max-w-full break-words rounded border border-blue-200 bg-white px-2 py-1 text-xs font-bold leading-5">automationExecuted:false</span>
+              <span className="max-w-full break-words rounded border border-blue-200 bg-white px-2 py-1 text-xs font-bold leading-5">providerCalled:false</span>
+              <span className="max-w-full break-words rounded border border-blue-200 bg-white px-2 py-1 text-xs font-bold leading-5">sent:false</span>
+              <span className="max-w-full break-words rounded border border-blue-200 bg-white px-2 py-1 text-xs font-bold leading-5">liveExecutionAllowed:false</span>
+              <span className="max-w-full break-words rounded border border-blue-200 bg-white px-2 py-1 text-xs font-bold leading-5">simulationOnly:true</span>
             </div>
           </div>
         ) : null}
 
         {automationPreviewError ? (
-          <p className="mt-4 rounded-xl border border-red-100 bg-red-50 p-3 text-sm font-semibold text-red-700">
+          <p className="mt-4 break-words rounded-xl border border-red-100 bg-red-50 p-3 text-sm font-semibold text-red-700">
             {automationPreviewError}
           </p>
         ) : null}
@@ -359,27 +359,27 @@ export default function DashboardPage() {
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
-        className="rounded-[1.5rem] border border-border bg-surface p-6"
+        className="overflow-hidden rounded-[1.5rem] border border-border bg-surface p-5 sm:p-6"
       >
-        <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-          <div className="space-y-2">
-            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-muted">Read-only observability</p>
-            <h2 id="manual-revenue-metrics-heading" className="text-xl font-semibold text-primary">
+        <div className="flex min-w-0 flex-col gap-3 md:flex-row md:items-start md:justify-between">
+          <div className="min-w-0 space-y-2">
+            <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-muted">Read-only observability</p>
+            <h2 id="manual-revenue-metrics-heading" className="break-words text-xl font-semibold text-primary">
               Manual revenue metrics
             </h2>
-            <p className="max-w-3xl text-sm leading-6 text-muted">
+            <p className="max-w-3xl break-words text-sm leading-6 text-muted">
               In-memory dashboard summary for manual operator review only. No polling, persistence, provider call, SMS,
               email, automation, or live execution is enabled by these metrics.
             </p>
           </div>
-          <div className="flex flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
-            <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-800">
+          <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+            <span className="max-w-full break-words rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-center leading-5 text-emerald-800">
               Read only
             </span>
-            <span className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-blue-800">
+            <span className="max-w-full break-words rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-center leading-5 text-blue-800">
               Simulation only
             </span>
-            <span className="rounded-full border border-red-200 bg-red-50 px-3 py-1 text-red-800">
+            <span className="max-w-full break-words rounded-full border border-red-200 bg-red-50 px-3 py-1 text-center leading-5 text-red-800">
               Providers blocked
             </span>
           </div>
@@ -409,23 +409,23 @@ export default function DashboardPage() {
         </div>
 
         <div className="mt-4 grid gap-3 text-sm md:grid-cols-3">
-          <div className="rounded-2xl border border-border bg-white p-4">
-            <p className="font-semibold text-primary">Manual follow-up load</p>
-            <p className="mt-1 text-muted">
+          <div className="min-w-0 rounded-2xl border border-border bg-white p-4">
+            <p className="break-words font-semibold text-primary">Manual follow-up load</p>
+            <p className="mt-1 break-words text-muted">
               {manualRevenueMetrics.metricValues.manual_follow_ups_due} due,{" "}
               {manualRevenueMetrics.metricValues.manual_follow_ups_overdue} overdue.
             </p>
           </div>
-          <div className="rounded-2xl border border-border bg-white p-4">
-            <p className="font-semibold text-primary">Critical data risk</p>
-            <p className="mt-1 text-muted">
+          <div className="min-w-0 rounded-2xl border border-border bg-white p-4">
+            <p className="break-words font-semibold text-primary">Critical data risk</p>
+            <p className="mt-1 break-words text-muted">
               {manualRevenueMetrics.metricValues.missing_critical_data_count} leads have missing source, address,
               contact, motivation, or timeline data.
             </p>
           </div>
-          <div className="rounded-2xl border border-border bg-white p-4">
-            <p className="font-semibold text-primary">Safety boundary</p>
-            <p className="mt-1 text-muted">
+          <div className="min-w-0 rounded-2xl border border-border bg-white p-4">
+            <p className="break-words font-semibold text-primary">Safety boundary</p>
+            <p className="mt-1 break-words text-muted">
               readOnly:true, providerCalled:false, sent:false, automationExecuted:false.
             </p>
           </div>
@@ -434,11 +434,11 @@ export default function DashboardPage() {
 
       <BuyerIntelligencePanel />
 
-      <section className="rounded-[1.5rem] border border-border bg-surface p-6">
-        <h2 className="text-xl font-semibold text-primary">Suggested operator workflow</h2>
+      <section className="overflow-hidden rounded-[1.5rem] border border-border bg-surface p-5 sm:p-6">
+        <h2 className="break-words text-xl font-semibold text-primary">Suggested operator workflow</h2>
         <div className="mt-4 grid gap-3">
           {queue.map((item) => (
-            <div key={item} className="rounded-2xl border border-border bg-white px-4 py-3 text-sm text-muted">
+            <div key={item} className="min-w-0 break-words rounded-2xl border border-border bg-white px-4 py-3 text-sm text-muted">
               {item}
             </div>
           ))}

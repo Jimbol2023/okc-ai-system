@@ -236,54 +236,54 @@ export function OperatorWorkQueueSummary({ leads, metrics }: OperatorWorkQueueSu
   return (
     <section
       aria-labelledby="operator-work-queue-heading"
-      className="rounded-[1.5rem] border border-border bg-surface p-6"
+      className="overflow-hidden rounded-[1.5rem] border border-border bg-surface p-5 sm:p-6"
     >
-      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-        <div className="space-y-2">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-muted">
+      <div className="flex min-w-0 flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        <div className="min-w-0 space-y-2">
+          <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-muted">
             Operator work queue intelligence
           </p>
-          <h2 id="operator-work-queue-heading" className="text-xl font-semibold text-primary">
+          <h2 id="operator-work-queue-heading" className="break-words text-xl font-semibold text-primary">
             Read-only operator work queue summary
           </h2>
-          <p className="max-w-3xl text-sm leading-6 text-muted">{requiredSafetyCopy}</p>
+          <p className="max-w-3xl break-words text-sm leading-6 text-muted">{requiredSafetyCopy}</p>
         </div>
-        <div className="flex flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+        <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
           {safetyBadges.map((badge) => (
-            <span key={badge} className="rounded-full border border-border bg-white px-3 py-1 text-primary">
+            <span key={badge} className="max-w-full break-words rounded-full border border-border bg-white px-3 py-1 text-center leading-5 text-primary">
               {badge}
             </span>
           ))}
         </div>
       </div>
 
-      <div className="mt-5 grid gap-3 lg:grid-cols-7" aria-label="Highest-value next actions">
+      <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-7" aria-label="Highest-value next actions">
         {highestValueActions.map((action) => (
-          <article key={action.rank} className="rounded-2xl border border-border bg-white p-4">
-            <div className="flex items-start justify-between gap-3">
-              <h3 className="text-sm font-semibold text-primary">{action.label}</h3>
-              <span className="rounded-full border border-border bg-[#f7fafc] px-2.5 py-1 text-xs font-bold text-primary">
+          <article key={action.rank} className="min-w-0 rounded-2xl border border-border bg-white p-4">
+            <div className="flex min-w-0 flex-wrap items-start justify-between gap-3">
+              <h3 className="min-w-0 flex-1 break-words text-sm font-semibold text-primary">{action.label}</h3>
+              <span className="shrink-0 rounded-full border border-border bg-[#f7fafc] px-2.5 py-1 text-xs font-bold text-primary">
                 {action.rank}
               </span>
             </div>
             <p className="mt-2 text-2xl font-semibold text-primary">{action.count}</p>
-            <p className="mt-1 text-sm font-medium text-primary">{action.status}</p>
-            <p className="mt-1 text-sm leading-6 text-muted">{action.detail}</p>
+            <p className="mt-1 break-words text-sm font-medium text-primary">{action.status}</p>
+            <p className="mt-1 break-words text-sm leading-6 text-muted">{action.detail}</p>
           </article>
         ))}
       </div>
 
-      <div className="mt-4 grid gap-3 lg:grid-cols-5">
+      <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
         {sections.map((section) => (
-          <article key={section.title} className="rounded-2xl border border-border bg-white p-4">
-            <div className="flex items-start justify-between gap-3">
-              <h3 className="text-sm font-semibold text-primary">{section.title}</h3>
-              <span className="rounded-full border border-border bg-[#f7fafc] px-2.5 py-1 text-xs font-bold text-primary">
+          <article key={section.title} className="min-w-0 rounded-2xl border border-border bg-white p-4">
+            <div className="flex min-w-0 flex-wrap items-start justify-between gap-3">
+              <h3 className="min-w-0 flex-1 break-words text-sm font-semibold text-primary">{section.title}</h3>
+              <span className="shrink-0 rounded-full border border-border bg-[#f7fafc] px-2.5 py-1 text-xs font-bold text-primary">
                 {section.count}
               </span>
             </div>
-            <p className="mt-2 text-sm font-medium text-primary">{section.status}</p>
-            <p className="mt-1 text-sm leading-6 text-muted">{section.detail}</p>
+            <p className="mt-2 break-words text-sm font-medium text-primary">{section.status}</p>
+            <p className="mt-1 break-words text-sm leading-6 text-muted">{section.detail}</p>
           </article>
         ))}
       </div>
@@ -312,8 +312,8 @@ export function OperatorWorkQueueSummary({ leads, metrics }: OperatorWorkQueueSu
       </div>
 
       <div className="mt-4 rounded-2xl border border-blue-100 bg-blue-50 p-4 text-sm leading-6 text-blue-950">
-        <h3 className="font-semibold text-blue-950">Safe operator guidance</h3>
-        <p className="mt-1">
+        <h3 className="break-words font-semibold text-blue-950">Safe operator guidance</h3>
+        <p className="mt-1 break-words">
           Review governance stop signals first, then highest-value next actions, daily revenue priorities, near-close
           recovery items, stuck-deal recovery items, seller follow-up priorities, buyer disposition priorities, missing
           revenue data items, workflow bottlenecks, and the manual review queue. Guidance is advisory text only and

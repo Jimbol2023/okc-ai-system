@@ -221,41 +221,41 @@ export function BuyerDispositionOperationalIntelligenceSummary({
     <section
       aria-labelledby="buyer-disposition-operational-intelligence-heading"
       aria-describedby="buyer-disposition-operational-intelligence-summary"
-      className="rounded-[1.5rem] border border-border bg-surface p-6"
+      className="overflow-hidden rounded-[1.5rem] border border-border bg-surface p-5 sm:p-6"
     >
-      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-        <div className="space-y-2">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-muted">
+      <div className="flex min-w-0 flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        <div className="min-w-0 space-y-2">
+          <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-muted">
             Buyer disposition operational intelligence
           </p>
-          <h2 id="buyer-disposition-operational-intelligence-heading" className="text-xl font-semibold text-primary">
+          <h2 id="buyer-disposition-operational-intelligence-heading" className="break-words text-xl font-semibold text-primary">
             Read-only disposition operations summary
           </h2>
-          <p id="buyer-disposition-operational-intelligence-summary" className="max-w-3xl text-sm leading-6 text-muted">
+          <p id="buyer-disposition-operational-intelligence-summary" className="max-w-3xl break-words text-sm leading-6 text-muted">
             Manual disposition review recommended. Disposition priority label is advisory only. Review buyer context
             before taking action. High assignment probability does not mean send.
           </p>
         </div>
-        <div className="flex flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+        <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
           {safetyBadges.map((badge) => (
-            <span key={badge} className="rounded-full border border-border bg-white px-3 py-1 text-primary">
+            <span key={badge} className="max-w-full break-words rounded-full border border-border bg-white px-3 py-1 text-center leading-5 text-primary">
               {badge}
             </span>
           ))}
         </div>
       </div>
 
-      <div className="mt-5 grid gap-3 lg:grid-cols-4">
+      <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         {sections.map((section) => (
-          <article key={section.title} className="rounded-2xl border border-border bg-white p-4">
-            <div className="flex items-start justify-between gap-3">
-              <h3 className="text-sm font-semibold text-primary">{section.title}</h3>
-              <span className="rounded-full border border-border bg-[#f7fafc] px-2.5 py-1 text-xs font-bold text-primary">
+          <article key={section.title} className="min-w-0 rounded-2xl border border-border bg-white p-4">
+            <div className="flex min-w-0 flex-wrap items-start justify-between gap-3">
+              <h3 className="min-w-0 flex-1 break-words text-sm font-semibold text-primary">{section.title}</h3>
+              <span className="shrink-0 rounded-full border border-border bg-[#f7fafc] px-2.5 py-1 text-xs font-bold text-primary">
                 {section.count}
               </span>
             </div>
-            <p className="mt-2 text-sm font-medium text-primary">{section.status}</p>
-            <p className="mt-1 text-sm leading-6 text-muted">{section.detail}</p>
+            <p className="mt-2 break-words text-sm font-medium text-primary">{section.status}</p>
+            <p className="mt-1 break-words text-sm leading-6 text-muted">{section.detail}</p>
           </article>
         ))}
       </div>
@@ -284,8 +284,8 @@ export function BuyerDispositionOperationalIntelligenceSummary({
       </div>
 
       <div className="mt-4 rounded-2xl border border-blue-100 bg-blue-50 p-4 text-sm leading-6 text-blue-950">
-        <h3 className="font-semibold text-blue-950">Operator disposition workflow guidance</h3>
-        <p className="mt-1">
+        <h3 className="break-words font-semibold text-blue-950">Operator disposition workflow guidance</h3>
+        <p className="mt-1 break-words">
           Governance stop signals must be resolved first. Then review revenue-priority disposition, high-likelihood
           assignment, assignment readiness, buyer package completeness, stale buyer package, stale deal visibility, buyer
           engagement, buyer demand mismatch, disposition bottlenecks, blocked disposition, and workload priority. This is
@@ -294,23 +294,23 @@ export function BuyerDispositionOperationalIntelligenceSummary({
         </p>
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-2 text-xs font-bold">
-        <span className="rounded border border-blue-200 bg-white px-2 py-1 text-blue-950">readOnly:true</span>
-        <span className="rounded border border-blue-200 bg-white px-2 py-1 text-blue-950">advisoryOnly:true</span>
-        <span className="rounded border border-blue-200 bg-white px-2 py-1 text-blue-950">simulationOnly:true</span>
-        <span className="rounded border border-blue-200 bg-white px-2 py-1 text-blue-950">providerCalled:false</span>
-        <span className="rounded border border-blue-200 bg-white px-2 py-1 text-blue-950">sent:false</span>
-        <span className="rounded border border-blue-200 bg-white px-2 py-1 text-blue-950">
+      <div className="mt-4 flex max-w-full flex-wrap gap-2 text-xs font-bold">
+        <span className="max-w-full break-words rounded border border-blue-200 bg-white px-2 py-1 leading-5 text-blue-950">readOnly:true</span>
+        <span className="max-w-full break-words rounded border border-blue-200 bg-white px-2 py-1 leading-5 text-blue-950">advisoryOnly:true</span>
+        <span className="max-w-full break-words rounded border border-blue-200 bg-white px-2 py-1 leading-5 text-blue-950">simulationOnly:true</span>
+        <span className="max-w-full break-words rounded border border-blue-200 bg-white px-2 py-1 leading-5 text-blue-950">providerCalled:false</span>
+        <span className="max-w-full break-words rounded border border-blue-200 bg-white px-2 py-1 leading-5 text-blue-950">sent:false</span>
+        <span className="max-w-full break-words rounded border border-blue-200 bg-white px-2 py-1 leading-5 text-blue-950">
           persistenceAllowedNow:false
         </span>
-        <span className="rounded border border-blue-200 bg-white px-2 py-1 text-blue-950">pollingAllowed:false</span>
-        <span className="rounded border border-blue-200 bg-white px-2 py-1 text-blue-950">
+        <span className="max-w-full break-words rounded border border-blue-200 bg-white px-2 py-1 leading-5 text-blue-950">pollingAllowed:false</span>
+        <span className="max-w-full break-words rounded border border-blue-200 bg-white px-2 py-1 leading-5 text-blue-950">
           runtimeActivationAllowed:false
         </span>
-        <span className="rounded border border-blue-200 bg-white px-2 py-1 text-blue-950">
+        <span className="max-w-full break-words rounded border border-blue-200 bg-white px-2 py-1 leading-5 text-blue-950">
           providerActivationAllowed:false
         </span>
-        <span className="rounded border border-blue-200 bg-white px-2 py-1 text-blue-950">
+        <span className="max-w-full break-words rounded border border-blue-200 bg-white px-2 py-1 leading-5 text-blue-950">
           approvalGrantsExecution:false
         </span>
       </div>
