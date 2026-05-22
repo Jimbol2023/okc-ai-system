@@ -13,6 +13,7 @@ import BuyerIntelligencePanel from "@/components/dashboard/buyer-intelligence-pa
 import { SystemHealthSafetyBar } from "@/components/dashboard/system-health-safety-bar";
 import { ActivityAuditPreviewPanel } from "@/components/dashboard/activity-audit-preview-panel";
 import { ManualRevenueWorkdaySummary } from "@/components/dashboard/manual-revenue-workday-summary";
+import { StuckDealRecoverySummary } from "@/components/dashboard/stuck-deal-recovery-summary";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -100,6 +101,7 @@ export default function DashboardPage() {
   const [automationPreview, setAutomationPreview] = useState<AutomationDryRunPreview | null>(null);
   const [automationPreviewError, setAutomationPreviewError] = useState<string | null>(null);
   const [isLoadingLeads, setIsLoadingLeads] = useState(true);
+  const [dashboardLeads, setDashboardLeads] = useState<StoredLead[]>([]);
   const [manualRevenueMetrics, setManualRevenueMetrics] = useState<R53ManualRevenueMetricsResult>(() =>
     deriveDashboardManualRevenueMetrics([])
   );
@@ -109,6 +111,7 @@ export default function DashboardPage() {
 
     setOpenLeadCount(leads.length);
     setPendingFollowUpCount(getPendingFollowUpCount(leads));
+    setDashboardLeads(leads);
     setManualRevenueMetrics(deriveDashboardManualRevenueMetrics(leads));
     setIsLoadingLeads(false);
 
@@ -125,6 +128,7 @@ export default function DashboardPage() {
 
       setOpenLeadCount(result.leads.length);
       setPendingFollowUpCount(getPendingFollowUpCount(result.leads));
+      setDashboardLeads(result.leads);
       setManualRevenueMetrics(deriveDashboardManualRevenueMetrics(result.leads));
       setDealFinderMessage(
         result.skippedCount > 0
@@ -146,6 +150,7 @@ export default function DashboardPage() {
 
       setOpenLeadCount(result.leads.length);
       setPendingFollowUpCount(getPendingFollowUpCount(result.leads));
+      setDashboardLeads(result.leads);
       setManualRevenueMetrics(deriveDashboardManualRevenueMetrics(result.leads));
       setRealLeadsMessage(
         result.skippedCount > 0
@@ -322,6 +327,8 @@ export default function DashboardPage() {
       </div>
 
       <ManualRevenueWorkdaySummary metrics={manualRevenueMetrics} />
+
+      <StuckDealRecoverySummary leads={dashboardLeads} metrics={manualRevenueMetrics} />
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
