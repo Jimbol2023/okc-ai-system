@@ -30,6 +30,7 @@ import { ManualOperatorActionCenterSummary } from "@/components/dashboard/manual
 import { ControlledHumanOutreachSummary } from "@/components/dashboard/controlled-human-outreach-summary";
 import { RevenueCommandCenterSummary } from "@/components/dashboard/revenue-command-center-summary";
 import { ProviderActivationReadinessSummary } from "@/components/dashboard/provider-activation-readiness-summary";
+import { HitlRevenueExecutionSummary } from "@/components/dashboard/hitl-revenue-execution-summary";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -377,6 +378,8 @@ export default function DashboardPage() {
       <RevenueCommandCenterSummary />
 
       <ProviderActivationReadinessSummary />
+
+      <HitlRevenueExecutionSummary />
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
