@@ -257,29 +257,6 @@ export function OperatorWorkQueueSummary({ leads, metrics }: OperatorWorkQueueSu
         </div>
       </div>
 
-      <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4" aria-label="Operator work queue summary">
-        <StatCard
-          label="Queue signals"
-          value={String(getQueueTotal(sections))}
-          helper="Read-only manual priority signals from existing dashboard data"
-        />
-        <StatCard
-          label="Governance stops"
-          value={String(highestValueActions[0]?.count ?? 0)}
-          helper="Review first; no override or execution control"
-        />
-        <StatCard
-          label="Daily priorities"
-          value={String(sections[2]?.count ?? 0)}
-          helper="Advisory daily attention labels"
-        />
-        <StatCard
-          label="Manual reviews"
-          value={String(sections[9]?.count ?? 0)}
-          helper="Human review queue visibility only"
-        />
-      </div>
-
       <div className="mt-5 grid gap-3 lg:grid-cols-7" aria-label="Highest-value next actions">
         {highestValueActions.map((action) => (
           <article key={action.rank} className="rounded-2xl border border-border bg-white p-4">
@@ -309,6 +286,29 @@ export function OperatorWorkQueueSummary({ leads, metrics }: OperatorWorkQueueSu
             <p className="mt-1 text-sm leading-6 text-muted">{section.detail}</p>
           </article>
         ))}
+      </div>
+
+      <div className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-4" aria-label="Operator work queue summary">
+        <StatCard
+          label="Queue signals"
+          value={String(getQueueTotal(sections))}
+          helper="Read-only manual priority signals from existing dashboard data"
+        />
+        <StatCard
+          label="Governance stops"
+          value={String(highestValueActions[0]?.count ?? 0)}
+          helper="Review first; no override or execution control"
+        />
+        <StatCard
+          label="Daily priorities"
+          value={String(sections[2]?.count ?? 0)}
+          helper="Advisory daily attention labels"
+        />
+        <StatCard
+          label="Manual reviews"
+          value={String(sections[9]?.count ?? 0)}
+          helper="Human review queue visibility only"
+        />
       </div>
 
       <div className="mt-4 rounded-2xl border border-blue-100 bg-blue-50 p-4 text-sm leading-6 text-blue-950">
