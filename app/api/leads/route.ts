@@ -28,6 +28,48 @@ function getSafeLeadRouteError(error: unknown) {
   };
 }
 
+function getSafeDatabaseTargetDebug() {
+  const expectedDatabaseName = "okc_wholesale_ai_staging_clean";
+  const expectedHostMarker = "ep-lucky-dawn-apm4gv31";
+
+  const inspectUrl = (value: string | undefined) => {
+    if (!value) {
+      return {
+        present: false,
+        parseable: false,
+        expectedDatabase: false,
+        expectedHostMarker: false,
+        neonHost: false
+      };
+    }
+
+    try {
+      const parsedUrl = new URL(value);
+
+      return {
+        present: true,
+        parseable: true,
+        expectedDatabase: parsedUrl.pathname.replace("/", "") === expectedDatabaseName,
+        expectedHostMarker: parsedUrl.hostname.includes(expectedHostMarker),
+        neonHost: parsedUrl.hostname.endsWith(".neon.tech")
+      };
+    } catch {
+      return {
+        present: true,
+        parseable: false,
+        expectedDatabase: false,
+        expectedHostMarker: false,
+        neonHost: false
+      };
+    }
+  };
+
+  return {
+    databaseUrlTarget: inspectUrl(process.env.DATABASE_URL),
+    directUrlTarget: inspectUrl(process.env.DIRECT_URL)
+  };
+}
+
 function buildInitialAutomationFields() {
   return {
     status: "new" as const,
@@ -48,7 +90,8 @@ export async function GET(request: Request) {
         method: "GET",
         authenticated: false,
         hasDatabaseUrl: Boolean(process.env.DATABASE_URL),
-        hasDirectUrl: Boolean(process.env.DIRECT_URL)
+        hasDirectUrl: Boolean(process.env.DIRECT_URL),
+        ...getSafeDatabaseTargetDebug()
       });
 
       return getUnauthorizedApiResponse();
@@ -66,6 +109,7 @@ export async function GET(request: Request) {
       authenticated,
       hasDatabaseUrl: Boolean(process.env.DATABASE_URL),
       hasDirectUrl: Boolean(process.env.DIRECT_URL),
+      ...getSafeDatabaseTargetDebug(),
       ...getSafeLeadRouteError(error)
     });
 
