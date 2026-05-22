@@ -28,6 +28,7 @@ import { ExecutionSimulationIntelligenceSummary } from "@/components/dashboard/e
 import { ProviderIsolationSafetySummary } from "@/components/dashboard/provider-isolation-safety-summary";
 import { ManualOperatorActionCenterSummary } from "@/components/dashboard/manual-operator-action-center-summary";
 import { ControlledHumanOutreachSummary } from "@/components/dashboard/controlled-human-outreach-summary";
+import { RevenueCommandCenterSummary } from "@/components/dashboard/revenue-command-center-summary";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -371,6 +372,8 @@ export default function DashboardPage() {
       <ManualOperatorActionCenterSummary />
 
       <ControlledHumanOutreachSummary />
+
+      <RevenueCommandCenterSummary />
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
