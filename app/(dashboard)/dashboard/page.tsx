@@ -66,6 +66,7 @@ import { HumanOperationalCommandCenterSummary } from "@/components/dashboard/hum
 import { LiveManualLeadOperationsSummary } from "@/components/dashboard/live-manual-lead-operations-summary";
 import { HumanGuidedSellerConversationSupportSummary } from "@/components/dashboard/human-guided-seller-conversation-support-summary";
 import { HumanGuidedBuyerMatchingOperationsSummary } from "@/components/dashboard/human-guided-buyer-matching-operations-summary";
+import { DealThroughputOptimizationLayerSummary } from "@/components/dashboard/deal-throughput-optimization-layer-summary";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -485,6 +486,8 @@ export default function DashboardPage() {
       <HumanGuidedSellerConversationSupportSummary />
 
       <HumanGuidedBuyerMatchingOperationsSummary />
+
+      <DealThroughputOptimizationLayerSummary />
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
