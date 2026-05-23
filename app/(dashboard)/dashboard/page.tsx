@@ -60,6 +60,7 @@ import { ControlledHumanReviewCoordinationSummary } from "@/components/dashboard
 import { GovernanceProtectedRevenueCoordinationSummary } from "@/components/dashboard/governance-protected-revenue-coordination-summary";
 import { ManualOperatorDecisionRoutingSummary } from "@/components/dashboard/manual-operator-decision-routing-summary";
 import { RevenueIntelligenceConsolidationSummary } from "@/components/dashboard/revenue-intelligence-consolidation-summary";
+import { FinalAdvisoryCoordinationLayerSummary } from "@/components/dashboard/final-advisory-coordination-layer-summary";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -467,6 +468,8 @@ export default function DashboardPage() {
       <ManualOperatorDecisionRoutingSummary />
 
       <RevenueIntelligenceConsolidationSummary />
+
+      <FinalAdvisoryCoordinationLayerSummary />
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
