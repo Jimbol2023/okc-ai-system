@@ -8,68 +8,6 @@ import { storedLeadArraySchema, storedLeadSchema } from "@/lib/validations/store
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-function getSafeLeadRouteError(error: unknown) {
-  if (typeof error !== "object" || error === null) {
-    return {
-      errorType: typeof error
-    };
-  }
-
-  const safeError = error as {
-    name?: unknown;
-    code?: unknown;
-    clientVersion?: unknown;
-  };
-
-  return {
-    errorName: typeof safeError.name === "string" ? safeError.name : "UnknownError",
-    prismaCode: typeof safeError.code === "string" ? safeError.code : null,
-    prismaClientVersion: typeof safeError.clientVersion === "string" ? safeError.clientVersion : null
-  };
-}
-
-function getSafeDatabaseTargetDebug() {
-  const expectedDatabaseName = "okc_wholesale_ai_staging_clean";
-  const expectedHostMarker = "ep-lucky-dawn-apm4gv31";
-
-  const inspectUrl = (value: string | undefined) => {
-    if (!value) {
-      return {
-        present: false,
-        parseable: false,
-        expectedDatabase: false,
-        expectedHostMarker: false,
-        neonHost: false
-      };
-    }
-
-    try {
-      const parsedUrl = new URL(value);
-
-      return {
-        present: true,
-        parseable: true,
-        expectedDatabase: parsedUrl.pathname.replace("/", "") === expectedDatabaseName,
-        expectedHostMarker: parsedUrl.hostname.includes(expectedHostMarker),
-        neonHost: parsedUrl.hostname.endsWith(".neon.tech")
-      };
-    } catch {
-      return {
-        present: true,
-        parseable: false,
-        expectedDatabase: false,
-        expectedHostMarker: false,
-        neonHost: false
-      };
-    }
-  };
-
-  return {
-    databaseUrlTarget: inspectUrl(process.env.DATABASE_URL),
-    directUrlTarget: inspectUrl(process.env.DIRECT_URL)
-  };
-}
-
 function buildInitialAutomationFields() {
   return {
     status: "new" as const,
@@ -86,14 +24,6 @@ export async function GET(request: Request) {
     authenticated = await isAuthenticatedRequest(request);
 
     if (!authenticated) {
-      console.warn("[leads-debug]", {
-        method: "GET",
-        authenticated: false,
-        hasDatabaseUrl: Boolean(process.env.DATABASE_URL),
-        hasDirectUrl: Boolean(process.env.DIRECT_URL),
-        ...getSafeDatabaseTargetDebug()
-      });
-
       return getUnauthorizedApiResponse();
     }
 
@@ -103,16 +33,7 @@ export async function GET(request: Request) {
       ok: true,
       leads
     });
-  } catch (error) {
-    console.error("[leads-debug]", {
-      method: "GET",
-      authenticated,
-      hasDatabaseUrl: Boolean(process.env.DATABASE_URL),
-      hasDirectUrl: Boolean(process.env.DIRECT_URL),
-      ...getSafeDatabaseTargetDebug(),
-      ...getSafeLeadRouteError(error)
-    });
-
+  } catch {
     return NextResponse.json(
       {
         ok: false,
