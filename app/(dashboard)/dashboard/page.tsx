@@ -64,6 +64,7 @@ import { FinalAdvisoryCoordinationLayerSummary } from "@/components/dashboard/fi
 import { GovernanceLockdownFinalOperationalReadinessSummary } from "@/components/dashboard/governance-lockdown-final-operational-readiness-summary";
 import { HumanOperationalCommandCenterSummary } from "@/components/dashboard/human-operational-command-center-summary";
 import { LiveManualLeadOperationsSummary } from "@/components/dashboard/live-manual-lead-operations-summary";
+import { HumanGuidedSellerConversationSupportSummary } from "@/components/dashboard/human-guided-seller-conversation-support-summary";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -479,6 +480,8 @@ export default function DashboardPage() {
       <HumanOperationalCommandCenterSummary />
 
       <LiveManualLeadOperationsSummary />
+
+      <HumanGuidedSellerConversationSupportSummary />
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
