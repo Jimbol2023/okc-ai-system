@@ -46,6 +46,7 @@ import { ControlledRevenueOperationsSummary } from "@/components/dashboard/contr
 import { ManualRevenueCommandCenterSummary } from "@/components/dashboard/manual-revenue-command-center-summary";
 import { RevenueThroughputCoordinationSummary } from "@/components/dashboard/revenue-throughput-coordination-summary";
 import { RevenueBottleneckResolutionSummary } from "@/components/dashboard/revenue-bottleneck-resolution-summary";
+import { ControlledRevenueRecoverySummary } from "@/components/dashboard/controlled-revenue-recovery-summary";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -425,6 +426,8 @@ export default function DashboardPage() {
       <RevenueThroughputCoordinationSummary />
 
       <RevenueBottleneckResolutionSummary />
+
+      <ControlledRevenueRecoverySummary />
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
