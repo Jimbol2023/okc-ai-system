@@ -69,6 +69,7 @@ import { HumanGuidedBuyerMatchingOperationsSummary } from "@/components/dashboar
 import { DealThroughputOptimizationLayerSummary } from "@/components/dashboard/deal-throughput-optimization-layer-summary";
 import { RevenueLeakageDetectionLayerSummary } from "@/components/dashboard/revenue-leakage-detection-layer-summary";
 import { NearCloseDealRecoveryOperationsSummary } from "@/components/dashboard/near-close-deal-recovery-operations-summary";
+import { HumanApprovedCommunicationWorkspaceSummary } from "@/components/dashboard/human-approved-communication-workspace-summary";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -494,6 +495,8 @@ export default function DashboardPage() {
       <RevenueLeakageDetectionLayerSummary />
 
       <NearCloseDealRecoveryOperationsSummary />
+
+      <HumanApprovedCommunicationWorkspaceSummary />
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
