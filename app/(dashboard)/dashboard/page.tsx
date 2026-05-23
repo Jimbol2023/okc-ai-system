@@ -53,6 +53,7 @@ import { RevenueRiskReviewCommandSummary } from "@/components/dashboard/revenue-
 import { RevenueRiskPrioritizationSummary } from "@/components/dashboard/revenue-risk-prioritization-summary";
 import { RevenueRiskTriageCommandSummary } from "@/components/dashboard/revenue-risk-triage-command-summary";
 import { RevenueRiskDecisionSupportSummary } from "@/components/dashboard/revenue-risk-decision-support-summary";
+import { RevenueRiskActionRecommendationSummary } from "@/components/dashboard/revenue-risk-action-recommendation-summary";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -446,6 +447,8 @@ export default function DashboardPage() {
       <RevenueRiskTriageCommandSummary />
 
       <RevenueRiskDecisionSupportSummary />
+
+      <RevenueRiskActionRecommendationSummary />
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
