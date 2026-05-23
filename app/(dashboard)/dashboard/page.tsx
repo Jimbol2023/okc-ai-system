@@ -39,6 +39,7 @@ import { NeighborhoodOpportunityClusteringSummary } from "@/components/dashboard
 import { AcquisitionResearchWorkbenchSummary } from "@/components/dashboard/acquisition-research-workbench-summary";
 import { MarketTimingMomentumSummary } from "@/components/dashboard/market-timing-momentum-summary";
 import { AcquisitionDataVerificationReadinessSummary } from "@/components/dashboard/acquisition-data-verification-readiness-summary";
+import { AcquisitionPriorityRevenueSummary } from "@/components/dashboard/acquisition-priority-revenue-summary";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -404,6 +405,8 @@ export default function DashboardPage() {
       <MarketTimingMomentumSummary />
 
       <AcquisitionDataVerificationReadinessSummary />
+
+      <AcquisitionPriorityRevenueSummary />
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
