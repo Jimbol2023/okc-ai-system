@@ -57,6 +57,7 @@ import { RevenueRiskActionRecommendationSummary } from "@/components/dashboard/r
 import { RevenueRiskRecommendationReviewCommandSummary } from "@/components/dashboard/revenue-risk-recommendation-review-command-summary";
 import { RevenueRiskManualRecommendationApprovalReadinessSummary } from "@/components/dashboard/revenue-risk-manual-recommendation-approval-readiness-summary";
 import { ControlledHumanReviewCoordinationSummary } from "@/components/dashboard/controlled-human-review-coordination-summary";
+import { GovernanceProtectedRevenueCoordinationSummary } from "@/components/dashboard/governance-protected-revenue-coordination-summary";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -458,6 +459,8 @@ export default function DashboardPage() {
       <RevenueRiskManualRecommendationApprovalReadinessSummary />
 
       <ControlledHumanReviewCoordinationSummary />
+
+      <GovernanceProtectedRevenueCoordinationSummary />
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
