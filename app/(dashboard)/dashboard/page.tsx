@@ -44,6 +44,7 @@ import { ControlledAcquisitionWorkflowIntelligenceSummary } from "@/components/d
 import { ManualAcquisitionCommandCenterSummary } from "@/components/dashboard/manual-acquisition-command-center-summary";
 import { ControlledRevenueOperationsSummary } from "@/components/dashboard/controlled-revenue-operations-summary";
 import { ManualRevenueCommandCenterSummary } from "@/components/dashboard/manual-revenue-command-center-summary";
+import { RevenueThroughputCoordinationSummary } from "@/components/dashboard/revenue-throughput-coordination-summary";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -419,6 +420,8 @@ export default function DashboardPage() {
       <ControlledRevenueOperationsSummary />
 
       <ManualRevenueCommandCenterSummary />
+
+      <RevenueThroughputCoordinationSummary />
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
