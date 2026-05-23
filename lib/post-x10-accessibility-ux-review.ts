@@ -1,0 +1,16 @@
+import { postX10ReviewFlags } from "./post-x10-system-operational-review";
+
+export const postX10AccessibilityReviewAreas = ["semantic headings", "aria consistency", "readable labels", "text-based meaning", "non-color-only meaning", "low-clutter layout consistency", "cognitive accessibility", "elderly accessibility", "screen-reader friendliness", "keyboard navigation consistency", "dashboard readability", "mobile responsiveness review", "operational UX clarity"] as const;
+
+export type PostX10AccessibilityReviewInput = Partial<Record<"semanticHeadingsReviewed" | "ariaReviewed" | "readableLabelsReviewed" | "textMeaningReviewed" | "nonColorMeaningReviewed" | "lowClutterReviewed" | "cognitiveAccessibilityReviewed" | "elderlyAccessibilityReviewed" | "screenReaderReviewed" | "keyboardNavigationReviewed" | "dashboardReadabilityReviewed" | "mobileResponsivenessReviewed" | "uxClarityReviewed", boolean>> & Partial<Record<"redesignRequested" | "animationSystemRequested" | "themeSystemRequested" | "executionRequested", boolean>>;
+export type PostX10AccessibilityReviewStatus = "post_x10_accessibility_blocked" | "operator_review_required" | "post_x10_accessibility_review_clear";
+
+const requiredReviewAreas: Array<[keyof PostX10AccessibilityReviewInput, string]> = [["semanticHeadingsReviewed", "semantic headings"], ["ariaReviewed", "aria consistency"], ["readableLabelsReviewed", "readable labels"], ["textMeaningReviewed", "text-based meaning"], ["nonColorMeaningReviewed", "non-color-only meaning"], ["lowClutterReviewed", "low-clutter layout consistency"], ["cognitiveAccessibilityReviewed", "cognitive accessibility"], ["elderlyAccessibilityReviewed", "elderly accessibility"], ["screenReaderReviewed", "screen-reader friendliness"], ["keyboardNavigationReviewed", "keyboard navigation consistency"], ["dashboardReadabilityReviewed", "dashboard readability"], ["mobileResponsivenessReviewed", "mobile responsiveness review"], ["uxClarityReviewed", "operational UX clarity"]];
+const blockedRequests: Array<[keyof PostX10AccessibilityReviewInput, string]> = [["redesignRequested", "redesign remains outside POST-X10 scope"], ["animationSystemRequested", "animation systems remain outside POST-X10 scope"], ["themeSystemRequested", "theme systems remain outside POST-X10 scope"], ["executionRequested", "accessibility review cannot execute"]];
+
+export function createPostX10AccessibilityUxReview(input: PostX10AccessibilityReviewInput = {}) {
+  const missingReviewAreas = requiredReviewAreas.filter(([key]) => !input[key]).map(([, label]) => label);
+  const blockedReasons = blockedRequests.filter(([key]) => input[key]).map(([, label]) => label);
+  const status: PostX10AccessibilityReviewStatus = blockedReasons.length > 0 ? "post_x10_accessibility_blocked" : missingReviewAreas.length > 0 ? "operator_review_required" : "post_x10_accessibility_review_clear";
+  return { phase: "POST-X10C" as const, status, flags: postX10ReviewFlags, reviewAreas: postX10AccessibilityReviewAreas, findings: ["Existing X1-X10 surfaces use semantic sections and visible text-based governance warnings.", "Review remains UX consistency only and does not redesign UI.", "Mobile and cognitive accessibility should be evaluated before any later activation planning."], missingReviewAreas, blockedReasons };
+}

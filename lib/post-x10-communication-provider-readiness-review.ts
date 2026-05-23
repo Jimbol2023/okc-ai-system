@@ -1,0 +1,16 @@
+import { postX10ReviewFlags } from "./post-x10-system-operational-review";
+
+export const postX10CommunicationProviderReviewAreas = ["communication workspace readiness", "DNC/opt-out consistency", "provider isolation safety", "human approval integrity", "future communication architecture readiness", "local number readiness", "toll-free number readiness", "professional email readiness", "inbox workflow readiness", "communication governance readiness"] as const;
+
+export type PostX10CommunicationProviderReviewInput = Partial<Record<"workspaceReadinessReviewed" | "dncOptOutReviewed" | "providerIsolationReviewed" | "humanApprovalReviewed" | "architectureReadinessReviewed" | "localNumberReviewed" | "tollFreeReviewed" | "professionalEmailReviewed" | "inboxWorkflowReviewed" | "governanceReadinessReviewed", boolean>> & Partial<Record<"smsSendingRequested" | "emailSendingRequested" | "twilioActivationRequested" | "sendgridActivationRequested" | "providerRuntimeRequested" | "communicationExecutionRequested", boolean>>;
+export type PostX10CommunicationProviderReviewStatus = "post_x10_communication_blocked" | "operator_review_required" | "post_x10_communication_review_clear";
+
+const requiredReviewAreas: Array<[keyof PostX10CommunicationProviderReviewInput, string]> = [["workspaceReadinessReviewed", "communication workspace readiness"], ["dncOptOutReviewed", "DNC/opt-out consistency"], ["providerIsolationReviewed", "provider isolation safety"], ["humanApprovalReviewed", "human approval integrity"], ["architectureReadinessReviewed", "future communication architecture readiness"], ["localNumberReviewed", "local number readiness"], ["tollFreeReviewed", "toll-free number readiness"], ["professionalEmailReviewed", "professional email readiness"], ["inboxWorkflowReviewed", "inbox workflow readiness"], ["governanceReadinessReviewed", "communication governance readiness"]];
+const blockedRequests: Array<[keyof PostX10CommunicationProviderReviewInput, string]> = [["smsSendingRequested", "SMS sending remains blocked"], ["emailSendingRequested", "email sending remains blocked"], ["twilioActivationRequested", "Twilio activation remains blocked"], ["sendgridActivationRequested", "SendGrid activation remains blocked"], ["providerRuntimeRequested", "provider runtime remains blocked"], ["communicationExecutionRequested", "communication execution remains blocked"]];
+
+export function createPostX10CommunicationProviderReadinessReview(input: PostX10CommunicationProviderReviewInput = {}) {
+  const missingReviewAreas = requiredReviewAreas.filter(([key]) => !input[key]).map(([, label]) => label);
+  const blockedReasons = blockedRequests.filter(([key]) => input[key]).map(([, label]) => label);
+  const status: PostX10CommunicationProviderReviewStatus = blockedReasons.length > 0 ? "post_x10_communication_blocked" : missingReviewAreas.length > 0 ? "operator_review_required" : "post_x10_communication_review_clear";
+  return { phase: "POST-X10D" as const, status, flags: postX10ReviewFlags, reviewAreas: postX10CommunicationProviderReviewAreas, findings: ["Communication readiness is visible but non-sending.", "Provider isolation remains intact.", "DNC/opt-out and human approval integrity require deliberate future scoped planning before activation."], missingReviewAreas, blockedReasons };
+}
