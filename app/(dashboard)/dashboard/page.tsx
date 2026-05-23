@@ -71,6 +71,7 @@ import { RevenueLeakageDetectionLayerSummary } from "@/components/dashboard/reve
 import { NearCloseDealRecoveryOperationsSummary } from "@/components/dashboard/near-close-deal-recovery-operations-summary";
 import { HumanApprovedCommunicationWorkspaceSummary } from "@/components/dashboard/human-approved-communication-workspace-summary";
 import { ControlledExecutionReadinessOperationsSummary } from "@/components/dashboard/controlled-execution-readiness-operations-summary";
+import { InternalOperationalPilotSummary } from "@/components/dashboard/internal-operational-pilot-summary";
 
 const queue = [
   "Review new seller leads and assign an owner.",
@@ -500,6 +501,8 @@ export default function DashboardPage() {
       <HumanApprovedCommunicationWorkspaceSummary />
 
       <ControlledExecutionReadinessOperationsSummary />
+
+      <InternalOperationalPilotSummary />
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
