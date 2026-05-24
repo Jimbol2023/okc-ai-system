@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import type { Route } from "next";
 import { useEffect, useState } from "react";
 
 import { generateLeads } from "@/lib/lead-generator";
@@ -8,6 +9,7 @@ import { createGeneratedLeads, fetchLeads } from "@/lib/leads-api";
 import { fetchRealLeads } from "@/lib/real-leads";
 import type { StoredLead } from "@/lib/leads-storage";
 import { createDashboardSignalConsolidation, type DashboardSignalConsolidation } from "@/lib/dashboard-signal-consolidation";
+import { createPracticalOperatorWorkQueue, type PracticalOperatorWorkQueue, type PracticalOperatorWorkQueueLane } from "@/lib/operator-work-queue-practicalization";
 import { deriveManualRevenueMetrics, type R53ManualRevenueMetricsResult } from "@/lib/r53-manual-revenue-metrics-helper";
 import { StatCard } from "@/components/shared/stat-card";
 import SystemReadinessPanel from "@/components/dashboard/system-readiness-panel";
@@ -102,6 +104,113 @@ function getPriorityTone(priority: DashboardSignalConsolidation["topOperatorPrio
   return "border-blue-200 bg-blue-50 text-blue-900";
 }
 
+function formatQueueLaneLabel(lane: PracticalOperatorWorkQueueLane) {
+  const labels: Record<PracticalOperatorWorkQueueLane, string> = {
+    stop_first: "Stop first",
+    cleanup_first: "Cleanup first",
+    overdue_follow_up: "Overdue follow-up",
+    review_now: "Review now",
+    near_close_review: "Near-close review",
+    buyer_ready_review: "Buyer-ready review",
+    monitor: "Monitor",
+  };
+
+  return labels[lane];
+}
+
+function getQueueLaneTone(lane: PracticalOperatorWorkQueueLane) {
+  if (lane === "stop_first") return "border-red-200 bg-red-50 text-red-900";
+  if (lane === "cleanup_first") return "border-amber-200 bg-amber-50 text-amber-900";
+  if (lane === "overdue_follow_up") return "border-orange-200 bg-orange-50 text-orange-900";
+  if (lane === "review_now" || lane === "near_close_review" || lane === "buyer_ready_review") {
+    return "border-emerald-200 bg-emerald-50 text-emerald-900";
+  }
+  return "border-blue-200 bg-blue-50 text-blue-900";
+}
+
+function ManualWorkQueue({ queue }: { queue: PracticalOperatorWorkQueue }) {
+  return (
+    <section
+      aria-labelledby="manual-work-queue-heading"
+      className="overflow-hidden rounded-[1.5rem] border border-border bg-surface p-5 sm:p-6"
+    >
+      <div className="flex min-w-0 flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+        <div className="min-w-0 space-y-2">
+          <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-muted">Read-only review order</p>
+          <h2 id="manual-work-queue-heading" className="break-words text-xl font-semibold text-primary">
+            Manual work queue
+          </h2>
+          <p className="max-w-3xl break-words text-sm leading-6 text-muted">
+            Practical ordering from current lead records only. No assignments, stored queue items, routing, reminders, calendar items, outreach, or workflow state are created.
+          </p>
+        </div>
+        <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+          <span className="max-w-full break-words rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-center leading-5 text-emerald-800">
+            Read only
+          </span>
+          <span className="max-w-full break-words rounded-full border border-red-200 bg-red-50 px-3 py-1 text-center leading-5 text-red-800">
+            No assignment
+          </span>
+        </div>
+      </div>
+
+      {queue.visibleRows.length === 0 ? (
+        <div className="mt-5 rounded-2xl border border-border bg-white p-4 text-sm leading-6 text-muted">
+          {queue.emptyState}
+        </div>
+      ) : (
+        <div className="mt-5 grid gap-3">
+          {queue.visibleRows.map((row) => {
+            const visibleChips = [...row.blockerLabels, ...row.cleanupLabels].slice(0, 4);
+
+            return (
+              <article key={row.leadId} className="min-w-0 rounded-2xl border border-border bg-white p-4">
+                <div className="flex min-w-0 flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                  <div className="min-w-0 space-y-2">
+                    <div className="flex max-w-full flex-wrap gap-2">
+                      <span className={`max-w-full break-words rounded-full border px-3 py-1 text-xs font-bold uppercase leading-5 tracking-[0.08em] ${getQueueLaneTone(row.queueLane)}`}>
+                        {formatQueueLaneLabel(row.queueLane)}
+                      </span>
+                      <span className="max-w-full break-words rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-semibold leading-5 text-blue-900">
+                        Source: {row.sourceVisible}
+                      </span>
+                    </div>
+                    <h3 className="break-words text-base font-semibold text-primary">{row.leadLabel}</h3>
+                    <p className="break-words text-sm leading-6 text-muted">{row.reason}</p>
+                  </div>
+                  <Link
+                    href={row.detailHref as Route}
+                    className="inline-flex min-h-10 shrink-0 items-center justify-center rounded-full border border-border bg-white px-4 py-2 text-sm font-semibold text-primary transition hover:border-primary/30"
+                  >
+                    Open lead detail
+                  </Link>
+                </div>
+
+                <div className="mt-3 flex max-w-full flex-wrap gap-2">
+                  <span className="max-w-full break-words rounded border border-slate-200 bg-slate-50 px-2 py-1 text-xs font-semibold leading-5 text-slate-700">
+                    {row.followUpLabel}
+                  </span>
+                  {visibleChips.map((chip) => (
+                    <span key={chip} className="max-w-full break-words rounded border border-amber-200 bg-amber-50 px-2 py-1 text-xs font-semibold leading-5 text-amber-900">
+                      {chip}
+                    </span>
+                  ))}
+                </div>
+
+                <p className="mt-3 break-words text-sm leading-6 text-muted">{row.safeManualReview}</p>
+              </article>
+            );
+          })}
+        </div>
+      )}
+
+      <p className="mt-4 break-words text-xs font-semibold uppercase leading-5 tracking-[0.1em] text-muted">
+        readOnly:true, queueItemCreated:false, operatorAssignmentCreated:false, reminderCreated:false, crmMutationAllowed:false
+      </p>
+    </section>
+  );
+}
+
 function DashboardSignalBrief({ signal }: { signal: DashboardSignalConsolidation }) {
   return (
     <section
@@ -184,6 +293,7 @@ export default function DashboardPage() {
     deriveDashboardManualRevenueMetrics([])
   );
   const dashboardSignal = createDashboardSignalConsolidation(dashboardLeads, manualRevenueMetrics);
+  const practicalWorkQueue = createPracticalOperatorWorkQueue(dashboardLeads, manualRevenueMetrics);
 
   async function refreshLeadCounts() {
     const leads = await fetchLeads();
@@ -399,6 +509,8 @@ export default function DashboardPage() {
       </section>
 
       <DashboardSignalBrief signal={dashboardSignal} />
+
+      <ManualWorkQueue queue={practicalWorkQueue} />
 
       <div className="grid gap-4 sm:grid-cols-2 2xl:grid-cols-4">
         <StatCard label="Open leads" value={String(openLeadCount)} helper="Submitted, imported, and generated leads under review" />
