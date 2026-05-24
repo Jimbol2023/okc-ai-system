@@ -23,6 +23,10 @@ import {
   createLeadDetailManualReviewModel,
   type LeadDetailManualReviewModel,
 } from "@/lib/lead-detail-manual-review-usability";
+import {
+  createBuyerDispositionReadinessUsabilityModel,
+  type BuyerDispositionReadinessUsabilityModel,
+} from "@/lib/buyer-disposition-readiness-usability";
 import { createSellerCallOutcomeUsabilityModel } from "@/lib/seller-call-outcome-usability";
 import type { StoredLead } from "@/lib/leads-storage";
 
@@ -241,6 +245,88 @@ function ManualReviewBriefPanel({ review }: { review: LeadDetailManualReviewMode
           <p className="mt-2 font-semibold">{review.safeManualNextReview}</p>
           <p className="mt-2 text-xs font-bold uppercase tracking-[0.08em] text-slate-500">
             providerCalled:false sent:false followUpContactExecuted:false crmMutationAllowed:false
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function BuyerDispositionReadinessPanel({ readiness }: { readiness: BuyerDispositionReadinessUsabilityModel }) {
+  return (
+    <section
+      aria-labelledby="buyer-disposition-readiness-heading"
+      className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm"
+    >
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
+            Buyer / disposition readiness
+          </p>
+          <h2 id="buyer-disposition-readiness-heading" className="mt-1 text-xl font-bold text-slate-950">
+            Buyer Package Review
+          </h2>
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+            Internal buyer/disposition visibility only. No buyer outreach, assignment, contract, reminder, routing, or status movement is created.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+          <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-800">
+            Read only
+          </span>
+          <span className="rounded-full border border-red-200 bg-red-50 px-3 py-1 text-red-800">
+            No buyer contact
+          </span>
+        </div>
+      </div>
+
+      <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <div className={`rounded border p-3 ${getReviewTone(readiness.buyerReadinessLabel)}`}>
+          <p className="text-xs font-bold uppercase">Buyer readiness</p>
+          <p className="mt-1 text-sm font-semibold">{readiness.buyerReadinessLabel}</p>
+          <p className="mt-1 text-xs">Score {readiness.buyerReadinessScore}/100</p>
+        </div>
+        <div className={`rounded border p-3 ${getReviewTone(readiness.assignmentReadinessLabel)}`}>
+          <p className="text-xs font-bold uppercase">Assignment readiness</p>
+          <p className="mt-1 text-sm font-semibold">{readiness.assignmentReadinessLabel}</p>
+        </div>
+        <div className="rounded border border-slate-200 bg-slate-50 p-3 text-slate-800">
+          <p className="text-xs font-bold uppercase">Source</p>
+          <p className="mt-1 text-sm font-semibold">{readiness.sourceVisible}</p>
+        </div>
+        <div className="rounded border border-slate-200 bg-slate-50 p-3 text-slate-800">
+          <p className="text-xs font-bold uppercase">Package checklist</p>
+          <p className="mt-1 text-sm font-semibold">
+            {readiness.packageChecklistSummary.complete}/{readiness.packageChecklistSummary.total} complete
+          </p>
+          <p className="mt-1 text-xs">
+            {readiness.packageChecklistSummary.missing} missing, {readiness.packageChecklistSummary.reviewNeeded} review
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-4 grid gap-3 lg:grid-cols-[1fr_1fr_1.2fr]">
+        <div className="rounded border border-blue-100 bg-blue-50 p-3 text-sm leading-6 text-blue-950">
+          <p className="font-bold">Near-close visibility</p>
+          <p className="mt-2">{readiness.nearCloseVisibility}</p>
+          <p className="mt-2">{readiness.closingVisibility}</p>
+        </div>
+        <div className="rounded border border-amber-200 bg-amber-50 p-3 text-sm leading-6 text-amber-950">
+          <p className="font-bold">Missing package data</p>
+          {readiness.missingPackageData.length > 0 ? (
+            <p className="mt-2">{readiness.missingPackageData.slice(0, 6).join(", ")}</p>
+          ) : (
+            <p className="mt-2">No buyer package gaps are visible from current lead data.</p>
+          )}
+          {readiness.blockerLabels.length > 0 ? (
+            <p className="mt-2 font-semibold">Blockers: {readiness.blockerLabels.slice(0, 4).join(", ")}</p>
+          ) : null}
+        </div>
+        <div className="rounded border border-slate-200 bg-slate-50 p-3 text-sm leading-6 text-slate-800">
+          <p className="font-bold">Safe manual next review</p>
+          <p className="mt-2 font-semibold">{readiness.safeManualNextReview}</p>
+          <p className="mt-2 text-xs font-bold uppercase tracking-[0.08em] text-slate-500">
+            buyerContacted:false contractGenerated:false assignmentExecuted:false crmMutationExpanded:false
           </p>
         </div>
       </div>
@@ -536,6 +622,7 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
   ============================= */
 
   const manualReview = createLeadDetailManualReviewModel(lead, sellerCallOutcomes);
+  const buyerDispositionReadiness = createBuyerDispositionReadinessUsabilityModel(lead);
   const sellerCallUsability = createSellerCallOutcomeUsabilityModel(lead, sellerCallOutcomes);
 
   return (
@@ -590,6 +677,8 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
       </section>
 
       <ManualReviewBriefPanel review={manualReview} />
+
+      <BuyerDispositionReadinessPanel readiness={buyerDispositionReadiness} />
 
       <LeadDetailObservabilityPanel lead={lead} outcomes={sellerCallOutcomes} review={manualReview} />
 
