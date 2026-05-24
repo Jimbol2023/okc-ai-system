@@ -12,6 +12,7 @@ import { createDashboardSignalConsolidation, type DashboardSignalConsolidation }
 import { createOperationalPilotHardeningSummary } from "@/lib/operational-pilot-hardening";
 import { createPracticalOperatorWorkQueue, type PracticalOperatorWorkQueue, type PracticalOperatorWorkQueueLane } from "@/lib/operator-work-queue-practicalization";
 import { deriveManualRevenueMetrics, type R53ManualRevenueMetricsResult } from "@/lib/r53-manual-revenue-metrics-helper";
+import { reviewPilotResultsBeforeExpandingScope, type PilotResultsReview } from "@/lib/review-pilot-results";
 import { createStopAndMeasureResult, type StopAndMeasureResult } from "@/lib/stop-and-measure";
 import { StatCard } from "@/components/shared/stat-card";
 import SystemReadinessPanel from "@/components/dashboard/system-readiness-panel";
@@ -371,6 +372,67 @@ function StopAndMeasurePanel({ measurement }: { measurement: StopAndMeasureResul
   );
 }
 
+function PilotReviewGatePanel({ review }: { review: PilotResultsReview }) {
+  return (
+    <section
+      aria-labelledby="pilot-review-gate-heading"
+      className="overflow-hidden rounded-[1.5rem] border border-border bg-surface p-5 sm:p-6"
+    >
+      <div className="flex min-w-0 flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        <div className="min-w-0 space-y-2">
+          <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-muted">Scope review gate</p>
+          <h2 id="pilot-review-gate-heading" className="break-words text-xl font-semibold text-primary">
+            Pilot Review Gate
+          </h2>
+          <p className="max-w-3xl break-words text-sm leading-6 text-muted">
+            Uses the Stop And Measure counts only. Pick the next move from observed operator friction, not speculative advisory expansion.
+          </p>
+        </div>
+        <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+          <span className="max-w-full break-words rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-center leading-5 text-emerald-800">
+            Read only
+          </span>
+          <span className="max-w-full break-words rounded-full border border-red-200 bg-red-50 px-3 py-1 text-center leading-5 text-red-800">
+            Scope held
+          </span>
+        </div>
+      </div>
+
+      <div className="mt-5 rounded-2xl border border-blue-100 bg-blue-50 p-4 text-sm leading-6 text-blue-950">
+        <p className="font-bold capitalize">{formatSignalLabel(review.pilotReviewDecision)}</p>
+        <p className="mt-1">{review.finalRecommendation}</p>
+      </div>
+
+      <div className="mt-4 grid gap-3 text-sm lg:grid-cols-[1fr_1fr]">
+        <div className="min-w-0 rounded-2xl border border-border bg-white p-4">
+          <p className="break-words font-semibold text-primary">Recommended focus</p>
+          <p className="mt-1 break-words leading-6 text-muted">{review.recommendedFocusArea}</p>
+          <p className="mt-3 break-words text-xs font-bold uppercase leading-5 tracking-[0.08em] text-muted">
+            Next: {review.recommendedNextExactStep}
+          </p>
+        </div>
+        <div className="min-w-0 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-amber-950">
+          <p className="break-words font-semibold">Expansion warning</p>
+          <p className="mt-1 break-words leading-6">{review.scopeExpansionWarning}</p>
+        </div>
+      </div>
+
+      <div className="mt-4 rounded-2xl border border-border bg-white p-4 text-sm leading-6 text-muted">
+        <p className="font-semibold text-primary">Evidence</p>
+        <ul className="mt-2 space-y-1">
+          {review.evidenceSummary.map((item) => (
+            <li key={item}>- {item}</li>
+          ))}
+        </ul>
+      </div>
+
+      <p className="mt-4 break-words text-xs font-semibold uppercase leading-5 tracking-[0.1em] text-muted">
+        readOnly:true pilotReviewPersisted:false trackingEnabled:false pilotScopeExpanded:false pilotWorkflowCreated:false pilotDecisionExecuted:false
+      </p>
+    </section>
+  );
+}
+
 export default function DashboardPage() {
   const operationalPilot = createOperationalPilotHardeningSummary();
   const [openLeadCount, setOpenLeadCount] = useState(0);
@@ -396,6 +458,7 @@ export default function DashboardPage() {
     dashboardSignal,
     workQueue: practicalWorkQueue,
   });
+  const pilotReview = reviewPilotResultsBeforeExpandingScope(stopAndMeasure);
 
   async function refreshLeadCounts() {
     const leads = await fetchLeads();
@@ -711,6 +774,8 @@ export default function DashboardPage() {
       </section>
 
       <StopAndMeasurePanel measurement={stopAndMeasure} />
+
+      <PilotReviewGatePanel review={pilotReview} />
 
       <section className="overflow-hidden rounded-[1.5rem] border border-border bg-surface p-5 sm:p-6">
         <h2 className="break-words text-xl font-semibold text-primary">Suggested operator workflow</h2>
