@@ -33,6 +33,8 @@ describe("acquisition intake review", () => {
 
     expect(result.totalRows).toBe(0);
     expect(result.acquisitionReadiness).toBe("not_ready");
+    expect(result.readinessLabel).toBe("Not ready");
+    expect(result.readinessDetail).toMatch(/Load a CSV preview/i);
     expect(result.importConfidence).toBe("none");
     expect(result.safeNextManualReview).toContain("Resolve source");
   });
@@ -45,6 +47,8 @@ describe("acquisition intake review", () => {
 
     expect(result.readyRows).toBe(2);
     expect(result.acquisitionReadiness).toBe("ready_for_manual_import_review");
+    expect(result.readinessLabel).toBe("Ready for manual import review");
+    expect(result.readinessDetail).toMatch(/does not authorize outreach/i);
     expect(result.importConfidence).toBe("high");
     expect(result.sourceMix).toEqual(
       expect.arrayContaining([
@@ -66,6 +70,16 @@ describe("acquisition intake review", () => {
     expect(result.acquisitionReadiness).toBe("needs_cleanup");
   });
 
+  it("surfaces duplicate-only previews as duplicate review rather than cleanup", () => {
+    const result = reviewAcquisitionIntake([makePreview({ duplicate: true })]);
+
+    expect(result.duplicateRows).toBe(1);
+    expect(result.invalidRows).toBe(0);
+    expect(result.acquisitionReadiness).toBe("needs_duplicate_review");
+    expect(result.readinessLabel).toBe("Duplicate review needed");
+    expect(result.readinessDetail).toMatch(/already exist/i);
+  });
+
   it("surfaces missing source contact and address clearly", () => {
     const result = reviewAcquisitionIntake([
       makePreview({
@@ -78,10 +92,23 @@ describe("acquisition intake review", () => {
     ]);
 
     expect(result.missingSourceRows).toBe(1);
+    expect(result.sourceReviewRows).toBe(1);
     expect(result.missingContactRows).toBe(1);
     expect(result.missingAddressRows).toBe(1);
+    expect(result.acquisitionReadiness).toBe("needs_cleanup");
+    expect(result.readinessLabel).toBe("Cleanup before import");
     expect(result.sourceClarity).toMatch(/missing specific acquisition source/i);
     expect(result.cleanupNeeds.join(" ")).toMatch(/source review|seller contact|property address/i);
+  });
+
+  it("keeps manual-import fallback rows visible for source review", () => {
+    const result = reviewAcquisitionIntake([makePreview({ source: "manual_import" })]);
+
+    expect(result.sourceMix).toEqual([expect.objectContaining({ source: "manual_import", count: 1 })]);
+    expect(result.missingSourceRows).toBe(1);
+    expect(result.sourceReviewRows).toBe(1);
+    expect(result.acquisitionReadiness).toBe("needs_cleanup");
+    expect(result.cleanupNeeds).toEqual(expect.arrayContaining(["1 row need source review"]));
   });
 
   it("normalizes aliased and unknown sources while preserving operator review visibility", () => {
@@ -104,6 +131,7 @@ describe("acquisition intake review", () => {
     const result = reviewAcquisitionIntake([makePreview()]);
 
     expect(result.complianceLabels.join(" ")).toMatch(/No scraping|outreach|CRM mutation/i);
+    expect(result.complianceLabels.join(" ")).toMatch(/source-labeled and manually reviewed before any outreach/i);
     expect(summary.deferred).toEqual(expect.arrayContaining(["public-record connectors", "virtual D4D", "territory scoring"]));
     expect(acquisitionIntakeReviewFlags.providerCalled).toBe(false);
     expect(acquisitionIntakeReviewFlags.sent).toBe(false);

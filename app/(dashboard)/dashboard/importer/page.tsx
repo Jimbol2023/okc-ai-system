@@ -24,10 +24,6 @@ function getImportLeadStatusClass(lead: ImportedLeadPreview) {
   return lead.duplicate ? "bg-[#f6e8cc] text-[#9a6a1a]" : "bg-[#dcefe3] text-[#2d6a4f]";
 }
 
-function formatReadiness(value: AcquisitionIntakeReview["acquisitionReadiness"]) {
-  return value.replaceAll("_", " ");
-}
-
 function getReadinessClass(value: AcquisitionIntakeReview["acquisitionReadiness"]) {
   if (value === "ready_for_manual_import_review") return "border-emerald-200 bg-emerald-50 text-emerald-900";
   if (value === "needs_duplicate_review") return "border-amber-200 bg-amber-50 text-amber-900";
@@ -43,7 +39,7 @@ function AcquisitionIntakeReviewPanel({ review }: { review: AcquisitionIntakeRev
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-muted">Acquisition intake review</p>
           <h2 className="text-2xl font-semibold text-primary">Import readiness</h2>
           <p className="max-w-3xl text-sm leading-6 text-muted">
-            Read-only review of the current preview. Imported and public-list records must stay source-labeled and manually reviewed before any seller workflow.
+            Source-labeled review of the current preview. Imported and public-list records require manual review before outreach or seller workflow.
           </p>
         </div>
         <div className="flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-[0.12em]">
@@ -53,11 +49,12 @@ function AcquisitionIntakeReviewPanel({ review }: { review: AcquisitionIntakeRev
       </div>
 
       <div className={`mt-5 rounded-2xl border p-4 text-sm leading-6 ${getReadinessClass(review.acquisitionReadiness)}`}>
-        <p className="font-bold capitalize">{formatReadiness(review.acquisitionReadiness)}</p>
-        <p className="mt-1">{review.safeNextManualReview}</p>
+        <p className="font-bold">{review.readinessLabel}</p>
+        <p className="mt-1">{review.readinessDetail}</p>
+        <p className="mt-1 font-semibold">{review.safeNextManualReview}</p>
       </div>
 
-      <div className="mt-5 grid gap-3 sm:grid-cols-2 2xl:grid-cols-4">
+      <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
         <div className="rounded-2xl border border-border bg-white p-4">
           <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Ready</p>
           <p className="mt-1 text-2xl font-semibold text-primary">{review.readyRows}</p>
@@ -74,9 +71,19 @@ function AcquisitionIntakeReviewPanel({ review }: { review: AcquisitionIntakeRev
           <p className="mt-1 text-sm text-muted">Fix before import</p>
         </div>
         <div className="rounded-2xl border border-border bg-white p-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Source review</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Source</p>
           <p className="mt-1 text-2xl font-semibold text-primary">{review.missingSourceRows}</p>
-          <p className="mt-1 text-sm text-muted">Fallback or missing source</p>
+          <p className="mt-1 text-sm text-muted">Fallback or missing</p>
+        </div>
+        <div className="rounded-2xl border border-border bg-white p-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Contact</p>
+          <p className="mt-1 text-2xl font-semibold text-primary">{review.missingContactRows}</p>
+          <p className="mt-1 text-sm text-muted">Needs seller data</p>
+        </div>
+        <div className="rounded-2xl border border-border bg-white p-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Address</p>
+          <p className="mt-1 text-2xl font-semibold text-primary">{review.missingAddressRows}</p>
+          <p className="mt-1 text-sm text-muted">Needs property data</p>
         </div>
       </div>
 
@@ -294,13 +301,13 @@ export default function DashboardImporterPage() {
                       <td className="px-4 py-3 font-semibold">
                         {`${lead.firstName} ${lead.lastName}`.trim() || lead.ownerName || "Unknown owner"}
                       </td>
-                      <td className="px-4 py-3">{lead.phone || "—"}</td>
-                      <td className="px-4 py-3">{lead.email || "—"}</td>
-                      <td className="px-4 py-3">{lead.propertyAddress || "—"}</td>
+                      <td className="px-4 py-3">{lead.phone || "--"}</td>
+                      <td className="px-4 py-3">{lead.email || "--"}</td>
+                      <td className="px-4 py-3">{lead.propertyAddress || "--"}</td>
                       <td className="px-4 py-3">{formatLeadSourceTag(lead.source)}</td>
-                      <td className="px-4 py-3">{[lead.city, lead.state].filter(Boolean).join(", ") || "—"}</td>
-                      <td className="px-4 py-3">{lead.county || "—"}</td>
-                      <td className="px-4 py-3">{lead.parcelId || "—"}</td>
+                      <td className="px-4 py-3">{[lead.city, lead.state].filter(Boolean).join(", ") || "--"}</td>
+                      <td className="px-4 py-3">{lead.county || "--"}</td>
+                      <td className="px-4 py-3">{lead.parcelId || "--"}</td>
                       <td className="px-4 py-3">
                         <span
                           className={`inline-flex rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] ${getImportLeadStatusClass(
@@ -351,22 +358,22 @@ export default function DashboardImporterPage() {
 
                   <div className="mt-4 space-y-2 text-sm text-[#173447]">
                     <p>
-                      <span className="font-semibold">Phone:</span> {lead.phone || "—"}
+                      <span className="font-semibold">Phone:</span> {lead.phone || "--"}
                     </p>
                     <p>
-                      <span className="font-semibold">Email:</span> {lead.email || "—"}
+                      <span className="font-semibold">Email:</span> {lead.email || "--"}
                     </p>
                     <p>
                       <span className="font-semibold">Source:</span> {formatLeadSourceTag(lead.source)}
                     </p>
                     <p>
-                      <span className="font-semibold">Location:</span> {[lead.city, lead.state, lead.zipCode].filter(Boolean).join(" ") || "—"}
+                      <span className="font-semibold">Location:</span> {[lead.city, lead.state, lead.zipCode].filter(Boolean).join(" ") || "--"}
                     </p>
                     <p>
-                      <span className="font-semibold">County:</span> {lead.county || "—"}
+                      <span className="font-semibold">County:</span> {lead.county || "--"}
                     </p>
                     <p>
-                      <span className="font-semibold">Parcel ID:</span> {lead.parcelId || "—"}
+                      <span className="font-semibold">Parcel ID:</span> {lead.parcelId || "--"}
                     </p>
                   </div>
                 </article>
@@ -374,6 +381,10 @@ export default function DashboardImporterPage() {
             </div>
           </>
         )}
+
+        <p className="mt-5 rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm leading-6 text-blue-950">
+          Import is a user-triggered CRM intake action only. It does not send outreach, call sellers, start automation, create queues, or approve follow-up.
+        </p>
 
         <button
           type="button"

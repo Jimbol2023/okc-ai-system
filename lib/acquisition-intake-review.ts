@@ -32,6 +32,7 @@ export type AcquisitionIntakeReview = {
   duplicateRows: number;
   invalidRows: number;
   missingSourceRows: number;
+  sourceReviewRows: number;
   missingContactRows: number;
   missingAddressRows: number;
   sourceMix: Array<{
@@ -41,6 +42,8 @@ export type AcquisitionIntakeReview = {
   }>;
   sourceClarity: string;
   importConfidence: "none" | "low" | "medium" | "high";
+  readinessLabel: string;
+  readinessDetail: string;
   cleanupNeeds: string[];
   complianceLabels: string[];
   acquisitionReadiness: AcquisitionIntakeReadiness;
@@ -122,10 +125,34 @@ function getReadiness({
   missingContactRows: number;
   missingAddressRows: number;
 }): AcquisitionIntakeReadiness {
-  if (totalRows === 0 || readyRows === 0) return "not_ready";
+  if (totalRows === 0) return "not_ready";
   if (invalidRows > 0 || missingSourceRows > 0 || missingContactRows > 0 || missingAddressRows > 0) return "needs_cleanup";
   if (duplicateRows > 0) return "needs_duplicate_review";
+  if (readyRows === 0) return "not_ready";
   return "ready_for_manual_import_review";
+}
+
+function getReadinessLabel(readiness: AcquisitionIntakeReadiness) {
+  if (readiness === "ready_for_manual_import_review") return "Ready for manual import review";
+  if (readiness === "needs_duplicate_review") return "Duplicate review needed";
+  if (readiness === "needs_cleanup") return "Cleanup before import";
+  return "Not ready";
+}
+
+function getReadinessDetail(readiness: AcquisitionIntakeReadiness) {
+  if (readiness === "ready_for_manual_import_review") {
+    return "Rows look usable for operator-approved import review. This does not authorize outreach or automation.";
+  }
+
+  if (readiness === "needs_duplicate_review") {
+    return "At least one row may already exist. Review duplicates before deciding what to import.";
+  }
+
+  if (readiness === "needs_cleanup") {
+    return "Fix missing source, contact, property address, or invalid row issues before import.";
+  }
+
+  return "Load a CSV preview with source-labeled records before acquisition intake review.";
 }
 
 export function reviewAcquisitionIntake(previewLeads: ImportedLeadPreview[]): AcquisitionIntakeReview {
@@ -167,6 +194,7 @@ export function reviewAcquisitionIntake(previewLeads: ImportedLeadPreview[]): Ac
     duplicateRows,
     invalidRows,
     missingSourceRows,
+    sourceReviewRows: missingSourceRows,
     missingContactRows,
     missingAddressRows,
     sourceMix,
@@ -175,11 +203,13 @@ export function reviewAcquisitionIntake(previewLeads: ImportedLeadPreview[]): Ac
         ? "Some rows are missing specific acquisition source attribution or fell back to manual import."
         : "All preview rows have source attribution visible for manual review.",
     importConfidence,
+    readinessLabel: getReadinessLabel(acquisitionReadiness),
+    readinessDetail: getReadinessDetail(acquisitionReadiness),
     cleanupNeeds,
     complianceLabels: [
       "Source-labeled import review only",
       "No scraping, provider calls, outreach, routing, assignment, reminders, or CRM mutation are authorized by this review",
-      "Public-list and imported data must be manually reviewed before any seller workflow",
+      "Imported and public-list data must stay source-labeled and manually reviewed before any outreach or seller workflow",
     ],
     acquisitionReadiness,
     safeNextManualReview:
