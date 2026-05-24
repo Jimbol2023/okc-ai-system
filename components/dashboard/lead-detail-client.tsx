@@ -23,6 +23,7 @@ import {
   createLeadDetailManualReviewModel,
   type LeadDetailManualReviewModel,
 } from "@/lib/lead-detail-manual-review-usability";
+import { createSellerCallOutcomeUsabilityModel } from "@/lib/seller-call-outcome-usability";
 import type { StoredLead } from "@/lib/leads-storage";
 
 /* =============================
@@ -535,6 +536,7 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
   ============================= */
 
   const manualReview = createLeadDetailManualReviewModel(lead, sellerCallOutcomes);
+  const sellerCallUsability = createSellerCallOutcomeUsabilityModel(lead, sellerCallOutcomes);
 
   return (
     <div className="space-y-6 p-6">
@@ -613,6 +615,7 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
 
       <SellerCallOutcomeForm
         leadId={lead.id}
+        usability={sellerCallUsability}
         onOutcomeSaved={(outcome) => {
           setSellerCallOutcomes((currentOutcomes) => [outcome, ...currentOutcomes]);
         }}
@@ -624,7 +627,7 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
         </p>
       ) : null}
 
-      <SellerCallOutcomeHistory outcomes={sellerCallOutcomes} />
+      <SellerCallOutcomeHistory outcomes={sellerCallOutcomes} usability={sellerCallUsability} />
 
       <SellerCallOutcomePlanPanel compact />
 

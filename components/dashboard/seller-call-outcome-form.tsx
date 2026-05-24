@@ -8,10 +8,12 @@ import {
   sellerCallSignalStrengths,
   type SellerCallManualNextStep,
 } from "@/lib/seller-call-outcome-validation";
+import type { SellerCallOutcomeUsabilityModel } from "@/lib/seller-call-outcome-usability";
 import type { SellerCallOutcomeHistoryItem } from "@/components/dashboard/seller-call-outcome-history";
 
 type SellerCallOutcomeFormProps = {
   leadId: string;
+  usability?: SellerCallOutcomeUsabilityModel;
   onOutcomeSaved: (outcome: SellerCallOutcomeHistoryItem) => void;
 };
 
@@ -52,16 +54,16 @@ function getDefaultCallCompletedAt() {
   return offsetDate.toISOString().slice(0, 16);
 }
 
-export function SellerCallOutcomeForm({ leadId, onOutcomeSaved }: SellerCallOutcomeFormProps) {
+export function SellerCallOutcomeForm({ leadId, usability, onOutcomeSaved }: SellerCallOutcomeFormProps) {
   const plan = useMemo(() => getSellerCallOutcomePlan(), []);
-  const [outcome, setOutcome] = useState<SellerCallOutcomeId>("no_answer");
+  const [outcome, setOutcome] = useState<SellerCallOutcomeId>(usability?.recommendedDefaults.outcome ?? "no_answer");
   const [callCompletedAt, setCallCompletedAt] = useState(getDefaultCallCompletedAt());
   const [operatorSummary, setOperatorSummary] = useState("");
-  const [sellerMotivationSignal, setSellerMotivationSignal] = useState<SellerCallSignalStrength>("not_captured");
-  const [sellerTimelineSignal, setSellerTimelineSignal] = useState<SellerCallSignalStrength>("not_captured");
-  const [propertyConditionSignal, setPropertyConditionSignal] = useState<SellerCallSignalStrength>("not_captured");
-  const [priceExpectationSignal, setPriceExpectationSignal] = useState<SellerCallSignalStrength>("not_captured");
-  const [manualNextStep, setManualNextStep] = useState<SellerCallManualNextStep>(manualNextStepByOutcome.no_answer);
+  const [sellerMotivationSignal, setSellerMotivationSignal] = useState<SellerCallSignalStrength>(usability?.recommendedDefaults.sellerMotivationSignal ?? "not_captured");
+  const [sellerTimelineSignal, setSellerTimelineSignal] = useState<SellerCallSignalStrength>(usability?.recommendedDefaults.sellerTimelineSignal ?? "not_captured");
+  const [propertyConditionSignal, setPropertyConditionSignal] = useState<SellerCallSignalStrength>(usability?.recommendedDefaults.propertyConditionSignal ?? "not_captured");
+  const [priceExpectationSignal, setPriceExpectationSignal] = useState<SellerCallSignalStrength>(usability?.recommendedDefaults.priceExpectationSignal ?? "not_captured");
+  const [manualNextStep, setManualNextStep] = useState<SellerCallManualNextStep>(usability?.recommendedDefaults.manualNextStep ?? manualNextStepByOutcome.no_answer);
   const [saveState, setSaveState] = useState<"idle" | "saving" | "saved">("idle");
   const [error, setError] = useState<string | null>(null);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
@@ -122,7 +124,7 @@ export function SellerCallOutcomeForm({ leadId, onOutcomeSaved }: SellerCallOutc
     <section className="rounded-xl border bg-white p-5">
       <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
         <div>
-          <h2 className="text-xl font-bold">Seller Call Outcome Capture</h2>
+          <h2 className="text-xl font-bold">Seller call outcome capture</h2>
           <p className="mt-1 text-sm text-gray-600">
             Manual capture only. No outreach is sent, no provider is called, no automation is triggered, no approval is granted, and no DNC state is changed.
           </p>
@@ -132,10 +134,25 @@ export function SellerCallOutcomeForm({ leadId, onOutcomeSaved }: SellerCallOutc
         </span>
       </div>
 
+      {usability ? (
+        <div className="mt-4 grid gap-3 md:grid-cols-[1fr_1.2fr]">
+          <div className="rounded border border-blue-100 bg-blue-50 p-3 text-sm leading-6 text-blue-950">
+            <p className="font-bold">Capture state: {formatLabel(usability.captureState)}</p>
+            <p className="mt-1">{usability.operatorGuidance}</p>
+          </div>
+          <div className="rounded border border-amber-100 bg-amber-50 p-3 text-sm leading-6 text-amber-950">
+            <p className="font-bold">Before saving</p>
+            <p className="mt-1">
+              Summary is required. Keep it internal and factual; avoid send, call, schedule, approval, DNC override, provider, credential, or contract instructions.
+            </p>
+          </div>
+        </div>
+      ) : null}
+
       <form onSubmit={handleSubmit} className="mt-4 space-y-4">
         <div className="grid gap-3 md:grid-cols-2">
           <label className="block text-sm font-semibold text-gray-700">
-            Outcome
+            Completed manual call outcome
             <select
               value={outcome}
               onChange={(event) => handleOutcomeChange(event.target.value as SellerCallOutcomeId)}
@@ -150,7 +167,7 @@ export function SellerCallOutcomeForm({ leadId, onOutcomeSaved }: SellerCallOutc
           </label>
 
           <label className="block text-sm font-semibold text-gray-700">
-            Call completed at
+            Manual call completed at
             <input
               type="datetime-local"
               value={callCompletedAt}
@@ -163,10 +180,10 @@ export function SellerCallOutcomeForm({ leadId, onOutcomeSaved }: SellerCallOutc
 
         <div className="grid gap-3 md:grid-cols-4">
           {[
-            ["Motivation", sellerMotivationSignal, setSellerMotivationSignal],
-            ["Timeline", sellerTimelineSignal, setSellerTimelineSignal],
-            ["Condition", propertyConditionSignal, setPropertyConditionSignal],
-            ["Price", priceExpectationSignal, setPriceExpectationSignal],
+            ["Seller motivation", sellerMotivationSignal, setSellerMotivationSignal],
+            ["Seller timeline", sellerTimelineSignal, setSellerTimelineSignal],
+            ["Property condition", propertyConditionSignal, setPropertyConditionSignal],
+            ["Price expectation", priceExpectationSignal, setPriceExpectationSignal],
           ].map(([label, value, setValue]) => (
             <label key={label as string} className="block text-sm font-semibold text-gray-700">
               {label as string}
@@ -186,7 +203,7 @@ export function SellerCallOutcomeForm({ leadId, onOutcomeSaved }: SellerCallOutc
         </div>
 
         <label className="block text-sm font-semibold text-gray-700">
-          Manual next step
+          Safe manual next review
           <select
             value={manualNextStep}
             onChange={(event) => setManualNextStep(event.target.value as SellerCallManualNextStep)}
@@ -201,16 +218,19 @@ export function SellerCallOutcomeForm({ leadId, onOutcomeSaved }: SellerCallOutc
         </label>
 
         <label className="block text-sm font-semibold text-gray-700">
-          Operator summary
+          Internal operator summary
           <textarea
             value={operatorSummary}
             onChange={(event) => setOperatorSummary(event.target.value)}
             rows={4}
             maxLength={700}
             className="mt-1 w-full rounded border px-3 py-2"
-            placeholder="Short internal summary. Do not enter send, schedule, approval, DNC override, provider, credential, or contract instructions."
+            placeholder="Short internal summary from the completed manual call. Do not enter send, call, schedule, approval, DNC override, provider, credential, or contract instructions."
             required
           />
+          <span className="mt-1 block text-xs font-medium text-gray-500">
+            Required. 700 characters max. This text is context only and cannot authorize execution.
+          </span>
         </label>
 
         <div className="rounded border border-red-100 bg-red-50 p-3">
@@ -230,7 +250,7 @@ export function SellerCallOutcomeForm({ leadId, onOutcomeSaved }: SellerCallOutc
             disabled={saveState === "saving"}
             className="rounded border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-bold text-blue-800 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {saveState === "saving" ? "Saving..." : "Save Outcome"}
+            {saveState === "saving" ? "Saving..." : "Save manual outcome"}
           </button>
           <p className="text-xs font-semibold text-gray-500">Save only. No send, schedule, approval, or DNC mutation action exists here.</p>
         </div>
