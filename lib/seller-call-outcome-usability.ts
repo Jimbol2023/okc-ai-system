@@ -39,6 +39,15 @@ export type SellerCallOutcomeHistoryScanRow = {
   safetyFlags: string[];
 };
 
+export type SellerCallOutcomeRecommendedFormDefaults = {
+  outcome: "no_answer";
+  manualNextStep: SellerCallManualNextStep;
+  sellerMotivationSignal: "not_captured";
+  sellerTimelineSignal: "not_captured";
+  propertyConditionSignal: "not_captured";
+  priceExpectationSignal: "not_captured";
+};
+
 export const sellerCallOutcomeUsabilityFlags = {
   ...manualFollowUpWorkspaceFlags,
   sellerCallProviderCalled: false,
@@ -57,20 +66,18 @@ export const sellerCallOutcomeUsabilityFlags = {
 export type SellerCallOutcomeUsabilityModel = {
   leadId: string;
   sourceVisible: string;
+  sourceVisibility: string;
   latestOutcomeLabel: string;
   captureState: SellerCallCaptureState;
   missingSellerSignals: string[];
-  recommendedDefaults: {
-    outcome: "no_answer";
-    manualNextStep: SellerCallManualNextStep;
-    sellerMotivationSignal: "not_captured";
-    sellerTimelineSignal: "not_captured";
-    propertyConditionSignal: "not_captured";
-    priceExpectationSignal: "not_captured";
-  };
+  recommendedDefaults: SellerCallOutcomeRecommendedFormDefaults;
+  recommendedFormDefaults: SellerCallOutcomeRecommendedFormDefaults;
   safetyCopy: string[];
+  conciseSafetyCopy: string[];
   historyRows: SellerCallOutcomeHistoryScanRow[];
+  historyScanRows: SellerCallOutcomeHistoryScanRow[];
   operatorGuidance: string;
+  blockedCaptureGuidance: string;
   recommendedNextExactStep: "Buyer/Disposition Readiness Usability";
   advisoryOnly: true;
   readOnly: true;
@@ -160,6 +167,14 @@ function getOperatorGuidance(captureState: SellerCallCaptureState) {
   return "Seller call context is captured; monitor behind higher-priority manual review records.";
 }
 
+function getBlockedCaptureGuidance(captureState: SellerCallCaptureState) {
+  if (captureState === "blocked_manual_review") {
+    return "Blocked capture guidance: stop before seller-call work and review DNC, rejected, or contact-safety context manually.";
+  }
+
+  return "No DNC or rejected capture blocker is visible. Seller-call outcome capture remains manual, append-only, and non-executing.";
+}
+
 function createHistoryRows(outcomes: SellerCallOutcomeUsabilityOutcomeInput[]): SellerCallOutcomeHistoryScanRow[] {
   return [...outcomes]
     .sort(
@@ -187,28 +202,37 @@ export function createSellerCallOutcomeUsabilityModel(
   const missingLeadData = getMissingLeadData(lead);
   const missingSellerSignals = Array.from(new Set([...missingLeadData, ...getMissingSellerSignals(latestOutcome)]));
   const captureState = getCaptureState(lead, latestOutcome, missingLeadData, missingSellerSignals);
+  const sourceVisible = getSourceVisible(lead);
+  const recommendedDefaults = {
+    outcome: "no_answer" as const,
+    manualNextStep: "manual_follow_up_review" as const,
+    sellerMotivationSignal: "not_captured" as const,
+    sellerTimelineSignal: "not_captured" as const,
+    propertyConditionSignal: "not_captured" as const,
+    priceExpectationSignal: "not_captured" as const,
+  };
+  const safetyCopy = [
+    "Manual outcome capture only.",
+    "Do not enter send, call, schedule, approval, DNC override, provider, credential, or contract instructions.",
+    "Saving an outcome does not send outreach, call providers, create reminders, mutate CRM status, or authorize execution.",
+  ];
+  const historyRows = createHistoryRows(outcomes);
 
   return {
     leadId: lead.id,
-    sourceVisible: getSourceVisible(lead),
+    sourceVisible,
+    sourceVisibility: sourceVisible,
     latestOutcomeLabel: latestOutcome ? formatLabel(latestOutcome.outcome) : "not captured",
     captureState,
     missingSellerSignals,
-    recommendedDefaults: {
-      outcome: "no_answer",
-      manualNextStep: "manual_follow_up_review",
-      sellerMotivationSignal: "not_captured",
-      sellerTimelineSignal: "not_captured",
-      propertyConditionSignal: "not_captured",
-      priceExpectationSignal: "not_captured",
-    },
-    safetyCopy: [
-      "Manual outcome capture only.",
-      "Do not enter send, call, schedule, approval, DNC override, provider, credential, or contract instructions.",
-      "Saving an outcome does not send outreach, call providers, create reminders, mutate CRM status, or authorize execution.",
-    ],
-    historyRows: createHistoryRows(outcomes),
+    recommendedDefaults,
+    recommendedFormDefaults: recommendedDefaults,
+    safetyCopy,
+    conciseSafetyCopy: safetyCopy,
+    historyRows,
+    historyScanRows: historyRows,
     operatorGuidance: getOperatorGuidance(captureState),
+    blockedCaptureGuidance: getBlockedCaptureGuidance(captureState),
     recommendedNextExactStep: "Buyer/Disposition Readiness Usability",
     advisoryOnly: true,
     readOnly: true,

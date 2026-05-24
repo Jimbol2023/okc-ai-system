@@ -74,6 +74,11 @@ describe("seller call outcome usability", () => {
 
     expect(result.latestOutcomeLabel).toBe("not captured");
     expect(result.captureState).toBe("needs_capture");
+    expect(result.recommendedFormDefaults).toBe(result.recommendedDefaults);
+    expect(result.conciseSafetyCopy).toBe(result.safetyCopy);
+    expect(result.historyScanRows).toBe(result.historyRows);
+    expect(result.sourceVisibility).toBe(result.sourceVisible);
+    expect(result.blockedCaptureGuidance).toContain("No DNC or rejected capture blocker");
     expect(result.missingSellerSignals).toEqual(
       expect.arrayContaining(["seller motivation", "seller timeline", "property condition", "price expectation"]),
     );
@@ -88,8 +93,10 @@ describe("seller call outcome usability", () => {
     ]);
 
     expect(result.sourceVisible).toBe("county-import");
+    expect(result.sourceVisibility).toBe("county-import");
     expect(result.latestOutcomeLabel).toBe("wants offer");
     expect(result.historyRows[0]?.id).toBe("new");
+    expect(result.historyScanRows[0]?.id).toBe("new");
     expect(result.historyRows[0]?.manualNextStepLabel).toBe("manual offer readiness review");
     expect(result.historyRows[0]?.sellerSignalSummary).toContain("Motivation medium");
   });
@@ -100,7 +107,9 @@ describe("seller call outcome usability", () => {
 
     expect(dnc.captureState).toBe("blocked_manual_review");
     expect(dnc.operatorGuidance).toContain("Stop before seller-call work");
+    expect(dnc.blockedCaptureGuidance).toContain("Blocked capture guidance");
     expect(rejected.captureState).toBe("blocked_manual_review");
+    expect(rejected.blockedCaptureGuidance).toContain("contact-safety context");
     expect(rejected.flags.sellerCallContactExecuted).toBe(false);
   });
 

@@ -39,7 +39,7 @@ export function SellerCallOutcomeHistory({
   usability?: SellerCallOutcomeUsabilityModel;
 }) {
   const rows =
-    usability?.historyRows ??
+    usability?.historyScanRows ??
     outcomes.map((outcome) => ({
       id: outcome.id,
       outcomeLabel: formatLabel(outcome.outcome),

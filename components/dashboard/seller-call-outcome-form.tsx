@@ -56,14 +56,14 @@ function getDefaultCallCompletedAt() {
 
 export function SellerCallOutcomeForm({ leadId, usability, onOutcomeSaved }: SellerCallOutcomeFormProps) {
   const plan = useMemo(() => getSellerCallOutcomePlan(), []);
-  const [outcome, setOutcome] = useState<SellerCallOutcomeId>(usability?.recommendedDefaults.outcome ?? "no_answer");
+  const [outcome, setOutcome] = useState<SellerCallOutcomeId>(usability?.recommendedFormDefaults.outcome ?? "no_answer");
   const [callCompletedAt, setCallCompletedAt] = useState(getDefaultCallCompletedAt());
   const [operatorSummary, setOperatorSummary] = useState("");
-  const [sellerMotivationSignal, setSellerMotivationSignal] = useState<SellerCallSignalStrength>(usability?.recommendedDefaults.sellerMotivationSignal ?? "not_captured");
-  const [sellerTimelineSignal, setSellerTimelineSignal] = useState<SellerCallSignalStrength>(usability?.recommendedDefaults.sellerTimelineSignal ?? "not_captured");
-  const [propertyConditionSignal, setPropertyConditionSignal] = useState<SellerCallSignalStrength>(usability?.recommendedDefaults.propertyConditionSignal ?? "not_captured");
-  const [priceExpectationSignal, setPriceExpectationSignal] = useState<SellerCallSignalStrength>(usability?.recommendedDefaults.priceExpectationSignal ?? "not_captured");
-  const [manualNextStep, setManualNextStep] = useState<SellerCallManualNextStep>(usability?.recommendedDefaults.manualNextStep ?? manualNextStepByOutcome.no_answer);
+  const [sellerMotivationSignal, setSellerMotivationSignal] = useState<SellerCallSignalStrength>(usability?.recommendedFormDefaults.sellerMotivationSignal ?? "not_captured");
+  const [sellerTimelineSignal, setSellerTimelineSignal] = useState<SellerCallSignalStrength>(usability?.recommendedFormDefaults.sellerTimelineSignal ?? "not_captured");
+  const [propertyConditionSignal, setPropertyConditionSignal] = useState<SellerCallSignalStrength>(usability?.recommendedFormDefaults.propertyConditionSignal ?? "not_captured");
+  const [priceExpectationSignal, setPriceExpectationSignal] = useState<SellerCallSignalStrength>(usability?.recommendedFormDefaults.priceExpectationSignal ?? "not_captured");
+  const [manualNextStep, setManualNextStep] = useState<SellerCallManualNextStep>(usability?.recommendedFormDefaults.manualNextStep ?? manualNextStepByOutcome.no_answer);
   const [saveState, setSaveState] = useState<"idle" | "saving" | "saved">("idle");
   const [error, setError] = useState<string | null>(null);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
@@ -139,12 +139,11 @@ export function SellerCallOutcomeForm({ leadId, usability, onOutcomeSaved }: Sel
           <div className="rounded border border-blue-100 bg-blue-50 p-3 text-sm leading-6 text-blue-950">
             <p className="font-bold">Capture state: {formatLabel(usability.captureState)}</p>
             <p className="mt-1">{usability.operatorGuidance}</p>
+            <p className="mt-1">{usability.blockedCaptureGuidance}</p>
           </div>
           <div className="rounded border border-amber-100 bg-amber-50 p-3 text-sm leading-6 text-amber-950">
             <p className="font-bold">Before saving</p>
-            <p className="mt-1">
-              Summary is required. Keep it internal and factual; avoid send, call, schedule, approval, DNC override, provider, credential, or contract instructions.
-            </p>
+            <p className="mt-1">{usability.conciseSafetyCopy[1]}</p>
           </div>
         </div>
       ) : null}
