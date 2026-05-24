@@ -9,11 +9,13 @@ import {
   Droppable,
   type DropResult,
 } from "@hello-pangea/dnd";
+import { LayoutList, Table2 } from "lucide-react";
 
 import { getActiveDistressFlags } from "@/lib/distress-flags";
 import { deleteLead, fetchLeads } from "@/lib/leads-api";
 import { formatLeadSourceTag } from "@/lib/lead-source";
 import type { LeadStatus, StoredLead } from "@/lib/leads-storage";
+import { createRealManualLeadDecision, type RealManualLeadDecision } from "@/lib/real-manual-lead-operations-decision-adapter";
 import { analyzeRevenuePipelineLead } from "@/lib/revenue-pipeline";
 
 const PIPELINE_STATUSES: LeadStatus[] = [
@@ -149,11 +151,11 @@ function getNextPipelineStatus(status: LeadStatus): LeadStatus {
 }
 
 function getNextAction(status: LeadStatus) {
-  if (status === "new") return "Call Now";
-  if (status === "contacted") return "Follow Up";
-  if (status === "negotiating") return "Send Offer";
-  if (status === "under_contract") return "Close Deal";
-  return "Done";
+  if (status === "new") return "Manual seller review";
+  if (status === "contacted") return "Manual follow-up review";
+  if (status === "negotiating") return "Manual offer review";
+  if (status === "under_contract") return "Manual closing review";
+  return "No active review";
 }
 
 function isFollowUpDue(lead: StoredLead) {
@@ -326,6 +328,124 @@ function RevenueActionSummary({ lead }: { lead: StoredLead }) {
   );
 }
 
+function getDecisionTone(decisionLane: RealManualLeadDecision["decisionLane"]) {
+  if (decisionLane === "stop_do_not_work") return "border-red-200 bg-red-50 text-red-800";
+  if (decisionLane === "cleanup_before_decision") return "border-amber-200 bg-amber-50 text-amber-800";
+  if (decisionLane === "review_risk_first") return "border-orange-200 bg-orange-50 text-orange-800";
+  if (decisionLane === "review_revenue_now" || decisionLane === "review_revenue_today") return "border-emerald-200 bg-emerald-50 text-emerald-900";
+  if (decisionLane === "terminal_no_decision") return "border-slate-200 bg-slate-50 text-slate-600";
+  if (decisionLane === "consolidate_instead_of_expand") return "border-indigo-200 bg-indigo-50 text-indigo-800";
+  return "border-gray-200 bg-gray-50 text-gray-700";
+}
+
+function formatDecisionLabel(label: string) {
+  return label.replaceAll("_", " ");
+}
+
+function LeadDecisionSummary({ decision }: { decision: RealManualLeadDecision }) {
+  return (
+    <div className={`rounded border px-3 py-2 text-xs leading-5 ${getDecisionTone(decision.decisionLane)}`}>
+      <p className="font-bold">Manual decision: {formatDecisionLabel(decision.decisionLane)}</p>
+      <p className="mt-1">{decision.safeManualNextReview}</p>
+      <p className="mt-1 font-semibold">Source: {decision.sourceVisible}</p>
+      {decision.missingData.length > 0 ? (
+        <p className="mt-1 font-semibold">Cleanup: {decision.missingData.slice(0, 3).join(", ")}</p>
+      ) : null}
+    </div>
+  );
+}
+
+function LeadMobileCard({
+  lead,
+  isUpdating,
+  isClosed,
+  aiBadges,
+  missingData,
+  decision,
+  onAdvance,
+  onDelete,
+}: {
+  lead: StoredLead;
+  isUpdating: boolean;
+  isClosed: boolean;
+  aiBadges: AIBadgeData[];
+  missingData: string[];
+  decision: RealManualLeadDecision;
+  onAdvance: (lead: StoredLead) => void;
+  onDelete: (id: string) => void;
+}) {
+  return (
+    <article className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <Link
+            href={`/dashboard/leads/${lead.id}` as Route}
+            className="block truncate font-semibold hover:underline"
+          >
+            {lead.firstName} {lead.lastName}
+          </Link>
+          <Link
+            href={`/dashboard/leads/${lead.id}` as Route}
+            className="mt-1 block text-sm text-gray-600 hover:underline"
+          >
+            {lead.propertyAddress}
+          </Link>
+        </div>
+        <ScoreBadge lead={lead} />
+      </div>
+
+      <div className="mt-3 grid gap-2 text-sm text-gray-700">
+        <p>{lead.phone || "No phone on file"}</p>
+        <p className="text-xs font-semibold text-gray-500">{formatLeadSourceTag(lead.source)}</p>
+      </div>
+
+      <div className="mt-3 flex flex-wrap gap-2">
+        <StatusBadge status={lead.status} />
+        <span className="rounded border border-gray-200 bg-gray-50 px-2 py-1 text-xs font-bold text-gray-600">
+          {lead.priority} Priority
+        </span>
+        {aiBadges.map((badge) => (
+          <AIBadge key={`${lead.id}-${badge.label}`} badge={badge} />
+        ))}
+      </div>
+
+      <p className="mt-3 text-xs leading-5 text-gray-600">{getCompactScoreExplanation(lead)}</p>
+      {missingData.length > 0 ? (
+        <p className="mt-1 text-xs font-semibold text-gray-500">Missing: {missingData.join(", ")}</p>
+      ) : null}
+
+      <div className="mt-3">
+        <LeadDecisionSummary decision={decision} />
+      </div>
+
+      <div className="mt-3">
+        <RevenueActionSummary lead={lead} />
+      </div>
+
+      <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <span className="text-xs font-semibold text-blue-700">{getNextAction(lead.status)}</span>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => onAdvance(lead)}
+            disabled={isUpdating || isClosed}
+            className="rounded-md border border-gray-300 px-3 py-2 text-xs font-semibold disabled:opacity-50"
+          >
+            {isUpdating ? "Updating..." : getPipelineButtonLabel(lead.status)}
+          </button>
+          <button
+            type="button"
+            onClick={() => onDelete(lead.id)}
+            className="rounded-md border border-red-200 px-3 py-2 text-xs font-semibold text-red-600"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 /* =====================================================
    API HELPERS
 ===================================================== */
@@ -449,45 +569,57 @@ export default function DashboardLeadsPage() {
   const workFirstCount = leads.filter(shouldWorkFirst).length;
   const highPriorityCount = leads.filter(isHighScore).length;
   const dncCount = leads.filter((lead) => lead.doNotContact).length;
+  const leadDecisions = leads.map(createRealManualLeadDecision);
+  const reviewNowCount = leadDecisions.filter((decision) => decision.decisionLane === "review_revenue_now").length;
+  const cleanupDecisionCount = leadDecisions.filter((decision) => decision.decisionLane === "cleanup_before_decision").length;
+  const stopDecisionCount = leadDecisions.filter((decision) => decision.decisionLane === "stop_do_not_work").length;
 
   if (isLoading) return <div className="p-6">Loading...</div>;
   if (error) return <div className="p-6 text-red-600">{error}</div>;
 
   return (
-    <div className="p-6">
+    <div>
       {/* =====================================================
           PAGE HEADER / VIEW TOGGLE
       ===================================================== */}
 
-      <div className="mb-4 flex items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold">Leads</h1>
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold">Leads</h1>
+          <p className="mt-1 text-sm text-gray-500">{visibleLeads.length} visible of {leads.length} total</p>
+        </div>
 
-        <div className="flex gap-2">
+        <div className="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-1">
           <button
             type="button"
             onClick={() => setViewMode("table")}
-            className={`rounded border px-3 py-1 text-xs ${
-              viewMode === "table" ? "bg-gray-900 text-white" : "bg-white"
+            className={`inline-flex min-h-9 items-center gap-2 rounded-md px-3 py-2 text-xs font-semibold ${
+              viewMode === "table" ? "bg-gray-900 text-white shadow-sm" : "text-gray-700"
             }`}
           >
+            <Table2 className="h-4 w-4" />
             Table View
           </button>
 
           <button
             type="button"
             onClick={() => setViewMode("pipeline")}
-            className={`rounded border px-3 py-1 text-xs ${
-              viewMode === "pipeline" ? "bg-gray-900 text-white" : "bg-white"
+            className={`inline-flex min-h-9 items-center gap-2 rounded-md px-3 py-2 text-xs font-semibold ${
+              viewMode === "pipeline" ? "bg-gray-900 text-white shadow-sm" : "text-gray-700"
             }`}
           >
+            <LayoutList className="h-4 w-4" />
             Pipeline View
           </button>
         </div>
       </div>
 
-      <div className="mb-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mb-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
         {[
           ["Work First", workFirstCount],
+          ["Review Now", reviewNowCount],
+          ["Cleanup First", cleanupDecisionCount],
+          ["Stop / DNC", stopDecisionCount],
           ["High Priority", highPriorityCount],
           ["New", newLeadCount],
           ["Overdue", overdueLeadCount],
@@ -497,21 +629,21 @@ export default function DashboardLeadsPage() {
           ["DNC", dncCount],
           ["Approval Pending", approvalPendingCount],
         ].map(([label, value]) => (
-          <div key={label} className="rounded border bg-white p-3">
+          <div key={label} className="rounded-lg border border-gray-200 bg-white p-3 shadow-sm">
             <p className="text-xs font-semibold uppercase text-gray-500">{label}</p>
             <p className="mt-1 text-2xl font-semibold text-gray-900">{value}</p>
           </div>
         ))}
       </div>
 
-      <div className="mb-4 grid gap-3 rounded border bg-white p-3 md:grid-cols-[1fr_240px]">
+      <div className="mb-4 grid gap-3 rounded-lg border border-gray-200 bg-white p-3 shadow-sm lg:grid-cols-[1fr_240px]">
         <div className="flex flex-wrap gap-2">
           {LEAD_FILTERS.map((filter) => (
             <button
               key={filter.value}
               type="button"
               onClick={() => setActiveFilter(filter.value)}
-              className={`rounded border px-3 py-2 text-xs font-semibold ${
+              className={`min-h-10 rounded-md border px-3 py-2 text-xs font-semibold ${
                 activeFilter === filter.value ? "border-gray-900 bg-gray-900 text-white" : "bg-white text-gray-700"
               }`}
             >
@@ -525,7 +657,7 @@ export default function DashboardLeadsPage() {
           <select
             value={activeSort}
             onChange={(event) => setActiveSort(event.target.value as LeadSort)}
-            className="w-full rounded border px-3 py-2 text-sm"
+            className="min-h-10 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
           >
             {LEAD_SORTS.map((sort) => (
               <option key={sort.value} value={sort.value}>
@@ -539,7 +671,7 @@ export default function DashboardLeadsPage() {
       {leads.length === 0 ? (
         <div>No leads yet.</div>
       ) : visibleLeads.length === 0 ? (
-        <div className="rounded border bg-white p-4 text-sm text-gray-500">No leads match the current filter.</div>
+        <div className="rounded-lg border border-gray-200 bg-white p-4 text-sm text-gray-500">No leads match the current filter.</div>
       ) : viewMode === "pipeline" ? (
         <DragDropContext onDragEnd={handleDragEnd}>
           <div className="flex gap-4 overflow-x-auto pb-4">
@@ -572,6 +704,7 @@ export default function DashboardLeadsPage() {
                         const isUpdating = updatingId === lead.id;
                         const isClosed = lead.status === "closed";
                         const aiBadges = getAIStatusBadges(lead);
+                        const decision = createRealManualLeadDecision(lead);
 
                         return (
                           <Draggable
@@ -647,6 +780,10 @@ export default function DashboardLeadsPage() {
                                 </p>
 
                                 <div className="mt-2">
+                                  <LeadDecisionSummary decision={decision} />
+                                </div>
+
+                                <div className="mt-2">
                                   <RevenueActionSummary lead={lead} />
                                 </div>
 
@@ -658,7 +795,7 @@ export default function DashboardLeadsPage() {
 
                                 {shouldAutoFollowUp(lead) ? (
                                   <p className="mt-2 text-xs font-bold text-green-600">
-                                    🔥 Auto Follow-Up Ready
+                                    Manual follow-up review
                                   </p>
                                 ) : null}
 
@@ -687,8 +824,34 @@ export default function DashboardLeadsPage() {
           </div>
         </DragDropContext>
       ) : (
-        <table className="w-full border text-sm">
-          <thead>
+        <>
+          <div className="grid gap-3 lg:hidden">
+            {visibleLeads.map((lead) => {
+              const isUpdating = updatingId === lead.id;
+              const isClosed = lead.status === "closed";
+              const aiBadges = getAIStatusBadges(lead);
+              const missingData = getMissingDataLabels(lead);
+              const decision = createRealManualLeadDecision(lead);
+
+              return (
+                <LeadMobileCard
+                  key={lead.id}
+                  lead={lead}
+                  isUpdating={isUpdating}
+                  isClosed={isClosed}
+                  aiBadges={aiBadges}
+                  missingData={missingData}
+                  decision={decision}
+                  onAdvance={handleAdvance}
+                  onDelete={handleDelete}
+                />
+              );
+            })}
+          </div>
+
+          <div className="hidden overflow-x-auto rounded-lg border border-gray-200 bg-white lg:block">
+            <table className="min-w-[1320px] w-full text-sm">
+          <thead className="bg-gray-50">
             <tr className="border-b text-xs uppercase text-gray-500">
               <th className="p-3 text-left">Name</th>
               <th className="p-3 text-left">Phone</th>
@@ -700,6 +863,7 @@ export default function DashboardLeadsPage() {
               <th className="p-3 text-left">Score Explanation</th>
               <th className="p-3 text-left">AI Status</th>
               <th className="p-3 text-left">Next Action</th>
+              <th className="p-3 text-left">Manual Decision</th>
               <th className="p-3 text-left">Revenue Action</th>
               <th className="p-3 text-right">Actions</th>
             </tr>
@@ -711,9 +875,10 @@ export default function DashboardLeadsPage() {
               const isClosed = lead.status === "closed";
               const aiBadges = getAIStatusBadges(lead);
               const missingData = getMissingDataLabels(lead);
+              const decision = createRealManualLeadDecision(lead);
 
               return (
-                <tr key={lead.id} className="border-b">
+                <tr key={lead.id} className="border-b align-middle last:border-b-0 hover:bg-gray-50/70">
                   <td className="p-3 font-semibold">
                     <Link
                       href={`/dashboard/leads/${lead.id}` as Route}
@@ -779,16 +944,21 @@ export default function DashboardLeadsPage() {
                     {getNextAction(lead.status)}
                   </td>
 
+                  <td className="max-w-[280px] p-3">
+                    <LeadDecisionSummary decision={decision} />
+                  </td>
+
                   <td className="max-w-[260px] p-3">
                     <RevenueActionSummary lead={lead} />
                   </td>
 
-                  <td className="space-x-2 p-3 text-right">
+                  <td className="p-3 text-right">
+                    <div className="flex justify-end gap-2">
                     <button
                       type="button"
                       onClick={() => handleAdvance(lead)}
                       disabled={isUpdating || isClosed}
-                      className="rounded border px-2 py-1 text-xs disabled:opacity-50"
+                      className="rounded-md border border-gray-300 px-3 py-2 text-xs font-semibold disabled:opacity-50"
                     >
                       {isUpdating
                         ? "Updating..."
@@ -798,16 +968,19 @@ export default function DashboardLeadsPage() {
                     <button
                       type="button"
                       onClick={() => handleDelete(lead.id)}
-                      className="rounded border px-2 py-1 text-xs text-red-600"
+                      className="rounded-md border border-red-200 px-3 py-2 text-xs font-semibold text-red-600"
                     >
                       Delete
                     </button>
+                    </div>
                   </td>
                 </tr>
               );
             })}
           </tbody>
-        </table>
+            </table>
+          </div>
+        </>
       )}
     </div>
   );
