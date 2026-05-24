@@ -362,13 +362,35 @@ function getFollowUpWorkspaceTone(lane: ManualFollowUpWorkspaceModel["lane"]) {
   return "border-teal-200 bg-teal-50 text-teal-900";
 }
 
+function getFollowUpWorkspaceLabel(lane: ManualFollowUpWorkspaceModel["lane"]) {
+  if (lane === "blocked_no_follow_up") return "Blocked / do not contact";
+  if (lane === "cleanup_before_follow_up") return "Cleanup before follow-up";
+  if (lane === "overdue_manual_review") return "Overdue manual review";
+  if (lane === "due_soon_manual_review") return "Due soon";
+  if (lane === "ready_for_manual_follow_up_review") return "Ready for manual review";
+  if (lane === "pause_low_value") return "Pause low value";
+  if (lane === "terminal_no_follow_up") return "Terminal";
+  return "Monitor only";
+}
+
+function getCompactFollowUpReviewCue(lane: ManualFollowUpWorkspaceModel["lane"]) {
+  if (lane === "blocked_no_follow_up") return "No follow-up work.";
+  if (lane === "cleanup_before_follow_up") return "Clean up data first.";
+  if (lane === "overdue_manual_review") return "Review timing today.";
+  if (lane === "due_soon_manual_review") return "Review upcoming timing.";
+  if (lane === "ready_for_manual_follow_up_review") return "Ready for operator review.";
+  if (lane === "pause_low_value") return "Consider pause or nurture.";
+  if (lane === "terminal_no_follow_up") return "No active follow-up.";
+  return "Monitor only.";
+}
+
 function FollowUpWorkspaceSummary({ followUp }: { followUp: ManualFollowUpWorkspaceModel }) {
   return (
     <div className={`rounded border px-3 py-2 text-xs leading-5 ${getFollowUpWorkspaceTone(followUp.lane)}`}>
-      <p className="font-bold">Manual follow-up: {formatDecisionLabel(followUp.lane)}</p>
+      <p className="font-bold">Follow-up: {getFollowUpWorkspaceLabel(followUp.lane)}</p>
       <p className="mt-1">{followUp.timingLabel}</p>
-      <p className="mt-1">{followUp.safeManualNextReview}</p>
-      <p className="mt-1 font-semibold">Source: {followUp.sourceVisible}</p>
+      <p className="mt-1 font-semibold">{getCompactFollowUpReviewCue(followUp.lane)}</p>
+      <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.08em]">Source: {followUp.sourceVisible}</p>
       {followUp.missingData.length > 0 ? (
         <p className="mt-1 font-semibold">Before follow-up: {followUp.missingData.slice(0, 3).join(", ")}</p>
       ) : null}
