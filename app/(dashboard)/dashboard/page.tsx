@@ -12,6 +12,7 @@ import { createDashboardSignalConsolidation, type DashboardSignalConsolidation }
 import { createOperationalPilotHardeningSummary } from "@/lib/operational-pilot-hardening";
 import { createPracticalOperatorWorkQueue, type PracticalOperatorWorkQueue, type PracticalOperatorWorkQueueLane } from "@/lib/operator-work-queue-practicalization";
 import { deriveManualRevenueMetrics, type R53ManualRevenueMetricsResult } from "@/lib/r53-manual-revenue-metrics-helper";
+import { createStopAndMeasureResult, type StopAndMeasureResult } from "@/lib/stop-and-measure";
 import { StatCard } from "@/components/shared/stat-card";
 import SystemReadinessPanel from "@/components/dashboard/system-readiness-panel";
 import { SystemHealthSafetyBar } from "@/components/dashboard/system-health-safety-bar";
@@ -280,6 +281,96 @@ function DashboardSignalBrief({ signal }: { signal: DashboardSignalConsolidation
   );
 }
 
+function StopAndMeasurePanel({ measurement }: { measurement: StopAndMeasureResult }) {
+  return (
+    <section
+      aria-labelledby="stop-and-measure-heading"
+      className="overflow-hidden rounded-[1.5rem] border border-border bg-surface p-5 sm:p-6"
+    >
+      <div className="flex min-w-0 flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        <div className="min-w-0 space-y-2">
+          <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-muted">Pilot measurement checkpoint</p>
+          <h2 id="stop-and-measure-heading" className="break-words text-xl font-semibold text-primary">
+            Stop and measure
+          </h2>
+          <p className="max-w-3xl break-words text-sm leading-6 text-muted">
+            Read-only pilot review from already-loaded lead data. Use these counts to decide whether real operator friction exists before expanding scope.
+          </p>
+        </div>
+        <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+          <span className="max-w-full break-words rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-center leading-5 text-emerald-800">
+            No tracking
+          </span>
+          <span className="max-w-full break-words rounded-full border border-red-200 bg-red-50 px-3 py-1 text-center leading-5 text-red-800">
+            No expansion
+          </span>
+        </div>
+      </div>
+
+      <div className="mt-5 rounded-2xl border border-blue-100 bg-blue-50 p-4 text-sm leading-6 text-blue-950">
+        <p className="font-bold capitalize">{formatSignalLabel(measurement.measurementStatus)}</p>
+        <p className="mt-1">{measurement.decisionPrompt}</p>
+      </div>
+
+      <div className="mt-5 grid gap-4 sm:grid-cols-2 2xl:grid-cols-4">
+        <StatCard
+          label="Blocked / DNC"
+          value={String(measurement.frictionSignals.blockedDncCount)}
+          helper="Stop-first records to inspect before work"
+        />
+        <StatCard
+          label="Cleanup"
+          value={String(measurement.frictionSignals.cleanupCount)}
+          helper="Missing source, contact, property, or seller context"
+        />
+        <StatCard
+          label="Follow-up pressure"
+          value={String(measurement.frictionSignals.overdueFollowUpCount + measurement.frictionSignals.dueFollowUpCount)}
+          helper={`${measurement.frictionSignals.overdueFollowUpCount} overdue, ${measurement.frictionSignals.dueFollowUpCount} due`}
+        />
+        <StatCard
+          label="Manual queue rows"
+          value={String(measurement.operatorThroughputSignals.visibleManualQueueRows)}
+          helper="Visible read-only rows, not stored assignments"
+        />
+      </div>
+
+      <div className="mt-4 grid gap-3 text-sm md:grid-cols-2 2xl:grid-cols-3">
+        <div className="min-w-0 rounded-2xl border border-border bg-white p-4">
+          <p className="break-words font-semibold text-primary">Revenue review</p>
+          <p className="mt-1 break-words text-muted">
+            {measurement.operatorThroughputSignals.reviewNowCount} review-now,{" "}
+            {measurement.operatorThroughputSignals.buyerReadyNearCloseCount} buyer-ready or near-close.
+          </p>
+        </div>
+        <div className="min-w-0 rounded-2xl border border-border bg-white p-4">
+          <p className="break-words font-semibold text-primary">Seller-call visibility</p>
+          <p className="mt-1 break-words text-muted">
+            {measurement.operatorThroughputSignals.sellerCallOutcomesRecorded} seller-call outcome records are visible in the pilot measurement.
+          </p>
+        </div>
+        <div className="min-w-0 rounded-2xl border border-border bg-white p-4">
+          <p className="break-words font-semibold text-primary">Next decision</p>
+          <p className="mt-1 break-words text-muted">{measurement.recommendedNextExactStep}</p>
+        </div>
+      </div>
+
+      <div className="mt-4 rounded-2xl border border-border bg-white p-4 text-sm leading-6 text-muted">
+        <p className="font-semibold text-primary">Measurement questions</p>
+        <ul className="mt-2 space-y-1">
+          {measurement.measurementQuestions.slice(0, 3).map((question) => (
+            <li key={question}>- {question}</li>
+          ))}
+        </ul>
+      </div>
+
+      <p className="mt-4 break-words text-xs font-semibold uppercase leading-5 tracking-[0.1em] text-muted">
+        readOnly:true analyticsPersisted:false trackingEnabled:false pollingEnabled:false queueCreated:false crmMutationExpanded:false
+      </p>
+    </section>
+  );
+}
+
 export default function DashboardPage() {
   const operationalPilot = createOperationalPilotHardeningSummary();
   const [openLeadCount, setOpenLeadCount] = useState(0);
@@ -299,6 +390,12 @@ export default function DashboardPage() {
   );
   const dashboardSignal = createDashboardSignalConsolidation(dashboardLeads, manualRevenueMetrics);
   const practicalWorkQueue = createPracticalOperatorWorkQueue(dashboardLeads, manualRevenueMetrics);
+  const stopAndMeasure = createStopAndMeasureResult({
+    leads: dashboardLeads,
+    metrics: manualRevenueMetrics,
+    dashboardSignal,
+    workQueue: practicalWorkQueue,
+  });
 
   async function refreshLeadCounts() {
     const leads = await fetchLeads();
@@ -612,6 +709,8 @@ export default function DashboardPage() {
           </div>
         </div>
       </section>
+
+      <StopAndMeasurePanel measurement={stopAndMeasure} />
 
       <section className="overflow-hidden rounded-[1.5rem] border border-border bg-surface p-5 sm:p-6">
         <h2 className="break-words text-xl font-semibold text-primary">Suggested operator workflow</h2>
