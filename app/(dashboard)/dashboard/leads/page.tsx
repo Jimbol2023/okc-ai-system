@@ -15,6 +15,7 @@ import { getActiveDistressFlags } from "@/lib/distress-flags";
 import { deleteLead, fetchLeads } from "@/lib/leads-api";
 import { formatLeadSourceTag } from "@/lib/lead-source";
 import type { LeadStatus, StoredLead } from "@/lib/leads-storage";
+import { createManualFollowUpWorkspaceModel, type ManualFollowUpWorkspaceModel } from "@/lib/manual-follow-up-workspace-usability";
 import { createRealManualLeadDecision, type RealManualLeadDecision } from "@/lib/real-manual-lead-operations-decision-adapter";
 import { analyzeRevenuePipelineLead } from "@/lib/revenue-pipeline";
 
@@ -181,10 +182,6 @@ function isFollowUpDue(lead: StoredLead) {
   const hoursSince = (Date.now() - last) / (1000 * 60 * 60);
 
   return hoursSince > 24;
-}
-
-function shouldAutoFollowUp(lead: StoredLead) {
-  return lead.status === "contacted" && lead.priority === "High";
 }
 
 function needsReview(lead: StoredLead) {
@@ -355,6 +352,30 @@ function LeadDecisionSummary({ decision }: { decision: RealManualLeadDecision })
   );
 }
 
+function getFollowUpWorkspaceTone(lane: ManualFollowUpWorkspaceModel["lane"]) {
+  if (lane === "blocked_no_follow_up") return "border-red-200 bg-red-50 text-red-800";
+  if (lane === "cleanup_before_follow_up") return "border-amber-200 bg-amber-50 text-amber-800";
+  if (lane === "overdue_manual_review") return "border-orange-200 bg-orange-50 text-orange-800";
+  if (lane === "due_soon_manual_review" || lane === "ready_for_manual_follow_up_review") return "border-cyan-200 bg-cyan-50 text-cyan-900";
+  if (lane === "terminal_no_follow_up") return "border-slate-200 bg-slate-50 text-slate-600";
+  if (lane === "pause_low_value") return "border-gray-200 bg-gray-50 text-gray-700";
+  return "border-teal-200 bg-teal-50 text-teal-900";
+}
+
+function FollowUpWorkspaceSummary({ followUp }: { followUp: ManualFollowUpWorkspaceModel }) {
+  return (
+    <div className={`rounded border px-3 py-2 text-xs leading-5 ${getFollowUpWorkspaceTone(followUp.lane)}`}>
+      <p className="font-bold">Manual follow-up: {formatDecisionLabel(followUp.lane)}</p>
+      <p className="mt-1">{followUp.timingLabel}</p>
+      <p className="mt-1">{followUp.safeManualNextReview}</p>
+      <p className="mt-1 font-semibold">Source: {followUp.sourceVisible}</p>
+      {followUp.missingData.length > 0 ? (
+        <p className="mt-1 font-semibold">Before follow-up: {followUp.missingData.slice(0, 3).join(", ")}</p>
+      ) : null}
+    </div>
+  );
+}
+
 function LeadMobileCard({
   lead,
   isUpdating,
@@ -362,6 +383,7 @@ function LeadMobileCard({
   aiBadges,
   missingData,
   decision,
+  followUp,
   onAdvance,
   onDelete,
 }: {
@@ -371,6 +393,7 @@ function LeadMobileCard({
   aiBadges: AIBadgeData[];
   missingData: string[];
   decision: RealManualLeadDecision;
+  followUp: ManualFollowUpWorkspaceModel;
   onAdvance: (lead: StoredLead) => void;
   onDelete: (id: string) => void;
 }) {
@@ -416,6 +439,10 @@ function LeadMobileCard({
 
       <div className="mt-3">
         <LeadDecisionSummary decision={decision} />
+      </div>
+
+      <div className="mt-3">
+        <FollowUpWorkspaceSummary followUp={followUp} />
       </div>
 
       <div className="mt-3">
@@ -705,6 +732,7 @@ export default function DashboardLeadsPage() {
                         const isClosed = lead.status === "closed";
                         const aiBadges = getAIStatusBadges(lead);
                         const decision = createRealManualLeadDecision(lead);
+                        const followUp = createManualFollowUpWorkspaceModel(lead);
 
                         return (
                           <Draggable
@@ -784,20 +812,12 @@ export default function DashboardLeadsPage() {
                                 </div>
 
                                 <div className="mt-2">
-                                  <RevenueActionSummary lead={lead} />
+                                  <FollowUpWorkspaceSummary followUp={followUp} />
                                 </div>
 
-                                {isFollowUpDue(lead) ? (
-                                  <p className="mt-2 text-xs font-bold text-orange-600">
-                                    ⏰ Follow-Up Overdue
-                                  </p>
-                                ) : null}
-
-                                {shouldAutoFollowUp(lead) ? (
-                                  <p className="mt-2 text-xs font-bold text-green-600">
-                                    Manual follow-up review
-                                  </p>
-                                ) : null}
+                                <div className="mt-2">
+                                  <RevenueActionSummary lead={lead} />
+                                </div>
 
                                 <button
                                   type="button"
@@ -832,6 +852,7 @@ export default function DashboardLeadsPage() {
               const aiBadges = getAIStatusBadges(lead);
               const missingData = getMissingDataLabels(lead);
               const decision = createRealManualLeadDecision(lead);
+              const followUp = createManualFollowUpWorkspaceModel(lead);
 
               return (
                 <LeadMobileCard
@@ -842,6 +863,7 @@ export default function DashboardLeadsPage() {
                   aiBadges={aiBadges}
                   missingData={missingData}
                   decision={decision}
+                  followUp={followUp}
                   onAdvance={handleAdvance}
                   onDelete={handleDelete}
                 />
@@ -850,7 +872,7 @@ export default function DashboardLeadsPage() {
           </div>
 
           <div className="hidden overflow-x-auto rounded-lg border border-gray-200 bg-white lg:block">
-            <table className="min-w-[1320px] w-full text-sm">
+            <table className="min-w-[1480px] w-full text-sm">
           <thead className="bg-gray-50">
             <tr className="border-b text-xs uppercase text-gray-500">
               <th className="p-3 text-left">Name</th>
@@ -864,6 +886,7 @@ export default function DashboardLeadsPage() {
               <th className="p-3 text-left">AI Status</th>
               <th className="p-3 text-left">Next Action</th>
               <th className="p-3 text-left">Manual Decision</th>
+              <th className="p-3 text-left">Follow-Up Review</th>
               <th className="p-3 text-left">Revenue Action</th>
               <th className="p-3 text-right">Actions</th>
             </tr>
@@ -876,6 +899,7 @@ export default function DashboardLeadsPage() {
               const aiBadges = getAIStatusBadges(lead);
               const missingData = getMissingDataLabels(lead);
               const decision = createRealManualLeadDecision(lead);
+              const followUp = createManualFollowUpWorkspaceModel(lead);
 
               return (
                 <tr key={lead.id} className="border-b align-middle last:border-b-0 hover:bg-gray-50/70">
@@ -946,6 +970,10 @@ export default function DashboardLeadsPage() {
 
                   <td className="max-w-[280px] p-3">
                     <LeadDecisionSummary decision={decision} />
+                  </td>
+
+                  <td className="max-w-[280px] p-3">
+                    <FollowUpWorkspaceSummary followUp={followUp} />
                   </td>
 
                   <td className="max-w-[260px] p-3">
