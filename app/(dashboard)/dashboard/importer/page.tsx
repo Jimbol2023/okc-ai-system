@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import { reviewAcquisitionIntake, type AcquisitionIntakeReview } from "@/lib/acquisition-intake-review";
 import { createImportedLeads, fetchLeads } from "@/lib/leads-api";
 import { formatLeadSourceTag, LEAD_SOURCE_TAGS, type LeadSourceTag } from "@/lib/lead-source";
 import type { StoredLead } from "@/lib/leads-storage";
@@ -21,6 +22,100 @@ function getImportLeadStatusClass(lead: ImportedLeadPreview) {
   }
 
   return lead.duplicate ? "bg-[#f6e8cc] text-[#9a6a1a]" : "bg-[#dcefe3] text-[#2d6a4f]";
+}
+
+function formatReadiness(value: AcquisitionIntakeReview["acquisitionReadiness"]) {
+  return value.replaceAll("_", " ");
+}
+
+function getReadinessClass(value: AcquisitionIntakeReview["acquisitionReadiness"]) {
+  if (value === "ready_for_manual_import_review") return "border-emerald-200 bg-emerald-50 text-emerald-900";
+  if (value === "needs_duplicate_review") return "border-amber-200 bg-amber-50 text-amber-900";
+  if (value === "needs_cleanup") return "border-orange-200 bg-orange-50 text-orange-900";
+  return "border-slate-200 bg-slate-50 text-slate-800";
+}
+
+function AcquisitionIntakeReviewPanel({ review }: { review: AcquisitionIntakeReview }) {
+  return (
+    <section className="rounded-[1.5rem] border border-border bg-surface p-5 shadow-[0_18px_40px_rgba(17,37,52,0.05)] md:p-6">
+      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        <div className="space-y-2">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-muted">Acquisition intake review</p>
+          <h2 className="text-2xl font-semibold text-primary">Import readiness</h2>
+          <p className="max-w-3xl text-sm leading-6 text-muted">
+            Read-only review of the current preview. Imported and public-list records must stay source-labeled and manually reviewed before any seller workflow.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-[0.12em]">
+          <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-800">Read only</span>
+          <span className="rounded-full border border-red-200 bg-red-50 px-3 py-1 text-red-800">No outreach</span>
+        </div>
+      </div>
+
+      <div className={`mt-5 rounded-2xl border p-4 text-sm leading-6 ${getReadinessClass(review.acquisitionReadiness)}`}>
+        <p className="font-bold capitalize">{formatReadiness(review.acquisitionReadiness)}</p>
+        <p className="mt-1">{review.safeNextManualReview}</p>
+      </div>
+
+      <div className="mt-5 grid gap-3 sm:grid-cols-2 2xl:grid-cols-4">
+        <div className="rounded-2xl border border-border bg-white p-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Ready</p>
+          <p className="mt-1 text-2xl font-semibold text-primary">{review.readyRows}</p>
+          <p className="mt-1 text-sm text-muted">Confidence: {review.importConfidence}</p>
+        </div>
+        <div className="rounded-2xl border border-border bg-white p-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Duplicates</p>
+          <p className="mt-1 text-2xl font-semibold text-primary">{review.duplicateRows}</p>
+          <p className="mt-1 text-sm text-muted">Manual duplicate review</p>
+        </div>
+        <div className="rounded-2xl border border-border bg-white p-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Invalid</p>
+          <p className="mt-1 text-2xl font-semibold text-primary">{review.invalidRows}</p>
+          <p className="mt-1 text-sm text-muted">Fix before import</p>
+        </div>
+        <div className="rounded-2xl border border-border bg-white p-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Source review</p>
+          <p className="mt-1 text-2xl font-semibold text-primary">{review.missingSourceRows}</p>
+          <p className="mt-1 text-sm text-muted">Fallback or missing source</p>
+        </div>
+      </div>
+
+      <div className="mt-4 grid gap-3 text-sm md:grid-cols-2">
+        <div className="rounded-2xl border border-border bg-white p-4">
+          <p className="font-semibold text-primary">Source mix</p>
+          {review.sourceMix.length > 0 ? (
+            <div className="mt-2 flex flex-wrap gap-2">
+              {review.sourceMix.map((item) => (
+                <span key={item.source} className="rounded border border-blue-100 bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-900">
+                  {item.label}: {item.count}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <p className="mt-2 text-muted">No source mix visible until a CSV preview is loaded.</p>
+          )}
+          <p className="mt-3 leading-6 text-muted">{review.sourceClarity}</p>
+        </div>
+
+        <div className="rounded-2xl border border-border bg-white p-4">
+          <p className="font-semibold text-primary">Cleanup needs</p>
+          {review.cleanupNeeds.length > 0 ? (
+            <ul className="mt-2 space-y-1 leading-6 text-muted">
+              {review.cleanupNeeds.slice(0, 5).map((item) => (
+                <li key={item}>- {item}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-2 leading-6 text-muted">No cleanup needs are visible from the current preview.</p>
+          )}
+        </div>
+      </div>
+
+      <p className="mt-4 text-xs font-semibold uppercase leading-5 tracking-[0.1em] text-muted">
+        providerCalled:false scrapingTriggered:false outreachCreated:false autonomousCrmMutationAllowed:false storageAuthorizedByReview:false
+      </p>
+    </section>
+  );
 }
 
 export default function DashboardImporterPage() {
@@ -43,6 +138,7 @@ export default function DashboardImporterPage() {
 
   const duplicateCount = previewLeads.filter((lead) => lead.duplicate).length;
   const invalidCount = previewLeads.filter((lead) => lead.validationErrors.length > 0).length;
+  const acquisitionIntakeReview = reviewAcquisitionIntake(previewLeads);
   const importableLeads = previewLeads.filter((lead) => {
     const requiredFields = hasRequiredImportedLeadFields(lead);
 
@@ -152,6 +248,8 @@ export default function DashboardImporterPage() {
         {formError ? <p className="mt-3 text-sm text-red-700">{formError}</p> : null}
         {importMessage ? <p className="mt-3 text-sm text-success">{importMessage}</p> : null}
       </section>
+
+      <AcquisitionIntakeReviewPanel review={acquisitionIntakeReview} />
 
       <section className="rounded-[1.5rem] border border-border bg-surface p-5 shadow-[0_18px_40px_rgba(17,37,52,0.05)] md:p-6">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
