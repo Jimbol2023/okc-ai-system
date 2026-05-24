@@ -1,83 +1,24 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { generateLeads } from "@/lib/lead-generator";
 import { createGeneratedLeads, fetchLeads } from "@/lib/leads-api";
 import { fetchRealLeads } from "@/lib/real-leads";
 import type { StoredLead } from "@/lib/leads-storage";
+import { createDashboardSignalConsolidation, type DashboardSignalConsolidation } from "@/lib/dashboard-signal-consolidation";
 import { deriveManualRevenueMetrics, type R53ManualRevenueMetricsResult } from "@/lib/r53-manual-revenue-metrics-helper";
 import { StatCard } from "@/components/shared/stat-card";
 import SystemReadinessPanel from "@/components/dashboard/system-readiness-panel";
-import BuyerIntelligencePanel from "@/components/dashboard/buyer-intelligence-panel";
 import { SystemHealthSafetyBar } from "@/components/dashboard/system-health-safety-bar";
 import { ActivityAuditPreviewPanel } from "@/components/dashboard/activity-audit-preview-panel";
-import { ManualRevenueWorkdaySummary } from "@/components/dashboard/manual-revenue-workday-summary";
-import { StuckDealRecoverySummary } from "@/components/dashboard/stuck-deal-recovery-summary";
-import { NearCloseRevenueRecoverySummary } from "@/components/dashboard/near-close-revenue-recovery-summary";
-import { OperatorWorkQueueSummary } from "@/components/dashboard/operator-work-queue-summary";
-import { AcquisitionDailyCallPrioritySummary } from "@/components/dashboard/acquisition-daily-call-priority-summary";
-import { BuyerReadyDispositionPrioritySummary } from "@/components/dashboard/buyer-ready-disposition-priority-summary";
-import { BuyerDispositionOperationalIntelligenceSummary } from "@/components/dashboard/buyer-disposition-operational-intelligence-summary";
-import { OperatorWorkQueueIntelligenceSummary } from "@/components/dashboard/operator-work-queue-intelligence-summary";
-import { DrivingForDollarsIntelligenceSummary } from "@/components/dashboard/driving-for-dollars-intelligence-summary";
-import { LeadQualityIntelligenceSummary } from "@/components/dashboard/lead-quality-intelligence-summary";
-import { ControlledExecutionReadinessSummary } from "@/components/dashboard/controlled-execution-readiness-summary";
-import { AutomationLastGovernanceSummary } from "@/components/dashboard/automation-last-governance-summary";
-import { ExecutionSimulationIntelligenceSummary } from "@/components/dashboard/execution-simulation-intelligence-summary";
-import { ProviderIsolationSafetySummary } from "@/components/dashboard/provider-isolation-safety-summary";
-import { ManualOperatorActionCenterSummary } from "@/components/dashboard/manual-operator-action-center-summary";
-import { ControlledHumanOutreachSummary } from "@/components/dashboard/controlled-human-outreach-summary";
-import { RevenueCommandCenterSummary } from "@/components/dashboard/revenue-command-center-summary";
-import { ProviderActivationReadinessSummary } from "@/components/dashboard/provider-activation-readiness-summary";
-import { HitlRevenueExecutionSummary } from "@/components/dashboard/hitl-revenue-execution-summary";
-import { VirtualDrivingForDollarsSummary } from "@/components/dashboard/virtual-driving-for-dollars-summary";
-import { DistressPropertyIntelligenceSummary } from "@/components/dashboard/distress-property-intelligence-summary";
-import { AcquisitionOpportunityScoringSummary } from "@/components/dashboard/acquisition-opportunity-scoring-summary";
-import { BuyerDemandAlignmentSummary } from "@/components/dashboard/buyer-demand-alignment-summary";
-import { NeighborhoodOpportunityClusteringSummary } from "@/components/dashboard/neighborhood-opportunity-clustering-summary";
-import { AcquisitionResearchWorkbenchSummary } from "@/components/dashboard/acquisition-research-workbench-summary";
-import { MarketTimingMomentumSummary } from "@/components/dashboard/market-timing-momentum-summary";
-import { AcquisitionDataVerificationReadinessSummary } from "@/components/dashboard/acquisition-data-verification-readiness-summary";
-import { AcquisitionPriorityRevenueSummary } from "@/components/dashboard/acquisition-priority-revenue-summary";
-import { ControlledAcquisitionWorkflowIntelligenceSummary } from "@/components/dashboard/controlled-acquisition-workflow-intelligence-summary";
-import { ManualAcquisitionCommandCenterSummary } from "@/components/dashboard/manual-acquisition-command-center-summary";
-import { ControlledRevenueOperationsSummary } from "@/components/dashboard/controlled-revenue-operations-summary";
-import { ManualRevenueCommandCenterSummary } from "@/components/dashboard/manual-revenue-command-center-summary";
-import { RevenueThroughputCoordinationSummary } from "@/components/dashboard/revenue-throughput-coordination-summary";
-import { RevenueBottleneckResolutionSummary } from "@/components/dashboard/revenue-bottleneck-resolution-summary";
-import { ControlledRevenueRecoverySummary } from "@/components/dashboard/controlled-revenue-recovery-summary";
-import { RevenueResilienceStabilizationSummary } from "@/components/dashboard/revenue-resilience-stabilization-summary";
-import { RevenueRiskEarlyWarningSummary } from "@/components/dashboard/revenue-risk-early-warning-summary";
-import { RevenueRiskReviewCommandSummary } from "@/components/dashboard/revenue-risk-review-command-summary";
-import { RevenueRiskPrioritizationSummary } from "@/components/dashboard/revenue-risk-prioritization-summary";
-import { RevenueRiskTriageCommandSummary } from "@/components/dashboard/revenue-risk-triage-command-summary";
-import { RevenueRiskDecisionSupportSummary } from "@/components/dashboard/revenue-risk-decision-support-summary";
-import { RevenueRiskActionRecommendationSummary } from "@/components/dashboard/revenue-risk-action-recommendation-summary";
-import { RevenueRiskRecommendationReviewCommandSummary } from "@/components/dashboard/revenue-risk-recommendation-review-command-summary";
-import { RevenueRiskManualRecommendationApprovalReadinessSummary } from "@/components/dashboard/revenue-risk-manual-recommendation-approval-readiness-summary";
-import { ControlledHumanReviewCoordinationSummary } from "@/components/dashboard/controlled-human-review-coordination-summary";
-import { GovernanceProtectedRevenueCoordinationSummary } from "@/components/dashboard/governance-protected-revenue-coordination-summary";
-import { ManualOperatorDecisionRoutingSummary } from "@/components/dashboard/manual-operator-decision-routing-summary";
-import { RevenueIntelligenceConsolidationSummary } from "@/components/dashboard/revenue-intelligence-consolidation-summary";
-import { FinalAdvisoryCoordinationLayerSummary } from "@/components/dashboard/final-advisory-coordination-layer-summary";
-import { GovernanceLockdownFinalOperationalReadinessSummary } from "@/components/dashboard/governance-lockdown-final-operational-readiness-summary";
-import { HumanOperationalCommandCenterSummary } from "@/components/dashboard/human-operational-command-center-summary";
-import { LiveManualLeadOperationsSummary } from "@/components/dashboard/live-manual-lead-operations-summary";
-import { HumanGuidedSellerConversationSupportSummary } from "@/components/dashboard/human-guided-seller-conversation-support-summary";
-import { HumanGuidedBuyerMatchingOperationsSummary } from "@/components/dashboard/human-guided-buyer-matching-operations-summary";
-import { DealThroughputOptimizationLayerSummary } from "@/components/dashboard/deal-throughput-optimization-layer-summary";
-import { RevenueLeakageDetectionLayerSummary } from "@/components/dashboard/revenue-leakage-detection-layer-summary";
-import { NearCloseDealRecoveryOperationsSummary } from "@/components/dashboard/near-close-deal-recovery-operations-summary";
-import { HumanApprovedCommunicationWorkspaceSummary } from "@/components/dashboard/human-approved-communication-workspace-summary";
-import { ControlledExecutionReadinessOperationsSummary } from "@/components/dashboard/controlled-execution-readiness-operations-summary";
-import { InternalOperationalPilotSummary } from "@/components/dashboard/internal-operational-pilot-summary";
 
 const queue = [
-  "Review new seller leads and assign an owner.",
-  "Import tax delinquent list and flag out-of-state owners.",
-  "Score new opportunities with the deal analyzer.",
-  "Create follow-up tasks for inactive prospects."
+  "Open blocked or DNC leads first and confirm no external action should occur.",
+  "Clean up missing source, contact, property, or seller context before lower-priority review.",
+  "Review overdue and due-soon manual follow-ups from the leads workspace.",
+  "Inspect review-now, near-close, and buyer-ready records manually before any buyer-facing action."
 ];
 
 type AutomationDryRunPreview = {
@@ -147,6 +88,85 @@ function deriveDashboardManualRevenueMetrics(leads: StoredLead[]) {
   });
 }
 
+function formatSignalLabel(value: string) {
+  return value.replaceAll("_", " ");
+}
+
+function getPriorityTone(priority: DashboardSignalConsolidation["topOperatorPriority"]) {
+  if (priority === "blocked_stop_first") return "border-red-200 bg-red-50 text-red-900";
+  if (priority === "cleanup_before_work") return "border-amber-200 bg-amber-50 text-amber-900";
+  if (priority === "overdue_follow_up_review") return "border-orange-200 bg-orange-50 text-orange-900";
+  if (priority === "review_revenue_now" || priority === "near_close_or_buyer_ready_review") {
+    return "border-emerald-200 bg-emerald-50 text-emerald-900";
+  }
+  return "border-blue-200 bg-blue-50 text-blue-900";
+}
+
+function DashboardSignalBrief({ signal }: { signal: DashboardSignalConsolidation }) {
+  return (
+    <section
+      aria-labelledby="dashboard-signal-brief-heading"
+      className="overflow-hidden rounded-[1.5rem] border border-border bg-surface p-5 sm:p-6"
+    >
+      <div className="flex min-w-0 flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+        <div className="min-w-0 space-y-2">
+          <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-muted">Dashboard signal consolidation</p>
+          <h2 id="dashboard-signal-brief-heading" className="break-words text-xl font-semibold text-primary">
+            Operator signal brief
+          </h2>
+          <p className="max-w-3xl break-words text-sm leading-6 text-muted">
+            One read-only signal surface for what to review first. It consolidates lead decisions, follow-up pressure, cleanup risk, blocked states, and revenue review signals without creating work, queues, reminders, or automation.
+          </p>
+        </div>
+        <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+          <span className="max-w-full break-words rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-center leading-5 text-emerald-800">
+            Read only
+          </span>
+          <span className="max-w-full break-words rounded-full border border-red-200 bg-red-50 px-3 py-1 text-center leading-5 text-red-800">
+            No execution
+          </span>
+        </div>
+      </div>
+
+      <div className={`mt-5 rounded-2xl border p-4 ${getPriorityTone(signal.topOperatorPriority)}`}>
+        <p className="text-xs font-bold uppercase tracking-[0.12em]">Top operator priority</p>
+        <p className="mt-1 break-words text-lg font-semibold capitalize">{formatSignalLabel(signal.topOperatorPriority)}</p>
+        <p className="mt-2 break-words text-sm leading-6">{signal.safeNextDashboardStep}</p>
+      </div>
+
+      <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {signal.signalCards.map((card) => (
+          <StatCard key={card.label} label={card.label} value={String(card.value)} helper={card.helper} />
+        ))}
+      </div>
+
+      <div className="mt-5 grid gap-3 text-sm lg:grid-cols-[1fr_1fr_1fr]">
+        <Link
+          href="/dashboard/leads"
+          className="rounded-2xl border border-border bg-white p-4 font-semibold text-primary transition hover:border-primary/30"
+        >
+          Review leads workspace
+          <span className="mt-1 block text-sm font-normal leading-6 text-muted">Manual lead decisions, follow-up lanes, source, and cleanup visibility.</span>
+        </Link>
+        <Link
+          href="/dashboard/approvals"
+          className="rounded-2xl border border-border bg-white p-4 font-semibold text-primary transition hover:border-primary/30"
+        >
+          Review approvals
+          <span className="mt-1 block text-sm font-normal leading-6 text-muted">Human approval visibility only; approval does not grant execution.</span>
+        </Link>
+        <Link
+          href="/dashboard/leads"
+          className="rounded-2xl border border-border bg-white p-4 font-semibold text-primary transition hover:border-primary/30"
+        >
+          Review follow-ups
+          <span className="mt-1 block text-sm font-normal leading-6 text-muted">Overdue and due-soon follow-up review remains manual and outside automation.</span>
+        </Link>
+      </div>
+    </section>
+  );
+}
+
 export default function DashboardPage() {
   const [openLeadCount, setOpenLeadCount] = useState(0);
   const [pendingFollowUpCount, setPendingFollowUpCount] = useState(0);
@@ -163,6 +183,7 @@ export default function DashboardPage() {
   const [manualRevenueMetrics, setManualRevenueMetrics] = useState<R53ManualRevenueMetricsResult>(() =>
     deriveDashboardManualRevenueMetrics([])
   );
+  const dashboardSignal = createDashboardSignalConsolidation(dashboardLeads, manualRevenueMetrics);
 
   async function refreshLeadCounts() {
     const leads = await fetchLeads();
@@ -377,132 +398,14 @@ export default function DashboardPage() {
         ) : null}
       </section>
 
+      <DashboardSignalBrief signal={dashboardSignal} />
+
       <div className="grid gap-4 sm:grid-cols-2 2xl:grid-cols-4">
-        <StatCard label="Open leads" value={String(openLeadCount)} helper="Includes submitted, imported, and AI-generated leads" />
-        <StatCard label="Follow-up tasks" value={String(pendingFollowUpCount)} helper="Pending scheduled outreach items" />
-        <StatCard label="Tracked opportunities" value={String(openLeadCount)} helper="Lead-linked opportunities under review" />
-        <StatCard label="Source coverage" value="6" helper="Website, imports, and AI-generated discovery" />
+        <StatCard label="Open leads" value={String(openLeadCount)} helper="Submitted, imported, and generated leads under review" />
+        <StatCard label="Manual follow-ups" value={String(pendingFollowUpCount)} helper="Pending follow-up placeholders; no reminders or sends created" />
+        <StatCard label="Cleanup needed" value={String(dashboardSignal.cleanupCount)} helper="Missing source, contact, property, or seller context" />
+        <StatCard label="Stop / DNC" value={String(dashboardSignal.blockedDncCount)} helper="Do-not-proceed visibility, not an override control" />
       </div>
-
-      <ManualRevenueWorkdaySummary metrics={manualRevenueMetrics} />
-
-      <StuckDealRecoverySummary leads={dashboardLeads} metrics={manualRevenueMetrics} />
-
-      <NearCloseRevenueRecoverySummary leads={dashboardLeads} metrics={manualRevenueMetrics} />
-
-      <OperatorWorkQueueSummary leads={dashboardLeads} metrics={manualRevenueMetrics} />
-
-      <AcquisitionDailyCallPrioritySummary leads={dashboardLeads} metrics={manualRevenueMetrics} />
-
-      <BuyerReadyDispositionPrioritySummary leads={dashboardLeads} metrics={manualRevenueMetrics} />
-
-      <BuyerDispositionOperationalIntelligenceSummary leads={dashboardLeads} metrics={manualRevenueMetrics} />
-
-      <OperatorWorkQueueIntelligenceSummary leads={dashboardLeads} metrics={manualRevenueMetrics} />
-
-      <DrivingForDollarsIntelligenceSummary leads={dashboardLeads} metrics={manualRevenueMetrics} />
-
-      <LeadQualityIntelligenceSummary leads={dashboardLeads} metrics={manualRevenueMetrics} />
-
-      <ControlledExecutionReadinessSummary />
-
-      <AutomationLastGovernanceSummary />
-
-      <ExecutionSimulationIntelligenceSummary />
-
-      <ProviderIsolationSafetySummary />
-
-      <ManualOperatorActionCenterSummary />
-
-      <ControlledHumanOutreachSummary />
-
-      <RevenueCommandCenterSummary />
-
-      <ProviderActivationReadinessSummary />
-
-      <HitlRevenueExecutionSummary />
-
-      <VirtualDrivingForDollarsSummary />
-
-      <DistressPropertyIntelligenceSummary />
-
-      <AcquisitionOpportunityScoringSummary />
-
-      <BuyerDemandAlignmentSummary />
-
-      <NeighborhoodOpportunityClusteringSummary />
-
-      <AcquisitionResearchWorkbenchSummary />
-
-      <MarketTimingMomentumSummary />
-
-      <AcquisitionDataVerificationReadinessSummary />
-
-      <AcquisitionPriorityRevenueSummary />
-
-      <ControlledAcquisitionWorkflowIntelligenceSummary />
-
-      <ManualAcquisitionCommandCenterSummary />
-
-      <ControlledRevenueOperationsSummary />
-
-      <ManualRevenueCommandCenterSummary />
-
-      <RevenueThroughputCoordinationSummary />
-
-      <RevenueBottleneckResolutionSummary />
-
-      <ControlledRevenueRecoverySummary />
-
-      <RevenueResilienceStabilizationSummary />
-
-      <RevenueRiskEarlyWarningSummary />
-
-      <RevenueRiskReviewCommandSummary />
-
-      <RevenueRiskPrioritizationSummary />
-
-      <RevenueRiskTriageCommandSummary />
-
-      <RevenueRiskDecisionSupportSummary />
-
-      <RevenueRiskActionRecommendationSummary />
-
-      <RevenueRiskRecommendationReviewCommandSummary />
-
-      <RevenueRiskManualRecommendationApprovalReadinessSummary />
-
-      <ControlledHumanReviewCoordinationSummary />
-
-      <GovernanceProtectedRevenueCoordinationSummary />
-
-      <ManualOperatorDecisionRoutingSummary />
-
-      <RevenueIntelligenceConsolidationSummary />
-
-      <FinalAdvisoryCoordinationLayerSummary />
-
-      <GovernanceLockdownFinalOperationalReadinessSummary />
-
-      <HumanOperationalCommandCenterSummary />
-
-      <LiveManualLeadOperationsSummary />
-
-      <HumanGuidedSellerConversationSupportSummary />
-
-      <HumanGuidedBuyerMatchingOperationsSummary />
-
-      <DealThroughputOptimizationLayerSummary />
-
-      <RevenueLeakageDetectionLayerSummary />
-
-      <NearCloseDealRecoveryOperationsSummary />
-
-      <HumanApprovedCommunicationWorkspaceSummary />
-
-      <ControlledExecutionReadinessOperationsSummary />
-
-      <InternalOperationalPilotSummary />
 
       <section
         aria-labelledby="manual-revenue-metrics-heading"
@@ -578,8 +481,6 @@ export default function DashboardPage() {
           </div>
         </div>
       </section>
-
-      <BuyerIntelligencePanel />
 
       <section className="overflow-hidden rounded-[1.5rem] border border-border bg-surface p-5 sm:p-6">
         <h2 className="break-words text-xl font-semibold text-primary">Suggested operator workflow</h2>
