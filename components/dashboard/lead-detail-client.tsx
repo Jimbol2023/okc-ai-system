@@ -5,7 +5,7 @@
    -----------------------------------------------------
    - Reads API response: { ok: true, lead }
    - Shows AI Reply Panel when lastSellerReply exists
-   - Keeps human approval before sending
+   - Keeps human approval visibility without direct sending
    - Keeps DNC protection
    - Captures seller call outcomes without outreach execution
 ===================================================== */
@@ -19,18 +19,19 @@ import {
   type SellerCallOutcomeHistoryItem,
 } from "@/components/dashboard/seller-call-outcome-history";
 import { SellerCallOutcomePlanPanel } from "@/components/dashboard/seller-call-outcome-plan-panel";
+import {
+  createLeadDetailManualReviewModel,
+  type LeadDetailManualReviewModel,
+} from "@/lib/lead-detail-manual-review-usability";
+import type { StoredLead } from "@/lib/leads-storage";
 
 /* =============================
    TYPES
 ============================= */
 
-type Lead = {
+type Lead = Partial<StoredLead> & {
   id: string;
   name?: string | null;
-  phone?: string | null;
-  propertyAddress?: string | null;
-  source?: string | null;
-  approvalStatus?: string | null;
 
   lastSellerReply?: string | null;
   lastSellerReplyAt?: string | null;
@@ -40,8 +41,8 @@ type Lead = {
   requiresHumanApproval?: boolean | null;
   suggestedReply?: string | null;
 
-  doNotContact?: boolean | null;
-  automationStatus?: string | null;
+  optOutReason?: string | null;
+  optOutAt?: string | null;
 };
 
 type LeadApiResponse = {
@@ -76,6 +77,26 @@ type LeadDetailObservabilitySummary = {
   opportunitySummary: string;
   manualNextStep: string;
 };
+
+function getReviewTone(value: string) {
+  if (value.includes("stop") || value.includes("blocked") || value.includes("no_follow_up")) {
+    return "border-red-200 bg-red-50 text-red-900";
+  }
+  if (value.includes("cleanup") || value.includes("missing")) {
+    return "border-amber-200 bg-amber-50 text-amber-900";
+  }
+  if (value.includes("overdue") || value.includes("risk")) {
+    return "border-orange-200 bg-orange-50 text-orange-900";
+  }
+  if (value.includes("review_revenue") || value.includes("ready_for")) {
+    return "border-emerald-200 bg-emerald-50 text-emerald-900";
+  }
+  if (value.includes("terminal")) {
+    return "border-slate-200 bg-slate-50 text-slate-700";
+  }
+
+  return "border-blue-200 bg-blue-50 text-blue-900";
+}
 
 function hasValue(value?: string | null) {
   return typeof value === "string" && value.trim().length > 0;
@@ -155,12 +176,85 @@ function deriveLeadDetailObservability(
   };
 }
 
+function ManualReviewBriefPanel({ review }: { review: LeadDetailManualReviewModel }) {
+  return (
+    <section
+      aria-labelledby="lead-detail-manual-review-brief-heading"
+      className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm"
+    >
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
+            Consolidated manual review
+          </p>
+          <h2 id="lead-detail-manual-review-brief-heading" className="mt-1 text-xl font-bold text-slate-950">
+            Manual Review Brief
+          </h2>
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+            One operator-facing summary from Z10 decision support, follow-up workspace timing, source tracking, and seller call context.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+          <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-800">
+            Advisory only
+          </span>
+          <span className="rounded-full border border-red-200 bg-red-50 px-3 py-1 text-red-800">
+            No external action
+          </span>
+        </div>
+      </div>
+
+      <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <div className={`rounded border p-3 ${getReviewTone(review.decision.decisionLane)}`}>
+          <p className="text-xs font-bold uppercase">Decision</p>
+          <p className="mt-1 text-sm font-semibold">{formatSignal(review.decision.decisionLane)}</p>
+        </div>
+        <div className={`rounded border p-3 ${getReviewTone(review.followUp.lane)}`}>
+          <p className="text-xs font-bold uppercase">Follow-up</p>
+          <p className="mt-1 text-sm font-semibold">{formatSignal(review.followUp.lane)}</p>
+          <p className="mt-1 text-xs">{review.followUp.timingLabel}</p>
+        </div>
+        <div className="rounded border border-slate-200 bg-slate-50 p-3 text-slate-800">
+          <p className="text-xs font-bold uppercase">Source</p>
+          <p className="mt-1 text-sm font-semibold">{review.sourceVisible}</p>
+        </div>
+        <div className="rounded border border-slate-200 bg-slate-50 p-3 text-slate-800">
+          <p className="text-xs font-bold uppercase">Missing data</p>
+          <p className="mt-1 text-sm font-semibold">
+            {review.missingCriticalData.length > 0 ? review.missingCriticalData.slice(0, 4).join(", ") : "No critical gaps visible"}
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-4 grid gap-3 lg:grid-cols-[1fr_1fr_1.2fr]">
+        <div className="rounded border border-blue-100 bg-blue-50 p-3 text-sm leading-6 text-blue-950">
+          <p className="font-bold">Seller context</p>
+          <p className="mt-2">{review.sellerContextSummary}</p>
+        </div>
+        <div className={`rounded border p-3 text-sm leading-6 ${getReviewTone(review.blockedVisibility)}`}>
+          <p className="font-bold">Blocked visibility</p>
+          <p className="mt-2">{review.blockedVisibility}</p>
+        </div>
+        <div className="rounded border border-slate-200 bg-slate-50 p-3 text-sm leading-6 text-slate-800">
+          <p className="font-bold">Safe manual next review</p>
+          <p className="mt-2 font-semibold">{review.safeManualNextReview}</p>
+          <p className="mt-2 text-xs font-bold uppercase tracking-[0.08em] text-slate-500">
+            providerCalled:false sent:false followUpContactExecuted:false crmMutationAllowed:false
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function LeadDetailObservabilityPanel({
   lead,
   outcomes,
+  review,
 }: {
   lead: Lead;
   outcomes: SellerCallOutcomeHistoryItem[];
+  review: LeadDetailManualReviewModel;
 }) {
   const summary = deriveLeadDetailObservability(lead, outcomes);
 
@@ -178,8 +272,8 @@ function LeadDetailObservabilityPanel({
             Lead detail observability
           </h2>
           <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-            Advisory lead-specific summary only. No message delivery, provider call, automation, persistence, or
-            runtime action is enabled by this panel.
+            Advisory lead-specific summary only. The Manual Review Brief above is the controlling operator summary;
+            this panel keeps supporting context visible without enabling execution.
           </p>
         </div>
         <div className="flex flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
@@ -217,9 +311,9 @@ function LeadDetailObservabilityPanel({
       <div className="mt-4 grid gap-3 text-sm lg:grid-cols-[1fr_1fr_1.2fr]">
         <div className="rounded border border-amber-200 bg-amber-50 p-3 text-amber-950">
           <p className="font-bold">Missing critical data</p>
-          {summary.missingCriticalData.length > 0 ? (
+          {review.missingCriticalData.length > 0 ? (
             <ul className="mt-2 space-y-1" aria-label="Missing critical lead data">
-              {summary.missingCriticalData.map((item) => (
+              {review.missingCriticalData.map((item) => (
                 <li key={item}>! {item}</li>
               ))}
             </ul>
@@ -230,14 +324,14 @@ function LeadDetailObservabilityPanel({
 
         <div className="rounded border border-red-200 bg-red-50 p-3 text-red-950">
           <p className="font-bold">Blocked-state visibility</p>
-          <p className="mt-2">{summary.blockedSummary}</p>
+          <p className="mt-2">{review.blockedVisibility}</p>
         </div>
 
         <div className="rounded border border-slate-200 bg-slate-50 p-3 text-slate-800">
           <p className="font-bold">Manual next step</p>
           <p className="mt-2">{summary.followUpSummary}</p>
           <p className="mt-2">{summary.opportunitySummary}</p>
-          <p className="mt-2 font-semibold">{summary.manualNextStep}</p>
+          <p className="mt-2 font-semibold">{review.safeManualNextReview}</p>
           <p className="mt-2 text-xs font-bold uppercase tracking-[0.08em] text-slate-500">
             readOnly:true providerCalled:false sent:false liveExecutionAllowed:false
           </p>
@@ -440,6 +534,8 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
      MAIN UI
   ============================= */
 
+  const manualReview = createLeadDetailManualReviewModel(lead, sellerCallOutcomes);
+
   return (
     <div className="space-y-6 p-6">
       <Link
@@ -462,7 +558,7 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
               Manual lead review only
             </h2>
             <p className="mt-2 text-sm leading-6 text-blue-950">
-              Call sellers manually outside the app, then record the outcome here.
+              Review seller context manually outside the app, then record any completed call outcome here.
               Human review is required before any seller or buyer-facing action.
             </p>
           </div>
@@ -491,7 +587,9 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
         </div>
       </section>
 
-      <LeadDetailObservabilityPanel lead={lead} outcomes={sellerCallOutcomes} />
+      <ManualReviewBriefPanel review={manualReview} />
+
+      <LeadDetailObservabilityPanel lead={lead} outcomes={sellerCallOutcomes} review={manualReview} />
 
       <section className="rounded-xl border bg-white p-4">
         <h2 className="mb-2 text-lg font-bold">Lead Info</h2>
@@ -537,7 +635,7 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
           </h2>
 
           <p className="mb-4 text-sm text-gray-600">
-            Human approval is required before any SMS or email can be sent.
+            Approval review is captured here without sending SMS or email.
           </p>
 
           <div className="mb-4 rounded border bg-white p-3">
@@ -607,7 +705,7 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
 
           {lead.doNotContact ? (
             <p className="mt-2 text-red-600">
-              Do Not Contact - sending disabled
+              Do Not Contact - external contact disabled
             </p>
           ) : null}
 
