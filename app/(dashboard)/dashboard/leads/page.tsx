@@ -136,10 +136,10 @@ function getAIStatusBadges(lead: StoredLead): AIBadgeData[] {
 ===================================================== */
 
 function getPipelineButtonLabel(status: LeadStatus) {
-  if (status === "new") return "Mark Contacted";
-  if (status === "contacted") return "Start Negotiation";
-  if (status === "negotiating") return "Mark Under Contract";
-  if (status === "under_contract") return "Mark Closed";
+  if (status === "new") return "Set contacted";
+  if (status === "contacted") return "Set negotiating";
+  if (status === "negotiating") return "Set under contract";
+  if (status === "under_contract") return "Set closed";
   return "Closed";
 }
 
@@ -623,8 +623,28 @@ export default function DashboardLeadsPage() {
   const cleanupDecisionCount = leadDecisions.filter((decision) => decision.decisionLane === "cleanup_before_decision").length;
   const stopDecisionCount = leadDecisions.filter((decision) => decision.decisionLane === "stop_do_not_work").length;
 
-  if (isLoading) return <div className="p-6">Loading...</div>;
-  if (error) return <div className="p-6 text-red-600">{error}</div>;
+  if (isLoading) {
+    return (
+      <div className="p-6">
+        <div className="rounded-lg border border-gray-200 bg-white p-5 text-sm leading-6 text-gray-600 shadow-sm">
+          <p className="font-semibold text-gray-900">Loading lead workspace...</p>
+          <p className="mt-1">Preparing manual decision, follow-up, source, cleanup, and blocked-state visibility. No outreach or automation is running.</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6">
+        <div className="rounded-lg border border-red-200 bg-red-50 p-5 text-sm leading-6 text-red-800">
+          <p className="font-semibold">Unable to load the leads workspace.</p>
+          <p className="mt-1">{error}</p>
+          <p className="mt-2">No lead status, follow-up, queue, reminder, assignment, or outreach action was created.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -715,12 +735,25 @@ export default function DashboardLeadsPage() {
             ))}
           </select>
         </label>
+        <p className="text-xs leading-5 text-gray-500 lg:col-span-2">
+          Pipeline status controls are user-triggered CRM updates only. They do not call sellers, send messages, create tasks, schedule reminders, route leads, or move records autonomously.
+        </p>
       </div>
 
       {leads.length === 0 ? (
-        <div>No leads yet.</div>
+        <div className="rounded-lg border border-gray-200 bg-white p-5 text-sm leading-6 text-gray-600 shadow-sm">
+          <p className="font-semibold text-gray-900">No leads are visible yet.</p>
+          <p className="mt-1">
+            Import, generate, or capture leads from approved user-triggered flows, then return here to review source, missing data, follow-up timing, and blocked states manually.
+          </p>
+        </div>
       ) : visibleLeads.length === 0 ? (
-        <div className="rounded-lg border border-gray-200 bg-white p-4 text-sm text-gray-500">No leads match the current filter.</div>
+        <div className="rounded-lg border border-gray-200 bg-white p-5 text-sm leading-6 text-gray-600 shadow-sm">
+          <p className="font-semibold text-gray-900">No leads match this view.</p>
+          <p className="mt-1">
+            Clear the filter or switch sort order to inspect blocked, cleanup, overdue follow-up, and review-now records. No queue or assignment is created by filtering.
+          </p>
+        </div>
       ) : viewMode === "pipeline" ? (
         <DragDropContext onDragEnd={handleDragEnd}>
           <div className="flex gap-4 overflow-x-auto pb-4">

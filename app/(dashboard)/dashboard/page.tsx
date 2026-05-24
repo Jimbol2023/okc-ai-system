@@ -9,6 +9,7 @@ import { createGeneratedLeads, fetchLeads } from "@/lib/leads-api";
 import { fetchRealLeads } from "@/lib/real-leads";
 import type { StoredLead } from "@/lib/leads-storage";
 import { createDashboardSignalConsolidation, type DashboardSignalConsolidation } from "@/lib/dashboard-signal-consolidation";
+import { createOperationalPilotHardeningSummary } from "@/lib/operational-pilot-hardening";
 import { createPracticalOperatorWorkQueue, type PracticalOperatorWorkQueue, type PracticalOperatorWorkQueueLane } from "@/lib/operator-work-queue-practicalization";
 import { deriveManualRevenueMetrics, type R53ManualRevenueMetricsResult } from "@/lib/r53-manual-revenue-metrics-helper";
 import { StatCard } from "@/components/shared/stat-card";
@@ -156,7 +157,10 @@ function ManualWorkQueue({ queue }: { queue: PracticalOperatorWorkQueue }) {
 
       {queue.visibleRows.length === 0 ? (
         <div className="mt-5 rounded-2xl border border-border bg-white p-4 text-sm leading-6 text-muted">
-          {queue.emptyState}
+          <p className="font-semibold text-primary">No manual work rows are urgent right now.</p>
+          <p className="mt-1">
+            {queue.emptyState} Keep source tracking clean, watch new submissions, and use the leads workspace for manual review when records appear.
+          </p>
         </div>
       ) : (
         <div className="mt-5 grid gap-3">
@@ -277,6 +281,7 @@ function DashboardSignalBrief({ signal }: { signal: DashboardSignalConsolidation
 }
 
 export default function DashboardPage() {
+  const operationalPilot = createOperationalPilotHardeningSummary();
   const [openLeadCount, setOpenLeadCount] = useState(0);
   const [pendingFollowUpCount, setPendingFollowUpCount] = useState(0);
   const [dealFinderMessage, setDealFinderMessage] = useState<string | null>(null);
@@ -412,7 +417,7 @@ export default function DashboardPage() {
           <p className="break-words text-sm font-semibold uppercase tracking-[0.2em] text-muted">Internal Dashboard</p>
           <h1 className="break-words text-3xl font-semibold text-primary md:text-4xl">Operations overview</h1>
           <p className="max-w-2xl break-words text-sm leading-6 text-muted md:text-base">
-            This internal area is structured for CRM activity, property review, underwriting, and future list-management workflows.
+            This pilot view is for manual CRM review, follow-up visibility, and revenue inspection. User-triggered tools below do not send outreach, create assignments, schedule reminders, or run automation.
           </p>
         </div>
 
@@ -446,9 +451,23 @@ export default function DashboardPage() {
 
       {dealFinderMessage ? <p className="text-sm font-medium text-success">{dealFinderMessage}</p> : null}
       {realLeadsMessage ? <p className="text-sm font-medium text-success">{realLeadsMessage}</p> : null}
-      {realLeadsError ? <p className="text-sm font-medium text-red-700">{realLeadsError}</p> : null}
+      {realLeadsError ? (
+        <p className="rounded-xl border border-red-100 bg-red-50 p-3 text-sm font-semibold text-red-700">
+          {realLeadsError} No outreach, routing, reminders, or CRM status movement was created. Review the source feed manually before retrying.
+        </p>
+      ) : null}
 
       <SystemReadinessPanel />
+
+      <section className="rounded-[1.5rem] border border-blue-100 bg-blue-50 p-4 text-sm leading-6 text-blue-950 sm:p-5">
+        <p className="font-bold">Operational pilot hardening</p>
+        <p className="mt-1">
+          Dashboard, leads workspace, lead detail, seller-call capture, and buyer/disposition review are ready for manual pilot use. Next step: {operationalPilot.recommendedNextExactStep}.
+        </p>
+        <p className="mt-2 text-xs font-bold uppercase tracking-[0.08em]">
+          providerCalled:false sent:false queueCreated:false assignmentCreated:false reminderCreated:false crmMutationExpanded:false
+        </p>
+      </section>
 
       <section className="overflow-hidden rounded-[1.5rem] border border-border bg-surface p-5 sm:p-6">
         <div className="flex min-w-0 flex-col gap-3 md:flex-row md:items-center md:justify-between">

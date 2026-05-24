@@ -594,7 +594,10 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
         </Link>
 
         <div className="rounded-xl border bg-white p-6 text-sm text-muted">
-          Loading lead details...
+          <p className="font-semibold text-slate-900">Loading lead detail...</p>
+          <p className="mt-1 leading-6">
+            Preparing the Manual Review Brief, seller-call history, follow-up state, and buyer/disposition visibility. No outreach, routing, reminder, or automation is running.
+          </p>
         </div>
       </div>
     );
@@ -610,8 +613,10 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
           &lt;- Back to leads
         </Link>
 
-        <div className="rounded-xl border bg-white p-6 text-sm text-red-600">
-          {loadError || "Lead not found."}
+        <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-sm leading-6 text-red-800">
+          <p className="font-semibold">Lead detail could not be opened.</p>
+          <p className="mt-1">{loadError || "Lead not found."}</p>
+          <p className="mt-2">Return to the leads workspace and verify the record still exists. No lead status, approval, seller-call, buyer/disposition, or outreach action was created.</p>
         </div>
       </div>
     );
@@ -711,8 +716,8 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
       />
 
       {sellerCallOutcomeError ? (
-        <p className="rounded border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-800">
-          {sellerCallOutcomeError}
+        <p className="rounded border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-semibold leading-6 text-amber-800">
+          Seller-call history could not be loaded: {sellerCallOutcomeError}. The Manual Review Brief remains visible; no seller-call record, reminder, outreach, or automation was created.
         </p>
       ) : null}
 
@@ -774,7 +779,7 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
             >
               {aiReplySendState === "saving"
                 ? "Saving..."
-                : "Approve, Not Sent"}
+                : "Save approval review, not sent"}
             </button>
 
             <button
@@ -783,7 +788,7 @@ export function LeadDetailClient({ leadId }: { leadId: string }) {
               disabled={aiReplySendState === "saving"}
               className="rounded border border-red-200 px-4 py-2 text-red-700 disabled:opacity-50"
             >
-              Reject Lead
+              Reject reply review
             </button>
 
             <button
