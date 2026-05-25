@@ -6,14 +6,33 @@ import { reviewAcquisitionIntake, type AcquisitionIntakeReview } from "@/lib/acq
 import { createImportedLeads, fetchLeads } from "@/lib/leads-api";
 import { formatLeadSourceTag, LEAD_SOURCE_TAGS, type LeadSourceTag } from "@/lib/lead-source";
 import type { StoredLead } from "@/lib/leads-storage";
-import { hasRequiredImportedLeadFields, parseLeadImportCsv, type ImportedLeadPreview } from "@/lib/list-importer";
+import {
+  applyDefaultSourceToImportedLeadPreview,
+  hasRequiredImportedLeadFields,
+  isContactReadyImportedLead,
+  isPropertyFirstImportedLead,
+  parseLeadImportCsv,
+  type ImportedLeadPreview,
+} from "@/lib/list-importer";
 
 function getImportLeadStatus(lead: ImportedLeadPreview) {
   if (lead.validationErrors.length > 0) {
     return "Invalid";
   }
 
-  return lead.duplicate ? "Duplicate" : "Ready";
+  if (lead.duplicate) {
+    return "Duplicate";
+  }
+
+  if (lead.sourceResolution !== "high_confidence_source") {
+    return "Source Review";
+  }
+
+  if (lead.importReadiness === "property_first_review") {
+    return "Property Review";
+  }
+
+  return "Ready";
 }
 
 function getImportLeadStatusClass(lead: ImportedLeadPreview) {
@@ -21,7 +40,26 @@ function getImportLeadStatusClass(lead: ImportedLeadPreview) {
     return "bg-[#f8d7da] text-[#9f1d2f]";
   }
 
-  return lead.duplicate ? "bg-[#f6e8cc] text-[#9a6a1a]" : "bg-[#dcefe3] text-[#2d6a4f]";
+  if (lead.duplicate) {
+    return "bg-[#f6e8cc] text-[#9a6a1a]";
+  }
+
+  if (lead.sourceResolution !== "high_confidence_source") {
+    return "bg-orange-100 text-orange-900";
+  }
+
+  if (lead.importReadiness === "property_first_review") {
+    return "bg-blue-100 text-blue-900";
+  }
+
+  return "bg-[#dcefe3] text-[#2d6a4f]";
+}
+
+function formatSourceResolution(value: ImportedLeadPreview["sourceResolution"]) {
+  if (value === "high_confidence_source") return "High-confidence source";
+  if (value === "fallback_manual_source") return "Default source fallback";
+  if (value === "unknown_source") return "Unknown source";
+  return "Cleanup needed";
 }
 
 function getReadinessClass(value: AcquisitionIntakeReview["acquisitionReadiness"]) {
@@ -54,7 +92,7 @@ function AcquisitionIntakeReviewPanel({ review }: { review: AcquisitionIntakeRev
         <p className="mt-1 font-semibold">{review.safeNextManualReview}</p>
       </div>
 
-      <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
+      <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <div className="rounded-2xl border border-border bg-white p-4">
           <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Ready</p>
           <p className="mt-1 text-2xl font-semibold text-primary">{review.readyRows}</p>
@@ -74,6 +112,16 @@ function AcquisitionIntakeReviewPanel({ review }: { review: AcquisitionIntakeRev
           <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Source</p>
           <p className="mt-1 text-2xl font-semibold text-primary">{review.missingSourceRows}</p>
           <p className="mt-1 text-sm text-muted">Fallback or missing</p>
+        </div>
+        <div className="rounded-2xl border border-border bg-white p-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Fallback</p>
+          <p className="mt-1 text-2xl font-semibold text-primary">{review.fallbackSourceRows}</p>
+          <p className="mt-1 text-sm text-muted">Default-source rows</p>
+        </div>
+        <div className="rounded-2xl border border-border bg-white p-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Unknown</p>
+          <p className="mt-1 text-2xl font-semibold text-primary">{review.unknownSourceRows}</p>
+          <p className="mt-1 text-sm text-muted">Source cleanup</p>
         </div>
         <div className="rounded-2xl border border-border bg-white p-4">
           <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted">Contact</p>
@@ -102,6 +150,12 @@ function AcquisitionIntakeReviewPanel({ review }: { review: AcquisitionIntakeRev
             <p className="mt-2 text-muted">No source mix visible until a CSV preview is loaded.</p>
           )}
           <p className="mt-3 leading-6 text-muted">{review.sourceClarity}</p>
+          {review.unmappedHeaders.length > 0 ? (
+            <p className="mt-3 text-xs font-semibold uppercase leading-5 tracking-[0.1em] text-orange-800">
+              Unmapped headers: {review.unmappedHeaders.slice(0, 6).join(", ")}
+              {review.unmappedHeaders.length > 6 ? "..." : ""}
+            </p>
+          ) : null}
         </div>
 
         <div className="rounded-2xl border border-border bg-white p-4">
@@ -144,12 +198,20 @@ export default function DashboardImporterPage() {
   }, []);
 
   const duplicateCount = previewLeads.filter((lead) => lead.duplicate).length;
-  const invalidCount = previewLeads.filter((lead) => lead.validationErrors.length > 0).length;
+  const contactReadyCount = previewLeads.filter(isContactReadyImportedLead).length;
+  const propertyFirstCount = previewLeads.filter(isPropertyFirstImportedLead).length;
+  const invalidCount = previewLeads.filter((lead) => lead.importReadiness === "blocked_cleanup").length;
   const acquisitionIntakeReview = reviewAcquisitionIntake(previewLeads);
   const importableLeads = previewLeads.filter((lead) => {
     const requiredFields = hasRequiredImportedLeadFields(lead);
 
-    return !lead.duplicate && lead.validationErrors.length === 0 && requiredFields.phone && requiredFields.propertyAddress;
+    return (
+      !lead.duplicate &&
+      lead.validationErrors.length === 0 &&
+      requiredFields.propertyAddress &&
+      requiredFields.source &&
+      (lead.importReadiness === "contact_ready" || lead.importReadiness === "property_first_review")
+    );
   });
 
   async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -166,18 +228,17 @@ export default function DashboardImporterPage() {
 
     try {
       const csvText = await file.text();
-      const parsedLeads = parseLeadImportCsv(csvText, existingLeads).map((lead) => ({
-        ...lead,
-        source: lead.source === "manual_import" ? defaultSource : lead.source
-      }));
+      const parsedLeads = parseLeadImportCsv(csvText, existingLeads).map((lead) =>
+        applyDefaultSourceToImportedLeadPreview(lead, defaultSource)
+      );
 
       setFileName(file.name);
       setPreviewLeads(parsedLeads);
 
       if (parsedLeads.length === 0) {
         setFormError("No usable rows were found in that CSV file.");
-      } else if (parsedLeads.some((lead) => lead.validationErrors.length > 0)) {
-        setFormError("Some rows are missing a property address or phone. Fix those rows before importing them.");
+      } else if (parsedLeads.some((lead) => lead.importReadiness === "blocked_cleanup")) {
+        setFormError("Some rows are missing property address or known source context. Fix those rows before importing them.");
       }
     } catch {
       setFormError("Unable to read that CSV file. Please try another file.");
@@ -269,6 +330,8 @@ export default function DashboardImporterPage() {
           <div className="flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-[0.12em]">
             <span className="rounded-full bg-[#e7eef5] px-3 py-1 text-[#355066]">Rows: {previewLeads.length}</span>
             <span className="rounded-full bg-[#dcefe3] px-3 py-1 text-[#2d6a4f]">Importing: {importableLeads.length}</span>
+            <span className="rounded-full bg-blue-100 px-3 py-1 text-blue-900">Property Review: {propertyFirstCount}</span>
+            <span className="rounded-full bg-emerald-100 px-3 py-1 text-emerald-900">Contact Ready: {contactReadyCount}</span>
             <span className="rounded-full bg-[#f6e8cc] px-3 py-1 text-[#9a6a1a]">Duplicates: {duplicateCount}</span>
             <span className="rounded-full bg-[#f8d7da] px-3 py-1 text-[#9f1d2f]">Invalid: {invalidCount}</span>
           </div>
@@ -289,6 +352,7 @@ export default function DashboardImporterPage() {
                     <th className="px-4 py-3">Email</th>
                     <th className="px-4 py-3">Property Address</th>
                     <th className="px-4 py-3">Source</th>
+                    <th className="px-4 py-3">Source Review</th>
                     <th className="px-4 py-3">City / State</th>
                     <th className="px-4 py-3">County</th>
                     <th className="px-4 py-3">Parcel ID</th>
@@ -305,6 +369,13 @@ export default function DashboardImporterPage() {
                       <td className="px-4 py-3">{lead.email || "--"}</td>
                       <td className="px-4 py-3">{lead.propertyAddress || "--"}</td>
                       <td className="px-4 py-3">{formatLeadSourceTag(lead.source)}</td>
+                      <td className="px-4 py-3">
+                        <p className="font-semibold">{formatSourceResolution(lead.sourceResolution)}</p>
+                        {lead.rawSourceLabel ? <p className="mt-1 text-xs text-muted">Raw: {lead.rawSourceLabel}</p> : null}
+                        {lead.sourceReviewReasons.length > 0 ? (
+                          <p className="mt-1 text-xs leading-5 text-orange-800">{lead.sourceReviewReasons[0]}</p>
+                        ) : null}
+                      </td>
                       <td className="px-4 py-3">{[lead.city, lead.state].filter(Boolean).join(", ") || "--"}</td>
                       <td className="px-4 py-3">{lead.county || "--"}</td>
                       <td className="px-4 py-3">{lead.parcelId || "--"}</td>
@@ -367,6 +438,10 @@ export default function DashboardImporterPage() {
                       <span className="font-semibold">Source:</span> {formatLeadSourceTag(lead.source)}
                     </p>
                     <p>
+                      <span className="font-semibold">Source review:</span> {formatSourceResolution(lead.sourceResolution)}
+                    </p>
+                    {lead.sourceReviewReasons.length > 0 ? <p className="text-orange-800">{lead.sourceReviewReasons[0]}</p> : null}
+                    <p>
                       <span className="font-semibold">Location:</span> {[lead.city, lead.state, lead.zipCode].filter(Boolean).join(" ") || "--"}
                     </p>
                     <p>
@@ -383,7 +458,8 @@ export default function DashboardImporterPage() {
         )}
 
         <p className="mt-5 rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm leading-6 text-blue-950">
-          Import is a user-triggered CRM intake action only. It does not send outreach, call sellers, start automation, create queues, or approve follow-up.
+          Import is a user-triggered CRM intake action only. Source fallback rows stay marked for manual review; this does not send outreach,
+          call sellers, start automation, create queues, or approve follow-up. Property-only public-list rows import as Do Not Contact cleanup records.
         </p>
 
         <button

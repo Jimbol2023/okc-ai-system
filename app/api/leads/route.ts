@@ -8,7 +8,16 @@ import { storedLeadArraySchema, storedLeadSchema } from "@/lib/validations/store
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-function buildInitialAutomationFields() {
+function buildInitialAutomationFields(lead?: { doNotContact?: boolean | null; approvalStatus?: string | null }) {
+  if (lead?.doNotContact || lead?.approvalStatus === "needs_human_review") {
+    return {
+      status: "new" as const,
+      nextFollowUpAt: null,
+      automationStatus: "idle",
+      followUpCount: 0
+    };
+  }
+
   return {
     status: "new" as const,
     nextFollowUpAt: new Date(Date.now() + 5 * 60 * 1000),
@@ -89,7 +98,7 @@ export async function POST(request: Request) {
         parsedLeads.data.map((lead) =>
           createDbLead({
             ...lead,
-            ...buildInitialAutomationFields()
+            ...buildInitialAutomationFields(lead)
           })
         )
       );
@@ -117,7 +126,7 @@ export async function POST(request: Request) {
 
     const result = await createDbLead({
       ...parsedLead.data,
-      ...buildInitialAutomationFields()
+      ...buildInitialAutomationFields(parsedLead.data)
     });
 
     return NextResponse.json({

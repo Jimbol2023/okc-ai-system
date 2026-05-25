@@ -115,11 +115,24 @@ function createLeadId() {
   return `lead-${Date.now()}`;
 }
 
+const PROPERTY_FIRST_IMPORT_NOTE = "Property-first public-list import; contact cleanup required before outreach.";
+
+function getPropertyFirstPhoneKey(lead: Pick<StoredLead, "propertyAddress" | "source" | "parcelId" | "county">) {
+  return [
+    "property_only",
+    lead.source.trim().toLowerCase() || "unknown_source",
+    lead.propertyAddress.trim().toLowerCase(),
+    lead.parcelId.trim().toLowerCase() || lead.county.trim().toLowerCase() || "no_parcel",
+  ]
+    .join(":")
+    .replace(/\s+/g, "_");
+}
+
 export function storedLeadToDbData(lead: StoredLead) {
   return {
     id: lead.id,
     name: toLeadName(lead),
-    phone: lead.phone,
+    phone: lead.phone || getPropertyFirstPhoneKey(lead),
     propertyAddress: lead.propertyAddress,
     source: lead.source,
     status: lead.status,
@@ -201,6 +214,11 @@ export function generatedLeadToStoredLead(lead: GeneratedLeadInput): StoredLead 
 }
 
 export function importedLeadToStoredLead(lead: ImportedLeadDraft): StoredLead {
+  const isPropertyFirstImport = !lead.phone.trim() && !lead.email.trim();
+  const situationDetails = [lead.situationDetails, isPropertyFirstImport ? PROPERTY_FIRST_IMPORT_NOTE : ""]
+    .filter(Boolean)
+    .join("\n\n");
+
   return {
     id: createLeadId(),
     timestamp: new Date().toISOString(),
@@ -216,8 +234,8 @@ export function importedLeadToStoredLead(lead: ImportedLeadDraft): StoredLead {
     mailingAddress: lead.mailingAddress,
     county: lead.county,
     parcelId: lead.parcelId,
-    situationDetails: lead.situationDetails,
-    source: "county-import",
+    situationDetails,
+    source: lead.source,
     status: "new",
     notes: [],
     followUps: [],
@@ -230,6 +248,11 @@ export function importedLeadToStoredLead(lead: ImportedLeadDraft): StoredLead {
     opportunityScore: "Low",
     score: 0,
     priority: "Low",
-    scoreBreakdown: ""
+    scoreBreakdown: "",
+    doNotContact: isPropertyFirstImport ? true : undefined,
+    requiresHumanApproval: isPropertyFirstImport ? true : undefined,
+    approvalStatus: isPropertyFirstImport ? "needs_human_review" : undefined,
+    automationStatus: isPropertyFirstImport ? "idle" : undefined,
+    nextFollowUpAt: isPropertyFirstImport ? null : undefined
   };
 }

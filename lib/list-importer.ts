@@ -20,6 +20,72 @@ const SUPPORTED_IMPORT_COLUMNS = [
 
 type SupportedImportColumn = (typeof SUPPORTED_IMPORT_COLUMNS)[number];
 
+const IMPORT_COLUMN_ALIASES: Record<string, SupportedImportColumn> = {
+  firstname: "firstName",
+  first: "firstName",
+  ownerfirstname: "firstName",
+  sellerfirstname: "firstName",
+  lastname: "lastName",
+  last: "lastName",
+  ownerlastname: "lastName",
+  sellerlastname: "lastName",
+  fullname: "ownerName",
+  name: "ownerName",
+  owner: "ownerName",
+  ownername: "ownerName",
+  propertyowner: "ownerName",
+  sellername: "ownerName",
+  phone: "phone",
+  phone1: "phone",
+  phonenumber: "phone",
+  mobilephone: "phone",
+  cell: "phone",
+  cellphone: "phone",
+  primaryphone: "phone",
+  email: "email",
+  emailaddress: "email",
+  propertyaddress: "propertyAddress",
+  address: "propertyAddress",
+  situsaddress: "propertyAddress",
+  siteaddress: "propertyAddress",
+  propertysitusaddress: "propertyAddress",
+  propertyfulladdress: "propertyAddress",
+  streetaddress: "propertyAddress",
+  city: "city",
+  propertycity: "city",
+  situscity: "city",
+  state: "state",
+  propertystate: "state",
+  situsstate: "state",
+  zipcode: "zipCode",
+  zip: "zipCode",
+  propertyzip: "zipCode",
+  situszip: "zipCode",
+  mailingaddress: "mailingAddress",
+  mailaddress: "mailingAddress",
+  owneraddress: "mailingAddress",
+  ownermailingaddress: "mailingAddress",
+  county: "county",
+  propertycounty: "county",
+  parcelid: "parcelId",
+  parcel: "parcelId",
+  apn: "parcelId",
+  accountnumber: "parcelId",
+  taxaccountnumber: "parcelId",
+  propertyid: "parcelId",
+  situationdetails: "situationDetails",
+  notes: "situationDetails",
+  note: "situationDetails",
+  comments: "situationDetails",
+  distressnotes: "situationDetails",
+  leadsource: "source",
+  listsource: "source",
+  source: "source",
+  campaign: "source",
+  campaignname: "source",
+  sourcename: "source"
+};
+
 export type ImportedLeadDraft = {
   firstName: string;
   lastName: string;
@@ -37,9 +103,27 @@ export type ImportedLeadDraft = {
   source: string;
 };
 
+export type ImportedLeadSourceResolution =
+  | "high_confidence_source"
+  | "fallback_manual_source"
+  | "unknown_source"
+  | "cleanup_needed";
+
+export type ImportedLeadImportReadiness =
+  | "contact_ready"
+  | "property_first_review"
+  | "blocked_cleanup";
+
 export type ImportedLeadPreview = ImportedLeadDraft & {
   duplicate: boolean;
   validationErrors: string[];
+  importReadiness: ImportedLeadImportReadiness;
+  sourceResolution: ImportedLeadSourceResolution;
+  rawSourceLabel: string;
+  matchedHeaders: string[];
+  unmappedHeaders: string[];
+  sourceReviewReasons: string[];
+  importBlockers: string[];
 };
 
 function normalizeHeader(header: string) {
@@ -119,7 +203,7 @@ function createEmptyImportedLeadDraft(): ImportedLeadDraft {
     county: "",
     parcelId: "",
     situationDetails: "",
-    source: "manual_import"
+    source: ""
   };
 }
 
@@ -143,17 +227,14 @@ export function validateImportedLeadDraft(lead: ImportedLeadDraft) {
     errors.push("Property address is required.");
   }
 
-  if (!requiredFields.phone) {
-    errors.push("Phone is required.");
-  }
-
   return errors;
 }
 
 export function hasRequiredImportedLeadFields(lead: ImportedLeadDraft) {
   return {
     phone: sanitizeImportedLeadPhone(lead.phone).length > 0,
-    propertyAddress: lead.propertyAddress.trim().length > 0
+    propertyAddress: lead.propertyAddress.trim().length > 0,
+    source: normalizeLeadSourceTag(lead.source) !== "manual_import"
   };
 }
 
@@ -166,17 +247,147 @@ function sanitizeImportedLeadDraft(lead: ImportedLeadDraft): ImportedLeadDraft {
   };
 }
 
+function getMatchedImportColumn(header: string) {
+  const normalizedHeader = normalizeHeader(header);
+  const supportedColumn = SUPPORTED_IMPORT_COLUMNS.find((column) => normalizeHeader(column) === normalizedHeader);
+
+  return supportedColumn ?? IMPORT_COLUMN_ALIASES[normalizedHeader];
+}
+
+function getSourceResolution(rawSourceLabel: string, validationErrors: string[]): ImportedLeadSourceResolution {
+  const hasRawSource = rawSourceLabel.trim().length > 0;
+  const normalizedSource = normalizeLeadSourceTag(rawSourceLabel);
+
+  if (validationErrors.length > 0) {
+    return "cleanup_needed";
+  }
+
+  if (!hasRawSource) {
+    return "fallback_manual_source";
+  }
+
+  if (normalizedSource === "manual_import") {
+    return "unknown_source";
+  }
+
+  return "high_confidence_source";
+}
+
+function getSourceReviewReasons({
+  rawSourceLabel,
+  sourceResolution,
+  unmappedHeaders,
+}: {
+  rawSourceLabel: string;
+  sourceResolution: ImportedLeadSourceResolution;
+  unmappedHeaders: string[];
+}) {
+  return [
+    sourceResolution === "fallback_manual_source" ? "No source column value was found; review the selected default source before import." : "",
+    sourceResolution === "unknown_source" ? `Source label "${rawSourceLabel}" did not match a known acquisition source.` : "",
+    sourceResolution === "cleanup_needed" ? "Required cleanup is needed before this row can be source-reviewed confidently." : "",
+    unmappedHeaders.length > 0 ? `${unmappedHeaders.length} CSV header${unmappedHeaders.length === 1 ? "" : "s"} were not mapped into the import preview.` : "",
+  ].filter(Boolean);
+}
+
+function hasContact(lead: ImportedLeadDraft) {
+  return sanitizeImportedLeadPhone(lead.phone).length > 0 || lead.email.trim().length > 0;
+}
+
+export function getImportedLeadImportBlockers(lead: ImportedLeadDraft) {
+  const requiredFields = hasRequiredImportedLeadFields(lead);
+
+  return [
+    !requiredFields.propertyAddress ? "Property address is required." : "",
+    !requiredFields.source ? "Known source is required." : "",
+  ].filter(Boolean);
+}
+
+export function getImportedLeadImportReadiness(
+  lead: ImportedLeadDraft,
+  sourceResolution: ImportedLeadSourceResolution,
+  validationErrors: string[]
+): ImportedLeadImportReadiness {
+  if (
+    validationErrors.length > 0 ||
+    sourceResolution === "unknown_source" ||
+    sourceResolution === "cleanup_needed" ||
+    normalizeLeadSourceTag(lead.source) === "manual_import"
+  ) {
+    return "blocked_cleanup";
+  }
+
+  return hasContact(lead) ? "contact_ready" : "property_first_review";
+}
+
+export function isContactReadyImportedLead(lead: ImportedLeadPreview) {
+  return lead.importReadiness === "contact_ready";
+}
+
+export function isPropertyFirstImportedLead(lead: ImportedLeadPreview) {
+  return lead.importReadiness === "property_first_review";
+}
+
+export function applyDefaultSourceToImportedLeadPreview(
+  lead: ImportedLeadPreview,
+  defaultSource: string
+): ImportedLeadPreview {
+  if (lead.sourceResolution !== "fallback_manual_source") {
+    return lead;
+  }
+
+  const normalizedDefaultSource = normalizeLeadSourceTag(defaultSource);
+  const nextLead = {
+    ...lead,
+    source: normalizedDefaultSource,
+  };
+  const sourceResolution: ImportedLeadSourceResolution =
+    normalizedDefaultSource === "manual_import" ? "cleanup_needed" : "fallback_manual_source";
+  const importBlockers = getImportedLeadImportBlockers(nextLead);
+  const importReadiness = getImportedLeadImportReadiness(nextLead, sourceResolution, importBlockers);
+
+  return {
+    ...nextLead,
+    source: normalizedDefaultSource,
+    sourceResolution,
+    importReadiness,
+    importBlockers,
+    sourceReviewReasons: [
+      ...lead.sourceReviewReasons,
+      normalizedDefaultSource === "manual_import"
+        ? "Default source is still Manual Import; choose a more specific source when the list origin is known."
+        : `Using operator-selected default source "${normalizedDefaultSource}" because the CSV row did not provide one.`,
+    ],
+  };
+}
+
 export function isImportedLeadDuplicate(existingLeads: StoredLead[], importedLead: ImportedLeadDraft) {
   const propertyAddress = normalizePropertyAddress(importedLead.propertyAddress);
   const phone = normalizePhone(importedLead.phone);
+  const source = normalizeLeadSourceTag(importedLead.source);
+  const parcelId = importedLead.parcelId.trim().toLowerCase();
+  const county = importedLead.county.trim().toLowerCase();
 
-  if (!propertyAddress || !phone) {
+  if (!propertyAddress) {
     return false;
   }
 
+  if (phone) {
+    return existingLeads.some(
+      (lead) =>
+        normalizePropertyAddress(lead.propertyAddress) === propertyAddress && normalizePhone(lead.phone) === phone
+    );
+  }
+
   return existingLeads.some(
-    (lead) =>
-      normalizePropertyAddress(lead.propertyAddress) === propertyAddress && normalizePhone(lead.phone) === phone
+    (lead) => {
+      const sameAddress = normalizePropertyAddress(lead.propertyAddress) === propertyAddress;
+      const sameSource = normalizeLeadSourceTag(lead.source) === source;
+      const sameParcel = parcelId && lead.parcelId.trim().toLowerCase() === parcelId;
+      const sameCounty = county && lead.county.trim().toLowerCase() === county;
+
+      return sameAddress && sameSource && (sameParcel || sameCounty || (!parcelId && !county));
+    }
   );
 }
 
@@ -195,13 +406,17 @@ export function parseLeadImportCsv(csvText: string, existingLeads: StoredLead[])
 
   const headers = parseCsvLine(lines[0]);
   const headerMap = new Map<number, SupportedImportColumn>();
+  const matchedHeaders: string[] = [];
+  const unmappedHeaders: string[] = [];
 
   headers.forEach((header, index) => {
-    const normalizedHeader = normalizeHeader(header);
-    const matchedColumn = SUPPORTED_IMPORT_COLUMNS.find((column) => normalizeHeader(column) === normalizedHeader);
+    const matchedColumn = getMatchedImportColumn(header);
 
     if (matchedColumn) {
       headerMap.set(index, matchedColumn);
+      matchedHeaders.push(header.trim());
+    } else if (header.trim()) {
+      unmappedHeaders.push(header.trim());
     }
   });
 
@@ -225,12 +440,28 @@ export function parseLeadImportCsv(csvText: string, existingLeads: StoredLead[])
         importedLead.lastName = importedLead.lastName || splitName.lastName;
       }
 
+      const rawSourceLabel = importedLead.source.trim();
       const sanitizedLead = sanitizeImportedLeadDraft(importedLead);
+      const validationErrors = validateImportedLeadDraft(sanitizedLead);
+      const sourceResolution = getSourceResolution(rawSourceLabel, validationErrors);
+      const importBlockers = getImportedLeadImportBlockers(sanitizedLead);
+      const importReadiness = getImportedLeadImportReadiness(sanitizedLead, sourceResolution, validationErrors);
 
       return {
         ...sanitizedLead,
         duplicate: isImportedLeadDuplicate(existingLeads, sanitizedLead),
-        validationErrors: validateImportedLeadDraft(sanitizedLead)
+        validationErrors,
+        importReadiness,
+        sourceResolution,
+        rawSourceLabel,
+        matchedHeaders,
+        unmappedHeaders,
+        importBlockers,
+        sourceReviewReasons: getSourceReviewReasons({
+          rawSourceLabel,
+          sourceResolution,
+          unmappedHeaders,
+        })
       } satisfies ImportedLeadPreview;
     })
     .filter((lead) =>
@@ -248,7 +479,7 @@ export function parseLeadImportCsv(csvText: string, existingLeads: StoredLead[])
         lead.county,
         lead.parcelId,
         lead.situationDetails,
-        lead.source
+        lead.rawSourceLabel
       ].some((value) => value.trim())
     );
 }

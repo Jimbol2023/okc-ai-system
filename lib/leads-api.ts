@@ -3,7 +3,12 @@
 import { createStoredLead, deleteLeadFromLocalStorage, replaceLeadsInLocalStorage, type StoredLead, upsertLeadInLocalStorage } from "@/lib/leads-storage";
 import { importedLeadToStoredLead } from "@/lib/lead-record";
 import type { GeneratedLeadInput } from "@/lib/lead-generator";
-import { hasRequiredImportedLeadFields, sanitizeImportedLeadPhone, validateImportedLeadDraft, type ImportedLeadDraft } from "@/lib/list-importer";
+import {
+  getImportedLeadImportBlockers,
+  sanitizeImportedLeadPhone,
+  validateImportedLeadDraft,
+  type ImportedLeadDraft,
+} from "@/lib/list-importer";
 import type { LeadIntakeInput } from "@/lib/validations/lead";
 
 async function parseJsonResponse<T>(response: Response): Promise<T> {
@@ -94,13 +99,13 @@ export async function createImportedLeads(importedLeads: ImportedLeadDraft[]) {
     propertyAddress: lead.propertyAddress.trim()
   }));
   const invalidLeads = sanitizedLeads.filter((lead) => {
-    const requiredFields = hasRequiredImportedLeadFields(lead);
+    const blockers = getImportedLeadImportBlockers(lead);
 
-    return validateImportedLeadDraft(lead).length > 0 || !requiredFields.phone || !requiredFields.propertyAddress;
+    return validateImportedLeadDraft(lead).length > 0 || blockers.length > 0;
   });
 
   if (invalidLeads.length > 0) {
-    throw new Error("Imported leads must include a property address and phone.");
+    throw new Error("Imported leads must include a property address and known source.");
   }
 
   const payload = sanitizedLeads.map((lead) => importedLeadToStoredLead(lead));

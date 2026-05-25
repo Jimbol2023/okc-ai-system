@@ -23,6 +23,12 @@ function makePreview(overrides: Partial<ImportedLeadPreview> = {}): ImportedLead
     source: "tax_delinquent",
     duplicate: false,
     validationErrors: [],
+    importReadiness: "contact_ready",
+    sourceResolution: "high_confidence_source",
+    rawSourceLabel: "tax_delinquent",
+    matchedHeaders: [],
+    unmappedHeaders: [],
+    sourceReviewReasons: [],
     ...overrides,
   };
 }
@@ -61,7 +67,7 @@ describe("acquisition intake review", () => {
   it("surfaces duplicate and invalid rows for cleanup review", () => {
     const result = reviewAcquisitionIntake([
       makePreview({ duplicate: true }),
-      makePreview({ phone: "", validationErrors: ["Phone is required."] }),
+      makePreview({ propertyAddress: "", validationErrors: ["Property address is required."], importReadiness: "blocked_cleanup" }),
     ]);
 
     expect(result.duplicateRows).toBe(1);
@@ -87,7 +93,9 @@ describe("acquisition intake review", () => {
         phone: "",
         email: "",
         propertyAddress: "",
-        validationErrors: ["Property address is required.", "Phone is required."],
+        validationErrors: ["Property address is required."],
+        importReadiness: "blocked_cleanup",
+        sourceResolution: "cleanup_needed",
       }),
     ]);
 
@@ -97,24 +105,59 @@ describe("acquisition intake review", () => {
     expect(result.missingAddressRows).toBe(1);
     expect(result.acquisitionReadiness).toBe("needs_cleanup");
     expect(result.readinessLabel).toBe("Cleanup before import");
-    expect(result.sourceClarity).toMatch(/missing specific acquisition source/i);
-    expect(result.cleanupNeeds.join(" ")).toMatch(/source review|seller contact|property address/i);
+    expect(result.sourceClarity).toMatch(/source review/i);
+    expect(result.cleanupNeeds.join(" ")).toMatch(/source review|property address/i);
+  });
+
+  it("treats property-first rows as importable manual review instead of invalid cleanup", () => {
+    const result = reviewAcquisitionIntake([
+      makePreview({
+        phone: "",
+        email: "",
+        importReadiness: "property_first_review",
+      }),
+    ]);
+
+    expect(result.readyRows).toBe(1);
+    expect(result.contactReadyRows).toBe(0);
+    expect(result.propertyFirstRows).toBe(1);
+    expect(result.missingContactRows).toBe(1);
+    expect(result.invalidRows).toBe(0);
+    expect(result.acquisitionReadiness).toBe("ready_for_manual_import_review");
+    expect(result.cleanupNeeds).toEqual(
+      expect.arrayContaining(["1 property-first row will import blocked for contact cleanup"]),
+    );
   });
 
   it("keeps manual-import fallback rows visible for source review", () => {
-    const result = reviewAcquisitionIntake([makePreview({ source: "manual_import" })]);
+    const result = reviewAcquisitionIntake([
+      makePreview({
+        source: "tax_delinquent",
+        sourceResolution: "fallback_manual_source",
+        importReadiness: "property_first_review",
+        rawSourceLabel: "",
+        sourceReviewReasons: ["No source column value was found; review the selected default source before import."],
+      }),
+    ]);
 
-    expect(result.sourceMix).toEqual([expect.objectContaining({ source: "manual_import", count: 1 })]);
-    expect(result.missingSourceRows).toBe(1);
-    expect(result.sourceReviewRows).toBe(1);
-    expect(result.acquisitionReadiness).toBe("needs_cleanup");
-    expect(result.cleanupNeeds).toEqual(expect.arrayContaining(["1 row need source review"]));
+    expect(result.sourceMix).toEqual([expect.objectContaining({ source: "tax_delinquent", count: 1 })]);
+    expect(result.missingSourceRows).toBe(0);
+    expect(result.sourceReviewRows).toBe(0);
+    expect(result.fallbackSourceRows).toBe(1);
+    expect(result.acquisitionReadiness).toBe("ready_for_manual_import_review");
+    expect(result.cleanupNeeds).toEqual(expect.arrayContaining(["1 row use default-source fallback"]));
   });
 
   it("normalizes aliased and unknown sources while preserving operator review visibility", () => {
     const result = reviewAcquisitionIntake([
       makePreview({ source: "county" }),
-      makePreview({ source: "mystery-list", propertyAddress: "456 Main St" }),
+      makePreview({
+        source: "manual_import",
+        rawSourceLabel: "mystery-list",
+        sourceResolution: "unknown_source",
+        importReadiness: "blocked_cleanup",
+        propertyAddress: "456 Main St",
+      }),
     ]);
 
     expect(result.sourceMix).toEqual(
@@ -124,6 +167,20 @@ describe("acquisition intake review", () => {
       ]),
     );
     expect(result.missingSourceRows).toBe(1);
+    expect(result.unknownSourceRows).toBe(1);
+  });
+
+  it("summarizes high-confidence source rows and unmapped headers without authorizing execution", () => {
+    const result = reviewAcquisitionIntake([
+      makePreview({ sourceResolution: "high_confidence_source", unmappedHeaders: ["Extra Field"] }),
+      makePreview({ source: "d4d", sourceResolution: "high_confidence_source", propertyAddress: "456 Main St" }),
+    ]);
+
+    expect(result.highConfidenceSourceRows).toBe(2);
+    expect(result.fallbackSourceRows).toBe(0);
+    expect(result.unknownSourceRows).toBe(0);
+    expect(result.unmappedHeaders).toEqual(["Extra Field"]);
+    expect(result.cleanupNeeds).toEqual(expect.arrayContaining(["1 unmapped CSV header need review"]));
   });
 
   it("keeps compliance labels advisory and execution storage provider outreach and CRM mutation flags blocked", () => {

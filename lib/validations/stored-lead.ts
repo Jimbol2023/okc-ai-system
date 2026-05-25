@@ -71,7 +71,7 @@ export const storedLeadSchema = z.object({
   firstName: z.string(),
   lastName: z.string(),
   email: z.string(),
-  phone: z.string().min(1),
+  phone: z.string(),
   propertyAddress: z.string().min(1),
   city: z.string(),
   state: z.string(),

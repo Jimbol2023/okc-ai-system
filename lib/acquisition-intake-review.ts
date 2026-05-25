@@ -29,10 +29,18 @@ export type AcquisitionIntakeReadiness =
 export type AcquisitionIntakeReview = {
   totalRows: number;
   readyRows: number;
+  contactReadyRows: number;
+  propertyFirstRows: number;
+  blockedCleanupRows: number;
   duplicateRows: number;
   invalidRows: number;
   missingSourceRows: number;
   sourceReviewRows: number;
+  highConfidenceSourceRows: number;
+  fallbackSourceRows: number;
+  unknownSourceRows: number;
+  cleanupSourceRows: number;
+  unmappedHeaders: string[];
   missingContactRows: number;
   missingAddressRows: number;
   sourceMix: Array<{
@@ -63,11 +71,21 @@ function hasContact(lead: ImportedLeadPreview) {
 }
 
 function isMissingSource(lead: ImportedLeadPreview) {
-  return !hasText(lead.source) || normalizeLeadSourceTag(lead.source) === "manual_import";
+  return (
+    !hasText(lead.source) ||
+    normalizeLeadSourceTag(lead.source) === "manual_import" ||
+    lead.sourceResolution === "unknown_source" ||
+    lead.sourceResolution === "cleanup_needed"
+  );
 }
 
 function getReadyRows(leads: ImportedLeadPreview[]) {
-  return leads.filter((lead) => !lead.duplicate && lead.validationErrors.length === 0 && hasContact(lead) && hasText(lead.propertyAddress));
+  return leads.filter(
+    (lead) =>
+      !lead.duplicate &&
+      lead.validationErrors.length === 0 &&
+      (lead.importReadiness === "contact_ready" || lead.importReadiness === "property_first_review")
+  );
 }
 
 function getSourceMix(leads: ImportedLeadPreview[]) {
@@ -114,7 +132,6 @@ function getReadiness({
   duplicateRows,
   invalidRows,
   missingSourceRows,
-  missingContactRows,
   missingAddressRows,
 }: {
   totalRows: number;
@@ -122,11 +139,10 @@ function getReadiness({
   duplicateRows: number;
   invalidRows: number;
   missingSourceRows: number;
-  missingContactRows: number;
   missingAddressRows: number;
 }): AcquisitionIntakeReadiness {
   if (totalRows === 0) return "not_ready";
-  if (invalidRows > 0 || missingSourceRows > 0 || missingContactRows > 0 || missingAddressRows > 0) return "needs_cleanup";
+  if (invalidRows > 0 || missingSourceRows > 0 || missingAddressRows > 0) return "needs_cleanup";
   if (duplicateRows > 0) return "needs_duplicate_review";
   if (readyRows === 0) return "not_ready";
   return "ready_for_manual_import_review";
@@ -149,7 +165,7 @@ function getReadinessDetail(readiness: AcquisitionIntakeReadiness) {
   }
 
   if (readiness === "needs_cleanup") {
-    return "Fix missing source, contact, property address, or invalid row issues before import.";
+    return "Fix missing source, property address, or invalid row issues before import.";
   }
 
   return "Load a CSV preview with source-labeled records before acquisition intake review.";
@@ -158,15 +174,26 @@ function getReadinessDetail(readiness: AcquisitionIntakeReadiness) {
 export function reviewAcquisitionIntake(previewLeads: ImportedLeadPreview[]): AcquisitionIntakeReview {
   const totalRows = previewLeads.length;
   const readyRows = getReadyRows(previewLeads).length;
+  const contactReadyRows = previewLeads.filter((lead) => lead.importReadiness === "contact_ready").length;
+  const propertyFirstRows = previewLeads.filter((lead) => lead.importReadiness === "property_first_review").length;
+  const blockedCleanupRows = previewLeads.filter((lead) => lead.importReadiness === "blocked_cleanup").length;
   const duplicateRows = previewLeads.filter((lead) => lead.duplicate).length;
   const invalidRows = previewLeads.filter((lead) => lead.validationErrors.length > 0).length;
   const missingSourceRows = previewLeads.filter(isMissingSource).length;
+  const highConfidenceSourceRows = previewLeads.filter((lead) => lead.sourceResolution === "high_confidence_source").length;
+  const fallbackSourceRows = previewLeads.filter((lead) => lead.sourceResolution === "fallback_manual_source").length;
+  const unknownSourceRows = previewLeads.filter((lead) => lead.sourceResolution === "unknown_source").length;
+  const cleanupSourceRows = previewLeads.filter((lead) => lead.sourceResolution === "cleanup_needed").length;
+  const unmappedHeaders = Array.from(new Set(previewLeads.flatMap((lead) => lead.unmappedHeaders))).sort();
   const missingContactRows = previewLeads.filter((lead) => !hasContact(lead)).length;
   const missingAddressRows = previewLeads.filter((lead) => !hasText(lead.propertyAddress)).length;
   const sourceMix = getSourceMix(previewLeads);
   const cleanupNeeds = [
     missingSourceRows > 0 ? `${missingSourceRows} row${missingSourceRows === 1 ? "" : "s"} need source review` : "",
-    missingContactRows > 0 ? `${missingContactRows} row${missingContactRows === 1 ? "" : "s"} need seller contact data` : "",
+    fallbackSourceRows > 0 ? `${fallbackSourceRows} row${fallbackSourceRows === 1 ? "" : "s"} use default-source fallback` : "",
+    unknownSourceRows > 0 ? `${unknownSourceRows} row${unknownSourceRows === 1 ? "" : "s"} have unknown source labels` : "",
+    unmappedHeaders.length > 0 ? `${unmappedHeaders.length} unmapped CSV header${unmappedHeaders.length === 1 ? "" : "s"} need review` : "",
+    propertyFirstRows > 0 ? `${propertyFirstRows} property-first row${propertyFirstRows === 1 ? "" : "s"} will import blocked for contact cleanup` : "",
     missingAddressRows > 0 ? `${missingAddressRows} row${missingAddressRows === 1 ? "" : "s"} need property address data` : "",
     invalidRows > 0 ? `${invalidRows} invalid row${invalidRows === 1 ? "" : "s"} need cleanup` : "",
     duplicateRows > 0 ? `${duplicateRows} duplicate row${duplicateRows === 1 ? "" : "s"} need review` : "",
@@ -184,23 +211,30 @@ export function reviewAcquisitionIntake(previewLeads: ImportedLeadPreview[]): Ac
     duplicateRows,
     invalidRows,
     missingSourceRows,
-    missingContactRows,
     missingAddressRows,
   });
 
   return {
     totalRows,
     readyRows,
+    contactReadyRows,
+    propertyFirstRows,
+    blockedCleanupRows,
     duplicateRows,
     invalidRows,
     missingSourceRows,
     sourceReviewRows: missingSourceRows,
+    highConfidenceSourceRows,
+    fallbackSourceRows,
+    unknownSourceRows,
+    cleanupSourceRows,
+    unmappedHeaders,
     missingContactRows,
     missingAddressRows,
     sourceMix,
     sourceClarity:
       missingSourceRows > 0
-        ? "Some rows are missing specific acquisition source attribution or fell back to manual import."
+        ? "Some rows need source review because they use a default fallback, an unknown source label, or row cleanup."
         : "All preview rows have source attribution visible for manual review.",
     importConfidence,
     readinessLabel: getReadinessLabel(acquisitionReadiness),
@@ -214,8 +248,8 @@ export function reviewAcquisitionIntake(previewLeads: ImportedLeadPreview[]): Ac
     acquisitionReadiness,
     safeNextManualReview:
       acquisitionReadiness === "ready_for_manual_import_review"
-        ? "Review the ready rows, confirm source attribution, then use the existing import button if the operator approves."
-        : "Resolve source, duplicate, contact, or property-address cleanup before importing lower-confidence rows.",
+        ? "Review contact-ready and property-first rows, confirm source attribution, then use the existing import button if the operator approves."
+        : "Resolve source, duplicate, or property-address cleanup before importing lower-confidence rows.",
     recommendedNextExactStep: "Review Import Preview Manually",
     advisoryOnly: true,
     readOnly: true,

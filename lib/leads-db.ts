@@ -38,12 +38,23 @@ function getDefaultNextFollowUpAt() {
   return new Date(Date.now() + 5 * 60 * 1000);
 }
 
-async function findExistingLead(lead: Pick<StoredLead, "propertyAddress" | "phone">) {
+function getPropertyFirstPhoneKey(lead: Pick<StoredLead, "propertyAddress" | "source" | "parcelId" | "county">) {
+  return [
+    "property_only",
+    lead.source.trim().toLowerCase() || "unknown_source",
+    lead.propertyAddress.trim().toLowerCase(),
+    lead.parcelId.trim().toLowerCase() || lead.county.trim().toLowerCase() || "no_parcel",
+  ]
+    .join(":")
+    .replace(/\s+/g, "_");
+}
+
+async function findExistingLead(lead: Pick<StoredLead, "propertyAddress" | "phone" | "source" | "parcelId" | "county">) {
   return prisma.lead.findUnique({
     where: {
       propertyAddress_phone: {
         propertyAddress: lead.propertyAddress,
-        phone: lead.phone
+        phone: lead.phone || getPropertyFirstPhoneKey(lead)
       }
     }
   });
@@ -87,7 +98,9 @@ export async function createDbLead(storedLead: StoredLead) {
 
         lastContactedAt: toDateOrNull(leadWithAutomation.lastContactedAt),
         nextFollowUpAt:
-          toDateOrNull(leadWithAutomation.nextFollowUpAt) ?? getDefaultNextFollowUpAt(),
+          leadWithAutomation.nextFollowUpAt === null
+            ? null
+            : toDateOrNull(leadWithAutomation.nextFollowUpAt) ?? getDefaultNextFollowUpAt(),
         followUpCount: leadWithAutomation.followUpCount ?? 0,
         lastFollowUpMessage: leadWithAutomation.lastFollowUpMessage ?? null,
         automationStatus: leadWithAutomation.automationStatus ?? "scheduled",
