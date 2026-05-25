@@ -65,6 +65,86 @@ describe("activation evidence gap resolution planning", () => {
     );
   });
 
+  it("defines all 16 elite high-aROI phase evidence gap records in order", () => {
+    const result = getActivationEvidenceGapResolutionPlanning();
+
+    expect(result.phaseEvidenceGapMap.map((phase) => phase.phaseName)).toEqual([
+      "Business Foundation & Trust Infrastructure",
+      "Lead Intake & Simple CRM",
+      "Lead Prioritization Engine",
+      "Seller Review & Call Prep",
+      "Follow-Up Organization System",
+      "Daily Acquisition Command Center",
+      "KPI & Revenue Intelligence",
+      "Deal Quality Intelligence",
+      "AI-Assisted Lead Discovery",
+      "SEO & Local Authority Engine",
+      "Conversion Optimization Engine",
+      "Safety & Compliance Engine",
+      "Facebook & TikTok Acquisition Engine",
+      "Design & Creative AI Agent",
+      "Buyer Fit Intelligence",
+      "Pentest & Security Engine",
+    ]);
+  });
+
+  it("requires each phase gap record to include manual evidence blocker AI role human boundary forbidden drift and next guidance", () => {
+    const result = getActivationEvidenceGapResolutionPlanning();
+
+    for (const phase of result.phaseEvidenceGapMap) {
+      expect(phase.evidenceGapFocus.length).toBeGreaterThan(0);
+      expect(phase.requiredManualEvidence.length).toBeGreaterThan(0);
+      expect(phase.blockerRule).toMatch(/block/i);
+      expect(phase.aiGapSummaryRole).toEqual(
+        expect.arrayContaining([
+          "gap summarization",
+          "missing evidence visibility",
+          "manual review organization",
+          "evidence-readiness explanation",
+          "operator clarity support",
+        ]),
+      );
+      expect(phase.humanApprovalExecutionBoundary).toEqual(
+        expect.arrayContaining([
+          "entity formation",
+          "evidence collection",
+          "evidence review",
+          "provider approval",
+          "communication approval",
+          "outreach approval",
+          "negotiation",
+          "sending",
+          "contracts",
+          "closing",
+          "go/no-go decisions",
+        ]),
+      );
+      expect(phase.forbiddenDrift.length).toBeGreaterThan(0);
+      expect(phase.nextEvidenceReviewGuidance).toMatch(/evidence/i);
+    }
+  });
+
+  it("strengthens Phase 1 with the full manual entity and communication identity evidence set", () => {
+    const result = getActivationEvidenceGapResolutionPlanning();
+    const phase1 = result.phaseEvidenceGapMap[0];
+    const evidenceText = phase1.requiredManualEvidence.join(" ");
+
+    expect(phase1.phaseName).toBe("Business Foundation & Trust Infrastructure");
+    expect(evidenceText).toMatch(/entity proof/i);
+    expect(evidenceText).toMatch(/EIN evidence/i);
+    expect(evidenceText).toMatch(/banking readiness/i);
+    expect(evidenceText).toMatch(/domain ownership/i);
+    expect(evidenceText).toMatch(/Google Workspace\/email identity plan/i);
+    expect(evidenceText).toMatch(/SPF readiness notes/i);
+    expect(evidenceText).toMatch(/DKIM readiness notes/i);
+    expect(evidenceText).toMatch(/DMARC readiness notes/i);
+    expect(evidenceText).toMatch(/branded signature plan/i);
+    expect(evidenceText).toMatch(/Twilio readiness notes/i);
+    expect(evidenceText).toMatch(/A2P\/10DLC readiness notes/i);
+    expect(evidenceText).toMatch(/DNC\/STOP governance/i);
+    expect(evidenceText).toMatch(/public website\/private dashboard separation/i);
+  });
+
   it("maps the required real-world evidence gaps without collecting evidence", () => {
     const result = getActivationEvidenceGapResolutionPlanning();
     const laneText = result.activationEvidenceGapLanes
@@ -102,7 +182,9 @@ describe("activation evidence gap resolution planning", () => {
     expect(flags.dnsMutationEnabled).toBe(false);
     expect(flags.domainActivated).toBe(false);
     expect(flags.vercelDomainConnectionChanged).toBe(false);
+    expect(flags.vercelMutationEnabled).toBe(false);
     expect(flags.googleWorkspaceChanged).toBe(false);
+    expect(flags.googleWorkspaceActivated).toBe(false);
     expect(flags.mailboxCreated).toBe(false);
     expect(flags.spfDkimDmarcPublished).toBe(false);
     expect(flags.emailSignatureActivated).toBe(false);
@@ -135,15 +217,22 @@ describe("activation evidence gap resolution planning", () => {
     expect(flags.approvalGrantsExecution).toBe(false);
     expect(flags.communicationExecutionAuthorized).toBe(false);
     expect(flags.automationEnabled).toBe(false);
+    expect(flags.autonomousOutreachEnabled).toBe(false);
     expect(flags.autonomousFollowUpEnabled).toBe(false);
     expect(flags.autonomousSellerHandlingEnabled).toBe(false);
     expect(flags.autonomousNegotiationEnabled).toBe(false);
+    expect(flags.autonomousTextingEnabled).toBe(false);
+    expect(flags.autonomousCallingEnabled).toBe(false);
+    expect(flags.autonomousCampaignsEnabled).toBe(false);
+    expect(flags.autonomousBuyerHandlingEnabled).toBe(false);
+    expect(flags.autonomousApprovalAuthorityEnabled).toBe(false);
     expect(flags.rollbackExecutionEnabled).toBe(false);
     expect(flags.goLiveAuthorized).toBe(false);
     expect(flags.spendIncreaseAuthorized).toBe(false);
     expect(flags.dncBypassAllowed).toBe(false);
     expect(flags.optOutBypassAllowed).toBe(false);
     expect(flags.stopBypassAllowed).toBe(false);
+    expect(flags.blockerBypassEnabled).toBe(false);
   });
 
   it("keeps doctrine focused on gap identification without setup or evidence automation", () => {
@@ -158,7 +247,10 @@ describe("activation evidence gap resolution planning", () => {
     expect(doctrineText).toMatch(/not fetched, stored, verified online, or written/i);
     expect(doctrineText).toMatch(/No evidence collection automation, DNS mutation, Vercel configuration/i);
     expect(doctrineText).toMatch(/Missing LLC\/business identity/i);
-    expect(doctrineText).toMatch(/AI may summarize gaps and suggest manual evidence categories only/i);
+    expect(doctrineText).toMatch(/evidence-gap planning layer for all 16/i);
+    expect(doctrineText).toMatch(/gap summarization, missing evidence visibility, manual review organization/i);
+    expect(doctrineText).toMatch(/AI cannot collect evidence automatically/i);
+    expect(doctrineText).toMatch(/All phase movement remains human-approved/i);
   });
 
   it("summarizes evidence gaps only with no activation provider communication calling runtime or go-live", () => {
@@ -166,6 +258,10 @@ describe("activation evidence gap resolution planning", () => {
     const summary = summarizeActivationEvidenceGapResolutionPlanning(result);
 
     expect(summary).toMatch(/Gap resolution decision is not_authorized_for_execution/i);
+    expect(summary).toMatch(/evidence-gap planning for all 16 phases/i);
+    expect(summary).toMatch(/operator leverage only/i);
+    expect(summary).toMatch(/human-approved movement/i);
+    expect(summary).toMatch(/no Phase 2 implementation/i);
     expect(summary).toMatch(/provider decision is not_authorized/i);
     expect(summary).toMatch(/communication decision is not_authorized/i);
     expect(summary).toMatch(/automation decision is not_authorized/i);
@@ -176,6 +272,11 @@ describe("activation evidence gap resolution planning", () => {
     expect(summary).toMatch(/Twilio number readiness/i);
     expect(summary).toMatch(/A2P\/10DLC status/i);
     expect(summary).toMatch(/No evidence collection automation/i);
+    expect(summary).toMatch(/No activation/i);
+    expect(summary).toMatch(/provider execution/i);
+    expect(summary).toMatch(/outreach/i);
+    expect(summary).toMatch(/automation/i);
+    expect(summary).toMatch(/not autonomous wholesaling/i);
     expect(summary).toMatch(/provider activation/i);
     expect(summary).toMatch(/outbound communication/i);
     expect(summary).toMatch(/calling/i);
@@ -197,7 +298,9 @@ describe("activation evidence gap resolution planning", () => {
       "dnsMutationEnabled",
       "domainActivated",
       "vercelDomainConnectionChanged",
+      "vercelMutationEnabled",
       "googleWorkspaceChanged",
+      "googleWorkspaceActivated",
       "mailboxCreated",
       "spfDkimDmarcPublished",
       "emailSignatureActivated",
@@ -217,14 +320,21 @@ describe("activation evidence gap resolution planning", () => {
       "crmMutationEnabled",
       "auditWritingEnabled",
       "automationEnabled",
+      "autonomousOutreachEnabled",
       "autonomousFollowUpEnabled",
       "autonomousSellerHandlingEnabled",
       "rollbackExecutionEnabled",
+      "autonomousTextingEnabled",
+      "autonomousCallingEnabled",
+      "autonomousCampaignsEnabled",
+      "autonomousBuyerHandlingEnabled",
+      "autonomousApprovalAuthorityEnabled",
       "goLiveAuthorized",
       "spendIncreaseAuthorized",
       "dncBypassAllowed",
       "optOutBypassAllowed",
       "stopBypassAllowed",
+      "blockerBypassEnabled",
     ] as const;
 
     for (const blockedFlag of blockedFlags) {
@@ -276,5 +386,34 @@ describe("activation evidence gap resolution planning", () => {
     };
 
     expect(() => assertActivationEvidenceGapResolutionPlanningSafe(unsafeResult)).toThrow(/Activation Evidence Completeness Review/i);
+  });
+
+  it("fails invariant checks if the 16-phase evidence gap map drifts", () => {
+    const missingPhase = {
+      ...getActivationEvidenceGapResolutionPlanning(),
+      phaseEvidenceGapMap: getActivationEvidenceGapResolutionPlanning().phaseEvidenceGapMap.slice(0, 15),
+    };
+    const wrongOrder = {
+      ...getActivationEvidenceGapResolutionPlanning(),
+      phaseEvidenceGapMap: [
+        getActivationEvidenceGapResolutionPlanning().phaseEvidenceGapMap[1],
+        getActivationEvidenceGapResolutionPlanning().phaseEvidenceGapMap[0],
+        ...getActivationEvidenceGapResolutionPlanning().phaseEvidenceGapMap.slice(2),
+      ],
+    };
+    const missingRecordFields = {
+      ...getActivationEvidenceGapResolutionPlanning(),
+      phaseEvidenceGapMap: [
+        {
+          ...getActivationEvidenceGapResolutionPlanning().phaseEvidenceGapMap[0],
+          requiredManualEvidence: [],
+        },
+        ...getActivationEvidenceGapResolutionPlanning().phaseEvidenceGapMap.slice(1),
+      ],
+    };
+
+    expect(() => assertActivationEvidenceGapResolutionPlanningSafe(missingPhase)).toThrow(/16 phase evidence gap records/i);
+    expect(() => assertActivationEvidenceGapResolutionPlanningSafe(wrongOrder)).toThrow(/required 16-phase order/i);
+    expect(() => assertActivationEvidenceGapResolutionPlanningSafe(missingRecordFields)).toThrow(/Every phase evidence gap record/i);
   });
 });
