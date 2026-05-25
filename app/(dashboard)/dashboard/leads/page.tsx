@@ -11,6 +11,7 @@ import {
 } from "@hello-pangea/dnd";
 import { LayoutList, Table2 } from "lucide-react";
 
+import { OperatorDecisionQualityUiDraft } from "@/components/dashboard/operator-decision-quality-ui-draft";
 import { getActiveDistressFlags } from "@/lib/distress-flags";
 import { deleteLead, fetchLeads } from "@/lib/leads-api";
 import { formatLeadSourceTag } from "@/lib/lead-source";
@@ -704,6 +705,8 @@ export default function DashboardLeadsPage() {
           </div>
         ))}
       </div>
+
+      <OperatorDecisionQualityUiDraft />
 
       <div className="mb-4 grid gap-3 rounded-lg border border-gray-200 bg-white p-3 shadow-sm lg:grid-cols-[1fr_240px]">
         <div className="flex flex-wrap gap-2">
