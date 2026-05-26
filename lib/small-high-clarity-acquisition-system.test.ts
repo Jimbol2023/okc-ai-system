@@ -31,11 +31,11 @@ describe("small high-clarity acquisition system", () => {
     expect(result.flags.planningOnly).toBe(true);
   });
 
-  it("includes all 16 phases in order and every phase has a next recommendation", () => {
+  it("includes all 17 phases in order and every phase has a next recommendation", () => {
     const roadmap = getSmallHighClarityAcquisitionSystem().roadmap;
 
-    expect(roadmap).toHaveLength(16);
-    expect(roadmap.map((phase) => phase.phaseNumber)).toEqual(Array.from({ length: 16 }, (_, index) => index + 1));
+    expect(roadmap).toHaveLength(17);
+    expect(roadmap.map((phase) => phase.phaseNumber)).toEqual(Array.from({ length: 17 }, (_, index) => index + 1));
     for (const phase of roadmap) {
       expect(phase.phaseName).toBeTruthy();
       expect(phase.goal).toBeTruthy();
@@ -48,13 +48,13 @@ describe("small high-clarity acquisition system", () => {
     }
   });
 
-  it("keeps Phase 1 and Phase 16 next recommendations pinned", () => {
+  it("keeps Phase 1 and Phase 17 next recommendations pinned", () => {
     const roadmap = getSmallHighClarityAcquisitionSystem().roadmap;
 
     expect(roadmap[0].phaseName).toBe("Business Foundation & Trust Infrastructure");
     expect(roadmap[0].nextPhaseRecommendation).toBe("Manual Business Entity And Communication Identity Setup");
-    expect(roadmap[15].phaseName).toBe("KPI & Revenue Intelligence");
-    expect(roadmap[15].nextPhaseRecommendation).toBe("Review KPI Evidence Before Expanding Scope");
+    expect(roadmap[16].phaseName).toBe("KPI & Revenue Intelligence");
+    expect(roadmap[16].nextPhaseRecommendation).toBe("Review KPI Evidence Before Expanding Scope");
   });
 
   it("includes the required roadmap phases", () => {
@@ -68,6 +68,7 @@ describe("small high-clarity acquisition system", () => {
       "Follow-Up Organization System",
       "Deal Quality Intelligence",
       "AI-Assisted Lead Discovery",
+      "Virtual Driving for Dollars Intelligence Engine",
       "Facebook & TikTok Acquisition Engine",
       "SEO & Local Authority Engine",
       "Design & Creative AI Agent",
@@ -78,6 +79,35 @@ describe("small high-clarity acquisition system", () => {
       "Pentest & Security Engine",
       "KPI & Revenue Intelligence",
     ]);
+  });
+
+  it("inserts Virtual Driving for Dollars as review-only Tier 2-style operator leverage after AI-assisted lead discovery", () => {
+    const roadmap = getSmallHighClarityAcquisitionSystem().roadmap;
+    const phaseNames = roadmap.map((phase) => phase.phaseName);
+    const virtualD4d = roadmap.find((phase) => phase.phaseName === "Virtual Driving for Dollars Intelligence Engine");
+    const virtualD4dText = [
+      ...(virtualD4d?.buildOrPlanningItems ?? []),
+      ...(virtualD4d?.aiRole ?? []),
+      ...(virtualD4d?.humanRole ?? []),
+      ...(virtualD4d?.forbiddenDrift ?? []),
+      virtualD4d?.aroiRationale ?? "",
+    ].join(" ");
+
+    expect(phaseNames.indexOf("Virtual Driving for Dollars Intelligence Engine")).toBe(phaseNames.indexOf("AI-Assisted Lead Discovery") + 1);
+    expect(phaseNames.indexOf("Virtual Driving for Dollars Intelligence Engine")).toBeLessThan(phaseNames.indexOf("SEO & Local Authority Engine"));
+    expect(virtualD4d?.nextPhaseRecommendation).toBe("Facebook & TikTok Acquisition Engine");
+    expect(virtualD4dText).toMatch(/approved target neighborhoods/i);
+    expect(virtualD4dText).toMatch(/distress signal checklist/i);
+    expect(virtualD4dText).toMatch(/buyer-demand criteria/i);
+    expect(virtualD4dText).toMatch(/DNC\/STOP governance/i);
+    expect(virtualD4dText).toMatch(/public website\/private dashboard separation/i);
+    expect(virtualD4dText).toMatch(/no-autonomous-scraping confirmation/i);
+    expect(virtualD4dText).toMatch(/suggest neighborhoods/i);
+    expect(virtualD4dText).toMatch(/approve any lead creation/i);
+    expect(virtualD4dText).toMatch(/autonomous map scraping/i);
+    expect(virtualD4dText).toMatch(/Google Street View automation/i);
+    expect(virtualD4dText).toMatch(/GPS surveillance/i);
+    expect(virtualD4dText).toMatch(/lead creation without human approval/i);
   });
 
   it("keeps AI allowed actions limited to operator leverage", () => {
@@ -114,6 +144,9 @@ describe("small high-clarity acquisition system", () => {
     expect(forbiddenText).toMatch(/provider activation/i);
     expect(forbiddenText).toMatch(/autonomous scraping/i);
     expect(forbiddenText).toMatch(/autonomous skip tracing/i);
+    expect(forbiddenText).toMatch(/autonomous map scraping/i);
+    expect(forbiddenText).toMatch(/Google Street View automation/i);
+    expect(forbiddenText).toMatch(/GPS surveillance/i);
   });
 
   it("keeps humans as approval review communication negotiation decision sending and closing owners", () => {
@@ -215,7 +248,7 @@ describe("small high-clarity acquisition system", () => {
   it("fails invariant checks if roadmap order or next recommendations drift", () => {
     const missingPhase = {
       ...getSmallHighClarityAcquisitionSystem(),
-      roadmap: getSmallHighClarityAcquisitionSystem().roadmap.slice(0, 15),
+      roadmap: getSmallHighClarityAcquisitionSystem().roadmap.slice(0, 16),
     };
     const phase1NextUnsafe = {
       ...getSmallHighClarityAcquisitionSystem(),
@@ -230,15 +263,15 @@ describe("small high-clarity acquisition system", () => {
     const phase16NextUnsafe = {
       ...getSmallHighClarityAcquisitionSystem(),
       roadmap: [
-        ...getSmallHighClarityAcquisitionSystem().roadmap.slice(0, 15),
+        ...getSmallHighClarityAcquisitionSystem().roadmap.slice(0, 16),
         {
-          ...getSmallHighClarityAcquisitionSystem().roadmap[15],
+          ...getSmallHighClarityAcquisitionSystem().roadmap[16],
           nextPhaseRecommendation: "Autonomous Expansion",
         },
       ],
     };
 
-    expect(() => assertSmallHighClarityAcquisitionSystemSafe(missingPhase)).toThrow(/16 phases/i);
+    expect(() => assertSmallHighClarityAcquisitionSystemSafe(missingPhase)).toThrow(/17 phases/i);
     expect(() => assertSmallHighClarityAcquisitionSystemSafe(phase1NextUnsafe)).toThrow(/Manual Business Entity And Communication Identity Setup/i);
     expect(() => assertSmallHighClarityAcquisitionSystemSafe(phase16NextUnsafe)).toThrow(/Review KPI Evidence Before Expanding Scope/i);
   });

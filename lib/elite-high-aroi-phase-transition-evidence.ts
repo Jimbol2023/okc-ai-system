@@ -152,10 +152,20 @@ export const eliteHighAroiPhaseTransitionMap: EliteHighAroiPhaseTransition[] = [
     humanOwnedExecutionBoundary: ["review sources", "approve contact decisions", "contact sellers manually", "negotiate manually"],
     aiOperatorLeverageRole: ["organize sources", "clean lists", "prioritize opportunities", "identify source patterns"],
     blockedAutomationProviderDrift: ["autonomous scraping", "autonomous skip tracing", "autonomous seller outreach", "autonomous campaigns"],
-    nextRecommendation: "Facebook & TikTok Acquisition Engine",
+    nextRecommendation: "Virtual Driving for Dollars Intelligence Engine",
   },
   {
     phaseNumber: 8,
+    phaseName: "Virtual Driving for Dollars Intelligence Engine",
+    highAroiReason: "Review-only Virtual D4D can uncover distressed, vacant, neglected, landlord-fatigue, infill, land, and rental-area source opportunities not already sitting on common public wholesale lists.",
+    requiredEvidenceBeforeMovingForward: ["approved target neighborhoods", "manual review process", "distress signal checklist", "lead approval criteria", "buyer-demand criteria", "DNC/STOP governance", "public website/private dashboard separation", "no-autonomous-scraping confirmation"],
+    humanOwnedExecutionBoundary: ["drive or review routes", "verify property observations", "approve any lead creation", "approve any outreach", "own communication and negotiation"],
+    aiOperatorLeverageRole: ["suggest neighborhoods to review", "organize potential D4D targets", "summarize visual/property distress signals", "help score opportunity quality", "connect D4D targets to likely buyer demand", "prepare manual review queues"],
+    blockedAutomationProviderDrift: ["autonomous map scraping", "Google Street View automation", "GPS surveillance", "owner contact automation", "skip tracing automation", "scraping", "autonomous outreach", "campaign activation", "lead creation without human approval"],
+    nextRecommendation: "Facebook & TikTok Acquisition Engine",
+  },
+  {
+    phaseNumber: 9,
     phaseName: "Facebook & TikTok Acquisition Engine",
     highAroiReason: "Inbound authority can improve seller trust and lower competition when claims stay controlled.",
     requiredEvidenceBeforeMovingForward: ["manual publishing rule", "ad claim review", "seller education themes", "local trust standard", "spend approval boundary"],
@@ -165,7 +175,7 @@ export const eliteHighAroiPhaseTransitionMap: EliteHighAroiPhaseTransition[] = [
     nextRecommendation: "SEO & Local Authority Engine",
   },
   {
-    phaseNumber: 9,
+    phaseNumber: 10,
     phaseName: "SEO & Local Authority Engine",
     highAroiReason: "High-intent inbound search traffic compounds only when content is accurate and locally credible.",
     requiredEvidenceBeforeMovingForward: ["keyword plan", "local claim verification", "manual publish rule", "seller FAQ standards", "trust copy review"],
@@ -175,7 +185,7 @@ export const eliteHighAroiPhaseTransitionMap: EliteHighAroiPhaseTransition[] = [
     nextRecommendation: "Design & Creative AI Agent",
   },
   {
-    phaseNumber: 10,
+    phaseNumber: 11,
     phaseName: "Design & Creative AI Agent",
     highAroiReason: "Professional design improves trust when it supports seller clarity instead of feature sprawl.",
     requiredEvidenceBeforeMovingForward: ["brand standards", "mobile-first review", "claim review", "trust section criteria", "manual publish rule"],
@@ -185,7 +195,7 @@ export const eliteHighAroiPhaseTransitionMap: EliteHighAroiPhaseTransition[] = [
     nextRecommendation: "Conversion Optimization Engine",
   },
   {
-    phaseNumber: 11,
+    phaseNumber: 12,
     phaseName: "Conversion Optimization Engine",
     highAroiReason: "Conversion quality increases lead yield without increasing operator chaos or spend.",
     requiredEvidenceBeforeMovingForward: ["form friction review", "CTA review", "mobile usability notes", "trust copy evidence", "lead quality feedback"],
@@ -195,7 +205,7 @@ export const eliteHighAroiPhaseTransitionMap: EliteHighAroiPhaseTransition[] = [
     nextRecommendation: "Buyer Fit Intelligence",
   },
   {
-    phaseNumber: 12,
+    phaseNumber: 13,
     phaseName: "Buyer Fit Intelligence",
     highAroiReason: "Buyer fit improves disposition quality while preserving relationship control.",
     requiredEvidenceBeforeMovingForward: ["buyer category rules", "fit criteria", "manual deal sharing approval", "relationship ownership rule", "no blast boundary"],
@@ -205,7 +215,7 @@ export const eliteHighAroiPhaseTransitionMap: EliteHighAroiPhaseTransition[] = [
     nextRecommendation: "Daily Acquisition Command Center",
   },
   {
-    phaseNumber: 13,
+    phaseNumber: 14,
     phaseName: "Daily Acquisition Command Center",
     highAroiReason: "A single operating view reduces decision fatigue and keeps one operator focused on revenue-producing work.",
     requiredEvidenceBeforeMovingForward: ["daily queue definitions", "warning criteria", "manual action rule", "priority explanation standard", "no-send boundary"],
@@ -215,7 +225,7 @@ export const eliteHighAroiPhaseTransitionMap: EliteHighAroiPhaseTransition[] = [
     nextRecommendation: "Safety & Compliance Engine",
   },
   {
-    phaseNumber: 14,
+    phaseNumber: 15,
     phaseName: "Safety & Compliance Engine",
     highAroiReason: "Safety protects communication reputation and makes future growth durable.",
     requiredEvidenceBeforeMovingForward: ["DNC policy", "STOP policy", "opt-out visibility", "consent visibility", "manual approval boundary"],
@@ -225,7 +235,7 @@ export const eliteHighAroiPhaseTransitionMap: EliteHighAroiPhaseTransition[] = [
     nextRecommendation: "Pentest & Security Engine",
   },
   {
-    phaseNumber: 15,
+    phaseNumber: 16,
     phaseName: "Pentest & Security Engine",
     highAroiReason: "Security protects lead data, trust infrastructure, and acquisition continuity.",
     requiredEvidenceBeforeMovingForward: ["auth review", "API exposure review", "route protection review", "env safety notes", "data leakage review"],
@@ -235,7 +245,7 @@ export const eliteHighAroiPhaseTransitionMap: EliteHighAroiPhaseTransition[] = [
     nextRecommendation: "KPI & Revenue Intelligence",
   },
   {
-    phaseNumber: 16,
+    phaseNumber: 17,
     phaseName: "KPI & Revenue Intelligence",
     highAroiReason: "Revenue truth tells the operator what to double down on and what to stop doing.",
     requiredEvidenceBeforeMovingForward: ["lead-to-call ratio", "call-to-offer ratio", "offer-to-contract ratio", "source quality evidence", "dead lead cause review"],
@@ -286,7 +296,7 @@ export function getEliteHighAroiPhaseTransitionEvidence(): EliteHighAroiPhaseTra
 export function assertEliteHighAroiPhaseTransitionEvidenceSafe(result: EliteHighAroiPhaseTransitionEvidence) {
   const allowedTrueFlags = new Set(["readOnly", "advisoryOnly", "planningOnly"]);
   const unsafeTrueFlags = Object.entries(result.flags).filter(([key, value]) => !allowedTrueFlags.has(key) && value === true);
-  const expectedPhaseNumbers = Array.from({ length: 16 }, (_, index) => index + 1);
+  const expectedPhaseNumbers = Array.from({ length: 17 }, (_, index) => index + 1);
 
   if (!result.readOnly || !result.advisoryOnly || !result.planningOnly) {
     throw new Error("Elite high-aROI phase transition evidence must remain read-only, advisory-only, and planning-only.");
@@ -316,12 +326,12 @@ export function assertEliteHighAroiPhaseTransitionEvidenceSafe(result: EliteHigh
     throw new Error("Next stage recommendation must remain Activation Evidence Gap Resolution Planning.");
   }
 
-  if (result.phaseTransitionMap.length !== 16) {
-    throw new Error("Elite high-aROI phase transition map must include all 16 phases.");
+  if (result.phaseTransitionMap.length !== 17) {
+    throw new Error("Elite high-aROI phase transition map must include all 17 phases.");
   }
 
   if (result.phaseTransitionMap.map((phase) => phase.phaseNumber).join(",") !== expectedPhaseNumbers.join(",")) {
-    throw new Error("Elite high-aROI phase transition map phases must remain ordered 1 through 16.");
+    throw new Error("Elite high-aROI phase transition map phases must remain ordered 1 through 17.");
   }
 
   if (

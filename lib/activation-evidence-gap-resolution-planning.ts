@@ -305,7 +305,17 @@ export const phaseEvidenceGapMap: ActivationPhaseEvidenceGapRecord[] = [
     aiGapSummaryRole: activationEvidenceGapAiRole,
     humanApprovalExecutionBoundary: activationEvidenceGapHumanBoundary,
     forbiddenDrift: ["autonomous scraping", "autonomous skip tracing", "autonomous seller outreach", "autonomous campaigns"],
-    nextEvidenceReviewGuidance: "Confirm lead discovery evidence before SEO and local authority evidence is reviewed.",
+    nextEvidenceReviewGuidance: "Confirm lead discovery evidence before Virtual Driving for Dollars evidence is reviewed.",
+  },
+  {
+    phaseName: "Virtual Driving for Dollars Intelligence Engine",
+    evidenceGapFocus: ["approved neighborhoods", "distress signal review", "buyer demand fit", "manual D4D review", "no autonomous map automation"],
+    requiredManualEvidence: ["approved target neighborhoods", "manual review process", "distress signal checklist", "lead approval criteria", "buyer-demand criteria", "DNC/STOP governance", "public website/private dashboard separation", "no-autonomous-scraping confirmation"],
+    blockerRule: "Missing Virtual D4D evidence blocks D4D planning movement and cannot authorize map scraping, Street View automation, GPS surveillance, skip tracing, owner contact, campaigns, lead creation, or outreach.",
+    aiGapSummaryRole: activationEvidenceGapAiRole,
+    humanApprovalExecutionBoundary: activationEvidenceGapHumanBoundary,
+    forbiddenDrift: ["autonomous map scraping", "Google Street View automation", "GPS surveillance", "owner contact automation", "skip tracing automation", "scraping", "autonomous outreach", "campaign activation", "lead creation without human approval"],
+    nextEvidenceReviewGuidance: "Confirm Virtual D4D evidence before SEO and local authority evidence is reviewed.",
   },
   {
     phaseName: "SEO & Local Authority Engine",
@@ -381,7 +391,7 @@ export const phaseEvidenceGapMap: ActivationPhaseEvidenceGapRecord[] = [
 
 export const activationEvidenceGapDoctrine = [
   "Activation Evidence Gap Resolution Planning identifies missing evidence only.",
-  "Activation Evidence Gap Resolution Planning is the evidence-gap planning layer for all 16 elite high-aROI acquisition phases.",
+  "Activation Evidence Gap Resolution Planning is the evidence-gap planning layer for all 17 elite high-aROI acquisition phases.",
   "Gap resolution decision remains not_authorized_for_execution.",
   "Provider decision remains not_authorized.",
   "Communication decision remains not_authorized.",
@@ -488,6 +498,7 @@ export function assertActivationEvidenceGapResolutionPlanningSafe(result: Activa
     "KPI & Revenue Intelligence",
     "Deal Quality Intelligence",
     "AI-Assisted Lead Discovery",
+    "Virtual Driving for Dollars Intelligence Engine",
     "SEO & Local Authority Engine",
     "Conversion Optimization Engine",
     "Safety & Compliance Engine",
@@ -525,8 +536,8 @@ export function assertActivationEvidenceGapResolutionPlanningSafe(result: Activa
     throw new Error("Activation Evidence Gap Resolution Planning cannot authorize evidence automation, provider activation, DNS/domain mutation, Vercel changes, Google Workspace changes, env reads, SDK imports, routes/webhooks, SMS, email, calling, AI voice, campaigns, queues, reminders, runtime jobs, CRM mutation, audit writing, rollback execution, autonomous seller handling, spend increases, blocker bypass, communication execution, or go-live.");
   }
 
-  if (result.phaseEvidenceGapMap.length !== 16) {
-    throw new Error("Activation Evidence Gap Resolution Planning must include all 16 phase evidence gap records.");
+  if (result.phaseEvidenceGapMap.length !== 17) {
+    throw new Error("Activation Evidence Gap Resolution Planning must include all 17 phase evidence gap records.");
   }
 
   if (result.phaseEvidenceGapMap.map((phase) => phase.phaseName).join("|") !== expectedPhaseNames.join("|")) {
@@ -560,5 +571,5 @@ export function assertActivationEvidenceGapResolutionPlanningSafe(result: Activa
 export function summarizeActivationEvidenceGapResolutionPlanning(result: ActivationEvidenceGapResolutionPlanning) {
   assertActivationEvidenceGapResolutionPlanningSafe(result);
 
-  return `${result.phase}: ${result.activationEvidenceGapResolutionPlanningStatus}. This is evidence-gap planning for all 16 phases, with operator leverage only, human-approved movement, and no Phase 2 implementation. Gap resolution decision is ${result.gapResolutionDecision}; provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}. The gap map identifies missing LLC/business identity evidence, domain ownership evidence, Vercel domain connection evidence, Google Workspace email evidence, SPF/DKIM/DMARC evidence, email signature evidence, Twilio number readiness, A2P/10DLC status, STOP/DNC handling evidence, manual approval checklist evidence, rollback checklist evidence, internal test evidence, and phase-level evidence gaps across the elite high-aROI acquisition OS. No evidence collection automation, activation, provider execution, outreach, automation, provider activation, DNS/domain mutation, Vercel change, Google Workspace change, mailbox creation, SPF/DKIM/DMARC publishing, number activation, A2P/10DLC submission, env read, SDK import, route, webhook, outbound communication, SMS, email, calling, AI voice, campaign, queue, reminder, polling, runtime job, CRM mutation, audit writing, rollback execution, autonomous seller handling, approval-as-execution, blocker bypass, communication execution, go-live, or spend increase is authorized. This is not autonomous wholesaling. Next exact step: ${result.recommendedNextExactStep}. Next stage: ${result.nextStageRecommendation}.`;
+  return `${result.phase}: ${result.activationEvidenceGapResolutionPlanningStatus}. This is evidence-gap planning for all 17 phases, with operator leverage only, human-approved movement, and no Phase 2 implementation. Gap resolution decision is ${result.gapResolutionDecision}; provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}. The gap map identifies missing LLC/business identity evidence, domain ownership evidence, Vercel domain connection evidence, Google Workspace email evidence, SPF/DKIM/DMARC evidence, email signature evidence, Twilio number readiness, A2P/10DLC status, STOP/DNC handling evidence, manual approval checklist evidence, rollback checklist evidence, internal test evidence, Virtual Driving for Dollars evidence, and phase-level evidence gaps across the elite high-aROI acquisition OS. No evidence collection automation, activation, provider execution, outreach, automation, provider activation, DNS/domain mutation, Vercel change, Google Workspace change, mailbox creation, SPF/DKIM/DMARC publishing, number activation, A2P/10DLC submission, env read, SDK import, route, webhook, outbound communication, SMS, email, calling, AI voice, campaign, queue, reminder, polling, runtime job, CRM mutation, audit writing, rollback execution, autonomous seller handling, map scraping, Google Street View automation, GPS surveillance, lead creation without human approval, approval-as-execution, blocker bypass, communication execution, go-live, or spend increase is authorized. This is not autonomous wholesaling. Next exact step: ${result.recommendedNextExactStep}. Next stage: ${result.nextStageRecommendation}.`;
 }

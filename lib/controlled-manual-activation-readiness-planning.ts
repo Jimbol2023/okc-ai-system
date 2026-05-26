@@ -110,6 +110,7 @@ export const controlledManualActivationReadinessPhaseOrder = [
   "KPI & Revenue Intelligence",
   "Deal Quality Intelligence",
   "AI-Assisted Lead Discovery",
+  "Virtual Driving for Dollars Intelligence Engine",
   "SEO & Local Authority Engine",
   "Conversion Optimization Engine",
   "Safety & Compliance Engine",
@@ -283,7 +284,13 @@ export const phaseReadinessRecords: ControlledManualActivationReadinessPhaseReco
     "AI-Assisted Lead Discovery",
     ["source provenance reviewed", "legal source notes reviewed", "manual review boundary reviewed", "no scraping and no skip tracing boundary reviewed"],
     ["autonomous scraping", "autonomous skip tracing", "autonomous seller outreach", "autonomous campaigns"],
-    "Review discovery readiness only after source provenance and manual contact boundaries are clear.",
+    "Review discovery readiness only after source provenance and manual contact boundaries are clear before Virtual D4D readiness.",
+  ),
+  createReadinessRecord(
+    "Virtual Driving for Dollars Intelligence Engine",
+    ["approved target neighborhoods reviewed", "manual review process reviewed", "distress signal checklist reviewed", "lead approval criteria reviewed", "buyer-demand criteria reviewed", "DNC/STOP governance reviewed", "public/private separation reviewed", "no-autonomous-scraping confirmation reviewed"],
+    ["autonomous map scraping", "Google Street View automation", "GPS surveillance", "owner contact automation", "skip tracing automation", "scraping", "autonomous outreach", "campaign activation", "lead creation without human approval"],
+    "Review Virtual D4D readiness as review-only off-market opportunity intelligence before SEO readiness.",
   ),
   createReadinessRecord(
     "SEO & Local Authority Engine",
@@ -331,7 +338,7 @@ export const phaseReadinessRecords: ControlledManualActivationReadinessPhaseReco
 
 export const controlledManualActivationReadinessDoctrine = [
   "Controlled Manual Activation Readiness Planning is planning-only.",
-  "Controlled Manual Activation Readiness Planning covers all 16 phases of the elite high-aROI acquisition OS.",
+  "Controlled Manual Activation Readiness Planning covers all 17 phases of the elite high-aROI acquisition OS.",
   "Highest ROI comes from controlled manual readiness, not premature Phase 2 implementation, provider activation, outreach, automation, or scope expansion.",
   "AI remains operator leverage only.",
   "All movement remains human-approved.",
@@ -407,8 +414,8 @@ export function assertControlledManualActivationReadinessPlanningSafe(result: Co
     throw new Error("Controlled Manual Activation Readiness Planning must include the required controlled readiness lanes.");
   }
 
-  if (result.phaseReadinessRecords.length !== 16) {
-    throw new Error("Controlled Manual Activation Readiness Planning must include all 16 phase readiness records.");
+  if (result.phaseReadinessRecords.length !== 17) {
+    throw new Error("Controlled Manual Activation Readiness Planning must include all 17 phase readiness records.");
   }
 
   if (result.phaseReadinessRecords.map((phase) => phase.phaseName).join("|") !== controlledManualActivationReadinessPhaseOrder.join("|")) {
@@ -445,5 +452,5 @@ export function assertControlledManualActivationReadinessPlanningSafe(result: Co
 export function summarizeControlledManualActivationReadinessPlanning(result: ControlledManualActivationReadinessPlanning) {
   assertControlledManualActivationReadinessPlanningSafe(result);
 
-  return `${result.phase}: ${result.readinessStatus}. This is controlled manual activation readiness planning for all 16 phases, built for highest ROI by keeping readiness operator leverage only, human-approved, planning-only, and blocked from premature execution. Provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}. Readiness lanes cover business identity, domain/DNS notes, public website/private dashboard separation, Google Workspace/email identity, SPF/DKIM/DMARC notes, Twilio readiness, A2P/10DLC readiness, DNC/STOP governance, manual approval process, rollback/stop procedure, internal dry-run plan, and human go/no-go criteria. No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, provider activation, provider clients, env reads, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, campaigns, autonomous seller handling, autonomous buyer handling, approval-as-execution, blocker bypass, go-live, or Phase 2 implementation is authorized. This is not autonomous wholesaling. Next exact step: ${result.recommendedNextExactStep}. Next stage: ${result.nextStageRecommendation}.`;
+  return `${result.phase}: ${result.readinessStatus}. This is controlled manual activation readiness planning for all 17 phases, built for highest ROI by keeping readiness operator leverage only, human-approved, planning-only, and blocked from premature execution. Provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}. Readiness lanes cover business identity, domain/DNS notes, public website/private dashboard separation, Google Workspace/email identity, SPF/DKIM/DMARC notes, Twilio readiness, A2P/10DLC readiness, DNC/STOP governance, manual approval process, rollback/stop procedure, internal dry-run plan, human go/no-go criteria, and Virtual Driving for Dollars review-only intelligence. No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, provider activation, provider clients, env reads, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, campaigns, autonomous seller handling, autonomous buyer handling, map scraping, Google Street View automation, GPS surveillance, lead creation without human approval, approval-as-execution, blocker bypass, go-live, or Phase 2 implementation is authorized. This is not autonomous wholesaling. Next exact step: ${result.recommendedNextExactStep}. Next stage: ${result.nextStageRecommendation}.`;
 }

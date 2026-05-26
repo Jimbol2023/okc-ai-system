@@ -30,11 +30,11 @@ describe("elite high-aROI phase transition evidence", () => {
     expect(result.flags.planningOnly).toBe(true);
   });
 
-  it("includes all 16 phases with evidence AI role human boundary forbidden drift and next recommendation", () => {
+  it("includes all 17 phases with evidence AI role human boundary forbidden drift and next recommendation", () => {
     const phases = getEliteHighAroiPhaseTransitionEvidence().phaseTransitionMap;
 
-    expect(phases).toHaveLength(16);
-    expect(phases.map((phase) => phase.phaseNumber)).toEqual(Array.from({ length: 16 }, (_, index) => index + 1));
+    expect(phases).toHaveLength(17);
+    expect(phases.map((phase) => phase.phaseNumber)).toEqual(Array.from({ length: 17 }, (_, index) => index + 1));
     for (const phase of phases) {
       expect(phase.phaseName).toBeTruthy();
       expect(phase.highAroiReason).toMatch(/trust|lead|operator|preparation|discipline|time|source|inbound|traffic|design|conversion|buyer|view|safety|security|revenue/i);
@@ -79,6 +79,7 @@ describe("elite high-aROI phase transition evidence", () => {
       "Follow-Up Organization System",
       "Deal Quality Intelligence",
       "AI-Assisted Lead Discovery",
+      "Virtual Driving for Dollars Intelligence Engine",
       "Facebook & TikTok Acquisition Engine",
       "SEO & Local Authority Engine",
       "Design & Creative AI Agent",
@@ -89,6 +90,36 @@ describe("elite high-aROI phase transition evidence", () => {
       "Pentest & Security Engine",
       "KPI & Revenue Intelligence",
     ]);
+  });
+
+  it("adds Virtual Driving for Dollars evidence-first boundaries after AI-assisted lead discovery", () => {
+    const phases = getEliteHighAroiPhaseTransitionEvidence().phaseTransitionMap;
+    const phaseNames = phases.map((phase) => phase.phaseName);
+    const virtualD4d = phases.find((phase) => phase.phaseName === "Virtual Driving for Dollars Intelligence Engine");
+    const virtualD4dText = [
+      virtualD4d?.highAroiReason ?? "",
+      ...(virtualD4d?.requiredEvidenceBeforeMovingForward ?? []),
+      ...(virtualD4d?.humanOwnedExecutionBoundary ?? []),
+      ...(virtualD4d?.aiOperatorLeverageRole ?? []),
+      ...(virtualD4d?.blockedAutomationProviderDrift ?? []),
+    ].join(" ");
+
+    expect(phaseNames.indexOf("Virtual Driving for Dollars Intelligence Engine")).toBe(phaseNames.indexOf("AI-Assisted Lead Discovery") + 1);
+    expect(phaseNames.indexOf("Virtual Driving for Dollars Intelligence Engine")).toBeLessThan(phaseNames.indexOf("SEO & Local Authority Engine"));
+    expect(virtualD4dText).toMatch(/distressed/i);
+    expect(virtualD4dText).toMatch(/approved target neighborhoods/i);
+    expect(virtualD4dText).toMatch(/distress signal checklist/i);
+    expect(virtualD4dText).toMatch(/lead approval criteria/i);
+    expect(virtualD4dText).toMatch(/buyer-demand criteria/i);
+    expect(virtualD4dText).toMatch(/DNC\/STOP governance/i);
+    expect(virtualD4dText).toMatch(/public website\/private dashboard separation/i);
+    expect(virtualD4dText).toMatch(/no-autonomous-scraping confirmation/i);
+    expect(virtualD4dText).toMatch(/suggest neighborhoods/i);
+    expect(virtualD4dText).toMatch(/verify property observations/i);
+    expect(virtualD4dText).toMatch(/autonomous map scraping/i);
+    expect(virtualD4dText).toMatch(/Google Street View automation/i);
+    expect(virtualD4dText).toMatch(/GPS surveillance/i);
+    expect(virtualD4dText).toMatch(/lead creation without human approval/i);
   });
 
   it("keeps provider communication automation CRM runtime autonomous DNS Vercel Twilio Google Workspace and go-live flags false", () => {
@@ -180,12 +211,12 @@ describe("elite high-aROI phase transition evidence", () => {
     };
     const missingPhaseUnsafe = {
       ...getEliteHighAroiPhaseTransitionEvidence(),
-      phaseTransitionMap: getEliteHighAroiPhaseTransitionEvidence().phaseTransitionMap.slice(0, 15),
+      phaseTransitionMap: getEliteHighAroiPhaseTransitionEvidence().phaseTransitionMap.slice(0, 16),
     };
 
     expect(() => assertEliteHighAroiPhaseTransitionEvidenceSafe(nextStepUnsafe)).toThrow(/Complete Manual Entity Formation/i);
     expect(() => assertEliteHighAroiPhaseTransitionEvidenceSafe(nextStageUnsafe)).toThrow(/Activation Evidence Gap Resolution Planning/i);
-    expect(() => assertEliteHighAroiPhaseTransitionEvidenceSafe(missingPhaseUnsafe)).toThrow(/16 phases/i);
+    expect(() => assertEliteHighAroiPhaseTransitionEvidenceSafe(missingPhaseUnsafe)).toThrow(/17 phases/i);
   });
 
   it("summarizes high-aROI evidence-first operator leverage human-approved boundaries and next stage", () => {

@@ -140,6 +140,7 @@ export const activationEvidenceCompletenessPhaseOrder = [
   "KPI & Revenue Intelligence",
   "Deal Quality Intelligence",
   "AI-Assisted Lead Discovery",
+  "Virtual Driving for Dollars Intelligence Engine",
   "SEO & Local Authority Engine",
   "Conversion Optimization Engine",
   "Safety & Compliance Engine",
@@ -235,7 +236,13 @@ export const phaseCompletenessRecords: ActivationEvidenceCompletenessRecord[] = 
     "AI-Assisted Lead Discovery",
     ["source provenance evidence", "legal source notes", "manual review rule", "no scraping boundary", "no skip tracing boundary"],
     ["autonomous scraping", "autonomous skip tracing", "autonomous seller outreach", "autonomous campaigns"],
-    "Review discovery evidence only when source provenance and human contact boundaries are clear.",
+    "Review discovery evidence only when source provenance and human contact boundaries are clear before Virtual D4D completeness review.",
+  ),
+  createCompletenessRecord(
+    "Virtual Driving for Dollars Intelligence Engine",
+    ["approved target neighborhoods", "manual review process", "distress signal checklist", "lead approval criteria", "buyer-demand criteria", "DNC/STOP governance", "public website/private dashboard separation", "no-autonomous-scraping confirmation"],
+    ["autonomous map scraping", "Google Street View automation", "GPS surveillance", "owner contact automation", "skip tracing automation", "scraping", "autonomous outreach", "campaign activation", "lead creation without human approval"],
+    "Review Virtual D4D completeness only as human-approved off-market opportunity intelligence before SEO and local authority evidence is reviewed.",
   ),
   createCompletenessRecord(
     "SEO & Local Authority Engine",
@@ -283,7 +290,7 @@ export const phaseCompletenessRecords: ActivationEvidenceCompletenessRecord[] = 
 
 export const activationEvidenceCompletenessDoctrine = [
   "Activation Evidence Completeness Review is evidence completeness review only.",
-  "Activation Evidence Completeness Review covers all 16 phases of the elite high-aROI acquisition OS.",
+  "Activation Evidence Completeness Review covers all 17 phases of the elite high-aROI acquisition OS.",
   "Highest ROI comes from preventing premature Phase 2 implementation, provider activation, outreach, automation, and scope expansion before evidence is complete.",
   "AI remains operator leverage only.",
   "All movement remains human-approved.",
@@ -353,8 +360,8 @@ export function assertActivationEvidenceCompletenessReviewSafe(result: Activatio
     throw new Error("Activation Evidence Completeness Review cannot authorize evidence automation, online verification, storage mutation, provider activation, provider execution, DNS/domain mutation, Vercel changes, Google Workspace changes, env reads, SDK imports, routes/webhooks, SMS, email, calling, AI voice, campaigns, queues, reminders, runtime jobs, CRM mutation, audit writing, rollback execution, autonomous seller handling, spend increases, blocker bypass, approval-as-execution, communication execution, Phase 2 implementation, or go-live.");
   }
 
-  if (result.phaseCompletenessRecords.length !== 16) {
-    throw new Error("Activation Evidence Completeness Review must include all 16 phase completeness records.");
+  if (result.phaseCompletenessRecords.length !== 17) {
+    throw new Error("Activation Evidence Completeness Review must include all 17 phase completeness records.");
   }
 
   if (result.phaseCompletenessRecords.map((phase) => phase.phaseName).join("|") !== activationEvidenceCompletenessPhaseOrder.join("|")) {
@@ -387,5 +394,5 @@ export function assertActivationEvidenceCompletenessReviewSafe(result: Activatio
 export function summarizeActivationEvidenceCompletenessReview(result: ActivationEvidenceCompletenessReview) {
   assertActivationEvidenceCompletenessReviewSafe(result);
 
-  return `${result.phase}: ${result.reviewStatus}. This is evidence completeness review for all 16 phases, built for highest ROI by keeping movement operator leverage only, human-approved, evidence-first, and blocked from premature expansion. Provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}. Phase 1 completeness includes entity proof, EIN evidence, banking readiness, domain ownership, Google Workspace/email identity plan, SPF/DKIM/DMARC readiness notes, branded signature plan, Twilio readiness, A2P/10DLC readiness, DNC/STOP governance, and public website/private dashboard separation. No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, online verification, storage mutation, provider activation, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, autonomous seller handling, approval-as-execution, blocker bypass, go-live, or Phase 2 implementation is authorized. This is not autonomous wholesaling. Next exact step: ${result.recommendedNextExactStep}. Next stage: ${result.nextStageRecommendation}.`;
+  return `${result.phase}: ${result.reviewStatus}. This is evidence completeness review for all 17 phases, built for highest ROI by keeping movement operator leverage only, human-approved, evidence-first, and blocked from premature expansion. Provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}. Phase 1 completeness includes entity proof, EIN evidence, banking readiness, domain ownership, Google Workspace/email identity plan, SPF/DKIM/DMARC readiness notes, branded signature plan, Twilio readiness, A2P/10DLC readiness, DNC/STOP governance, and public website/private dashboard separation. Virtual Driving for Dollars completeness remains review-only and requires approved target neighborhoods, manual review process, distress signal checklist, lead approval criteria, buyer-demand criteria, DNC/STOP governance, public/private separation, and no-autonomous-scraping confirmation. No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, online verification, storage mutation, provider activation, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, autonomous seller handling, map scraping, Google Street View automation, GPS surveillance, lead creation without human approval, approval-as-execution, blocker bypass, go-live, or Phase 2 implementation is authorized. This is not autonomous wholesaling. Next exact step: ${result.recommendedNextExactStep}. Next stage: ${result.nextStageRecommendation}.`;
 }

@@ -69,7 +69,7 @@ describe("controlled manual activation readiness planning", () => {
     expect(laneText).toMatch(/go\/no-go criteria/i);
   });
 
-  it("defines all 16 phase readiness records in order", () => {
+  it("defines all 17 phase readiness records in order", () => {
     const result = getControlledManualActivationReadinessPlanning();
 
     expect(result.phaseReadinessRecords.map((phase) => phase.phaseName)).toEqual([
@@ -82,6 +82,7 @@ describe("controlled manual activation readiness planning", () => {
       "KPI & Revenue Intelligence",
       "Deal Quality Intelligence",
       "AI-Assisted Lead Discovery",
+      "Virtual Driving for Dollars Intelligence Engine",
       "SEO & Local Authority Engine",
       "Conversion Optimization Engine",
       "Safety & Compliance Engine",
@@ -90,6 +91,30 @@ describe("controlled manual activation readiness planning", () => {
       "Buyer Fit Intelligence",
       "Pentest & Security Engine",
     ]);
+  });
+
+  it("adds Virtual Driving for Dollars readiness as review-only intelligence before SEO", () => {
+    const result = getControlledManualActivationReadinessPlanning();
+    const phaseNames = result.phaseReadinessRecords.map((phase) => phase.phaseName);
+    const virtualD4d = result.phaseReadinessRecords.find((phase) => phase.phaseName === "Virtual Driving for Dollars Intelligence Engine");
+    const virtualD4dText = [
+      ...(virtualD4d?.readinessPrerequisites ?? []),
+      ...(virtualD4d?.blockedDrift ?? []),
+      virtualD4d?.nextReadinessGuidance ?? "",
+    ].join(" ");
+
+    expect(phaseNames.indexOf("Virtual Driving for Dollars Intelligence Engine")).toBe(phaseNames.indexOf("AI-Assisted Lead Discovery") + 1);
+    expect(phaseNames.indexOf("Virtual Driving for Dollars Intelligence Engine")).toBeLessThan(phaseNames.indexOf("SEO & Local Authority Engine"));
+    expect(virtualD4dText).toMatch(/approved target neighborhoods/i);
+    expect(virtualD4dText).toMatch(/distress signal checklist/i);
+    expect(virtualD4dText).toMatch(/lead approval criteria/i);
+    expect(virtualD4dText).toMatch(/buyer-demand criteria/i);
+    expect(virtualD4dText).toMatch(/DNC\/STOP governance/i);
+    expect(virtualD4dText).toMatch(/public\/private separation/i);
+    expect(virtualD4dText).toMatch(/no-autonomous-scraping confirmation/i);
+    expect(virtualD4dText).toMatch(/map scraping/i);
+    expect(virtualD4dText).toMatch(/Street View automation/i);
+    expect(virtualD4dText).toMatch(/GPS surveillance/i);
   });
 
   it("requires every phase readiness record to include prerequisites boundaries blocked drift and no-execution guidance", () => {
@@ -157,7 +182,8 @@ describe("controlled manual activation readiness planning", () => {
     const summary = summarizeControlledManualActivationReadinessPlanning(result);
 
     expect(summary).toMatch(/controlled manual activation readiness planning/i);
-    expect(summary).toMatch(/all 16 phases/i);
+    expect(summary).toMatch(/all 17 phases/i);
+    expect(summary).toMatch(/Virtual Driving for Dollars review-only intelligence/i);
     expect(summary).toMatch(/highest ROI/i);
     expect(summary).toMatch(/operator leverage only/i);
     expect(summary).toMatch(/human-approved/i);
@@ -255,7 +281,7 @@ describe("controlled manual activation readiness planning", () => {
     };
     const missingPhase = {
       ...getControlledManualActivationReadinessPlanning(),
-      phaseReadinessRecords: getControlledManualActivationReadinessPlanning().phaseReadinessRecords.slice(0, 15),
+      phaseReadinessRecords: getControlledManualActivationReadinessPlanning().phaseReadinessRecords.slice(0, 16),
     };
     const wrongOrder = {
       ...getControlledManualActivationReadinessPlanning(),
@@ -286,7 +312,7 @@ describe("controlled manual activation readiness planning", () => {
 
     expect(() => assertControlledManualActivationReadinessPlanningSafe(statusUnsafe)).toThrow(/cannot become activation-ready/i);
     expect(() => assertControlledManualActivationReadinessPlanningSafe(providerUnsafe)).toThrow(/provider decision/i);
-    expect(() => assertControlledManualActivationReadinessPlanningSafe(missingPhase)).toThrow(/16 phase readiness records/i);
+    expect(() => assertControlledManualActivationReadinessPlanningSafe(missingPhase)).toThrow(/17 phase readiness records/i);
     expect(() => assertControlledManualActivationReadinessPlanningSafe(wrongOrder)).toThrow(/required 16-phase order/i);
     expect(() => assertControlledManualActivationReadinessPlanningSafe(missingGuidance)).toThrow(/Every phase readiness record/i);
     expect(() => assertControlledManualActivationReadinessPlanningSafe(nextStepUnsafe)).toThrow(/Manual Activation Readiness Checklist Review/i);

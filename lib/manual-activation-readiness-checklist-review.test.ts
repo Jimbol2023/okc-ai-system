@@ -66,7 +66,7 @@ describe("manual activation readiness checklist review", () => {
     }
   });
 
-  it("defines all 16 phase checklist records in order", () => {
+  it("defines all 17 phase checklist records in order", () => {
     const result = getManualActivationReadinessChecklistReview();
 
     expect(result.phaseChecklistRecords.map((phase) => phase.phaseName)).toEqual([
@@ -79,6 +79,7 @@ describe("manual activation readiness checklist review", () => {
       "KPI & Revenue Intelligence",
       "Deal Quality Intelligence",
       "AI-Assisted Lead Discovery",
+      "Virtual Driving for Dollars Intelligence Engine",
       "SEO & Local Authority Engine",
       "Conversion Optimization Engine",
       "Safety & Compliance Engine",
@@ -87,6 +88,31 @@ describe("manual activation readiness checklist review", () => {
       "Buyer Fit Intelligence",
       "Pentest & Security Engine",
     ]);
+  });
+
+  it("adds Virtual Driving for Dollars checklist review as no-drift intelligence before SEO", () => {
+    const result = getManualActivationReadinessChecklistReview();
+    const phaseNames = result.phaseChecklistRecords.map((phase) => phase.phaseName);
+    const virtualD4d = result.phaseChecklistRecords.find((phase) => phase.phaseName === "Virtual Driving for Dollars Intelligence Engine");
+    const virtualD4dText = [
+      ...(virtualD4d?.manualReviewCriteria ?? []),
+      ...(virtualD4d?.forbiddenDrift ?? []),
+      virtualD4d?.noExecutionGuidance ?? "",
+    ].join(" ");
+
+    expect(phaseNames.indexOf("Virtual Driving for Dollars Intelligence Engine")).toBe(phaseNames.indexOf("AI-Assisted Lead Discovery") + 1);
+    expect(phaseNames.indexOf("Virtual Driving for Dollars Intelligence Engine")).toBeLessThan(phaseNames.indexOf("SEO & Local Authority Engine"));
+    expect(virtualD4dText).toMatch(/approved target neighborhoods/i);
+    expect(virtualD4dText).toMatch(/distress signal checklist/i);
+    expect(virtualD4dText).toMatch(/lead approval criteria/i);
+    expect(virtualD4dText).toMatch(/buyer-demand criteria/i);
+    expect(virtualD4dText).toMatch(/DNC\/STOP governance/i);
+    expect(virtualD4dText).toMatch(/public\/private separation/i);
+    expect(virtualD4dText).toMatch(/no-autonomous-scraping confirmation/i);
+    expect(virtualD4dText).toMatch(/map scraping/i);
+    expect(virtualD4dText).toMatch(/Street View automation/i);
+    expect(virtualD4dText).toMatch(/GPS surveillance/i);
+    expect(virtualD4dText).toMatch(/lead creation without human approval/i);
   });
 
   it("requires every phase record to include review criteria boundaries blocker status drift and no-execution guidance", () => {
@@ -147,7 +173,8 @@ describe("manual activation readiness checklist review", () => {
 
     expect(summary).toMatch(/manual activation readiness checklist review/i);
     expect(summary).toMatch(/highest acquisition ROI per operator hour/i);
-    expect(summary).toMatch(/all 16 phases/i);
+    expect(summary).toMatch(/all 17 phases/i);
+    expect(summary).toMatch(/Virtual Driving for Dollars review-only intelligence/i);
     expect(summary).toMatch(/operator leverage only/i);
     expect(summary).toMatch(/human-approved movement/i);
     expect(summary).toMatch(/No activation/i);
@@ -244,7 +271,7 @@ describe("manual activation readiness checklist review", () => {
     };
     const missingPhase = {
       ...getManualActivationReadinessChecklistReview(),
-      phaseChecklistRecords: getManualActivationReadinessChecklistReview().phaseChecklistRecords.slice(0, 15),
+      phaseChecklistRecords: getManualActivationReadinessChecklistReview().phaseChecklistRecords.slice(0, 16),
     };
     const wrongOrder = {
       ...getManualActivationReadinessChecklistReview(),
@@ -270,7 +297,7 @@ describe("manual activation readiness checklist review", () => {
     };
 
     expect(() => assertManualActivationReadinessChecklistReviewSafe(missingSection)).toThrow(/required checklist sections/i);
-    expect(() => assertManualActivationReadinessChecklistReviewSafe(missingPhase)).toThrow(/16 phase checklist records/i);
+    expect(() => assertManualActivationReadinessChecklistReviewSafe(missingPhase)).toThrow(/17 phase checklist records/i);
     expect(() => assertManualActivationReadinessChecklistReviewSafe(wrongOrder)).toThrow(/required 16-phase order/i);
     expect(() => assertManualActivationReadinessChecklistReviewSafe(missingRecordField)).toThrow(/Every phase checklist record/i);
     expect(() => assertManualActivationReadinessChecklistReviewSafe(activationWording)).toThrow(/forbid activation/i);

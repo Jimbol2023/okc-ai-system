@@ -33,7 +33,7 @@ describe("activation evidence completeness review", () => {
     expect(result.flags.evidenceCompletenessReviewOnly).toBe(true);
   });
 
-  it("defines all 16 phase completeness records in order", () => {
+  it("defines all 17 phase completeness records in order", () => {
     const result = getActivationEvidenceCompletenessReview();
 
     expect(result.phaseCompletenessRecords.map((phase) => phase.phaseName)).toEqual([
@@ -46,6 +46,7 @@ describe("activation evidence completeness review", () => {
       "KPI & Revenue Intelligence",
       "Deal Quality Intelligence",
       "AI-Assisted Lead Discovery",
+      "Virtual Driving for Dollars Intelligence Engine",
       "SEO & Local Authority Engine",
       "Conversion Optimization Engine",
       "Safety & Compliance Engine",
@@ -54,6 +55,30 @@ describe("activation evidence completeness review", () => {
       "Buyer Fit Intelligence",
       "Pentest & Security Engine",
     ]);
+  });
+
+  it("adds Virtual Driving for Dollars completeness as review-only intelligence before SEO", () => {
+    const result = getActivationEvidenceCompletenessReview();
+    const phaseNames = result.phaseCompletenessRecords.map((phase) => phase.phaseName);
+    const virtualD4d = result.phaseCompletenessRecords.find((phase) => phase.phaseName === "Virtual Driving for Dollars Intelligence Engine");
+    const virtualD4dText = [
+      ...(virtualD4d?.manualEvidenceCriteria ?? []),
+      ...(virtualD4d?.forbiddenDrift ?? []),
+      virtualD4d?.nextReviewGuidance ?? "",
+    ].join(" ");
+
+    expect(phaseNames.indexOf("Virtual Driving for Dollars Intelligence Engine")).toBe(phaseNames.indexOf("AI-Assisted Lead Discovery") + 1);
+    expect(phaseNames.indexOf("Virtual Driving for Dollars Intelligence Engine")).toBeLessThan(phaseNames.indexOf("SEO & Local Authority Engine"));
+    expect(virtualD4dText).toMatch(/approved target neighborhoods/i);
+    expect(virtualD4dText).toMatch(/distress signal checklist/i);
+    expect(virtualD4dText).toMatch(/lead approval criteria/i);
+    expect(virtualD4dText).toMatch(/buyer-demand criteria/i);
+    expect(virtualD4dText).toMatch(/DNC\/STOP governance/i);
+    expect(virtualD4dText).toMatch(/public website\/private dashboard separation/i);
+    expect(virtualD4dText).toMatch(/no-autonomous-scraping confirmation/i);
+    expect(virtualD4dText).toMatch(/map scraping/i);
+    expect(virtualD4dText).toMatch(/Street View automation/i);
+    expect(virtualD4dText).toMatch(/GPS surveillance/i);
   });
 
   it("requires every phase record to include completeness criteria and boundaries", () => {
@@ -157,7 +182,7 @@ describe("activation evidence completeness review", () => {
     const doctrineText = result.activationEvidenceCompletenessDoctrine.join(" ");
 
     expect(doctrineText).toMatch(/evidence completeness review only/i);
-    expect(doctrineText).toMatch(/all 16 phases/i);
+    expect(doctrineText).toMatch(/all 17 phases/i);
     expect(doctrineText).toMatch(/Highest ROI/i);
     expect(doctrineText).toMatch(/AI remains operator leverage only/i);
     expect(doctrineText).toMatch(/human-approved/i);
@@ -174,7 +199,8 @@ describe("activation evidence completeness review", () => {
     const summary = summarizeActivationEvidenceCompletenessReview(result);
 
     expect(summary).toMatch(/evidence completeness review/i);
-    expect(summary).toMatch(/all 16 phases/i);
+    expect(summary).toMatch(/all 17 phases/i);
+    expect(summary).toMatch(/Virtual Driving for Dollars completeness/i);
     expect(summary).toMatch(/highest ROI/i);
     expect(summary).toMatch(/operator leverage only/i);
     expect(summary).toMatch(/human-approved/i);
@@ -301,7 +327,7 @@ describe("activation evidence completeness review", () => {
   it("fails invariant checks if the 16-phase completeness map drifts", () => {
     const missingPhase = {
       ...getActivationEvidenceCompletenessReview(),
-      phaseCompletenessRecords: getActivationEvidenceCompletenessReview().phaseCompletenessRecords.slice(0, 15),
+      phaseCompletenessRecords: getActivationEvidenceCompletenessReview().phaseCompletenessRecords.slice(0, 16),
     };
     const wrongOrder = {
       ...getActivationEvidenceCompletenessReview(),
@@ -322,7 +348,7 @@ describe("activation evidence completeness review", () => {
       ],
     };
 
-    expect(() => assertActivationEvidenceCompletenessReviewSafe(missingPhase)).toThrow(/16 phase completeness records/i);
+    expect(() => assertActivationEvidenceCompletenessReviewSafe(missingPhase)).toThrow(/17 phase completeness records/i);
     expect(() => assertActivationEvidenceCompletenessReviewSafe(wrongOrder)).toThrow(/required 16-phase order/i);
     expect(() => assertActivationEvidenceCompletenessReviewSafe(missingCriteria)).toThrow(/Every phase completeness record/i);
   });

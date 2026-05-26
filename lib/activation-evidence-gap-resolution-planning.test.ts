@@ -65,7 +65,7 @@ describe("activation evidence gap resolution planning", () => {
     );
   });
 
-  it("defines all 16 elite high-aROI phase evidence gap records in order", () => {
+  it("defines all 17 elite high-aROI phase evidence gap records in order", () => {
     const result = getActivationEvidenceGapResolutionPlanning();
 
     expect(result.phaseEvidenceGapMap.map((phase) => phase.phaseName)).toEqual([
@@ -78,6 +78,7 @@ describe("activation evidence gap resolution planning", () => {
       "KPI & Revenue Intelligence",
       "Deal Quality Intelligence",
       "AI-Assisted Lead Discovery",
+      "Virtual Driving for Dollars Intelligence Engine",
       "SEO & Local Authority Engine",
       "Conversion Optimization Engine",
       "Safety & Compliance Engine",
@@ -86,6 +87,33 @@ describe("activation evidence gap resolution planning", () => {
       "Buyer Fit Intelligence",
       "Pentest & Security Engine",
     ]);
+  });
+
+  it("adds Virtual Driving for Dollars evidence gaps as review-only intelligence before SEO", () => {
+    const result = getActivationEvidenceGapResolutionPlanning();
+    const phaseNames = result.phaseEvidenceGapMap.map((phase) => phase.phaseName);
+    const virtualD4d = result.phaseEvidenceGapMap.find((phase) => phase.phaseName === "Virtual Driving for Dollars Intelligence Engine");
+    const virtualD4dText = [
+      ...(virtualD4d?.evidenceGapFocus ?? []),
+      ...(virtualD4d?.requiredManualEvidence ?? []),
+      virtualD4d?.blockerRule ?? "",
+      ...(virtualD4d?.forbiddenDrift ?? []),
+      virtualD4d?.nextEvidenceReviewGuidance ?? "",
+    ].join(" ");
+
+    expect(phaseNames.indexOf("Virtual Driving for Dollars Intelligence Engine")).toBe(phaseNames.indexOf("AI-Assisted Lead Discovery") + 1);
+    expect(phaseNames.indexOf("Virtual Driving for Dollars Intelligence Engine")).toBeLessThan(phaseNames.indexOf("SEO & Local Authority Engine"));
+    expect(virtualD4dText).toMatch(/approved target neighborhoods/i);
+    expect(virtualD4dText).toMatch(/distress signal checklist/i);
+    expect(virtualD4dText).toMatch(/lead approval criteria/i);
+    expect(virtualD4dText).toMatch(/buyer-demand criteria/i);
+    expect(virtualD4dText).toMatch(/DNC\/STOP governance/i);
+    expect(virtualD4dText).toMatch(/public website\/private dashboard separation/i);
+    expect(virtualD4dText).toMatch(/no-autonomous-scraping confirmation/i);
+    expect(virtualD4dText).toMatch(/map scraping/i);
+    expect(virtualD4dText).toMatch(/Street View automation/i);
+    expect(virtualD4dText).toMatch(/GPS surveillance/i);
+    expect(virtualD4dText).toMatch(/lead creation/i);
   });
 
   it("requires each phase gap record to include manual evidence blocker AI role human boundary forbidden drift and next guidance", () => {
@@ -247,7 +275,7 @@ describe("activation evidence gap resolution planning", () => {
     expect(doctrineText).toMatch(/not fetched, stored, verified online, or written/i);
     expect(doctrineText).toMatch(/No evidence collection automation, DNS mutation, Vercel configuration/i);
     expect(doctrineText).toMatch(/Missing LLC\/business identity/i);
-    expect(doctrineText).toMatch(/evidence-gap planning layer for all 16/i);
+    expect(doctrineText).toMatch(/evidence-gap planning layer for all 17/i);
     expect(doctrineText).toMatch(/gap summarization, missing evidence visibility, manual review organization/i);
     expect(doctrineText).toMatch(/AI cannot collect evidence automatically/i);
     expect(doctrineText).toMatch(/All phase movement remains human-approved/i);
@@ -258,7 +286,8 @@ describe("activation evidence gap resolution planning", () => {
     const summary = summarizeActivationEvidenceGapResolutionPlanning(result);
 
     expect(summary).toMatch(/Gap resolution decision is not_authorized_for_execution/i);
-    expect(summary).toMatch(/evidence-gap planning for all 16 phases/i);
+    expect(summary).toMatch(/evidence-gap planning for all 17 phases/i);
+    expect(summary).toMatch(/Virtual Driving for Dollars evidence/i);
     expect(summary).toMatch(/operator leverage only/i);
     expect(summary).toMatch(/human-approved movement/i);
     expect(summary).toMatch(/no Phase 2 implementation/i);
@@ -391,7 +420,7 @@ describe("activation evidence gap resolution planning", () => {
   it("fails invariant checks if the 16-phase evidence gap map drifts", () => {
     const missingPhase = {
       ...getActivationEvidenceGapResolutionPlanning(),
-      phaseEvidenceGapMap: getActivationEvidenceGapResolutionPlanning().phaseEvidenceGapMap.slice(0, 15),
+      phaseEvidenceGapMap: getActivationEvidenceGapResolutionPlanning().phaseEvidenceGapMap.slice(0, 16),
     };
     const wrongOrder = {
       ...getActivationEvidenceGapResolutionPlanning(),
@@ -412,7 +441,7 @@ describe("activation evidence gap resolution planning", () => {
       ],
     };
 
-    expect(() => assertActivationEvidenceGapResolutionPlanningSafe(missingPhase)).toThrow(/16 phase evidence gap records/i);
+    expect(() => assertActivationEvidenceGapResolutionPlanningSafe(missingPhase)).toThrow(/17 phase evidence gap records/i);
     expect(() => assertActivationEvidenceGapResolutionPlanningSafe(wrongOrder)).toThrow(/required 16-phase order/i);
     expect(() => assertActivationEvidenceGapResolutionPlanningSafe(missingRecordFields)).toThrow(/Every phase evidence gap record/i);
   });

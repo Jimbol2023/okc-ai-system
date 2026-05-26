@@ -118,6 +118,10 @@ export const smallHighClarityAiForbiddenActions = [
   "provider activation",
   "autonomous scraping",
   "autonomous skip tracing",
+  "autonomous map scraping",
+  "Google Street View automation",
+  "GPS surveillance",
+  "owner contact automation",
 ];
 
 export const smallHighClarityHumanOwnedActions = [
@@ -222,10 +226,30 @@ export const smallHighClarityRoadmap: SmallHighClarityRoadmapPhase[] = [
     humanRole: ["review sources", "approve contact", "contact sellers", "negotiate"],
     forbiddenDrift: ["autonomous scraping", "autonomous skip tracing", "autonomous seller outreach", "autonomous campaigns"],
     aroiRationale: "Lead discovery support improves source quality without turning the system into uncontrolled acquisition automation.",
-    nextPhaseRecommendation: "Facebook & TikTok Acquisition Engine",
+    nextPhaseRecommendation: "Virtual Driving for Dollars Intelligence Engine",
   },
   {
     phaseNumber: 8,
+    phaseName: "Virtual Driving for Dollars Intelligence Engine",
+    goal: "Identify off-market property opportunities through human-approved, review-only distress and neighborhood intelligence.",
+    buildOrPlanningItems: [
+      "approved target neighborhoods",
+      "manual review process",
+      "distress signal checklist",
+      "lead approval criteria",
+      "buyer-demand criteria",
+      "DNC/STOP governance",
+      "public website/private dashboard separation",
+      "no-autonomous-scraping confirmation",
+    ],
+    aiRole: ["suggest neighborhoods to review", "organize potential D4D targets", "summarize visual/property distress signals", "help score opportunity quality", "connect D4D targets to likely buyer demand", "prepare manual review queues"],
+    humanRole: ["drive or review routes", "verify property observations", "approve any lead creation", "approve any outreach", "own communication and negotiation"],
+    forbiddenDrift: ["autonomous map scraping", "Google Street View automation", "GPS surveillance", "owner contact automation", "skip tracing automation", "scraping", "autonomous outreach", "campaign activation", "lead creation without human approval"],
+    aroiRationale: "Virtual D4D is high-aROI only when AI reduces operator waste by prioritizing neighborhoods, routes, distress signals, buyer demand, and manual review.",
+    nextPhaseRecommendation: "Facebook & TikTok Acquisition Engine",
+  },
+  {
+    phaseNumber: 9,
     phaseName: "Facebook & TikTok Acquisition Engine",
     goal: "Generate inbound motivated seller leads and local authority.",
     buildOrPlanningItems: ["ad angles", "ad copy", "lead forms", "landing pages", "retargeting concepts", "seller education content", "short-form scripts", "local authority videos", "trust-building clips", "local market education"],
@@ -236,7 +260,7 @@ export const smallHighClarityRoadmap: SmallHighClarityRoadmapPhase[] = [
     nextPhaseRecommendation: "SEO & Local Authority Engine",
   },
   {
-    phaseNumber: 9,
+    phaseNumber: 10,
     phaseName: "SEO & Local Authority Engine",
     goal: "Generate inbound search traffic from high-intent motivated sellers.",
     buildOrPlanningItems: ["local SEO pages", "seller FAQ pages", "neighborhood pages", "blog content", "title/meta optimization", "internal links", "Google Business Profile strategy"],
@@ -247,7 +271,7 @@ export const smallHighClarityRoadmap: SmallHighClarityRoadmapPhase[] = [
     nextPhaseRecommendation: "Design & Creative AI Agent",
   },
   {
-    phaseNumber: 10,
+    phaseNumber: 11,
     phaseName: "Design & Creative AI Agent",
     goal: "Increase professionalism, trust, and conversion quality.",
     buildOrPlanningItems: ["logos", "branding", "seller pages", "ad creatives", "thumbnails", "landing pages", "social graphics", "mobile-first layouts", "trust sections", "CTA optimization"],
@@ -258,7 +282,7 @@ export const smallHighClarityRoadmap: SmallHighClarityRoadmapPhase[] = [
     nextPhaseRecommendation: "Conversion Optimization Engine",
   },
   {
-    phaseNumber: 11,
+    phaseNumber: 12,
     phaseName: "Conversion Optimization Engine",
     goal: "Get more qualified leads from the same traffic.",
     buildOrPlanningItems: ["landing page review", "form review", "CTA placement", "mobile usability", "trust copy", "seller objections", "abandonment points"],
@@ -269,7 +293,7 @@ export const smallHighClarityRoadmap: SmallHighClarityRoadmapPhase[] = [
     nextPhaseRecommendation: "Buyer Fit Intelligence",
   },
   {
-    phaseNumber: 12,
+    phaseNumber: 13,
     phaseName: "Buyer Fit Intelligence",
     goal: "Improve disposition quality without autonomous deal blasting.",
     buildOrPlanningItems: ["flipper buyers", "landlord buyers", "land investors", "infill developers", "creative finance buyers", "rental buyers"],
@@ -280,7 +304,7 @@ export const smallHighClarityRoadmap: SmallHighClarityRoadmapPhase[] = [
     nextPhaseRecommendation: "Daily Acquisition Command Center",
   },
   {
-    phaseNumber: 13,
+    phaseNumber: 14,
     phaseName: "Daily Acquisition Command Center",
     goal: "Give one operator one dashboard for maximum acquisition clarity.",
     buildOrPlanningItems: ["highest priority leads", "warm sellers", "overdue follow-ups", "blocked deals", "stale leads", "buyer-fit opportunities", "communication warnings", "review-needed leads"],
@@ -291,7 +315,7 @@ export const smallHighClarityRoadmap: SmallHighClarityRoadmapPhase[] = [
     nextPhaseRecommendation: "Safety & Compliance Engine",
   },
   {
-    phaseNumber: 14,
+    phaseNumber: 15,
     phaseName: "Safety & Compliance Engine",
     goal: "Protect the business as communication and lead volume grow.",
     buildOrPlanningItems: ["DNC handling", "STOP handling", "opt-outs", "consent visibility", "communication governance", "ad claim safety", "manual approval boundaries"],
@@ -302,7 +326,7 @@ export const smallHighClarityRoadmap: SmallHighClarityRoadmapPhase[] = [
     nextPhaseRecommendation: "Pentest & Security Engine",
   },
   {
-    phaseNumber: 15,
+    phaseNumber: 16,
     phaseName: "Pentest & Security Engine",
     goal: "Protect lead data and acquisition infrastructure.",
     buildOrPlanningItems: ["auth security", "API exposure", "Supabase security", "route protection", "rate limits", "spam protection", "env safety", "upload/file risks", "data leakage risk"],
@@ -313,7 +337,7 @@ export const smallHighClarityRoadmap: SmallHighClarityRoadmapPhase[] = [
     nextPhaseRecommendation: "KPI & Revenue Intelligence",
   },
   {
-    phaseNumber: 16,
+    phaseNumber: 17,
     phaseName: "KPI & Revenue Intelligence",
     goal: "Understand what actually produces revenue.",
     buildOrPlanningItems: ["lead-to-call ratio", "call-to-offer ratio", "offer-to-contract ratio", "follow-up conversion", "marketing source quality", "average deal profitability", "time to close", "dead lead causes"],
@@ -366,7 +390,7 @@ export function getSmallHighClarityAcquisitionSystem(): SmallHighClarityAcquisit
 export function assertSmallHighClarityAcquisitionSystemSafe(result: SmallHighClarityAcquisitionSystem) {
   const allowedTrueFlags = new Set(["readOnly", "advisoryOnly", "planningOnly"]);
   const unsafeTrueFlags = Object.entries(result.flags).filter(([key, value]) => !allowedTrueFlags.has(key) && value === true);
-  const expectedPhaseNumbers = Array.from({ length: 16 }, (_, index) => index + 1);
+  const expectedPhaseNumbers = Array.from({ length: 17 }, (_, index) => index + 1);
 
   if (!result.readOnly || !result.advisoryOnly || !result.planningOnly) {
     throw new Error("Small high-clarity acquisition system must remain read-only, advisory-only, and planning-only.");
@@ -396,12 +420,12 @@ export function assertSmallHighClarityAcquisitionSystemSafe(result: SmallHighCla
     throw new Error("Small high-clarity acquisition system must keep the next stage recommendation pinned.");
   }
 
-  if (result.roadmap.length !== 16) {
-    throw new Error("Small high-clarity acquisition system roadmap must include all 16 phases.");
+  if (result.roadmap.length !== 17) {
+    throw new Error("Small high-clarity acquisition system roadmap must include all 17 phases.");
   }
 
   if (result.roadmap.map((phase) => phase.phaseNumber).join(",") !== expectedPhaseNumbers.join(",")) {
-    throw new Error("Small high-clarity acquisition system roadmap phases must remain ordered 1 through 16.");
+    throw new Error("Small high-clarity acquisition system roadmap phases must remain ordered 1 through 17.");
   }
 
   if (result.roadmap.some((phase) => !phase.nextPhaseRecommendation)) {
@@ -412,8 +436,8 @@ export function assertSmallHighClarityAcquisitionSystemSafe(result: SmallHighCla
     throw new Error("Phase 1 must end with Manual Business Entity And Communication Identity Setup.");
   }
 
-  if (result.roadmap[15]?.nextPhaseRecommendation !== "Review KPI Evidence Before Expanding Scope") {
-    throw new Error("Phase 16 must end with Review KPI Evidence Before Expanding Scope.");
+  if (result.roadmap[16]?.nextPhaseRecommendation !== "Review KPI Evidence Before Expanding Scope") {
+    throw new Error("Phase 17 must end with Review KPI Evidence Before Expanding Scope.");
   }
 
   if (unsafeTrueFlags.length > 0) {
@@ -424,5 +448,5 @@ export function assertSmallHighClarityAcquisitionSystemSafe(result: SmallHighCla
 export function summarizeSmallHighClarityAcquisitionSystem(result: SmallHighClarityAcquisitionSystem) {
   assertSmallHighClarityAcquisitionSystemSafe(result);
 
-  return `${result.businessName} in ${result.market} is aligned as a ${result.systemMode} optimizing ${result.primaryMetric}. The system is high-clarity, revenue-focused, human-approved, disciplined, local-first, and operationally realistic. AI remains operator leverage only; humans approve, review, communicate, negotiate, decide, send, and close. This is not autonomous wholesaling and does not authorize provider activation, autonomous outreach, autonomous texting, autonomous calling, autonomous campaigns, autonomous deal blasting, autonomous seller handling, autonomous buyer handling, autonomous negotiation, scraping, skip tracing, runtime jobs, CRM mutation, automation, go-live, or approval-as-execution. The roadmap contains ${result.roadmap.length} phases, each with a next phase recommendation. Next exact step: ${result.recommendedNextExactStep}.`;
+  return `${result.businessName} in ${result.market} is aligned as a ${result.systemMode} optimizing ${result.primaryMetric}. The system is high-clarity, revenue-focused, human-approved, disciplined, local-first, and operationally realistic. AI remains operator leverage only; humans approve, review, communicate, negotiate, decide, send, and close. Virtual Driving for Dollars is represented as review-only Tier 2 intelligence, not live map automation. This is not autonomous wholesaling and does not authorize provider activation, autonomous outreach, autonomous texting, autonomous calling, autonomous campaigns, autonomous deal blasting, autonomous seller handling, autonomous buyer handling, autonomous negotiation, scraping, skip tracing, map scraping, Google Street View automation, GPS surveillance, runtime jobs, CRM mutation, automation, go-live, or approval-as-execution. The roadmap contains ${result.roadmap.length} phases, each with a next phase recommendation. Next exact step: ${result.recommendedNextExactStep}.`;
 }

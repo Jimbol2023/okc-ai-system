@@ -86,6 +86,9 @@ describe("elite high-aROI acquisition OS alignment", () => {
         "autonomously approve actions",
         "autonomously close deals",
         "autonomously activate providers",
+        "autonomously scrape maps",
+        "autonomously use Google Street View",
+        "autonomously surveil GPS routes",
       ]),
     );
   });
@@ -106,17 +109,17 @@ describe("elite high-aROI acquisition OS alignment", () => {
     );
   });
 
-  it("includes all 16 roadmap phases with tier purpose and operator leverage explanation", () => {
+  it("includes all 17 roadmap phases with tier purpose and operator leverage explanation", () => {
     const result = getEliteHighAroiAcquisitionOsAlignment();
 
-    expect(result.roadmap).toHaveLength(16);
+    expect(result.roadmap).toHaveLength(17);
     for (const phase of result.roadmap) {
       expect(phase.name).toBeTruthy();
       expect(phase.aroiTier).toMatch(/^Tier [123]/);
       expect(phase.purpose).toBeTruthy();
       expect(phase.operatorLeverageExplanation).toBeTruthy();
     }
-    expect(result.roadmap.map((phase) => phase.order)).toEqual(Array.from({ length: 16 }, (_, index) => index + 1));
+    expect(result.roadmap.map((phase) => phase.order)).toEqual(Array.from({ length: 17 }, (_, index) => index + 1));
   });
 
   it("ranks the required Tier 1 phases highest", () => {
@@ -146,6 +149,7 @@ describe("elite high-aROI acquisition OS alignment", () => {
       expect.arrayContaining([
         "Deal Quality Intelligence",
         "AI-Assisted Lead Discovery",
+        "Virtual Driving for Dollars Intelligence Engine",
         "SEO & Local Authority Engine",
         "Conversion Optimization Engine",
         "Safety & Compliance Engine",
@@ -159,6 +163,26 @@ describe("elite high-aROI acquisition OS alignment", () => {
         "Pentest & Security Engine",
       ]),
     );
+  });
+
+  it("inserts Virtual Driving for Dollars as a Tier 2 review-only phase after AI-assisted lead discovery", () => {
+    const result = getEliteHighAroiAcquisitionOsAlignment();
+    const phaseNames = result.roadmap.map((phase) => phase.name);
+    const virtualD4d = result.roadmap.find((phase) => phase.name === "Virtual Driving for Dollars Intelligence Engine");
+    const virtualD4dText = `${virtualD4d?.purpose ?? ""} ${virtualD4d?.operatorLeverageExplanation ?? ""}`;
+
+    expect(phaseNames.indexOf("Virtual Driving for Dollars Intelligence Engine")).toBe(phaseNames.indexOf("AI-Assisted Lead Discovery") + 1);
+    expect(phaseNames.indexOf("Virtual Driving for Dollars Intelligence Engine")).toBeLessThan(phaseNames.indexOf("SEO & Local Authority Engine"));
+    expect(virtualD4d?.aroiTier).toBe("Tier 2 - High Value Support");
+    expect(virtualD4dText).toMatch(/distressed/i);
+    expect(virtualD4dText).toMatch(/vacant/i);
+    expect(virtualD4dText).toMatch(/landlord-fatigue/i);
+    expect(virtualD4dText).toMatch(/prioritize neighborhoods/i);
+    expect(virtualD4dText).toMatch(/manual review/i);
+    expect(virtualD4dText).toMatch(/without scraping maps/i);
+    expect(virtualD4dText).toMatch(/Street View/i);
+    expect(virtualD4dText).toMatch(/GPS/i);
+    expect(virtualD4dText).toMatch(/creating leads/i);
   });
 
   it("includes the exact Phase 1 trust infrastructure checklist", () => {
@@ -234,6 +258,7 @@ describe("elite high-aROI acquisition OS alignment", () => {
     expect(summary).toMatch(/AI is operator leverage only/i);
     expect(summary).toMatch(/human operator owns communication and execution/i);
     expect(summary).toMatch(/prioritization, seller clarity, follow-up discipline, trust, and operational focus/i);
+    expect(summary).toMatch(/Virtual Driving for Dollars is a Tier 2 review-only intelligence phase/i);
     expect(summary).toMatch(/Twilio remains readiness only/i);
     expect(summary).toMatch(/No provider activation/i);
     expect(summary).toMatch(/Next stage: Phase 1 Elite Business Foundation & Trust Infrastructure Planning/i);

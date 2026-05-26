@@ -115,6 +115,9 @@ export const aiForbiddenActions = [
   "autonomously approve actions",
   "autonomously close deals",
   "autonomously activate providers",
+  "autonomously scrape maps",
+  "autonomously use Google Street View",
+  "autonomously surveil GPS routes",
 ];
 
 export const humanOwnedActions = [
@@ -179,62 +182,69 @@ export const eliteHighAroiRoadmap: EliteHighAroiRoadmapPhase[] = [
   },
   {
     order: 8,
+    name: "Virtual Driving for Dollars Intelligence Engine",
+    aroiTier: "Tier 2 - High Value Support",
+    purpose: "Represent review-only off-market opportunity intelligence for distressed, vacant, neglected, landlord-fatigue, infill, land, and rental-area properties.",
+    operatorLeverageExplanation: "Virtual D4D is high-aROI only when AI helps prioritize neighborhoods, routes, distress signals, buyer demand, and manual review without scraping maps, automating Street View, tracking GPS, skip tracing, creating leads, or contacting owners.",
+  },
+  {
+    order: 9,
     name: "Facebook & TikTok Acquisition Engine",
     aroiTier: "Tier 3 - Deferred / Secondary",
     purpose: "Plan inbound seller content, ad angles, education clips, and trust-building local authority concepts.",
     operatorLeverageExplanation: "Social acquisition is useful after the core trust, intake, prioritization, and follow-up systems are disciplined.",
   },
   {
-    order: 9,
+    order: 10,
     name: "SEO & Local Authority Engine",
     aroiTier: "Tier 2 - High Value Support",
     purpose: "Develop local SEO pages, seller FAQs, neighborhood pages, content, metadata, internal links, and local authority strategy.",
     operatorLeverageExplanation: "SEO compounds inbound lead quality once the operator can reliably review and follow up on new opportunities.",
   },
   {
-    order: 10,
+    order: 11,
     name: "Design & Creative AI Agent",
     aroiTier: "Tier 3 - Deferred / Secondary",
     purpose: "Support branding, seller pages, ad creatives, thumbnails, social graphics, and trust sections.",
     operatorLeverageExplanation: "Creative improves conversion support but should not outrank direct seller clarity, trust infrastructure, or follow-up discipline.",
   },
   {
-    order: 11,
+    order: 12,
     name: "Conversion Optimization Engine",
     aroiTier: "Tier 2 - High Value Support",
     purpose: "Review landing pages, forms, CTAs, mobile usability, trust copy, seller objections, and abandonment points.",
     operatorLeverageExplanation: "Conversion improvements raise lead yield from the same traffic without adding operator chaos or spend.",
   },
   {
-    order: 12,
+    order: 13,
     name: "Buyer Fit Intelligence",
     aroiTier: "Tier 3 - Deferred / Secondary",
     purpose: "Clarify buyer-fit patterns across flippers, landlords, land investors, developers, creative finance buyers, and rental buyers.",
     operatorLeverageExplanation: "Buyer-fit support helps disposition quality but must remain human-reviewed and cannot become autonomous deal blasting.",
   },
   {
-    order: 13,
+    order: 14,
     name: "Daily Acquisition Command Center",
     aroiTier: "Tier 1 - Highest aROI Leverage",
     purpose: "Give one operator a daily view of priority leads, warm sellers, overdue follow-ups, blocked deals, stale leads, and warnings.",
     operatorLeverageExplanation: "A daily command center reduces overwhelm and decision fatigue while improving revenue-producing focus.",
   },
   {
-    order: 14,
+    order: 15,
     name: "Safety & Compliance Engine",
     aroiTier: "Tier 2 - High Value Support",
     purpose: "Protect DNC, STOP, opt-out, consent, communication governance, ad claims, and manual approval boundaries.",
     operatorLeverageExplanation: "Safety preserves communication reputation and makes growth durable without turning into autonomous outreach.",
   },
   {
-    order: 15,
+    order: 16,
     name: "Pentest & Security Engine",
     aroiTier: "Tier 3 - Deferred / Secondary",
     purpose: "Review auth, API exposure, route protection, rate limits, spam protection, env safety, file risks, and data leakage risk.",
     operatorLeverageExplanation: "Security is important, but early acquisition aROI comes first from trust, intake, prioritization, seller prep, and follow-up discipline.",
   },
   {
-    order: 16,
+    order: 17,
     name: "KPI & Revenue Intelligence",
     aroiTier: "Tier 1 - Highest aROI Leverage",
     purpose: "Track lead-to-call, call-to-offer, offer-to-contract, follow-up conversion, source quality, profit, close time, and dead lead causes.",
@@ -328,8 +338,8 @@ export function assertEliteHighAroiAcquisitionOsSafe(result: EliteHighAroiAcquis
     throw new Error("Human role must remain approval_execution_and_relationship_owner.");
   }
 
-  if (result.roadmap.length !== 16) {
-    throw new Error("Elite high-aROI acquisition OS roadmap must include all 16 phases.");
+  if (result.roadmap.length !== 17) {
+    throw new Error("Elite high-aROI acquisition OS roadmap must include all 17 phases.");
   }
 
   if (tierOnePhases.length !== 7) {
@@ -352,5 +362,5 @@ export function assertEliteHighAroiAcquisitionOsSafe(result: EliteHighAroiAcquis
 export function summarizeEliteHighAroiAcquisitionOs(result: EliteHighAroiAcquisitionOsAlignment) {
   assertEliteHighAroiAcquisitionOsSafe(result);
 
-  return `${result.businessName} in ${result.market} is aligned as an ${result.systemMode} with primary metric ${result.primaryMetric}. This system is not autonomous wholesaling. The AI is operator leverage only, and the human operator owns communication and execution. Highest aROI comes from prioritization, seller clarity, follow-up discipline, trust, and operational focus. Tier 1 highest-aROI phases are business foundation, lead intake, prioritization, seller review, follow-up organization, daily command center, and KPI intelligence. Twilio remains readiness only, not live activation, not live outreach, and not autonomous communication. No provider activation, autonomous outreach, autonomous negotiation, autonomous texting, autonomous calling, autonomous seller handling, autonomous buyer handling, autonomous campaigns, autonomous deal blasting, autonomous approval authority, outbound communication, scraping, skip tracing, runtime jobs, polling, CRM mutation, automation, go-live, or approval-as-execution is authorized. Next stage: ${result.nextStageRecommendation}.`;
+  return `${result.businessName} in ${result.market} is aligned as an ${result.systemMode} with primary metric ${result.primaryMetric}. This system is not autonomous wholesaling. The AI is operator leverage only, and the human operator owns communication and execution. Highest aROI comes from prioritization, seller clarity, follow-up discipline, trust, and operational focus. Virtual Driving for Dollars is a Tier 2 review-only intelligence phase, not live map automation. Tier 1 highest-aROI phases are business foundation, lead intake, prioritization, seller review, follow-up organization, daily command center, and KPI intelligence. Twilio remains readiness only, not live activation, not live outreach, and not autonomous communication. No provider activation, autonomous outreach, autonomous negotiation, autonomous texting, autonomous calling, autonomous seller handling, autonomous buyer handling, autonomous campaigns, autonomous deal blasting, autonomous approval authority, outbound communication, scraping, map scraping, Google Street View automation, GPS surveillance, skip tracing, runtime jobs, polling, CRM mutation, automation, go-live, or approval-as-execution is authorized. Next stage: ${result.nextStageRecommendation}.`;
 }
