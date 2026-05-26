@@ -3,6 +3,9 @@ export const completeHumanGoNoGoReadinessDecisionPlanningFlags = {
   advisoryOnly: true,
   planningOnly: true,
   humanDecisionCompletionOnly: true,
+  dryRunExecutionEnabled: false,
+  rollbackExecutionEnabled: false,
+  providerExecutionEnabled: false,
   providerActivated: false,
   providerClientsEnabled: false,
   envReadEnabled: false,
@@ -32,6 +35,7 @@ export const completeHumanGoNoGoReadinessDecisionPlanningFlags = {
   streetViewAutomationEnabled: false,
   gpsSurveillanceEnabled: false,
   skipTracingEnabled: false,
+  skipTracingAutomationEnabled: false,
   leadCreationEnabled: false,
   finalAuthorizationGranted: false,
   goLiveAuthorized: false,
@@ -64,6 +68,8 @@ export type CompleteHumanGoNoGoReadinessDecisionPlanning = {
   systemMode: "small_high_clarity_acquisition_operating_system";
   strategicAlignment: "elite_high_aroi_acquisition_os";
   primaryMetric: "acquisition_roi_per_operator_hour";
+  currentPhasePosition: "Phase 1: Business Foundation & Trust Infrastructure";
+  previousRequiredStep: "Human Go No-Go Readiness Decision Planning";
   completionStatus: CompleteHumanGoNoGoReadinessDecisionPlanningStatus;
   providerDecision: CompleteHumanGoNoGoReadinessDecision;
   communicationDecision: CompleteHumanGoNoGoReadinessDecision;
@@ -181,7 +187,7 @@ function createPhaseCompletionRecord(
     humanOwner: completionHumanOwner,
     aiOperatorLeverageBoundary: completionAiBoundary,
     forbiddenDrift,
-    noExecutionNoGoLiveConfirmation: `${phaseName} completion confirms no activation, no provider execution, no outreach, no automation, no CRM mutation, no lead creation, no autonomous wholesaling, no Phase 2 implementation, no map automation, no final authorization, and no go-live authorization.`,
+    noExecutionNoGoLiveConfirmation: `${phaseName} completion confirms no activation, no provider execution, no outreach, no automation, no CRM mutation, no dry-run execution, no rollback execution, no lead creation, no autonomous wholesaling, no Phase 2 implementation, no map automation, no final authorization, and no go-live authorization.`,
   };
 }
 
@@ -275,6 +281,8 @@ export const phaseCompletionRecords: CompleteHumanGoNoGoReadinessPhaseCompletion
 
 export const completeHumanGoNoGoReadinessDecisionPlanningDoctrine = [
   "Complete Human Go No-Go Readiness Decision Planning is planning-only and human-decision-completion-only.",
+  "Current phase position is Phase 1: Business Foundation & Trust Infrastructure.",
+  "Previous required step is Human Go No-Go Readiness Decision Planning.",
   "Complete Human Go No-Go Readiness Decision Planning protects highest acquisition ROI per operator hour by confirming readiness decision planning is complete before final authorization review.",
   "Complete Human Go No-Go Readiness Decision Planning covers all 17 phases.",
   "AI remains operator leverage only and may organize completion evidence, summarize remaining blockers, explain no-go reasons, and prepare final authorization review notes.",
@@ -285,7 +293,7 @@ export const completeHumanGoNoGoReadinessDecisionPlanningDoctrine = [
   "Go-live decision remains not_authorized.",
   "Final authorization remains not granted.",
   "Virtual Driving for Dollars remains no-map-automation review-only intelligence.",
-  "No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, campaigns, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, lead creation, map scraping, Google Street View automation, GPS surveillance, skip tracing, final authorization, or go-live is authorized.",
+  "No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, campaigns, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, dry-run execution, rollback execution, lead creation, map automation, map scraping, Google Street View automation, GPS surveillance, skip tracing, skip tracing automation, final authorization, Phase 2 implementation, or go-live is authorized.",
   "This is not autonomous wholesaling.",
   "This is not Phase 2 implementation.",
   "Recommended next exact step is Final Human Go/No-Go Authorization Review.",
@@ -298,6 +306,8 @@ export function getCompleteHumanGoNoGoReadinessDecisionPlanning(): CompleteHuman
     systemMode: "small_high_clarity_acquisition_operating_system",
     strategicAlignment: "elite_high_aroi_acquisition_os",
     primaryMetric: "acquisition_roi_per_operator_hour",
+    currentPhasePosition: "Phase 1: Business Foundation & Trust Infrastructure",
+    previousRequiredStep: "Human Go No-Go Readiness Decision Planning",
     completionStatus: "human_go_no_go_readiness_decision_completion_required",
     providerDecision: "not_authorized",
     communicationDecision: "not_authorized",
@@ -336,6 +346,14 @@ export function assertCompleteHumanGoNoGoReadinessDecisionPlanningSafe(result: C
     throw new Error("Complete Human Go No-Go Readiness Decision Planning cannot become activation-ready, execution-ready, automation-ready, Phase 2-ready, lead-creation-ready, map-automation-ready, final-authorization-ready, or go-live-ready.");
   }
 
+  if (result.currentPhasePosition !== "Phase 1: Business Foundation & Trust Infrastructure") {
+    throw new Error("Complete Human Go No-Go Readiness Decision Planning must remain positioned in Phase 1: Business Foundation & Trust Infrastructure.");
+  }
+
+  if (result.previousRequiredStep !== "Human Go No-Go Readiness Decision Planning") {
+    throw new Error("Complete Human Go No-Go Readiness Decision Planning must require Human Go No-Go Readiness Decision Planning first.");
+  }
+
   if (result.providerDecision !== "not_authorized") {
     throw new Error("Complete Human Go No-Go Readiness Decision Planning provider decision must remain not_authorized.");
   }
@@ -353,7 +371,7 @@ export function assertCompleteHumanGoNoGoReadinessDecisionPlanningSafe(result: C
   }
 
   if (unsafeTrueFlags.length > 0) {
-    throw new Error("Complete Human Go No-Go Readiness Decision Planning cannot authorize provider clients, env reads, DNS/Vercel mutation, Google Workspace activation, Twilio activation, SMS, email, calling, AI voice, runtime jobs, polling, CRM mutation, automation, campaigns, autonomous seller or buyer handling, autonomous outreach, autonomous negotiation, autonomous texting, autonomous calling, approval-as-execution, blocker bypass, Phase 2 implementation, map scraping, Street View automation, GPS surveillance, skip tracing, lead creation, final authorization, or go-live.");
+    throw new Error("Complete Human Go No-Go Readiness Decision Planning cannot authorize dry-run execution, rollback execution, provider execution, provider clients, env reads, DNS/Vercel mutation, Google Workspace activation, Twilio activation, SMS, email, calling, AI voice, runtime jobs, polling, CRM mutation, automation, campaigns, autonomous seller or buyer handling, autonomous outreach, autonomous negotiation, autonomous texting, autonomous calling, approval-as-execution, blocker bypass, Phase 2 implementation, map scraping, Street View automation, GPS surveillance, skip tracing, skip tracing automation, lead creation, final authorization, or go-live.");
   }
 
   if (result.completionLanes.map((lane) => lane.laneName).join("|") !== completeHumanGoNoGoReadinessCompletionLaneNames.join("|")) {
@@ -400,16 +418,20 @@ export function assertCompleteHumanGoNoGoReadinessDecisionPlanningSafe(result: C
     !/provider execution/i.test(doctrineText) ||
     !/outreach/i.test(doctrineText) ||
     !/automation/i.test(doctrineText) ||
+    !/dry-run execution/i.test(doctrineText) ||
+    !/rollback execution/i.test(doctrineText) ||
     !/lead creation/i.test(doctrineText) ||
+    !/map automation/i.test(doctrineText) ||
     !/map scraping/i.test(doctrineText) ||
     !/Google Street View automation/i.test(doctrineText) ||
     !/GPS surveillance/i.test(doctrineText) ||
     !/final authorization/i.test(doctrineText) ||
     !/not autonomous wholesaling/i.test(doctrineText) ||
     !/not Phase 2 implementation/i.test(doctrineText) ||
-    !/go-live is authorized/i.test(doctrineText)
+    !/go-live is authorized/i.test(doctrineText) ||
+    /16-phase|16 phases/i.test(doctrineText)
   ) {
-    throw new Error("Complete Human Go No-Go Readiness Decision Planning wording must forbid activation, provider execution, outreach, automation, autonomous wholesaling, Phase 2 implementation, lead creation, map automation, final authorization, and go-live.");
+    throw new Error("Complete Human Go No-Go Readiness Decision Planning wording must forbid activation, provider execution, outreach, automation, autonomous wholesaling, dry-run execution, rollback execution, Phase 2 implementation, lead creation, map automation, final authorization, and go-live, with no stale 16-phase wording.");
   }
 
   if (result.recommendedNextExactStep !== "Final Human Go/No-Go Authorization Review") {
@@ -424,5 +446,5 @@ export function assertCompleteHumanGoNoGoReadinessDecisionPlanningSafe(result: C
 export function summarizeCompleteHumanGoNoGoReadinessDecisionPlanning(result: CompleteHumanGoNoGoReadinessDecisionPlanning) {
   assertCompleteHumanGoNoGoReadinessDecisionPlanningSafe(result);
 
-  return `${result.phase}: ${result.completionStatus}. This human-owned completion layer protects highest acquisition ROI per operator hour across all 17 phases through operator leverage only, human-owned completion judgment, human-approved movement, and no-drift blocker clarity before final authorization review. Provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}; go-live decision is ${result.goLiveDecision}. Completion lanes cover evidence completeness, unresolved blockers, identity/trust readiness, communication governance, manual approval process, rollback/stop procedure, internal dry-run readiness, public/private separation, Virtual Driving for Dollars no-map-automation boundary, and final human decision authority. No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, campaigns, provider activation, provider clients, env reads, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, autonomous seller handling, autonomous buyer handling, map scraping, Google Street View automation, GPS surveillance, skip tracing, lead creation, lead creation without human approval, final authorization, approval-as-execution, blocker bypass, go-live, or Phase 2 implementation is authorized. This is not autonomous wholesaling. Recommended next exact step: ${result.recommendedNextExactStep}. Next stage: ${result.nextStageRecommendation}.`;
+  return `${result.phase}: ${result.completionStatus}. Current phase position: ${result.currentPhasePosition}. Previous required step: ${result.previousRequiredStep}. This human-owned completion layer protects highest acquisition ROI per operator hour across all 17 phases through operator leverage only, human-owned completion judgment, human-approved movement, and no-drift blocker clarity before final authorization review. Provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}; go-live decision is ${result.goLiveDecision}. Completion lanes cover evidence completeness, unresolved blockers, identity/trust readiness, communication governance, manual approval process, rollback/stop procedure, internal dry-run readiness, public/private separation, Virtual Driving for Dollars no-map-automation boundary, and final human decision authority. No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, campaigns, dry-run execution, rollback execution, provider activation, provider clients, env reads, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, autonomous seller handling, autonomous buyer handling, map automation, map scraping, Google Street View automation, GPS surveillance, skip tracing, skip tracing automation, lead creation, lead creation without human approval, final authorization, approval-as-execution, blocker bypass, go-live, or Phase 2 implementation is authorized. This is not autonomous wholesaling. Recommended next exact step: ${result.recommendedNextExactStep}. Next stage: ${result.nextStageRecommendation}.`;
 }
