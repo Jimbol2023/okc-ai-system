@@ -13,6 +13,8 @@ describe("complete manual activation readiness checklist review", () => {
     expect(result.systemMode).toBe("small_high_clarity_acquisition_operating_system");
     expect(result.strategicAlignment).toBe("elite_high_aroi_acquisition_os");
     expect(result.primaryMetric).toBe("acquisition_roi_per_operator_hour");
+    expect(result.currentPhasePosition).toBe("Phase 1: Business Foundation & Trust Infrastructure");
+    expect(result.previousRequiredStep).toBe("Manual Activation Readiness Checklist Review");
     expect(result.completionStatus).toBe("manual_completion_review_required");
     expect(result.providerDecision).toBe("not_authorized");
     expect(result.communicationDecision).toBe("not_authorized");
@@ -129,6 +131,11 @@ describe("complete manual activation readiness checklist review", () => {
       expect(phase.forbiddenDrift.length).toBeGreaterThan(0);
       expect(phase.noExecutionConfirmation).toMatch(/no activation/i);
       expect(phase.noExecutionConfirmation).toMatch(/no provider execution/i);
+      expect(phase.noExecutionConfirmation).toMatch(/no dry-run execution/i);
+      expect(phase.noExecutionConfirmation).toMatch(/no rollback execution/i);
+      expect(phase.noExecutionConfirmation).toMatch(/no map automation/i);
+      expect(phase.noExecutionConfirmation).toMatch(/no lead creation/i);
+      expect(phase.noExecutionConfirmation).toMatch(/no final authorization/i);
       expect(phase.noExecutionConfirmation).toMatch(/no Phase 2 implementation/i);
       expect(phase.noExecutionConfirmation).toMatch(/no go-live/i);
     }
@@ -137,6 +144,15 @@ describe("complete manual activation readiness checklist review", () => {
   it("keeps all blocked flags false", () => {
     const flags = getCompleteManualActivationReadinessChecklistReview().flags;
 
+    expect(flags.dryRunExecutionEnabled).toBe(false);
+    expect(flags.rollbackExecutionEnabled).toBe(false);
+    expect(flags.providerExecutionEnabled).toBe(false);
+    expect(flags.finalAuthorizationGranted).toBe(false);
+    expect(flags.mapScrapingEnabled).toBe(false);
+    expect(flags.streetViewAutomationEnabled).toBe(false);
+    expect(flags.gpsSurveillanceEnabled).toBe(false);
+    expect(flags.skipTracingAutomationEnabled).toBe(false);
+    expect(flags.leadCreationEnabled).toBe(false);
     expect(flags.providerActivated).toBe(false);
     expect(flags.providerClientsEnabled).toBe(false);
     expect(flags.envReadEnabled).toBe(false);
@@ -169,6 +185,8 @@ describe("complete manual activation readiness checklist review", () => {
     const result = getCompleteManualActivationReadinessChecklistReview();
     const summary = summarizeCompleteManualActivationReadinessChecklistReview(result);
 
+    expect(summary).toMatch(/Phase 1: Business Foundation & Trust Infrastructure/i);
+    expect(summary).toMatch(/Manual Activation Readiness Checklist Review/i);
     expect(summary).toMatch(/highest acquisition ROI per operator hour/i);
     expect(summary).toMatch(/all 17 phases/i);
     expect(summary).toMatch(/Virtual Driving for Dollars review-only intelligence/i);
@@ -178,6 +196,11 @@ describe("complete manual activation readiness checklist review", () => {
     expect(summary).toMatch(/provider execution/i);
     expect(summary).toMatch(/outreach/i);
     expect(summary).toMatch(/automation/i);
+    expect(summary).toMatch(/dry-run execution/i);
+    expect(summary).toMatch(/rollback execution/i);
+    expect(summary).toMatch(/map automation/i);
+    expect(summary).toMatch(/lead creation without human approval/i);
+    expect(summary).toMatch(/final authorization/i);
     expect(summary).toMatch(/not autonomous wholesaling/i);
     expect(summary).toMatch(/Phase 2 implementation/i);
     expect(summary).toMatch(/Human Go No-Go Readiness Decision Planning/i);
@@ -185,6 +208,15 @@ describe("complete manual activation readiness checklist review", () => {
 
   it("fails invariant checks if any blocked flag drifts true", () => {
     const blockedFlags = [
+      "dryRunExecutionEnabled",
+      "rollbackExecutionEnabled",
+      "providerExecutionEnabled",
+      "finalAuthorizationGranted",
+      "mapScrapingEnabled",
+      "streetViewAutomationEnabled",
+      "gpsSurveillanceEnabled",
+      "skipTracingAutomationEnabled",
+      "leadCreationEnabled",
       "providerActivated",
       "providerClientsEnabled",
       "envReadEnabled",
@@ -251,8 +283,18 @@ describe("complete manual activation readiness checklist review", () => {
       ...getCompleteManualActivationReadinessChecklistReview(),
       nextStageRecommendation: "Go Live" as "Human Go No-Go Readiness Decision Planning",
     };
+    const phasePositionUnsafe = {
+      ...getCompleteManualActivationReadinessChecklistReview(),
+      currentPhasePosition: "Phase 2: Lead Intake & Simple CRM" as "Phase 1: Business Foundation & Trust Infrastructure",
+    };
+    const previousStepUnsafe = {
+      ...getCompleteManualActivationReadinessChecklistReview(),
+      previousRequiredStep: "Controlled Manual Activation Readiness Planning" as "Manual Activation Readiness Checklist Review",
+    };
 
     expect(() => assertCompleteManualActivationReadinessChecklistReviewSafe(statusUnsafe)).toThrow(/cannot become activation-ready/i);
+    expect(() => assertCompleteManualActivationReadinessChecklistReviewSafe(phasePositionUnsafe)).toThrow(/Phase 1/i);
+    expect(() => assertCompleteManualActivationReadinessChecklistReviewSafe(previousStepUnsafe)).toThrow(/Manual Activation Readiness Checklist Review/i);
     expect(() => assertCompleteManualActivationReadinessChecklistReviewSafe(providerUnsafe)).toThrow(/provider decision/i);
     expect(() => assertCompleteManualActivationReadinessChecklistReviewSafe(communicationUnsafe)).toThrow(/communication decision/i);
     expect(() => assertCompleteManualActivationReadinessChecklistReviewSafe(automationUnsafe)).toThrow(/automation decision/i);
@@ -291,11 +333,19 @@ describe("complete manual activation readiness checklist review", () => {
       ...getCompleteManualActivationReadinessChecklistReview(),
       completeManualActivationReadinessChecklistReviewDoctrine: ["Activation is allowed after review."],
     };
+    const stalePhaseCountWording = {
+      ...getCompleteManualActivationReadinessChecklistReview(),
+      completeManualActivationReadinessChecklistReviewDoctrine: [
+        ...getCompleteManualActivationReadinessChecklistReview().completeManualActivationReadinessChecklistReviewDoctrine,
+        "This stale sentence says 16 phases.",
+      ],
+    };
 
     expect(() => assertCompleteManualActivationReadinessChecklistReviewSafe(missingSection)).toThrow(/required completion sections/i);
     expect(() => assertCompleteManualActivationReadinessChecklistReviewSafe(missingPhase)).toThrow(/17 phase completion records/i);
-    expect(() => assertCompleteManualActivationReadinessChecklistReviewSafe(wrongOrder)).toThrow(/required 16-phase order/i);
+    expect(() => assertCompleteManualActivationReadinessChecklistReviewSafe(wrongOrder)).toThrow(/required 17-phase order/i);
     expect(() => assertCompleteManualActivationReadinessChecklistReviewSafe(missingRecordField)).toThrow(/Every phase completion record/i);
     expect(() => assertCompleteManualActivationReadinessChecklistReviewSafe(activationWording)).toThrow(/forbid activation/i);
+    expect(() => assertCompleteManualActivationReadinessChecklistReviewSafe(stalePhaseCountWording)).toThrow(/stale 16-phase wording/i);
   });
 });

@@ -3,6 +3,15 @@ export const completeManualActivationReadinessChecklistReviewFlags = {
   advisoryOnly: true,
   planningOnly: true,
   manualCompletionReviewOnly: true,
+  dryRunExecutionEnabled: false,
+  rollbackExecutionEnabled: false,
+  providerExecutionEnabled: false,
+  finalAuthorizationGranted: false,
+  mapScrapingEnabled: false,
+  streetViewAutomationEnabled: false,
+  gpsSurveillanceEnabled: false,
+  skipTracingAutomationEnabled: false,
+  leadCreationEnabled: false,
   providerActivated: false,
   providerClientsEnabled: false,
   envReadEnabled: false,
@@ -59,6 +68,8 @@ export type CompleteManualActivationReadinessChecklistReview = {
   systemMode: "small_high_clarity_acquisition_operating_system";
   strategicAlignment: "elite_high_aroi_acquisition_os";
   primaryMetric: "acquisition_roi_per_operator_hour";
+  currentPhasePosition: "Phase 1: Business Foundation & Trust Infrastructure";
+  previousRequiredStep: "Manual Activation Readiness Checklist Review";
   completionStatus: CompleteManualActivationReadinessChecklistReviewStatus;
   providerDecision: CompleteManualActivationReadinessChecklistReviewDecision;
   communicationDecision: CompleteManualActivationReadinessChecklistReviewDecision;
@@ -191,7 +202,7 @@ function createPhaseCompletionRecord(
     humanBoundary,
     aiOperatorLeverageBoundary,
     forbiddenDrift,
-    noExecutionConfirmation: `${phaseName} completion review confirms no activation, no provider execution, no outreach, no automation, no autonomous wholesaling, no Phase 2 implementation, and no go-live authorization.`,
+    noExecutionConfirmation: `${phaseName} completion review confirms no activation, no provider execution, no outreach, no automation, no dry-run execution, no rollback execution, no map automation, no lead creation, no final authorization, no autonomous wholesaling, no Phase 2 implementation, and no go-live authorization.`,
   };
 }
 
@@ -285,6 +296,8 @@ export const phaseCompletionRecords: CompleteManualActivationReadinessPhaseCompl
 
 export const completeManualActivationReadinessChecklistReviewDoctrine = [
   "Complete Manual Activation Readiness Checklist Review is planning-only and manual-completion-review-only.",
+  "Current phase position is Phase 1: Business Foundation & Trust Infrastructure.",
+  "Previous required step is Manual Activation Readiness Checklist Review.",
   "Complete Manual Activation Readiness Checklist Review protects highest acquisition ROI per operator hour by confirming manual readiness review completeness before human go/no-go planning.",
   "Complete Manual Activation Readiness Checklist Review covers all 17 phases.",
   "AI remains operator leverage only.",
@@ -292,7 +305,7 @@ export const completeManualActivationReadinessChecklistReviewDoctrine = [
   "Provider decision remains not_authorized.",
   "Communication decision remains not_authorized.",
   "Automation decision remains not_authorized.",
-  "No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, campaigns, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, or go-live is authorized.",
+  "No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, campaigns, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, dry-run execution, rollback execution, map automation, lead creation, final authorization, Phase 2 implementation, or go-live is authorized.",
   "This is not autonomous wholesaling.",
   "This is not Phase 2 implementation.",
   "Recommended next exact step is Human Go No-Go Readiness Decision Planning.",
@@ -305,6 +318,8 @@ export function getCompleteManualActivationReadinessChecklistReview(): CompleteM
     systemMode: "small_high_clarity_acquisition_operating_system",
     strategicAlignment: "elite_high_aroi_acquisition_os",
     primaryMetric: "acquisition_roi_per_operator_hour",
+    currentPhasePosition: "Phase 1: Business Foundation & Trust Infrastructure",
+    previousRequiredStep: "Manual Activation Readiness Checklist Review",
     completionStatus: "manual_completion_review_required",
     providerDecision: "not_authorized",
     communicationDecision: "not_authorized",
@@ -342,6 +357,14 @@ export function assertCompleteManualActivationReadinessChecklistReviewSafe(resul
     throw new Error("Complete Manual Activation Readiness Checklist Review cannot become activation-ready, execution-ready, automation-ready, Phase 2-ready, or go-live-ready.");
   }
 
+  if (result.currentPhasePosition !== "Phase 1: Business Foundation & Trust Infrastructure") {
+    throw new Error("Complete Manual Activation Readiness Checklist Review must remain positioned in Phase 1: Business Foundation & Trust Infrastructure.");
+  }
+
+  if (result.previousRequiredStep !== "Manual Activation Readiness Checklist Review") {
+    throw new Error("Complete Manual Activation Readiness Checklist Review must require Manual Activation Readiness Checklist Review first.");
+  }
+
   if (result.providerDecision !== "not_authorized") {
     throw new Error("Complete Manual Activation Readiness Checklist Review provider decision must remain not_authorized.");
   }
@@ -355,7 +378,7 @@ export function assertCompleteManualActivationReadinessChecklistReviewSafe(resul
   }
 
   if (unsafeTrueFlags.length > 0) {
-    throw new Error("Complete Manual Activation Readiness Checklist Review cannot authorize provider activation, provider clients, env reads, DNS/Vercel mutation, Google Workspace activation, Twilio activation, SMS, email, calling, AI voice, runtime jobs, polling, CRM mutation, automation, campaigns, autonomous seller or buyer handling, autonomous outreach, autonomous negotiation, autonomous texting, autonomous calling, approval-as-execution, blocker bypass, Phase 2 implementation, or go-live.");
+    throw new Error("Complete Manual Activation Readiness Checklist Review cannot authorize dry-run execution, rollback execution, provider execution, provider activation, provider clients, env reads, DNS/Vercel mutation, Google Workspace activation, Twilio activation, SMS, email, calling, AI voice, runtime jobs, polling, CRM mutation, automation, campaigns, autonomous seller or buyer handling, autonomous outreach, autonomous negotiation, autonomous texting, autonomous calling, map automation, lead creation, final authorization, approval-as-execution, blocker bypass, Phase 2 implementation, or go-live.");
   }
 
   if (result.completionSections.map((section) => section.sectionName).join("|") !== completeManualActivationReadinessCompletionSectionNames.join("|")) {
@@ -380,7 +403,7 @@ export function assertCompleteManualActivationReadinessChecklistReviewSafe(resul
   }
 
   if (result.phaseCompletionRecords.map((phase) => phase.phaseName).join("|") !== completeManualActivationReadinessPhaseOrder.join("|")) {
-    throw new Error("Complete Manual Activation Readiness Checklist Review phase completion records must remain in the required 16-phase order.");
+    throw new Error("Complete Manual Activation Readiness Checklist Review phase completion records must remain in the required 17-phase order.");
   }
 
   if (
@@ -405,9 +428,15 @@ export function assertCompleteManualActivationReadinessChecklistReviewSafe(resul
     !/automation/i.test(doctrineText) ||
     !/not autonomous wholesaling/i.test(doctrineText) ||
     !/not Phase 2 implementation/i.test(doctrineText) ||
-    !/go-live is authorized/i.test(doctrineText)
+    !/dry-run execution/i.test(doctrineText) ||
+    !/rollback execution/i.test(doctrineText) ||
+    !/map automation/i.test(doctrineText) ||
+    !/lead creation/i.test(doctrineText) ||
+    !/final authorization/i.test(doctrineText) ||
+    !/go-live is authorized/i.test(doctrineText) ||
+    /16-phase|16 phases/i.test(doctrineText)
   ) {
-    throw new Error("Complete Manual Activation Readiness Checklist Review wording must forbid activation, provider execution, outreach, automation, autonomous wholesaling, Phase 2 implementation, and go-live.");
+    throw new Error("Complete Manual Activation Readiness Checklist Review wording must forbid activation, provider execution, outreach, automation, autonomous wholesaling, dry-run execution, rollback execution, map automation, lead creation, final authorization, Phase 2 implementation, and go-live, with no stale 16-phase wording.");
   }
 
   if (result.recommendedNextExactStep !== "Human Go No-Go Readiness Decision Planning") {
@@ -422,5 +451,5 @@ export function assertCompleteManualActivationReadinessChecklistReviewSafe(resul
 export function summarizeCompleteManualActivationReadinessChecklistReview(result: CompleteManualActivationReadinessChecklistReview) {
   assertCompleteManualActivationReadinessChecklistReviewSafe(result);
 
-  return `${result.phase}: ${result.completionStatus}. This completion review protects highest acquisition ROI per operator hour across all 17 phases through operator leverage only, human-approved movement, and manual readiness completion before human go/no-go planning. Provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}. Completion sections cover business identity, domain/DNS notes, public/private separation, Google Workspace/email identity, SPF/DKIM/DMARC, Twilio, A2P/10DLC, DNC/STOP, manual approval, rollback/stop, internal dry-run, human go/no-go criteria, and Virtual Driving for Dollars review-only intelligence. No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, campaigns, provider activation, provider clients, env reads, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, autonomous seller handling, autonomous buyer handling, map scraping, Google Street View automation, GPS surveillance, lead creation without human approval, approval-as-execution, blocker bypass, go-live, or Phase 2 implementation is authorized. This is not autonomous wholesaling. Recommended next exact step: ${result.recommendedNextExactStep}. Next stage: ${result.nextStageRecommendation}.`;
+  return `${result.phase}: ${result.completionStatus}. Current phase position: ${result.currentPhasePosition}. Previous required step: ${result.previousRequiredStep}. This completion review protects highest acquisition ROI per operator hour across all 17 phases through operator leverage only, human-approved movement, and manual readiness completion before human go/no-go planning. Provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}. Completion sections cover business identity, domain/DNS notes, public/private separation, Google Workspace/email identity, SPF/DKIM/DMARC, Twilio, A2P/10DLC, DNC/STOP, manual approval, rollback/stop, internal dry-run, human go/no-go criteria, and Virtual Driving for Dollars review-only intelligence. No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, campaigns, dry-run execution, rollback execution, provider activation, provider clients, env reads, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, autonomous seller handling, autonomous buyer handling, map automation, map scraping, Google Street View automation, GPS surveillance, lead creation without human approval, final authorization, approval-as-execution, blocker bypass, go-live, or Phase 2 implementation is authorized. This is not autonomous wholesaling. Recommended next exact step: ${result.recommendedNextExactStep}. Next stage: ${result.nextStageRecommendation}.`;
 }
