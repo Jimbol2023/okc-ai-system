@@ -5,6 +5,7 @@ export const finalHumanGoNoGoAuthorizationReviewFlags = {
   finalAuthorizationGranted: false,
   goLiveAuthorized: false,
   providerActivationAuthorized: false,
+  providerExecutionEnabled: false,
   providerActivated: false,
   providerClientCreated: false,
   providerEnvRead: false,
@@ -42,11 +43,13 @@ export const finalHumanGoNoGoAuthorizationReviewFlags = {
   dncBypassAllowed: false,
   optOutBypassAllowed: false,
   stopBypassAllowed: false,
+  dryRunExecutionEnabled: false,
   rollbackExecutionEnabled: false,
   mapScrapingEnabled: false,
   streetViewAutomationEnabled: false,
   gpsSurveillanceEnabled: false,
   skipTracingEnabled: false,
+  skipTracingAutomationEnabled: false,
   leadCreationEnabled: false,
   phase2ImplementationEnabled: false,
 } as const;
@@ -99,6 +102,7 @@ export type FinalHumanGoNoGoAuthorizationReview = {
   providerDecision: FinalHumanProviderDecision;
   communicationExecutionDecision: FinalHumanCommunicationExecutionDecision;
   automationDecision: FinalHumanAutomationDecision;
+  currentPhasePosition: "Phase 1: Business Foundation & Trust Infrastructure";
   previousRequiredStep: "Complete Human Go No-Go Readiness Decision Planning";
   finalHumanGoNoGoLanes: FinalHumanGoNoGoLane[];
   phaseFinalReviewRecords: FinalHumanGoNoGoPhaseReviewRecord[];
@@ -327,6 +331,7 @@ export const finalHumanGoNoGoDoctrine = [
   "Final Human Go/No-Go Authorization Review requires Complete Human Go No-Go Readiness Decision Planning evidence before controlled manual activation runbook planning can be considered.",
   "Final Human Go/No-Go Authorization Review covers all 17 phases of the elite high-aROI acquisition OS.",
   "Go/no-go decision remains not_authorized.",
+  "Current phase position is Phase 1: Business Foundation & Trust Infrastructure.",
   "Provider decision remains not_authorized.",
   "Communication execution decision remains not_authorized.",
   "Automation decision remains not_authorized.",
@@ -334,7 +339,7 @@ export const finalHumanGoNoGoDoctrine = [
   "Final authorization requires separate signed human evidence outside this planning contract.",
   "DNC, opt-out, STOP, revocation, and missing approval remain non-bypassable hard blockers.",
   "Virtual Driving for Dollars remains no-map-automation review-only intelligence.",
-  "No final authorization, provider activation, provider execution, DNS/domain activation, mailbox creation, SPF/DKIM/DMARC publishing, number activation, env read, SDK import, route, webhook, SMS, email, calling, AI voice, CRM mutation, campaign, queue, reminder, polling, runtime job, audit write, autonomous seller handling, lead creation, map scraping, Google Street View automation, GPS surveillance, skip tracing, Phase 2 implementation, go-live behavior, or spend increase is authorized.",
+  "No final authorization, provider activation, provider execution, DNS/domain activation, mailbox creation, SPF/DKIM/DMARC publishing, number activation, env read, SDK import, route, webhook, SMS, email, calling, AI voice, CRM mutation, campaign, queue, reminder, polling, runtime job, audit write, autonomous seller handling, dry-run execution, rollback execution, lead creation, map automation, map scraping, Google Street View automation, GPS surveillance, skip tracing, skip tracing automation, Phase 2 implementation, go-live behavior, or spend increase is authorized.",
   "This is not autonomous wholesaling.",
   "Highest acquisition ROI per operator hour remains controlled: do not go live until identity, consent, blocker visibility, auditability, rollback, and operator workflow evidence are reviewable.",
 ];
@@ -380,11 +385,13 @@ export const forbiddenFinalHumanGoNoGoDrift = [
   "DNC bypass",
   "opt-out bypass",
   "STOP bypass",
+  "dry-run execution",
   "rollback execution",
   "map scraping",
   "Google Street View automation",
   "GPS surveillance",
   "skip tracing",
+  "skip tracing automation",
   "lead creation",
   "Phase 2 implementation",
 ];
@@ -397,6 +404,7 @@ export function getFinalHumanGoNoGoAuthorizationReview(): FinalHumanGoNoGoAuthor
     providerDecision: "not_authorized",
     communicationExecutionDecision: "not_authorized",
     automationDecision: "not_authorized",
+    currentPhasePosition: "Phase 1: Business Foundation & Trust Infrastructure",
     previousRequiredStep: "Complete Human Go No-Go Readiness Decision Planning",
     finalHumanGoNoGoLanes,
     phaseFinalReviewRecords,
@@ -444,8 +452,12 @@ export function assertFinalHumanGoNoGoAuthorizationReviewSafe(result: FinalHuman
     throw new Error("Final Human Go/No-Go automation decision must remain not_authorized.");
   }
 
+  if (result.currentPhasePosition !== "Phase 1: Business Foundation & Trust Infrastructure") {
+    throw new Error("Final Human Go/No-Go Authorization Review must remain positioned in Phase 1: Business Foundation & Trust Infrastructure.");
+  }
+
   if (unsafeTrueFlags.length > 0) {
-    throw new Error("Final Human Go/No-Go Authorization Review cannot authorize final approval, go-live, provider activation, DNS/domain activation, env reads, SDK imports, routes/webhooks, SMS, email, calling, AI voice, campaigns, queues, reminders, runtime jobs, CRM mutation, audit writing, autonomous seller handling, spend increases, blocker bypass, communication execution, rollback execution, lead creation, map automation, skip tracing, or Phase 2 implementation.");
+    throw new Error("Final Human Go/No-Go Authorization Review cannot authorize final approval, go-live, provider activation, provider execution, DNS/domain activation, env reads, SDK imports, routes/webhooks, SMS, email, calling, AI voice, campaigns, queues, reminders, runtime jobs, CRM mutation, audit writing, autonomous seller handling, spend increases, blocker bypass, communication execution, dry-run execution, rollback execution, lead creation, map automation, skip tracing, skip tracing automation, or Phase 2 implementation.");
   }
 
   if (result.previousRequiredStep !== "Complete Human Go No-Go Readiness Decision Planning") {
@@ -479,15 +491,20 @@ export function assertFinalHumanGoNoGoAuthorizationReviewSafe(result: FinalHuman
     !/No final authorization/i.test(doctrineText) ||
     !/provider execution/i.test(doctrineText) ||
     !/SMS, email, calling/i.test(doctrineText) ||
+    !/dry-run execution/i.test(doctrineText) ||
+    !/rollback execution/i.test(doctrineText) ||
     !/lead creation/i.test(doctrineText) ||
+    !/map automation/i.test(doctrineText) ||
     !/map scraping/i.test(doctrineText) ||
     !/Google Street View automation/i.test(doctrineText) ||
     !/GPS surveillance/i.test(doctrineText) ||
+    !/skip tracing automation/i.test(doctrineText) ||
     !/not autonomous wholesaling/i.test(doctrineText) ||
     !/Phase 2 implementation/i.test(doctrineText) ||
-    !/go-live behavior/i.test(doctrineText)
+    !/go-live behavior/i.test(doctrineText) ||
+    /16-phase|16 phases/i.test(doctrineText)
   ) {
-    throw new Error("Final Human Go/No-Go Authorization Review wording must forbid activation, provider execution, outreach, automation, autonomous wholesaling, lead creation, map automation, final authorization, Phase 2 implementation, and go-live.");
+    throw new Error("Final Human Go/No-Go Authorization Review wording must forbid activation, provider execution, outreach, automation, autonomous wholesaling, dry-run execution, rollback execution, lead creation, map automation, skip tracing automation, final authorization, Phase 2 implementation, and go-live, with no stale 16-phase wording.");
   }
 
   if (result.recommendedNextExactStep !== "Controlled Manual Activation Runbook Planning") {
@@ -502,5 +519,5 @@ export function assertFinalHumanGoNoGoAuthorizationReviewSafe(result: FinalHuman
 export function summarizeFinalHumanGoNoGoAuthorizationReview(result: FinalHumanGoNoGoAuthorizationReview) {
   assertFinalHumanGoNoGoAuthorizationReviewSafe(result);
 
-  return `${result.phase}: ${result.finalHumanGoNoGoAuthorizationReviewStatus}. Previous required step is ${result.previousRequiredStep}. Go/no-go decision is ${result.goNoGoDecision}; provider decision is ${result.providerDecision}; communication execution decision is ${result.communicationExecutionDecision}; automation decision is ${result.automationDecision}. Final review checks Go-Live Readiness Gate evidence, named human decision authority, signed authorization evidence planning, identity policy evidence, consent/DNC/opt-out/STOP evidence, operator workflow evidence, provider credential boundaries, audit/rollback/failure evidence, no-campaign/no-autonomy boundaries, hard blocker preservation, no-activation boundaries, controlled activation runbook readiness, and all 17 phases of the elite high-aROI acquisition OS. AI remains operator leverage only and the final review is human-owned. Virtual Driving for Dollars remains no-map-automation review-only intelligence. No final authorization, go-live, provider activation, provider execution, DNS/domain activation, mailbox creation, number activation, env read, SDK import, route, webhook, outbound communication, SMS, email, calling, AI voice, campaign, queue, reminder, polling, runtime job, CRM mutation, audit writing, autonomous seller handling, lead creation, map scraping, Google Street View automation, GPS surveillance, skip tracing, approval-as-execution, blocker bypass, rollback execution, Phase 2 implementation, automation, or spend increase is authorized. This is not autonomous wholesaling. Highest acquisition ROI per operator hour remains protected. Next stage: ${result.nextStageRecommendation}.`;
+  return `${result.phase}: ${result.finalHumanGoNoGoAuthorizationReviewStatus}. Current phase position: ${result.currentPhasePosition}. Previous required step is ${result.previousRequiredStep}. Go/no-go decision is ${result.goNoGoDecision}; provider decision is ${result.providerDecision}; communication execution decision is ${result.communicationExecutionDecision}; automation decision is ${result.automationDecision}. Final review checks Go-Live Readiness Gate evidence, named human decision authority, signed authorization evidence planning, identity policy evidence, consent/DNC/opt-out/STOP evidence, operator workflow evidence, provider credential boundaries, audit/rollback/failure evidence, no-campaign/no-autonomy boundaries, hard blocker preservation, no-activation boundaries, controlled activation runbook readiness, and all 17 phases of the elite high-aROI acquisition OS. AI remains operator leverage only and the final review is human-owned. Virtual Driving for Dollars remains no-map-automation review-only intelligence. No final authorization, go-live, provider activation, provider execution, DNS/domain activation, mailbox creation, number activation, env read, SDK import, route, webhook, outbound communication, SMS, email, calling, AI voice, campaign, queue, reminder, polling, runtime job, CRM mutation, audit writing, autonomous seller handling, dry-run execution, rollback execution, lead creation, map automation, map scraping, Google Street View automation, GPS surveillance, skip tracing, skip tracing automation, approval-as-execution, blocker bypass, Phase 2 implementation, automation, or spend increase is authorized. This is not autonomous wholesaling. Highest acquisition ROI per operator hour remains protected. Next stage: ${result.nextStageRecommendation}.`;
 }
