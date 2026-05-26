@@ -1,3 +1,9 @@
+import {
+  assertAllExecutionDecisionsNotAuthorized,
+  assertNoUnsafeRoadmapAuthorizationWording,
+  assertOnlyAllowedTrueFlags,
+} from "./roadmap-contract-safety-helpers";
+
 export const roadmapFinalLockdownHumanGoNoGoReviewFlags = {
   readOnly: true,
   advisoryOnly: true,
@@ -10,9 +16,13 @@ export const roadmapFinalLockdownHumanGoNoGoReviewFlags = {
   automationEnabled: false,
   communicationEnabled: false,
   crmMutationEnabled: false,
+  leadMutationEnabled: false,
   schemaChangeEnabled: false,
   storageMutationEnabled: false,
   runtimeJobsEnabled: false,
+  routeChangeEnabled: false,
+  apiChangeEnabled: false,
+  uiChangeEnabled: false,
   authMutationEnabled: false,
   securityMutationEnabled: false,
   networkEnabled: false,
@@ -58,6 +68,14 @@ export type RoadmapFinalLockdownSummaryState =
   | "operator_review_only"
   | "not_authorized";
 
+export type RoadmapFinalLockdownHumanChecklistItem =
+  | "legal_review_required"
+  | "security_review_required"
+  | "provider_approval_required"
+  | "credentials_untouched"
+  | "go_live_blocked"
+  | "execution_approval_human_owned";
+
 export type RoadmapFinalLockdownPhaseRecord = {
   phaseNumber: number;
   phaseName: string;
@@ -90,12 +108,33 @@ export type RoadmapFinalLockdownHumanGoNoGoReview = {
   phaseRecords: RoadmapFinalLockdownPhaseRecord[];
   finalReviewLanes: RoadmapFinalLockdownReviewLane[];
   summaryStates: RoadmapFinalLockdownSummaryState[];
+  humanGoNoGoChecklist: RoadmapFinalLockdownHumanChecklistItem[];
   stopRules: string[];
   aiOperatorLeverageBoundary: string[];
   humanOwnershipBoundary: string[];
   forbiddenDrift: string[];
   flags: typeof roadmapFinalLockdownHumanGoNoGoReviewFlags;
 };
+
+export const roadmapFinalLockdownPhaseNames = [
+  "Business Foundation & Trust Infrastructure",
+  "Lead Intake & Simple CRM",
+  "Lead Prioritization Engine",
+  "Seller Review & Call Prep",
+  "Follow-Up Organization System",
+  "Daily Acquisition Command Center",
+  "KPI & Revenue Intelligence",
+  "Deal Quality Intelligence",
+  "AI-Assisted Lead Discovery",
+  "Virtual Driving for Dollars Intelligence Engine",
+  "SEO & Local Authority Engine",
+  "Conversion Optimization Engine",
+  "Safety & Compliance Engine",
+  "Facebook & TikTok Acquisition Engine",
+  "Design & Creative AI Agent",
+  "Buyer Fit Intelligence",
+  "Pentest & Security Engine",
+] as const;
 
 export const roadmapFinalLockdownPhaseRecords: RoadmapFinalLockdownPhaseRecord[] = [
   { phaseNumber: 1, phaseName: "Business Foundation & Trust Infrastructure", finalReviewFocus: "trust foundation and human authority", executionBoundary: "advisory/planning-only unless separately approved by the human operator" },
@@ -145,6 +184,15 @@ export const roadmapFinalLockdownSummaryStates: RoadmapFinalLockdownSummaryState
   "audit_remediation_blocked",
   "operator_review_only",
   "not_authorized",
+];
+
+export const roadmapFinalLockdownHumanGoNoGoChecklist: RoadmapFinalLockdownHumanChecklistItem[] = [
+  "legal_review_required",
+  "security_review_required",
+  "provider_approval_required",
+  "credentials_untouched",
+  "go_live_blocked",
+  "execution_approval_human_owned",
 ];
 
 export const roadmapFinalLockdownStopRules = [
@@ -212,6 +260,7 @@ export function getRoadmapFinalLockdownHumanGoNoGoReview(): RoadmapFinalLockdown
     phaseRecords: roadmapFinalLockdownPhaseRecords,
     finalReviewLanes: roadmapFinalLockdownReviewLanes,
     summaryStates: roadmapFinalLockdownSummaryStates,
+    humanGoNoGoChecklist: roadmapFinalLockdownHumanGoNoGoChecklist,
     stopRules: roadmapFinalLockdownStopRules,
     aiOperatorLeverageBoundary: roadmapFinalLockdownAiBoundary,
     humanOwnershipBoundary: roadmapFinalLockdownHumanBoundary,
@@ -223,26 +272,25 @@ export function getRoadmapFinalLockdownHumanGoNoGoReview(): RoadmapFinalLockdown
 }
 
 export function assertRoadmapFinalLockdownHumanGoNoGoReviewSafe(result: RoadmapFinalLockdownHumanGoNoGoReview) {
-  const allowedTrue = new Set(["readOnly", "advisoryOnly", "planningOnly", "finalRoadmapLockdownOnly", "operatorLeverageOnly", "completedSeventeenPhaseRoadmap"]);
-  const unsafeTrue = Object.entries(result.flags).filter(([key, value]) => !allowedTrue.has(key) && value === true);
   const text = [result.stopRules, result.aiOperatorLeverageBoundary, result.humanOwnershipBoundary, result.forbiddenDrift].flat().join(" ");
-  const unsafePattern = /go-live is authorized|provider activation is authorized|credential reads are authorized|env reads are authorized|scans are authorized|exploit execution is authorized|network calls are authorized|auth\/security mutation is authorized|route\/API\/UI\/schema\/storage changes are authorized|CRM mutation is authorized|audit writing is authorized|remediation execution is authorized|outreach is authorized|runtime jobs are authorized|campaign activation is authorized|spend increases are authorized|AI legal approval is authorized|AI security approval is authorized|further roadmap implementation is authorized/i;
 
   if (result.phase !== "Roadmap Final Lockdown — Human Go/No-Go Review") throw new Error("Roadmap final lockdown phase must remain pinned.");
   if (result.previousStep !== "Phase 17F — Security Final Lockdown") throw new Error("Roadmap final lockdown previous step must remain Phase 17F.");
   if (result.phaseDecision !== "human_go_no_go_review_only") throw new Error("Roadmap final lockdown decision must remain human-go/no-go-review-only.");
-  if (Object.entries(result).some(([key, value]) => key.endsWith("Decision") && key !== "phaseDecision" && value !== "not_authorized")) throw new Error("Roadmap final lockdown decisions must remain not_authorized.");
+  assertAllExecutionDecisionsNotAuthorized(result, "Roadmap final lockdown");
   if (result.recommendedNextExactStep !== "No further roadmap phase — human-owned final decision required") throw new Error("Roadmap final lockdown must not recommend another roadmap phase.");
   if (result.nextStageRecommendation !== "No further roadmap phase — human-owned final decision required") throw new Error("Roadmap final lockdown next stage must require human final decision.");
   if (result.phaseRecords.length !== 17 || result.phaseRecords.some((record, index) => record.phaseNumber !== index + 1)) throw new Error("Roadmap final lockdown must include all 17 ordered phase records.");
+  if (result.phaseRecords.map((record) => record.phaseName).join("|") !== roadmapFinalLockdownPhaseNames.join("|")) throw new Error("Roadmap final lockdown phase names must remain pinned in exact order.");
   if (result.finalReviewLanes.join("|") !== roadmapFinalLockdownReviewLanes.join("|")) throw new Error("Roadmap final lockdown review lanes are missing.");
   if (result.summaryStates.join("|") !== roadmapFinalLockdownSummaryStates.join("|")) throw new Error("Roadmap final lockdown summary states are missing.");
-  if (unsafeTrue.length > 0) throw new Error("Roadmap final lockdown blocked flags cannot turn true.");
+  if (result.humanGoNoGoChecklist.join("|") !== roadmapFinalLockdownHumanGoNoGoChecklist.join("|")) throw new Error("Roadmap final lockdown human go/no-go checklist is missing.");
+  assertOnlyAllowedTrueFlags(result.flags, ["readOnly", "advisoryOnly", "planningOnly", "finalRoadmapLockdownOnly", "operatorLeverageOnly", "completedSeventeenPhaseRoadmap"], "Roadmap final lockdown");
   if (!/review-only/i.test(result.stopRules.join(" ")) || !/no further roadmap phase/i.test(result.stopRules.join(" "))) throw new Error("Roadmap final lockdown stop rule is missing.");
   if (!/human review only/i.test(result.aiOperatorLeverageBoundary.join(" ")) || !/may not approve go-live/i.test(result.aiOperatorLeverageBoundary.join(" "))) throw new Error("Roadmap final lockdown AI boundary is missing.");
   if (!/final go\/no-go judgment/i.test(result.humanOwnershipBoundary.join(" ")) || !/execution approval/i.test(result.humanOwnershipBoundary.join(" "))) throw new Error("Roadmap final lockdown human boundary is missing.");
   if (!/further roadmap implementation/i.test(result.forbiddenDrift.join(" ")) || !/credential or env reads/i.test(result.forbiddenDrift.join(" "))) throw new Error("Roadmap final lockdown forbidden drift is missing.");
-  if (unsafePattern.test(text)) throw new Error("Roadmap final lockdown wording must not imply unsafe authorization.");
+  assertNoUnsafeRoadmapAuthorizationWording(text, "Roadmap final lockdown");
 }
 
 export function getRoadmapFinalLockdownHumanGoNoGoReviewSummary() {

@@ -1,8 +1,14 @@
 import {
+  assertNoUnsafeRoadmapAuthorizationWording,
+  assertOnlyAllowedTrueFlags,
+} from "./roadmap-contract-safety-helpers";
+import {
   assertRoadmapFinalLockdownHumanGoNoGoReviewSafe,
   getRoadmapFinalLockdownHumanGoNoGoReview,
   getRoadmapFinalLockdownHumanGoNoGoReviewSummary,
+  roadmapFinalLockdownHumanGoNoGoChecklist,
   roadmapFinalLockdownHumanGoNoGoReviewFlags,
+  roadmapFinalLockdownPhaseNames,
   roadmapFinalLockdownReviewLanes,
   roadmapFinalLockdownSummaryStates,
 } from "./roadmap-final-lockdown-human-go-no-go-review";
@@ -26,6 +32,10 @@ describe("roadmap final lockdown human go/no-go review", () => {
     expect(result.flags.goLiveAuthorized).toBe(false);
     expect(result.flags.providerActivated).toBe(false);
     expect(result.flags.credentialReadEnabled).toBe(false);
+    expect(result.flags.routeChangeEnabled).toBe(false);
+    expect(result.flags.apiChangeEnabled).toBe(false);
+    expect(result.flags.uiChangeEnabled).toBe(false);
+    expect(result.flags.leadMutationEnabled).toBe(false);
     expect(result.flags.pentestExecutionEnabled).toBe(false);
     expect(result.flags.scannerEnabled).toBe(false);
     expect(result.flags.auditWritingEnabled).toBe(false);
@@ -38,6 +48,7 @@ describe("roadmap final lockdown human go/no-go review", () => {
 
     expect(result.phaseRecords).toHaveLength(17);
     expect(result.phaseRecords.map((record) => record.phaseNumber)).toEqual(Array.from({ length: 17 }, (_, index) => index + 1));
+    expect(result.phaseRecords.map((record) => record.phaseName)).toEqual(roadmapFinalLockdownPhaseNames);
     expect(result.phaseRecords[0]?.phaseName).toBe("Business Foundation & Trust Infrastructure");
     expect(result.phaseRecords[16]?.phaseName).toBe("Pentest & Security Engine");
     expect(result.phaseRecords.every((record) => /no |advisory\/planning-only/i.test(record.executionBoundary))).toBe(true);
@@ -51,6 +62,20 @@ describe("roadmap final lockdown human go/no-go review", () => {
     expect(result.finalReviewLanes).toContain("final_human_go_no_go_decision_required");
     expect(result.summaryStates).toContain("human_go_no_go_required");
     expect(result.summaryStates).toContain("not_authorized");
+  });
+
+  it("includes the human go/no-go checklist", () => {
+    const result = getRoadmapFinalLockdownHumanGoNoGoReview();
+
+    expect(result.humanGoNoGoChecklist).toEqual(roadmapFinalLockdownHumanGoNoGoChecklist);
+    expect(result.humanGoNoGoChecklist).toEqual([
+      "legal_review_required",
+      "security_review_required",
+      "provider_approval_required",
+      "credentials_untouched",
+      "go_live_blocked",
+      "execution_approval_human_owned",
+    ]);
   });
 
   it("blocks go-live, providers, credentials, scans, mutation, audit writing, remediation, outreach, runtime work, and further roadmap implementation", () => {
@@ -112,13 +137,36 @@ describe("roadmap final lockdown human go/no-go review", () => {
     expect(() => assertRoadmapFinalLockdownHumanGoNoGoReviewSafe({ ...result, phase: "Drift" as never })).toThrow(/phase/i);
     expect(() => assertRoadmapFinalLockdownHumanGoNoGoReviewSafe({ ...result, previousStep: "Phase 17E — Minimal Security Gate" as never })).toThrow(/previous/i);
     expect(() => assertRoadmapFinalLockdownHumanGoNoGoReviewSafe({ ...result, phaseRecords: result.phaseRecords.slice(0, 16) })).toThrow(/17 ordered phase records/i);
+    expect(() =>
+      assertRoadmapFinalLockdownHumanGoNoGoReviewSafe({
+        ...result,
+        phaseRecords: result.phaseRecords.map((record) => (record.phaseNumber === 8 ? { ...record, phaseName: "Drift" } : record)),
+      }),
+    ).toThrow(/phase names/i);
     expect(() => assertRoadmapFinalLockdownHumanGoNoGoReviewSafe({ ...result, finalReviewLanes: result.finalReviewLanes.slice(1) })).toThrow(/review lanes/i);
     expect(() => assertRoadmapFinalLockdownHumanGoNoGoReviewSafe({ ...result, summaryStates: result.summaryStates.slice(1) })).toThrow(/summary states/i);
+    expect(() => assertRoadmapFinalLockdownHumanGoNoGoReviewSafe({ ...result, humanGoNoGoChecklist: result.humanGoNoGoChecklist.slice(1) })).toThrow(/checklist/i);
     expect(() => assertRoadmapFinalLockdownHumanGoNoGoReviewSafe({ ...result, stopRules: [] })).toThrow(/stop rule/i);
     expect(() => assertRoadmapFinalLockdownHumanGoNoGoReviewSafe({ ...result, aiOperatorLeverageBoundary: [] })).toThrow(/AI boundary/i);
     expect(() => assertRoadmapFinalLockdownHumanGoNoGoReviewSafe({ ...result, humanOwnershipBoundary: [] })).toThrow(/human boundary/i);
     expect(() => assertRoadmapFinalLockdownHumanGoNoGoReviewSafe({ ...result, forbiddenDrift: [] })).toThrow(/forbidden drift/i);
     expect(() => assertRoadmapFinalLockdownHumanGoNoGoReviewSafe({ ...result, flags: { ...roadmapFinalLockdownHumanGoNoGoReviewFlags, goLiveAuthorized: true } as never })).toThrow(/blocked flags/i);
     expect(() => assertRoadmapFinalLockdownHumanGoNoGoReviewSafe({ ...result, stopRules: ["go-live is authorized"] })).toThrow(/unsafe authorization/i);
+  });
+
+  it("uses shared safety helpers for blocked flags and unsafe wording variants", () => {
+    expect(() =>
+      assertOnlyAllowedTrueFlags({ readOnly: true, advisoryOnly: true, goLiveAuthorized: false }, ["readOnly", "advisoryOnly"], "helper test"),
+    ).not.toThrow();
+    expect(() =>
+      assertOnlyAllowedTrueFlags({ readOnly: true, routeChangeEnabled: true }, ["readOnly"], "helper test"),
+    ).toThrow(/blocked flags/i);
+
+    expect(() => assertNoUnsafeRoadmapAuthorizationWording("provider activation allowed", "helper test")).toThrow(/unsafe authorization/i);
+    expect(() => assertNoUnsafeRoadmapAuthorizationWording("run scans", "helper test")).toThrow(/unsafe authorization/i);
+    expect(() => assertNoUnsafeRoadmapAuthorizationWording("read credentials", "helper test")).toThrow(/unsafe authorization/i);
+    expect(() => assertNoUnsafeRoadmapAuthorizationWording("execute remediation", "helper test")).toThrow(/unsafe authorization/i);
+    expect(() => assertNoUnsafeRoadmapAuthorizationWording("launch campaigns", "helper test")).toThrow(/unsafe authorization/i);
+    expect(() => assertNoUnsafeRoadmapAuthorizationWording("No go-live, scans, provider activation, or remediation execution is authorized.", "helper test")).not.toThrow();
   });
 });
