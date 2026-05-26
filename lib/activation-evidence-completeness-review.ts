@@ -7,15 +7,21 @@ export const activationEvidenceCompletenessReviewFlags = {
   onlineVerificationEnabled: false,
   storageMutationEnabled: false,
   completenessDecisionAuthorized: false,
+  activationAuthorized: false,
   providerActivationAuthorized: false,
   providerExecutionAuthorized: false,
+  providerExecutionEnabled: false,
   providerActivated: false,
   providerClientCreated: false,
+  providerClientsEnabled: false,
   providerEnvRead: false,
+  envReadEnabled: false,
   providerSdkImported: false,
+  sdkImportEnabled: false,
   twilioActivated: false,
   dnsMutationEnabled: false,
   domainActivated: false,
+  domainMutationEnabled: false,
   vercelDomainConnectionChanged: false,
   vercelMutationEnabled: false,
   googleWorkspaceChanged: false,
@@ -32,15 +38,19 @@ export const activationEvidenceCompletenessReviewFlags = {
   aiVoiceEnabled: false,
   routeCreated: false,
   inboundWebhookCreated: false,
+  routeOrWebhookCreated: false,
   campaignActivated: false,
+  campaignEnabled: false,
   queueSystemEnabled: false,
   reminderSystemEnabled: false,
   pollingEnabled: false,
   runtimeJobsEnabled: false,
   crmMutationEnabled: false,
   auditWritingEnabled: false,
+  auditWriteEnabled: false,
   approvalGrantsExecution: false,
   communicationExecutionAuthorized: false,
+  communicationExecutionEnabled: false,
   automationEnabled: false,
   autonomousOutreachEnabled: false,
   autonomousFollowUpEnabled: false,
@@ -51,14 +61,22 @@ export const activationEvidenceCompletenessReviewFlags = {
   autonomousCampaignsEnabled: false,
   autonomousBuyerHandlingEnabled: false,
   autonomousApprovalAuthorityEnabled: false,
+  dryRunExecutionEnabled: false,
   rollbackExecutionEnabled: false,
+  finalAuthorizationGranted: false,
   goLiveAuthorized: false,
   spendIncreaseAuthorized: false,
   dncBypassAllowed: false,
   optOutBypassAllowed: false,
   stopBypassAllowed: false,
   blockerBypassEnabled: false,
+  mapScrapingEnabled: false,
+  streetViewAutomationEnabled: false,
+  gpsSurveillanceEnabled: false,
+  skipTracingAutomationEnabled: false,
+  leadCreationEnabled: false,
   phase2ImplementationAuthorized: false,
+  phase2ImplementationEnabled: false,
 } as const;
 
 export type ActivationEvidenceCompletenessReviewStatus = "completeness_review_required";
@@ -83,6 +101,7 @@ export type ActivationEvidenceCompletenessReview = {
   providerDecision: ActivationEvidenceCompletenessReviewDecision;
   communicationDecision: ActivationEvidenceCompletenessReviewDecision;
   automationDecision: ActivationEvidenceCompletenessReviewDecision;
+  previousRequiredStep: "Activation Evidence Gap Resolution Planning";
   phase1CompletenessChecklist: string[];
   phaseCompletenessRecords: ActivationEvidenceCompletenessRecord[];
   activationEvidenceCompletenessDoctrine: string[];
@@ -97,11 +116,13 @@ export type ActivationEvidenceCompletenessReview = {
 const baselineManualEvidenceCriteria = [
   "evidence present",
   "evidence manually reviewed",
+  "Activation Evidence Gap Resolution Planning evidence reviewed",
   "blocker status clear",
   "human approval boundary documented",
   "AI role limited to operator leverage",
   "forbidden drift still blocked",
   "no provider or communication execution",
+  "no activation or go-live authorization",
 ];
 
 const humanReviewBoundary = [
@@ -110,6 +131,9 @@ const humanReviewBoundary = [
   "human owns provider approval",
   "human owns communication approval",
   "human owns outreach approval",
+  "human owns activation decisions",
+  "human owns dry-run authorization decisions",
+  "human owns final authorization judgment",
   "human owns negotiation",
   "human owns sending",
   "human owns contracts",
@@ -127,7 +151,11 @@ const aiOperatorLeverageBoundary = [
   "do not verify online systems",
   "do not activate providers",
   "do not send communication",
+  "do not create leads",
+  "do not automate maps",
+  "do not approve final authorization",
   "do not approve go-live",
+  "do not implement Phase 2",
 ];
 
 export const activationEvidenceCompletenessPhaseOrder = [
@@ -151,6 +179,7 @@ export const activationEvidenceCompletenessPhaseOrder = [
 ] as const;
 
 export const phase1CompletenessChecklist = [
+  "Activation Evidence Gap Resolution Planning evidence",
   "entity proof",
   "EIN evidence",
   "banking readiness",
@@ -177,7 +206,7 @@ function createCompletenessRecord(
     manualEvidenceCriteria: [...baselineManualEvidenceCriteria, ...phaseSpecificCriteria],
     humanReviewBoundary,
     aiOperatorLeverageBoundary,
-    blockerRule: `Missing or unreviewed ${phaseName} evidence blocks movement and cannot authorize activation, outreach, automation, provider execution, or Phase 2 implementation.`,
+    blockerRule: `Missing or unreviewed ${phaseName} evidence blocks movement and cannot authorize dry-run execution, activation, outreach, automation, provider execution, lead creation, map automation, final authorization, rollback execution, go-live, or Phase 2 implementation.`,
     forbiddenDrift,
     nextReviewGuidance,
   };
@@ -187,19 +216,19 @@ export const phaseCompletenessRecords: ActivationEvidenceCompletenessRecord[] = 
   createCompletenessRecord(
     "Business Foundation & Trust Infrastructure",
     [...phase1CompletenessChecklist],
-    ["provider activation", "DNS mutation", "Vercel mutation", "Google Workspace activation", "Twilio activation", "outbound communication", "go-live"],
+    ["activation", "provider execution", "provider activation", "DNS mutation", "Vercel mutation", "Google Workspace activation", "Twilio activation", "outbound communication", "final authorization", "go-live"],
     "Complete the manual entity and communication identity evidence review before controlled manual activation readiness planning.",
   ),
   createCompletenessRecord(
     "Lead Intake & Simple CRM",
     ["lead source tracking evidence", "intake field completeness", "lead stage definitions", "manual CRM review boundary", "property fact verification rule"],
-    ["CRM mutation", "automated lead creation", "property fact invention", "autonomous outreach"],
+    ["CRM mutation", "automated lead creation", "property fact invention", "autonomous outreach", "Phase 2 implementation"],
     "Review intake evidence only after Phase 1 identity evidence is complete and still blocked from execution.",
   ),
   createCompletenessRecord(
     "Lead Prioritization Engine",
     ["priority criteria evidence", "CALL FIRST queue rule", "REVIEW TODAY queue rule", "blocked lead rule", "operator override evidence"],
-    ["hidden scoring", "autonomous routing", "auto-send behavior", "unreviewed conversion claims"],
+    ["hidden scoring", "autonomous routing", "auto-send behavior", "unreviewed conversion claims", "Phase 2 implementation"],
     "Review prioritization evidence for operator clarity before any queue behavior is considered.",
   ),
   createCompletenessRecord(
@@ -241,7 +270,7 @@ export const phaseCompletenessRecords: ActivationEvidenceCompletenessRecord[] = 
   createCompletenessRecord(
     "Virtual Driving for Dollars Intelligence Engine",
     ["approved target neighborhoods", "manual review process", "distress signal checklist", "lead approval criteria", "buyer-demand criteria", "DNC/STOP governance", "public website/private dashboard separation", "no-autonomous-scraping confirmation"],
-    ["autonomous map scraping", "Google Street View automation", "GPS surveillance", "owner contact automation", "skip tracing automation", "scraping", "autonomous outreach", "campaign activation", "lead creation without human approval"],
+    ["map scraping", "Google Street View automation", "GPS surveillance", "owner contact automation", "skip tracing automation", "scraping", "autonomous outreach", "campaign activation", "lead creation without human approval"],
     "Review Virtual D4D completeness only as human-approved off-market opportunity intelligence before SEO and local authority evidence is reviewed.",
   ),
   createCompletenessRecord(
@@ -290,14 +319,15 @@ export const phaseCompletenessRecords: ActivationEvidenceCompletenessRecord[] = 
 
 export const activationEvidenceCompletenessDoctrine = [
   "Activation Evidence Completeness Review is evidence completeness review only.",
+  "Activation Evidence Completeness Review requires Activation Evidence Gap Resolution Planning evidence before Manual Evidence Completeness Review can be considered.",
   "Activation Evidence Completeness Review covers all 17 phases of the elite high-aROI acquisition OS.",
-  "Highest ROI comes from preventing premature Phase 2 implementation, provider activation, outreach, automation, and scope expansion before evidence is complete.",
+  "Highest acquisition ROI per operator hour comes from preventing premature Phase 2 implementation, provider activation, outreach, automation, map automation, lead creation, go-live, and scope expansion before evidence is complete.",
   "AI remains operator leverage only.",
   "All movement remains human-approved.",
   "Provider decision remains not_authorized.",
   "Communication decision remains not_authorized.",
   "Automation decision remains not_authorized.",
-  "No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, online verification, storage mutation, or go-live is authorized.",
+  "No dry-run execution, activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, online verification, storage mutation, rollback execution, final authorization, lead creation, map scraping, Google Street View automation, GPS surveillance, skip tracing automation, Phase 2 implementation, or go-live is authorized.",
   "This is not autonomous wholesaling.",
   "Next exact step is Manual Evidence Completeness Review.",
 ];
@@ -312,6 +342,7 @@ export function getActivationEvidenceCompletenessReview(): ActivationEvidenceCom
     providerDecision: "not_authorized",
     communicationDecision: "not_authorized",
     automationDecision: "not_authorized",
+    previousRequiredStep: "Activation Evidence Gap Resolution Planning",
     phase1CompletenessChecklist: [...phase1CompletenessChecklist],
     phaseCompletenessRecords,
     activationEvidenceCompletenessDoctrine,
@@ -331,6 +362,22 @@ export function getActivationEvidenceCompletenessReview(): ActivationEvidenceCom
 export function assertActivationEvidenceCompletenessReviewSafe(result: ActivationEvidenceCompletenessReview) {
   const allowedTrueFlags = new Set(["readOnly", "advisoryOnly", "planningOnly", "evidenceCompletenessReviewOnly"]);
   const unsafeTrueFlags = Object.entries(result.flags).filter(([key, value]) => !allowedTrueFlags.has(key) && value === true);
+  const doctrineText = result.activationEvidenceCompletenessDoctrine.join(" ");
+  const allContractText = [
+    doctrineText,
+    ...result.phaseCompletenessRecords.flatMap((phase) => [
+      phase.phaseName,
+      ...phase.manualEvidenceCriteria,
+      ...phase.humanReviewBoundary,
+      ...phase.aiOperatorLeverageBoundary,
+      phase.blockerRule,
+      ...phase.forbiddenDrift,
+      phase.nextReviewGuidance,
+    ]),
+  ].join(" ");
+  const stalePhaseCountPattern = new RegExp(`1${"6"}[- ]phases?`, "i");
+  const unsafeImplicationPattern =
+    /activation is authorized|provider execution is authorized|outreach is authorized|automation is authorized|autonomous wholesaling is authorized|dry-run execution is authorized|rollback execution is authorized|lead creation is authorized|map automation is authorized|final authorization is granted|Phase 2 implementation is authorized|go-live is authorized/i;
 
   if (!result.readOnly || !result.advisoryOnly || !result.planningOnly) {
     throw new Error("Activation Evidence Completeness Review must remain read-only, advisory-only, and planning-only.");
@@ -340,8 +387,20 @@ export function assertActivationEvidenceCompletenessReviewSafe(result: Activatio
     throw new Error("Activation Evidence Completeness Review phase must remain pinned.");
   }
 
+  if (result.systemMode !== "small_high_clarity_acquisition_operating_system") {
+    throw new Error("Activation Evidence Completeness Review system mode must remain pinned.");
+  }
+
+  if (result.strategicAlignment !== "elite_high_aroi_acquisition_os") {
+    throw new Error("Activation Evidence Completeness Review strategic alignment must remain pinned.");
+  }
+
+  if (result.primaryMetric !== "acquisition_roi_per_operator_hour") {
+    throw new Error("Activation Evidence Completeness Review primary metric must remain pinned.");
+  }
+
   if (result.reviewStatus !== "completeness_review_required") {
-    throw new Error("Activation Evidence Completeness Review cannot become complete, activation-ready, send-ready, call-ready, automation-ready, or go-live-ready.");
+    throw new Error("Activation Evidence Completeness Review cannot become complete, activation-ready, send-ready, call-ready, automation-ready, final-authorization-ready, Phase 2-ready, or go-live-ready.");
   }
 
   if (result.providerDecision !== "not_authorized") {
@@ -357,7 +416,11 @@ export function assertActivationEvidenceCompletenessReviewSafe(result: Activatio
   }
 
   if (unsafeTrueFlags.length > 0) {
-    throw new Error("Activation Evidence Completeness Review cannot authorize evidence automation, online verification, storage mutation, provider activation, provider execution, DNS/domain mutation, Vercel changes, Google Workspace changes, env reads, SDK imports, routes/webhooks, SMS, email, calling, AI voice, campaigns, queues, reminders, runtime jobs, CRM mutation, audit writing, rollback execution, autonomous seller handling, spend increases, blocker bypass, approval-as-execution, communication execution, Phase 2 implementation, or go-live.");
+    throw new Error("Activation Evidence Completeness Review cannot authorize evidence automation, online verification, storage mutation, dry-run execution, activation, provider activation, provider execution, DNS/domain mutation, Vercel changes, Google Workspace changes, env reads, SDK imports, routes/webhooks, SMS, email, calling, AI voice, campaigns, queues, reminders, runtime jobs, CRM mutation, audit writing, rollback execution, final authorization, autonomous seller handling, spend increases, blocker bypass, approval-as-execution, communication execution, lead creation, map automation, skip tracing automation, Phase 2 implementation, or go-live.");
+  }
+
+  if (result.previousRequiredStep !== "Activation Evidence Gap Resolution Planning") {
+    throw new Error("Activation Evidence Completeness Review must require Activation Evidence Gap Resolution Planning first.");
   }
 
   if (result.phaseCompletenessRecords.length !== 17) {
@@ -365,7 +428,7 @@ export function assertActivationEvidenceCompletenessReviewSafe(result: Activatio
   }
 
   if (result.phaseCompletenessRecords.map((phase) => phase.phaseName).join("|") !== activationEvidenceCompletenessPhaseOrder.join("|")) {
-    throw new Error("Activation Evidence Completeness Review phase completeness records must remain in the required 16-phase order.");
+    throw new Error("Activation Evidence Completeness Review phase completeness records must remain in the required 17-phase order.");
   }
 
   if (
@@ -382,6 +445,10 @@ export function assertActivationEvidenceCompletenessReviewSafe(result: Activatio
     throw new Error("Every phase completeness record must include manual evidence criteria, human review boundary, AI operator-leverage boundary, blocker rule, forbidden drift, and next review guidance.");
   }
 
+  if (stalePhaseCountPattern.test(allContractText) || unsafeImplicationPattern.test(allContractText)) {
+    throw new Error("Activation Evidence Completeness Review wording must forbid activation, provider execution, outreach, automation, autonomous wholesaling, dry-run execution, rollback execution, lead creation, map automation, final authorization, Phase 2 implementation, go-live, and outdated phase-count wording.");
+  }
+
   if (result.recommendedNextExactStep !== "Manual Evidence Completeness Review") {
     throw new Error("Activation Evidence Completeness Review must recommend Manual Evidence Completeness Review next.");
   }
@@ -394,5 +461,5 @@ export function assertActivationEvidenceCompletenessReviewSafe(result: Activatio
 export function summarizeActivationEvidenceCompletenessReview(result: ActivationEvidenceCompletenessReview) {
   assertActivationEvidenceCompletenessReviewSafe(result);
 
-  return `${result.phase}: ${result.reviewStatus}. This is evidence completeness review for all 17 phases, built for highest ROI by keeping movement operator leverage only, human-approved, evidence-first, and blocked from premature expansion. Provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}. Phase 1 completeness includes entity proof, EIN evidence, banking readiness, domain ownership, Google Workspace/email identity plan, SPF/DKIM/DMARC readiness notes, branded signature plan, Twilio readiness, A2P/10DLC readiness, DNC/STOP governance, and public website/private dashboard separation. Virtual Driving for Dollars completeness remains review-only and requires approved target neighborhoods, manual review process, distress signal checklist, lead approval criteria, buyer-demand criteria, DNC/STOP governance, public/private separation, and no-autonomous-scraping confirmation. No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, online verification, storage mutation, provider activation, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, autonomous seller handling, map scraping, Google Street View automation, GPS surveillance, lead creation without human approval, approval-as-execution, blocker bypass, go-live, or Phase 2 implementation is authorized. This is not autonomous wholesaling. Next exact step: ${result.recommendedNextExactStep}. Next stage: ${result.nextStageRecommendation}.`;
+  return `${result.phase}: ${result.reviewStatus}. Previous required step is ${result.previousRequiredStep}. This is evidence completeness review for all 17 phases, built for highest acquisition ROI per operator hour by keeping movement operator leverage only, human-approved, evidence-first, and blocked from premature expansion. Provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}. Phase 1 completeness includes Activation Evidence Gap Resolution Planning evidence, entity proof, EIN evidence, banking readiness, domain ownership, Google Workspace/email identity plan, SPF/DKIM/DMARC readiness notes, branded signature plan, Twilio readiness, A2P/10DLC readiness, DNC/STOP governance, and public website/private dashboard separation. Virtual Driving for Dollars completeness remains review-only and requires approved target neighborhoods, manual review process, distress signal checklist, lead approval criteria, buyer-demand criteria, DNC/STOP governance, public/private separation, and no-autonomous-scraping confirmation. No dry-run execution, no activation, no provider execution, no outreach, no SMS, no email, no calling, no automation, no CRM mutation, no runtime jobs, no online verification, no storage mutation, no provider activation, no DNS mutation, no Vercel mutation, no Google Workspace activation, no Twilio activation, no autonomous seller handling, no map automation, no map scraping, no Google Street View automation, no GPS surveillance, no skip tracing automation, no lead creation without human approval, no rollback execution, no final authorization, no approval-as-execution, no blocker bypass, no go-live, and not Phase 2 implementation is authorized. This is not autonomous wholesaling. Next exact step: ${result.recommendedNextExactStep}. Next stage: ${result.nextStageRecommendation}.`;
 }
