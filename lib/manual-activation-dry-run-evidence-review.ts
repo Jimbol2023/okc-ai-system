@@ -3,6 +3,8 @@ export const manualActivationDryRunEvidenceReviewFlags = {
   advisoryOnly: true,
   planningOnly: true,
   evidenceReviewOnly: true,
+  runbookExecutionAuthorized: false,
+  runbookExecutionEnabled: false,
   dryRunExecutionAuthorized: false,
   dryRunExecutionEnabled: false,
   providerActivationAuthorized: false,
@@ -96,6 +98,20 @@ export type ManualActivationDryRunEvidenceLane = {
   noExecutionRule: string;
 };
 
+export const manualActivationDryRunEvidenceLaneOrder: ManualActivationDryRunEvidenceLaneKey[] = [
+  "controlled_runbook_planning_prerequisite",
+  "domain_email_checklist_readiness",
+  "business_number_twilio_readiness",
+  "consent_dnc_opt_out_stop_blocker_evidence",
+  "manual_approval_step_evidence",
+  "rollback_checklist_evidence",
+  "failure_state_handling_evidence",
+  "audit_expectation_evidence",
+  "credential_env_boundary",
+  "no_send_no_call_no_provider_boundary",
+  "evidence_gap_resolution_readiness",
+];
+
 export type ManualActivationDryRunPhaseEvidenceRecord = {
   phaseName: string;
   evidenceReviewBasis: string[];
@@ -109,6 +125,7 @@ export type ManualActivationDryRunPhaseEvidenceRecord = {
 
 export type ManualActivationDryRunEvidenceReview = {
   phase: "Manual Activation Dry-Run Evidence Review";
+  currentPhasePosition: "Phase 1: Business Foundation & Trust Infrastructure";
   manualActivationDryRunEvidenceReviewStatus: ManualActivationDryRunEvidenceReviewStatus;
   dryRunDecision: ManualActivationDryRunDecision;
   providerDecision: ManualActivationDryRunProviderDecision;
@@ -185,7 +202,7 @@ function createEvidenceLane(
     governanceRule,
     humanOwner: dryRunEvidenceHumanOwner,
     aiEvidenceSummaryOnlyRole,
-    noExecutionRule: `${lane} is evidence review only and cannot execute dry-runs, activate providers, execute provider actions, send outreach, run automation, mutate CRM data, create leads, automate maps, execute rollback, grant final authorization, implement Phase 2, or authorize go-live.`,
+    noExecutionRule: `${lane} is evidence review only and cannot execute runbooks, execute dry-runs, activate providers, execute provider actions, send outreach, run automation, mutate CRM data, create leads, automate maps, execute rollback, grant final authorization, implement Phase 2, or authorize go-live.`,
   };
 }
 
@@ -260,7 +277,7 @@ function createPhaseDryRunEvidenceRecord(
     humanOwner: dryRunEvidenceHumanOwner,
     aiEvidenceSummaryOnlyRole,
     forbiddenDrift,
-    noExecutionRule: `${phaseName} dry-run evidence review authorizes no dry-run execution, no activation, no provider execution, no outreach, no automation, no CRM mutation, no lead creation, no map automation, no rollback execution, no final authorization, no Phase 2 implementation, and no go-live.`,
+    noExecutionRule: `${phaseName} dry-run evidence review authorizes no runbook execution, no dry-run execution, no activation, no provider execution, no outreach, no automation, no CRM mutation, no lead creation, no map automation, no rollback execution, no final authorization, no Phase 2 implementation, and no go-live.`,
   };
 }
 
@@ -353,6 +370,7 @@ export const phaseDryRunEvidenceRecords: ManualActivationDryRunPhaseEvidenceReco
 ];
 
 export const manualActivationDryRunEvidenceDoctrine = [
+  "Current roadmap position remains Phase 1: Business Foundation & Trust Infrastructure, inside the readiness chain before Phase 2.",
   "Manual Activation Dry-Run Evidence Review is evidence-only.",
   "Manual Activation Dry-Run Evidence Review requires Controlled Manual Activation Runbook Planning evidence before Activation Evidence Gap Resolution Planning can be considered.",
   "Manual Activation Dry-Run Evidence Review covers all 17 phases of the elite high-aROI acquisition OS.",
@@ -364,13 +382,15 @@ export const manualActivationDryRunEvidenceDoctrine = [
   "AI remains operator leverage only and may summarize evidence gaps, organize dry-run evidence, explain blockers, support operator clarity, and prepare evidence gap notes.",
   "AI cannot execute dry-runs, approve final authorization, activate providers, contact sellers, create leads, automate maps, run campaigns, perform outreach, bypass blockers, or implement Phase 2.",
   "Virtual Driving for Dollars remains review-only, evidence-first, human-approved, and operator-leverage-only with no map automation.",
-  "No dry-run execution, provider activation, provider execution, DNS/domain mutation, Vercel mutation, mailbox creation, Google Workspace activation, Twilio activation, number activation, env read, SDK import, provider client, route, webhook, SMS, email, calling, AI voice, CRM mutation, campaign, queue, reminder, polling, runtime job, audit write, rollback execution, final authorization, lead creation, map scraping, Google Street View automation, GPS surveillance, skip tracing automation, Phase 2 implementation, go-live behavior, or spend increase is authorized.",
+  "No runbook execution, dry-run execution, provider activation, provider execution, DNS/domain mutation, Vercel mutation, mailbox creation, Google Workspace activation, Twilio activation, number activation, env read, SDK import, provider client, route, webhook, SMS, email, calling, AI voice, CRM mutation, campaign, queue, reminder, polling, runtime job, audit write, rollback execution, final authorization, lead creation, map scraping, Google Street View automation, GPS surveillance, skip tracing automation, Phase 2 implementation, go-live behavior, or spend increase is authorized.",
   "DNC, opt-out, STOP, revocation, missing approval, missing identity evidence, missing controlled runbook evidence, and missing consent evidence remain non-bypassable blockers.",
   "This is not autonomous wholesaling.",
   "Highest acquisition ROI per operator hour remains controlled: review evidence gaps before considering any activation path.",
 ];
 
 export const forbiddenManualActivationDryRunEvidenceDrift = [
+  "runbook execution authorization",
+  "runbook execution",
   "dry-run execution authorization",
   "dry-run execution",
   "provider activation authorization",
@@ -428,6 +448,7 @@ export const forbiddenManualActivationDryRunEvidenceDrift = [
 export function getManualActivationDryRunEvidenceReview(): ManualActivationDryRunEvidenceReview {
   const result: ManualActivationDryRunEvidenceReview = {
     phase: "Manual Activation Dry-Run Evidence Review",
+    currentPhasePosition: "Phase 1: Business Foundation & Trust Infrastructure",
     manualActivationDryRunEvidenceReviewStatus: "planning_only",
     dryRunDecision: "not_authorized_for_execution",
     providerDecision: "not_authorized",
@@ -456,7 +477,7 @@ export function assertManualActivationDryRunEvidenceReviewSafe(result: ManualAct
   const unsafeTrueFlags = Object.entries(result.flags).filter(([key, value]) => !allowedTrueFlags.has(key) && value === true);
   const doctrineText = result.manualActivationDryRunEvidenceDoctrine.join(" ");
   const unsafeImplicationPattern =
-    /activation is authorized|outreach is authorized|automation is authorized|dry-run execution is authorized|rollback execution is authorized|lead creation is authorized|map automation is authorized|final authorization is granted|Phase 2 implementation is authorized|go-live is authorized/i;
+    /activation is authorized|outreach is authorized|automation is authorized|runbook execution is authorized|dry-run execution is authorized|rollback execution is authorized|lead creation is authorized|map automation is authorized|final authorization is granted|Phase 2 implementation is authorized|go-live is authorized|required 16-phase order|all 16 phases|16 phase/i;
 
   if (!result.readOnly || !result.advisoryOnly || !result.planningOnly) {
     throw new Error("Manual Activation Dry-Run Evidence Review must remain read-only, advisory-only, and planning-only.");
@@ -464,6 +485,10 @@ export function assertManualActivationDryRunEvidenceReviewSafe(result: ManualAct
 
   if (result.manualActivationDryRunEvidenceReviewStatus !== "planning_only") {
     throw new Error("Manual Activation Dry-Run Evidence Review cannot become dry-run-ready, execution-ready, activation-ready, provider-ready, send-ready, call-ready, rollback-ready, final-authorization-ready, Phase 2-ready, or go-live-ready.");
+  }
+
+  if (result.currentPhasePosition !== "Phase 1: Business Foundation & Trust Infrastructure") {
+    throw new Error("Manual Activation Dry-Run Evidence Review must remain positioned in Phase 1: Business Foundation & Trust Infrastructure.");
   }
 
   if (result.dryRunDecision !== "not_authorized_for_execution") {
@@ -483,11 +508,22 @@ export function assertManualActivationDryRunEvidenceReviewSafe(result: ManualAct
   }
 
   if (unsafeTrueFlags.length > 0) {
-    throw new Error("Manual Activation Dry-Run Evidence Review cannot authorize dry-run execution, provider activation, DNS/domain activation, env reads, SDK imports, routes/webhooks, SMS, email, calling, AI voice, campaigns, queues, reminders, runtime jobs, CRM mutation, audit writing, rollback execution, autonomous seller handling, spend increases, blocker bypass, communication execution, lead creation, map automation, skip tracing, final authorization, Phase 2 implementation, or go-live.");
+    throw new Error("Manual Activation Dry-Run Evidence Review cannot authorize runbook execution, dry-run execution, provider activation, DNS/domain activation, env reads, SDK imports, routes/webhooks, SMS, email, calling, AI voice, campaigns, queues, reminders, runtime jobs, CRM mutation, audit writing, rollback execution, autonomous seller handling, spend increases, blocker bypass, communication execution, lead creation, map automation, skip tracing, final authorization, Phase 2 implementation, or go-live.");
   }
 
   if (result.previousRequiredStep !== "Controlled Manual Activation Runbook Planning") {
     throw new Error("Manual Activation Dry-Run Evidence Review must require Controlled Manual Activation Runbook Planning first.");
+  }
+
+  if (
+    result.manualActivationDryRunEvidenceLanes.length !== manualActivationDryRunEvidenceLaneOrder.length ||
+    result.manualActivationDryRunEvidenceLanes.map((lane) => lane.lane).join("|") !== manualActivationDryRunEvidenceLaneOrder.join("|")
+  ) {
+    throw new Error("Manual Activation Dry-Run Evidence Review must preserve every required dry-run evidence lane in order.");
+  }
+
+  if (/required 16-phase order|all 16 phases|16 phase/i.test(doctrineText)) {
+    throw new Error("Manual Activation Dry-Run Evidence Review wording must use 17-phase language and cannot contain stale 16-phase wording.");
   }
 
   if (result.phaseDryRunEvidenceRecords.length !== 17) {
@@ -527,7 +563,7 @@ export function assertManualActivationDryRunEvidenceReviewSafe(result: ManualAct
   }
 
   if (
-    !/No dry-run execution/i.test(doctrineText) ||
+    !/No runbook execution, dry-run execution/i.test(doctrineText) ||
     !/provider execution/i.test(doctrineText) ||
     !/SMS, email, calling/i.test(doctrineText) ||
     !/lead creation/i.test(doctrineText) ||
@@ -539,7 +575,7 @@ export function assertManualActivationDryRunEvidenceReviewSafe(result: ManualAct
     !/go-live behavior/i.test(doctrineText) ||
     unsafeImplicationPattern.test(doctrineText)
   ) {
-    throw new Error("Manual Activation Dry-Run Evidence Review wording must forbid dry-run execution, activation, outreach, automation, autonomous wholesaling, rollback execution, lead creation, map automation, final authorization, Phase 2 implementation, and go-live.");
+    throw new Error("Manual Activation Dry-Run Evidence Review wording must forbid runbook execution, dry-run execution, activation, outreach, automation, autonomous wholesaling, rollback execution, lead creation, map automation, final authorization, Phase 2 implementation, and go-live.");
   }
 
   if (result.recommendedNextExactStep !== "Activation Evidence Gap Resolution Planning") {
@@ -554,5 +590,5 @@ export function assertManualActivationDryRunEvidenceReviewSafe(result: ManualAct
 export function summarizeManualActivationDryRunEvidenceReview(result: ManualActivationDryRunEvidenceReview) {
   assertManualActivationDryRunEvidenceReviewSafe(result);
 
-  return `${result.phase}: ${result.manualActivationDryRunEvidenceReviewStatus}. Previous required step is ${result.previousRequiredStep}. Dry-run decision is ${result.dryRunDecision}; provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}. The human-owned dry-run evidence review protects highest acquisition ROI per operator hour across all 17 phases through operator leverage only, controlled runbook planning evidence, manual evidence requirements, blocker clarity, no-drift Virtual Driving for Dollars boundaries, and evidence gap resolution readiness. No dry-run execution, activation, provider activation, provider execution, DNS/domain activation, Vercel mutation, mailbox creation, Google Workspace activation, Twilio activation, number activation, env read, SDK import, route, webhook, outbound communication, SMS, email, calling, AI voice, campaign, queue, reminder, polling, runtime job, CRM mutation, audit writing, rollback execution, final authorization, autonomous seller handling, lead creation, map scraping, Google Street View automation, GPS surveillance, skip tracing automation, approval-as-execution, blocker bypass, communication execution, automation, Phase 2 implementation, go-live, or spend increase is authorized. This is not autonomous wholesaling. Next stage: ${result.nextStageRecommendation}.`;
+  return `${result.phase}: ${result.manualActivationDryRunEvidenceReviewStatus}. Current phase position is ${result.currentPhasePosition}, inside the readiness chain before Phase 2. Previous required step is ${result.previousRequiredStep}. Dry-run decision is ${result.dryRunDecision}; provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}. The human-owned dry-run evidence review protects highest acquisition ROI per operator hour across all 17 phases through operator leverage only, controlled runbook planning evidence, manual evidence requirements, blocker clarity, no-drift Virtual Driving for Dollars boundaries, and evidence gap resolution readiness. No runbook execution, dry-run execution, activation, provider activation, provider execution, DNS/domain activation, Vercel mutation, mailbox creation, Google Workspace activation, Twilio activation, number activation, env read, SDK import, route, webhook, outbound communication, SMS, email, calling, AI voice, campaign, queue, reminder, polling, runtime job, CRM mutation, audit writing, rollback execution, final authorization, autonomous seller handling, lead creation, map scraping, Google Street View automation, GPS surveillance, skip tracing automation, approval-as-execution, blocker bypass, communication execution, automation, Phase 2 implementation, go-live, or spend increase is authorized. This is not autonomous wholesaling. Next stage: ${result.nextStageRecommendation}.`;
 }

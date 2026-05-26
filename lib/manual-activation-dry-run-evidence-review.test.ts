@@ -1,6 +1,7 @@
 import {
   assertManualActivationDryRunEvidenceReviewSafe,
   getManualActivationDryRunEvidenceReview,
+  manualActivationDryRunEvidenceLaneOrder,
   manualActivationDryRunEvidenceReviewFlags,
   manualActivationDryRunPhaseOrder,
   summarizeManualActivationDryRunEvidenceReview,
@@ -11,6 +12,7 @@ describe("manual activation dry-run evidence review", () => {
     const result = getManualActivationDryRunEvidenceReview();
 
     expect(result.phase).toBe("Manual Activation Dry-Run Evidence Review");
+    expect(result.currentPhasePosition).toBe("Phase 1: Business Foundation & Trust Infrastructure");
     expect(result.manualActivationDryRunEvidenceReviewStatus).toBe("planning_only");
     expect(result.dryRunDecision).toBe("not_authorized_for_execution");
     expect(result.providerDecision).toBe("not_authorized");
@@ -43,19 +45,7 @@ describe("manual activation dry-run evidence review", () => {
     const result = getManualActivationDryRunEvidenceReview();
 
     expect(result.manualActivationDryRunEvidenceLanes.map((lane) => lane.lane)).toEqual(
-      expect.arrayContaining([
-        "controlled_runbook_planning_prerequisite",
-        "domain_email_checklist_readiness",
-        "business_number_twilio_readiness",
-        "consent_dnc_opt_out_stop_blocker_evidence",
-        "manual_approval_step_evidence",
-        "rollback_checklist_evidence",
-        "failure_state_handling_evidence",
-        "audit_expectation_evidence",
-        "credential_env_boundary",
-        "no_send_no_call_no_provider_boundary",
-        "evidence_gap_resolution_readiness",
-      ]),
+      manualActivationDryRunEvidenceLaneOrder,
     );
 
     for (const lane of result.manualActivationDryRunEvidenceLanes) {
@@ -63,6 +53,7 @@ describe("manual activation dry-run evidence review", () => {
       expect(lane.governanceRule).toMatch(/evidence|review|cannot/i);
       expect(lane.humanOwner.join(" ")).toMatch(/human owns/i);
       expect(lane.aiEvidenceSummaryOnlyRole.join(" ")).toMatch(/summarize evidence gaps/i);
+      expect(lane.noExecutionRule).toMatch(/cannot execute runbooks/i);
       expect(lane.noExecutionRule).toMatch(/cannot execute dry-runs/i);
     }
   });
@@ -103,6 +94,7 @@ describe("manual activation dry-run evidence review", () => {
       expect(phase.humanOwner.join(" ")).toMatch(/human owns/i);
       expect(phase.aiEvidenceSummaryOnlyRole.join(" ")).toMatch(/summarize evidence gaps/i);
       expect(phase.forbiddenDrift.length).toBeGreaterThan(0);
+      expect(phase.noExecutionRule).toMatch(/no runbook execution/i);
       expect(phase.noExecutionRule).toMatch(/no dry-run execution/i);
     }
   });
@@ -145,6 +137,8 @@ describe("manual activation dry-run evidence review", () => {
   it("keeps all blocked execution flags false", () => {
     const flags = getManualActivationDryRunEvidenceReview().flags;
 
+    expect(flags.runbookExecutionAuthorized).toBe(false);
+    expect(flags.runbookExecutionEnabled).toBe(false);
     expect(flags.dryRunExecutionAuthorized).toBe(false);
     expect(flags.dryRunExecutionEnabled).toBe(false);
     expect(flags.providerActivationAuthorized).toBe(false);
@@ -239,6 +233,13 @@ describe("manual activation dry-run evidence review", () => {
     expect(() =>
       assertManualActivationDryRunEvidenceReviewSafe({
         ...getManualActivationDryRunEvidenceReview(),
+        currentPhasePosition: "Phase 2: Lead Intake & Simple CRM" as "Phase 1: Business Foundation & Trust Infrastructure",
+      }),
+    ).toThrow(/Phase 1/i);
+
+    expect(() =>
+      assertManualActivationDryRunEvidenceReviewSafe({
+        ...getManualActivationDryRunEvidenceReview(),
         previousRequiredStep: "Skip Runbook Planning" as "Controlled Manual Activation Runbook Planning",
       }),
     ).toThrow(/Controlled Manual Activation Runbook Planning/i);
@@ -248,9 +249,34 @@ describe("manual activation dry-run evidence review", () => {
     expect(() =>
       assertManualActivationDryRunEvidenceReviewSafe({
         ...getManualActivationDryRunEvidenceReview(),
+        manualActivationDryRunEvidenceLanes: getManualActivationDryRunEvidenceReview().manualActivationDryRunEvidenceLanes.slice(0, -1),
+      }),
+    ).toThrow(/required dry-run evidence lane/i);
+
+    expect(() =>
+      assertManualActivationDryRunEvidenceReviewSafe({
+        ...getManualActivationDryRunEvidenceReview(),
         phaseDryRunEvidenceRecords: getManualActivationDryRunEvidenceReview().phaseDryRunEvidenceRecords.slice(0, 16),
       }),
     ).toThrow(/17 phase evidence records/i);
+
+    expect(() =>
+      assertManualActivationDryRunEvidenceReviewSafe({
+        ...getManualActivationDryRunEvidenceReview(),
+        phaseDryRunEvidenceRecords: [
+          getManualActivationDryRunEvidenceReview().phaseDryRunEvidenceRecords[1],
+          getManualActivationDryRunEvidenceReview().phaseDryRunEvidenceRecords[0],
+          ...getManualActivationDryRunEvidenceReview().phaseDryRunEvidenceRecords.slice(2),
+        ],
+      }),
+    ).toThrow(/17-phase order/i);
+
+    expect(() =>
+      assertManualActivationDryRunEvidenceReviewSafe({
+        ...getManualActivationDryRunEvidenceReview(),
+        manualActivationDryRunEvidenceDoctrine: ["Manual Activation Dry-Run Evidence Review covers all 16 phases."],
+      }),
+    ).toThrow(/17-phase language/i);
 
     expect(() =>
       assertManualActivationDryRunEvidenceReviewSafe({
@@ -264,10 +290,11 @@ describe("manual activation dry-run evidence review", () => {
     const summary = summarizeManualActivationDryRunEvidenceReview(getManualActivationDryRunEvidenceReview());
 
     expect(summary).toMatch(/highest acquisition ROI per operator hour/i);
+    expect(summary).toMatch(/Phase 1: Business Foundation & Trust Infrastructure/i);
     expect(summary).toMatch(/all 17 phases/i);
     expect(summary).toMatch(/operator leverage only/i);
     expect(summary).toMatch(/human-owned dry-run evidence review/i);
-    expect(summary).toMatch(/No dry-run execution/i);
+    expect(summary).toMatch(/No runbook execution, dry-run execution/i);
     expect(summary).toMatch(/provider execution/i);
     expect(summary).toMatch(/outbound communication/i);
     expect(summary).toMatch(/no map automation/i);
