@@ -3,6 +3,10 @@ export const humanGoNoGoReadinessDecisionPlanningFlags = {
   advisoryOnly: true,
   planningOnly: true,
   humanDecisionPlanningOnly: true,
+  dryRunExecutionEnabled: false,
+  rollbackExecutionEnabled: false,
+  providerExecutionEnabled: false,
+  finalAuthorizationGranted: false,
   providerActivated: false,
   providerClientsEnabled: false,
   envReadEnabled: false,
@@ -32,6 +36,7 @@ export const humanGoNoGoReadinessDecisionPlanningFlags = {
   streetViewAutomationEnabled: false,
   gpsSurveillanceEnabled: false,
   skipTracingEnabled: false,
+  skipTracingAutomationEnabled: false,
   leadCreationEnabled: false,
   goLiveAuthorized: false,
 } as const;
@@ -62,6 +67,8 @@ export type HumanGoNoGoReadinessDecisionPlanning = {
   systemMode: "small_high_clarity_acquisition_operating_system";
   strategicAlignment: "elite_high_aroi_acquisition_os";
   primaryMetric: "acquisition_roi_per_operator_hour";
+  currentPhasePosition: "Phase 1: Business Foundation & Trust Infrastructure";
+  previousRequiredStep: "Complete Manual Activation Readiness Checklist Review";
   decisionPlanningStatus: HumanGoNoGoReadinessDecisionPlanningStatus;
   providerDecision: HumanGoNoGoReadinessDecision;
   communicationDecision: HumanGoNoGoReadinessDecision;
@@ -177,7 +184,7 @@ function createPhaseDecisionRecord(
     humanDecisionOwner,
     aiOperatorLeverageSupportRole,
     forbiddenDrift,
-    noExecutionNoGoLiveRule: `${phaseName} go/no-go readiness decision planning does not authorize activation, provider execution, outreach, automation, CRM mutation, lead creation, autonomous wholesaling, Phase 2 implementation, map automation, or go-live.`,
+    noExecutionNoGoLiveRule: `${phaseName} go/no-go readiness decision planning does not authorize activation, provider execution, outreach, automation, CRM mutation, dry-run execution, rollback execution, lead creation, final authorization, autonomous wholesaling, Phase 2 implementation, map automation, or go-live.`,
   };
 }
 
@@ -271,6 +278,8 @@ export const phaseDecisionRecords: HumanGoNoGoReadinessPhaseDecisionRecord[] = [
 
 export const humanGoNoGoReadinessDecisionPlanningDoctrine = [
   "Human Go No-Go Readiness Decision Planning is planning-only and human-decision-planning-only.",
+  "Current phase position is Phase 1: Business Foundation & Trust Infrastructure.",
+  "Previous required step is Complete Manual Activation Readiness Checklist Review.",
   "Human Go No-Go Readiness Decision Planning protects highest acquisition ROI per operator hour by stopping premature activation and forcing human-owned readiness judgment.",
   "Human Go No-Go Readiness Decision Planning covers all 17 phases.",
   "AI remains operator leverage only and may organize evidence, summarize blockers, explain no-go reasons, and prepare human decision notes.",
@@ -280,7 +289,7 @@ export const humanGoNoGoReadinessDecisionPlanningDoctrine = [
   "Automation decision remains not_authorized.",
   "Go-live decision remains not_authorized.",
   "Virtual Driving for Dollars remains no-map-automation review-only intelligence.",
-  "No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, campaigns, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, lead creation, map scraping, Google Street View automation, GPS surveillance, skip tracing, or go-live is authorized.",
+  "No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, campaigns, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, dry-run execution, rollback execution, lead creation, final authorization, map automation, map scraping, Google Street View automation, GPS surveillance, skip tracing, skip tracing automation, Phase 2 implementation, or go-live is authorized.",
   "This is not autonomous wholesaling.",
   "This is not Phase 2 implementation.",
   "Recommended next exact step is Complete Human Go No-Go Readiness Decision Planning.",
@@ -293,6 +302,8 @@ export function getHumanGoNoGoReadinessDecisionPlanning(): HumanGoNoGoReadinessD
     systemMode: "small_high_clarity_acquisition_operating_system",
     strategicAlignment: "elite_high_aroi_acquisition_os",
     primaryMetric: "acquisition_roi_per_operator_hour",
+    currentPhasePosition: "Phase 1: Business Foundation & Trust Infrastructure",
+    previousRequiredStep: "Complete Manual Activation Readiness Checklist Review",
     decisionPlanningStatus: "human_go_no_go_readiness_decision_planning_required",
     providerDecision: "not_authorized",
     communicationDecision: "not_authorized",
@@ -331,6 +342,14 @@ export function assertHumanGoNoGoReadinessDecisionPlanningSafe(result: HumanGoNo
     throw new Error("Human Go No-Go Readiness Decision Planning cannot become activation-ready, execution-ready, automation-ready, Phase 2-ready, lead-creation-ready, map-automation-ready, or go-live-ready.");
   }
 
+  if (result.currentPhasePosition !== "Phase 1: Business Foundation & Trust Infrastructure") {
+    throw new Error("Human Go No-Go Readiness Decision Planning must remain positioned in Phase 1: Business Foundation & Trust Infrastructure.");
+  }
+
+  if (result.previousRequiredStep !== "Complete Manual Activation Readiness Checklist Review") {
+    throw new Error("Human Go No-Go Readiness Decision Planning must require Complete Manual Activation Readiness Checklist Review first.");
+  }
+
   if (result.providerDecision !== "not_authorized") {
     throw new Error("Human Go No-Go Readiness Decision Planning provider decision must remain not_authorized.");
   }
@@ -348,7 +367,7 @@ export function assertHumanGoNoGoReadinessDecisionPlanningSafe(result: HumanGoNo
   }
 
   if (unsafeTrueFlags.length > 0) {
-    throw new Error("Human Go No-Go Readiness Decision Planning cannot authorize provider clients, env reads, DNS/Vercel mutation, Google Workspace activation, Twilio activation, SMS, email, calling, AI voice, runtime jobs, polling, CRM mutation, automation, campaigns, autonomous seller or buyer handling, autonomous outreach, autonomous negotiation, autonomous texting, autonomous calling, approval-as-execution, blocker bypass, Phase 2 implementation, map scraping, Street View automation, GPS surveillance, skip tracing, lead creation, or go-live.");
+    throw new Error("Human Go No-Go Readiness Decision Planning cannot authorize dry-run execution, rollback execution, provider execution, final authorization, provider clients, env reads, DNS/Vercel mutation, Google Workspace activation, Twilio activation, SMS, email, calling, AI voice, runtime jobs, polling, CRM mutation, automation, campaigns, autonomous seller or buyer handling, autonomous outreach, autonomous negotiation, autonomous texting, autonomous calling, approval-as-execution, blocker bypass, Phase 2 implementation, map scraping, Street View automation, GPS surveillance, skip tracing, skip tracing automation, lead creation, or go-live.");
   }
 
   if (result.decisionPlanningLanes.map((lane) => lane.laneName).join("|") !== humanGoNoGoReadinessDecisionLaneNames.join("|")) {
@@ -395,14 +414,19 @@ export function assertHumanGoNoGoReadinessDecisionPlanningSafe(result: HumanGoNo
     !/outreach/i.test(doctrineText) ||
     !/automation/i.test(doctrineText) ||
     !/lead creation/i.test(doctrineText) ||
+    !/dry-run execution/i.test(doctrineText) ||
+    !/rollback execution/i.test(doctrineText) ||
+    !/final authorization/i.test(doctrineText) ||
     !/map scraping/i.test(doctrineText) ||
     !/Google Street View automation/i.test(doctrineText) ||
     !/GPS surveillance/i.test(doctrineText) ||
+    !/map automation/i.test(doctrineText) ||
     !/not autonomous wholesaling/i.test(doctrineText) ||
     !/not Phase 2 implementation/i.test(doctrineText) ||
-    !/go-live is authorized/i.test(doctrineText)
+    !/go-live is authorized/i.test(doctrineText) ||
+    /16-phase|16 phases/i.test(doctrineText)
   ) {
-    throw new Error("Human Go No-Go Readiness Decision Planning wording must forbid activation, provider execution, outreach, automation, autonomous wholesaling, Phase 2 implementation, lead creation, map automation, and go-live.");
+    throw new Error("Human Go No-Go Readiness Decision Planning wording must forbid activation, provider execution, outreach, automation, autonomous wholesaling, dry-run execution, rollback execution, final authorization, Phase 2 implementation, lead creation, map automation, and go-live, with no stale 16-phase wording.");
   }
 
   if (result.recommendedNextExactStep !== "Complete Human Go No-Go Readiness Decision Planning") {
@@ -417,5 +441,5 @@ export function assertHumanGoNoGoReadinessDecisionPlanningSafe(result: HumanGoNo
 export function summarizeHumanGoNoGoReadinessDecisionPlanning(result: HumanGoNoGoReadinessDecisionPlanning) {
   assertHumanGoNoGoReadinessDecisionPlanningSafe(result);
 
-  return `${result.phase}: ${result.decisionPlanningStatus}. This human-owned readiness decision planning protects highest acquisition ROI per operator hour across all 17 phases through operator leverage only, human-owned readiness judgment, human-approved movement, and no-drift blocker clarity before final authorization review. Provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}; go-live decision is ${result.goLiveDecision}. Decision lanes cover evidence completeness, unresolved blockers, identity/trust readiness, communication governance, manual approval process, rollback/stop procedure, internal dry-run readiness, public/private separation, Virtual Driving for Dollars no-map-automation boundary, and final human decision authority. No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, campaigns, provider activation, provider clients, env reads, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, autonomous seller handling, autonomous buyer handling, map scraping, Google Street View automation, GPS surveillance, skip tracing, lead creation, lead creation without human approval, approval-as-execution, blocker bypass, go-live, or Phase 2 implementation is authorized. This is not autonomous wholesaling. Recommended next exact step: ${result.recommendedNextExactStep}. Next stage: ${result.nextStageRecommendation}.`;
+  return `${result.phase}: ${result.decisionPlanningStatus}. Current phase position: ${result.currentPhasePosition}. Previous required step: ${result.previousRequiredStep}. This human-owned readiness decision planning protects highest acquisition ROI per operator hour across all 17 phases through operator leverage only, human-owned readiness judgment, human-approved movement, and no-drift blocker clarity before final authorization review. Provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}; go-live decision is ${result.goLiveDecision}. Decision lanes cover evidence completeness, unresolved blockers, identity/trust readiness, communication governance, manual approval process, rollback/stop procedure, internal dry-run readiness, public/private separation, Virtual Driving for Dollars no-map-automation boundary, and final human decision authority. No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, campaigns, dry-run execution, rollback execution, provider activation, provider clients, env reads, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, autonomous seller handling, autonomous buyer handling, map automation, map scraping, Google Street View automation, GPS surveillance, skip tracing, skip tracing automation, lead creation, lead creation without human approval, final authorization, approval-as-execution, blocker bypass, go-live, or Phase 2 implementation is authorized. This is not autonomous wholesaling. Recommended next exact step: ${result.recommendedNextExactStep}. Next stage: ${result.nextStageRecommendation}.`;
 }

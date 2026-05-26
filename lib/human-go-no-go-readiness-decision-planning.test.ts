@@ -13,6 +13,8 @@ describe("human go no-go readiness decision planning", () => {
     expect(result.systemMode).toBe("small_high_clarity_acquisition_operating_system");
     expect(result.strategicAlignment).toBe("elite_high_aroi_acquisition_os");
     expect(result.primaryMetric).toBe("acquisition_roi_per_operator_hour");
+    expect(result.currentPhasePosition).toBe("Phase 1: Business Foundation & Trust Infrastructure");
+    expect(result.previousRequiredStep).toBe("Complete Manual Activation Readiness Checklist Review");
     expect(result.decisionPlanningStatus).toBe("human_go_no_go_readiness_decision_planning_required");
     expect(result.providerDecision).toBe("not_authorized");
     expect(result.communicationDecision).toBe("not_authorized");
@@ -130,7 +132,10 @@ describe("human go no-go readiness decision planning", () => {
       expect(phase.forbiddenDrift.length).toBeGreaterThan(0);
       expect(phase.noExecutionNoGoLiveRule).toMatch(/does not authorize activation/i);
       expect(phase.noExecutionNoGoLiveRule).toMatch(/provider execution/i);
+      expect(phase.noExecutionNoGoLiveRule).toMatch(/dry-run execution/i);
+      expect(phase.noExecutionNoGoLiveRule).toMatch(/rollback execution/i);
       expect(phase.noExecutionNoGoLiveRule).toMatch(/lead creation/i);
+      expect(phase.noExecutionNoGoLiveRule).toMatch(/final authorization/i);
       expect(phase.noExecutionNoGoLiveRule).toMatch(/map automation/i);
       expect(phase.noExecutionNoGoLiveRule).toMatch(/go-live/i);
     }
@@ -139,6 +144,10 @@ describe("human go no-go readiness decision planning", () => {
   it("keeps all blocked flags false", () => {
     const flags = getHumanGoNoGoReadinessDecisionPlanning().flags;
 
+    expect(flags.dryRunExecutionEnabled).toBe(false);
+    expect(flags.rollbackExecutionEnabled).toBe(false);
+    expect(flags.providerExecutionEnabled).toBe(false);
+    expect(flags.finalAuthorizationGranted).toBe(false);
     expect(flags.providerActivated).toBe(false);
     expect(flags.providerClientsEnabled).toBe(false);
     expect(flags.envReadEnabled).toBe(false);
@@ -168,6 +177,7 @@ describe("human go no-go readiness decision planning", () => {
     expect(flags.streetViewAutomationEnabled).toBe(false);
     expect(flags.gpsSurveillanceEnabled).toBe(false);
     expect(flags.skipTracingEnabled).toBe(false);
+    expect(flags.skipTracingAutomationEnabled).toBe(false);
     expect(flags.leadCreationEnabled).toBe(false);
     expect(flags.goLiveAuthorized).toBe(false);
   });
@@ -176,6 +186,8 @@ describe("human go no-go readiness decision planning", () => {
     const result = getHumanGoNoGoReadinessDecisionPlanning();
     const summary = summarizeHumanGoNoGoReadinessDecisionPlanning(result);
 
+    expect(summary).toMatch(/Phase 1: Business Foundation & Trust Infrastructure/i);
+    expect(summary).toMatch(/Complete Manual Activation Readiness Checklist Review/i);
     expect(summary).toMatch(/highest acquisition ROI per operator hour/i);
     expect(summary).toMatch(/all 17 phases/i);
     expect(summary).toMatch(/operator leverage only/i);
@@ -185,6 +197,9 @@ describe("human go no-go readiness decision planning", () => {
     expect(summary).toMatch(/provider execution/i);
     expect(summary).toMatch(/outreach/i);
     expect(summary).toMatch(/automation/i);
+    expect(summary).toMatch(/dry-run execution/i);
+    expect(summary).toMatch(/rollback execution/i);
+    expect(summary).toMatch(/final authorization/i);
     expect(summary).toMatch(/not autonomous wholesaling/i);
     expect(summary).toMatch(/Phase 2 implementation/i);
     expect(summary).toMatch(/no-map-automation boundary/i);
@@ -195,6 +210,10 @@ describe("human go no-go readiness decision planning", () => {
 
   it("fails invariant checks if any blocked flag drifts true", () => {
     const blockedFlags = [
+      "dryRunExecutionEnabled",
+      "rollbackExecutionEnabled",
+      "providerExecutionEnabled",
+      "finalAuthorizationGranted",
       "providerActivated",
       "providerClientsEnabled",
       "envReadEnabled",
@@ -224,6 +243,7 @@ describe("human go no-go readiness decision planning", () => {
       "streetViewAutomationEnabled",
       "gpsSurveillanceEnabled",
       "skipTracingEnabled",
+      "skipTracingAutomationEnabled",
       "leadCreationEnabled",
       "goLiveAuthorized",
     ] as const;
@@ -270,8 +290,18 @@ describe("human go no-go readiness decision planning", () => {
       ...getHumanGoNoGoReadinessDecisionPlanning(),
       nextStageRecommendation: "Go Live" as "Final Human Go/No-Go Authorization Review",
     };
+    const phasePositionUnsafe = {
+      ...getHumanGoNoGoReadinessDecisionPlanning(),
+      currentPhasePosition: "Phase 2: Lead Intake & Simple CRM" as "Phase 1: Business Foundation & Trust Infrastructure",
+    };
+    const previousStepUnsafe = {
+      ...getHumanGoNoGoReadinessDecisionPlanning(),
+      previousRequiredStep: "Manual Activation Readiness Checklist Review" as "Complete Manual Activation Readiness Checklist Review",
+    };
 
     expect(() => assertHumanGoNoGoReadinessDecisionPlanningSafe(statusUnsafe)).toThrow(/cannot become activation-ready/i);
+    expect(() => assertHumanGoNoGoReadinessDecisionPlanningSafe(phasePositionUnsafe)).toThrow(/Phase 1/i);
+    expect(() => assertHumanGoNoGoReadinessDecisionPlanningSafe(previousStepUnsafe)).toThrow(/Complete Manual Activation Readiness Checklist Review/i);
     expect(() => assertHumanGoNoGoReadinessDecisionPlanningSafe(providerUnsafe)).toThrow(/provider decision/i);
     expect(() => assertHumanGoNoGoReadinessDecisionPlanningSafe(communicationUnsafe)).toThrow(/communication decision/i);
     expect(() => assertHumanGoNoGoReadinessDecisionPlanningSafe(automationUnsafe)).toThrow(/automation decision/i);
@@ -311,11 +341,19 @@ describe("human go no-go readiness decision planning", () => {
       ...getHumanGoNoGoReadinessDecisionPlanning(),
       humanGoNoGoReadinessDecisionPlanningDoctrine: ["Activation is allowed after human decision planning."],
     };
+    const stalePhaseCountWording = {
+      ...getHumanGoNoGoReadinessDecisionPlanning(),
+      humanGoNoGoReadinessDecisionPlanningDoctrine: [
+        ...getHumanGoNoGoReadinessDecisionPlanning().humanGoNoGoReadinessDecisionPlanningDoctrine,
+        "This stale sentence says 16 phases.",
+      ],
+    };
 
     expect(() => assertHumanGoNoGoReadinessDecisionPlanningSafe(missingLane)).toThrow(/decision planning lanes/i);
     expect(() => assertHumanGoNoGoReadinessDecisionPlanningSafe(missingPhase)).toThrow(/17 phase decision records/i);
     expect(() => assertHumanGoNoGoReadinessDecisionPlanningSafe(wrongOrder)).toThrow(/17-phase order/i);
     expect(() => assertHumanGoNoGoReadinessDecisionPlanningSafe(missingRecordField)).toThrow(/Every phase decision record/i);
     expect(() => assertHumanGoNoGoReadinessDecisionPlanningSafe(activationWording)).toThrow(/forbid activation/i);
+    expect(() => assertHumanGoNoGoReadinessDecisionPlanningSafe(stalePhaseCountWording)).toThrow(/stale 16-phase wording/i);
   });
 });
