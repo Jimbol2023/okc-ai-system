@@ -9,6 +9,7 @@ export const controlledManualActivationRunbookPlanningFlags = {
   finalAuthorizationGranted: false,
   goLiveAuthorized: false,
   providerActivationAuthorized: false,
+  providerExecutionEnabled: false,
   providerActivated: false,
   providerClientCreated: false,
   providerClientsEnabled: false,
@@ -112,6 +113,7 @@ export type ControlledManualActivationRunbookPlanning = {
   providerDecision: ControlledRunbookProviderDecision;
   communicationDecision: ControlledRunbookCommunicationDecision;
   automationDecision: ControlledRunbookAutomationDecision;
+  currentPhasePosition: "Phase 1: Business Foundation & Trust Infrastructure";
   previousRequiredStep: "Final Human Go/No-Go Authorization Review";
   controlledManualActivationRunbookLanes: ControlledManualActivationRunbookLane[];
   phaseRunbookRecords: ControlledManualActivationRunbookPhaseRecord[];
@@ -361,6 +363,7 @@ export const phaseRunbookRecords: ControlledManualActivationRunbookPhaseRecord[]
 
 export const controlledManualActivationRunbookDoctrine = [
   "Controlled Manual Activation Runbook Planning is contract-only and planning-only.",
+  "Current phase position is Phase 1: Business Foundation & Trust Infrastructure.",
   "Controlled Manual Activation Runbook Planning requires Final Human Go/No-Go Authorization Review evidence before Manual Activation Dry-Run Evidence Review can be considered.",
   "Controlled Manual Activation Runbook Planning covers all 17 phases of the elite high-aROI acquisition OS.",
   "Runbook decision remains not_authorized_for_execution.",
@@ -437,6 +440,7 @@ export function getControlledManualActivationRunbookPlanning(): ControlledManual
     providerDecision: "not_authorized",
     communicationDecision: "not_authorized",
     automationDecision: "not_authorized",
+    currentPhasePosition: "Phase 1: Business Foundation & Trust Infrastructure",
     previousRequiredStep: "Final Human Go/No-Go Authorization Review",
     controlledManualActivationRunbookLanes,
     phaseRunbookRecords,
@@ -482,6 +486,10 @@ export function assertControlledManualActivationRunbookPlanningSafe(result: Cont
 
   if (result.automationDecision !== "not_authorized") {
     throw new Error("Controlled Manual Activation Runbook automation decision must remain not_authorized.");
+  }
+
+  if (result.currentPhasePosition !== "Phase 1: Business Foundation & Trust Infrastructure") {
+    throw new Error("Controlled Manual Activation Runbook Planning must remain positioned in Phase 1: Business Foundation & Trust Infrastructure.");
   }
 
   if (unsafeTrueFlags.length > 0) {
@@ -539,9 +547,10 @@ export function assertControlledManualActivationRunbookPlanningSafe(result: Cont
     !/GPS surveillance/i.test(doctrineText) ||
     !/not autonomous wholesaling/i.test(doctrineText) ||
     !/Phase 2 implementation/i.test(doctrineText) ||
-    !/go-live behavior/i.test(doctrineText)
+    !/go-live behavior/i.test(doctrineText) ||
+    /16-phase|16 phases/i.test(doctrineText)
   ) {
-    throw new Error("Controlled Manual Activation Runbook Planning wording must forbid activation, outreach, automation, autonomous wholesaling, dry-run execution, rollback execution, lead creation, map automation, final authorization, Phase 2 implementation, and go-live.");
+    throw new Error("Controlled Manual Activation Runbook Planning wording must forbid activation, outreach, automation, autonomous wholesaling, dry-run execution, rollback execution, lead creation, map automation, final authorization, Phase 2 implementation, and go-live, with no stale 16-phase wording.");
   }
 
   if (result.recommendedNextExactStep !== "Manual Activation Dry-Run Evidence Review") {
@@ -556,5 +565,5 @@ export function assertControlledManualActivationRunbookPlanningSafe(result: Cont
 export function summarizeControlledManualActivationRunbookPlanning(result: ControlledManualActivationRunbookPlanning) {
   assertControlledManualActivationRunbookPlanningSafe(result);
 
-  return `${result.phase}: ${result.controlledManualActivationRunbookPlanningStatus}. Previous required step is ${result.previousRequiredStep}. Runbook decision is ${result.runbookDecision}; provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}. The human-owned runbook planning layer protects highest acquisition ROI per operator hour across all 17 phases through operator leverage only, manual checklist planning, blocker preflight planning, final review evidence dependency, and no-drift dry-run readiness. The runbook plan defines final human review prerequisites, manual checklist sequence, identity evidence checks, consent/DNC/opt-out/STOP checks, blocker preflight checks, credential/env boundaries, manual activation step planning, audit expectations, rollback rules, failure-state planning, no-send/no-provider boundaries, dry-run evidence readiness, and Virtual Driving for Dollars no-map-automation review-only boundaries. No runbook execution, dry-run execution, final authorization, go-live, provider activation, provider execution, DNS/domain activation, Vercel mutation, mailbox creation, Google Workspace activation, Twilio activation, number activation, env read, SDK import, route, webhook, outbound communication, SMS, email, calling, AI voice, campaign, queue, reminder, polling, runtime job, CRM mutation, audit writing, rollback execution, autonomous seller handling, lead creation, map scraping, Google Street View automation, GPS surveillance, skip tracing automation, approval-as-execution, blocker bypass, communication execution, automation, Phase 2 implementation, or spend increase is authorized. This is not autonomous wholesaling. Next stage: ${result.nextStageRecommendation}.`;
+  return `${result.phase}: ${result.controlledManualActivationRunbookPlanningStatus}. Current phase position: ${result.currentPhasePosition}. Previous required step is ${result.previousRequiredStep}. Runbook decision is ${result.runbookDecision}; provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}. The human-owned runbook planning layer protects highest acquisition ROI per operator hour across all 17 phases through operator leverage only, manual checklist planning, blocker preflight planning, final review evidence dependency, and no-drift dry-run readiness. The runbook plan defines final human review prerequisites, manual checklist sequence, identity evidence checks, consent/DNC/opt-out/STOP checks, blocker preflight checks, credential/env boundaries, manual activation step planning, audit expectations, rollback rules, failure-state planning, no-send/no-provider boundaries, dry-run evidence readiness, and Virtual Driving for Dollars no-map-automation review-only boundaries. No runbook execution, dry-run execution, final authorization, go-live, provider activation, provider execution, DNS/domain activation, Vercel mutation, mailbox creation, Google Workspace activation, Twilio activation, number activation, env read, SDK import, route, webhook, outbound communication, SMS, email, calling, AI voice, campaign, queue, reminder, polling, runtime job, CRM mutation, audit writing, rollback execution, autonomous seller handling, lead creation, map scraping, Google Street View automation, GPS surveillance, skip tracing automation, approval-as-execution, blocker bypass, communication execution, automation, Phase 2 implementation, or spend increase is authorized. This is not autonomous wholesaling. Next stage: ${result.nextStageRecommendation}.`;
 }

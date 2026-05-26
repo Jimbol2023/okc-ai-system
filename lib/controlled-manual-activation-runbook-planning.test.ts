@@ -15,6 +15,7 @@ describe("controlled manual activation runbook planning", () => {
     expect(result.providerDecision).toBe("not_authorized");
     expect(result.communicationDecision).toBe("not_authorized");
     expect(result.automationDecision).toBe("not_authorized");
+    expect(result.currentPhasePosition).toBe("Phase 1: Business Foundation & Trust Infrastructure");
     expect(result.previousRequiredStep).toBe("Final Human Go/No-Go Authorization Review");
     expect(result.recommendedNextExactStep).toBe("Manual Activation Dry-Run Evidence Review");
     expect(result.nextStageRecommendation).toBe("Manual Activation Dry-Run Evidence Review");
@@ -181,6 +182,7 @@ describe("controlled manual activation runbook planning", () => {
     expect(flags.finalAuthorizationGranted).toBe(false);
     expect(flags.goLiveAuthorized).toBe(false);
     expect(flags.providerActivationAuthorized).toBe(false);
+    expect(flags.providerExecutionEnabled).toBe(false);
     expect(flags.providerActivated).toBe(false);
     expect(flags.providerClientCreated).toBe(false);
     expect(flags.providerClientsEnabled).toBe(false);
@@ -231,6 +233,7 @@ describe("controlled manual activation runbook planning", () => {
     const doctrineText = result.controlledManualActivationRunbookDoctrine.join(" ");
 
     expect(doctrineText).toMatch(/contract-only and planning-only/i);
+    expect(doctrineText).toMatch(/Phase 1: Business Foundation & Trust Infrastructure/i);
     expect(doctrineText).toMatch(/Final Human Go\/No-Go Authorization Review/i);
     expect(doctrineText).toMatch(/all 17 phases/i);
     expect(doctrineText).toMatch(/not_authorized_for_execution/i);
@@ -253,6 +256,7 @@ describe("controlled manual activation runbook planning", () => {
     const result = getControlledManualActivationRunbookPlanning();
     const summary = summarizeControlledManualActivationRunbookPlanning(result);
 
+    expect(summary).toMatch(/Phase 1: Business Foundation & Trust Infrastructure/i);
     expect(summary).toMatch(/highest acquisition ROI per operator hour/i);
     expect(summary).toMatch(/all 17 phases/i);
     expect(summary).toMatch(/operator leverage only/i);
@@ -280,6 +284,7 @@ describe("controlled manual activation runbook planning", () => {
       "finalAuthorizationGranted",
       "goLiveAuthorized",
       "providerActivationAuthorized",
+      "providerExecutionEnabled",
       "providerActivated",
       "providerClientCreated",
       "providerClientsEnabled",
@@ -355,8 +360,13 @@ describe("controlled manual activation runbook planning", () => {
       ...getControlledManualActivationRunbookPlanning(),
       automationDecision: "authorized" as "not_authorized",
     };
+    const phasePositionUnsafe = {
+      ...getControlledManualActivationRunbookPlanning(),
+      currentPhasePosition: "Phase 2: Lead Intake & Simple CRM" as "Phase 1: Business Foundation & Trust Infrastructure",
+    };
 
     expect(() => assertControlledManualActivationRunbookPlanningSafe(statusUnsafe)).toThrow(/cannot become execution-ready/i);
+    expect(() => assertControlledManualActivationRunbookPlanningSafe(phasePositionUnsafe)).toThrow(/Phase 1/i);
     expect(() => assertControlledManualActivationRunbookPlanningSafe(runbookUnsafe)).toThrow(/Runbook decision/i);
     expect(() => assertControlledManualActivationRunbookPlanningSafe(providerUnsafe)).toThrow(/provider decision/i);
     expect(() => assertControlledManualActivationRunbookPlanningSafe(communicationUnsafe)).toThrow(/communication decision/i);
@@ -394,12 +404,20 @@ describe("controlled manual activation runbook planning", () => {
       ...getControlledManualActivationRunbookPlanning(),
       controlledManualActivationRunbookDoctrine: ["Activation and dry-run execution are allowed after planning."],
     };
+    const stalePhaseCountWording = {
+      ...getControlledManualActivationRunbookPlanning(),
+      controlledManualActivationRunbookDoctrine: [
+        ...getControlledManualActivationRunbookPlanning().controlledManualActivationRunbookDoctrine,
+        "This stale sentence says 16 phases.",
+      ],
+    };
 
     expect(() => assertControlledManualActivationRunbookPlanningSafe(missingPreviousStep)).toThrow(/Final Human Go\/No-Go Authorization Review/i);
     expect(() => assertControlledManualActivationRunbookPlanningSafe(missingPhase)).toThrow(/17 phase runbook records/i);
     expect(() => assertControlledManualActivationRunbookPlanningSafe(wrongOrder)).toThrow(/17-phase order/i);
     expect(() => assertControlledManualActivationRunbookPlanningSafe(missingRecordField)).toThrow(/Every phase runbook record/i);
     expect(() => assertControlledManualActivationRunbookPlanningSafe(activationWording)).toThrow(/forbid activation/i);
+    expect(() => assertControlledManualActivationRunbookPlanningSafe(stalePhaseCountWording)).toThrow(/stale 16-phase wording/i);
   });
 
   it("fails invariant checks if the roadmap skips manual dry-run evidence review", () => {
