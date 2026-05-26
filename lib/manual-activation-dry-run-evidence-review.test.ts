@@ -2,11 +2,12 @@ import {
   assertManualActivationDryRunEvidenceReviewSafe,
   getManualActivationDryRunEvidenceReview,
   manualActivationDryRunEvidenceReviewFlags,
+  manualActivationDryRunPhaseOrder,
   summarizeManualActivationDryRunEvidenceReview,
 } from "./manual-activation-dry-run-evidence-review";
 
 describe("manual activation dry-run evidence review", () => {
-  it("creates a planning-only manual activation dry-run evidence review contract", () => {
+  it("preserves pinned fields and decisions", () => {
     const result = getManualActivationDryRunEvidenceReview();
 
     expect(result.phase).toBe("Manual Activation Dry-Run Evidence Review");
@@ -17,6 +18,13 @@ describe("manual activation dry-run evidence review", () => {
     expect(result.automationDecision).toBe("not_authorized");
     expect(result.recommendedNextExactStep).toBe("Activation Evidence Gap Resolution Planning");
     expect(result.nextStageRecommendation).toBe("Activation Evidence Gap Resolution Planning");
+  });
+
+  it("requires controlled manual activation runbook planning first", () => {
+    const result = getManualActivationDryRunEvidenceReview();
+
+    expect(result.previousRequiredStep).toBe("Controlled Manual Activation Runbook Planning");
+    expect(result.manualActivationDryRunEvidenceDoctrine.join(" ")).toMatch(/Controlled Manual Activation Runbook Planning evidence/i);
   });
 
   it("keeps dry-run evidence review read-only advisory-only planning-only and evidence-review-only", () => {
@@ -31,24 +39,12 @@ describe("manual activation dry-run evidence review", () => {
     expect(result.flags.evidenceReviewOnly).toBe(true);
   });
 
-  it("keeps dry-run provider communication and automation decisions not authorized", () => {
-    const result = getManualActivationDryRunEvidenceReview();
-
-    expect(result.dryRunDecision).toBe("not_authorized_for_execution");
-    expect(result.providerDecision).toBe("not_authorized");
-    expect(result.communicationDecision).toBe("not_authorized");
-    expect(result.automationDecision).toBe("not_authorized");
-    expect(result.flags.dryRunExecutionAuthorized).toBe(false);
-    expect(result.flags.providerActivated).toBe(false);
-    expect(result.flags.communicationExecutionAuthorized).toBe(false);
-    expect(result.flags.automationEnabled).toBe(false);
-  });
-
-  it("defines all manual activation dry-run evidence lanes", () => {
+  it("preserves all dry-run evidence lanes with evidence-only human-owned AI-summary-only boundaries", () => {
     const result = getManualActivationDryRunEvidenceReview();
 
     expect(result.manualActivationDryRunEvidenceLanes.map((lane) => lane.lane)).toEqual(
       expect.arrayContaining([
+        "controlled_runbook_planning_prerequisite",
         "domain_email_checklist_readiness",
         "business_number_twilio_readiness",
         "consent_dnc_opt_out_stop_blocker_evidence",
@@ -61,30 +57,92 @@ describe("manual activation dry-run evidence review", () => {
         "evidence_gap_resolution_readiness",
       ]),
     );
+
+    for (const lane of result.manualActivationDryRunEvidenceLanes) {
+      expect(lane.evidenceFocus.length).toBeGreaterThan(0);
+      expect(lane.governanceRule).toMatch(/evidence|review|cannot/i);
+      expect(lane.humanOwner.join(" ")).toMatch(/human owns/i);
+      expect(lane.aiEvidenceSummaryOnlyRole.join(" ")).toMatch(/summarize evidence gaps/i);
+      expect(lane.noExecutionRule).toMatch(/cannot execute dry-runs/i);
+    }
   });
 
-  it("covers domain email number Twilio consent approval rollback failure audit no-send and gap evidence", () => {
+  it("defines all 17 phase dry-run evidence records in order", () => {
     const result = getManualActivationDryRunEvidenceReview();
-    const laneText = result.manualActivationDryRunEvidenceLanes
-      .flatMap((lane) => [lane.lane, ...lane.evidenceFocus, lane.governanceRule])
-      .join(" ");
 
-    expect(laneText).toMatch(/domain checklist evidence/i);
-    expect(laneText).toMatch(/SPF\/DKIM\/DMARC evidence/i);
-    expect(laneText).toMatch(/business number evidence/i);
-    expect(laneText).toMatch(/Twilio readiness evidence/i);
-    expect(laneText).toMatch(/consent evidence/i);
-    expect(laneText).toMatch(/DNC blocker evidence/i);
-    expect(laneText).toMatch(/STOP\/revocation blocker evidence/i);
-    expect(laneText).toMatch(/manual approval checklist/i);
-    expect(laneText).toMatch(/rollback checklist evidence/i);
-    expect(laneText).toMatch(/failed preflight handling/i);
-    expect(laneText).toMatch(/audit field evidence/i);
-    expect(laneText).toMatch(/no provider activation/i);
-    expect(laneText).toMatch(/evidence gap list/i);
+    expect(result.phaseDryRunEvidenceRecords).toHaveLength(17);
+    expect(result.phaseDryRunEvidenceRecords.map((phase) => phase.phaseName)).toEqual([...manualActivationDryRunPhaseOrder]);
+    expect(result.phaseDryRunEvidenceRecords.map((phase) => phase.phaseName)).toEqual([
+      "Business Foundation & Trust Infrastructure",
+      "Lead Intake & Simple CRM",
+      "Lead Prioritization Engine",
+      "Seller Review & Call Prep",
+      "Follow-Up Organization System",
+      "Daily Acquisition Command Center",
+      "KPI & Revenue Intelligence",
+      "Deal Quality Intelligence",
+      "AI-Assisted Lead Discovery",
+      "Virtual Driving for Dollars Intelligence Engine",
+      "SEO & Local Authority Engine",
+      "Conversion Optimization Engine",
+      "Safety & Compliance Engine",
+      "Facebook & TikTok Acquisition Engine",
+      "Design & Creative AI Agent",
+      "Buyer Fit Intelligence",
+      "Pentest & Security Engine",
+    ]);
   });
 
-  it("keeps provider domain mailbox number env SDK route webhook and activation flags false", () => {
+  it("requires complete phase evidence structure for every phase", () => {
+    const result = getManualActivationDryRunEvidenceReview();
+
+    for (const phase of result.phaseDryRunEvidenceRecords) {
+      expect(phase.evidenceReviewBasis.length).toBeGreaterThan(0);
+      expect(phase.manualEvidenceRequirement).toMatch(/Controlled Manual Activation Runbook Planning/i);
+      expect(phase.blockerRule).toMatch(/blockers/i);
+      expect(phase.humanOwner.join(" ")).toMatch(/human owns/i);
+      expect(phase.aiEvidenceSummaryOnlyRole.join(" ")).toMatch(/summarize evidence gaps/i);
+      expect(phase.forbiddenDrift.length).toBeGreaterThan(0);
+      expect(phase.noExecutionRule).toMatch(/no dry-run execution/i);
+    }
+  });
+
+  it("keeps Virtual D4D evidence review review-only with no map automation or lead creation", () => {
+    const result = getManualActivationDryRunEvidenceReview();
+    const virtualD4d = result.phaseDryRunEvidenceRecords.find(
+      (phase) => phase.phaseName === "Virtual Driving for Dollars Intelligence Engine",
+    );
+
+    expect(virtualD4d).toBeDefined();
+    expect(virtualD4d?.evidenceReviewBasis).toEqual(
+      expect.arrayContaining([
+        "approved target neighborhoods",
+        "manual review process",
+        "distress signal checklist",
+        "lead approval criteria",
+        "buyer-demand criteria",
+        "DNC/STOP governance",
+        "public/private separation",
+        "no-autonomous-scraping confirmation",
+      ]),
+    );
+    expect(virtualD4d?.forbiddenDrift).toEqual(
+      expect.arrayContaining([
+        "map scraping",
+        "Google Street View automation",
+        "GPS surveillance",
+        "skip tracing automation",
+        "owner contact automation",
+        "autonomous outreach",
+        "campaign activation",
+        "lead creation without human approval",
+      ]),
+    );
+    expect(virtualD4d?.noExecutionRule).toMatch(/no map automation/i);
+    expect(virtualD4d?.noExecutionRule).toMatch(/no lead creation/i);
+  });
+
+  it("keeps all blocked execution flags false", () => {
     const flags = getManualActivationDryRunEvidenceReview().flags;
 
     expect(flags.dryRunExecutionAuthorized).toBe(false);
@@ -92,127 +150,49 @@ describe("manual activation dry-run evidence review", () => {
     expect(flags.providerActivationAuthorized).toBe(false);
     expect(flags.providerActivated).toBe(false);
     expect(flags.providerClientCreated).toBe(false);
+    expect(flags.providerClientsEnabled).toBe(false);
     expect(flags.providerEnvRead).toBe(false);
+    expect(flags.envReadEnabled).toBe(false);
     expect(flags.providerSdkImported).toBe(false);
+    expect(flags.sdkImportEnabled).toBe(false);
     expect(flags.twilioActivated).toBe(false);
     expect(flags.dnsMutationEnabled).toBe(false);
     expect(flags.domainActivated).toBe(false);
+    expect(flags.domainMutationEnabled).toBe(false);
+    expect(flags.vercelMutationEnabled).toBe(false);
     expect(flags.mailboxCreated).toBe(false);
-    expect(flags.spfDkimDmarcPublished).toBe(false);
-    expect(flags.numberActivated).toBe(false);
-    expect(flags.routeCreated).toBe(false);
-    expect(flags.inboundWebhookCreated).toBe(false);
-  });
-
-  it("keeps outbound communication AI voice campaign queue reminder polling and runtime flags false", () => {
-    const flags = getManualActivationDryRunEvidenceReview().flags;
-
+    expect(flags.googleWorkspaceActivated).toBe(false);
     expect(flags.outboundSmsEnabled).toBe(false);
     expect(flags.outboundEmailEnabled).toBe(false);
-    expect(flags.emailSendingEnabled).toBe(false);
     expect(flags.callingEnabled).toBe(false);
     expect(flags.aiVoiceEnabled).toBe(false);
-    expect(flags.campaignActivated).toBe(false);
+    expect(flags.routeOrWebhookCreated).toBe(false);
+    expect(flags.campaignEnabled).toBe(false);
     expect(flags.queueSystemEnabled).toBe(false);
-    expect(flags.reminderSystemEnabled).toBe(false);
-    expect(flags.pollingEnabled).toBe(false);
     expect(flags.runtimeJobsEnabled).toBe(false);
-  });
-
-  it("keeps CRM audit approval execution automation rollback go-live spend and blocker bypass flags false", () => {
-    const flags = getManualActivationDryRunEvidenceReview().flags;
-
     expect(flags.crmMutationEnabled).toBe(false);
-    expect(flags.auditWritingEnabled).toBe(false);
-    expect(flags.approvalGrantsExecution).toBe(false);
-    expect(flags.communicationExecutionAuthorized).toBe(false);
+    expect(flags.auditWriteEnabled).toBe(false);
+    expect(flags.communicationExecutionEnabled).toBe(false);
     expect(flags.automationEnabled).toBe(false);
-    expect(flags.autonomousFollowUpEnabled).toBe(false);
     expect(flags.autonomousSellerHandlingEnabled).toBe(false);
-    expect(flags.autonomousNegotiationEnabled).toBe(false);
+    expect(flags.autonomousOutreachEnabled).toBe(false);
+    expect(flags.autonomousTextingEnabled).toBe(false);
+    expect(flags.autonomousCallingEnabled).toBe(false);
     expect(flags.rollbackExecutionEnabled).toBe(false);
+    expect(flags.finalAuthorizationGranted).toBe(false);
     expect(flags.goLiveAuthorized).toBe(false);
-    expect(flags.spendIncreaseAuthorized).toBe(false);
-    expect(flags.dncBypassAllowed).toBe(false);
-    expect(flags.optOutBypassAllowed).toBe(false);
-    expect(flags.stopBypassAllowed).toBe(false);
+    expect(flags.mapScrapingEnabled).toBe(false);
+    expect(flags.streetViewAutomationEnabled).toBe(false);
+    expect(flags.gpsSurveillanceEnabled).toBe(false);
+    expect(flags.skipTracingAutomationEnabled).toBe(false);
+    expect(flags.leadCreationEnabled).toBe(false);
+    expect(flags.phase2ImplementationEnabled).toBe(false);
   });
 
-  it("keeps doctrine focused on evidence review without dry-run execution", () => {
-    const result = getManualActivationDryRunEvidenceReview();
-    const doctrineText = result.manualActivationDryRunEvidenceDoctrine.join(" ");
-
-    expect(doctrineText).toMatch(/evidence-only/i);
-    expect(doctrineText).toMatch(/not_authorized_for_execution/i);
-    expect(doctrineText).toMatch(/Provider decision remains not_authorized/i);
-    expect(doctrineText).toMatch(/Communication decision remains not_authorized/i);
-    expect(doctrineText).toMatch(/Automation decision remains not_authorized/i);
-    expect(doctrineText).toMatch(/domain\/email readiness, business number\/Twilio readiness/i);
-    expect(doctrineText).toMatch(/No dry-run execution, provider activation/i);
-    expect(doctrineText).toMatch(/Missing blocker evidence must stop the process/i);
-    expect(doctrineText).toMatch(/AI may summarize gaps only/i);
-  });
-
-  it("summarizes no provider activation communication calling runtime audit rollback go-live or spend and includes next stage", () => {
-    const result = getManualActivationDryRunEvidenceReview();
-    const summary = summarizeManualActivationDryRunEvidenceReview(result);
-
-    expect(summary).toMatch(/Dry-run decision is not_authorized_for_execution/i);
-    expect(summary).toMatch(/provider decision is not_authorized/i);
-    expect(summary).toMatch(/communication decision is not_authorized/i);
-    expect(summary).toMatch(/automation decision is not_authorized/i);
-    expect(summary).toMatch(/domain\/email checklist readiness/i);
-    expect(summary).toMatch(/business number\/Twilio readiness/i);
-    expect(summary).toMatch(/No dry-run execution/i);
-    expect(summary).toMatch(/provider activation/i);
-    expect(summary).toMatch(/outbound communication/i);
-    expect(summary).toMatch(/calling/i);
-    expect(summary).toMatch(/runtime job/i);
-    expect(summary).toMatch(/audit writing/i);
-    expect(summary).toMatch(/rollback execution/i);
-    expect(summary).toMatch(/go-live/i);
-    expect(summary).toMatch(/spend increase/i);
-    expect(summary).toMatch(/Next stage: Activation Evidence Gap Resolution Planning/i);
-  });
-
-  it("fails invariant checks if a blocked flag drifts true", () => {
-    const blockedFlags = [
-      "dryRunExecutionAuthorized",
-      "dryRunExecutionEnabled",
-      "providerActivationAuthorized",
-      "providerActivated",
-      "providerClientCreated",
-      "providerEnvRead",
-      "providerSdkImported",
-      "twilioActivated",
-      "dnsMutationEnabled",
-      "domainActivated",
-      "mailboxCreated",
-      "spfDkimDmarcPublished",
-      "numberActivated",
-      "outboundSmsEnabled",
-      "outboundEmailEnabled",
-      "callingEnabled",
-      "aiVoiceEnabled",
-      "routeCreated",
-      "inboundWebhookCreated",
-      "campaignActivated",
-      "queueSystemEnabled",
-      "reminderSystemEnabled",
-      "pollingEnabled",
-      "runtimeJobsEnabled",
-      "crmMutationEnabled",
-      "auditWritingEnabled",
-      "automationEnabled",
-      "autonomousFollowUpEnabled",
-      "autonomousSellerHandlingEnabled",
-      "rollbackExecutionEnabled",
-      "goLiveAuthorized",
-      "spendIncreaseAuthorized",
-      "dncBypassAllowed",
-      "optOutBypassAllowed",
-      "stopBypassAllowed",
-    ] as const;
+  it("fails invariant checks if any blocked flag drifts true", () => {
+    const blockedFlags = Object.keys(manualActivationDryRunEvidenceReviewFlags).filter(
+      (flag) => !["readOnly", "advisoryOnly", "planningOnly", "evidenceReviewOnly"].includes(flag),
+    ) as Array<keyof typeof manualActivationDryRunEvidenceReviewFlags>;
 
     for (const blockedFlag of blockedFlags) {
       const unsafeResult = {
@@ -227,41 +207,72 @@ describe("manual activation dry-run evidence review", () => {
     }
   });
 
-  it("fails invariant checks if decisions or status drift", () => {
-    const statusUnsafe = {
-      ...getManualActivationDryRunEvidenceReview(),
-      manualActivationDryRunEvidenceReviewStatus: "dry_run_evidence_review_required" as "planning_only",
-    };
-    const dryRunUnsafe = {
-      ...getManualActivationDryRunEvidenceReview(),
-      dryRunDecision: "authorized" as "not_authorized_for_execution",
-    };
-    const providerUnsafe = {
-      ...getManualActivationDryRunEvidenceReview(),
-      providerDecision: "authorized" as "not_authorized",
-    };
-    const communicationUnsafe = {
-      ...getManualActivationDryRunEvidenceReview(),
-      communicationDecision: "authorized" as "not_authorized",
-    };
-    const automationUnsafe = {
-      ...getManualActivationDryRunEvidenceReview(),
-      automationDecision: "authorized" as "not_authorized",
-    };
+  it("fails invariant checks if pinned decisions or previous step drift", () => {
+    expect(() =>
+      assertManualActivationDryRunEvidenceReviewSafe({
+        ...getManualActivationDryRunEvidenceReview(),
+        dryRunDecision: "authorized" as "not_authorized_for_execution",
+      }),
+    ).toThrow(/Dry-Run decision/i);
 
-    expect(() => assertManualActivationDryRunEvidenceReviewSafe(statusUnsafe)).toThrow(/cannot become dry-run-ready/i);
-    expect(() => assertManualActivationDryRunEvidenceReviewSafe(dryRunUnsafe)).toThrow(/Dry-Run decision/i);
-    expect(() => assertManualActivationDryRunEvidenceReviewSafe(providerUnsafe)).toThrow(/provider decision/i);
-    expect(() => assertManualActivationDryRunEvidenceReviewSafe(communicationUnsafe)).toThrow(/communication decision/i);
-    expect(() => assertManualActivationDryRunEvidenceReviewSafe(automationUnsafe)).toThrow(/automation decision/i);
+    expect(() =>
+      assertManualActivationDryRunEvidenceReviewSafe({
+        ...getManualActivationDryRunEvidenceReview(),
+        providerDecision: "authorized" as "not_authorized",
+      }),
+    ).toThrow(/provider decision/i);
+
+    expect(() =>
+      assertManualActivationDryRunEvidenceReviewSafe({
+        ...getManualActivationDryRunEvidenceReview(),
+        communicationDecision: "authorized" as "not_authorized",
+      }),
+    ).toThrow(/communication decision/i);
+
+    expect(() =>
+      assertManualActivationDryRunEvidenceReviewSafe({
+        ...getManualActivationDryRunEvidenceReview(),
+        automationDecision: "authorized" as "not_authorized",
+      }),
+    ).toThrow(/automation decision/i);
+
+    expect(() =>
+      assertManualActivationDryRunEvidenceReviewSafe({
+        ...getManualActivationDryRunEvidenceReview(),
+        previousRequiredStep: "Skip Runbook Planning" as "Controlled Manual Activation Runbook Planning",
+      }),
+    ).toThrow(/Controlled Manual Activation Runbook Planning/i);
   });
 
-  it("fails invariant checks if the roadmap skips evidence gap resolution planning", () => {
-    const unsafeResult = {
-      ...getManualActivationDryRunEvidenceReview(),
-      recommendedNextExactStep: "Activate Providers" as "Activation Evidence Gap Resolution Planning",
-    };
+  it("fails invariant checks if phase records or doctrine wording drift", () => {
+    expect(() =>
+      assertManualActivationDryRunEvidenceReviewSafe({
+        ...getManualActivationDryRunEvidenceReview(),
+        phaseDryRunEvidenceRecords: getManualActivationDryRunEvidenceReview().phaseDryRunEvidenceRecords.slice(0, 16),
+      }),
+    ).toThrow(/17 phase evidence records/i);
 
-    expect(() => assertManualActivationDryRunEvidenceReviewSafe(unsafeResult)).toThrow(/Activation Evidence Gap Resolution Planning/i);
+    expect(() =>
+      assertManualActivationDryRunEvidenceReviewSafe({
+        ...getManualActivationDryRunEvidenceReview(),
+        manualActivationDryRunEvidenceDoctrine: ["activation is authorized"],
+      }),
+    ).toThrow(/wording must forbid/i);
+  });
+
+  it("summarizes highest ROI no-drift evidence review and the next stage", () => {
+    const summary = summarizeManualActivationDryRunEvidenceReview(getManualActivationDryRunEvidenceReview());
+
+    expect(summary).toMatch(/highest acquisition ROI per operator hour/i);
+    expect(summary).toMatch(/all 17 phases/i);
+    expect(summary).toMatch(/operator leverage only/i);
+    expect(summary).toMatch(/human-owned dry-run evidence review/i);
+    expect(summary).toMatch(/No dry-run execution/i);
+    expect(summary).toMatch(/provider execution/i);
+    expect(summary).toMatch(/outbound communication/i);
+    expect(summary).toMatch(/no map automation/i);
+    expect(summary).toMatch(/not autonomous wholesaling/i);
+    expect(summary).toMatch(/Phase 2 implementation/i);
+    expect(summary).toMatch(/Activation Evidence Gap Resolution Planning/i);
   });
 });
