@@ -94,6 +94,7 @@ export type ActivationEvidenceCompletenessRecord = {
 
 export type ActivationEvidenceCompletenessReview = {
   phase: "Activation Evidence Completeness Review";
+  currentPhasePosition: "Phase 1: Business Foundation & Trust Infrastructure";
   systemMode: "small_high_clarity_acquisition_operating_system";
   strategicAlignment: "elite_high_aroi_acquisition_os";
   primaryMetric: "acquisition_roi_per_operator_hour";
@@ -318,6 +319,7 @@ export const phaseCompletenessRecords: ActivationEvidenceCompletenessRecord[] = 
 ];
 
 export const activationEvidenceCompletenessDoctrine = [
+  "Current roadmap position remains Phase 1: Business Foundation & Trust Infrastructure, inside the readiness chain before Phase 2.",
   "Activation Evidence Completeness Review is evidence completeness review only.",
   "Activation Evidence Completeness Review requires Activation Evidence Gap Resolution Planning evidence before Manual Evidence Completeness Review can be considered.",
   "Activation Evidence Completeness Review covers all 17 phases of the elite high-aROI acquisition OS.",
@@ -335,6 +337,7 @@ export const activationEvidenceCompletenessDoctrine = [
 export function getActivationEvidenceCompletenessReview(): ActivationEvidenceCompletenessReview {
   const result: ActivationEvidenceCompletenessReview = {
     phase: "Activation Evidence Completeness Review",
+    currentPhasePosition: "Phase 1: Business Foundation & Trust Infrastructure",
     systemMode: "small_high_clarity_acquisition_operating_system",
     strategicAlignment: "elite_high_aroi_acquisition_os",
     primaryMetric: "acquisition_roi_per_operator_hour",
@@ -385,6 +388,10 @@ export function assertActivationEvidenceCompletenessReviewSafe(result: Activatio
 
   if (result.phase !== "Activation Evidence Completeness Review") {
     throw new Error("Activation Evidence Completeness Review phase must remain pinned.");
+  }
+
+  if (result.currentPhasePosition !== "Phase 1: Business Foundation & Trust Infrastructure") {
+    throw new Error("Activation Evidence Completeness Review must remain positioned in Phase 1: Business Foundation & Trust Infrastructure.");
   }
 
   if (result.systemMode !== "small_high_clarity_acquisition_operating_system") {
@@ -461,5 +468,5 @@ export function assertActivationEvidenceCompletenessReviewSafe(result: Activatio
 export function summarizeActivationEvidenceCompletenessReview(result: ActivationEvidenceCompletenessReview) {
   assertActivationEvidenceCompletenessReviewSafe(result);
 
-  return `${result.phase}: ${result.reviewStatus}. Previous required step is ${result.previousRequiredStep}. This is evidence completeness review for all 17 phases, built for highest acquisition ROI per operator hour by keeping movement operator leverage only, human-approved, evidence-first, and blocked from premature expansion. Provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}. Phase 1 completeness includes Activation Evidence Gap Resolution Planning evidence, entity proof, EIN evidence, banking readiness, domain ownership, Google Workspace/email identity plan, SPF/DKIM/DMARC readiness notes, branded signature plan, Twilio readiness, A2P/10DLC readiness, DNC/STOP governance, and public website/private dashboard separation. Virtual Driving for Dollars completeness remains review-only and requires approved target neighborhoods, manual review process, distress signal checklist, lead approval criteria, buyer-demand criteria, DNC/STOP governance, public/private separation, and no-autonomous-scraping confirmation. No dry-run execution, no activation, no provider execution, no outreach, no SMS, no email, no calling, no automation, no CRM mutation, no runtime jobs, no online verification, no storage mutation, no provider activation, no DNS mutation, no Vercel mutation, no Google Workspace activation, no Twilio activation, no autonomous seller handling, no map automation, no map scraping, no Google Street View automation, no GPS surveillance, no skip tracing automation, no lead creation without human approval, no rollback execution, no final authorization, no approval-as-execution, no blocker bypass, no go-live, and not Phase 2 implementation is authorized. This is not autonomous wholesaling. Next exact step: ${result.recommendedNextExactStep}. Next stage: ${result.nextStageRecommendation}.`;
+  return `${result.phase}: ${result.reviewStatus}. Current phase position is ${result.currentPhasePosition}, inside the readiness chain before Phase 2. Previous required step is ${result.previousRequiredStep}. This is evidence completeness review for all 17 phases, built for highest acquisition ROI per operator hour by keeping movement operator leverage only, human-approved, evidence-first, and blocked from premature expansion. Provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}. Phase 1 completeness includes Activation Evidence Gap Resolution Planning evidence, entity proof, EIN evidence, banking readiness, domain ownership, Google Workspace/email identity plan, SPF/DKIM/DMARC readiness notes, branded signature plan, Twilio readiness, A2P/10DLC readiness, DNC/STOP governance, and public website/private dashboard separation. Virtual Driving for Dollars completeness remains review-only and requires approved target neighborhoods, manual review process, distress signal checklist, lead approval criteria, buyer-demand criteria, DNC/STOP governance, public/private separation, and no-autonomous-scraping confirmation. No dry-run execution, no activation, no provider execution, no outreach, no SMS, no email, no calling, no automation, no CRM mutation, no runtime jobs, no online verification, no storage mutation, no provider activation, no DNS mutation, no Vercel mutation, no Google Workspace activation, no Twilio activation, no autonomous seller handling, no map automation, no map scraping, no Google Street View automation, no GPS surveillance, no skip tracing automation, no lead creation without human approval, no rollback execution, no final authorization, no approval-as-execution, no blocker bypass, no go-live, and not Phase 2 implementation is authorized. This is not autonomous wholesaling. Next exact step: ${result.recommendedNextExactStep}. Next stage: ${result.nextStageRecommendation}.`;
 }
