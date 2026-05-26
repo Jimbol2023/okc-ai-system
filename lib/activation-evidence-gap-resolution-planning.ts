@@ -106,6 +106,21 @@ export type ActivationEvidenceGapLane = {
   blockerRule: string;
 };
 
+export const activationEvidenceGapLaneOrder: ActivationEvidenceGapLaneKey[] = [
+  "llc_business_identity_evidence",
+  "domain_ownership_evidence",
+  "vercel_domain_connection_evidence",
+  "google_workspace_email_evidence",
+  "spf_dkim_dmarc_evidence",
+  "email_signature_evidence",
+  "twilio_number_readiness",
+  "a2p_10dlc_status",
+  "stop_dnc_handling_evidence",
+  "manual_approval_checklist_evidence",
+  "rollback_checklist_evidence",
+  "internal_test_evidence",
+];
+
 export type ActivationPhaseEvidenceGapRecord = {
   phaseName: string;
   evidenceFocus: string[];
@@ -119,6 +134,7 @@ export type ActivationPhaseEvidenceGapRecord = {
 
 export type ActivationEvidenceGapResolutionPlanning = {
   phase: "Activation Evidence Gap Resolution Planning";
+  currentPhasePosition: "Phase 1: Business Foundation & Trust Infrastructure";
   activationEvidenceGapResolutionPlanningStatus: ActivationEvidenceGapResolutionPlanningStatus;
   gapResolutionDecision: ActivationEvidenceGapResolutionDecision;
   providerDecision: ActivationEvidenceGapProviderDecision;
@@ -413,6 +429,7 @@ export const phaseEvidenceGapMap: ActivationPhaseEvidenceGapRecord[] = [
 ];
 
 export const activationEvidenceGapDoctrine = [
+  "Current roadmap position remains Phase 1: Business Foundation & Trust Infrastructure, inside the readiness chain before Phase 2.",
   "Activation Evidence Gap Resolution Planning identifies missing evidence only.",
   "Activation Evidence Gap Resolution Planning requires Manual Activation Dry-Run Evidence Review gaps before Activation Evidence Completeness Review can be considered.",
   "Activation Evidence Gap Resolution Planning is evidence-gap planning for all 17 elite high-aROI acquisition phases.",
@@ -499,6 +516,7 @@ export const forbiddenActivationEvidenceGapDrift = [
 export function getActivationEvidenceGapResolutionPlanning(): ActivationEvidenceGapResolutionPlanning {
   const result: ActivationEvidenceGapResolutionPlanning = {
     phase: "Activation Evidence Gap Resolution Planning",
+    currentPhasePosition: "Phase 1: Business Foundation & Trust Infrastructure",
     activationEvidenceGapResolutionPlanningStatus: "planning_only",
     gapResolutionDecision: "not_authorized",
     providerDecision: "not_authorized",
@@ -553,6 +571,10 @@ export function assertActivationEvidenceGapResolutionPlanningSafe(result: Activa
     throw new Error("Activation Evidence Gap Resolution Planning cannot become evidence-complete, execution-ready, activation-ready, provider-ready, send-ready, call-ready, dry-run-ready, rollback-ready, final-authorization-ready, Phase 2-ready, or go-live-ready.");
   }
 
+  if (result.currentPhasePosition !== "Phase 1: Business Foundation & Trust Infrastructure") {
+    throw new Error("Activation Evidence Gap Resolution Planning must remain positioned in Phase 1: Business Foundation & Trust Infrastructure.");
+  }
+
   if (result.gapResolutionDecision !== "not_authorized") {
     throw new Error("Activation Evidence Gap Resolution decision must remain not_authorized.");
   }
@@ -575,6 +597,13 @@ export function assertActivationEvidenceGapResolutionPlanningSafe(result: Activa
 
   if (result.previousRequiredStep !== "Manual Activation Dry-Run Evidence Review") {
     throw new Error("Activation Evidence Gap Resolution Planning must require Manual Activation Dry-Run Evidence Review first.");
+  }
+
+  if (
+    result.activationEvidenceGapLanes.length !== activationEvidenceGapLaneOrder.length ||
+    result.activationEvidenceGapLanes.map((lane) => lane.lane).join("|") !== activationEvidenceGapLaneOrder.join("|")
+  ) {
+    throw new Error("Activation Evidence Gap Resolution Planning must preserve every required activation evidence gap lane in order.");
   }
 
   if (result.phaseEvidenceGapMap.length !== 17) {
@@ -616,5 +645,5 @@ export function assertActivationEvidenceGapResolutionPlanningSafe(result: Activa
 export function summarizeActivationEvidenceGapResolutionPlanning(result: ActivationEvidenceGapResolutionPlanning) {
   assertActivationEvidenceGapResolutionPlanningSafe(result);
 
-  return `${result.phase}: ${result.activationEvidenceGapResolutionPlanningStatus}. Previous required step is ${result.previousRequiredStep}. This is evidence-gap planning for all 17 phases, with highest acquisition ROI per operator hour, operator leverage only, human-approved movement, and not Phase 2 implementation. Gap resolution decision is ${result.gapResolutionDecision}; provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}. The gap map identifies missing LLC/business identity evidence, domain ownership evidence, Vercel domain connection evidence, Google Workspace email evidence, SPF/DKIM/DMARC evidence, email signature evidence, Twilio number readiness, A2P/10DLC status, STOP/DNC handling evidence, manual approval checklist evidence, rollback checklist evidence, internal test evidence, Manual Activation Dry-Run Evidence Review gaps, Virtual Driving for Dollars evidence, and phase-level evidence gaps across the elite high-aROI acquisition OS. No evidence collection automation, no activation, no provider execution, no outreach, no automation, no provider activation, no DNS/domain mutation, no Vercel change, no Google Workspace change, no mailbox creation, no SPF/DKIM/DMARC publishing, no number activation, no A2P/10DLC submission, no env read, no SDK import, no route, no webhook, no outbound communication, no SMS, no email, no calling, no AI voice, no campaign, no queue, no reminder, no polling, no runtime job, no CRM mutation, no audit writing, no dry-run execution, no rollback execution, no final authorization, no autonomous seller handling, no map automation, no map scraping, no Google Street View automation, no GPS surveillance, no skip tracing automation, no lead creation without human approval, no approval-as-execution, no blocker bypass, no communication execution, no go-live, and no spend increase is authorized. This is not autonomous wholesaling. Next exact step: ${result.recommendedNextExactStep}. Next stage: ${result.nextStageRecommendation}.`;
+  return `${result.phase}: ${result.activationEvidenceGapResolutionPlanningStatus}. Current phase position is ${result.currentPhasePosition}, inside the readiness chain before Phase 2. Previous required step is ${result.previousRequiredStep}. This is evidence-gap planning for all 17 phases, with highest acquisition ROI per operator hour, operator leverage only, human-approved movement, and not Phase 2 implementation. Gap resolution decision is ${result.gapResolutionDecision}; provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}. The gap map identifies missing LLC/business identity evidence, domain ownership evidence, Vercel domain connection evidence, Google Workspace email evidence, SPF/DKIM/DMARC evidence, email signature evidence, Twilio number readiness, A2P/10DLC status, STOP/DNC handling evidence, manual approval checklist evidence, rollback checklist evidence, internal test evidence, Manual Activation Dry-Run Evidence Review gaps, Virtual Driving for Dollars evidence, and phase-level evidence gaps across the elite high-aROI acquisition OS. No evidence collection automation, no activation, no provider execution, no outreach, no automation, no provider activation, no DNS/domain mutation, no Vercel change, no Google Workspace change, no mailbox creation, no SPF/DKIM/DMARC publishing, no number activation, no A2P/10DLC submission, no env read, no SDK import, no route, no webhook, no outbound communication, no SMS, no email, no calling, no AI voice, no campaign, no queue, no reminder, no polling, no runtime job, no CRM mutation, no audit writing, no dry-run execution, no rollback execution, no final authorization, no autonomous seller handling, no map automation, no map scraping, no Google Street View automation, no GPS surveillance, no skip tracing automation, no lead creation without human approval, no approval-as-execution, no blocker bypass, no communication execution, no go-live, and no spend increase is authorized. This is not autonomous wholesaling. Next exact step: ${result.recommendedNextExactStep}. Next stage: ${result.nextStageRecommendation}.`;
 }

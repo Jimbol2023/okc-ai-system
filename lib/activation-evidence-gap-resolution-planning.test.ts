@@ -1,4 +1,5 @@
 import {
+  activationEvidenceGapLaneOrder,
   activationEvidenceGapPhaseOrder,
   activationEvidenceGapResolutionPlanningFlags,
   assertActivationEvidenceGapResolutionPlanningSafe,
@@ -11,6 +12,7 @@ describe("activation evidence gap resolution planning", () => {
     const result = getActivationEvidenceGapResolutionPlanning();
 
     expect(result.phase).toBe("Activation Evidence Gap Resolution Planning");
+    expect(result.currentPhasePosition).toBe("Phase 1: Business Foundation & Trust Infrastructure");
     expect(result.activationEvidenceGapResolutionPlanningStatus).toBe("planning_only");
     expect(result.gapResolutionDecision).toBe("not_authorized");
     expect(result.providerDecision).toBe("not_authorized");
@@ -43,22 +45,7 @@ describe("activation evidence gap resolution planning", () => {
   it("preserves all activation evidence gap lanes", () => {
     const result = getActivationEvidenceGapResolutionPlanning();
 
-    expect(result.activationEvidenceGapLanes.map((lane) => lane.lane)).toEqual(
-      expect.arrayContaining([
-        "llc_business_identity_evidence",
-        "domain_ownership_evidence",
-        "vercel_domain_connection_evidence",
-        "google_workspace_email_evidence",
-        "spf_dkim_dmarc_evidence",
-        "email_signature_evidence",
-        "twilio_number_readiness",
-        "a2p_10dlc_status",
-        "stop_dnc_handling_evidence",
-        "manual_approval_checklist_evidence",
-        "rollback_checklist_evidence",
-        "internal_test_evidence",
-      ]),
-    );
+    expect(result.activationEvidenceGapLanes.map((lane) => lane.lane)).toEqual(activationEvidenceGapLaneOrder);
 
     for (const lane of result.activationEvidenceGapLanes) {
       expect(lane.missingEvidenceFocus.length).toBeGreaterThan(0);
@@ -230,6 +217,7 @@ describe("activation evidence gap resolution planning", () => {
     const doctrineText = result.activationEvidenceGapDoctrine.join(" ");
 
     expect(doctrineText).toMatch(/identifies missing evidence only/i);
+    expect(doctrineText).toMatch(/Phase 1: Business Foundation & Trust Infrastructure/i);
     expect(doctrineText).toMatch(/Manual Activation Dry-Run Evidence Review gaps/i);
     expect(doctrineText).toMatch(/not_authorized/i);
     expect(doctrineText).toMatch(/evidence-gap planning for all 17/i);
@@ -244,6 +232,7 @@ describe("activation evidence gap resolution planning", () => {
   it("summarizes required evidence-gap planning language and next stage", () => {
     const summary = summarizeActivationEvidenceGapResolutionPlanning(getActivationEvidenceGapResolutionPlanning());
 
+    expect(summary).toMatch(/Phase 1: Business Foundation & Trust Infrastructure/i);
     expect(summary).toMatch(/evidence-gap planning for all 17 phases/i);
     expect(summary).toMatch(/highest acquisition ROI per operator hour/i);
     expect(summary).toMatch(/operator leverage only/i);
@@ -309,12 +298,26 @@ describe("activation evidence gap resolution planning", () => {
     expect(() =>
       assertActivationEvidenceGapResolutionPlanningSafe({
         ...getActivationEvidenceGapResolutionPlanning(),
+        currentPhasePosition: "Phase 2: Lead Intake & Simple CRM" as "Phase 1: Business Foundation & Trust Infrastructure",
+      }),
+    ).toThrow(/Phase 1/i);
+
+    expect(() =>
+      assertActivationEvidenceGapResolutionPlanningSafe({
+        ...getActivationEvidenceGapResolutionPlanning(),
         previousRequiredStep: "Skip Dry Run Evidence" as "Manual Activation Dry-Run Evidence Review",
       }),
     ).toThrow(/Manual Activation Dry-Run Evidence Review/i);
   });
 
   it("fails invariant checks if phase records drift or stale wording appears", () => {
+    expect(() =>
+      assertActivationEvidenceGapResolutionPlanningSafe({
+        ...getActivationEvidenceGapResolutionPlanning(),
+        activationEvidenceGapLanes: getActivationEvidenceGapResolutionPlanning().activationEvidenceGapLanes.slice(0, -1),
+      }),
+    ).toThrow(/required activation evidence gap lane/i);
+
     expect(() =>
       assertActivationEvidenceGapResolutionPlanningSafe({
         ...getActivationEvidenceGapResolutionPlanning(),
