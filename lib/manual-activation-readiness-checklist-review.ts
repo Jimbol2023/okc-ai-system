@@ -3,6 +3,15 @@ export const manualActivationReadinessChecklistReviewFlags = {
   advisoryOnly: true,
   planningOnly: true,
   manualChecklistReviewOnly: true,
+  dryRunExecutionEnabled: false,
+  rollbackExecutionEnabled: false,
+  providerExecutionEnabled: false,
+  finalAuthorizationGranted: false,
+  mapScrapingEnabled: false,
+  streetViewAutomationEnabled: false,
+  gpsSurveillanceEnabled: false,
+  skipTracingAutomationEnabled: false,
+  leadCreationEnabled: false,
   providerActivated: false,
   providerClientsEnabled: false,
   envReadEnabled: false,
@@ -60,6 +69,8 @@ export type ManualActivationReadinessChecklistReview = {
   systemMode: "small_high_clarity_acquisition_operating_system";
   strategicAlignment: "elite_high_aroi_acquisition_os";
   primaryMetric: "acquisition_roi_per_operator_hour";
+  currentPhasePosition: "Phase 1: Business Foundation & Trust Infrastructure";
+  previousRequiredStep: "Controlled Manual Activation Readiness Planning";
   checklistReviewStatus: ManualActivationReadinessChecklistReviewStatus;
   providerDecision: ManualActivationReadinessChecklistReviewDecision;
   communicationDecision: ManualActivationReadinessChecklistReviewDecision;
@@ -207,7 +218,7 @@ function createPhaseChecklistRecord(
     humanApprovalBoundary,
     aiOperatorLeverageBoundary,
     forbiddenDrift,
-    noExecutionGuidance: `${phaseName} checklist review does not authorize activation, provider execution, outreach, automation, autonomous wholesaling, Phase 2 implementation, or go-live.`,
+    noExecutionGuidance: `${phaseName} checklist review does not authorize activation, provider execution, outreach, automation, dry-run execution, rollback execution, map automation, lead creation, final authorization, autonomous wholesaling, Phase 2 implementation, or go-live.`,
   };
 }
 
@@ -301,6 +312,8 @@ export const phaseChecklistRecords: ManualActivationReadinessPhaseChecklistRecor
 
 export const manualActivationReadinessChecklistReviewDoctrine = [
   "Manual Activation Readiness Checklist Review is planning-only and manual-review-only.",
+  "Current phase position is Phase 1: Business Foundation & Trust Infrastructure.",
+  "Previous required step is Controlled Manual Activation Readiness Planning.",
   "Manual Activation Readiness Checklist Review protects highest acquisition ROI per operator hour by requiring complete manual readiness review before movement.",
   "Manual Activation Readiness Checklist Review covers all 17 phases.",
   "AI remains operator leverage only.",
@@ -308,7 +321,7 @@ export const manualActivationReadinessChecklistReviewDoctrine = [
   "Provider decision remains not_authorized.",
   "Communication decision remains not_authorized.",
   "Automation decision remains not_authorized.",
-  "No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, campaigns, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, or go-live is authorized.",
+  "No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, campaigns, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, dry-run execution, rollback execution, map automation, lead creation, final authorization, Phase 2 implementation, or go-live is authorized.",
   "This is not autonomous wholesaling.",
   "This is not Phase 2 implementation.",
   "Recommended next exact step is Complete Manual Activation Readiness Checklist Review.",
@@ -321,6 +334,8 @@ export function getManualActivationReadinessChecklistReview(): ManualActivationR
     systemMode: "small_high_clarity_acquisition_operating_system",
     strategicAlignment: "elite_high_aroi_acquisition_os",
     primaryMetric: "acquisition_roi_per_operator_hour",
+    currentPhasePosition: "Phase 1: Business Foundation & Trust Infrastructure",
+    previousRequiredStep: "Controlled Manual Activation Readiness Planning",
     checklistReviewStatus: "manual_checklist_review_required",
     providerDecision: "not_authorized",
     communicationDecision: "not_authorized",
@@ -358,6 +373,14 @@ export function assertManualActivationReadinessChecklistReviewSafe(result: Manua
     throw new Error("Manual Activation Readiness Checklist Review cannot become activation-ready, execution-ready, automation-ready, Phase 2-ready, or go-live-ready.");
   }
 
+  if (result.currentPhasePosition !== "Phase 1: Business Foundation & Trust Infrastructure") {
+    throw new Error("Manual Activation Readiness Checklist Review must remain positioned in Phase 1: Business Foundation & Trust Infrastructure.");
+  }
+
+  if (result.previousRequiredStep !== "Controlled Manual Activation Readiness Planning") {
+    throw new Error("Manual Activation Readiness Checklist Review must require Controlled Manual Activation Readiness Planning first.");
+  }
+
   if (result.providerDecision !== "not_authorized") {
     throw new Error("Manual Activation Readiness Checklist Review provider decision must remain not_authorized.");
   }
@@ -371,7 +394,7 @@ export function assertManualActivationReadinessChecklistReviewSafe(result: Manua
   }
 
   if (unsafeTrueFlags.length > 0) {
-    throw new Error("Manual Activation Readiness Checklist Review cannot authorize provider activation, provider clients, env reads, DNS/Vercel mutation, Google Workspace activation, Twilio activation, SMS, email, calling, AI voice, runtime jobs, polling, CRM mutation, automation, campaigns, autonomous seller or buyer handling, autonomous outreach, autonomous negotiation, autonomous texting, autonomous calling, approval-as-execution, blocker bypass, Phase 2 implementation, or go-live.");
+    throw new Error("Manual Activation Readiness Checklist Review cannot authorize dry-run execution, rollback execution, provider execution, provider activation, provider clients, env reads, DNS/Vercel mutation, Google Workspace activation, Twilio activation, SMS, email, calling, AI voice, runtime jobs, polling, CRM mutation, automation, campaigns, autonomous seller or buyer handling, autonomous outreach, autonomous negotiation, autonomous texting, autonomous calling, map automation, lead creation, final authorization, approval-as-execution, blocker bypass, Phase 2 implementation, or go-live.");
   }
 
   if (result.checklistSections.map((section) => section.sectionName).join("|") !== manualActivationReadinessChecklistSectionNames.join("|")) {
@@ -397,7 +420,7 @@ export function assertManualActivationReadinessChecklistReviewSafe(result: Manua
   }
 
   if (result.phaseChecklistRecords.map((phase) => phase.phaseName).join("|") !== manualActivationReadinessPhaseOrder.join("|")) {
-    throw new Error("Manual Activation Readiness Checklist Review phase checklist records must remain in the required 16-phase order.");
+    throw new Error("Manual Activation Readiness Checklist Review phase checklist records must remain in the required 17-phase order.");
   }
 
   if (
@@ -422,9 +445,15 @@ export function assertManualActivationReadinessChecklistReviewSafe(result: Manua
     !/automation/i.test(doctrineText) ||
     !/not autonomous wholesaling/i.test(doctrineText) ||
     !/not Phase 2 implementation/i.test(doctrineText) ||
-    !/go-live is authorized/i.test(doctrineText)
+    !/dry-run execution/i.test(doctrineText) ||
+    !/rollback execution/i.test(doctrineText) ||
+    !/map automation/i.test(doctrineText) ||
+    !/lead creation/i.test(doctrineText) ||
+    !/final authorization/i.test(doctrineText) ||
+    !/go-live is authorized/i.test(doctrineText) ||
+    /16-phase|16 phases/i.test(doctrineText)
   ) {
-    throw new Error("Manual Activation Readiness Checklist Review wording must forbid activation, provider execution, outreach, automation, autonomous wholesaling, Phase 2 implementation, and go-live.");
+    throw new Error("Manual Activation Readiness Checklist Review wording must forbid activation, provider execution, outreach, automation, autonomous wholesaling, dry-run execution, rollback execution, map automation, lead creation, final authorization, Phase 2 implementation, and go-live, with no stale 16-phase wording.");
   }
 
   if (result.recommendedNextExactStep !== "Complete Manual Activation Readiness Checklist Review") {
@@ -439,5 +468,5 @@ export function assertManualActivationReadinessChecklistReviewSafe(result: Manua
 export function summarizeManualActivationReadinessChecklistReview(result: ManualActivationReadinessChecklistReview) {
   assertManualActivationReadinessChecklistReviewSafe(result);
 
-  return `${result.phase}: ${result.checklistReviewStatus}. This is manual activation readiness checklist review for all 17 phases, built to protect highest acquisition ROI per operator hour through operator leverage only, human-approved movement, and complete manual readiness review. Provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}. Checklist sections cover business identity, domain/DNS notes, public website/private dashboard separation, Google Workspace/email identity, SPF/DKIM/DMARC notes, Twilio readiness, A2P/10DLC readiness, DNC/STOP governance, manual approval process, rollback/stop procedure, internal dry-run plan, human go/no-go criteria, and Virtual Driving for Dollars review-only intelligence. No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, campaigns, provider activation, provider clients, env reads, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, autonomous seller handling, autonomous buyer handling, map scraping, Google Street View automation, GPS surveillance, lead creation without human approval, approval-as-execution, blocker bypass, go-live, or Phase 2 implementation is authorized. This is not autonomous wholesaling. Recommended next exact step: ${result.recommendedNextExactStep}. Next stage: ${result.nextStageRecommendation}.`;
+  return `${result.phase}: ${result.checklistReviewStatus}. Current phase position: ${result.currentPhasePosition}. Previous required step: ${result.previousRequiredStep}. This is manual activation readiness checklist review for all 17 phases, built to protect highest acquisition ROI per operator hour through operator leverage only, human-approved movement, and complete manual readiness review. Provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}. Checklist sections cover business identity, domain/DNS notes, public website/private dashboard separation, Google Workspace/email identity, SPF/DKIM/DMARC notes, Twilio readiness, A2P/10DLC readiness, DNC/STOP governance, manual approval process, rollback/stop procedure, internal dry-run plan, human go/no-go criteria, and Virtual Driving for Dollars review-only intelligence. No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, campaigns, dry-run execution, rollback execution, provider activation, provider clients, env reads, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, autonomous seller handling, autonomous buyer handling, map automation, map scraping, Google Street View automation, GPS surveillance, lead creation without human approval, final authorization, approval-as-execution, blocker bypass, go-live, or Phase 2 implementation is authorized. This is not autonomous wholesaling. Recommended next exact step: ${result.recommendedNextExactStep}. Next stage: ${result.nextStageRecommendation}.`;
 }
