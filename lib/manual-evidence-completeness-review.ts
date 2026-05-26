@@ -73,6 +73,7 @@ export type ManualEvidenceCompletenessReviewRecord = {
 
 export type ManualEvidenceCompletenessReview = {
   phase: "Manual Evidence Completeness Review";
+  currentPhasePosition: "Phase 1: Business Foundation & Trust Infrastructure";
   systemMode: "small_high_clarity_acquisition_operating_system";
   strategicAlignment: "elite_high_aroi_acquisition_os";
   primaryMetric: "acquisition_roi_per_operator_hour";
@@ -288,6 +289,7 @@ export const phaseManualReviewRecords: ManualEvidenceCompletenessReviewRecord[] 
 ];
 
 export const manualEvidenceCompletenessReviewDoctrine = [
+  "Current roadmap position remains Phase 1: Business Foundation & Trust Infrastructure, inside the readiness chain before Phase 2.",
   "Manual Evidence Completeness Review is manual evidence completeness review only.",
   "Manual Evidence Completeness Review requires Activation Evidence Completeness Review evidence before Controlled Manual Activation Readiness Planning can be considered.",
   "Manual Evidence Completeness Review covers all 17 phases of the elite high-aROI acquisition OS.",
@@ -305,6 +307,7 @@ export const manualEvidenceCompletenessReviewDoctrine = [
 export function getManualEvidenceCompletenessReview(): ManualEvidenceCompletenessReview {
   const result: ManualEvidenceCompletenessReview = {
     phase: "Manual Evidence Completeness Review",
+    currentPhasePosition: "Phase 1: Business Foundation & Trust Infrastructure",
     systemMode: "small_high_clarity_acquisition_operating_system",
     strategicAlignment: "elite_high_aroi_acquisition_os",
     primaryMetric: "acquisition_roi_per_operator_hour",
@@ -355,6 +358,10 @@ export function assertManualEvidenceCompletenessReviewSafe(result: ManualEvidenc
 
   if (result.phase !== "Manual Evidence Completeness Review") {
     throw new Error("Manual Evidence Completeness Review phase must remain pinned.");
+  }
+
+  if (result.currentPhasePosition !== "Phase 1: Business Foundation & Trust Infrastructure") {
+    throw new Error("Manual Evidence Completeness Review must remain positioned in Phase 1: Business Foundation & Trust Infrastructure.");
   }
 
   if (result.systemMode !== "small_high_clarity_acquisition_operating_system") {
@@ -431,5 +438,5 @@ export function assertManualEvidenceCompletenessReviewSafe(result: ManualEvidenc
 export function summarizeManualEvidenceCompletenessReview(result: ManualEvidenceCompletenessReview) {
   assertManualEvidenceCompletenessReviewSafe(result);
 
-  return `${result.phase}: ${result.manualReviewStatus}. Previous required step is ${result.previousRequiredStep}. This is manual evidence completeness review for all 17 phases, built for highest acquisition ROI per operator hour through operator leverage only, human-owned review, human-approved movement, and controlled readiness preparation. Provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}. Phase 1 manual evidence includes Activation Evidence Completeness Review evidence, entity proof, EIN evidence, banking readiness, domain ownership, Google Workspace/email identity, SPF/DKIM/DMARC notes, branded signature plan, Twilio readiness, A2P/10DLC readiness, DNC/STOP governance, and public/private separation. Virtual Driving for Dollars remains review-only with approved target neighborhoods, manual review process, distress signal checklist, lead approval criteria, buyer-demand criteria, DNC/STOP governance, public/private separation, no map automation, no map scraping, no Google Street View automation, no GPS surveillance, no skip tracing automation, and no lead creation without human approval. No activation, no provider execution, no outreach, no automation, no CRM mutation, no runtime jobs, no dry-run execution, no rollback execution, no final authorization, no map automation, no lead creation, no go-live, and not Phase 2 implementation is authorized. This is not autonomous wholesaling. Next exact step: ${result.recommendedNextExactStep}. Next stage: ${result.nextStageRecommendation}.`;
+  return `${result.phase}: ${result.manualReviewStatus}. Current phase position is ${result.currentPhasePosition}, inside the readiness chain before Phase 2. Previous required step is ${result.previousRequiredStep}. This is manual evidence completeness review for all 17 phases, built for highest acquisition ROI per operator hour through operator leverage only, human-owned review, human-approved movement, and controlled readiness preparation. Provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}. Phase 1 manual evidence includes Activation Evidence Completeness Review evidence, entity proof, EIN evidence, banking readiness, domain ownership, Google Workspace/email identity, SPF/DKIM/DMARC notes, branded signature plan, Twilio readiness, A2P/10DLC readiness, DNC/STOP governance, and public/private separation. Virtual Driving for Dollars remains review-only with approved target neighborhoods, manual review process, distress signal checklist, lead approval criteria, buyer-demand criteria, DNC/STOP governance, public/private separation, no map automation, no map scraping, no Google Street View automation, no GPS surveillance, no skip tracing automation, and no lead creation without human approval. No activation, no provider execution, no outreach, no automation, no CRM mutation, no runtime jobs, no dry-run execution, no rollback execution, no final authorization, no map automation, no lead creation, no go-live, and not Phase 2 implementation is authorized. This is not autonomous wholesaling. Next exact step: ${result.recommendedNextExactStep}. Next stage: ${result.nextStageRecommendation}.`;
 }

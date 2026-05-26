@@ -11,6 +11,7 @@ describe("manual evidence completeness review", () => {
     const result = getManualEvidenceCompletenessReview();
 
     expect(result.phase).toBe("Manual Evidence Completeness Review");
+    expect(result.currentPhasePosition).toBe("Phase 1: Business Foundation & Trust Infrastructure");
     expect(result.systemMode).toBe("small_high_clarity_acquisition_operating_system");
     expect(result.strategicAlignment).toBe("elite_high_aroi_acquisition_os");
     expect(result.primaryMetric).toBe("acquisition_roi_per_operator_hour");
@@ -209,6 +210,7 @@ describe("manual evidence completeness review", () => {
     const doctrineText = result.manualEvidenceCompletenessReviewDoctrine.join(" ");
 
     expect(doctrineText).toMatch(/manual evidence completeness review only/i);
+    expect(doctrineText).toMatch(/Phase 1: Business Foundation & Trust Infrastructure/i);
     expect(doctrineText).toMatch(/Activation Evidence Completeness Review evidence/i);
     expect(doctrineText).toMatch(/all 17 phases/i);
     expect(doctrineText).toMatch(/Highest acquisition ROI per operator hour/i);
@@ -226,6 +228,7 @@ describe("manual evidence completeness review", () => {
   it("summarizes required manual evidence completeness boundaries and next stage", () => {
     const summary = summarizeManualEvidenceCompletenessReview(getManualEvidenceCompletenessReview());
 
+    expect(summary).toMatch(/Phase 1: Business Foundation & Trust Infrastructure/i);
     expect(summary).toMatch(/manual evidence completeness review/i);
     expect(summary).toMatch(/all 17 phases/i);
     expect(summary).toMatch(/highest acquisition ROI per operator hour/i);
@@ -289,6 +292,13 @@ describe("manual evidence completeness review", () => {
         automationDecision: "authorized" as "not_authorized",
       }),
     ).toThrow(/automation decision/i);
+
+    expect(() =>
+      assertManualEvidenceCompletenessReviewSafe({
+        ...getManualEvidenceCompletenessReview(),
+        currentPhasePosition: "Phase 2: Lead Intake & Simple CRM" as "Phase 1: Business Foundation & Trust Infrastructure",
+      }),
+    ).toThrow(/Phase 1/i);
 
     expect(() =>
       assertManualEvidenceCompletenessReviewSafe({
