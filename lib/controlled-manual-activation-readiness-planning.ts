@@ -7,15 +7,23 @@ export const controlledManualActivationReadinessPlanningFlags = {
   onlineVerificationEnabled: false,
   storageMutationEnabled: false,
   readinessDecisionAuthorized: false,
+  activationAuthorized: false,
+  finalAuthorizationGranted: false,
+  goLiveAuthorized: false,
   providerActivationAuthorized: false,
   providerExecutionAuthorized: false,
+  providerExecutionEnabled: false,
   providerActivated: false,
   providerClientCreated: false,
+  providerClientsEnabled: false,
   providerEnvRead: false,
+  envReadEnabled: false,
   providerSdkImported: false,
+  sdkImportEnabled: false,
   twilioActivated: false,
   dnsMutationEnabled: false,
   domainActivated: false,
+  domainMutationEnabled: false,
   vercelDomainConnectionChanged: false,
   vercelMutationEnabled: false,
   googleWorkspaceChanged: false,
@@ -32,15 +40,19 @@ export const controlledManualActivationReadinessPlanningFlags = {
   aiVoiceEnabled: false,
   routeCreated: false,
   inboundWebhookCreated: false,
+  routeOrWebhookCreated: false,
   campaignActivated: false,
+  campaignEnabled: false,
   queueSystemEnabled: false,
   reminderSystemEnabled: false,
   pollingEnabled: false,
   runtimeJobsEnabled: false,
   crmMutationEnabled: false,
   auditWritingEnabled: false,
+  auditWriteEnabled: false,
   approvalGrantsExecution: false,
   communicationExecutionAuthorized: false,
+  communicationExecutionEnabled: false,
   automationEnabled: false,
   autonomousOutreachEnabled: false,
   autonomousFollowUpEnabled: false,
@@ -51,14 +63,20 @@ export const controlledManualActivationReadinessPlanningFlags = {
   autonomousCampaignsEnabled: false,
   autonomousBuyerHandlingEnabled: false,
   autonomousApprovalAuthorityEnabled: false,
+  dryRunExecutionEnabled: false,
   rollbackExecutionEnabled: false,
-  goLiveAuthorized: false,
   spendIncreaseAuthorized: false,
   dncBypassAllowed: false,
   optOutBypassAllowed: false,
   stopBypassAllowed: false,
   blockerBypassEnabled: false,
+  mapScrapingEnabled: false,
+  streetViewAutomationEnabled: false,
+  gpsSurveillanceEnabled: false,
+  skipTracingAutomationEnabled: false,
+  leadCreationEnabled: false,
   phase2ImplementationAuthorized: false,
+  phase2ImplementationEnabled: false,
 } as const;
 
 export type ControlledManualActivationReadinessStatus = "manual_activation_readiness_planning_required";
@@ -89,6 +107,8 @@ export type ControlledManualActivationReadinessPlanning = {
   providerDecision: ControlledManualActivationReadinessDecision;
   communicationDecision: ControlledManualActivationReadinessDecision;
   automationDecision: ControlledManualActivationReadinessDecision;
+  previousRequiredStep: "Manual Evidence Completeness Review";
+  currentPhasePosition: "Phase 1: Business Foundation & Trust Infrastructure";
   controlledReadinessLanes: ControlledManualActivationReadinessLane[];
   phaseReadinessRecords: ControlledManualActivationReadinessPhaseRecord[];
   controlledManualActivationReadinessDoctrine: string[];
@@ -121,7 +141,8 @@ export const controlledManualActivationReadinessPhaseOrder = [
 ] as const;
 
 const baselineReadinessPrerequisites = [
-  "evidence completeness confirmed",
+  "Manual Evidence Completeness Review completed",
+  "manually reviewed evidence completeness documented",
   "human approval boundary documented",
   "AI role limited to operator leverage",
   "blocked drift remains blocked",
@@ -133,6 +154,9 @@ const humanApprovalBoundary = [
   "human owns provider approval",
   "human owns communication approval",
   "human owns outreach approval",
+  "human owns activation decisions",
+  "human owns dry-run authorization decisions",
+  "human owns final authorization judgment",
   "human owns negotiation",
   "human owns sending",
   "human owns contracts",
@@ -148,13 +172,17 @@ const aiOperatorLeverageRole = [
   "do not activate providers",
   "do not send communication",
   "do not mutate CRM data",
+  "do not create leads",
+  "do not automate maps",
+  "do not approve final authorization",
   "do not approve go-live",
+  "do not implement Phase 2",
 ];
 
 export const controlledReadinessLanes: ControlledManualActivationReadinessLane[] = [
   {
     lane: "business_identity",
-    manualReadinessFocus: ["entity proof reviewed", "EIN evidence reviewed", "banking readiness reviewed", "authorized human owner identified"],
+    manualReadinessFocus: ["Manual Evidence Completeness Review complete", "entity proof reviewed", "EIN evidence reviewed", "banking readiness reviewed", "authorized human owner identified"],
     readinessBlockerRule: "Business identity readiness remains blocked until manually reviewed; this contract cannot form entities or verify records online.",
   },
   {
@@ -195,7 +223,7 @@ export const controlledReadinessLanes: ControlledManualActivationReadinessLane[]
   {
     lane: "manual_approval_process",
     manualReadinessFocus: ["approval checklist reviewed", "human reviewer identified", "approval does not execute", "approval evidence remains manual"],
-    readinessBlockerRule: "Approval readiness cannot grant execution, sending, provider activation, or go-live.",
+    readinessBlockerRule: "Approval readiness cannot grant execution, sending, provider activation, final authorization, or go-live.",
   },
   {
     lane: "rollback_stop_procedure",
@@ -205,12 +233,12 @@ export const controlledReadinessLanes: ControlledManualActivationReadinessLane[]
   {
     lane: "internal_dry_run_plan",
     manualReadinessFocus: ["no-send dry-run plan reviewed", "failure-state rehearsal reviewed", "provider calls remain blocked"],
-    readinessBlockerRule: "Internal dry-run planning cannot become live testing, provider calls, sending, or runtime jobs.",
+    readinessBlockerRule: "Internal dry-run planning cannot become dry-run execution, live testing, provider calls, sending, or runtime jobs.",
   },
   {
     lane: "human_go_no_go_criteria",
     manualReadinessFocus: ["go/no-go criteria reviewed", "operator decision owner identified", "go-live remains blocked"],
-    readinessBlockerRule: "Go/no-go criteria planning cannot authorize go-live or convert approval into execution.",
+    readinessBlockerRule: "Go/no-go criteria planning cannot authorize final authorization, go-live, or convert approval into execution.",
   },
 ];
 
@@ -226,7 +254,7 @@ function createReadinessRecord(
     humanApprovalBoundary,
     aiOperatorLeverageRole,
     blockedDrift,
-    noExecutionRule: `${phaseName} readiness cannot activate providers, execute communication, mutate CRM data, create runtime jobs, implement Phase 2, or authorize go-live.`,
+    noExecutionRule: `${phaseName} readiness cannot activate providers, execute communication, mutate CRM data, create runtime jobs, execute dry-runs, execute rollback, create leads, automate maps, grant final authorization, implement Phase 2, or authorize go-live.`,
     nextReadinessGuidance,
   };
 }
@@ -235,13 +263,13 @@ export const phaseReadinessRecords: ControlledManualActivationReadinessPhaseReco
   createReadinessRecord(
     "Business Foundation & Trust Infrastructure",
     ["entity evidence reviewed", "domain/DNS notes reviewed", "email identity notes reviewed", "Twilio/A2P readiness reviewed", "DNC/STOP governance reviewed"],
-    ["provider activation", "DNS mutation", "Vercel mutation", "Google Workspace activation", "Twilio activation", "outbound communication", "go-live"],
+    ["activation", "provider execution", "provider activation", "DNS mutation", "Vercel mutation", "Google Workspace activation", "Twilio activation", "outbound communication", "final authorization", "go-live"],
     "Complete the manual activation readiness checklist review before any human go/no-go readiness decision planning.",
   ),
   createReadinessRecord(
     "Lead Intake & Simple CRM",
     ["lead source rule reviewed", "required intake fields reviewed", "stage taxonomy reviewed", "manual CRM boundary reviewed"],
-    ["CRM mutation", "automated lead creation", "property fact invention", "autonomous outreach"],
+    ["CRM mutation", "automated lead creation", "property fact invention", "autonomous outreach", "Phase 2 implementation"],
     "Review lead intake readiness only as planning; do not implement Phase 2.",
   ),
   createReadinessRecord(
@@ -289,7 +317,7 @@ export const phaseReadinessRecords: ControlledManualActivationReadinessPhaseReco
   createReadinessRecord(
     "Virtual Driving for Dollars Intelligence Engine",
     ["approved target neighborhoods reviewed", "manual review process reviewed", "distress signal checklist reviewed", "lead approval criteria reviewed", "buyer-demand criteria reviewed", "DNC/STOP governance reviewed", "public/private separation reviewed", "no-autonomous-scraping confirmation reviewed"],
-    ["autonomous map scraping", "Google Street View automation", "GPS surveillance", "owner contact automation", "skip tracing automation", "scraping", "autonomous outreach", "campaign activation", "lead creation without human approval"],
+    ["map scraping", "Google Street View automation", "GPS surveillance", "owner contact automation", "skip tracing automation", "scraping", "autonomous outreach", "campaign activation", "lead creation without human approval"],
     "Review Virtual D4D readiness as review-only off-market opportunity intelligence before SEO readiness.",
   ),
   createReadinessRecord(
@@ -338,14 +366,16 @@ export const phaseReadinessRecords: ControlledManualActivationReadinessPhaseReco
 
 export const controlledManualActivationReadinessDoctrine = [
   "Controlled Manual Activation Readiness Planning is planning-only.",
+  "Controlled Manual Activation Readiness Planning requires Manual Evidence Completeness Review before Manual Activation Readiness Checklist Review can be considered.",
+  "Current phase position is Phase 1: Business Foundation & Trust Infrastructure.",
   "Controlled Manual Activation Readiness Planning covers all 17 phases of the elite high-aROI acquisition OS.",
-  "Highest ROI comes from controlled manual readiness, not premature Phase 2 implementation, provider activation, outreach, automation, or scope expansion.",
+  "Highest acquisition ROI per operator hour comes from controlled manual readiness, not premature Phase 2 implementation, provider activation, outreach, automation, map automation, lead creation, or scope expansion.",
   "AI remains operator leverage only.",
   "All movement remains human-approved.",
   "Provider decision remains not_authorized.",
   "Communication decision remains not_authorized.",
   "Automation decision remains not_authorized.",
-  "No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, or go-live is authorized.",
+  "No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, dry-run execution, rollback execution, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, final authorization, lead creation, map scraping, Google Street View automation, GPS surveillance, skip tracing automation, Phase 2 implementation, or go-live is authorized.",
   "This is not autonomous wholesaling.",
   "Next exact step is Manual Activation Readiness Checklist Review.",
   "Next stage is Human Go No-Go Readiness Decision Planning.",
@@ -361,6 +391,8 @@ export function getControlledManualActivationReadinessPlanning(): ControlledManu
     providerDecision: "not_authorized",
     communicationDecision: "not_authorized",
     automationDecision: "not_authorized",
+    previousRequiredStep: "Manual Evidence Completeness Review",
+    currentPhasePosition: "Phase 1: Business Foundation & Trust Infrastructure",
     controlledReadinessLanes,
     phaseReadinessRecords,
     controlledManualActivationReadinessDoctrine,
@@ -380,7 +412,22 @@ export function getControlledManualActivationReadinessPlanning(): ControlledManu
 export function assertControlledManualActivationReadinessPlanningSafe(result: ControlledManualActivationReadinessPlanning) {
   const allowedTrueFlags = new Set(["readOnly", "advisoryOnly", "planningOnly", "manualActivationReadinessPlanningOnly"]);
   const unsafeTrueFlags = Object.entries(result.flags).filter(([key, value]) => !allowedTrueFlags.has(key) && value === true);
-  const summaryText = controlledManualActivationReadinessDoctrine.join(" ");
+  const allContractText = [
+    ...result.controlledManualActivationReadinessDoctrine,
+    ...result.controlledReadinessLanes.flatMap((lane) => [lane.lane, ...lane.manualReadinessFocus, lane.readinessBlockerRule]),
+    ...result.phaseReadinessRecords.flatMap((phase) => [
+      phase.phaseName,
+      ...phase.readinessPrerequisites,
+      ...phase.humanApprovalBoundary,
+      ...phase.aiOperatorLeverageRole,
+      ...phase.blockedDrift,
+      phase.noExecutionRule,
+      phase.nextReadinessGuidance,
+    ]),
+  ].join(" ");
+  const stalePhaseCountPattern = new RegExp(`1${"6"}[- ]phases?`, "i");
+  const unsafeImplicationPattern =
+    /activation is authorized|provider execution is authorized|outreach is authorized|automation is authorized|autonomous wholesaling is authorized|dry-run execution is authorized|rollback execution is authorized|lead creation is authorized|map automation is authorized|final authorization is granted|Phase 2 implementation is authorized|go-live is authorized/i;
 
   if (!result.readOnly || !result.advisoryOnly || !result.planningOnly) {
     throw new Error("Controlled Manual Activation Readiness Planning must remain read-only, advisory-only, and planning-only.");
@@ -390,8 +437,20 @@ export function assertControlledManualActivationReadinessPlanningSafe(result: Co
     throw new Error("Controlled Manual Activation Readiness Planning phase must remain pinned.");
   }
 
+  if (result.systemMode !== "small_high_clarity_acquisition_operating_system") {
+    throw new Error("Controlled Manual Activation Readiness Planning system mode must remain pinned.");
+  }
+
+  if (result.strategicAlignment !== "elite_high_aroi_acquisition_os") {
+    throw new Error("Controlled Manual Activation Readiness Planning strategic alignment must remain pinned.");
+  }
+
+  if (result.primaryMetric !== "acquisition_roi_per_operator_hour") {
+    throw new Error("Controlled Manual Activation Readiness Planning primary metric must remain pinned.");
+  }
+
   if (result.readinessStatus !== "manual_activation_readiness_planning_required") {
-    throw new Error("Controlled Manual Activation Readiness Planning cannot become activation-ready, execution-ready, send-ready, call-ready, automation-ready, or go-live-ready.");
+    throw new Error("Controlled Manual Activation Readiness Planning cannot become activation-ready, execution-ready, send-ready, call-ready, automation-ready, final-authorization-ready, Phase 2-ready, or go-live-ready.");
   }
 
   if (result.providerDecision !== "not_authorized") {
@@ -407,7 +466,15 @@ export function assertControlledManualActivationReadinessPlanningSafe(result: Co
   }
 
   if (unsafeTrueFlags.length > 0) {
-    throw new Error("Controlled Manual Activation Readiness Planning cannot authorize provider activation, provider clients, env reads, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, SMS, email, calling, runtime jobs, polling, CRM mutation, automation, campaigns, autonomous seller or buyer handling, approval-as-execution, blocker bypass, Phase 2 implementation, or go-live.");
+    throw new Error("Controlled Manual Activation Readiness Planning cannot authorize provider activation, provider execution, provider clients, env reads, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, SMS, email, calling, runtime jobs, polling, CRM mutation, automation, campaigns, dry-run execution, rollback execution, final authorization, map automation, lead creation, autonomous seller or buyer handling, approval-as-execution, blocker bypass, Phase 2 implementation, or go-live.");
+  }
+
+  if (result.previousRequiredStep !== "Manual Evidence Completeness Review") {
+    throw new Error("Controlled Manual Activation Readiness Planning must require Manual Evidence Completeness Review first.");
+  }
+
+  if (result.currentPhasePosition !== "Phase 1: Business Foundation & Trust Infrastructure") {
+    throw new Error("Controlled Manual Activation Readiness Planning must remain in Phase 1: Business Foundation & Trust Infrastructure.");
   }
 
   if (result.controlledReadinessLanes.length !== 12) {
@@ -419,7 +486,7 @@ export function assertControlledManualActivationReadinessPlanningSafe(result: Co
   }
 
   if (result.phaseReadinessRecords.map((phase) => phase.phaseName).join("|") !== controlledManualActivationReadinessPhaseOrder.join("|")) {
-    throw new Error("Controlled Manual Activation Readiness Planning phase readiness records must remain in the required 16-phase order.");
+    throw new Error("Controlled Manual Activation Readiness Planning phase readiness records must remain in the required 17-phase order.");
   }
 
   if (
@@ -433,11 +500,11 @@ export function assertControlledManualActivationReadinessPlanningSafe(result: Co
         !phase.nextReadinessGuidance,
     )
   ) {
-    throw new Error("Every phase readiness record must include evidence completeness, human boundary, AI operator-leverage boundary, blocked drift, and no-execution guidance.");
+    throw new Error("Every phase readiness record must include evidence completeness, human boundary, AI operator-leverage boundary, blocked drift, no-execution rule, and next readiness guidance.");
   }
 
-  if (!/No activation/i.test(summaryText) || !/not autonomous wholesaling/i.test(summaryText)) {
-    throw new Error("Controlled Manual Activation Readiness Planning wording must remain planning-only and non-activating.");
+  if (stalePhaseCountPattern.test(allContractText) || unsafeImplicationPattern.test(allContractText)) {
+    throw new Error("Controlled Manual Activation Readiness Planning wording must forbid activation, provider execution, outreach, automation, autonomous wholesaling, dry-run execution, rollback execution, lead creation, map automation, final authorization, Phase 2 implementation, go-live, and outdated phase-count wording.");
   }
 
   if (result.recommendedNextExactStep !== "Manual Activation Readiness Checklist Review") {
@@ -452,5 +519,5 @@ export function assertControlledManualActivationReadinessPlanningSafe(result: Co
 export function summarizeControlledManualActivationReadinessPlanning(result: ControlledManualActivationReadinessPlanning) {
   assertControlledManualActivationReadinessPlanningSafe(result);
 
-  return `${result.phase}: ${result.readinessStatus}. This is controlled manual activation readiness planning for all 17 phases, built for highest ROI by keeping readiness operator leverage only, human-approved, planning-only, and blocked from premature execution. Provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}. Readiness lanes cover business identity, domain/DNS notes, public website/private dashboard separation, Google Workspace/email identity, SPF/DKIM/DMARC notes, Twilio readiness, A2P/10DLC readiness, DNC/STOP governance, manual approval process, rollback/stop procedure, internal dry-run plan, human go/no-go criteria, and Virtual Driving for Dollars review-only intelligence. No activation, provider execution, outreach, SMS, email, calling, automation, CRM mutation, runtime jobs, provider activation, provider clients, env reads, DNS mutation, Vercel mutation, Google Workspace activation, Twilio activation, campaigns, autonomous seller handling, autonomous buyer handling, map scraping, Google Street View automation, GPS surveillance, lead creation without human approval, approval-as-execution, blocker bypass, go-live, or Phase 2 implementation is authorized. This is not autonomous wholesaling. Next exact step: ${result.recommendedNextExactStep}. Next stage: ${result.nextStageRecommendation}.`;
+  return `${result.phase}: ${result.readinessStatus}. Current phase position: ${result.currentPhasePosition}. Previous required step is ${result.previousRequiredStep}. This is controlled manual activation readiness planning for all 17 phases, built for highest acquisition ROI per operator hour by keeping readiness operator leverage only, human-approved, planning-only, and blocked from premature execution. Provider decision is ${result.providerDecision}; communication decision is ${result.communicationDecision}; automation decision is ${result.automationDecision}. Readiness lanes cover business identity, domain/DNS notes, public website/private dashboard separation, Google Workspace/email identity, SPF/DKIM/DMARC notes, Twilio readiness, A2P/10DLC readiness, DNC/STOP governance, manual approval process, rollback/stop procedure, internal dry-run plan, human go/no-go criteria, and Virtual Driving for Dollars review-only intelligence. No activation, no provider execution, no outreach, no SMS, no email, no calling, no automation, no CRM mutation, no runtime jobs, no dry-run execution, no rollback execution, no final authorization, no provider activation, no provider clients, no env reads, no DNS mutation, no Vercel mutation, no Google Workspace activation, no Twilio activation, no campaigns, no autonomous seller handling, no autonomous buyer handling, no map automation, no map scraping, no Google Street View automation, no GPS surveillance, no skip tracing automation, no lead creation without human approval, no approval-as-execution, no blocker bypass, no go-live, and not Phase 2 implementation is authorized. This is not autonomous wholesaling. Next exact step: ${result.recommendedNextExactStep}. Next stage: ${result.nextStageRecommendation}.`;
 }

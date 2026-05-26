@@ -1,12 +1,13 @@
 import {
   assertControlledManualActivationReadinessPlanningSafe,
+  controlledManualActivationReadinessPhaseOrder,
   controlledManualActivationReadinessPlanningFlags,
   getControlledManualActivationReadinessPlanning,
   summarizeControlledManualActivationReadinessPlanning,
 } from "./controlled-manual-activation-readiness-planning";
 
 describe("controlled manual activation readiness planning", () => {
-  it("creates the pinned controlled manual activation readiness planning contract", () => {
+  it("preserves pinned controlled manual activation readiness planning fields", () => {
     const result = getControlledManualActivationReadinessPlanning();
 
     expect(result.phase).toBe("Controlled Manual Activation Readiness Planning");
@@ -17,6 +18,8 @@ describe("controlled manual activation readiness planning", () => {
     expect(result.providerDecision).toBe("not_authorized");
     expect(result.communicationDecision).toBe("not_authorized");
     expect(result.automationDecision).toBe("not_authorized");
+    expect(result.previousRequiredStep).toBe("Manual Evidence Completeness Review");
+    expect(result.currentPhasePosition).toBe("Phase 1: Business Foundation & Trust Infrastructure");
     expect(result.recommendedNextExactStep).toBe("Manual Activation Readiness Checklist Review");
     expect(result.nextStageRecommendation).toBe("Human Go No-Go Readiness Decision Planning");
   });
@@ -52,6 +55,7 @@ describe("controlled manual activation readiness planning", () => {
       "internal_dry_run_plan",
       "human_go_no_go_criteria",
     ]);
+    expect(laneText).toMatch(/Manual Evidence Completeness Review complete/i);
     expect(laneText).toMatch(/business identity/i);
     expect(laneText).toMatch(/domain and DNS/i);
     expect(laneText).toMatch(/public website stays marketing-only/i);
@@ -72,6 +76,8 @@ describe("controlled manual activation readiness planning", () => {
   it("defines all 17 phase readiness records in order", () => {
     const result = getControlledManualActivationReadinessPlanning();
 
+    expect(result.phaseReadinessRecords).toHaveLength(17);
+    expect(result.phaseReadinessRecords.map((phase) => phase.phaseName)).toEqual([...controlledManualActivationReadinessPhaseOrder]);
     expect(result.phaseReadinessRecords.map((phase) => phase.phaseName)).toEqual([
       "Business Foundation & Trust Infrastructure",
       "Lead Intake & Simple CRM",
@@ -93,7 +99,46 @@ describe("controlled manual activation readiness planning", () => {
     ]);
   });
 
-  it("adds Virtual Driving for Dollars readiness as review-only intelligence before SEO", () => {
+  it("requires every phase readiness record to include prerequisites boundaries blocked drift and no-execution guidance", () => {
+    const result = getControlledManualActivationReadinessPlanning();
+
+    for (const phase of result.phaseReadinessRecords) {
+      const prerequisiteText = phase.readinessPrerequisites.join(" ");
+
+      expect(prerequisiteText).toMatch(/Manual Evidence Completeness Review completed/i);
+      expect(prerequisiteText).toMatch(/manually reviewed evidence completeness documented/i);
+      expect(prerequisiteText).toMatch(/human approval boundary documented/i);
+      expect(prerequisiteText).toMatch(/AI role limited to operator leverage/i);
+      expect(prerequisiteText).toMatch(/blocked drift remains blocked/i);
+      expect(prerequisiteText).toMatch(/no execution authorized/i);
+      expect(phase.humanApprovalBoundary).toEqual(
+        expect.arrayContaining([
+          "human reviews readiness checklist",
+          "human owns activation decisions",
+          "human owns dry-run authorization decisions",
+          "human owns final authorization judgment",
+          "human owns go/no-go decisions",
+        ]),
+      );
+      expect(phase.aiOperatorLeverageRole).toEqual(
+        expect.arrayContaining([
+          "organize readiness prerequisites",
+          "support operator clarity",
+          "do not activate providers",
+          "do not send communication",
+          "do not create leads",
+          "do not automate maps",
+          "do not implement Phase 2",
+        ]),
+      );
+      expect(phase.blockedDrift.length).toBeGreaterThan(0);
+      expect(phase.noExecutionRule).toMatch(/cannot activate providers/i);
+      expect(phase.noExecutionRule).toMatch(/cannot.*implement Phase 2/i);
+      expect(phase.nextReadinessGuidance).toMatch(/review|complete/i);
+    }
+  });
+
+  it("keeps Virtual D4D readiness review-only with no map automation or lead creation", () => {
     const result = getControlledManualActivationReadinessPlanning();
     const phaseNames = result.phaseReadinessRecords.map((phase) => phase.phaseName);
     const virtualD4d = result.phaseReadinessRecords.find((phase) => phase.phaseName === "Virtual Driving for Dollars Intelligence Engine");
@@ -115,147 +160,90 @@ describe("controlled manual activation readiness planning", () => {
     expect(virtualD4dText).toMatch(/map scraping/i);
     expect(virtualD4dText).toMatch(/Street View automation/i);
     expect(virtualD4dText).toMatch(/GPS surveillance/i);
+    expect(virtualD4dText).toMatch(/skip tracing automation/i);
+    expect(virtualD4dText).toMatch(/autonomous outreach/i);
+    expect(virtualD4dText).toMatch(/campaign activation/i);
+    expect(virtualD4dText).toMatch(/lead creation without human approval/i);
   });
 
-  it("requires every phase readiness record to include prerequisites boundaries blocked drift and no-execution guidance", () => {
-    const result = getControlledManualActivationReadinessPlanning();
-
-    for (const phase of result.phaseReadinessRecords) {
-      const prerequisiteText = phase.readinessPrerequisites.join(" ");
-
-      expect(prerequisiteText).toMatch(/evidence completeness confirmed/i);
-      expect(prerequisiteText).toMatch(/human approval boundary documented/i);
-      expect(prerequisiteText).toMatch(/AI role limited to operator leverage/i);
-      expect(prerequisiteText).toMatch(/blocked drift remains blocked/i);
-      expect(prerequisiteText).toMatch(/no execution authorized/i);
-      expect(phase.humanApprovalBoundary).toEqual(expect.arrayContaining(["human reviews readiness checklist", "human owns go/no-go decisions"]));
-      expect(phase.aiOperatorLeverageRole).toEqual(
-        expect.arrayContaining(["organize readiness prerequisites", "support operator clarity", "do not activate providers", "do not send communication"]),
-      );
-      expect(phase.blockedDrift.length).toBeGreaterThan(0);
-      expect(phase.noExecutionRule).toMatch(/cannot activate providers/i);
-      expect(phase.noExecutionRule).toMatch(/cannot.*implement Phase 2/i);
-      expect(phase.nextReadinessGuidance).toMatch(/review/i);
-    }
-  });
-
-  it("keeps provider clients env DNS Vercel Google Workspace Twilio outbound runtime CRM automation campaigns and go-live flags false", () => {
+  it("keeps all blocked execution provider communication runtime map lead Phase 2 and go-live flags false", () => {
     const flags = getControlledManualActivationReadinessPlanning().flags;
 
     expect(flags.evidenceCollectionAutomationEnabled).toBe(false);
     expect(flags.onlineVerificationEnabled).toBe(false);
     expect(flags.storageMutationEnabled).toBe(false);
     expect(flags.readinessDecisionAuthorized).toBe(false);
+    expect(flags.activationAuthorized).toBe(false);
+    expect(flags.finalAuthorizationGranted).toBe(false);
+    expect(flags.goLiveAuthorized).toBe(false);
     expect(flags.providerActivationAuthorized).toBe(false);
     expect(flags.providerExecutionAuthorized).toBe(false);
+    expect(flags.providerExecutionEnabled).toBe(false);
     expect(flags.providerActivated).toBe(false);
     expect(flags.providerClientCreated).toBe(false);
+    expect(flags.providerClientsEnabled).toBe(false);
     expect(flags.providerEnvRead).toBe(false);
+    expect(flags.envReadEnabled).toBe(false);
     expect(flags.providerSdkImported).toBe(false);
+    expect(flags.sdkImportEnabled).toBe(false);
     expect(flags.twilioActivated).toBe(false);
     expect(flags.dnsMutationEnabled).toBe(false);
-    expect(flags.domainActivated).toBe(false);
-    expect(flags.vercelDomainConnectionChanged).toBe(false);
+    expect(flags.domainMutationEnabled).toBe(false);
     expect(flags.vercelMutationEnabled).toBe(false);
-    expect(flags.googleWorkspaceChanged).toBe(false);
     expect(flags.googleWorkspaceActivated).toBe(false);
     expect(flags.mailboxCreated).toBe(false);
     expect(flags.outboundSmsEnabled).toBe(false);
     expect(flags.outboundEmailEnabled).toBe(false);
-    expect(flags.emailSendingEnabled).toBe(false);
     expect(flags.callingEnabled).toBe(false);
+    expect(flags.aiVoiceEnabled).toBe(false);
+    expect(flags.routeOrWebhookCreated).toBe(false);
+    expect(flags.campaignEnabled).toBe(false);
+    expect(flags.queueSystemEnabled).toBe(false);
     expect(flags.runtimeJobsEnabled).toBe(false);
     expect(flags.pollingEnabled).toBe(false);
     expect(flags.crmMutationEnabled).toBe(false);
+    expect(flags.auditWriteEnabled).toBe(false);
+    expect(flags.communicationExecutionEnabled).toBe(false);
     expect(flags.automationEnabled).toBe(false);
-    expect(flags.campaignActivated).toBe(false);
     expect(flags.autonomousSellerHandlingEnabled).toBe(false);
     expect(flags.autonomousBuyerHandlingEnabled).toBe(false);
     expect(flags.approvalGrantsExecution).toBe(false);
-    expect(flags.blockerBypassEnabled).toBe(false);
-    expect(flags.phase2ImplementationAuthorized).toBe(false);
-    expect(flags.goLiveAuthorized).toBe(false);
+    expect(flags.dryRunExecutionEnabled).toBe(false);
+    expect(flags.rollbackExecutionEnabled).toBe(false);
+    expect(flags.mapScrapingEnabled).toBe(false);
+    expect(flags.streetViewAutomationEnabled).toBe(false);
+    expect(flags.gpsSurveillanceEnabled).toBe(false);
+    expect(flags.skipTracingAutomationEnabled).toBe(false);
+    expect(flags.leadCreationEnabled).toBe(false);
+    expect(flags.phase2ImplementationEnabled).toBe(false);
   });
 
-  it("summarizes controlled manual readiness planning without activation or Phase 2 implementation", () => {
-    const result = getControlledManualActivationReadinessPlanning();
-    const summary = summarizeControlledManualActivationReadinessPlanning(result);
+  it("summarizes controlled readiness planning with phase position and no drift", () => {
+    const summary = summarizeControlledManualActivationReadinessPlanning(getControlledManualActivationReadinessPlanning());
 
+    expect(summary).toMatch(/Current phase position: Phase 1: Business Foundation & Trust Infrastructure/i);
     expect(summary).toMatch(/controlled manual activation readiness planning/i);
     expect(summary).toMatch(/all 17 phases/i);
     expect(summary).toMatch(/Virtual Driving for Dollars review-only intelligence/i);
-    expect(summary).toMatch(/highest ROI/i);
+    expect(summary).toMatch(/highest acquisition ROI per operator hour/i);
     expect(summary).toMatch(/operator leverage only/i);
     expect(summary).toMatch(/human-approved/i);
     expect(summary).toMatch(/No activation/i);
-    expect(summary).toMatch(/provider execution/i);
-    expect(summary).toMatch(/outreach/i);
-    expect(summary).toMatch(/automation/i);
+    expect(summary).toMatch(/no provider execution/i);
+    expect(summary).toMatch(/no outreach/i);
+    expect(summary).toMatch(/no automation/i);
+    expect(summary).toMatch(/no map automation/i);
     expect(summary).toMatch(/not autonomous wholesaling/i);
-    expect(summary).toMatch(/Phase 2 implementation/i);
+    expect(summary).toMatch(/not Phase 2 implementation/i);
     expect(summary).toMatch(/Manual Activation Readiness Checklist Review/i);
     expect(summary).toMatch(/Human Go No-Go Readiness Decision Planning/i);
+    expect(summary).not.toMatch(new RegExp(`1${"6"}[- ]phases?`, "i"));
   });
 
   it("fails invariant checks if any blocked flag drifts true", () => {
-    const blockedFlags = [
-      "evidenceCollectionAutomationEnabled",
-      "onlineVerificationEnabled",
-      "storageMutationEnabled",
-      "readinessDecisionAuthorized",
-      "providerActivationAuthorized",
-      "providerExecutionAuthorized",
-      "providerActivated",
-      "providerClientCreated",
-      "providerEnvRead",
-      "providerSdkImported",
-      "twilioActivated",
-      "dnsMutationEnabled",
-      "domainActivated",
-      "vercelDomainConnectionChanged",
-      "vercelMutationEnabled",
-      "googleWorkspaceChanged",
-      "googleWorkspaceActivated",
-      "mailboxCreated",
-      "spfDkimDmarcPublished",
-      "emailSignatureActivated",
-      "numberActivated",
-      "a2p10DlcSubmitted",
-      "outboundSmsEnabled",
-      "outboundEmailEnabled",
-      "emailSendingEnabled",
-      "callingEnabled",
-      "aiVoiceEnabled",
-      "routeCreated",
-      "inboundWebhookCreated",
-      "campaignActivated",
-      "queueSystemEnabled",
-      "reminderSystemEnabled",
-      "pollingEnabled",
-      "runtimeJobsEnabled",
-      "crmMutationEnabled",
-      "auditWritingEnabled",
-      "approvalGrantsExecution",
-      "communicationExecutionAuthorized",
-      "automationEnabled",
-      "autonomousOutreachEnabled",
-      "autonomousFollowUpEnabled",
-      "autonomousSellerHandlingEnabled",
-      "autonomousNegotiationEnabled",
-      "autonomousTextingEnabled",
-      "autonomousCallingEnabled",
-      "autonomousCampaignsEnabled",
-      "autonomousBuyerHandlingEnabled",
-      "autonomousApprovalAuthorityEnabled",
-      "rollbackExecutionEnabled",
-      "goLiveAuthorized",
-      "spendIncreaseAuthorized",
-      "dncBypassAllowed",
-      "optOutBypassAllowed",
-      "stopBypassAllowed",
-      "blockerBypassEnabled",
-      "phase2ImplementationAuthorized",
-    ] as const;
+    const blockedFlags = Object.keys(controlledManualActivationReadinessPlanningFlags).filter(
+      (flag) => !["readOnly", "advisoryOnly", "planningOnly", "manualActivationReadinessPlanningOnly"].includes(flag),
+    ) as Array<keyof typeof controlledManualActivationReadinessPlanningFlags>;
 
     for (const blockedFlag of blockedFlags) {
       const unsafeResult = {
@@ -270,52 +258,82 @@ describe("controlled manual activation readiness planning", () => {
     }
   });
 
-  it("fails invariant checks if pinned fields or readiness records drift", () => {
-    const statusUnsafe = {
-      ...getControlledManualActivationReadinessPlanning(),
-      readinessStatus: "activation_ready" as "manual_activation_readiness_planning_required",
-    };
-    const providerUnsafe = {
-      ...getControlledManualActivationReadinessPlanning(),
-      providerDecision: "authorized" as "not_authorized",
-    };
-    const missingPhase = {
-      ...getControlledManualActivationReadinessPlanning(),
-      phaseReadinessRecords: getControlledManualActivationReadinessPlanning().phaseReadinessRecords.slice(0, 16),
-    };
-    const wrongOrder = {
-      ...getControlledManualActivationReadinessPlanning(),
-      phaseReadinessRecords: [
-        getControlledManualActivationReadinessPlanning().phaseReadinessRecords[1],
-        getControlledManualActivationReadinessPlanning().phaseReadinessRecords[0],
-        ...getControlledManualActivationReadinessPlanning().phaseReadinessRecords.slice(2),
-      ],
-    };
-    const missingGuidance = {
-      ...getControlledManualActivationReadinessPlanning(),
-      phaseReadinessRecords: [
-        {
-          ...getControlledManualActivationReadinessPlanning().phaseReadinessRecords[0],
-          noExecutionRule: "",
-        },
-        ...getControlledManualActivationReadinessPlanning().phaseReadinessRecords.slice(1),
-      ],
-    };
-    const nextStepUnsafe = {
-      ...getControlledManualActivationReadinessPlanning(),
-      recommendedNextExactStep: "Activate Providers" as "Manual Activation Readiness Checklist Review",
-    };
-    const nextStageUnsafe = {
-      ...getControlledManualActivationReadinessPlanning(),
-      nextStageRecommendation: "Go Live" as "Human Go No-Go Readiness Decision Planning",
-    };
+  it("fails invariant checks if pinned fields or previous step drift", () => {
+    expect(() =>
+      assertControlledManualActivationReadinessPlanningSafe({
+        ...getControlledManualActivationReadinessPlanning(),
+        readinessStatus: "activation_ready" as "manual_activation_readiness_planning_required",
+      }),
+    ).toThrow(/cannot become activation-ready/i);
 
-    expect(() => assertControlledManualActivationReadinessPlanningSafe(statusUnsafe)).toThrow(/cannot become activation-ready/i);
-    expect(() => assertControlledManualActivationReadinessPlanningSafe(providerUnsafe)).toThrow(/provider decision/i);
-    expect(() => assertControlledManualActivationReadinessPlanningSafe(missingPhase)).toThrow(/17 phase readiness records/i);
-    expect(() => assertControlledManualActivationReadinessPlanningSafe(wrongOrder)).toThrow(/required 16-phase order/i);
-    expect(() => assertControlledManualActivationReadinessPlanningSafe(missingGuidance)).toThrow(/Every phase readiness record/i);
-    expect(() => assertControlledManualActivationReadinessPlanningSafe(nextStepUnsafe)).toThrow(/Manual Activation Readiness Checklist Review/i);
-    expect(() => assertControlledManualActivationReadinessPlanningSafe(nextStageUnsafe)).toThrow(/Human Go No-Go Readiness Decision Planning/i);
+    expect(() =>
+      assertControlledManualActivationReadinessPlanningSafe({
+        ...getControlledManualActivationReadinessPlanning(),
+        providerDecision: "authorized" as "not_authorized",
+      }),
+    ).toThrow(/provider decision/i);
+
+    expect(() =>
+      assertControlledManualActivationReadinessPlanningSafe({
+        ...getControlledManualActivationReadinessPlanning(),
+        previousRequiredStep: "Skip Manual Evidence" as "Manual Evidence Completeness Review",
+      }),
+    ).toThrow(/Manual Evidence Completeness Review/i);
+
+    expect(() =>
+      assertControlledManualActivationReadinessPlanningSafe({
+        ...getControlledManualActivationReadinessPlanning(),
+        currentPhasePosition: "Phase 2: Lead Intake & Simple CRM" as "Phase 1: Business Foundation & Trust Infrastructure",
+      }),
+    ).toThrow(/Phase 1: Business Foundation & Trust Infrastructure/i);
+  });
+
+  it("fails invariant checks if readiness records drift or stale wording appears", () => {
+    expect(() =>
+      assertControlledManualActivationReadinessPlanningSafe({
+        ...getControlledManualActivationReadinessPlanning(),
+        phaseReadinessRecords: getControlledManualActivationReadinessPlanning().phaseReadinessRecords.slice(0, 16),
+      }),
+    ).toThrow(/17 phase readiness records/i);
+
+    expect(() =>
+      assertControlledManualActivationReadinessPlanningSafe({
+        ...getControlledManualActivationReadinessPlanning(),
+        phaseReadinessRecords: [
+          getControlledManualActivationReadinessPlanning().phaseReadinessRecords[1],
+          getControlledManualActivationReadinessPlanning().phaseReadinessRecords[0],
+          ...getControlledManualActivationReadinessPlanning().phaseReadinessRecords.slice(2),
+        ],
+      }),
+    ).toThrow(/required 17-phase order/i);
+
+    expect(() =>
+      assertControlledManualActivationReadinessPlanningSafe({
+        ...getControlledManualActivationReadinessPlanning(),
+        phaseReadinessRecords: [
+          {
+            ...getControlledManualActivationReadinessPlanning().phaseReadinessRecords[0],
+            noExecutionRule: "",
+          },
+          ...getControlledManualActivationReadinessPlanning().phaseReadinessRecords.slice(1),
+        ],
+      }),
+    ).toThrow(/Every phase readiness record/i);
+
+    expect(() =>
+      assertControlledManualActivationReadinessPlanningSafe({
+        ...getControlledManualActivationReadinessPlanning(),
+        controlledManualActivationReadinessDoctrine: [[ "This stale", "phase wording is not allowed." ].join(` 1${"6"}-`)],
+      }),
+    ).toThrow(/outdated phase-count wording/i);
+  });
+
+  it("fails invariant checks if wording implies activation", () => {
+    expect(() =>
+      assertControlledManualActivationReadinessPlanningSafe({
+        ...getControlledManualActivationReadinessPlanning(),
+        controlledManualActivationReadinessDoctrine: ["activation is authorized"],
+      }),
+    ).toThrow(/wording must forbid/i);
   });
 });
