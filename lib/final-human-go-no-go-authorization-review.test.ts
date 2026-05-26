@@ -15,6 +15,7 @@ describe("final human go no-go authorization review", () => {
     expect(result.providerDecision).toBe("not_authorized");
     expect(result.communicationExecutionDecision).toBe("not_authorized");
     expect(result.automationDecision).toBe("not_authorized");
+    expect(result.previousRequiredStep).toBe("Complete Human Go No-Go Readiness Decision Planning");
     expect(result.recommendedNextExactStep).toBe("Controlled Manual Activation Runbook Planning");
     expect(result.nextStageRecommendation).toBe("Controlled Manual Activation Runbook Planning");
   });
@@ -160,6 +161,88 @@ describe("final human go no-go authorization review", () => {
     expect(doctrineText).toMatch(/AI may summarize evidence and explain blockers only/i);
     expect(doctrineText).toMatch(/Final authorization requires separate signed human evidence/i);
     expect(doctrineText).toMatch(/DNC, opt-out, STOP, revocation, and missing approval remain non-bypassable/i);
+    expect(doctrineText).toMatch(/Complete Human Go No-Go Readiness Decision Planning/i);
+    expect(doctrineText).toMatch(/all 17 phases/i);
+    expect(doctrineText).toMatch(/operator leverage only/i);
+    expect(doctrineText).toMatch(/Virtual Driving for Dollars remains no-map-automation/i);
+    expect(doctrineText).toMatch(/lead creation/i);
+    expect(doctrineText).toMatch(/map scraping/i);
+    expect(doctrineText).toMatch(/Google Street View automation/i);
+    expect(doctrineText).toMatch(/GPS surveillance/i);
+    expect(doctrineText).toMatch(/Phase 2 implementation/i);
+    expect(doctrineText).toMatch(/not autonomous wholesaling/i);
+  });
+
+  it("defines all 17 phase final review records in order", () => {
+    const result = getFinalHumanGoNoGoAuthorizationReview();
+
+    expect(result.phaseFinalReviewRecords.map((phase) => phase.phaseName)).toEqual([
+      "Business Foundation & Trust Infrastructure",
+      "Lead Intake & Simple CRM",
+      "Lead Prioritization Engine",
+      "Seller Review & Call Prep",
+      "Follow-Up Organization System",
+      "Daily Acquisition Command Center",
+      "KPI & Revenue Intelligence",
+      "Deal Quality Intelligence",
+      "AI-Assisted Lead Discovery",
+      "Virtual Driving for Dollars Intelligence Engine",
+      "SEO & Local Authority Engine",
+      "Conversion Optimization Engine",
+      "Safety & Compliance Engine",
+      "Facebook & TikTok Acquisition Engine",
+      "Design & Creative AI Agent",
+      "Buyer Fit Intelligence",
+      "Pentest & Security Engine",
+    ]);
+  });
+
+  it("requires every phase final review record to preserve human authorization and no-execution boundaries", () => {
+    const result = getFinalHumanGoNoGoAuthorizationReview();
+
+    for (const phase of result.phaseFinalReviewRecords) {
+      expect(phase.finalReviewEvidence).toEqual(expect.arrayContaining(["prior completion step evidence"]));
+      expect(phase.humanAuthorizationBoundary).toEqual(expect.arrayContaining(["human owns final review judgment", "human owns signed authorization evidence"]));
+      expect(phase.signedEvidenceExpectation).toMatch(/separate signed human evidence/i);
+      expect(phase.blockerPreservationRule).toMatch(/non-bypassable/i);
+      expect(phase.aiAdvisoryOnlyRole).toEqual(expect.arrayContaining(["summarize final review evidence", "support operator clarity", "do not grant final authorization"]));
+      expect(phase.forbiddenDrift.length).toBeGreaterThan(0);
+      expect(phase.noExecutionRule).toMatch(/does not authorize final authorization/i);
+      expect(phase.noExecutionRule).toMatch(/go-live/i);
+      expect(phase.noExecutionRule).toMatch(/provider activation/i);
+      expect(phase.noExecutionRule).toMatch(/lead creation/i);
+      expect(phase.noExecutionRule).toMatch(/map automation/i);
+      expect(phase.noExecutionRule).toMatch(/Phase 2 implementation/i);
+    }
+  });
+
+  it("keeps Virtual Driving for Dollars final review no-map automation and human-approved only", () => {
+    const result = getFinalHumanGoNoGoAuthorizationReview();
+    const phaseNames = result.phaseFinalReviewRecords.map((phase) => phase.phaseName);
+    const virtualD4d = result.phaseFinalReviewRecords.find((phase) => phase.phaseName === "Virtual Driving for Dollars Intelligence Engine");
+    const virtualD4dText = [
+      ...(virtualD4d?.finalReviewEvidence ?? []),
+      ...(virtualD4d?.forbiddenDrift ?? []),
+      virtualD4d?.noExecutionRule ?? "",
+    ].join(" ");
+
+    expect(phaseNames.indexOf("Virtual Driving for Dollars Intelligence Engine")).toBe(phaseNames.indexOf("AI-Assisted Lead Discovery") + 1);
+    expect(phaseNames.indexOf("Virtual Driving for Dollars Intelligence Engine")).toBeLessThan(phaseNames.indexOf("SEO & Local Authority Engine"));
+    expect(virtualD4dText).toMatch(/approved target neighborhoods/i);
+    expect(virtualD4dText).toMatch(/manual review process/i);
+    expect(virtualD4dText).toMatch(/distress signal checklist/i);
+    expect(virtualD4dText).toMatch(/lead approval criteria/i);
+    expect(virtualD4dText).toMatch(/buyer-demand criteria/i);
+    expect(virtualD4dText).toMatch(/DNC\/STOP governance/i);
+    expect(virtualD4dText).toMatch(/public\/private separation/i);
+    expect(virtualD4dText).toMatch(/map scraping/i);
+    expect(virtualD4dText).toMatch(/Google Street View automation/i);
+    expect(virtualD4dText).toMatch(/GPS surveillance/i);
+    expect(virtualD4dText).toMatch(/skip tracing automation/i);
+    expect(virtualD4dText).toMatch(/owner contact automation/i);
+    expect(virtualD4dText).toMatch(/autonomous outreach/i);
+    expect(virtualD4dText).toMatch(/campaign activation/i);
+    expect(virtualD4dText).toMatch(/lead creation without human approval/i);
   });
 
   it("summarizes no authorization activation communication runtime autonomy or spend and includes next stage", () => {
@@ -171,9 +254,20 @@ describe("final human go no-go authorization review", () => {
     expect(summary).toMatch(/communication execution decision is not_authorized/i);
     expect(summary).toMatch(/automation decision is not_authorized/i);
     expect(summary).toMatch(/No final authorization/i);
+    expect(summary).toMatch(/all 17 phases/i);
+    expect(summary).toMatch(/operator leverage only/i);
+    expect(summary).toMatch(/human-owned/i);
     expect(summary).toMatch(/go-live/i);
     expect(summary).toMatch(/provider activation/i);
+    expect(summary).toMatch(/provider execution/i);
     expect(summary).toMatch(/outbound communication/i);
+    expect(summary).toMatch(/lead creation/i);
+    expect(summary).toMatch(/map scraping/i);
+    expect(summary).toMatch(/Google Street View automation/i);
+    expect(summary).toMatch(/GPS surveillance/i);
+    expect(summary).toMatch(/Phase 2 implementation/i);
+    expect(summary).toMatch(/not autonomous wholesaling/i);
+    expect(summary).toMatch(/Highest acquisition ROI per operator hour/i);
     expect(summary).toMatch(/runtime job/i);
     expect(summary).toMatch(/autonomous seller handling/i);
     expect(summary).toMatch(/spend increase/i);
@@ -211,11 +305,20 @@ describe("final human go no-go authorization review", () => {
       "automationEnabled",
       "autonomousFollowUpEnabled",
       "autonomousSellerHandlingEnabled",
+      "autonomousOutreachEnabled",
+      "autonomousTextingEnabled",
+      "autonomousCallingEnabled",
       "spendIncreaseAuthorized",
       "dncBypassAllowed",
       "optOutBypassAllowed",
       "stopBypassAllowed",
       "rollbackExecutionEnabled",
+      "mapScrapingEnabled",
+      "streetViewAutomationEnabled",
+      "gpsSurveillanceEnabled",
+      "skipTracingEnabled",
+      "leadCreationEnabled",
+      "phase2ImplementationEnabled",
     ] as const;
 
     for (const blockedFlag of blockedFlags) {
@@ -258,6 +361,45 @@ describe("final human go no-go authorization review", () => {
     expect(() => assertFinalHumanGoNoGoAuthorizationReviewSafe(providerUnsafe)).toThrow(/provider decision/i);
     expect(() => assertFinalHumanGoNoGoAuthorizationReviewSafe(communicationUnsafe)).toThrow(/communication execution decision/i);
     expect(() => assertFinalHumanGoNoGoAuthorizationReviewSafe(automationUnsafe)).toThrow(/automation decision/i);
+  });
+
+  it("fails invariant checks if prior completion step or phase records drift", () => {
+    const missingPriorStep = {
+      ...getFinalHumanGoNoGoAuthorizationReview(),
+      previousRequiredStep: "Human Go No-Go Readiness Decision Planning" as "Complete Human Go No-Go Readiness Decision Planning",
+    };
+    const missingPhase = {
+      ...getFinalHumanGoNoGoAuthorizationReview(),
+      phaseFinalReviewRecords: getFinalHumanGoNoGoAuthorizationReview().phaseFinalReviewRecords.slice(0, 16),
+    };
+    const wrongOrder = {
+      ...getFinalHumanGoNoGoAuthorizationReview(),
+      phaseFinalReviewRecords: [
+        getFinalHumanGoNoGoAuthorizationReview().phaseFinalReviewRecords[1],
+        getFinalHumanGoNoGoAuthorizationReview().phaseFinalReviewRecords[0],
+        ...getFinalHumanGoNoGoAuthorizationReview().phaseFinalReviewRecords.slice(2),
+      ],
+    };
+    const missingRecordField = {
+      ...getFinalHumanGoNoGoAuthorizationReview(),
+      phaseFinalReviewRecords: [
+        {
+          ...getFinalHumanGoNoGoAuthorizationReview().phaseFinalReviewRecords[0],
+          noExecutionRule: "",
+        },
+        ...getFinalHumanGoNoGoAuthorizationReview().phaseFinalReviewRecords.slice(1),
+      ],
+    };
+    const activationWording = {
+      ...getFinalHumanGoNoGoAuthorizationReview(),
+      finalHumanGoNoGoDoctrine: ["Activation and final authorization are allowed."],
+    };
+
+    expect(() => assertFinalHumanGoNoGoAuthorizationReviewSafe(missingPriorStep)).toThrow(/Complete Human Go No-Go Readiness Decision Planning/i);
+    expect(() => assertFinalHumanGoNoGoAuthorizationReviewSafe(missingPhase)).toThrow(/17 phase final review records/i);
+    expect(() => assertFinalHumanGoNoGoAuthorizationReviewSafe(wrongOrder)).toThrow(/17-phase order/i);
+    expect(() => assertFinalHumanGoNoGoAuthorizationReviewSafe(missingRecordField)).toThrow(/Every phase final review record/i);
+    expect(() => assertFinalHumanGoNoGoAuthorizationReviewSafe(activationWording)).toThrow(/forbid activation/i);
   });
 
   it("fails invariant checks if the roadmap skips controlled manual activation runbook planning", () => {
