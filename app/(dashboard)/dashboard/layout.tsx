@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BarChart3, Building2, ClipboardCheck, HousePlus, LayoutGrid, Lock, Search, Shield, Upload, Users } from "lucide-react";
 
 import { getAuthenticatedAdmin } from "@/lib/auth";
+import { brandConfig } from "@/lib/brand-config";
 
 const navItems = [
   { href: "/dashboard" as Route, label: "Overview", icon: LayoutGrid },
@@ -26,11 +27,11 @@ export default async function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-[#eef2f3]">
-      <div className="dashboard-container-shell py-4 md:py-6">
-        <div className="grid gap-4 xl:grid-cols-[260px_minmax(0,1fr)]">
-          <aside className="rounded-[1.75rem] border border-border bg-primary p-5 text-white md:min-h-[calc(100vh-3rem)]">
+      <div className="dashboard-container-shell py-3 md:py-5">
+        <div className="grid gap-3 xl:grid-cols-[260px_minmax(0,1fr)]">
+          <aside className="rounded-2xl border border-border bg-primary p-4 text-white md:min-h-[calc(100vh-2.5rem)] md:p-5">
             <Link href="/" className="inline-flex items-center gap-2 text-sm font-semibold tracking-[0.18em] text-white/70 uppercase">
-              OKC Wholesale
+              {brandConfig.companyDisplayName}
             </Link>
             <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/72">
               <p className="font-semibold text-white">Signed in</p>
@@ -57,7 +58,7 @@ export default async function DashboardLayout({
               ))}
             </div>
           </aside>
-          <div className="min-w-0 rounded-[1.75rem] border border-border bg-surface-strong p-5 md:p-7 xl:p-8">
+          <div className="min-w-0 rounded-2xl border border-border bg-surface-strong p-4 md:p-6 xl:p-7">
             {children}
           </div>
         </div>

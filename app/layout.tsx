@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Instrument_Serif, Manrope } from "next/font/google";
 
 import "@/app/globals.css";
+import { brandConfig } from "@/lib/brand-config";
 import { getAppUrl } from "@/lib/env";
 
 const manrope = Manrope({
@@ -17,11 +18,10 @@ const instrumentSerif = Instrument_Serif({
 
 export const metadata: Metadata = {
   title: {
-    default: "OKC Wholesale AI System",
-    template: "%s | OKC Wholesale AI System"
+    default: brandConfig.appName,
+    template: `%s | ${brandConfig.appName}`
   },
-  description:
-    "Wholesale real estate platform for Oklahoma City with a public acquisition website and an internal operations dashboard.",
+  description: brandConfig.appDescription,
   metadataBase: new URL(getAppUrl())
 };
 

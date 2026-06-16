@@ -2,6 +2,8 @@ import type { Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
+import { brandConfig } from "@/lib/brand-config";
+
 const navLinks = [
   { href: "/" as Route, label: "Home" },
   { href: "/sell-your-house" as Route, label: "Sell Your House" },
@@ -16,7 +18,7 @@ export function Navbar() {
         <Link href="/" className="mr-auto flex shrink-0 items-center">
           <Image
             src="/images/okc-logo-final.png"
-            alt="OKC Wholesale logo"
+            alt={brandConfig.logoAlt}
             width={320}
             height={120}
             className="h-[55px] w-auto object-contain"
