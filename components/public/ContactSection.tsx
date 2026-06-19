@@ -1,5 +1,4 @@
 import { Globe2, Mail, Phone, ShieldCheck } from "lucide-react";
-import Link from "next/link";
 
 import { brandConfig } from "@/lib/brand-config";
 
@@ -16,17 +15,13 @@ export function ContactSection() {
               Contact J Capital Property Group
             </h2>
             <p className="mt-5 max-w-2xl text-base leading-8 text-white/80">
-              We are available to discuss your property questions and explore potential real estate solutions.
+              Reach our team for general questions, accessibility support, direct phone or email contact, and
+              professional communication.
             </p>
             <p className="mt-4 max-w-2xl text-sm leading-6 text-white/70">
-              No pressure, no automated outreach from this website, and no obligation to move forward.
+              For property-specific situations, use the Discuss Your Property page. For general communication, contact
+              us directly by phone or email.
             </p>
-            <Link
-              href="/sell-your-house"
-              className="mt-8 inline-flex min-h-13 items-center justify-center rounded-md bg-[#D4A017] px-6 py-3.5 font-heading text-sm font-bold text-[#02213D] transition hover:bg-[#e0af2e]"
-            >
-              Discuss Your Property
-            </Link>
           </div>
 
           <div className="grid gap-4">
