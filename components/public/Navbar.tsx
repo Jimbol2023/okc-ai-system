@@ -6,7 +6,7 @@ import { brandConfig } from "@/lib/brand-config";
 
 const navLinks = [
   { href: "/" as Route, label: "Home" },
-  { href: "/sell-your-house" as Route, label: "Sell Your Property" },
+  { href: "/sell-your-house" as Route, label: "Discuss Your Property" },
   { href: "/about" as Route, label: "About" },
   { href: "/contact" as Route, label: "Contact" }
 ];
@@ -45,7 +45,7 @@ export function Navbar() {
         </nav>
 
         <Link
-          href="/contact"
+          href="/sell-your-house"
           className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-md bg-[#D4A017] px-4 py-2.5 font-heading text-sm font-bold text-[#02213D] shadow-[0_10px_24px_rgba(212,160,23,0.25)] transition hover:bg-[#e0af2e] sm:px-5"
         >
           Discuss Your Property

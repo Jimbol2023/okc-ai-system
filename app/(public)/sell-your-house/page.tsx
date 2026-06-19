@@ -8,7 +8,7 @@ import { createPublicPageMetadata } from "@/lib/public-seo";
 
 export const metadata = createPublicPageMetadata({
   path: "/sell-your-house",
-  title: "Sell Your Property",
+  title: "Discuss Your Property",
   description:
     "Discuss inherited property, vacant property, deferred maintenance, landlord fatigue, relocation, or private property questions with J Capital Property Group."
 });
@@ -16,22 +16,22 @@ export const metadata = createPublicPageMetadata({
 const processSteps = [
   {
     step: "01",
-    title: "You Contact Us",
-    description: "Call or email to share your property questions and the situation you are working through."
+    title: "Contact J Capital",
+    description: "Call or email when you want a private place to ask property questions."
   },
   {
     step: "02",
-    title: "We Review The Situation",
-    description: "We review the property details, condition, timing, and practical considerations with care."
+    title: "Discuss Your Situation",
+    description: "Talk through inherited property, vacancy, repairs, landlord concerns, relocation, or other details."
   },
   {
     step: "03",
-    title: "We Discuss Possible Next Steps",
-    description: "We discuss possible next steps clearly so you can compare options without pressure."
+    title: "Review Possible Options",
+    description: "Review practical considerations clearly so you can compare possible paths without pressure."
   },
   {
     step: "04",
-    title: "You Decide What Makes Sense",
+    title: "Decide What Makes Sense",
     description: "You choose whether any path fits your goals, timing, and property circumstances."
   }
 ];
@@ -70,15 +70,15 @@ export default function SellYourPropertyPage() {
         <div className="container-shell">
           <div className="max-w-4xl">
             <p className="font-heading text-xs font-bold uppercase tracking-[0.22em] text-[#D4A017]">
-              Sell Your Property
+              Discuss Your Property
             </p>
             <h1 className="mt-5 font-heading text-4xl font-bold leading-tight md:text-6xl">
-              Professional Property Solutions for Oklahoma Property Owners
+              A professional conversation about your Oklahoma property
             </h1>
             <p className="mt-6 max-w-3xl text-base leading-8 text-white/82 md:text-lg">
-              Property decisions can involve repairs, timing, ownership changes, or financial uncertainty. J Capital
-              Property Group provides a calm, professional place to discuss your situation and understand practical
-              next steps without pressure.
+              Property decisions can involve repairs, timing, inherited ownership, vacancy, landlord concerns,
+              relocation, or private questions. J Capital Property Group provides a calm place to discuss your
+              situation and understand practical next steps without pressure.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a
@@ -127,15 +127,15 @@ export default function SellYourPropertyPage() {
             </p>
           </div>
 
-          <div className="mt-10 grid gap-4 md:grid-cols-4">
+          <ol className="mt-10 grid gap-4 md:grid-cols-4" aria-label="Property conversation decision path">
             {processSteps.map((item) => (
-              <article key={item.step} className="border border-slate-200 bg-white p-6 shadow-sm">
+              <li key={item.step} className="border border-slate-200 bg-white p-6 shadow-sm">
                 <p className="font-heading text-sm font-bold text-[#D4A017]">{item.step}</p>
                 <h3 className="mt-3 font-heading text-xl font-bold text-[#02213D]">{item.title}</h3>
                 <p className="mt-3 text-sm leading-6 text-[#4B5563]">{item.description}</p>
-              </article>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       </section>
 

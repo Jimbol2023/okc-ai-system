@@ -7,7 +7,7 @@ export const publicLogoUrl = `${publicSiteUrl}${brandConfig.logoPath}`;
 export const publicOpenGraphImageUrl = `${publicSiteUrl}/images/og-jcapital.jpg`;
 
 type PublicPageMetadataInput = {
-  path: "/" | "/sell-your-house" | "/about" | "/contact" | "/privacy" | "/accessibility";
+  path: "/" | "/sell-your-house" | "/about" | "/contact" | "/privacy" | "/accessibility" | "/faq" | "/resources";
   title: string;
   description: string;
 };

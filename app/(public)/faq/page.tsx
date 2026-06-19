@@ -1,0 +1,140 @@
+import { brandConfig } from "@/lib/brand-config";
+import { createPublicPageMetadata } from "@/lib/public-seo";
+
+export const metadata = createPublicPageMetadata({
+  path: "/faq",
+  title: "FAQ",
+  description:
+    "Common questions about J Capital Property Group, property conversations, accessibility, and contacting the team."
+});
+
+const faqs = [
+  {
+    question: "What does J Capital Property Group do?",
+    answer:
+      "J Capital Property Group helps Oklahoma property owners discuss real estate situations and understand practical options before making a decision."
+  },
+  {
+    question: "Is there any obligation when I contact you?",
+    answer:
+      "No. Contacting J Capital Property Group starts a conversation. You can ask questions and decide what makes sense for your situation."
+  },
+  {
+    question: "What types of property situations can I ask about?",
+    answer:
+      "You can ask about inherited property, vacant property, repairs, landlord concerns, relocation, timing questions, or private property decisions."
+  },
+  {
+    question: "Do you work with inherited properties?",
+    answer:
+      "You may contact J Capital Property Group about inherited property questions, including timing, condition, ownership changes, and possible next steps."
+  },
+  {
+    question: "Can I contact you about a vacant property?",
+    answer:
+      "Yes. Vacant property owners can contact the team to discuss upkeep concerns, timing, security, and practical property decisions."
+  },
+  {
+    question: "What if the property needs repairs?",
+    answer:
+      "You can discuss properties with deferred maintenance or repair concerns. The conversation can include condition, timing, and possible paths forward."
+  },
+  {
+    question: "Can landlords contact J Capital Property Group?",
+    answer:
+      "Yes. Landlords can contact J Capital Property Group about rental property questions, changing ownership goals, repairs, or management concerns."
+  },
+  {
+    question: "What areas do you serve?",
+    answer:
+      "J Capital Property Group focuses on Oklahoma property conversations. Contact the team directly if you have a question about a specific location."
+  },
+  {
+    question: "How quickly do you respond?",
+    answer:
+      "J Capital Property Group typically responds within one business day when messages include clear contact information."
+  },
+  {
+    question: "How do I contact J Capital Property Group?",
+    answer: `Call ${brandConfig.phone} or email ${brandConfig.primaryEmail}.`
+  },
+  {
+    question: "Is the website accessible for older adults, low-vision users, and screen readers?",
+    answer:
+      "The public website is built with readable text, clear headings, keyboard access, visible focus states, and screen-reader-friendly structure."
+  },
+  {
+    question: "Do you use automated outreach from this website?",
+    answer:
+      "No automated outreach is initiated from this public website. Contact is handled through direct phone and email links."
+  }
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.answer
+    }
+  }))
+};
+
+export default function FaqPage() {
+  return (
+    <div className="bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd).replace(/</g, "\\u003c") }}
+      />
+      <section className="bg-[#F2F4F7] py-16 md:py-20">
+        <div className="container-shell">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="font-heading text-xs font-bold uppercase tracking-[0.22em] text-[#D4A017]">FAQ</p>
+            <h1 className="mt-4 font-heading text-4xl font-bold leading-tight text-[#02213D] md:text-6xl">
+              Common Questions
+            </h1>
+            <p className="mt-5 text-base leading-8 text-[#4B5563]">
+              Clear answers for Oklahoma property owners who want a professional, no-pressure conversation.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-16 md:py-20" aria-labelledby="faq-list-heading">
+        <div className="container-shell">
+          <h2 id="faq-list-heading" className="sr-only">
+            Frequently Asked Questions
+          </h2>
+          <div className="mx-auto grid max-w-4xl gap-4">
+            {faqs.map((faq) => (
+              <article key={faq.question} className="border border-slate-200 bg-white p-5 shadow-sm">
+                <h3 className="font-heading text-xl font-bold text-[#02213D]">{faq.question}</h3>
+                <p className="mt-3 text-base leading-7 text-[#4B5563]">{faq.answer}</p>
+              </article>
+            ))}
+          </div>
+          <div className="mx-auto mt-10 max-w-4xl border-l-4 border-[#D4A017] bg-[#F2F4F7] p-5">
+            <p className="text-sm leading-6 text-[#4B5563]">
+              For direct contact, call{" "}
+              <a href={brandConfig.phoneHref} className="font-semibold text-[#02213D] underline underline-offset-4">
+                {brandConfig.phone}
+              </a>{" "}
+              or email{" "}
+              <a
+                href={`mailto:${brandConfig.primaryEmail}`}
+                className="font-semibold text-[#02213D] underline underline-offset-4"
+              >
+                {brandConfig.primaryEmail}
+              </a>
+              .
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}

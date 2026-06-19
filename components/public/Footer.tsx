@@ -31,6 +31,15 @@ export function Footer() {
             <Link href="/accessibility" className="font-heading font-semibold text-white/85 transition hover:text-white">
               Accessibility
             </Link>
+            <Link href="/faq" className="font-heading font-semibold text-white/85 transition hover:text-white">
+              FAQ
+            </Link>
+            <Link href="/resources" className="font-heading font-semibold text-white/85 transition hover:text-white">
+              Resources
+            </Link>
+            <Link href="/contact" className="font-heading font-semibold text-white/85 transition hover:text-white">
+              Contact
+            </Link>
           </nav>
         </div>
       </div>

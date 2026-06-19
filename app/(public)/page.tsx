@@ -13,6 +13,25 @@ export const metadata = createPublicPageMetadata({
     "J Capital Property Group helps Oklahoma property owners explore real estate opportunities with professionalism, transparency, and local market knowledge."
 });
 
+const conversationSteps = [
+  {
+    title: "Contact J Capital",
+    description: "Reach out by phone, email, or the property discussion page when you are ready to ask questions."
+  },
+  {
+    title: "Discuss Your Situation",
+    description: "Share the property details, timing, and circumstances you want help thinking through."
+  },
+  {
+    title: "Review Possible Options",
+    description: "Talk through practical paths and considerations in plain language."
+  },
+  {
+    title: "Decide What Makes Sense",
+    description: "Choose the next step that fits your goals, timeline, and comfort level."
+  }
+];
+
 export default function HomePage() {
   return (
     <>
@@ -28,16 +47,17 @@ export default function HomePage() {
               Clear steps, thoughtful review, and room to decide
             </h2>
           </div>
-          <div className="mt-10 grid gap-4 md:grid-cols-4">
-            {["You contact us", "We review the situation", "We discuss possible next steps", "You decide what makes sense"].map(
-              (step, index) => (
-                <article key={step} className="border border-slate-200 bg-white p-5 shadow-sm">
-                  <p className="font-heading text-sm font-bold text-[#D4A017]">{String(index + 1).padStart(2, "0")}</p>
-                  <h3 className="mt-3 font-heading text-lg font-bold text-[#02213D]">{step}</h3>
-                </article>
-              )
-            )}
-          </div>
+          <ol className="mt-10 grid gap-4 md:grid-cols-4" aria-label="Property conversation decision path">
+            {conversationSteps.map((step, index) => (
+              <li key={step.title} className="border border-slate-200 bg-white p-5 shadow-sm">
+                <p className="font-heading text-sm font-bold text-[#D4A017]">
+                  {String(index + 1).padStart(2, "0")}
+                </p>
+                <h3 className="mt-3 font-heading text-lg font-bold text-[#02213D]">{step.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-[#4B5563]">{step.description}</p>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
       <section className="bg-white py-18 md:py-24">
