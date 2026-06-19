@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { ContactSection } from "@/components/public/ContactSection";
 import { HeroSection } from "@/components/public/HeroSection";
+import { ServiceAreaLinks } from "@/components/public/ServiceAreaLinks";
 import { TrustSection } from "@/components/public/TrustSection";
 import { brandConfig } from "@/lib/brand-config";
 import { createPublicPageMetadata } from "@/lib/public-seo";
@@ -154,6 +155,27 @@ export default function HomePage() {
             >
               Explore Resources
             </Link>
+          </div>
+        </div>
+      </section>
+      <section className="bg-white py-18 md:py-24" aria-labelledby="homepage-service-areas-heading">
+        <div className="container-shell">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="font-heading text-xs font-bold uppercase tracking-[0.22em] text-[#D4A017]">
+              Service Areas
+            </p>
+            <h2
+              id="homepage-service-areas-heading"
+              className="mt-4 font-heading text-3xl font-bold leading-tight text-[#02213D] md:text-5xl"
+            >
+              Oklahoma Service Areas
+            </h2>
+            <p className="mt-4 text-base leading-7 text-[#4B5563]">
+              Local property guidance pages for Oklahoma owners who want a professional place to start.
+            </p>
+          </div>
+          <div className="mx-auto mt-10 max-w-4xl">
+            <ServiceAreaLinks />
           </div>
         </div>
       </section>

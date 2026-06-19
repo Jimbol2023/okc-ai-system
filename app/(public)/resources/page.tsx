@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { ServiceAreaLinks } from "@/components/public/ServiceAreaLinks";
 import { createPublicPageMetadata } from "@/lib/public-seo";
 
 export const metadata = createPublicPageMetadata({
@@ -80,6 +81,26 @@ export default function ResourcesPage() {
             </p>
           </div>
 
+          <section className="mx-auto mt-10 max-w-4xl" aria-labelledby="featured-resource-heading">
+            <div className="border-l-4 border-[#D4A017] bg-white p-5 shadow-sm">
+              <p className="font-heading text-xs font-bold uppercase tracking-[0.18em] text-[#D4A017]">
+                Featured Resource
+              </p>
+              <h2 id="featured-resource-heading" className="mt-3 font-heading text-2xl font-bold text-[#02213D]">
+                How To Handle An Inherited Property In Oklahoma
+              </h2>
+              <p className="mt-3 text-sm leading-6 text-[#4B5563]">
+                A practical, educational starting point for owners thinking through inherited property questions.
+              </p>
+              <Link
+                href="/resources/inherited-property-oklahoma"
+                className="mt-5 inline-flex min-h-12 items-center justify-center rounded-md bg-[#D4A017] px-5 py-3 font-heading text-sm font-bold text-[#02213D] transition hover:bg-[#B88712]"
+              >
+                Read Inherited Property Guide
+              </Link>
+            </div>
+          </section>
+
           <div className="mt-10 grid gap-4 md:grid-cols-2">
             {resourceSections.map((section) => (
               <section key={section.title} className="border border-slate-200 bg-[#F2F4F7] p-5">
@@ -98,6 +119,18 @@ export default function ResourcesPage() {
               </section>
             ))}
           </div>
+
+          <section className="mx-auto mt-10 max-w-4xl" aria-labelledby="resources-service-area-heading">
+            <h2 id="resources-service-area-heading" className="font-heading text-2xl font-bold text-[#02213D]">
+              Oklahoma service areas
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-[#4B5563]">
+              Explore local property guidance pages by area.
+            </p>
+            <div className="mt-5">
+              <ServiceAreaLinks variant="white" />
+            </div>
+          </section>
 
           <div className="mx-auto mt-10 max-w-3xl text-center">
             <Link

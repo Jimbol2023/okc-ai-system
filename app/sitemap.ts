@@ -9,6 +9,7 @@ const publicRoutes = [
   "/contact",
   "/faq",
   "/resources",
+  "/resources/inherited-property-oklahoma",
   "/oklahoma-city",
   "/yukon",
   "/moore",

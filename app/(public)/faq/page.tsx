@@ -1,4 +1,5 @@
 import { brandConfig } from "@/lib/brand-config";
+import { ServiceAreaLinks } from "@/components/public/ServiceAreaLinks";
 import { createPublicPageMetadata } from "@/lib/public-seo";
 
 export const metadata = createPublicPageMetadata({
@@ -117,6 +118,17 @@ export default function FaqPage() {
               </article>
             ))}
           </div>
+          <section className="mx-auto mt-10 max-w-4xl" aria-labelledby="faq-service-area-heading">
+            <h2 id="faq-service-area-heading" className="font-heading text-2xl font-bold text-[#02213D]">
+              Oklahoma service areas
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-[#4B5563]">
+              These local pages can help property owners find guidance by area.
+            </p>
+            <div className="mt-5">
+              <ServiceAreaLinks />
+            </div>
+          </section>
           <div className="mx-auto mt-10 max-w-4xl border-l-4 border-[#D4A017] bg-[#F2F4F7] p-5">
             <p className="text-sm leading-6 text-[#4B5563]">
               For direct contact, call{" "}
