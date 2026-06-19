@@ -24,9 +24,14 @@ export function Footer() {
         </div>
         <div className="flex flex-col items-center gap-2 text-center md:items-end md:text-right">
           <p>Professional, transparent real estate guidance for Oklahoma property owners.</p>
-          <Link href="/privacy" className="font-heading font-semibold text-white/78 transition hover:text-white">
-            Privacy Policy
-          </Link>
+          <nav aria-label="Footer navigation" className="flex flex-wrap justify-center gap-4 md:justify-end">
+            <Link href="/privacy" className="font-heading font-semibold text-white/85 transition hover:text-white">
+              Privacy Policy
+            </Link>
+            <Link href="/accessibility" className="font-heading font-semibold text-white/85 transition hover:text-white">
+              Accessibility
+            </Link>
+          </nav>
         </div>
       </div>
     </footer>
