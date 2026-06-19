@@ -1,5 +1,5 @@
-import { Footer } from "@/components/layout/footer";
-import { Navbar } from "@/components/layout/navbar";
+import { Footer } from "@/components/public/Footer";
+import { Navbar } from "@/components/public/Navbar";
 
 export default function PublicLayout({
   children
@@ -7,7 +7,7 @@ export default function PublicLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white">
       <Navbar />
       <main>{children}</main>
       <Footer />

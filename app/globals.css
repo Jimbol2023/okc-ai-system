@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f5f3ee;
-  --foreground: #12202a;
-  --surface: #fffdf8;
+  --background: #f2f4f7;
+  --foreground: #1f2937;
+  --surface: #ffffff;
   --surface-strong: #ffffff;
-  --border: rgba(18, 32, 42, 0.12);
-  --muted: #5d6a72;
-  --primary: #16394a;
-  --primary-strong: #0f2833;
-  --accent: #bf8b30;
+  --border: rgba(31, 41, 55, 0.14);
+  --muted: #5f6b7a;
+  --primary: #02213d;
+  --primary-strong: #01172c;
+  --accent: #d4a017;
   --success: #2d6a4f;
 }
 
@@ -25,7 +25,8 @@
   --color-accent: var(--accent);
   --color-success: var(--success);
   --font-sans: var(--font-sans);
-  --font-serif: var(--font-serif);
+  --font-heading: var(--font-heading);
+  --font-brand: var(--font-brand);
 }
 
 * {
@@ -38,9 +39,7 @@ html {
 
 body {
   min-height: 100vh;
-  background:
-    radial-gradient(circle at top left, rgba(191, 139, 48, 0.15), transparent 30%),
-    linear-gradient(180deg, #f7f4ee 0%, #f5f3ee 40%, #eef2f3 100%);
+  background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), sans-serif;
 }
@@ -57,7 +56,7 @@ textarea {
 }
 
 ::selection {
-  background: rgba(22, 57, 74, 0.18);
+  background: rgba(212, 160, 23, 0.28);
 }
 
 .container-shell {
