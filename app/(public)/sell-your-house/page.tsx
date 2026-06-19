@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Mail, Phone } from "lucide-react";
 
 import { ContactSection } from "@/components/public/ContactSection";
@@ -96,6 +97,20 @@ export default function SellYourPropertyPage() {
               </a>
             </div>
             <p className="mt-4 text-sm text-white/68">{brandConfig.phone}</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-10 md:py-14">
+        <div className="container-shell">
+          <div className="relative aspect-[1058/352] overflow-hidden rounded-md shadow-[0_22px_50px_rgba(2,33,61,0.14)]">
+            <Image
+              src="/images/sell-property-banner.jpg"
+              alt="J Capital Property Group sell your property brand banner"
+              fill
+              sizes="(min-width: 1280px) 1120px, calc(100vw - 2rem)"
+              className="object-cover"
+            />
           </div>
         </div>
       </section>

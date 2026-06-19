@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { CheckCircle2 } from "lucide-react";
 
 import { TrustSection } from "@/components/public/TrustSection";
@@ -45,6 +46,20 @@ export default function AboutPage() {
             <p className="mt-6 max-w-3xl text-lg font-semibold leading-8 text-white/88">
               Professional real estate solutions built on integrity, transparency, and local market knowledge.
             </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#F2F4F7] py-10 md:py-14">
+        <div className="container-shell">
+          <div className="relative aspect-[1058/352] overflow-hidden rounded-md shadow-[0_22px_50px_rgba(2,33,61,0.14)]">
+            <Image
+              src="/images/about-jcapital.jpg"
+              alt="J Capital Property Group about page brand banner"
+              fill
+              sizes="(min-width: 1280px) 1120px, calc(100vw - 2rem)"
+              className="object-cover"
+            />
           </div>
         </div>
       </section>

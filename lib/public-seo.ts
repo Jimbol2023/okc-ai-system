@@ -4,6 +4,7 @@ import { brandConfig } from "@/lib/brand-config";
 
 export const publicSiteUrl = "https://jcapitalpropertygroup.com";
 export const publicLogoUrl = `${publicSiteUrl}${brandConfig.logoPath}`;
+export const publicOpenGraphImageUrl = `${publicSiteUrl}/images/og-jcapital.jpg`;
 
 type PublicPageMetadataInput = {
   path: "/" | "/sell-your-house" | "/about" | "/contact" | "/privacy";
@@ -28,10 +29,10 @@ export function createPublicPageMetadata({ path, title, description }: PublicPag
       type: "website",
       images: [
         {
-          url: publicLogoUrl,
-          width: 512,
-          height: 512,
-          alt: brandConfig.logoAlt
+          url: publicOpenGraphImageUrl,
+          width: 1058,
+          height: 556,
+          alt: "J Capital Property Group social sharing image"
         }
       ]
     },
@@ -39,7 +40,7 @@ export function createPublicPageMetadata({ path, title, description }: PublicPag
       card: "summary",
       title,
       description,
-      images: [publicLogoUrl]
+      images: [publicOpenGraphImageUrl]
     }
   };
 }

@@ -9,8 +9,8 @@ export function HeroSection() {
     <section id="home" className="relative isolate overflow-hidden bg-[#02213D] text-white">
       <div className="absolute inset-0 -z-20">
         <Image
-          src="/images/hero-house.jpg"
-          alt="Professional residential real estate exterior"
+          src="/images/hero-jcapital.jpg"
+          alt="J Capital Property Group professional real estate hero image"
           fill
           sizes="100vw"
           className="object-cover opacity-25"
