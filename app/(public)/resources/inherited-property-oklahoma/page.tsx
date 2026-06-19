@@ -1,7 +1,31 @@
 import Link from "next/link";
+import type { Route } from "next";
 
 import { ServiceAreaLinks } from "@/components/public/ServiceAreaLinks";
 import { createPublicPageMetadata } from "@/lib/public-seo";
+
+const relatedResources = [
+  {
+    href: "/resources/shared-inherited-property-oklahoma",
+    label: "Shared Inherited Property Questions",
+    description: "Helpful when more than one family member is involved in the decision."
+  },
+  {
+    href: "/resources/vacant-property-oklahoma",
+    label: "Vacant Property Guide",
+    description: "Useful when an inherited property is empty or needs regular monitoring."
+  },
+  {
+    href: "/resources/landlord-property-decisions-oklahoma",
+    label: "Landlord Property Decisions",
+    description: "Helpful when an inherited property is rented or may become a rental."
+  },
+  {
+    href: "/resources/relocation-property-decisions-oklahoma",
+    label: "Relocation Property Decisions",
+    description: "Useful when family location or moving timelines affect property planning."
+  }
+] as const;
 
 export const metadata = createPublicPageMetadata({
   path: "/resources/inherited-property-oklahoma",
@@ -106,7 +130,33 @@ export default function InheritedPropertyOklahomaPage() {
         </div>
       </article>
 
-      <section className="bg-white py-16 md:py-24" aria-labelledby="article-links-heading">
+      <section className="bg-white py-16 md:py-24" aria-labelledby="related-resource-heading">
+        <div className="container-shell">
+          <div className="mx-auto max-w-4xl">
+            <h2 id="related-resource-heading" className="font-heading text-3xl font-bold text-[#02213D] md:text-5xl">
+              Related property resources
+            </h2>
+            <p className="mt-4 text-base leading-7 text-[#4B5563]">
+              These guides can help compare inherited property questions with other common Oklahoma property
+              situations.
+            </p>
+            <div className="mt-8 grid gap-4 md:grid-cols-2">
+              {relatedResources.map((resource) => (
+                <Link
+                  key={resource.href}
+                  href={resource.href as Route}
+                  className="border border-slate-200 bg-[#F2F4F7] p-5 transition hover:bg-[#e7ebf0]"
+                >
+                  <span className="block font-heading text-lg font-bold text-[#02213D]">{resource.label}</span>
+                  <span className="mt-2 block text-sm leading-6 text-[#4B5563]">{resource.description}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#F2F4F7] py-16 md:py-24" aria-labelledby="article-links-heading">
         <div className="container-shell">
           <div className="mx-auto max-w-4xl">
             <h2 id="article-links-heading" className="font-heading text-3xl font-bold text-[#02213D] md:text-5xl">
@@ -118,19 +168,19 @@ export default function InheritedPropertyOklahomaPage() {
             <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               <Link
                 href="/faq"
-                className="inline-flex min-h-12 items-center justify-center border border-slate-200 bg-[#F2F4F7] px-4 py-3 text-center font-heading text-sm font-bold text-[#02213D] transition hover:bg-[#e7ebf0]"
+                className="inline-flex min-h-12 items-center justify-center border border-slate-200 bg-white px-4 py-3 text-center font-heading text-sm font-bold text-[#02213D] transition hover:bg-[#F8FAFC]"
               >
                 Read FAQ
               </Link>
               <Link
                 href="/resources"
-                className="inline-flex min-h-12 items-center justify-center border border-slate-200 bg-[#F2F4F7] px-4 py-3 text-center font-heading text-sm font-bold text-[#02213D] transition hover:bg-[#e7ebf0]"
+                className="inline-flex min-h-12 items-center justify-center border border-slate-200 bg-white px-4 py-3 text-center font-heading text-sm font-bold text-[#02213D] transition hover:bg-[#F8FAFC]"
               >
                 Explore Resources
               </Link>
               <Link
                 href="/contact"
-                className="inline-flex min-h-12 items-center justify-center border border-slate-200 bg-[#F2F4F7] px-4 py-3 text-center font-heading text-sm font-bold text-[#02213D] transition hover:bg-[#e7ebf0]"
+                className="inline-flex min-h-12 items-center justify-center border border-slate-200 bg-white px-4 py-3 text-center font-heading text-sm font-bold text-[#02213D] transition hover:bg-[#F8FAFC]"
               >
                 Contact J Capital
               </Link>

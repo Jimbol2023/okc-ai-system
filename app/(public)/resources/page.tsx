@@ -1,7 +1,9 @@
 import Link from "next/link";
+import type { Route } from "next";
 
 import { ServiceAreaLinks } from "@/components/public/ServiceAreaLinks";
 import { createPublicPageMetadata } from "@/lib/public-seo";
+import { propertyResourcePages } from "@/lib/public-resource-pages";
 
 export const metadata = createPublicPageMetadata({
   path: "/resources",
@@ -24,25 +26,28 @@ const resourceSections = [
     title: "Inherited Property Questions",
     description:
       "Helpful starting points for owners thinking through timing, condition, family communication, and next steps after an ownership change.",
-    futureResources: ["How To Handle An Inherited Property In Oklahoma"]
+    futureResources: [
+      "How To Handle An Inherited Property In Oklahoma",
+      "Shared Inherited Property Questions for Oklahoma Families"
+    ]
   },
   {
     title: "Vacant Property Questions",
     description:
       "Guidance for owners considering upkeep, safety, timing, and long-term planning for vacant property.",
-    futureResources: ["Options For Vacant Property Owners In Oklahoma"]
+    futureResources: ["What To Do With a Vacant Property in Oklahoma"]
   },
   {
     title: "Landlord Property Guidance",
     description:
       "Plain-language support for landlords reviewing rental property goals, repairs, management needs, or a change in plans.",
-    futureResources: ["Property Guidance For Landlords In Oklahoma"]
+    futureResources: ["Understanding Landlord Property Decisions in Oklahoma"]
   },
   {
     title: "Property Decision Support",
     description:
       "Decision-focused resources for comparing possible paths, asking better questions, and choosing what fits your circumstances.",
-    futureResources: ["When To Discuss A Property Situation With A Professional"]
+    futureResources: ["Property Decisions During Relocation in Oklahoma"]
   },
   {
     title: "Accessibility-Friendly Information",
@@ -51,6 +56,34 @@ const resourceSections = [
     futureResources: ["Accessibility-Friendly Property Decision Guides"]
   }
 ];
+
+const compareCommonSituations = [
+  {
+    href: "/resources/inherited-property-oklahoma",
+    title: "Inherited property",
+    description: "Start with ownership, timing, family communication, and professional guidance questions."
+  },
+  {
+    href: "/resources/shared-inherited-property-oklahoma",
+    title: "Shared inherited property",
+    description: "Review communication, documents, decision authority, and shared responsibilities."
+  },
+  {
+    href: "/resources/vacant-property-oklahoma",
+    title: "Vacant property",
+    description: "Think through access, monitoring, utilities, condition, and upkeep questions."
+  },
+  {
+    href: "/resources/landlord-property-decisions-oklahoma",
+    title: "Landlord property",
+    description: "Review rental goals, management needs, repairs, and changing priorities."
+  },
+  {
+    href: "/resources/relocation-property-decisions-oklahoma",
+    title: "Relocation property",
+    description: "Organize timing, access, repairs, and property responsibilities during a move."
+  }
+] as const;
 
 export default function ResourcesPage() {
   return (
@@ -76,8 +109,7 @@ export default function ResourcesPage() {
               Resource Hub Foundation
             </h2>
             <p className="mt-4 text-base leading-7 text-[#4B5563]">
-              These sections are placeholders for future guides. They are intentionally brief until full resources are
-              ready for review.
+              These guides help Oklahoma property owners compare practical questions before choosing a next step.
             </p>
           </div>
 
@@ -98,6 +130,45 @@ export default function ResourcesPage() {
               >
                 Read Inherited Property Guide
               </Link>
+            </div>
+          </section>
+
+          <section className="mx-auto mt-10 max-w-5xl" aria-labelledby="compare-situations-heading">
+            <h2 id="compare-situations-heading" className="font-heading text-2xl font-bold text-[#02213D]">
+              Compare common situations
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-[#4B5563]">
+              Choose the guide that best matches the question you are trying to organize.
+            </p>
+            <div className="mt-5 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {compareCommonSituations.map((resource) => (
+                <Link
+                  key={resource.href}
+                  href={resource.href as Route}
+                  className="border border-slate-200 bg-[#F2F4F7] p-5 transition hover:bg-[#e7ebf0]"
+                >
+                  <span className="block font-heading text-lg font-bold text-[#02213D]">{resource.title}</span>
+                  <span className="mt-2 block text-sm leading-6 text-[#4B5563]">{resource.description}</span>
+                </Link>
+              ))}
+            </div>
+          </section>
+
+          <section className="mx-auto mt-10 max-w-5xl" aria-labelledby="resource-guides-heading">
+            <h2 id="resource-guides-heading" className="font-heading text-2xl font-bold text-[#02213D]">
+              Oklahoma property resource guides
+            </h2>
+            <div className="mt-5 grid gap-4 md:grid-cols-2">
+              {propertyResourcePages.map((resource) => (
+                <Link
+                  key={resource.path}
+                  href={resource.path}
+                  className="border border-slate-200 bg-white p-5 shadow-sm transition hover:bg-[#F8FAFC]"
+                >
+                  <span className="block font-heading text-lg font-bold text-[#02213D]">{resource.title}</span>
+                  <span className="mt-2 block text-sm leading-6 text-[#4B5563]">{resource.description}</span>
+                </Link>
+              ))}
             </div>
           </section>
 

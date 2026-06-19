@@ -1,3 +1,6 @@
+import Link from "next/link";
+import type { Route } from "next";
+
 import { brandConfig } from "@/lib/brand-config";
 import { ServiceAreaLinks } from "@/components/public/ServiceAreaLinks";
 import { createPublicPageMetadata } from "@/lib/public-seo";
@@ -84,6 +87,34 @@ const faqJsonLd = {
   }))
 };
 
+const relatedResources = [
+  {
+    href: "/resources/inherited-property-oklahoma",
+    label: "Inherited property guide",
+    description: "Review ownership, timing, condition, and professional guidance questions."
+  },
+  {
+    href: "/resources/shared-inherited-property-oklahoma",
+    label: "Shared inherited property questions",
+    description: "Helpful when multiple family members are involved in a property decision."
+  },
+  {
+    href: "/resources/vacant-property-oklahoma",
+    label: "Vacant property guide",
+    description: "Think through access, upkeep, utilities, monitoring, and timing questions."
+  },
+  {
+    href: "/resources/landlord-property-decisions-oklahoma",
+    label: "Landlord property decisions",
+    description: "Review rental goals, repairs, management needs, and changing priorities."
+  },
+  {
+    href: "/resources/relocation-property-decisions-oklahoma",
+    label: "Relocation property decisions",
+    description: "Organize property questions around moving timelines, access, and upkeep."
+  }
+] as const;
+
 export default function FaqPage() {
   return (
     <div className="bg-white">
@@ -118,6 +149,26 @@ export default function FaqPage() {
               </article>
             ))}
           </div>
+          <section className="mx-auto mt-10 max-w-4xl" aria-labelledby="faq-related-resources-heading">
+            <h2 id="faq-related-resources-heading" className="font-heading text-2xl font-bold text-[#02213D]">
+              Related property resources
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-[#4B5563]">
+              These guides expand on inherited, vacant, landlord, relocation, and private property questions.
+            </p>
+            <div className="mt-5 grid gap-3 md:grid-cols-2">
+              {relatedResources.map((resource) => (
+                <Link
+                  key={resource.href}
+                  href={resource.href as Route}
+                  className="border border-slate-200 bg-[#F2F4F7] p-4 transition hover:bg-[#e7ebf0]"
+                >
+                  <span className="block font-heading text-base font-bold text-[#02213D]">{resource.label}</span>
+                  <span className="mt-1 block text-sm leading-6 text-[#4B5563]">{resource.description}</span>
+                </Link>
+              ))}
+            </div>
+          </section>
           <section className="mx-auto mt-10 max-w-4xl" aria-labelledby="faq-service-area-heading">
             <h2 id="faq-service-area-heading" className="font-heading text-2xl font-bold text-[#02213D]">
               Oklahoma service areas
