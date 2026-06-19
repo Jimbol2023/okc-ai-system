@@ -1,14 +1,15 @@
-import type { Metadata } from "next";
 import { CheckCircle2 } from "lucide-react";
 
 import { TrustSection } from "@/components/public/TrustSection";
 import { brandConfig } from "@/lib/brand-config";
+import { createPublicPageMetadata } from "@/lib/public-seo";
 
-export const metadata: Metadata = {
+export const metadata = createPublicPageMetadata({
+  path: "/about",
   title: "About J Capital Property Group",
   description:
     "Learn about J Capital Property Group LLC, an Oklahoma-focused real estate company built on integrity, transparency, market knowledge, and professional guidance."
-};
+});
 
 const values = [
   {

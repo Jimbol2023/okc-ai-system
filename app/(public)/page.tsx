@@ -1,16 +1,17 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 
 import { ContactSection } from "@/components/public/ContactSection";
 import { HeroSection } from "@/components/public/HeroSection";
 import { TrustSection } from "@/components/public/TrustSection";
 import { brandConfig } from "@/lib/brand-config";
+import { createPublicPageMetadata } from "@/lib/public-seo";
 
-export const metadata: Metadata = {
+export const metadata = createPublicPageMetadata({
+  path: "/",
   title: "Professional Real Estate Solutions for Oklahoma Property Owners",
   description:
     "J Capital Property Group helps Oklahoma property owners explore real estate opportunities with professionalism, transparency, and local market knowledge."
-};
+});
 
 export default function HomePage() {
   return (

@@ -1,13 +1,13 @@
-import type { Metadata } from "next";
-
 import { ContactSection } from "@/components/public/ContactSection";
 import { brandConfig } from "@/lib/brand-config";
+import { createPublicPageMetadata } from "@/lib/public-seo";
 
-export const metadata: Metadata = {
+export const metadata = createPublicPageMetadata({
+  path: "/contact",
   title: "Contact J Capital Property Group",
   description:
     "Contact J Capital Property Group by phone or email to discuss Oklahoma property questions with a professional, no-pressure process."
-};
+});
 
 export default function ContactPage() {
   return (

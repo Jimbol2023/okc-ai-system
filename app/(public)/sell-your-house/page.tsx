@@ -1,15 +1,16 @@
-import type { Metadata } from "next";
 import { Mail, Phone } from "lucide-react";
 
 import { ContactSection } from "@/components/public/ContactSection";
 import { TrustSection } from "@/components/public/TrustSection";
 import { brandConfig } from "@/lib/brand-config";
+import { createPublicPageMetadata } from "@/lib/public-seo";
 
-export const metadata: Metadata = {
+export const metadata = createPublicPageMetadata({
+  path: "/sell-your-house",
   title: "Sell Your Property",
   description:
     "Discuss inherited property, vacant property, deferred maintenance, landlord fatigue, relocation, or private property questions with J Capital Property Group."
-};
+});
 
 const processSteps = [
   {
