@@ -23,7 +23,7 @@ export function Footer() {
           </div>
         </div>
         <div className="flex flex-col items-center gap-2 text-center md:items-end md:text-right">
-          <p>Professional real estate guidance for Oklahoma property owners.</p>
+          <p>Professional, transparent real estate guidance for Oklahoma property owners.</p>
           <Link href="/privacy" className="font-heading font-semibold text-white/78 transition hover:text-white">
             Privacy Policy
           </Link>

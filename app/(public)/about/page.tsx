@@ -1,7 +1,14 @@
+import type { Metadata } from "next";
 import { CheckCircle2 } from "lucide-react";
 
 import { TrustSection } from "@/components/public/TrustSection";
 import { brandConfig } from "@/lib/brand-config";
+
+export const metadata: Metadata = {
+  title: "About J Capital Property Group",
+  description:
+    "Learn about J Capital Property Group LLC, an Oklahoma-focused real estate company built on integrity, transparency, market knowledge, and professional guidance."
+};
 
 const values = [
   {
@@ -47,6 +54,11 @@ export default function AboutPage() {
             <div className="border-l-4 border-[#D4A017] bg-[#F2F4F7] p-6 md:p-8">
               <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#6B7280]">Operating Company</p>
               <p className="mt-3 font-heading text-2xl font-bold text-[#02213D]">{brandConfig.companyLegalName}</p>
+              <p className="mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-[#6B7280]">Mission</p>
+              <p className="mt-3 text-sm leading-7 text-[#1F2937]">
+                To help Oklahoma property owners evaluate real estate decisions with clarity, professionalism, and
+                respect for each unique situation.
+              </p>
             </div>
 
             <div>
@@ -55,6 +67,10 @@ export default function AboutPage() {
                 professionalism, transparency, and practical guidance. Every property situation is unique and deserves
                 thoughtful attention. Our goal is to help property owners move forward confidently while providing
                 clear communication and a straightforward process.
+              </p>
+              <p className="mt-5 text-base leading-8 text-[#1F2937]">
+                Our Oklahoma focus helps keep conversations practical, grounded, and attentive to local property
+                conditions.
               </p>
               <div className="mt-8 grid gap-4 sm:grid-cols-2">
                 {values.map((value) => (

@@ -1,4 +1,12 @@
+import type { Metadata } from "next";
+
 import { brandConfig } from "@/lib/brand-config";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description:
+    "Privacy policy for the public J Capital Property Group website, including contact information usage and no automated outreach from this website."
+};
 
 const policySections = [
   {
@@ -7,7 +15,7 @@ const policySections = [
   },
   {
     title: "How Information Is Used",
-    body: "Information shared by phone or email is used to communicate with you about your inquiry, answer questions, and discuss potential real estate solutions."
+    body: "Information voluntarily shared by phone or email is used to communicate with you about your inquiry, answer questions, and discuss potential real estate solutions."
   },
   {
     title: "No Sale Of Personal Information",

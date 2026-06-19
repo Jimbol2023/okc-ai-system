@@ -1,4 +1,8 @@
 import Image from "next/image";
+import Link from "next/link";
+import { Mail, Phone } from "lucide-react";
+
+import { brandConfig } from "@/lib/brand-config";
 
 export function HeroSection() {
   return (
@@ -28,18 +32,31 @@ export function HeroSection() {
             Helping property owners explore real estate opportunities with professionalism, transparency, and local
             expertise.
           </p>
+          <div className="mt-6 grid gap-3 text-sm text-white/78 sm:grid-cols-3">
+            <p className="border-l-2 border-[#D4A017] pl-3">Professional guidance</p>
+            <p className="border-l-2 border-[#D4A017] pl-3">Oklahoma market focus</p>
+            <p className="border-l-2 border-[#D4A017] pl-3">No-pressure conversations</p>
+          </div>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a
-              href="#contact"
+            <Link
+              href="/sell-your-house"
               className="inline-flex min-h-13 items-center justify-center rounded-md bg-[#D4A017] px-6 py-3.5 font-heading text-sm font-bold text-[#02213D] shadow-[0_18px_36px_rgba(212,160,23,0.26)] transition hover:bg-[#e0af2e]"
             >
-              Schedule a Consultation
-            </a>
+              Discuss Your Property
+            </Link>
             <a
-              href="#why-us"
+              href={brandConfig.phoneHref}
               className="inline-flex min-h-13 items-center justify-center rounded-md border border-white/25 bg-white/8 px-6 py-3.5 font-heading text-sm font-bold text-white transition hover:bg-white/14"
             >
-              Learn More
+              <Phone className="mr-2 h-4 w-4" aria-hidden="true" />
+              Call J Capital Property Group
+            </a>
+            <a
+              href={`mailto:${brandConfig.primaryEmail}`}
+              className="inline-flex min-h-13 items-center justify-center rounded-md border border-white/25 bg-white/8 px-6 py-3.5 font-heading text-sm font-bold text-white transition hover:bg-white/14 sm:col-span-2 md:col-span-1"
+            >
+              <Mail className="mr-2 h-4 w-4" aria-hidden="true" />
+              Email J Capital Property Group
             </a>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import { Globe2, Mail, Phone, ShieldCheck } from "lucide-react";
+import Link from "next/link";
 
 import { brandConfig } from "@/lib/brand-config";
 
@@ -17,12 +18,15 @@ export function ContactSection() {
             <p className="mt-5 max-w-2xl text-base leading-8 text-white/80">
               We are available to discuss your property questions and explore potential real estate solutions.
             </p>
-            <a
-              href={brandConfig.phoneHref}
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-white/70">
+              No pressure, no automated outreach from this website, and no obligation to move forward.
+            </p>
+            <Link
+              href="/sell-your-house"
               className="mt-8 inline-flex min-h-13 items-center justify-center rounded-md bg-[#D4A017] px-6 py-3.5 font-heading text-sm font-bold text-[#02213D] transition hover:bg-[#e0af2e]"
             >
-              Schedule a Consultation
-            </a>
+              Discuss Your Property
+            </Link>
           </div>
 
           <div className="grid gap-4">
@@ -33,7 +37,8 @@ export function ContactSection() {
               <Phone className="h-5 w-5 shrink-0 text-[#D4A017]" aria-hidden="true" />
               <span>
                 <span className="block text-xs font-semibold uppercase tracking-[0.18em] text-white/55">Phone</span>
-                <span className="mt-1 block font-heading text-lg font-bold">{brandConfig.phone}</span>
+                <span className="mt-1 block font-heading text-lg font-bold">Call J Capital Property Group</span>
+                <span className="mt-1 block text-sm text-white/70">{brandConfig.phone}</span>
               </span>
             </a>
 
@@ -44,7 +49,8 @@ export function ContactSection() {
               <Mail className="h-5 w-5 shrink-0 text-[#D4A017]" aria-hidden="true" />
               <span>
                 <span className="block text-xs font-semibold uppercase tracking-[0.18em] text-white/55">Email</span>
-                <span className="mt-1 block break-all font-heading text-lg font-bold">{brandConfig.primaryEmail}</span>
+                <span className="mt-1 block font-heading text-lg font-bold">Email J Capital Property Group</span>
+                <span className="mt-1 block break-all text-sm text-white/70">{brandConfig.primaryEmail}</span>
               </span>
             </a>
 
