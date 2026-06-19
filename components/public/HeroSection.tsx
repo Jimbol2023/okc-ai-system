@@ -13,11 +13,11 @@ export function HeroSection() {
           alt="J Capital Property Group professional real estate hero image"
           fill
           sizes="100vw"
-          className="object-cover opacity-25"
+          className="object-cover opacity-20"
           priority
         />
       </div>
-      <div className="absolute inset-0 -z-10 bg-[linear-gradient(110deg,rgba(2,33,61,0.98)_0%,rgba(2,33,61,0.9)_45%,rgba(2,33,61,0.68)_100%)]" />
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(110deg,rgba(2,33,61,0.99)_0%,rgba(2,33,61,0.92)_45%,rgba(2,33,61,0.74)_100%)]" />
       <div className="absolute inset-x-0 bottom-0 -z-10 h-32 bg-gradient-to-t from-[#F2F4F7] to-transparent" />
 
       <div className="container-shell grid min-h-[calc(100svh-5rem)] items-center gap-10 py-20 md:min-h-[680px] md:grid-cols-[1.04fr_0.96fr] md:py-24">

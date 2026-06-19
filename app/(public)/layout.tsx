@@ -8,7 +8,7 @@ export default function PublicLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="public-site min-h-screen bg-white">
       <StructuredData />
       <Navbar />
       <main>{children}</main>

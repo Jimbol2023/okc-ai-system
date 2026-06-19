@@ -49,6 +49,15 @@ a {
   text-decoration: none;
 }
 
+.public-site a:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.public-site [id] {
+  scroll-margin-top: 6rem;
+}
+
 input,
 select,
 textarea {

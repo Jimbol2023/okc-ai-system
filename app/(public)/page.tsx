@@ -65,7 +65,7 @@ export default function HomePage() {
               </p>
               <Link
                 href="/about"
-                className="mt-6 inline-flex min-h-12 items-center justify-center rounded-md bg-[#02213D] px-5 py-3 font-heading text-sm font-bold text-white transition hover:bg-[#01172c]"
+                className="mt-6 inline-flex min-h-12 items-center justify-center rounded-md bg-[#D4A017] px-5 py-3 font-heading text-sm font-bold text-[#02213D] shadow-[0_12px_28px_rgba(212,160,23,0.22)] transition hover:bg-[#e0af2e]"
               >
                 Learn About J Capital
               </Link>

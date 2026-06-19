@@ -36,9 +36,9 @@ export function ContactSection() {
             >
               <Phone className="h-5 w-5 shrink-0 text-[#D4A017]" aria-hidden="true" />
               <span>
-                <span className="block text-xs font-semibold uppercase tracking-[0.18em] text-white/55">Phone</span>
+                <span className="block text-xs font-semibold uppercase tracking-[0.18em] text-white/68">Phone</span>
                 <span className="mt-1 block font-heading text-lg font-bold">Call J Capital Property Group</span>
-                <span className="mt-1 block text-sm text-white/70">{brandConfig.phone}</span>
+                <span className="mt-1 block text-sm text-white/78">{brandConfig.phone}</span>
               </span>
             </a>
 
@@ -48,16 +48,16 @@ export function ContactSection() {
             >
               <Mail className="h-5 w-5 shrink-0 text-[#D4A017]" aria-hidden="true" />
               <span>
-                <span className="block text-xs font-semibold uppercase tracking-[0.18em] text-white/55">Email</span>
+                <span className="block text-xs font-semibold uppercase tracking-[0.18em] text-white/68">Email</span>
                 <span className="mt-1 block font-heading text-lg font-bold">Email J Capital Property Group</span>
-                <span className="mt-1 block break-all text-sm text-white/70">{brandConfig.primaryEmail}</span>
+                <span className="mt-1 block break-all text-sm text-white/78">{brandConfig.primaryEmail}</span>
               </span>
             </a>
 
             <div className="flex items-center gap-4 border border-white/12 bg-white/8 p-4">
               <Globe2 className="h-5 w-5 shrink-0 text-[#D4A017]" aria-hidden="true" />
               <span>
-                <span className="block text-xs font-semibold uppercase tracking-[0.18em] text-white/55">Website</span>
+                <span className="block text-xs font-semibold uppercase tracking-[0.18em] text-white/68">Website</span>
                 <span className="mt-1 block font-heading text-lg font-bold">{brandConfig.domain}</span>
               </span>
             </div>
