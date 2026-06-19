@@ -3,7 +3,7 @@ import { createPublicPageMetadata } from "@/lib/public-seo";
 
 export const metadata = createPublicPageMetadata({
   path: "/privacy",
-  title: "Privacy Policy",
+  title: "Public Website Privacy Policy",
   description:
     "Privacy policy for the public J Capital Property Group website, including contact information usage and no automated outreach from this website."
 });

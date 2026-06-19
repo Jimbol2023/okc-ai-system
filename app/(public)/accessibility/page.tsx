@@ -5,7 +5,7 @@ import { createPublicPageMetadata } from "@/lib/public-seo";
 
 export const metadata = createPublicPageMetadata({
   path: "/accessibility",
-  title: "Accessibility",
+  title: "Website Accessibility",
   description:
     "Accessibility information for the J Capital Property Group public website, including phone and email support for users who need help accessing information."
 });

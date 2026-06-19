@@ -2,8 +2,11 @@ import { Mail, Phone } from "lucide-react";
 import Link from "next/link";
 import type { Route } from "next";
 
+import { Breadcrumbs } from "@/components/public/Breadcrumbs";
+import { JsonLdScript } from "@/components/public/JsonLdScript";
 import { brandConfig } from "@/lib/brand-config";
 import { commonPropertySituations, serviceAreaSteps, type PublicServiceArea } from "@/lib/public-service-areas";
+import { createBreadcrumbListJsonLd, type BreadcrumbItem } from "@/lib/public-seo";
 
 type ServiceAreaPageProps = {
   area: PublicServiceArea;
@@ -17,10 +20,18 @@ const helpfulLinks = [
 ] as const;
 
 export function ServiceAreaPage({ area }: ServiceAreaPageProps) {
+  const breadcrumbs: BreadcrumbItem[] = [
+    { name: "Home", path: "/" },
+    { name: "Oklahoma Service Areas" },
+    { name: area.city }
+  ];
+
   return (
     <div className="bg-white">
+      <JsonLdScript data={createBreadcrumbListJsonLd(breadcrumbs)} />
       <section className="bg-[#02213D] py-16 text-white md:py-24">
         <div className="container-shell">
+          <Breadcrumbs items={breadcrumbs} />
           <div className="max-w-4xl">
             <p className="font-heading text-xs font-bold uppercase tracking-[0.22em] text-[#D4A017]">
               {area.city} Property Guidance

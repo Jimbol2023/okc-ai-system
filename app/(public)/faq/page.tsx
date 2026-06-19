@@ -1,13 +1,14 @@
 import Link from "next/link";
 import type { Route } from "next";
 
+import { JsonLdScript } from "@/components/public/JsonLdScript";
 import { brandConfig } from "@/lib/brand-config";
 import { ServiceAreaLinks } from "@/components/public/ServiceAreaLinks";
 import { createPublicPageMetadata } from "@/lib/public-seo";
 
 export const metadata = createPublicPageMetadata({
   path: "/faq",
-  title: "FAQ",
+  title: "J Capital Property Group FAQ",
   description:
     "Common questions about J Capital Property Group, property conversations, accessibility, and contacting the team."
 });
@@ -118,10 +119,7 @@ const relatedResources = [
 export default function FaqPage() {
   return (
     <div className="bg-white">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd).replace(/</g, "\\u003c") }}
-      />
+      <JsonLdScript data={faqJsonLd} />
       <section className="bg-[#F2F4F7] py-16 md:py-20">
         <div className="container-shell">
           <div className="mx-auto max-w-3xl text-center">

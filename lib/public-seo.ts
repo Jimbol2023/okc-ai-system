@@ -6,33 +6,44 @@ export const publicSiteUrl = "https://jcapitalpropertygroup.com";
 export const publicLogoUrl = `${publicSiteUrl}${brandConfig.logoPath}`;
 export const publicOpenGraphImageUrl = `${publicSiteUrl}/images/og-jcapital.jpg`;
 
+export type PublicPath =
+  | "/"
+  | "/sell-your-house"
+  | "/about"
+  | "/contact"
+  | "/privacy"
+  | "/accessibility"
+  | "/faq"
+  | "/resources"
+  | "/resources/inherited-property-oklahoma"
+  | "/resources/vacant-property-oklahoma"
+  | "/resources/landlord-property-decisions-oklahoma"
+  | "/resources/shared-inherited-property-oklahoma"
+  | "/resources/relocation-property-decisions-oklahoma"
+  | "/oklahoma-city"
+  | "/yukon"
+  | "/moore"
+  | "/norman"
+  | "/edmond"
+  | "/midwest-city";
+
+export type BreadcrumbItem = {
+  name: string;
+  path?: PublicPath;
+};
+
 type PublicPageMetadataInput = {
-  path:
-    | "/"
-    | "/sell-your-house"
-    | "/about"
-    | "/contact"
-    | "/privacy"
-    | "/accessibility"
-    | "/faq"
-    | "/resources"
-    | "/resources/inherited-property-oklahoma"
-    | "/resources/vacant-property-oklahoma"
-    | "/resources/landlord-property-decisions-oklahoma"
-    | "/resources/shared-inherited-property-oklahoma"
-    | "/resources/relocation-property-decisions-oklahoma"
-    | "/oklahoma-city"
-    | "/yukon"
-    | "/moore"
-    | "/norman"
-    | "/edmond"
-    | "/midwest-city";
+  path: PublicPath;
   title: string;
   description: string;
 };
 
+export function getPublicCanonicalUrl(path: PublicPath) {
+  return path === "/" ? publicSiteUrl : `${publicSiteUrl}${path}`;
+}
+
 export function createPublicPageMetadata({ path, title, description }: PublicPageMetadataInput): Metadata {
-  const canonical = path === "/" ? publicSiteUrl : `${publicSiteUrl}${path}`;
+  const canonical = getPublicCanonicalUrl(path);
 
   return {
     title,
@@ -60,6 +71,61 @@ export function createPublicPageMetadata({ path, title, description }: PublicPag
       title,
       description,
       images: [publicOpenGraphImageUrl]
+    }
+  };
+}
+
+export function createBreadcrumbListJsonLd(items: BreadcrumbItem[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => {
+      const listItem: Record<string, unknown> = {
+        "@type": "ListItem",
+        position: index + 1,
+        name: item.name
+      };
+
+      if (item.path) {
+        listItem.item = getPublicCanonicalUrl(item.path);
+      }
+
+      return listItem;
+    })
+  };
+}
+
+export function createArticleJsonLd({
+  path,
+  title,
+  description
+}: {
+  path: PublicPath;
+  title: string;
+  description: string;
+}) {
+  const canonical = getPublicCanonicalUrl(path);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: title,
+    description,
+    url: canonical,
+    mainEntityOfPage: canonical,
+    image: publicOpenGraphImageUrl,
+    author: {
+      "@type": "Organization",
+      name: brandConfig.companyDisplayName,
+      url: publicSiteUrl
+    },
+    publisher: {
+      "@type": "Organization",
+      name: brandConfig.companyDisplayName,
+      logo: {
+        "@type": "ImageObject",
+        url: publicLogoUrl
+      }
     }
   };
 }

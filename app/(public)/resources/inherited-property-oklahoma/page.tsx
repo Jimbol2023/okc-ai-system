@@ -1,8 +1,25 @@
 import Link from "next/link";
 import type { Route } from "next";
 
+import { Breadcrumbs } from "@/components/public/Breadcrumbs";
+import { JsonLdScript } from "@/components/public/JsonLdScript";
 import { ServiceAreaLinks } from "@/components/public/ServiceAreaLinks";
-import { createPublicPageMetadata } from "@/lib/public-seo";
+import {
+  createArticleJsonLd,
+  createBreadcrumbListJsonLd,
+  createPublicPageMetadata,
+  type BreadcrumbItem
+} from "@/lib/public-seo";
+
+const pageTitle = "How To Handle An Inherited Property In Oklahoma";
+const pageDescription =
+  "Educational guidance for Oklahoma owners thinking through inherited property, shared ownership, condition, timing, and professional guidance questions.";
+
+const breadcrumbs: BreadcrumbItem[] = [
+  { name: "Home", path: "/" },
+  { name: "Resources", path: "/resources" },
+  { name: pageTitle }
+];
 
 const relatedResources = [
   {
@@ -29,9 +46,8 @@ const relatedResources = [
 
 export const metadata = createPublicPageMetadata({
   path: "/resources/inherited-property-oklahoma",
-  title: "How To Handle An Inherited Property In Oklahoma",
-  description:
-    "Educational guidance for Oklahoma owners thinking through inherited property, shared ownership, condition, timing, and professional guidance questions."
+  title: pageTitle,
+  description: pageDescription
 });
 
 const sections = [
@@ -80,8 +96,17 @@ const sections = [
 export default function InheritedPropertyOklahomaPage() {
   return (
     <div className="bg-white">
+      <JsonLdScript data={createBreadcrumbListJsonLd(breadcrumbs)} />
+      <JsonLdScript
+        data={createArticleJsonLd({
+          path: "/resources/inherited-property-oklahoma",
+          title: pageTitle,
+          description: pageDescription
+        })}
+      />
       <section className="bg-[#02213D] py-16 text-white md:py-24">
         <div className="container-shell">
+          <Breadcrumbs items={breadcrumbs} />
           <div className="max-w-4xl">
             <p className="font-heading text-xs font-bold uppercase tracking-[0.22em] text-[#D4A017]">
               Oklahoma Property Resources

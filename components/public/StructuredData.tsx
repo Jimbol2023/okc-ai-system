@@ -1,3 +1,4 @@
+import { JsonLdScript } from "@/components/public/JsonLdScript";
 import { brandConfig } from "@/lib/brand-config";
 import { publicLogoUrl, publicSiteUrl } from "@/lib/public-seo";
 
@@ -34,16 +35,19 @@ export function StructuredData() {
           "@type": "AdministrativeArea",
           name: "Oklahoma"
         }
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${publicSiteUrl}/#website`,
+        name: brandConfig.companyDisplayName,
+        url: publicSiteUrl,
+        publisher: {
+          "@id": `${publicSiteUrl}/#organization`
+        },
+        inLanguage: "en-US"
       }
     ]
   };
 
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{
-        __html: JSON.stringify(graph).replace(/</g, "\\u003c")
-      }}
-    />
-  );
+  return <JsonLdScript data={graph} />;
 }

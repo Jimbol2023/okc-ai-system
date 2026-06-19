@@ -7,7 +7,7 @@ import { propertyResourcePages } from "@/lib/public-resource-pages";
 
 export const metadata = createPublicPageMetadata({
   path: "/resources",
-  title: "Resources",
+  title: "Oklahoma Property Resources",
   description:
     "A foundation for Oklahoma property resources, inherited property questions, vacant property guidance, landlord guidance, and property decision support."
 });

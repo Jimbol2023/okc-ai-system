@@ -1,8 +1,11 @@
 import Link from "next/link";
 import type { Route } from "next";
 
+import { Breadcrumbs } from "@/components/public/Breadcrumbs";
+import { JsonLdScript } from "@/components/public/JsonLdScript";
 import { ServiceAreaLinks } from "@/components/public/ServiceAreaLinks";
 import type { PublicResourcePage } from "@/lib/public-resource-pages";
+import { createArticleJsonLd, createBreadcrumbListJsonLd, type BreadcrumbItem } from "@/lib/public-seo";
 
 type PropertyResourceArticlePageProps = {
   page: PublicResourcePage;
@@ -16,19 +19,19 @@ const commonLinks = [
 ] as const;
 
 export function PropertyResourceArticlePage({ page }: PropertyResourceArticlePageProps) {
+  const breadcrumbs: BreadcrumbItem[] = [
+    { name: "Home", path: "/" },
+    { name: "Resources", path: "/resources" },
+    { name: page.title }
+  ];
+
   return (
     <div className="bg-white">
+      <JsonLdScript data={createBreadcrumbListJsonLd(breadcrumbs)} />
+      <JsonLdScript data={createArticleJsonLd({ path: page.path, title: page.title, description: page.description })} />
       <section className="bg-[#02213D] py-16 text-white md:py-24">
         <div className="container-shell">
-          <nav aria-label="Breadcrumb" className="mb-8 text-sm font-semibold text-white/78">
-            <Link href="/resources" className="underline underline-offset-4 transition hover:text-white">
-              Resources
-            </Link>
-            <span aria-hidden="true" className="mx-2 text-white/45">
-              /
-            </span>
-            <span>{page.eyebrow}</span>
-          </nav>
+          <Breadcrumbs items={breadcrumbs} />
           <div className="max-w-4xl">
             <p className="font-heading text-xs font-bold uppercase tracking-[0.22em] text-[#D4A017]">
               {page.eyebrow}
