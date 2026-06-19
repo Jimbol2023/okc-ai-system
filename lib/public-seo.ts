@@ -7,7 +7,21 @@ export const publicLogoUrl = `${publicSiteUrl}${brandConfig.logoPath}`;
 export const publicOpenGraphImageUrl = `${publicSiteUrl}/images/og-jcapital.jpg`;
 
 type PublicPageMetadataInput = {
-  path: "/" | "/sell-your-house" | "/about" | "/contact" | "/privacy" | "/accessibility" | "/faq" | "/resources";
+  path:
+    | "/"
+    | "/sell-your-house"
+    | "/about"
+    | "/contact"
+    | "/privacy"
+    | "/accessibility"
+    | "/faq"
+    | "/resources"
+    | "/oklahoma-city"
+    | "/yukon"
+    | "/moore"
+    | "/norman"
+    | "/edmond"
+    | "/midwest-city";
   title: string;
   description: string;
 };

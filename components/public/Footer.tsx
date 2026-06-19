@@ -1,7 +1,17 @@
 import Link from "next/link";
 import Image from "next/image";
+import type { Route } from "next";
 
 import { brandConfig } from "@/lib/brand-config";
+
+const serviceAreaLinks = [
+  { href: "/oklahoma-city" as Route, label: "Oklahoma City" },
+  { href: "/yukon" as Route, label: "Yukon" },
+  { href: "/moore" as Route, label: "Moore" },
+  { href: "/norman" as Route, label: "Norman" },
+  { href: "/edmond" as Route, label: "Edmond" },
+  { href: "/midwest-city" as Route, label: "Midwest City" }
+];
 
 export function Footer() {
   return (
@@ -40,6 +50,19 @@ export function Footer() {
             <Link href="/contact" className="font-heading font-semibold text-white/85 transition hover:text-white">
               Contact
             </Link>
+          </nav>
+          <nav
+            aria-label="Service area navigation"
+            className="mt-3 flex max-w-2xl flex-wrap justify-center gap-x-4 gap-y-2 md:justify-end"
+          >
+            <span className="w-full font-heading text-xs font-bold uppercase tracking-[0.18em] text-[#D4A017] md:text-right">
+              Service Areas
+            </span>
+            {serviceAreaLinks.map((link) => (
+              <Link key={link.href} href={link.href} className="font-heading font-semibold text-white/85 transition hover:text-white">
+                {link.label}
+              </Link>
+            ))}
           </nav>
         </div>
       </div>
