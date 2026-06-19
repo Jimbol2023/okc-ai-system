@@ -6,9 +6,9 @@ import { brandConfig } from "@/lib/brand-config";
 
 const navLinks = [
   { href: "/" as Route, label: "Home" },
-  { href: "/sell-your-house" as Route, label: "Sell Your House" },
-  { href: "/contact" as Route, label: "Contact" },
-  { href: "/dashboard" as Route, label: "Dashboard" }
+  { href: "/sell-your-house" as Route, label: "Sell Your Property" },
+  { href: "/about" as Route, label: "About" },
+  { href: "/contact" as Route, label: "Contact" }
 ];
 
 export function Navbar() {
@@ -17,10 +17,10 @@ export function Navbar() {
       <div className="container-shell flex min-h-20 items-center gap-3 py-3 md:min-h-24 md:gap-5 md:py-4">
         <Link href="/" className="mr-auto flex shrink-0 items-center">
           <Image
-            src="/images/okc-logo-final.png"
+            src={brandConfig.logoPath}
             alt={brandConfig.logoAlt}
-            width={320}
-            height={120}
+            width={96}
+            height={96}
             className="h-[55px] w-auto object-contain"
             sizes="55px"
             priority
@@ -35,16 +35,16 @@ export function Navbar() {
         </nav>
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           <Link
-            href="tel:5807455374"
+            href={brandConfig.phoneHref}
             className="hidden rounded-full border border-border bg-white px-4 py-2 text-sm font-semibold text-primary transition hover:border-primary/40 hover:text-primary-strong xl:inline-flex"
           >
-            Call or Text: (580) 745-5374
+            Call {brandConfig.phone}
           </Link>
           <Link
-            href="/sell-your-house"
+            href="/contact"
             className="inline-flex min-h-11 items-center justify-center rounded-full bg-[#d89a42] px-4 py-2.5 text-sm font-bold text-[#102437] shadow-[0_10px_25px_rgba(216,154,66,0.22)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#e5a64f] sm:px-5"
           >
-            See My Options
+            Schedule a Consultation
           </Link>
         </div>
       </div>

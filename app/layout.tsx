@@ -27,7 +27,11 @@ export const metadata: Metadata = {
     template: `%s | ${brandConfig.appName}`
   },
   description: brandConfig.appDescription,
-  metadataBase: new URL(getAppUrl())
+  metadataBase: new URL(getAppUrl()),
+  icons: {
+    icon: brandConfig.logoPath,
+    apple: brandConfig.logoPath
+  }
 };
 
 export default function RootLayout({

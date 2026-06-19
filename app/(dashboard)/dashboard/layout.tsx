@@ -1,4 +1,5 @@
 import type { Route } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { BarChart3, Building2, ClipboardCheck, HousePlus, LayoutGrid, Lock, Search, Shield, Upload, Users } from "lucide-react";
 
@@ -30,8 +31,20 @@ export default async function DashboardLayout({
       <div className="dashboard-container-shell py-3 md:py-5">
         <div className="grid gap-3 xl:grid-cols-[260px_minmax(0,1fr)]">
           <aside className="rounded-2xl border border-border bg-primary p-4 text-white md:min-h-[calc(100vh-2.5rem)] md:p-5">
-            <Link href="/" className="inline-flex items-center gap-2 text-sm font-semibold tracking-[0.18em] text-white/70 uppercase">
-              {brandConfig.companyDisplayName}
+            <Link href="/" className="inline-flex items-center gap-3">
+              <span className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-md border border-white/15 bg-white">
+                <Image
+                  src={brandConfig.logoPath}
+                  alt={brandConfig.logoAlt}
+                  fill
+                  sizes="44px"
+                  className="object-contain p-1"
+                  priority
+                />
+              </span>
+              <span className="text-sm font-semibold uppercase tracking-[0.18em] text-white/70">
+                {brandConfig.companyDisplayName}
+              </span>
             </Link>
             <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/72">
               <p className="font-semibold text-white">Signed in</p>

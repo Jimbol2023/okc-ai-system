@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Image from "next/image";
 
 import { LoginForm } from "@/components/auth/login-form";
 import { getAuthenticatedAdmin } from "@/lib/auth";
@@ -16,7 +17,19 @@ export default async function LoginPage() {
       <div className="container-shell flex min-h-screen items-center justify-center py-12">
         <div className="grid w-full max-w-5xl gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           <section className="rounded-[1.75rem] border border-border bg-primary px-6 py-8 text-white md:px-8 md:py-10">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-white/70">{brandConfig.companyDisplayName}</p>
+            <div className="flex items-center gap-3">
+              <span className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-md border border-white/15 bg-white">
+                <Image
+                  src={brandConfig.logoPath}
+                  alt={brandConfig.logoAlt}
+                  fill
+                  sizes="56px"
+                  className="object-contain p-1.5"
+                  priority
+                />
+              </span>
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-white/70">{brandConfig.companyDisplayName}</p>
+            </div>
             <h2 className="mt-4 text-4xl font-semibold">Secure dashboard access for internal operations.</h2>
             <p className="mt-4 max-w-xl text-sm leading-7 text-white/75 md:text-base">
               This sign-in protects lead data, imports, scoring workflows, and admin-only automation tools while the platform
