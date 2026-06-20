@@ -2,7 +2,11 @@ export type PublicResourcePath =
   | "/resources/vacant-property-oklahoma"
   | "/resources/landlord-property-decisions-oklahoma"
   | "/resources/shared-inherited-property-oklahoma"
-  | "/resources/relocation-property-decisions-oklahoma";
+  | "/resources/relocation-property-decisions-oklahoma"
+  | "/resources/education/probate-basics-oklahoma-property-owners"
+  | "/resources/education/deferred-maintenance-oklahoma"
+  | "/resources/education/property-ownership-change-considerations"
+  | "/resources/education/family-property-discussions";
 
 type ResourceLink = {
   href: string;
@@ -332,6 +336,278 @@ export const propertyResourcePages: PublicResourcePage[] = [
         href: "/resources/inherited-property-oklahoma",
         label: "Inherited Property Guide",
         description: "Helpful when relocation overlaps with an ownership change."
+      }
+    ]
+  },
+  {
+    path: "/resources/education/probate-basics-oklahoma-property-owners",
+    eyebrow: "Property Learning Center",
+    title: "Probate Basics for Oklahoma Property Owners",
+    description:
+      "General educational guidance for Oklahoma property owners thinking through probate, estate administration, documents, decision authority, and next-step questions.",
+    intro:
+      "Probate and estate administration can raise practical questions about who can act, what documents matter, and when property decisions can be discussed. This guide is a plain-language starting point, not legal advice.",
+    sectionsHeading: "Probate questions to organize",
+    sections: [
+      {
+        title: "Start with decision authority",
+        body:
+          "Before a property decision is made, owners and family members often need to understand who has authority to act. That answer may depend on documents, title records, court filings, or professional guidance."
+      },
+      {
+        title: "Gather documents before deciding",
+        body:
+          "Helpful documents may include estate papers, title information, mortgage or lien notices, insurance records, utility details, and maintenance notes. A simple folder can make future conversations clearer."
+      },
+      {
+        title: "Separate property questions from legal questions",
+        body:
+          "Property condition, access, security, and upkeep can be discussed generally, but legal authority and estate questions should be reviewed with qualified professionals before final decisions are made."
+      },
+      {
+        title: "Think through timing and responsibilities",
+        body:
+          "Probate-related property questions may involve vacant-property checks, utilities, repairs, insurance, family availability, and who is responsible for keeping the property stable while decisions are pending."
+      },
+      {
+        title: "Avoid assumptions",
+        body:
+          "It is easy to assume every inherited property follows the same path. Oklahoma property owners should avoid relying on assumptions about title, authority, value, taxes, debts, or timing."
+      },
+      {
+        title: "Questions to ask before a property conversation",
+        body:
+          "Useful questions include who is involved, what documents exist, whether the property is occupied, what condition concerns are known, and whether a qualified advisor should review the situation first."
+      }
+    ],
+    relatedQuestions: [
+      {
+        question: "Is this legal advice?",
+        prompt: "No. This guide is general education only and encourages professional review."
+      },
+      {
+        question: "Can inherited property questions be discussed?",
+        prompt: "Yes. J Capital can discuss practical property questions without replacing legal or tax guidance."
+      },
+      {
+        question: "What should I organize first?",
+        prompt: "Start with decision authority, documents, occupancy, condition, and timing."
+      }
+    ],
+    relatedResources: [
+      {
+        href: "/resources/inherited-property-oklahoma",
+        label: "Inherited Property Guide",
+        description: "A broader guide for inherited property questions and practical next steps."
+      },
+      {
+        href: "/resources/education/family-property-discussions",
+        label: "Family Property Discussions",
+        description: "Helpful when more than one family member is involved."
+      }
+    ]
+  },
+  {
+    path: "/resources/education/deferred-maintenance-oklahoma",
+    eyebrow: "Property Learning Center",
+    title: "Deferred Maintenance Considerations in Oklahoma",
+    description:
+      "Educational guidance for Oklahoma property owners reviewing delayed repairs, maintenance needs, safety questions, timing, and professional guidance.",
+    intro:
+      "Deferred maintenance can affect comfort, timing, access, insurance questions, and the type of help an owner may need. This guide helps organize known concerns before making a property decision.",
+    sectionsHeading: "Maintenance questions to review",
+    sections: [
+      {
+        title: "Write down known concerns",
+        body:
+          "A simple list of known repairs, visible issues, recurring problems, and past service work can make a property conversation more useful and reduce guesswork."
+      },
+      {
+        title: "Separate urgent concerns from planning questions",
+        body:
+          "Some issues may affect safety, access, utilities, weather exposure, or occupancy. Owners should contact qualified professionals for urgent or situation-specific repair guidance."
+      },
+      {
+        title: "Consider access and monitoring",
+        body:
+          "If a property is vacant or lightly used, owners may need to think through who can check on it, how often it is monitored, and whether utilities or exterior upkeep need attention."
+      },
+      {
+        title: "Think about repair timing",
+        body:
+          "Repair decisions can depend on budget, availability, property goals, family priorities, occupancy, and timing. There is no single path that fits every property."
+      },
+      {
+        title: "Understand what is known and unknown",
+        body:
+          "Owners should be clear about which concerns are confirmed and which are assumptions. Inspections, contractors, insurance professionals, or other qualified advisors may help clarify unknowns."
+      },
+      {
+        title: "Questions to ask before deciding",
+        body:
+          "Helpful questions include what repairs are known, whether anyone is living there, what has changed recently, who can access the property, and what timeline feels realistic."
+      }
+    ],
+    relatedQuestions: [
+      {
+        question: "Do I need repairs completed first?",
+        prompt: "That depends on your goals and situation. This guide helps organize the question."
+      },
+      {
+        question: "What if the property is vacant?",
+        prompt: "Vacant properties may need monitoring, access, and upkeep planning."
+      },
+      {
+        question: "Should I rely on assumptions?",
+        prompt: "No. Separate confirmed facts from assumptions before deciding."
+      }
+    ],
+    relatedResources: [
+      {
+        href: "/resources/vacant-property-oklahoma",
+        label: "Vacant Property Guide",
+        description: "Useful when maintenance concerns overlap with vacancy or access questions."
+      },
+      {
+        href: "/resources/education/property-ownership-change-considerations",
+        label: "Ownership Change Considerations",
+        description: "Helpful when repairs are part of a larger ownership transition."
+      }
+    ]
+  },
+  {
+    path: "/resources/education/property-ownership-change-considerations",
+    eyebrow: "Property Learning Center",
+    title: "Property Ownership Change Considerations",
+    description:
+      "General educational guidance for Oklahoma owners thinking through property ownership changes, documents, decision authority, timing, and next-step questions.",
+    intro:
+      "Ownership changes can happen for many reasons, including family events, estate questions, relocation, landlord decisions, or changing long-term plans. This guide helps owners organize practical questions before acting.",
+    sectionsHeading: "Ownership change questions to organize",
+    sections: [
+      {
+        title: "Clarify who is involved",
+        body:
+          "An ownership change may involve one owner, multiple owners, heirs, a trust, a business, or other parties. Understanding who needs to be included can prevent confusion."
+      },
+      {
+        title: "Review documents before relying on memory",
+        body:
+          "Title records, estate documents, loan information, tax notices, leases, and insurance records may affect what questions need professional review."
+      },
+      {
+        title: "Understand occupancy and access",
+        body:
+          "A property may be occupied, vacant, rented, or in transition. Occupancy can affect access, communication, maintenance, and timing."
+      },
+      {
+        title: "Plan for carrying responsibilities",
+        body:
+          "Ownership changes can involve utilities, insurance, taxes, repairs, yard care, security, and other responsibilities while decisions are being discussed."
+      },
+      {
+        title: "Use professional guidance when needed",
+        body:
+          "Legal, tax, title, financial, and insurance questions should be discussed with qualified professionals. A property conversation should not replace that guidance."
+      },
+      {
+        title: "Questions to ask before deciding",
+        body:
+          "Useful questions include who has authority, what documents apply, whether the property is occupied, what costs continue, and what outcome would fit the owner's situation."
+      }
+    ],
+    relatedQuestions: [
+      {
+        question: "Can ownership changes affect timing?",
+        prompt: "Yes. Timing can depend on documents, decision authority, occupancy, and professional review."
+      },
+      {
+        question: "What if several people are involved?",
+        prompt: "Shared decisions usually benefit from clear communication and organized documents."
+      },
+      {
+        question: "Is this title advice?",
+        prompt: "No. Title questions should be reviewed with qualified title or legal professionals."
+      }
+    ],
+    relatedResources: [
+      {
+        href: "/resources/shared-inherited-property-oklahoma",
+        label: "Shared Inherited Property Questions",
+        description: "Helpful when ownership questions involve family members or heirs."
+      },
+      {
+        href: "/resources/education/probate-basics-oklahoma-property-owners",
+        label: "Probate Basics",
+        description: "A starting point when an estate or probate question may be involved."
+      }
+    ]
+  },
+  {
+    path: "/resources/education/family-property-discussions",
+    eyebrow: "Property Learning Center",
+    title: "Preparing for Family Property Discussions",
+    description:
+      "Educational guidance for Oklahoma families preparing to discuss inherited property, shared ownership, timing, condition, responsibilities, and next steps.",
+    intro:
+      "Family property conversations can feel easier when people have the same basic information. This guide helps organize goals, questions, responsibilities, and next steps before a decision is made.",
+    sectionsHeading: "Family discussion questions to prepare",
+    sections: [
+      {
+        title: "Start with shared facts",
+        body:
+          "Before discussing preferences, families can list known facts about ownership, occupancy, condition, documents, expenses, access, and timing."
+      },
+      {
+        title: "Let each person name their priorities",
+        body:
+          "Different family members may care about timing, privacy, repairs, emotional attachment, costs, or simplicity. Naming priorities can reduce assumptions."
+      },
+      {
+        title: "Clarify roles and responsibilities",
+        body:
+          "Useful questions include who checks the property, who handles mail or utilities, who communicates with advisors, and who keeps notes from conversations."
+      },
+      {
+        title: "Avoid pressure during uncertain stages",
+        body:
+          "When documents, authority, condition, or timing are unclear, it can help to pause and gather information before asking anyone to make a final decision."
+      },
+      {
+        title: "Know when outside guidance helps",
+        body:
+          "Qualified attorneys, tax professionals, title companies, insurance professionals, or property advisors may help clarify different parts of the situation."
+      },
+      {
+        title: "Questions to discuss together",
+        body:
+          "Helpful questions include what everyone knows, what is still unknown, what timeline matters, what responsibilities continue, and what next step would be respectful and practical."
+      }
+    ],
+    relatedQuestions: [
+      {
+        question: "What if family members disagree?",
+        prompt: "Start by separating shared facts, individual priorities, and questions for qualified advisors."
+      },
+      {
+        question: "Should one person collect documents?",
+        prompt: "A shared folder or point person can help, if everyone involved is comfortable with that approach."
+      },
+      {
+        question: "Can J Capital discuss family property questions?",
+        prompt: "J Capital can discuss practical property questions while encouraging professional guidance where needed."
+      }
+    ],
+    relatedResources: [
+      {
+        href: "/resources/shared-inherited-property-oklahoma",
+        label: "Shared Inherited Property Questions",
+        description: "A companion guide for families managing shared property questions."
+      },
+      {
+        href: "/resources/education/property-ownership-change-considerations",
+        label: "Ownership Change Considerations",
+        description: "Helpful when the family conversation involves a change in ownership."
       }
     ]
   }

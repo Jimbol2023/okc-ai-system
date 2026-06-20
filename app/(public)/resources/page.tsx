@@ -7,10 +7,28 @@ import { propertyResourcePages } from "@/lib/public-resource-pages";
 
 export const metadata = createPublicPageMetadata({
   path: "/resources",
-  title: "Oklahoma Property Resources",
+  title: "Oklahoma Property Education Resources",
   description:
-    "A foundation for Oklahoma property resources, inherited property questions, vacant property guidance, landlord guidance, and property decision support."
+    "Education Center entry point for Oklahoma property guides, video lessons, property insights, inherited property questions, and decision support."
 });
+
+const educationCenterLinks = [
+  {
+    href: "/resources/education",
+    title: "Education Center",
+    description: "Start with the learning path and core authority guides."
+  },
+  {
+    href: "/resources/videos",
+    title: "Video Learning Center",
+    description: "Transcript-first lessons ready for future Canva, Loom, or YouTube videos."
+  },
+  {
+    href: "/resources/property-insights",
+    title: "Oklahoma Property Insights",
+    description: "Evergreen property decision topics without dated market-update framing."
+  }
+] as const;
 
 const resourceSections = [
   {
@@ -93,10 +111,11 @@ export default function ResourcesPage() {
           <div className="mx-auto max-w-3xl text-center">
             <p className="font-heading text-xs font-bold uppercase tracking-[0.22em] text-[#D4A017]">Resources</p>
             <h1 className="mt-4 font-heading text-4xl font-bold leading-tight text-[#02213D] md:text-6xl">
-              Oklahoma Property Resources
+              Oklahoma Property Education Resources
             </h1>
             <p className="mt-5 text-base leading-8 text-[#4B5563]">
-              A growing hub for property-owner questions, decision support, and accessible information.
+              A gateway to the J Capital Education Center, video lessons, property insights, and situation-based
+              guides for Oklahoma property owners.
             </p>
           </div>
         </div>
@@ -106,29 +125,48 @@ export default function ResourcesPage() {
         <div className="container-shell">
           <div className="mx-auto max-w-3xl text-center">
             <h2 id="resource-hub-heading" className="font-heading text-3xl font-bold text-[#02213D] md:text-5xl">
-              Resource Hub Foundation
+              Education Center foundation
             </h2>
             <p className="mt-4 text-base leading-7 text-[#4B5563]">
               These guides help Oklahoma property owners compare practical questions before choosing a next step.
             </p>
           </div>
 
+          <section className="mx-auto mt-10 max-w-5xl" aria-labelledby="education-center-links-heading">
+            <h2 id="education-center-links-heading" className="font-heading text-2xl font-bold text-[#02213D]">
+              Start with the Education Center
+            </h2>
+            <div className="mt-5 grid gap-4 md:grid-cols-3">
+              {educationCenterLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href as Route}
+                  className="border border-slate-200 bg-[#F2F4F7] p-5 transition hover:bg-[#e7ebf0]"
+                >
+                  <span className="block font-heading text-lg font-bold text-[#02213D]">{link.title}</span>
+                  <span className="mt-2 block text-sm leading-6 text-[#4B5563]">{link.description}</span>
+                </Link>
+              ))}
+            </div>
+          </section>
+
           <section className="mx-auto mt-10 max-w-4xl" aria-labelledby="featured-resource-heading">
             <div className="border-l-4 border-[#D4A017] bg-white p-5 shadow-sm">
               <p className="font-heading text-xs font-bold uppercase tracking-[0.18em] text-[#D4A017]">
-                Featured Resource
+                Featured Education Hub
               </p>
               <h2 id="featured-resource-heading" className="mt-3 font-heading text-2xl font-bold text-[#02213D]">
-                How To Handle An Inherited Property In Oklahoma
+                J Capital Property Owner Education Center
               </h2>
               <p className="mt-3 text-sm leading-6 text-[#4B5563]">
-                A practical, educational starting point for owners thinking through inherited property questions.
+                A practical, educational starting point for owners thinking through property questions, ownership
+                changes, videos, and evergreen Oklahoma property insights.
               </p>
               <Link
-                href="/resources/inherited-property-oklahoma"
+                href="/resources/education"
                 className="mt-5 inline-flex min-h-12 items-center justify-center rounded-md bg-[#D4A017] px-5 py-3 font-heading text-sm font-bold text-[#02213D] transition hover:bg-[#B88712]"
               >
-                Read Inherited Property Guide
+                Open Education Center
               </Link>
             </div>
           </section>

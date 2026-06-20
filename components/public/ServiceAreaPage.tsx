@@ -14,7 +14,7 @@ type ServiceAreaPageProps = {
 
 const helpfulLinks = [
   { href: "/faq" as Route, label: "Read FAQ" },
-  { href: "/resources" as Route, label: "Explore Resources" },
+  { href: "/resources/education" as Route, label: "Education Center" },
   { href: "/contact" as Route, label: "Contact J Capital" },
   { href: "/sell-your-house" as Route, label: "Discuss Your Property" }
 ] as const;

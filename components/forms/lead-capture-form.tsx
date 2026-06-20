@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { brandConfig } from "@/lib/brand-config";
 import { createLeadFromIntake } from "@/lib/leads-api";
 import { leadIntakeSchema, type LeadIntakeInput } from "@/lib/validations/lead";
 
@@ -172,8 +173,8 @@ export function LeadCaptureForm({ source }: LeadCaptureFormProps) {
 
       <p className="mt-4 text-sm leading-6 text-muted">
         Prefer to talk first?{" "}
-        <a className="font-semibold text-primary" href="tel:5807455374">
-          (580) 745-5374
+        <a className="font-semibold text-primary" href={brandConfig.phoneHref}>
+          {brandConfig.phone}
         </a>
         .
       </p>

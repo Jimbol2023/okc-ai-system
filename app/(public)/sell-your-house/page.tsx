@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Mail, Phone } from "lucide-react";
 
 import { ContactSection } from "@/components/public/ContactSection";
@@ -62,6 +63,24 @@ const situations = [
     description: "Some situations are best handled through a direct, respectful, and confidential conversation."
   }
 ];
+
+const educationLinks = [
+  {
+    href: "/resources/education",
+    title: "Education Center",
+    description: "Start with learning paths and core property-owner guides."
+  },
+  {
+    href: "/resources/education/deferred-maintenance-oklahoma",
+    title: "Deferred Maintenance",
+    description: "Organize repair and condition questions before a property conversation."
+  },
+  {
+    href: "/resources/videos",
+    title: "Video Learning Center",
+    description: "Review transcript-first lessons for common property situations."
+  }
+] as const;
 
 export default function SellYourPropertyPage() {
   return (
@@ -156,6 +175,37 @@ export default function SellYourPropertyPage() {
                   <h3 className="font-heading text-base font-bold text-[#02213D]">{situation.title}</h3>
                   <p className="mt-2 text-sm leading-6 text-[#4B5563]">{situation.description}</p>
                 </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#F2F4F7] py-18 md:py-24" aria-labelledby="property-education-heading">
+        <div className="container-shell">
+          <div className="grid gap-8 md:grid-cols-[0.85fr_1.15fr] md:items-start">
+            <div>
+              <p className="font-heading text-xs font-bold uppercase tracking-[0.22em] text-[#D4A017]">
+                Education Center
+              </p>
+              <h2 id="property-education-heading" className="mt-4 font-heading text-3xl font-bold leading-tight text-[#02213D] md:text-5xl">
+                Learn before you decide
+              </h2>
+              <p className="mt-4 text-base leading-7 text-[#4B5563]">
+                These guides help organize ownership, condition, timing, and next-step questions before a private
+                property conversation.
+              </p>
+            </div>
+            <div className="grid gap-3">
+              {educationLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="border border-slate-200 bg-white p-5 shadow-sm transition hover:bg-[#F8FAFC]"
+                >
+                  <span className="block font-heading text-lg font-bold text-[#02213D]">{link.title}</span>
+                  <span className="mt-2 block text-sm leading-6 text-[#4B5563]">{link.description}</span>
+                </Link>
               ))}
             </div>
           </div>

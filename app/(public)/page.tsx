@@ -54,22 +54,26 @@ const faqPreview = [
 
 const resourcePreview = [
   {
-    title: "Inherited Property Questions",
-    description: "Starting points for timing, condition, ownership changes, and family communication."
+    href: "/resources/education",
+    title: "Education Center",
+    description: "Start with learning paths, authority guides, video lessons, and property insights."
   },
   {
-    title: "Vacant Property Questions",
-    description: "Guidance for owners thinking about upkeep, security, timing, and long-term decisions."
+    href: "/resources/education/probate-basics-oklahoma-property-owners",
+    title: "Probate Basics",
+    description: "General education for inherited property, documents, timing, and authority questions."
   },
   {
-    title: "Landlord Property Guidance",
-    description: "Support for rental property questions, repairs, management needs, or changing ownership goals."
+    href: "/resources/videos",
+    title: "Video Learning Center",
+    description: "Transcript-first video pages for common Oklahoma property situations."
   },
   {
-    title: "Property Decision Support",
-    description: "Plain-language resources for comparing options and choosing the next practical step."
+    href: "/resources/property-insights",
+    title: "Property Insights",
+    description: "Evergreen topics for understanding property questions without dated market updates."
   }
-];
+] as const;
 
 export default function HomePage() {
   return (
@@ -131,29 +135,34 @@ export default function HomePage() {
         <div className="container-shell">
           <div className="mx-auto max-w-3xl text-center">
             <p className="font-heading text-xs font-bold uppercase tracking-[0.22em] text-[#D4A017]">
-              Resources
+              Education Center
             </p>
             <h2 id="homepage-resources-heading" className="mt-4 font-heading text-3xl font-bold leading-tight text-[#02213D] md:text-5xl">
-              Property Owner Resources
+              Property Owner Education Center
             </h2>
             <p className="mt-4 text-base leading-7 text-[#4B5563]">
-              Short guides and future resources for Oklahoma property owners who want to understand practical choices.
+              Evergreen guides, transcript-first video lessons, and property insights for Oklahoma owners who want to
+              understand practical choices.
             </p>
           </div>
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {resourcePreview.map((item) => (
-              <article key={item.title} className="border border-slate-200 bg-white p-5 shadow-sm">
-                <h3 className="font-heading text-lg font-bold text-[#02213D]">{item.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-[#4B5563]">{item.description}</p>
-              </article>
+              <Link
+                key={item.href}
+                href={item.href}
+                className="border border-slate-200 bg-white p-5 shadow-sm transition hover:bg-[#F8FAFC]"
+              >
+                <span className="block font-heading text-lg font-bold text-[#02213D]">{item.title}</span>
+                <span className="mt-3 block text-sm leading-6 text-[#4B5563]">{item.description}</span>
+              </Link>
             ))}
           </div>
           <div className="mt-8 text-center">
             <Link
-              href="/resources"
+              href="/resources/education"
               className="inline-flex min-h-12 items-center justify-center rounded-md border border-[#02213D]/18 bg-white px-5 py-3 font-heading text-sm font-bold text-[#02213D] transition hover:bg-[#eef1f5]"
             >
-              Explore Resources
+              Open Education Center
             </Link>
           </div>
         </div>

@@ -90,6 +90,16 @@ const faqJsonLd = {
 
 const relatedResources = [
   {
+    href: "/resources/education",
+    label: "Education Center",
+    description: "Start with the learning path, authority guides, videos, and property insights."
+  },
+  {
+    href: "/resources/education/probate-basics-oklahoma-property-owners",
+    label: "Probate basics",
+    description: "General education for probate-related property questions."
+  },
+  {
     href: "/resources/inherited-property-oklahoma",
     label: "Inherited property guide",
     description: "Review ownership, timing, condition, and professional guidance questions."

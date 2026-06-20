@@ -6,8 +6,10 @@ import { brandConfig } from "@/lib/brand-config";
 
 const navLinks = [
   { href: "/" as Route, label: "Home" },
-  { href: "/sell-your-house" as Route, label: "Discuss Your Property" },
   { href: "/about" as Route, label: "About" },
+  { href: "/resources/education" as Route, label: "Education Center" },
+  { href: "/faq" as Route, label: "FAQ" },
+  { href: "/sell-your-house" as Route, label: "Discuss Your Property" },
   { href: "/contact" as Route, label: "Contact" }
 ];
 
@@ -36,7 +38,7 @@ export function Navbar() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-6 font-heading text-sm font-semibold text-white/78 lg:flex">
+        <nav className="hidden items-center gap-5 font-heading text-sm font-semibold text-white/78 lg:flex">
           {navLinks.map((link) => (
             <Link key={link.href} href={link.href} className="transition hover:text-white">
               {link.label}

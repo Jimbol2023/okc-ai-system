@@ -13,7 +13,7 @@ type PropertyResourceArticlePageProps = {
 
 const commonLinks = [
   { href: "/faq", label: "Read FAQ", highlight: false },
-  { href: "/resources", label: "Explore Resources", highlight: false },
+  { href: "/resources/education", label: "Education Center", highlight: false },
   { href: "/contact", label: "Contact J Capital", highlight: false },
   { href: "/sell-your-house", label: "Discuss Your Property", highlight: true }
 ] as const;
@@ -21,7 +21,7 @@ const commonLinks = [
 export function PropertyResourceArticlePage({ page }: PropertyResourceArticlePageProps) {
   const breadcrumbs: BreadcrumbItem[] = [
     { name: "Home", path: "/" },
-    { name: "Resources", path: "/resources" },
+    { name: "Education Center", path: "/resources/education" },
     { name: page.title }
   ];
 

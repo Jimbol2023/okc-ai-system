@@ -44,8 +44,11 @@ export function Footer() {
             <Link href="/faq" className="font-heading font-semibold text-white/85 transition hover:text-white">
               FAQ
             </Link>
-            <Link href="/resources" className="font-heading font-semibold text-white/85 transition hover:text-white">
-              Resources
+            <Link href="/resources/education" className="font-heading font-semibold text-white/85 transition hover:text-white">
+              Education Center
+            </Link>
+            <Link href="/resources/videos" className="font-heading font-semibold text-white/85 transition hover:text-white">
+              Videos
             </Link>
             <Link href="/contact" className="font-heading font-semibold text-white/85 transition hover:text-white">
               Contact

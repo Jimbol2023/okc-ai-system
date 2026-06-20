@@ -17,7 +17,7 @@ const pageDescription =
 
 const breadcrumbs: BreadcrumbItem[] = [
   { name: "Home", path: "/" },
-  { name: "Resources", path: "/resources" },
+  { name: "Education Center", path: "/resources/education" },
   { name: pageTitle }
 ];
 
@@ -198,10 +198,10 @@ export default function InheritedPropertyOklahomaPage() {
                 Read FAQ
               </Link>
               <Link
-                href="/resources"
+                href="/resources/education"
                 className="inline-flex min-h-12 items-center justify-center border border-slate-200 bg-white px-4 py-3 text-center font-heading text-sm font-bold text-[#02213D] transition hover:bg-[#F8FAFC]"
               >
-                Explore Resources
+                Education Center
               </Link>
               <Link
                 href="/contact"
