@@ -17,11 +17,20 @@ type RelatedResource = {
   description: string;
 };
 
+type VideoAsset = {
+  src: string;
+  reviewStatus: "pending_review" | "ready";
+  targetDuration: string;
+};
+
 export type PublicVideoPage = {
   path: PublicVideoPath;
   title: string;
   description: string;
   summary: string;
+  videoAsset?: VideoAsset;
+  primaryCta?: string;
+  secondaryWebsiteCta?: string;
   transcript: string[];
   faqs: VideoFaq[];
   relatedResources: RelatedResource[];
@@ -32,15 +41,27 @@ export const publicVideoPages: PublicVideoPage[] = [
     path: "/resources/videos/inherited-property",
     title: "Understanding Inherited Property",
     description:
-      "Transcript-first educational video page for Oklahoma owners reviewing inherited property, family communication, documents, and next-step questions.",
+      "Educational video page for Oklahoma owners reviewing inherited property, family communication, documents, ownership questions, and practical next-step planning.",
     summary:
-      "This lesson helps inherited-property owners organize documents, decision authority, condition questions, family communication, and professional guidance needs before making a decision.",
+      "This 3-5 minute authority lesson helps inherited-property owners organize documents, decision authority, condition questions, family communication, responsibilities, and professional guidance needs before making a decision.",
+    videoAsset: {
+      src: "/videos/understanding-inherited-property.mp4",
+      reviewStatus: "ready",
+      targetDuration: "3-5 minutes"
+    },
+    primaryCta: "Learn more at jcapitalpropertygroup.com/resources/education",
+    secondaryWebsiteCta:
+      "If you'd like to discuss your specific situation, visit our property discussion form.",
     transcript: [
-      "Start by identifying who is involved and what documents are available.",
-      "Separate practical property questions from legal, tax, title, and estate questions.",
-      "Review whether the property is occupied, vacant, rented, or in transition.",
-      "Write down known condition concerns, access needs, utilities, insurance questions, and timing pressures.",
-      "Before making final decisions, consider whether a qualified professional should review the situation."
+      "Understanding inherited property in Oklahoma starts with slowing the decision down and organizing the facts before anyone feels pressured to choose a path.",
+      "Inherited property can involve ownership, documents, family communication, timing, property condition, and ongoing responsibilities. This lesson is general education only.",
+      "Common ownership situations may include one owner, multiple heirs, a trust, an estate, or unclear decision authority. Start by identifying who can make decisions and what documents are available.",
+      "Some situations may involve probate, trust review, title review, or other professional guidance. Legal, tax, financial, title, valuation, and repair questions should be reviewed with qualified professionals.",
+      "Families often need to think through utilities, insurance, access, repairs, personal property, taxes, security, and who can monitor the property.",
+      "Common challenges include distance, emotional stress, deferred maintenance, unclear paperwork, family disagreement, and timing pressure.",
+      "Possible paths may include keeping the property, renting it, repairing it, listing it, transferring ownership, or evaluating available ownership and disposition options. The right path depends on the situation.",
+      "Key takeaways: organize documents, confirm decision authority, separate facts from assumptions, understand property condition, and get qualified guidance when needed.",
+      "Learn more at jcapitalpropertygroup.com/resources/education."
     ],
     faqs: [
       {
@@ -52,8 +73,9 @@ export const publicVideoPages: PublicVideoPage[] = [
         answer: "Start with documents, decision authority, occupancy, condition, responsibilities, and timing."
       },
       {
-        question: "Can this page be updated with a real video later?",
-        answer: "Yes. The page is ready for a future Canva, Loom, or YouTube embed without redesigning the content."
+        question: "Why is this video 3-5 minutes?",
+        answer:
+          "The length gives enough room to educate, support website engagement, and build trust while staying short enough to finish."
       }
     ],
     relatedResources: [

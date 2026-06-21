@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Mail, Phone } from "lucide-react";
+import { Mail, Phone, PlayCircle } from "lucide-react";
 
+import { LeadCaptureForm } from "@/components/forms/lead-capture-form";
 import { ContactSection } from "@/components/public/ContactSection";
 import { TrustSection } from "@/components/public/TrustSection";
 import { brandConfig } from "@/lib/brand-config";
@@ -87,35 +88,41 @@ export default function SellYourPropertyPage() {
     <div className="bg-white">
       <section className="bg-[#02213D] py-18 text-white md:py-24">
         <div className="container-shell">
-          <div className="max-w-4xl">
-            <p className="font-heading text-xs font-bold uppercase tracking-[0.22em] text-[#D4A017]">
-              Discuss Your Property
-            </p>
-            <h1 className="mt-5 font-heading text-4xl font-bold leading-tight md:text-6xl">
-              A professional conversation about your Oklahoma property
-            </h1>
-            <p className="mt-6 max-w-3xl text-base leading-8 text-white/82 md:text-lg">
-              Property decisions can involve repairs, timing, inherited ownership, vacancy, landlord concerns,
-              relocation, or private questions. J Capital Property Group provides a calm place to discuss your
-              situation and understand practical next steps without pressure.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a
-                href={brandConfig.phoneHref}
-                className="inline-flex min-h-13 items-center justify-center gap-2 rounded-md bg-[#D4A017] px-6 py-3.5 font-heading text-sm font-bold text-[#02213D] transition hover:bg-[#e0af2e]"
-              >
-                <Phone className="h-4 w-4" aria-hidden="true" />
-                Call J Capital Property Group
-              </a>
-              <a
-                href={`mailto:${brandConfig.primaryEmail}`}
-                className="inline-flex min-h-13 items-center justify-center gap-2 rounded-md border border-white/20 bg-white/8 px-6 py-3.5 font-heading text-sm font-bold text-white transition hover:bg-white/14"
-              >
-                <Mail className="h-4 w-4" aria-hidden="true" />
-                Email J Capital Property Group
-              </a>
+          <div className="grid gap-10 lg:grid-cols-[0.94fr_0.86fr] lg:items-center">
+            <div className="max-w-4xl">
+              <p className="font-heading text-xs font-bold uppercase tracking-[0.22em] text-[#D4A017]">
+                Discuss Your Property
+              </p>
+              <h1 className="mt-5 font-heading text-4xl font-bold leading-tight md:text-6xl">
+                A professional conversation about your Oklahoma property
+              </h1>
+              <p className="mt-6 max-w-3xl text-base leading-8 text-white/82 md:text-lg">
+                Property decisions can involve repairs, timing, inherited ownership, vacancy, landlord concerns,
+                relocation, or private questions. J Capital Property Group provides a calm place to discuss your
+                situation and understand practical next steps without pressure.
+              </p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <a
+                  href={brandConfig.phoneHref}
+                  className="inline-flex min-h-13 items-center justify-center gap-2 rounded-md bg-[#D4A017] px-6 py-3.5 font-heading text-sm font-bold text-[#02213D] transition hover:bg-[#e0af2e]"
+                >
+                  <Phone className="h-4 w-4" aria-hidden="true" />
+                  Call J Capital Property Group
+                </a>
+                <a
+                  href={`mailto:${brandConfig.primaryEmail}`}
+                  className="inline-flex min-h-13 items-center justify-center gap-2 rounded-md border border-white/20 bg-white/8 px-6 py-3.5 font-heading text-sm font-bold text-white transition hover:bg-white/14"
+                >
+                  <Mail className="h-4 w-4" aria-hidden="true" />
+                  Email J Capital Property Group
+                </a>
+              </div>
+              <p className="mt-4 text-sm text-white/68">{brandConfig.phone}</p>
             </div>
-            <p className="mt-4 text-sm text-white/68">{brandConfig.phone}</p>
+
+            <div className="text-[#102437]">
+              <LeadCaptureForm source="seller_page_form" />
+            </div>
           </div>
         </div>
       </section>
@@ -130,6 +137,34 @@ export default function SellYourPropertyPage() {
               sizes="(min-width: 1280px) 1120px, calc(100vw - 2rem)"
               className="object-cover"
             />
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-10 md:py-14" aria-labelledby="learn-before-decide-heading">
+        <div className="container-shell">
+          <div className="grid gap-6 border border-slate-200 bg-[#F2F4F7] p-6 md:grid-cols-[0.78fr_1.22fr] md:items-center md:p-8">
+            <div className="flex min-h-40 items-center justify-center bg-[#02213D] text-white">
+              <PlayCircle className="h-14 w-14 text-[#D4A017]" aria-hidden="true" />
+            </div>
+            <div>
+              <p className="font-heading text-xs font-bold uppercase tracking-[0.22em] text-[#D4A017]">
+                Learn Before You Decide
+              </p>
+              <h2 id="learn-before-decide-heading" className="mt-3 font-heading text-2xl font-bold text-[#02213D] md:text-3xl">
+                Understanding inherited property in Oklahoma
+              </h2>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-[#4B5563]">
+                Review a calm educational lesson about documents, decision authority, responsibilities, family
+                communication, and ownership questions before choosing a path.
+              </p>
+              <Link
+                href="/resources/videos/inherited-property"
+                className="mt-5 inline-flex min-h-12 items-center justify-center rounded-md border border-[#02213D]/18 bg-white px-5 py-3 font-heading text-sm font-bold text-[#02213D] transition hover:bg-[#eef1f5]"
+              >
+                Watch Educational Lesson
+              </Link>
+            </div>
           </div>
         </div>
       </section>

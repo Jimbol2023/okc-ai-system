@@ -17,6 +17,7 @@ export function VideoLearningPage({ page }: VideoLearningPageProps) {
     { name: "Videos", path: "/resources/videos" },
     { name: page.title }
   ];
+  const videoAssetReady = page.videoAsset?.reviewStatus === "ready";
 
   return (
     <div className="bg-white">
@@ -34,17 +35,35 @@ export function VideoLearningPage({ page }: VideoLearningPageProps) {
         </div>
       </section>
 
-      <section className="bg-white py-16 md:py-24" aria-labelledby="video-placeholder-heading">
+      <section className="bg-white py-16 md:py-24" aria-labelledby="video-heading">
         <div className="container-shell">
           <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-[1.1fr_0.9fr] md:items-start">
             <div className="border border-slate-200 bg-[#F2F4F7] p-6">
-              <h2 id="video-placeholder-heading" className="font-heading text-2xl font-bold text-[#02213D]">
-                Video placeholder
+              <h2 id="video-heading" className="font-heading text-2xl font-bold text-[#02213D]">
+                {videoAssetReady ? "Watch the lesson" : "Video production review"}
               </h2>
-              <p className="mt-3 text-base leading-7 text-[#4B5563]">
-                A Canva, Loom, or YouTube video can be embedded here later. Until then, this page uses the summary,
-                transcript, FAQ, and related resources below as the educational foundation.
-              </p>
+              {videoAssetReady ? (
+                <video
+                  className="mt-5 aspect-video w-full bg-[#02213D]"
+                  controls
+                  preload="metadata"
+                  src={page.videoAsset?.src}
+                >
+                  <track kind="captions" />
+                </video>
+              ) : (
+                <div className="mt-5 border border-dashed border-[#D4A017]/70 bg-white p-5">
+                  <p className="text-base leading-7 text-[#4B5563]">
+                    The corrected MP4 will appear here after Canva text, logo placement, and brand review are complete.
+                    This page is already structured for the reviewed website video asset.
+                  </p>
+                  {page.videoAsset ? (
+                    <p className="mt-4 text-sm font-semibold text-[#02213D]">
+                      Target video length: {page.videoAsset.targetDuration}
+                    </p>
+                  ) : null}
+                </div>
+              )}
             </div>
             <div className="border-l-4 border-[#D4A017] bg-[#F2F4F7] p-6">
               <h2 className="font-heading text-2xl font-bold text-[#02213D]">General educational guidance</h2>
@@ -52,6 +71,9 @@ export function VideoLearningPage({ page }: VideoLearningPageProps) {
                 This page is general information only. It is not legal, tax, financial, title, valuation, or property
                 repair advice.
               </p>
+              {page.primaryCta ? (
+                <p className="mt-5 text-sm font-semibold leading-6 text-[#02213D]">{page.primaryCta}</p>
+              ) : null}
             </div>
           </div>
         </div>
@@ -94,6 +116,25 @@ export function VideoLearningPage({ page }: VideoLearningPageProps) {
           </div>
         </div>
       </section>
+
+      {page.secondaryWebsiteCta ? (
+        <section className="bg-white py-16 md:py-24" aria-labelledby="website-cta-heading">
+          <div className="container-shell">
+            <div className="mx-auto max-w-4xl border-l-4 border-[#D4A017] bg-[#F2F4F7] p-6">
+              <h2 id="website-cta-heading" className="font-heading text-2xl font-bold text-[#02213D]">
+                Property discussion
+              </h2>
+              <p className="mt-3 text-base leading-7 text-[#4B5563]">{page.secondaryWebsiteCta}</p>
+              <Link
+                href="/sell-your-house"
+                className="mt-5 inline-flex min-h-12 items-center justify-center rounded-md bg-[#D4A017] px-5 py-3 font-heading text-sm font-bold text-[#02213D] transition hover:bg-[#e0af2e]"
+              >
+                Open Property Discussion Form
+              </Link>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section className="bg-[#F2F4F7] py-16 md:py-24" aria-labelledby="video-related-heading">
         <div className="container-shell">
