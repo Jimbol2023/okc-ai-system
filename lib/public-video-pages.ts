@@ -17,6 +17,20 @@ type RelatedResource = {
   description: string;
 };
 
+type LessonGuideQuestion = {
+  question: string;
+  answer: string;
+};
+
+type LessonGuide = {
+  heading: string;
+  intro: string;
+  lessonSummary: string;
+  keyTakeaways: string[];
+  commonQuestions: LessonGuideQuestion[];
+  educationalDisclaimer: string;
+};
+
 type VideoAsset = {
   src: string;
   reviewStatus: "pending_review" | "ready";
@@ -31,6 +45,7 @@ export type PublicVideoPage = {
   videoAsset?: VideoAsset;
   primaryCta?: string;
   secondaryWebsiteCta?: string;
+  lessonGuide?: LessonGuide;
   transcript: string[];
   faqs: VideoFaq[];
   relatedResources: RelatedResource[];
@@ -52,16 +67,59 @@ export const publicVideoPages: PublicVideoPage[] = [
     primaryCta: "Learn more at jcapitalpropertygroup.com/resources/education",
     secondaryWebsiteCta:
       "If you'd like to discuss your specific situation, visit our property discussion form.",
+    lessonGuide: {
+      heading: "Understanding Inherited Property in Oklahoma",
+      intro:
+        "Inherited property can create emotional, legal, financial, and practical decisions for Oklahoma families. This lesson explains the main areas property owners should organize before deciding whether to keep, rent, repair, or sell an inherited property.",
+      lessonSummary:
+        "Inherited property often requires families to slow down and organize information before making major decisions. Important areas include ownership authority, probate or legal process, family communication, property condition, taxes, insurance, utilities, occupancy, repairs, and professional guidance.",
+      keyTakeaways: [
+        "Do not rush inherited property decisions.",
+        "Gather important documents before making decisions.",
+        "Confirm who has authority to act on behalf of the property.",
+        "Communicate clearly with all heirs or family members involved.",
+        "Review the property's condition, occupancy, utilities, taxes, and insurance.",
+        "Consider professional guidance from an attorney, tax professional, appraiser, real estate professional, or property manager.",
+        "Use educational resources before deciding whether to keep, rent, repair, or sell the property."
+      ],
+      commonQuestions: [
+        {
+          question: "Should I sell an inherited property immediately?",
+          answer:
+            "Not always. Families should first understand ownership, documentation, property condition, family goals, and possible legal or tax considerations."
+        },
+        {
+          question: "What if multiple family members inherited the property?",
+          answer:
+            "Clear communication is important. Families should confirm who has decision-making authority and avoid making rushed decisions without everyone understanding the situation."
+        },
+        {
+          question: "What should I check first?",
+          answer:
+            "Start with documents, occupancy, utilities, insurance, taxes, repairs, and whether probate or another legal process may be involved."
+        }
+      ],
+      educationalDisclaimer:
+        "This page provides general educational information for Oklahoma property owners. It is not legal, tax, financial, title, valuation, or property repair advice. Property owners should speak with qualified professionals before making major decisions."
+    },
     transcript: [
-      "Understanding inherited property in Oklahoma starts with slowing the decision down and organizing the facts before anyone feels pressured to choose a path.",
-      "Inherited property can involve ownership, documents, family communication, timing, property condition, and ongoing responsibilities. This lesson is general education only.",
-      "Common ownership situations may include one owner, multiple heirs, a trust, an estate, or unclear decision authority. Start by identifying who can make decisions and what documents are available.",
-      "Some situations may involve probate, trust review, title review, or other professional guidance. Legal, tax, financial, title, valuation, and repair questions should be reviewed with qualified professionals.",
-      "Families often need to think through utilities, insurance, access, repairs, personal property, taxes, security, and who can monitor the property.",
-      "Common challenges include distance, emotional stress, deferred maintenance, unclear paperwork, family disagreement, and timing pressure.",
-      "Possible paths may include keeping the property, renting it, repairing it, listing it, transferring ownership, or evaluating available ownership and disposition options. The right path depends on the situation.",
-      "Key takeaways: organize documents, confirm decision authority, separate facts from assumptions, understand property condition, and get qualified guidance when needed.",
-      "Learn more at jcapitalpropertygroup.com/resources/education."
+      "Understanding Inherited Property in Oklahoma",
+      "Inherited property can create emotional and practical decisions for Oklahoma families.",
+      "When a loved one passes away, families may suddenly have to think about ownership, documents, repairs, taxes, insurance, utilities, and who has authority to make decisions about the property.",
+      "The first step is to slow down and organize the situation.",
+      "Before deciding whether to keep, rent, repair, or sell the property, families should gather important documents and understand whether probate or another legal process may be involved.",
+      "The second step is communication.",
+      "Inherited property often involves more than one family member. Clear and respectful communication can help prevent confusion, disagreements, and rushed decisions.",
+      "The third step is reviewing the property condition.",
+      "Families should look at whether the property is occupied or vacant, whether utilities are active, whether insurance is current, whether taxes are owed, and whether repairs or maintenance are needed.",
+      "The fourth step is getting professional guidance.",
+      "Depending on the situation, families may need to speak with an attorney, tax professional, appraiser, real estate professional, contractor, or property manager.",
+      "Every inherited property situation is different.",
+      "Some families keep the property. Some rent it. Some repair it. Some sell it. Others need time before making a decision.",
+      "The goal is not to rush.",
+      "The goal is to understand the property, protect the family, and make an informed decision.",
+      "J Capital Property Group provides educational resources to help Oklahoma property owners understand their options before making major property decisions.",
+      "To learn more, visit the J Capital Property Group Education Center at jcapitalpropertygroup.com."
     ],
     faqs: [
       {
@@ -88,6 +146,16 @@ export const publicVideoPages: PublicVideoPage[] = [
         href: "/resources/education/probate-basics-oklahoma-property-owners",
         label: "Probate Basics",
         description: "General education for probate-related property questions."
+      },
+      {
+        href: "/resources/education",
+        label: "Education Center",
+        description: "Browse educational resources for Oklahoma property owners."
+      },
+      {
+        href: "/contact",
+        label: "Contact J Capital Property Group",
+        description: "Use direct phone and email links for general communication."
       }
     ]
   },
@@ -234,8 +302,8 @@ export const publicVideoPages: PublicVideoPage[] = [
         answer: "Write down the recurring tasks, repairs, communication needs, and timing concerns before comparing options."
       },
       {
-        question: "Can this page support a future recorded presentation?",
-        answer: "Yes. The current transcript-first structure is designed for a future Canva, Loom, or YouTube video."
+        question: "Can this page be used as a lesson guide?",
+        answer: "Yes. The page is structured with teaching notes, common questions, related resources, and disclaimers."
       }
     ],
     relatedResources: [

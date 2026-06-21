@@ -18,6 +18,7 @@ export function VideoLearningPage({ page }: VideoLearningPageProps) {
     { name: page.title }
   ];
   const videoAssetReady = page.videoAsset?.reviewStatus === "ready";
+  const hasLessonGuide = Boolean(page.lessonGuide);
 
   return (
     <div className="bg-white">
@@ -37,20 +38,26 @@ export function VideoLearningPage({ page }: VideoLearningPageProps) {
 
       <section className="bg-white py-16 md:py-24" aria-labelledby="video-heading">
         <div className="container-shell">
-          <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-[1.1fr_0.9fr] md:items-start">
-            <div className="border border-slate-200 bg-[#F2F4F7] p-6">
+          <div className="mx-auto max-w-4xl">
+            <div className="border border-slate-200 bg-[#F2F4F7] p-5 md:p-6">
               <h2 id="video-heading" className="font-heading text-2xl font-bold text-[#02213D]">
-                {videoAssetReady ? "Watch the lesson" : "Video production review"}
+                {videoAssetReady ? "Short visual overview" : "Video production review"}
               </h2>
               {videoAssetReady ? (
-                <video
-                  className="mt-5 aspect-video w-full bg-[#02213D]"
-                  controls
-                  preload="metadata"
-                  src={page.videoAsset?.src}
-                >
-                  <track kind="captions" />
-                </video>
+                <>
+                  <video
+                    className="mt-5 aspect-video w-full max-w-[720px] bg-[#02213D]"
+                    controls
+                    preload="metadata"
+                    src={page.videoAsset?.src}
+                  >
+                    <track kind="captions" />
+                  </video>
+                  <p className="mt-4 max-w-2xl text-sm leading-6 text-[#4B5563]">
+                    This short visual overview introduces the topic. Full teaching notes and key takeaways are provided
+                    below.
+                  </p>
+                </>
               ) : (
                 <div className="mt-5 border border-dashed border-[#D4A017]/70 bg-white p-5">
                   <p className="text-base leading-7 text-[#4B5563]">
@@ -64,58 +71,64 @@ export function VideoLearningPage({ page }: VideoLearningPageProps) {
                   ) : null}
                 </div>
               )}
-            </div>
-            <div className="border-l-4 border-[#D4A017] bg-[#F2F4F7] p-6">
-              <h2 className="font-heading text-2xl font-bold text-[#02213D]">General educational guidance</h2>
-              <p className="mt-3 text-base leading-7 text-[#4B5563]">
-                This page is general information only. It is not legal, tax, financial, title, valuation, or property
-                repair advice.
-              </p>
-              {page.primaryCta ? (
-                <p className="mt-5 text-sm font-semibold leading-6 text-[#02213D]">{page.primaryCta}</p>
-              ) : null}
+              <div className="mt-6 border-l-4 border-[#D4A017] bg-white p-5">
+                <h3 className="font-heading text-xl font-bold text-[#02213D]">General educational guidance</h3>
+                <p className="mt-3 text-sm leading-6 text-[#4B5563]">
+                  This page is general information only. It is not legal, tax, financial, title, valuation, or property
+                  repair advice.
+                </p>
+                {page.primaryCta ? (
+                  <p className="mt-4 text-sm font-semibold leading-6 text-[#02213D]">{page.primaryCta}</p>
+                ) : null}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="bg-[#F2F4F7] py-16 md:py-24" aria-labelledby="transcript-heading">
-        <div className="container-shell">
-          <div className="mx-auto max-w-4xl">
-            <h2 id="transcript-heading" className="font-heading text-3xl font-bold text-[#02213D] md:text-5xl">
-              Transcript
-            </h2>
-            <ol className="mt-8 grid gap-4">
-              {page.transcript.map((line, index) => (
-                <li key={line} className="grid gap-3 bg-white p-5 shadow-sm md:grid-cols-[3rem_1fr]">
-                  <span className="font-heading text-sm font-bold text-[#D4A017]">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <span className="text-base leading-7 text-[#4B5563]">{line}</span>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-white py-16 md:py-24" aria-labelledby="video-faq-heading">
-        <div className="container-shell">
-          <div className="mx-auto max-w-4xl">
-            <h2 id="video-faq-heading" className="font-heading text-3xl font-bold text-[#02213D] md:text-5xl">
-              FAQ
-            </h2>
-            <div className="mt-8 grid gap-4 md:grid-cols-3">
-              {page.faqs.map((faq) => (
-                <article key={faq.question} className="border border-slate-200 bg-[#F2F4F7] p-5">
-                  <h3 className="font-heading text-lg font-bold text-[#02213D]">{faq.question}</h3>
-                  <p className="mt-3 text-sm leading-6 text-[#4B5563]">{faq.answer}</p>
-                </article>
-              ))}
+      {page.lessonGuide ? (
+        <LessonGuideContent lessonGuide={page.lessonGuide} page={page} />
+      ) : (
+        <>
+          <section className="bg-[#F2F4F7] py-16 md:py-24" aria-labelledby="transcript-heading">
+            <div className="container-shell">
+              <div className="mx-auto max-w-4xl">
+                <h2 id="transcript-heading" className="font-heading text-3xl font-bold text-[#02213D] md:text-5xl">
+                  Transcript
+                </h2>
+                <ol className="mt-8 grid gap-4">
+                  {page.transcript.map((line, index) => (
+                    <li key={line} className="grid gap-3 bg-white p-5 shadow-sm md:grid-cols-[3rem_1fr]">
+                      <span className="font-heading text-sm font-bold text-[#D4A017]">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span className="text-base leading-7 text-[#4B5563]">{line}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
+
+          <section className="bg-white py-16 md:py-24" aria-labelledby="video-faq-heading">
+            <div className="container-shell">
+              <div className="mx-auto max-w-4xl">
+                <h2 id="video-faq-heading" className="font-heading text-3xl font-bold text-[#02213D] md:text-5xl">
+                  FAQ
+                </h2>
+                <div className="mt-8 grid gap-4 md:grid-cols-3">
+                  {page.faqs.map((faq) => (
+                    <article key={faq.question} className="border border-slate-200 bg-[#F2F4F7] p-5">
+                      <h3 className="font-heading text-lg font-bold text-[#02213D]">{faq.question}</h3>
+                      <p className="mt-3 text-sm leading-6 text-[#4B5563]">{faq.answer}</p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        </>
+      )}
 
       {page.secondaryWebsiteCta ? (
         <section className="bg-white py-16 md:py-24" aria-labelledby="website-cta-heading">
@@ -136,27 +149,116 @@ export function VideoLearningPage({ page }: VideoLearningPageProps) {
         </section>
       ) : null}
 
-      <section className="bg-[#F2F4F7] py-16 md:py-24" aria-labelledby="video-related-heading">
-        <div className="container-shell">
-          <div className="mx-auto max-w-4xl">
-            <h2 id="video-related-heading" className="font-heading text-3xl font-bold text-[#02213D] md:text-5xl">
-              Related resources
-            </h2>
-            <div className="mt-8 grid gap-4 md:grid-cols-2">
-              {page.relatedResources.map((resource) => (
-                <Link
-                  key={resource.href}
-                  href={resource.href as Route}
-                  className="border border-slate-200 bg-white p-5 shadow-sm transition hover:bg-[#F8FAFC]"
-                >
-                  <span className="block font-heading text-lg font-bold text-[#02213D]">{resource.label}</span>
-                  <span className="mt-2 block text-sm leading-6 text-[#4B5563]">{resource.description}</span>
-                </Link>
-              ))}
+      {!hasLessonGuide ? (
+        <section className="bg-[#F2F4F7] py-16 md:py-24">
+          <div className="container-shell">
+            <div className="mx-auto max-w-4xl">
+              <RelatedResourceSection page={page} />
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
     </div>
+  );
+}
+
+function LessonGuideContent({
+  lessonGuide,
+  page
+}: {
+  lessonGuide: NonNullable<PublicVideoPage["lessonGuide"]>;
+  page: PublicVideoPage;
+}) {
+  return (
+    <section className="bg-[#F2F4F7] py-16 md:py-24" aria-labelledby="lesson-guide-heading">
+      <div className="container-shell">
+        <article className="mx-auto max-w-4xl">
+          <h2 id="lesson-guide-heading" className="font-heading text-3xl font-bold text-[#02213D] md:text-5xl">
+            {lessonGuide.heading}
+          </h2>
+          <p className="mt-5 text-base leading-8 text-[#4B5563]">{lessonGuide.intro}</p>
+
+          <div className="mt-10 grid gap-5">
+            <section className="bg-white p-6 shadow-sm" aria-labelledby="lesson-summary-heading">
+              <h3 id="lesson-summary-heading" className="font-heading text-2xl font-bold text-[#02213D]">
+                Lesson Summary
+              </h3>
+              <p className="mt-3 text-base leading-7 text-[#4B5563]">{lessonGuide.lessonSummary}</p>
+            </section>
+
+            <section className="bg-white p-6 shadow-sm" aria-labelledby="voiceover-script-heading">
+              <h3 id="voiceover-script-heading" className="font-heading text-2xl font-bold text-[#02213D]">
+                Voiceover Script
+              </h3>
+              <div className="mt-4 grid gap-3">
+                {page.transcript.map((line) => (
+                  <p key={line} className="text-base leading-7 text-[#4B5563]">
+                    {line}
+                  </p>
+                ))}
+              </div>
+            </section>
+
+            <section className="bg-white p-6 shadow-sm" aria-labelledby="key-takeaways-heading">
+              <h3 id="key-takeaways-heading" className="font-heading text-2xl font-bold text-[#02213D]">
+                Key Takeaways
+              </h3>
+              <ul className="mt-4 grid gap-3">
+                {lessonGuide.keyTakeaways.map((takeaway) => (
+                  <li key={takeaway} className="border-l-4 border-[#D4A017] pl-4 text-base leading-7 text-[#4B5563]">
+                    {takeaway}
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            <section className="bg-white p-6 shadow-sm" aria-labelledby="common-questions-heading">
+              <h3 id="common-questions-heading" className="font-heading text-2xl font-bold text-[#02213D]">
+                Common Questions
+              </h3>
+              <div className="mt-4 grid gap-4">
+                {lessonGuide.commonQuestions.map((item) => (
+                  <article key={item.question} className="border border-slate-200 bg-[#F2F4F7] p-5">
+                    <h4 className="font-heading text-lg font-bold text-[#02213D]">Q: {item.question}</h4>
+                    <p className="mt-3 text-sm leading-6 text-[#4B5563]">A: {item.answer}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+
+            <RelatedResourceSection page={page} />
+
+            <section className="bg-white p-6 shadow-sm" aria-labelledby="educational-disclaimer-heading">
+              <h3 id="educational-disclaimer-heading" className="font-heading text-2xl font-bold text-[#02213D]">
+                Educational Disclaimer
+              </h3>
+              <p className="mt-3 text-base leading-7 text-[#4B5563]">{lessonGuide.educationalDisclaimer}</p>
+            </section>
+          </div>
+        </article>
+      </div>
+    </section>
+  );
+}
+
+function RelatedResourceSection({ page }: { page: PublicVideoPage }) {
+  return (
+    <section className="bg-white p-6 shadow-sm" aria-labelledby="video-related-heading">
+      <h3 id="video-related-heading" className="font-heading text-2xl font-bold text-[#02213D]">
+        Related Resources
+      </h3>
+      <div className="mt-5 grid gap-4 md:grid-cols-2">
+        {page.relatedResources.map((resource) => (
+          <Link
+            key={resource.href}
+            href={resource.href as Route}
+            className="border border-slate-200 bg-[#F2F4F7] p-5 shadow-sm transition hover:bg-[#eef1f5]"
+          >
+            <span className="block font-heading text-lg font-bold text-[#02213D]">{resource.label}</span>
+            <span className="mt-2 block text-sm leading-6 text-[#4B5563]">{resource.description}</span>
+          </Link>
+        ))}
+      </div>
+    </section>
   );
 }
