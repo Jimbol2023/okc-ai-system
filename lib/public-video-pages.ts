@@ -93,17 +93,29 @@ export const publicVideoPages: PublicVideoPage[] = [
   },
   {
     path: "/resources/videos/vacant-property",
-    title: "Vacant Property Considerations",
+    title: "Vacant Property in Oklahoma",
     description:
-      "Transcript-first educational video page for Oklahoma owners reviewing vacant property access, monitoring, utilities, condition, and timing.",
+      "Educational video page for Oklahoma owners reviewing vacant property access, monitoring, utilities, condition, responsibilities, and practical next-step planning.",
     summary:
-      "This lesson helps owners think through vacant property questions, including access, security, upkeep, utilities, insurance considerations, condition, and who can monitor the property.",
+      "This 3-5 minute authority lesson helps owners think through vacant property questions, including access, security, upkeep, utilities, insurance considerations, condition, and who can monitor the property.",
+    videoAsset: {
+      src: "/videos/vacant-property-in-oklahoma.mp4",
+      reviewStatus: "pending_review",
+      targetDuration: "3-5 minutes"
+    },
+    primaryCta: "Learn more at jcapitalpropertygroup.com/resources/education",
+    secondaryWebsiteCta:
+      "If you'd like to discuss your specific situation, visit our property discussion form.",
     transcript: [
-      "Confirm whether anyone has regular access to the property.",
-      "Review basic exterior visibility, mail, yard care, doors, windows, and known maintenance concerns.",
-      "Think through utilities, insurance, weather exposure, and whether qualified professionals should be contacted.",
-      "Write down who can check on the property and how often.",
-      "Use the information to compare practical next steps without relying on assumptions."
+      "Vacant property decisions in Oklahoma often start with access, visibility, security, condition, and responsibility questions.",
+      "A vacant home may be empty temporarily, between occupants, inherited, part of a relocation, or waiting for a longer-term decision.",
+      "Start by confirming who has access, who can check on the property, and whether keys, utilities, mail, and basic monitoring are organized.",
+      "Review visible condition concerns, yard care, doors, windows, weather exposure, insurance questions, and whether qualified professionals should be contacted.",
+      "Families and owners often face distance, time, repair uncertainty, recurring upkeep, and unclear responsibility for day-to-day property needs.",
+      "Possible paths may include keeping the property, repairing it, renting it, listing it, transferring responsibilities, or evaluating available ownership and disposition options.",
+      "Before making decisions, separate confirmed facts from assumptions about condition, safety, access, costs, and timing.",
+      "Key takeaways: confirm access, organize monitoring, document known concerns, review responsibilities, and get qualified guidance when needed.",
+      "Learn more at jcapitalpropertygroup.com/resources/education."
     ],
     faqs: [
       {
@@ -115,8 +127,9 @@ export const publicVideoPages: PublicVideoPage[] = [
         answer: "No. Insurance, repair, safety, and legal questions should be reviewed with qualified professionals."
       },
       {
-        question: "Can a video be embedded later?",
-        answer: "Yes. This page is structured for a future video embed and already includes the transcript content."
+        question: "Why is this video 3-5 minutes?",
+        answer:
+          "The length gives enough room to educate, support website engagement, and build trust while staying short enough to finish."
       }
     ],
     relatedResources: [
@@ -136,15 +149,27 @@ export const publicVideoPages: PublicVideoPage[] = [
     path: "/resources/videos/relocation-property",
     title: "Relocation Property Decisions",
     description:
-      "Transcript-first educational video page for Oklahoma owners organizing property decisions during relocation, timing, access, repairs, and responsibilities.",
+      "Educational video page for Oklahoma owners organizing property decisions during relocation, timing, access, repairs, responsibilities, and practical next-step planning.",
     summary:
-      "This lesson helps owners who are moving organize timing, access, occupancy, repairs, family availability, and ongoing property responsibilities.",
+      "This 3-5 minute authority lesson helps owners who are moving organize timing, access, occupancy, repairs, family availability, and ongoing property responsibilities.",
+    videoAsset: {
+      src: "/videos/relocation-property-decisions.mp4",
+      reviewStatus: "pending_review",
+      targetDuration: "3-5 minutes"
+    },
+    primaryCta: "Learn more at jcapitalpropertygroup.com/resources/education",
+    secondaryWebsiteCta:
+      "If you'd like to discuss your specific situation, visit our property discussion form.",
     transcript: [
-      "Start with the moving timeline and when the property may become vacant or harder to access.",
-      "Identify who can handle utilities, yard care, repair estimates, cleaning, or property checks.",
-      "Review whether the property is owner-occupied, tenant-occupied, vacant, or in transition.",
-      "Write down known repairs, remaining tasks, and timing pressures.",
-      "Compare options based on practical responsibilities, not pressure or assumptions."
+      "Relocation property decisions can become complicated when moving timelines, distance, repairs, access, and ongoing responsibilities overlap.",
+      "Start with the moving timeline and when the property may become vacant, harder to access, or more difficult to manage locally.",
+      "Review whether the property is owner-occupied, tenant-occupied, vacant, or in transition, and identify who can handle local tasks.",
+      "Owners may need to organize utilities, yard care, cleaning, property checks, repair estimates, personal property, and document access.",
+      "Common challenges include time pressure, distance, family availability, uncertainty about condition, and the need to make decisions from another location.",
+      "Possible paths may include keeping the property, renting it, repairing it, listing it, transferring responsibilities, or evaluating available ownership and disposition options.",
+      "Before choosing a path, separate confirmed facts from assumptions about access, occupancy, repairs, carrying costs, and timing.",
+      "Key takeaways: clarify the timeline, assign local responsibilities, organize known repairs, protect access, and get qualified guidance when needed.",
+      "Learn more at jcapitalpropertygroup.com/resources/education."
     ],
     faqs: [
       {
@@ -175,17 +200,29 @@ export const publicVideoPages: PublicVideoPage[] = [
   },
   {
     path: "/resources/videos/landlord-property",
-    title: "Landlord Property Questions",
+    title: "Landlord Property Decisions",
     description:
-      "Transcript-first educational video page for Oklahoma landlords reviewing rental goals, repairs, management load, occupancy, and changing priorities.",
+      "Educational video page for Oklahoma landlords reviewing rental goals, repairs, management load, occupancy, changing priorities, and practical next-step planning.",
     summary:
-      "This lesson helps landlords organize rental property questions, including occupancy, leases, repairs, management load, changing goals, and professional guidance needs.",
+      "This 3-5 minute authority lesson helps landlords organize rental property questions, including occupancy, leases, repairs, management load, changing goals, and professional guidance needs.",
+    videoAsset: {
+      src: "/videos/landlord-property-decisions.mp4",
+      reviewStatus: "pending_review",
+      targetDuration: "3-5 minutes"
+    },
+    primaryCta: "Learn more at jcapitalpropertygroup.com/resources/education",
+    secondaryWebsiteCta:
+      "If you'd like to discuss your specific situation, visit our property discussion form.",
     transcript: [
-      "Start by writing down the current rental property goal and what may have changed.",
-      "Review occupancy, lease documents, access questions, repairs, and management responsibilities.",
-      "Separate confirmed facts from assumptions about condition, timing, tenants, or obligations.",
-      "Consider whether legal, tax, insurance, property management, or title guidance is needed.",
-      "Use the organized information to decide what next conversation would be most helpful."
+      "Landlord property decisions often begin when rental goals, repairs, management load, occupancy, or personal priorities start to change.",
+      "Start by writing down the current rental property goal and what may have changed since the property was first rented.",
+      "Review occupancy, lease documents, access questions, repairs, recurring tasks, communication needs, and management responsibilities.",
+      "Some situations may require legal, tax, insurance, property management, title, or repair guidance from qualified professionals.",
+      "Common challenges include deferred maintenance, vacancy risk, tenant coordination, distance, time demands, and changing financial or family priorities.",
+      "Possible paths may include keeping the rental, adjusting management, repairing it, listing it, transferring responsibilities, or evaluating available ownership and disposition options.",
+      "Before choosing a path, separate confirmed facts from assumptions about condition, occupancy, obligations, expenses, and timing.",
+      "Key takeaways: clarify your goal, organize documents, understand condition, review responsibilities, and get qualified guidance when needed.",
+      "Learn more at jcapitalpropertygroup.com/resources/education."
     ],
     faqs: [
       {
