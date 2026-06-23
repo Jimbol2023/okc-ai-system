@@ -9,6 +9,7 @@ import { createGeneratedLeads, fetchLeads } from "@/lib/leads-api";
 import { fetchRealLeads } from "@/lib/real-leads";
 import type { StoredLead } from "@/lib/leads-storage";
 import { createDashboardSignalConsolidation, type DashboardSignalConsolidation } from "@/lib/dashboard-signal-consolidation";
+import { createDashboardRoiAutomation, type DashboardRoiAutomation, type DealReadinessLevel, type FollowUpRiskLevel, type SourceRoiRow } from "@/lib/dashboard-roi-automation";
 import { createOperationalPilotHardeningSummary } from "@/lib/operational-pilot-hardening";
 import { createPracticalOperatorWorkQueue, type PracticalOperatorWorkQueue, type PracticalOperatorWorkQueueLane } from "@/lib/operator-work-queue-practicalization";
 import { deriveManualRevenueMetrics, type R53ManualRevenueMetricsResult } from "@/lib/r53-manual-revenue-metrics-helper";
@@ -282,6 +283,198 @@ function DashboardSignalBrief({ signal }: { signal: DashboardSignalConsolidation
   );
 }
 
+function getSourceRoiTone(signal: SourceRoiRow["roiSignal"]) {
+  if (signal === "strong") return "border-emerald-200 bg-emerald-50 text-emerald-900";
+  if (signal === "cleanup_heavy") return "border-orange-200 bg-orange-50 text-orange-900";
+  if (signal === "watch") return "border-blue-200 bg-blue-50 text-blue-900";
+  return "border-slate-200 bg-slate-50 text-slate-700";
+}
+
+function getFollowUpRiskTone(level: FollowUpRiskLevel) {
+  if (level === "critical") return "border-red-200 bg-red-50 text-red-900";
+  if (level === "high") return "border-orange-200 bg-orange-50 text-orange-900";
+  if (level === "medium") return "border-amber-200 bg-amber-50 text-amber-900";
+  return "border-blue-200 bg-blue-50 text-blue-900";
+}
+
+function getDealReadinessTone(level: DealReadinessLevel) {
+  if (level === "blocked") return "border-red-200 bg-red-50 text-red-900";
+  if (level === "needs_review") return "border-amber-200 bg-amber-50 text-amber-900";
+  return "border-emerald-200 bg-emerald-50 text-emerald-900";
+}
+
+function DashboardRoiAutomationPanel({ automation }: { automation: DashboardRoiAutomation }) {
+  return (
+    <section
+      aria-labelledby="dashboard-roi-automation-heading"
+      className="overflow-hidden rounded-[1.5rem] border border-border bg-surface p-5 sm:p-6"
+    >
+      <div className="flex min-w-0 flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+        <div className="min-w-0 space-y-2">
+          <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-muted">ROI automation</p>
+          <h2 id="dashboard-roi-automation-heading" className="break-words text-xl font-semibold text-primary">
+            Revenue command panel
+          </h2>
+          <p className="max-w-3xl break-words text-sm leading-6 text-muted">
+            Automated scoring from current lead data only. It ranks money work, source quality, follow-up risk, and deal readiness without sending outreach, creating tasks, assigning work, or mutating CRM state.
+          </p>
+        </div>
+        <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+          <span className="max-w-full break-words rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-center leading-5 text-emerald-800">
+            Read only
+          </span>
+          <span className="max-w-full break-words rounded-full border border-red-200 bg-red-50 px-3 py-1 text-center leading-5 text-red-800">
+            No outreach
+          </span>
+          <span className="max-w-full break-words rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-center leading-5 text-blue-800">
+            No task creation
+          </span>
+        </div>
+      </div>
+
+      <div className="mt-5 rounded-2xl border border-emerald-100 bg-emerald-50 p-4 text-sm leading-6 text-emerald-950">
+        <p className="font-bold">Recommended focus</p>
+        <p className="mt-1">{automation.recommendedFocus}</p>
+      </div>
+
+      <div className="mt-5 grid gap-4 sm:grid-cols-2 2xl:grid-cols-4">
+        <StatCard label="Total leads" value={String(automation.totalLeads)} helper="Current dashboard lead records" />
+        <StatCard label="High intent" value={String(automation.highIntentLeadCount)} helper="High score, high priority, or hot" />
+        <StatCard label="Cleanup burden" value={String(automation.cleanupBurden)} helper="Missing source, contact, address, or context" />
+        <StatCard label="Contract / closed" value={String(automation.contractOrClosedCount)} helper="Revenue-stage records" />
+      </div>
+
+      <div className="mt-5 grid gap-4 xl:grid-cols-[1.05fr_0.95fr]">
+        <div className="rounded-2xl border border-border bg-white p-4">
+          <div className="flex items-center justify-between gap-3">
+            <h3 className="break-words text-base font-semibold text-primary">Lead source ROI</h3>
+            {automation.topSource ? (
+              <span className={`rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-[0.08em] ${getSourceRoiTone(automation.topSource.roiSignal)}`}>
+                Top: {automation.topSource.normalizedSource}
+              </span>
+            ) : null}
+          </div>
+
+          {automation.sourceRows.length === 0 ? (
+            <p className="mt-4 text-sm leading-6 text-muted">No source data is visible yet.</p>
+          ) : (
+            <div className="mt-4 grid gap-3">
+              {automation.sourceRows.map((row) => (
+                <article key={row.source} className="rounded-xl border border-border bg-[#F8FAFC] p-3">
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                      <p className="font-semibold text-primary">{row.source}</p>
+                      <p className="mt-1 text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+                        {row.normalizedSource}
+                      </p>
+                    </div>
+                    <span className={`w-fit rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-[0.08em] ${getSourceRoiTone(row.roiSignal)}`}>
+                      {formatSignalLabel(row.roiSignal)}
+                    </span>
+                  </div>
+                  <div className="mt-3 grid gap-2 text-xs text-muted sm:grid-cols-4">
+                    <span>{row.leadCount} leads</span>
+                    <span>{row.validContactRate}% valid contact</span>
+                    <span>{row.highScoreCount} high score</span>
+                    <span>{row.cleanupCount} cleanup</span>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="rounded-2xl border border-border bg-white p-4">
+          <h3 className="break-words text-base font-semibold text-primary">Daily money queue</h3>
+          {automation.dailyMoneyQueue.length === 0 ? (
+            <p className="mt-4 text-sm leading-6 text-muted">No money queue rows are urgent right now.</p>
+          ) : (
+            <div className="mt-4 grid gap-3">
+              {automation.dailyMoneyQueue.map((row) => (
+                <Link
+                  key={row.leadId}
+                  href={row.detailHref as Route}
+                  className="rounded-xl border border-border bg-[#F8FAFC] p-3 text-sm transition hover:border-primary/30"
+                >
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                    <p className="font-semibold text-primary">{row.leadLabel}</p>
+                    <span className={`w-fit rounded-full border px-2 py-1 text-xs font-bold uppercase tracking-[0.08em] ${getQueueLaneTone(row.queueLane)}`}>
+                      {formatQueueLaneLabel(row.queueLane)}
+                    </span>
+                  </div>
+                  <p className="mt-2 leading-6 text-muted">{row.safeManualReview}</p>
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="mt-5 grid gap-4 xl:grid-cols-2">
+        <div className="rounded-2xl border border-border bg-white p-4">
+          <h3 className="break-words text-base font-semibold text-primary">Follow-up risk automation</h3>
+          {automation.followUpRisks.length === 0 ? (
+            <p className="mt-4 text-sm leading-6 text-muted">No high-risk follow-up rows are visible.</p>
+          ) : (
+            <div className="mt-4 grid gap-3">
+              {automation.followUpRisks.map((risk) => (
+                <Link
+                  key={risk.leadId}
+                  href={risk.detailHref as Route}
+                  className={`rounded-xl border p-3 text-sm transition hover:brightness-[0.98] ${getFollowUpRiskTone(risk.riskLevel)}`}
+                >
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                    <p className="font-semibold">{risk.leadLabel}</p>
+                    <span className="w-fit rounded-full border border-current/20 px-2 py-1 text-xs font-bold uppercase tracking-[0.08em]">
+                      {risk.riskLevel}
+                    </span>
+                  </div>
+                  <p className="mt-2 leading-6">{risk.reason}</p>
+                  <p className="mt-1 font-semibold">{risk.safeManualAction}</p>
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="rounded-2xl border border-border bg-white p-4">
+          <h3 className="break-words text-base font-semibold text-primary">Deal readiness score</h3>
+          {automation.dealReadinessRows.length === 0 ? (
+            <p className="mt-4 text-sm leading-6 text-muted">No deal readiness rows are visible.</p>
+          ) : (
+            <div className="mt-4 grid gap-3">
+              {automation.dealReadinessRows.map((row) => (
+                <Link
+                  key={row.leadId}
+                  href={row.detailHref as Route}
+                  className={`rounded-xl border p-3 text-sm transition hover:brightness-[0.98] ${getDealReadinessTone(row.level)}`}
+                >
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                    <p className="font-semibold">{row.leadLabel}</p>
+                    <span className="w-fit rounded-full border border-current/20 px-2 py-1 text-xs font-bold uppercase tracking-[0.08em]">
+                      {formatSignalLabel(row.level)}
+                    </span>
+                  </div>
+                  <p className="mt-2 leading-6">{row.nextManualAction}</p>
+                  {row.missingItems.length > 0 ? (
+                    <p className="mt-1 text-xs font-semibold uppercase tracking-[0.08em]">
+                      Missing: {row.missingItems.slice(0, 4).join(", ")}
+                    </p>
+                  ) : null}
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <p className="mt-4 break-words text-xs font-semibold uppercase leading-5 tracking-[0.1em] text-muted">
+        readOnly:true advisoryOnly:true automationExecuted:false outreachSent:false taskCreated:false crmMutationAllowed:false
+      </p>
+    </section>
+  );
+}
+
 function StopAndMeasurePanel({ measurement }: { measurement: StopAndMeasureResult }) {
   return (
     <section
@@ -452,6 +645,7 @@ export default function DashboardPage() {
   );
   const dashboardSignal = createDashboardSignalConsolidation(dashboardLeads, manualRevenueMetrics);
   const practicalWorkQueue = createPracticalOperatorWorkQueue(dashboardLeads, manualRevenueMetrics);
+  const roiAutomation = createDashboardRoiAutomation(dashboardLeads, practicalWorkQueue);
   const stopAndMeasure = createStopAndMeasureResult({
     leads: dashboardLeads,
     metrics: manualRevenueMetrics,
@@ -688,6 +882,8 @@ export default function DashboardPage() {
       </section>
 
       <DashboardSignalBrief signal={dashboardSignal} />
+
+      <DashboardRoiAutomationPanel automation={roiAutomation} />
 
       <ManualWorkQueue queue={practicalWorkQueue} />
 
