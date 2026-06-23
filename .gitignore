@@ -10,3 +10,4 @@ coverage
 *.tsbuildinfo
 prisma/dev.db
 prisma/dev.db-journal
+jcapital-gbp-photo-assets-week-1/

@@ -57,9 +57,9 @@ export const serviceAreas = {
   "/oklahoma-city": {
     slug: "/oklahoma-city",
     city: "Oklahoma City",
-    headline: "Professional Property Guidance in Oklahoma City",
+    headline: "Oklahoma City Property Guidance for Owners",
     description:
-      "Professional, no-pressure property guidance for Oklahoma City owners thinking through inherited property, vacancy, repairs, landlord questions, relocation, or private property decisions.",
+      "No-pressure Oklahoma City property guidance for owners reviewing inherited houses, vacant property, repairs, landlord questions, relocation, or private sale decisions.",
     localIntro:
       "J Capital Property Group helps Oklahoma City property owners think through real estate situations with professionalism, transparency, and practical guidance.",
     localTrust:
@@ -68,9 +68,9 @@ export const serviceAreas = {
   "/yukon": {
     slug: "/yukon",
     city: "Yukon",
-    headline: "Professional Property Guidance in Yukon",
+    headline: "Yukon Property Guidance for Owners",
     description:
-      "No-pressure property guidance for Yukon owners reviewing inherited property, vacant property, repair concerns, landlord questions, relocation, or private decisions.",
+      "No-pressure Yukon property guidance for owners reviewing inherited property, vacant homes, repairs, landlord questions, relocation, or private sale decisions.",
     localIntro:
       "J Capital Property Group helps Yukon property owners review real estate questions with clear communication, practical guidance, and a no-pressure approach.",
     localTrust:
@@ -79,9 +79,9 @@ export const serviceAreas = {
   "/moore": {
     slug: "/moore",
     city: "Moore",
-    headline: "Professional Property Guidance in Moore",
+    headline: "Moore Property Guidance for Owners",
     description:
-      "Professional property guidance for Moore owners with questions about inherited property, vacancy, deferred maintenance, landlord needs, relocation, or private next steps.",
+      "Professional property guidance for Moore owners with questions about inherited property, vacant homes, deferred maintenance, landlord needs, relocation, or private sale decisions.",
     localIntro:
       "J Capital Property Group helps Moore property owners talk through property decisions with professionalism, transparency, and practical next-step guidance.",
     localTrust:
@@ -90,9 +90,9 @@ export const serviceAreas = {
   "/norman": {
     slug: "/norman",
     city: "Norman",
-    headline: "Professional Property Guidance in Norman",
+    headline: "Norman Property Guidance for Owners",
     description:
-      "Clear, no-pressure property guidance for Norman owners considering inherited property, vacant homes, repairs, landlord questions, relocation, or private decisions.",
+      "Clear, no-pressure property guidance for Norman owners considering inherited property, vacant homes, repairs, landlord questions, relocation, or private sale decisions.",
     localIntro:
       "J Capital Property Group helps Norman property owners consider real estate questions through a calm, educational, and professional conversation.",
     localTrust:
@@ -101,9 +101,9 @@ export const serviceAreas = {
   "/edmond": {
     slug: "/edmond",
     city: "Edmond",
-    headline: "Professional Property Guidance in Edmond",
+    headline: "Edmond Property Guidance for Owners",
     description:
-      "Professional property guidance for Edmond owners thinking through inherited property, vacancy, deferred maintenance, landlord questions, relocation, or private goals.",
+      "Professional property guidance for Edmond owners thinking through inherited property, vacant homes, deferred maintenance, landlord questions, relocation, or private sale decisions.",
     localIntro:
       "J Capital Property Group helps Edmond property owners discuss real estate situations with transparency, practical guidance, and room to decide.",
     localTrust:
@@ -112,9 +112,9 @@ export const serviceAreas = {
   "/midwest-city": {
     slug: "/midwest-city",
     city: "Midwest City",
-    headline: "Professional Property Guidance in Midwest City",
+    headline: "Midwest City Property Guidance for Owners",
     description:
-      "No-pressure property guidance for Midwest City owners reviewing inherited property, vacant homes, repairs, landlord questions, relocation, or private next steps.",
+      "No-pressure property guidance for Midwest City owners reviewing inherited property, vacant homes, repairs, landlord questions, relocation, or private sale decisions.",
     localIntro:
       "J Capital Property Group helps Midwest City property owners think through real estate questions with professionalism, transparency, and practical guidance.",
     localTrust:

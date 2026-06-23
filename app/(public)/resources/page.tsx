@@ -82,6 +82,11 @@ const compareCommonSituations = [
     description: "Start with ownership, timing, family communication, and professional guidance questions."
   },
   {
+    href: "/resources/sell-inherited-house-oklahoma-city",
+    title: "Sell inherited house in Oklahoma City",
+    description: "Organize documents, family communication, condition, timing, and sale questions."
+  },
+  {
     href: "/resources/shared-inherited-property-oklahoma",
     title: "Shared inherited property",
     description: "Review communication, documents, decision authority, and shared responsibilities."
@@ -90,6 +95,21 @@ const compareCommonSituations = [
     href: "/resources/vacant-property-oklahoma",
     title: "Vacant property",
     description: "Think through access, monitoring, utilities, condition, and upkeep questions."
+  },
+  {
+    href: "/resources/sell-vacant-house-okc",
+    title: "Sell vacant house in OKC",
+    description: "Review access, monitoring, carrying responsibilities, repairs, and timing questions."
+  },
+  {
+    href: "/resources/selling-house-during-probate-oklahoma",
+    title: "Selling during probate",
+    description: "Separate practical property questions from legal, title, and authority questions."
+  },
+  {
+    href: "/resources/out-of-state-owner-selling-oklahoma-property",
+    title: "Out-of-state owner",
+    description: "Organize Oklahoma property documents, access, condition, and local responsibilities."
   },
   {
     href: "/resources/landlord-property-decisions-oklahoma",

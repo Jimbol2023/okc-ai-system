@@ -1,8 +1,12 @@
 export type PublicResourcePath =
   | "/resources/vacant-property-oklahoma"
+  | "/resources/sell-vacant-house-okc"
   | "/resources/landlord-property-decisions-oklahoma"
   | "/resources/shared-inherited-property-oklahoma"
   | "/resources/relocation-property-decisions-oklahoma"
+  | "/resources/sell-inherited-house-oklahoma-city"
+  | "/resources/selling-house-during-probate-oklahoma"
+  | "/resources/out-of-state-owner-selling-oklahoma-property"
   | "/resources/education/probate-basics-oklahoma-property-owners"
   | "/resources/education/deferred-maintenance-oklahoma"
   | "/resources/education/property-ownership-change-considerations"
@@ -608,6 +612,290 @@ export const propertyResourcePages: PublicResourcePage[] = [
         href: "/resources/education/property-ownership-change-considerations",
         label: "Ownership Change Considerations",
         description: "Helpful when the family conversation involves a change in ownership."
+      }
+    ]
+  },
+  {
+    path: "/resources/sell-inherited-house-oklahoma-city",
+    eyebrow: "Inherited Property Education",
+    title: "Sell an Inherited House in Oklahoma City",
+    description:
+      "Educational guidance for Oklahoma City owners reviewing inherited house questions, documents, family communication, property condition, and possible sale timing.",
+    intro:
+      "Selling an inherited house in Oklahoma City can involve family, documents, authority, condition, and timing questions. This guide helps owners organize practical information before deciding whether a sale, repair plan, rental plan, or another path makes sense.",
+    sectionsHeading: "Inherited house questions to organize before selling",
+    sections: [
+      {
+        title: "Start with documents and authority",
+        body:
+          "Before discussing a sale, families can gather known documents and confirm who has authority to make decisions. Depending on the situation, probate, title, estate, or trust questions may need qualified professional guidance."
+      },
+      {
+        title: "Discuss family goals and timing",
+        body:
+          "Inherited property decisions may involve more than one person. It can help to write down each person's timing, concerns, desired outcome, and questions before anyone feels pressured to choose a path."
+      },
+      {
+        title: "Review occupancy and condition",
+        body:
+          "Owners can note whether the property is occupied or vacant, whether utilities are active, what repairs are known, and whether someone can safely access and monitor the house."
+      },
+      {
+        title: "Compare options before deciding",
+        body:
+          "Some families keep an inherited property, some rent it, some repair it, and some sell it. The practical choice depends on goals, responsibilities, costs, condition, and professional guidance."
+      },
+      {
+        title: "Use a calm, no-pressure conversation",
+        body:
+          "J Capital Property Group can discuss practical property questions with Oklahoma City owners while encouraging legal, tax, title, and financial guidance where those topics apply."
+      }
+    ],
+    relatedQuestions: [
+      {
+        question: "Should I sell an inherited house immediately?",
+        prompt:
+          "Not always. Start by reviewing authority, documents, condition, family goals, costs, and professional guidance needs."
+      },
+      {
+        question: "What if more than one family member is involved?",
+        prompt:
+          "Clear communication helps. Families should confirm decision authority and avoid rushing while key facts are still unclear."
+      },
+      {
+        question: "Can J Capital discuss inherited property in Oklahoma City?",
+        prompt:
+          "Yes. J Capital can discuss practical property questions while encouraging qualified guidance for legal, tax, title, or valuation matters."
+      }
+    ],
+    relatedResources: [
+      {
+        href: "/resources/inherited-property-oklahoma",
+        label: "Inherited Property Guide",
+        description: "A broader Oklahoma guide for inherited property questions."
+      },
+      {
+        href: "/resources/shared-inherited-property-oklahoma",
+        label: "Shared Inherited Property Questions",
+        description: "Helpful when multiple family members are involved."
+      },
+      {
+        href: "/resources/education/probate-basics-oklahoma-property-owners",
+        label: "Probate Basics",
+        description: "General education when probate-related questions may apply."
+      }
+    ]
+  },
+  {
+    path: "/resources/sell-vacant-house-okc",
+    eyebrow: "Vacant Property Education",
+    title: "Sell a Vacant House in OKC",
+    description:
+      "Plain-language guidance for Oklahoma City owners reviewing vacant house security, utilities, insurance, repairs, timing, and possible sale questions.",
+    intro:
+      "A vacant house in OKC can create practical responsibilities even when no one lives there. This guide helps owners organize security, access, utilities, insurance, condition, and timing questions before deciding whether selling or another path fits.",
+    sectionsHeading: "Vacant house questions to review",
+    sections: [
+      {
+        title: "Confirm access and monitoring",
+        body:
+          "Owners can start by confirming who has keys, who checks the property, whether mail or yard care needs attention, and whether the home appears secure from the outside."
+      },
+      {
+        title: "Review utilities, insurance, and taxes",
+        body:
+          "Vacant property planning often includes utility status, insurance coverage, tax responsibilities, and seasonal maintenance. Qualified professionals can help with situation-specific questions."
+      },
+      {
+        title: "List known repairs and unknowns",
+        body:
+          "Vacant homes may have visible repairs, deferred maintenance, or unknown condition issues. A simple written list can make a property conversation clearer."
+      },
+      {
+        title: "Think about timing and carrying responsibilities",
+        body:
+          "The right next step may depend on how long the property has been vacant, who is responsible for upkeep, and whether the owner wants a repair plan, rental plan, sale conversation, or more time."
+      },
+      {
+        title: "Have a private property discussion",
+        body:
+          "J Capital Property Group can talk through practical vacant property questions with OKC owners without pressure or unsupported assumptions about the property."
+      }
+    ],
+    relatedQuestions: [
+      {
+        question: "What should I check first on a vacant house?",
+        prompt:
+          "Start with access, security, utilities, insurance, taxes, known repairs, and who can monitor the property."
+      },
+      {
+        question: "Can I discuss a vacant house before repairs are complete?",
+        prompt:
+          "Yes. A practical conversation can begin with what is known, what is unknown, and what outcome the owner is considering."
+      },
+      {
+        question: "Is this property valuation advice?",
+        prompt:
+          "No. This guide is general education only and encourages qualified guidance for valuation, legal, tax, title, or repair questions."
+      }
+    ],
+    relatedResources: [
+      {
+        href: "/resources/vacant-property-oklahoma",
+        label: "Vacant Property Guide",
+        description: "A broader Oklahoma guide for vacant property planning."
+      },
+      {
+        href: "/resources/education/deferred-maintenance-oklahoma",
+        label: "Deferred Maintenance Considerations",
+        description: "Helpful for organizing repair and condition questions."
+      },
+      {
+        href: "/oklahoma-city",
+        label: "Oklahoma City Service Area",
+        description: "Local property guidance for Oklahoma City owners."
+      }
+    ]
+  },
+  {
+    path: "/resources/selling-house-during-probate-oklahoma",
+    eyebrow: "Probate Property Education",
+    title: "Selling a House During Probate in Oklahoma",
+    description:
+      "General educational guidance for Oklahoma owners reviewing probate-related property documents, authority, timing, condition, and professional guidance needs.",
+    intro:
+      "Selling a house during probate in Oklahoma may involve legal authority, documents, family communication, property responsibilities, and timing questions. This guide is a practical starting point and is not legal advice.",
+    sectionsHeading: "Probate-related property questions to organize",
+    sections: [
+      {
+        title: "Confirm who can make decisions",
+        body:
+          "Probate-related property decisions can depend on documents, court process, title, and authority. Owners should speak with qualified legal or title professionals before making major decisions."
+      },
+      {
+        title: "Gather estate and property information",
+        body:
+          "Helpful information may include estate documents, title records, mortgage or lien information, insurance, taxes, utility status, occupancy, and known condition concerns."
+      },
+      {
+        title: "Keep communication clear",
+        body:
+          "When family members or heirs are involved, clear notes about questions, responsibilities, and timing can reduce confusion while professional guidance is being gathered."
+      },
+      {
+        title: "Review property responsibilities",
+        body:
+          "Even during probate, a property may still require attention to access, security, utilities, insurance, taxes, maintenance, or repairs."
+      },
+      {
+        title: "Separate property questions from legal advice",
+        body:
+          "J Capital Property Group can discuss practical property considerations, but probate, legal authority, title, tax, and estate questions should be handled by qualified professionals."
+      }
+    ],
+    relatedQuestions: [
+      {
+        question: "Can a house be sold during probate in Oklahoma?",
+        prompt:
+          "That depends on the situation and authority involved. Property owners should speak with a qualified attorney or title professional."
+      },
+      {
+        question: "What information should families organize first?",
+        prompt:
+          "Start with authority, documents, occupancy, insurance, taxes, utilities, condition, and known responsibilities."
+      },
+      {
+        question: "Does J Capital provide probate advice?",
+        prompt:
+          "No. J Capital provides general property education and encourages qualified professional guidance for probate-specific questions."
+      }
+    ],
+    relatedResources: [
+      {
+        href: "/resources/education/probate-basics-oklahoma-property-owners",
+        label: "Probate Basics",
+        description: "General education for probate-related property questions."
+      },
+      {
+        href: "/resources/inherited-property-oklahoma",
+        label: "Inherited Property Guide",
+        description: "A broader guide for inherited property decisions."
+      },
+      {
+        href: "/resources/education/family-property-discussions",
+        label: "Family Property Discussions",
+        description: "A framework for respectful family conversations."
+      }
+    ]
+  },
+  {
+    path: "/resources/out-of-state-owner-selling-oklahoma-property",
+    eyebrow: "Out-of-State Owner Education",
+    title: "Out-of-State Owner Selling Oklahoma Property",
+    description:
+      "Educational guidance for out-of-state owners reviewing Oklahoma property access, documents, condition, local responsibilities, and possible sale questions.",
+    intro:
+      "Owning Oklahoma property from another state can make access, condition, documents, utilities, repairs, and timing harder to manage. This guide helps out-of-state owners organize practical questions before deciding what to do next.",
+    sectionsHeading: "Out-of-state owner questions to review",
+    sections: [
+      {
+        title: "Start with local access",
+        body:
+          "Owners can identify who has keys, who can check the property, whether the property is occupied or vacant, and whether access will be needed for inspections, repairs, or conversations."
+      },
+      {
+        title: "Organize documents and responsibilities",
+        body:
+          "Useful items may include title or ownership documents, tax records, insurance information, utility status, mortgage information, leases, repair notes, and contact information for local helpers."
+      },
+      {
+        title: "Review condition from a distance",
+        body:
+          "Out-of-state ownership can make condition questions harder. A written list of known repairs, photos from trusted sources, or qualified local guidance can make next-step conversations clearer."
+      },
+      {
+        title: "Think through timing and privacy",
+        body:
+          "Some owners want time to gather facts. Others need a simpler conversation because distance makes management difficult. The right path depends on goals, responsibilities, and comfort level."
+      },
+      {
+        title: "Use Oklahoma-focused property guidance",
+        body:
+          "J Capital Property Group can discuss practical Oklahoma property questions while avoiding assumptions about the property and encouraging professional guidance where needed."
+      }
+    ],
+    relatedQuestions: [
+      {
+        question: "Can I discuss an Oklahoma property if I live out of state?",
+        prompt:
+          "Yes. Start with known documents, access, occupancy, condition, timing, and the questions you want to organize."
+      },
+      {
+        question: "What if I cannot inspect the property myself?",
+        prompt:
+          "Consider trusted local access, photos, repair notes, and qualified professionals before making final decisions."
+      },
+      {
+        question: "Can J Capital help with legal or tax questions?",
+        prompt:
+          "No. J Capital can discuss practical property questions and encourages qualified legal, tax, title, insurance, or repair guidance."
+      }
+    ],
+    relatedResources: [
+      {
+        href: "/resources/relocation-property-decisions-oklahoma",
+        label: "Relocation Property Decisions",
+        description: "Helpful for owners managing property decisions from another place."
+      },
+      {
+        href: "/resources/vacant-property-oklahoma",
+        label: "Vacant Property Guide",
+        description: "Useful when the Oklahoma property is vacant or hard to monitor."
+      },
+      {
+        href: "/resources/property-insights",
+        label: "Property Decision Insights",
+        description: "Evergreen decision-support questions for Oklahoma owners."
       }
     ]
   }

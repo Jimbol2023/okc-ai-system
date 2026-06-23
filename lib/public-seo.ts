@@ -27,10 +27,14 @@ export type PublicPath =
   | "/resources/videos/landlord-property"
   | "/resources/property-insights"
   | "/resources/inherited-property-oklahoma"
+  | "/resources/sell-inherited-house-oklahoma-city"
   | "/resources/vacant-property-oklahoma"
+  | "/resources/sell-vacant-house-okc"
   | "/resources/landlord-property-decisions-oklahoma"
   | "/resources/shared-inherited-property-oklahoma"
   | "/resources/relocation-property-decisions-oklahoma"
+  | "/resources/selling-house-during-probate-oklahoma"
+  | "/resources/out-of-state-owner-selling-oklahoma-property"
   | "/oklahoma-city"
   | "/yukon"
   | "/moore"
@@ -138,5 +142,20 @@ export function createArticleJsonLd({
         url: publicLogoUrl
       }
     }
+  };
+}
+
+export function createFaqJsonLd(items: Array<{ question: string; answer: string }>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer
+      }
+    }))
   };
 }

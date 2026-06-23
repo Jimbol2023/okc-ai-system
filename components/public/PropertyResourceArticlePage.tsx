@@ -5,7 +5,7 @@ import { Breadcrumbs } from "@/components/public/Breadcrumbs";
 import { JsonLdScript } from "@/components/public/JsonLdScript";
 import { ServiceAreaLinks } from "@/components/public/ServiceAreaLinks";
 import type { PublicResourcePage } from "@/lib/public-resource-pages";
-import { createArticleJsonLd, createBreadcrumbListJsonLd, type BreadcrumbItem } from "@/lib/public-seo";
+import { createArticleJsonLd, createBreadcrumbListJsonLd, createFaqJsonLd, type BreadcrumbItem } from "@/lib/public-seo";
 
 type PropertyResourceArticlePageProps = {
   page: PublicResourcePage;
@@ -29,6 +29,9 @@ export function PropertyResourceArticlePage({ page }: PropertyResourceArticlePag
     <div className="bg-white">
       <JsonLdScript data={createBreadcrumbListJsonLd(breadcrumbs)} />
       <JsonLdScript data={createArticleJsonLd({ path: page.path, title: page.title, description: page.description })} />
+      <JsonLdScript
+        data={createFaqJsonLd(page.relatedQuestions.map((item) => ({ question: item.question, answer: item.prompt })))}
+      />
       <section className="bg-[#02213D] py-16 text-white md:py-24">
         <div className="container-shell">
           <Breadcrumbs items={breadcrumbs} />
