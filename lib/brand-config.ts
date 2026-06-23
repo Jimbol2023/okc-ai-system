@@ -9,7 +9,7 @@ export const brandConfig = {
   appName: "J Capital Property Group",
   appDescription: "Professional real estate solutions for Oklahoma property owners",
   logoAlt: "J Capital Property Group logo",
-  // TODO: Replace this temporary local image with the approved JC Shield Logo v1.0 export.
+  // Official JC Shield Logo v1.0 source used for site branding and favicon/app icons.
   logoPath: "/images/jc-shield-logo.png",
   colors: {
     deepNavy: "#02213D",
