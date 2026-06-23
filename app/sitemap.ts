@@ -7,6 +7,7 @@ const publicRoutes = [
   "/sell-your-house",
   "/about",
   "/contact",
+  "/thank-you",
   "/faq",
   "/resources",
   "/resources/education",

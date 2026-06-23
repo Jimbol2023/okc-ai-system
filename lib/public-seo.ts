@@ -11,6 +11,7 @@ export type PublicPath =
   | "/sell-your-house"
   | "/about"
   | "/contact"
+  | "/thank-you"
   | "/privacy"
   | "/accessibility"
   | "/faq"

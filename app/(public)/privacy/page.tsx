@@ -26,6 +26,16 @@ const policySections = [
     body: "This website does not create automated outreach, autonomous seller messaging, or automated follow-up campaigns."
   },
   {
+    title: "Cookies And Browser Storage",
+    body:
+      "This website may use essential browser storage to remember privacy preferences and support form or site functionality. Optional analytics or advertising cookies are not loaded unless they are added with consent controls."
+  },
+  {
+    title: "Lead Source Tracking",
+    body:
+      "Some website links include a source value so J Capital Property Group can understand which public pages or buttons led to a property inquiry. This source value is submitted with the form when you choose to contact us."
+  },
+  {
     title: "Contact",
     body: `Questions about this privacy policy may be sent to ${brandConfig.primaryEmail}.`
   }

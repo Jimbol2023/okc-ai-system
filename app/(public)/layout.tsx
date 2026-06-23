@@ -1,4 +1,5 @@
 import { Footer } from "@/components/public/Footer";
+import { CookieConsentBanner } from "@/components/public/CookieConsentBanner";
 import { Navbar } from "@/components/public/Navbar";
 import { StructuredData } from "@/components/public/StructuredData";
 
@@ -21,6 +22,7 @@ export default function PublicLayout({
         {children}
       </main>
       <Footer />
+      <CookieConsentBanner />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { brandConfig } from "@/lib/brand-config";
 import { createLeadFromIntake } from "@/lib/leads-api";
@@ -24,6 +25,7 @@ type LeadCaptureFormProps = {
 };
 
 export function LeadCaptureForm({ source }: LeadCaptureFormProps) {
+  const router = useRouter();
   const [effectiveSource, setEffectiveSource] = useState(source);
   const [values, setValues] = useState<LeadIntakeInput>({
     ...initialValues,
@@ -74,6 +76,7 @@ export function LeadCaptureForm({ source }: LeadCaptureFormProps) {
         ...initialValues,
         source: effectiveSource
       });
+      router.push(`/thank-you?source=${encodeURIComponent(effectiveSource)}`);
     } catch {
       setFormError("Unable to save your lead right now. Please try again.");
     } finally {
