@@ -5,7 +5,7 @@ export const brandConfig = {
   primaryEmail: "hello@jcapitalpropertygroup.com",
   phone: "(572) 777-8633",
   phoneHref: "tel:5727778633",
-  copyrightText: "© 2026 J Capital Property Group. All rights reserved.",
+  copyrightText: "Copyright 2026 J Capital Property Group. All rights reserved.",
   appName: "J Capital Property Group",
   appDescription: "Professional real estate solutions for Oklahoma property owners",
   logoAlt: "J Capital Property Group logo",

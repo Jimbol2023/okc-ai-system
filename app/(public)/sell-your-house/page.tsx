@@ -10,9 +10,9 @@ import { createPublicPageMetadata } from "@/lib/public-seo";
 
 export const metadata = createPublicPageMetadata({
   path: "/sell-your-house",
-  title: "Discuss Your Property",
+  title: "Sell Your House in Oklahoma City",
   description:
-    "Discuss inherited property, vacant property, deferred maintenance, landlord fatigue, relocation, or private property questions with J Capital Property Group."
+    "Start a no-pressure Oklahoma City property conversation about inherited property, vacant property, repairs, landlord fatigue, relocation, or private sale questions."
 });
 
 const processSteps = [

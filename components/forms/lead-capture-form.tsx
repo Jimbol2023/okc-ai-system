@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { brandConfig } from "@/lib/brand-config";
 import { createLeadFromIntake } from "@/lib/leads-api";
@@ -24,6 +24,7 @@ type LeadCaptureFormProps = {
 };
 
 export function LeadCaptureForm({ source }: LeadCaptureFormProps) {
+  const [effectiveSource, setEffectiveSource] = useState(source);
   const [values, setValues] = useState<LeadIntakeInput>({
     ...initialValues,
     source
@@ -32,6 +33,19 @@ export function LeadCaptureForm({ source }: LeadCaptureFormProps) {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
   const [submitted, setSubmitted] = useState(false);
   const [isPending, setIsPending] = useState(false);
+
+  useEffect(() => {
+    const querySource = new URLSearchParams(window.location.search).get("source");
+    const safeQuerySource = querySource?.trim();
+
+    if (safeQuerySource && /^[a-z0-9_-]{2,80}$/i.test(safeQuerySource)) {
+      setEffectiveSource(safeQuerySource);
+      setValues((current) => ({
+        ...current,
+        source: safeQuerySource
+      }));
+    }
+  }, []);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -52,13 +66,13 @@ export function LeadCaptureForm({ source }: LeadCaptureFormProps) {
     try {
       await createLeadFromIntake({
         ...parsed.data,
-        source
+        source: effectiveSource
       });
 
       setSubmitted(true);
       setValues({
         ...initialValues,
-        source
+        source: effectiveSource
       });
     } catch {
       setFormError("Unable to save your lead right now. Please try again.");
@@ -162,7 +176,7 @@ export function LeadCaptureForm({ source }: LeadCaptureFormProps) {
         </label>
       </div>
 
-      <input type="hidden" name="source" value={source} />
+      <input type="hidden" name="source" value={effectiveSource} />
 
       {formError ? <p className="mt-4 text-sm text-red-700">{formError}</p> : null}
       {submitted ? (

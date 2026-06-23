@@ -210,7 +210,7 @@ export default function InheritedPropertyOklahomaPage() {
                 Contact J Capital
               </Link>
               <Link
-                href="/sell-your-house"
+                href="/sell-your-house?source=inherited_property_resource_cta"
                 className="inline-flex min-h-12 items-center justify-center rounded-md bg-[#D4A017] px-4 py-3 text-center font-heading text-sm font-bold text-[#02213D] transition hover:bg-[#B88712]"
               >
                 Discuss Your Property

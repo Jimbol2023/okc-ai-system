@@ -263,7 +263,7 @@ export default function ResourcesPage() {
 
           <div className="mx-auto mt-10 max-w-3xl text-center">
             <Link
-              href="/sell-your-house"
+              href="/sell-your-house?source=resources_hub_cta"
               className="inline-flex min-h-12 items-center justify-center rounded-md bg-[#D4A017] px-5 py-3 font-heading text-sm font-bold text-[#02213D] shadow-[0_12px_28px_rgba(212,160,23,0.22)] transition hover:bg-[#B88712] hover:text-[#02213D]"
             >
               Discuss Your Property

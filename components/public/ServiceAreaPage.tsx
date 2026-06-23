@@ -16,10 +16,37 @@ const helpfulLinks = [
   { href: "/faq" as Route, label: "Read FAQ" },
   { href: "/resources/education" as Route, label: "Education Center" },
   { href: "/contact" as Route, label: "Contact J Capital" },
-  { href: "/sell-your-house" as Route, label: "Discuss Your Property" }
+  { href: "/sell-your-house?source=service_area_helpful_link" as Route, label: "Discuss Your Property" }
 ] as const;
 
 export function ServiceAreaPage({ area }: ServiceAreaPageProps) {
+  const areaSource = area.slug.replace("/", "").replace("-", "_");
+  const localResourceLinks = [
+    {
+      href:
+        area.slug === "/oklahoma-city"
+          ? "/resources/sell-inherited-house-oklahoma-city"
+          : "/resources/inherited-property-oklahoma",
+      label: area.slug === "/oklahoma-city" ? "Sell an inherited house in Oklahoma City" : "Inherited property guidance",
+      description: "Organize documents, family communication, condition, timing, and next-step questions."
+    },
+    {
+      href: area.slug === "/oklahoma-city" ? "/resources/sell-vacant-house-okc" : "/resources/vacant-property-oklahoma",
+      label: area.slug === "/oklahoma-city" ? "Sell a vacant house in OKC" : "Vacant property guidance",
+      description: "Review access, monitoring, utilities, repairs, carrying responsibilities, and timing."
+    },
+    {
+      href: "/resources/out-of-state-owner-selling-oklahoma-property",
+      label: "Out-of-state owner guidance",
+      description: "Useful for owners managing Oklahoma property questions from another location."
+    },
+    {
+      href: "/resources/selling-house-during-probate-oklahoma",
+      label: "Probate-related property questions",
+      description: "Separate practical property questions from legal, title, and authority questions."
+    }
+  ] as const;
+
   const breadcrumbs: BreadcrumbItem[] = [
     { name: "Home", path: "/" },
     { name: "Oklahoma Service Areas" },
@@ -40,7 +67,7 @@ export function ServiceAreaPage({ area }: ServiceAreaPageProps) {
             <p className="mt-6 max-w-3xl text-base leading-8 text-white/82 md:text-lg">{area.localIntro}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
-                href="/sell-your-house"
+                href={`/sell-your-house?source=${areaSource}_service_area_hero_cta`}
                 className="inline-flex min-h-13 items-center justify-center rounded-md bg-[#D4A017] px-6 py-3.5 font-heading text-sm font-bold text-[#02213D] shadow-[0_18px_36px_rgba(212,160,23,0.24)] transition hover:bg-[#e0af2e]"
               >
                 Discuss Your Property
@@ -132,6 +159,31 @@ export function ServiceAreaPage({ area }: ServiceAreaPageProps) {
         </div>
       </section>
 
+      <section className="bg-white py-16 md:py-24" aria-labelledby="local-resource-links-heading">
+        <div className="container-shell">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 id="local-resource-links-heading" className="font-heading text-3xl font-bold text-[#02213D] md:text-5xl">
+              Property guides for {area.city} owners
+            </h2>
+            <p className="mt-4 text-base leading-7 text-[#4B5563]">
+              These guides help organize common questions before a private property conversation.
+            </p>
+          </div>
+          <div className="mt-8 grid gap-4 md:grid-cols-2">
+            {localResourceLinks.map((resource) => (
+              <Link
+                key={resource.href}
+                href={resource.href as Route}
+                className="border border-slate-200 bg-[#F2F4F7] p-5 transition hover:bg-[#e7ebf0]"
+              >
+                <span className="block font-heading text-lg font-bold text-[#02213D]">{resource.label}</span>
+                <span className="mt-2 block text-sm leading-6 text-[#4B5563]">{resource.description}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="bg-[#F2F4F7] py-16 md:py-24" aria-labelledby="local-trust-heading">
         <div className="container-shell">
           <div className="grid gap-8 md:grid-cols-[0.85fr_1.15fr] md:items-start">
@@ -185,7 +237,7 @@ export function ServiceAreaPage({ area }: ServiceAreaPageProps) {
             </p>
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
               <Link
-                href="/sell-your-house"
+                href={`/sell-your-house?source=${areaSource}_service_area_footer_cta`}
                 className="inline-flex min-h-13 items-center justify-center rounded-md bg-[#D4A017] px-6 py-3.5 font-heading text-sm font-bold text-[#02213D] transition hover:bg-[#e0af2e]"
               >
                 Discuss Your Property

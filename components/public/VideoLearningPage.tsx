@@ -139,7 +139,7 @@ export function VideoLearningPage({ page }: VideoLearningPageProps) {
               </h2>
               <p className="mt-3 text-base leading-7 text-[#4B5563]">{page.secondaryWebsiteCta}</p>
               <Link
-                href="/sell-your-house"
+                href={`/sell-your-house?source=video_${page.path.replace("/resources/videos/", "").replaceAll("-", "_")}_cta`}
                 className="mt-5 inline-flex min-h-12 items-center justify-center rounded-md bg-[#D4A017] px-5 py-3 font-heading text-sm font-bold text-[#02213D] transition hover:bg-[#e0af2e]"
               >
                 Open Property Discussion Form

@@ -15,7 +15,7 @@ const commonLinks = [
   { href: "/faq", label: "Read FAQ", highlight: false },
   { href: "/resources/education", label: "Education Center", highlight: false },
   { href: "/contact", label: "Contact J Capital", highlight: false },
-  { href: "/sell-your-house", label: "Discuss Your Property", highlight: true }
+  { href: "/sell-your-house?source=resource_article_cta", label: "Discuss Your Property", highlight: true }
 ] as const;
 
 export function PropertyResourceArticlePage({ page }: PropertyResourceArticlePageProps) {

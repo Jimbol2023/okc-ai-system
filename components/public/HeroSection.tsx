@@ -39,7 +39,7 @@ export function HeroSection() {
           </div>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
-              href="/sell-your-house"
+              href="/sell-your-house?source=homepage_hero_cta"
               className="inline-flex min-h-13 items-center justify-center rounded-md bg-[#D4A017] px-6 py-3.5 font-heading text-sm font-bold text-[#02213D] shadow-[0_18px_36px_rgba(212,160,23,0.26)] transition hover:bg-[#e0af2e]"
             >
               Discuss Your Property
