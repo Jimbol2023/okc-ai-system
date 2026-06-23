@@ -28,7 +28,7 @@ const policySections = [
   {
     title: "Cookies And Browser Storage",
     body:
-      "This website may use essential browser storage to remember privacy preferences and support form or site functionality. Optional analytics or advertising cookies are not loaded unless they are added with consent controls."
+      "This website may use essential browser storage to remember privacy preferences and support form or site functionality. Optional analytics cookies are loaded only if analytics is configured and you accept optional cookies. Advertising and remarketing cookies are not loaded by this website."
   },
   {
     title: "Lead Source Tracking",

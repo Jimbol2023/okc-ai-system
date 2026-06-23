@@ -3,37 +3,10 @@
 import Link from "next/link";
 import { useSyncExternalStore } from "react";
 
-const CONSENT_STORAGE_KEY = "jcapital_cookie_consent_v1";
-const CONSENT_CHANGE_EVENT = "jcapital-cookie-consent-change";
-
-type ConsentChoice = "accepted" | "declined";
-
-function getStoredChoice(): ConsentChoice | null {
-  if (typeof window === "undefined") {
-    return "accepted";
-  }
-
-  const savedChoice = window.localStorage.getItem(CONSENT_STORAGE_KEY);
-  return savedChoice === "accepted" || savedChoice === "declined" ? savedChoice : null;
-}
-
-function subscribeToConsentChanges(onStoreChange: () => void) {
-  window.addEventListener("storage", onStoreChange);
-  window.addEventListener(CONSENT_CHANGE_EVENT, onStoreChange);
-
-  return () => {
-    window.removeEventListener("storage", onStoreChange);
-    window.removeEventListener(CONSENT_CHANGE_EVENT, onStoreChange);
-  };
-}
+import { getStoredConsentChoice, saveConsentChoice, subscribeToConsentChanges } from "@/lib/analytics-consent";
 
 export function CookieConsentBanner() {
-  const choice = useSyncExternalStore(subscribeToConsentChanges, getStoredChoice, () => "accepted");
-
-  function saveChoice(nextChoice: ConsentChoice) {
-    window.localStorage.setItem(CONSENT_STORAGE_KEY, nextChoice);
-    window.dispatchEvent(new Event(CONSENT_CHANGE_EVENT));
-  }
+  const choice = useSyncExternalStore(subscribeToConsentChanges, getStoredConsentChoice, () => "accepted");
 
   if (choice) {
     return null;
@@ -59,14 +32,14 @@ export function CookieConsentBanner() {
         <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
           <button
             type="button"
-            onClick={() => saveChoice("declined")}
+            onClick={() => saveConsentChoice("declined")}
             className="inline-flex min-h-11 items-center justify-center rounded-md border border-[#02213D]/20 bg-white px-5 py-2.5 font-heading text-sm font-bold text-[#02213D] transition hover:bg-[#F2F4F7]"
           >
             Decline Optional
           </button>
           <button
             type="button"
-            onClick={() => saveChoice("accepted")}
+            onClick={() => saveConsentChoice("accepted")}
             className="inline-flex min-h-11 items-center justify-center rounded-md bg-[#D4A017] px-5 py-2.5 font-heading text-sm font-bold text-[#02213D] transition hover:bg-[#e0af2e]"
           >
             Accept
