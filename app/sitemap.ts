@@ -16,7 +16,7 @@ const publicRoutes = [
   "/resources/education/property-ownership-change-considerations",
   "/resources/education/family-property-discussions",
   "/resources/videos",
-  "/resources/videos/inherited-property",
+  "/resources/videos/understanding-inherited-property",
   "/resources/videos/vacant-property",
   "/resources/videos/relocation-property",
   "/resources/videos/landlord-property",

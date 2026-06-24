@@ -159,7 +159,7 @@ export default function SellYourPropertyPage() {
                 communication, and ownership questions before choosing a path.
               </p>
               <Link
-                href="/resources/videos/inherited-property"
+                href="/resources/videos/understanding-inherited-property"
                 className="mt-5 inline-flex min-h-12 items-center justify-center rounded-md border border-[#02213D]/18 bg-white px-5 py-3 font-heading text-sm font-bold text-[#02213D] transition hover:bg-[#eef1f5]"
               >
                 Watch Educational Lesson

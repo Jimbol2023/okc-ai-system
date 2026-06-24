@@ -1,7 +1,7 @@
 import type { PublicPath } from "./public-seo";
 
 export type PublicVideoPath =
-  | "/resources/videos/inherited-property"
+  | "/resources/videos/understanding-inherited-property"
   | "/resources/videos/vacant-property"
   | "/resources/videos/relocation-property"
   | "/resources/videos/landlord-property";
@@ -53,7 +53,7 @@ export type PublicVideoPage = {
 
 export const publicVideoPages: PublicVideoPage[] = [
   {
-    path: "/resources/videos/inherited-property",
+    path: "/resources/videos/understanding-inherited-property",
     title: "Understanding Inherited Property",
     description:
       "Educational video page for Oklahoma owners reviewing inherited property, family communication, documents, ownership questions, and practical next-step planning.",
