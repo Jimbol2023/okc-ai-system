@@ -19,6 +19,7 @@ import { StatCard } from "@/components/shared/stat-card";
 import SystemReadinessPanel from "@/components/dashboard/system-readiness-panel";
 import { SystemHealthSafetyBar } from "@/components/dashboard/system-health-safety-bar";
 import { ActivityAuditPreviewPanel } from "@/components/dashboard/activity-audit-preview-panel";
+import { OperatorCommandCenter } from "@/components/dashboard/operator-command-center";
 
 const queue = [
   "Open blocked or DNC leads first and confirm no external action should occur.",
@@ -810,6 +811,8 @@ export default function DashboardPage() {
           {realLeadsError} No outreach, routing, reminders, or CRM status movement was created. Review the source feed manually before retrying.
         </p>
       ) : null}
+
+      <OperatorCommandCenter leads={dashboardLeads} isLoadingLeads={isLoadingLeads} />
 
       <SystemReadinessPanel />
 

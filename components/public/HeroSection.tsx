@@ -26,16 +26,16 @@ export function HeroSection() {
             J Capital Property Group LLC
           </p>
           <h1 className="mt-5 font-heading text-4xl font-bold leading-[1.04] text-white sm:text-5xl lg:text-6xl">
-            Professional Real Estate Solutions for Oklahoma Property Owners
+            Inherited, Vacant, or Hard-to-Decide Oklahoma Property?
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-8 text-white/82 sm:text-lg">
-            Helping property owners explore real estate opportunities with professionalism, transparency, and local
-            expertise.
+            Start with clear options, plain-language guidance, and a no-pressure conversation before deciding what makes
+            sense for your property.
           </p>
           <div className="mt-6 grid gap-3 text-sm text-white/78 sm:grid-cols-3">
-            <p className="border-l-2 border-[#D4A017] pl-3">Professional guidance</p>
-            <p className="border-l-2 border-[#D4A017] pl-3">Oklahoma market focus</p>
-            <p className="border-l-2 border-[#D4A017] pl-3">No-pressure conversations</p>
+            <p className="border-l-2 border-[#D4A017] pl-3">Inherited property questions</p>
+            <p className="border-l-2 border-[#D4A017] pl-3">Vacant or repair-heavy homes</p>
+            <p className="border-l-2 border-[#D4A017] pl-3">Private, no-pressure review</p>
           </div>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
@@ -67,7 +67,7 @@ export function HeroSection() {
               Oklahoma Property Owners
             </p>
             <p className="mt-4 text-2xl font-semibold leading-snug text-white">
-              Clear guidance for property decisions that deserve thoughtful attention.
+              Understand what you have, what choices are available, and what questions to ask next.
             </p>
           </div>
         </div>

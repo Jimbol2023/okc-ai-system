@@ -9,9 +9,9 @@ import { createPublicPageMetadata } from "@/lib/public-seo";
 
 export const metadata = createPublicPageMetadata({
   path: "/",
-  title: "Professional Real Estate Solutions for Oklahoma Property Owners",
+  title: "Clear Options for Inherited, Vacant, and Difficult Oklahoma Property",
   description:
-    "J Capital Property Group helps Oklahoma property owners explore real estate opportunities with professionalism, transparency, and local market knowledge."
+    "J Capital Property Group helps Oklahoma property owners understand inherited, vacant, repair-heavy, and time-sensitive property options without pressure."
 });
 
 const conversationSteps = [
@@ -54,24 +54,47 @@ const faqPreview = [
 
 const resourcePreview = [
   {
-    href: "/resources/education",
-    title: "Education Center",
-    description: "Start with learning paths, authority guides, video lessons, and property insights."
-  },
-  {
     href: "/resources/education/probate-basics-oklahoma-property-owners",
     title: "Probate Basics",
-    description: "General education for inherited property, documents, timing, and authority questions."
+    description: "Understand general probate questions, authority, documents, and timing considerations."
   },
   {
-    href: "/resources/videos",
-    title: "Video Learning Center",
-    description: "Transcript-first video pages for common Oklahoma property situations."
+    href: "/resources/vacant-property-oklahoma",
+    title: "Vacant Property",
+    description: "Review practical questions around empty homes, condition, timing, and next steps."
   },
   {
-    href: "/resources/property-insights",
-    title: "Property Insights",
-    description: "Evergreen topics for understanding property questions without dated market updates."
+    href: "/resources/education/deferred-maintenance-oklahoma",
+    title: "Repairs and Maintenance",
+    description: "Think through deferred maintenance without guessing at a one-size-fits-all answer."
+  },
+  {
+    href: "/resources/education/family-property-discussions",
+    title: "Family Property Decisions",
+    description: "Prepare for shared conversations when more than one person has a voice in the decision."
+  }
+] as const;
+
+const situationLinks = [
+  {
+    href: "/resources/inherited-property-oklahoma",
+    title: "I inherited a property",
+    question: "What do I do first, and what should I avoid rushing?"
+  },
+  {
+    href: "/resources/vacant-property-oklahoma",
+    title: "The house is sitting vacant",
+    question: "How do I think about condition, security, and timing?"
+  },
+  {
+    href: "/resources/out-of-state-owner-selling-oklahoma-property",
+    title: "I live out of state",
+    question: "How can I review options without being local?"
+  },
+  {
+    href: "/resources/landlord-property-decisions-oklahoma",
+    title: "I am tired of managing it",
+    question: "What choices exist before I commit to another rental cycle?"
   }
 ] as const;
 
@@ -80,6 +103,36 @@ export default function HomePage() {
     <>
       <HeroSection />
       <TrustSection />
+      <section className="bg-white py-18 md:py-24" aria-labelledby="homepage-situations-heading">
+        <div className="container-shell">
+          <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+            <div>
+              <p className="font-heading text-xs font-bold uppercase tracking-[0.22em] text-[#D4A017]">
+                Start With Your Situation
+              </p>
+              <h2 id="homepage-situations-heading" className="mt-4 font-heading text-3xl font-bold leading-tight text-[#02213D] md:text-5xl">
+                If you are asking &quot;what do I do now?&quot;, begin here.
+              </h2>
+              <p className="mt-4 text-base leading-7 text-[#4B5563]">
+                Property decisions can feel personal, urgent, or confusing. These guides help you slow the decision down
+                and understand the next question to ask.
+              </p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {situationLinks.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="border border-slate-200 bg-[#F2F4F7] p-5 shadow-sm transition hover:bg-white"
+                >
+                  <span className="block font-heading text-lg font-bold text-[#02213D]">{item.title}</span>
+                  <span className="mt-3 block text-sm leading-6 text-[#4B5563]">{item.question}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
       <section className="bg-[#F2F4F7] py-18 md:py-24">
         <div className="container-shell">
           <div className="mx-auto max-w-3xl text-center">
