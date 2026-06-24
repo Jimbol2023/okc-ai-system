@@ -15,7 +15,7 @@ export function VideoLearningPage({ page }: VideoLearningPageProps) {
     { name: "Home", path: "/" },
     { name: "Education Center", path: "/resources/education" },
     { name: "Videos", path: "/resources/videos" },
-    { name: page.title }
+    { name: page.title, path: page.path }
   ];
   const videoAssetReady = page.videoAsset?.reviewStatus === "ready";
   const hasLessonGuide = Boolean(page.lessonGuide);

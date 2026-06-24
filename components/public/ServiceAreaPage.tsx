@@ -49,8 +49,7 @@ export function ServiceAreaPage({ area }: ServiceAreaPageProps) {
 
   const breadcrumbs: BreadcrumbItem[] = [
     { name: "Home", path: "/" },
-    { name: "Oklahoma Service Areas" },
-    { name: area.city }
+    { name: area.city, path: area.slug }
   ];
 
   return (

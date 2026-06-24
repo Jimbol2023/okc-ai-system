@@ -22,7 +22,7 @@ export function PropertyResourceArticlePage({ page }: PropertyResourceArticlePag
   const breadcrumbs: BreadcrumbItem[] = [
     { name: "Home", path: "/" },
     { name: "Education Center", path: "/resources/education" },
-    { name: page.title }
+    { name: page.title, path: page.path }
   ];
 
   return (

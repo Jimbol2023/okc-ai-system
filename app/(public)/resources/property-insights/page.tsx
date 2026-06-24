@@ -15,7 +15,7 @@ export const metadata = createPublicPageMetadata({
 const breadcrumbs: BreadcrumbItem[] = [
   { name: "Home", path: "/" },
   { name: "Education Center", path: "/resources/education" },
-  { name: "Property Insights" }
+  { name: "Property Insights", path: "/resources/property-insights" }
 ];
 
 const insights = [

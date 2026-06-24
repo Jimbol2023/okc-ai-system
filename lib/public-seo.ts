@@ -45,7 +45,7 @@ export type PublicPath =
 
 export type BreadcrumbItem = {
   name: string;
-  path?: PublicPath;
+  path: PublicPath;
 };
 
 type PublicPageMetadataInput = {
@@ -95,19 +95,12 @@ export function createBreadcrumbListJsonLd(items: BreadcrumbItem[]) {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    itemListElement: items.map((item, index) => {
-      const listItem: Record<string, unknown> = {
-        "@type": "ListItem",
-        position: index + 1,
-        name: item.name
-      };
-
-      if (item.path) {
-        listItem.item = getPublicCanonicalUrl(item.path);
-      }
-
-      return listItem;
-    })
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: getPublicCanonicalUrl(item.path)
+    }))
   };
 }
 

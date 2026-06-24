@@ -18,7 +18,7 @@ const pageDescription =
 const breadcrumbs: BreadcrumbItem[] = [
   { name: "Home", path: "/" },
   { name: "Education Center", path: "/resources/education" },
-  { name: pageTitle }
+  { name: pageTitle, path: "/resources/inherited-property-oklahoma" }
 ];
 
 const relatedResources = [

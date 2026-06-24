@@ -16,7 +16,7 @@ export const metadata = createPublicPageMetadata({
 const breadcrumbs: BreadcrumbItem[] = [
   { name: "Home", path: "/" },
   { name: "Education Center", path: "/resources/education" },
-  { name: "Videos" }
+  { name: "Videos", path: "/resources/videos" }
 ];
 
 export default function VideoLearningCenterPage() {

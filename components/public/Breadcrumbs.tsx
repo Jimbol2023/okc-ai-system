@@ -26,12 +26,12 @@ export function Breadcrumbs({ items, variant = "dark" }: BreadcrumbsProps) {
                 /
               </span>
             ) : null}
-            {item.path ? (
+            {index === items.length - 1 ? (
+              <span aria-current="page">{item.name}</span>
+            ) : (
               <Link href={item.path as Route} className={linkClass}>
                 {item.name}
               </Link>
-            ) : (
-              <span aria-current={index === items.length - 1 ? "page" : undefined}>{item.name}</span>
             )}
           </li>
         ))}
