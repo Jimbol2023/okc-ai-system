@@ -3,6 +3,8 @@ export const CONSENT_CHANGE_EVENT = "jcapital-cookie-consent-change";
 
 export type ConsentChoice = "accepted" | "declined";
 
+type AnalyticsEventParams = Record<string, string | number | boolean | null | undefined>;
+
 declare global {
   interface Window {
     dataLayer?: unknown[];
@@ -12,6 +14,10 @@ declare global {
 
 export function getAnalyticsMeasurementId() {
   return process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim() ?? "";
+}
+
+export function isProductionAnalyticsEnabled() {
+  return process.env.NODE_ENV === "production" && Boolean(getAnalyticsMeasurementId());
 }
 
 export function getStoredConsentChoice(): ConsentChoice | null {
@@ -39,20 +45,49 @@ export function saveConsentChoice(nextChoice: ConsentChoice) {
 }
 
 export function hasAnalyticsConsent() {
-  return Boolean(getAnalyticsMeasurementId()) && getStoredConsentChoice() === "accepted";
+  return isProductionAnalyticsEnabled() && getStoredConsentChoice() === "accepted";
 }
 
-export function trackAnalyticsEvent(eventName: string, params: Record<string, string | number | boolean | null> = {}) {
+export function trackAnalyticsEvent(eventName: string, params: AnalyticsEventParams = {}) {
   if (typeof window === "undefined" || !hasAnalyticsConsent()) {
     return false;
   }
 
+  const cleanParams = Object.fromEntries(Object.entries(params).filter(([, value]) => value !== undefined));
+
   if (typeof window.gtag === "function") {
-    window.gtag("event", eventName, params);
+    window.gtag("event", eventName, cleanParams);
     return true;
   }
 
   window.dataLayer = window.dataLayer ?? [];
-  window.dataLayer.push({ event: eventName, ...params });
+  window.dataLayer.push({ event: eventName, ...cleanParams });
   return true;
+}
+
+export function trackPageView(pagePath: string, pageLocation?: string) {
+  return trackAnalyticsEvent("page_view", {
+    page_path: pagePath,
+    page_location: pageLocation
+  });
+}
+
+export function trackGenerateLead(params: AnalyticsEventParams = {}) {
+  return trackAnalyticsEvent("generate_lead", params);
+}
+
+export function trackContactFormSubmit(params: AnalyticsEventParams = {}) {
+  return trackAnalyticsEvent("contact_form_submit", params);
+}
+
+export function trackPhoneClick(params: AnalyticsEventParams = {}) {
+  return trackAnalyticsEvent("phone_click", params);
+}
+
+export function trackEmailClick(params: AnalyticsEventParams = {}) {
+  return trackAnalyticsEvent("email_click", params);
+}
+
+export function trackVideoPlay(params: AnalyticsEventParams = {}) {
+  return trackAnalyticsEvent("video_play", params);
 }

@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { trackAnalyticsEvent } from "@/lib/analytics-consent";
 import { brandConfig } from "@/lib/brand-config";
 import { createLeadFromIntake } from "@/lib/leads-api";
 import { leadIntakeSchema, type LeadIntakeInput } from "@/lib/validations/lead";
@@ -36,7 +35,6 @@ export function LeadCaptureForm({ source }: LeadCaptureFormProps) {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
   const [submitted, setSubmitted] = useState(false);
   const [isPending, setIsPending] = useState(false);
-  const [formStarted, setFormStarted] = useState(false);
 
   useEffect(() => {
     const querySource = new URLSearchParams(window.location.search).get("source");
@@ -74,10 +72,6 @@ export function LeadCaptureForm({ source }: LeadCaptureFormProps) {
       });
 
       setSubmitted(true);
-      trackAnalyticsEvent("lead_form_submit", {
-        source: effectiveSource,
-        page_path: window.location.pathname
-      });
       setValues({
         ...initialValues,
         source: effectiveSource
@@ -91,14 +85,6 @@ export function LeadCaptureForm({ source }: LeadCaptureFormProps) {
   }
 
   function updateField<Key extends keyof LeadIntakeInput>(key: Key, value: LeadIntakeInput[Key]) {
-    if (!formStarted) {
-      setFormStarted(true);
-      trackAnalyticsEvent("lead_form_start", {
-        source: effectiveSource,
-        page_path: window.location.pathname
-      });
-    }
-
     setValues((current) => ({
       ...current,
       [key]: value
