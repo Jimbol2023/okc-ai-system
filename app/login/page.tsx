@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import Image from "next/image";
+import { Suspense } from "react";
 
 import { LoginForm } from "@/components/auth/login-form";
 import { getAuthenticatedAdmin } from "@/lib/auth";
@@ -37,7 +38,17 @@ export default async function LoginPage() {
             </p>
           </section>
 
-          <LoginForm />
+          <Suspense
+            fallback={
+              <div className="rounded-[1.75rem] border border-border bg-surface p-6 shadow-[0_18px_50px_rgba(18,32,42,0.08)]">
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-muted">Admin Access</p>
+                <h1 className="mt-2 text-3xl font-semibold text-primary">Sign in</h1>
+                <p className="mt-3 text-sm leading-6 text-muted">Loading secure access form...</p>
+              </div>
+            }
+          >
+            <LoginForm />
+          </Suspense>
         </div>
       </div>
     </div>

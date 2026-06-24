@@ -82,20 +82,20 @@ export async function verifySessionToken(token: string | undefined) {
     return null;
   }
 
-  const { authSecret } = getAuthConfig();
-  const [encodedPayload, signature] = token.split(".");
-
-  if (!encodedPayload || !signature) {
-    return null;
-  }
-
-  const isValid = await verifySignature(encodedPayload, signature, authSecret);
-
-  if (!isValid) {
-    return null;
-  }
-
   try {
+    const { authSecret } = getAuthConfig();
+    const [encodedPayload, signature] = token.split(".");
+
+    if (!encodedPayload || !signature) {
+      return null;
+    }
+
+    const isValid = await verifySignature(encodedPayload, signature, authSecret);
+
+    if (!isValid) {
+      return null;
+    }
+
     const payload = JSON.parse(base64UrlDecode(encodedPayload)) as SessionPayload;
 
     if (!payload.email || payload.exp <= Date.now()) {
@@ -145,10 +145,14 @@ export function clearAuthCookie(response: NextResponse) {
 }
 
 export async function isAuthenticatedRequest(request: NextRequest | Request) {
-  const token = getRequestAuthToken(request);
-  const payload = await verifySessionToken(token);
+  try {
+    const token = getRequestAuthToken(request);
+    const payload = await verifySessionToken(token);
 
-  return Boolean(payload);
+    return Boolean(payload);
+  } catch {
+    return false;
+  }
 }
 
 function getRequestAuthToken(request: NextRequest | Request) {
@@ -182,10 +186,14 @@ export async function isAdminRequest(request: NextRequest | Request) {
 }
 
 export async function getAuthenticatedAdmin() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get(AUTH_COOKIE_NAME)?.value;
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get(AUTH_COOKIE_NAME)?.value;
 
-  return verifySessionToken(token);
+    return verifySessionToken(token);
+  } catch {
+    return null;
+  }
 }
 
 export function getUnauthorizedApiResponse() {
