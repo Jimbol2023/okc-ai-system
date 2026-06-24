@@ -1,4 +1,3 @@
-import { cookies } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
 
 import { getAdminEmail, getAdminPassword, getAuthSecret } from "@/lib/env";
@@ -187,6 +186,7 @@ export async function isAdminRequest(request: NextRequest | Request) {
 
 export async function getAuthenticatedAdmin() {
   try {
+    const { cookies } = await import("next/headers");
     const cookieStore = await cookies();
     const token = cookieStore.get(AUTH_COOKIE_NAME)?.value;
 
