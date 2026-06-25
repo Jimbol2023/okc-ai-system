@@ -3,6 +3,10 @@ import type { StoredLead } from "@/lib/leads-storage";
 
 export const OPERATOR_ANALYTICS_SNAPSHOTS_KEY = "jcapitalOperatorAnalyticsSnapshotsV1";
 export const OPERATOR_ANALYTICS_SNAPSHOTS_EVENT = "jcapital-operator-analytics-snapshots-change";
+const EMPTY_OPERATOR_ANALYTICS_SNAPSHOTS: OperatorAnalyticsSnapshot[] = [];
+
+let cachedSnapshotsRaw: string | null = null;
+let cachedSnapshots: OperatorAnalyticsSnapshot[] = EMPTY_OPERATOR_ANALYTICS_SNAPSHOTS;
 
 export type EducationalPageSnapshot = {
   title: string;
@@ -104,6 +108,75 @@ function createSnapshotId(snapshotDate: string) {
   return `snapshot-${snapshotDate}-${Date.now()}`;
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === "object";
+}
+
+function normalizeEducationalPages(value: unknown): EducationalPageSnapshot[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((page) => {
+      if (!isRecord(page)) {
+        return null;
+      }
+
+      const title = typeof page.title === "string" ? page.title.trim() : "";
+      const path = typeof page.path === "string" ? page.path.trim() : "";
+
+      if (!title || !path.startsWith("/")) {
+        return null;
+      }
+
+      return {
+        title,
+        path,
+        views: normalizeNumber(page.views),
+      };
+    })
+    .filter((page): page is EducationalPageSnapshot => page !== null)
+    .slice(0, 8);
+}
+
+function normalizeOperatorAnalyticsSnapshot(value: unknown): OperatorAnalyticsSnapshot | null {
+  if (!isRecord(value)) {
+    return null;
+  }
+
+  const snapshotDate = typeof value.snapshotDate === "string" ? value.snapshotDate.trim() : "";
+
+  if (!snapshotDate || !parseDate(snapshotDate)) {
+    return null;
+  }
+
+  return {
+    id: typeof value.id === "string" && value.id.trim() ? value.id : `snapshot-${snapshotDate}`,
+    snapshotDate,
+    websiteSessions: normalizeNumber(value.websiteSessions),
+    ga4Conversions: normalizeNumber(value.ga4Conversions),
+    gbpCalls: normalizeNumber(value.gbpCalls),
+    contactFormSubmissions: normalizeNumber(value.contactFormSubmissions),
+    youtubeViews: normalizeNumber(value.youtubeViews),
+    youtubeEngagement: normalizeNumber(value.youtubeEngagement),
+    topEducationalPages: normalizeEducationalPages(value.topEducationalPages),
+  };
+}
+
+function normalizeOperatorAnalyticsSnapshots(value: unknown): OperatorAnalyticsSnapshot[] {
+  if (!Array.isArray(value)) {
+    return EMPTY_OPERATOR_ANALYTICS_SNAPSHOTS;
+  }
+
+  const normalized = value
+    .map(normalizeOperatorAnalyticsSnapshot)
+    .filter((snapshot): snapshot is OperatorAnalyticsSnapshot => snapshot !== null)
+    .sort((a, b) => a.snapshotDate.localeCompare(b.snapshotDate));
+
+  return normalized.length === 0 ? EMPTY_OPERATOR_ANALYTICS_SNAPSHOTS : normalized;
+}
+
 function parseTopEducationalPages(value: string) {
   return value
     .split("\n")
@@ -163,41 +236,35 @@ export function validateOperatorAnalyticsSnapshotDraft(draft: OperatorAnalyticsS
 
 export function readOperatorAnalyticsSnapshots() {
   if (typeof window === "undefined") {
-    return [];
-  }
-
-  const rawSnapshots = window.localStorage.getItem(OPERATOR_ANALYTICS_SNAPSHOTS_KEY);
-
-  if (!rawSnapshots) {
-    return [];
+    return EMPTY_OPERATOR_ANALYTICS_SNAPSHOTS;
   }
 
   try {
-    const parsed = JSON.parse(rawSnapshots) as OperatorAnalyticsSnapshot[];
+    const rawSnapshots = window.localStorage.getItem(OPERATOR_ANALYTICS_SNAPSHOTS_KEY);
 
-    if (!Array.isArray(parsed)) {
-      return [];
+    if (!rawSnapshots) {
+      cachedSnapshotsRaw = null;
+      cachedSnapshots = EMPTY_OPERATOR_ANALYTICS_SNAPSHOTS;
+
+      return cachedSnapshots;
     }
 
-    return parsed
-      .map((snapshot) => ({
-        ...snapshot,
-        websiteSessions: normalizeNumber(snapshot.websiteSessions),
-        ga4Conversions: normalizeNumber(snapshot.ga4Conversions),
-        gbpCalls: normalizeNumber(snapshot.gbpCalls),
-        contactFormSubmissions: normalizeNumber(snapshot.contactFormSubmissions),
-        youtubeViews: normalizeNumber(snapshot.youtubeViews),
-        youtubeEngagement: normalizeNumber(snapshot.youtubeEngagement),
-        topEducationalPages: Array.isArray(snapshot.topEducationalPages) ? snapshot.topEducationalPages.map((page) => ({
-          title: page.title,
-          path: page.path,
-          views: normalizeNumber(page.views),
-        })) : [],
-      }))
-      .filter((snapshot) => Boolean(snapshot.snapshotDate && parseDate(snapshot.snapshotDate)))
-      .sort((a, b) => a.snapshotDate.localeCompare(b.snapshotDate));
+    if (rawSnapshots === cachedSnapshotsRaw) {
+      return cachedSnapshots;
+    }
+
+    const parsed = JSON.parse(rawSnapshots) as unknown;
+    const parsedSnapshots = normalizeOperatorAnalyticsSnapshots(parsed);
+
+    cachedSnapshotsRaw = rawSnapshots;
+    cachedSnapshots = parsedSnapshots;
+
+    return cachedSnapshots;
   } catch {
-    return [];
+    cachedSnapshotsRaw = null;
+    cachedSnapshots = EMPTY_OPERATOR_ANALYTICS_SNAPSHOTS;
+
+    return cachedSnapshots;
   }
 }
 
@@ -206,9 +273,12 @@ export function saveOperatorAnalyticsSnapshots(snapshots: OperatorAnalyticsSnaps
     return snapshots;
   }
 
-  const nextSnapshots = [...snapshots].sort((a, b) => a.snapshotDate.localeCompare(b.snapshotDate)).slice(-24);
+  const nextSnapshots = normalizeOperatorAnalyticsSnapshots(snapshots).slice(-24);
+  const nextRawSnapshots = JSON.stringify(nextSnapshots);
 
-  window.localStorage.setItem(OPERATOR_ANALYTICS_SNAPSHOTS_KEY, JSON.stringify(nextSnapshots));
+  window.localStorage.setItem(OPERATOR_ANALYTICS_SNAPSHOTS_KEY, nextRawSnapshots);
+  cachedSnapshotsRaw = nextRawSnapshots;
+  cachedSnapshots = nextSnapshots;
   window.dispatchEvent(new Event(OPERATOR_ANALYTICS_SNAPSHOTS_EVENT));
 
   return nextSnapshots;
@@ -279,7 +349,7 @@ function getTopEducationalPages(snapshots: OperatorAnalyticsSnapshot[]) {
   const pageMap = new Map<string, EducationalPageSnapshot>();
 
   snapshots.forEach((snapshot) => {
-    snapshot.topEducationalPages.forEach((page) => {
+    (snapshot.topEducationalPages ?? []).forEach((page) => {
       const current = pageMap.get(page.path);
 
       pageMap.set(page.path, {
@@ -297,10 +367,11 @@ export function createOperatorCommandCenterModel(
   leads: StoredLead[],
   snapshots: OperatorAnalyticsSnapshot[]
 ): OperatorCommandCenterModel {
-  const sortedSnapshots = [...snapshots].sort((a, b) => a.snapshotDate.localeCompare(b.snapshotDate));
+  const safeLeads = Array.isArray(leads) ? leads : [];
+  const sortedSnapshots = normalizeOperatorAnalyticsSnapshots(snapshots);
 
   return {
-    sourceTrends: getSourceTrendRows(leads),
+    sourceTrends: getSourceTrendRows(safeLeads),
     websiteSessionsTrend: getSnapshotTrend(sortedSnapshots, "websiteSessions"),
     ga4ConversionsTrend: getSnapshotTrend(sortedSnapshots, "ga4Conversions"),
     gbpCallsTrend: getSnapshotTrend(sortedSnapshots, "gbpCalls"),

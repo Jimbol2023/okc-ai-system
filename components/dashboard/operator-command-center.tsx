@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useSyncExternalStore, type FormEvent } from "react";
+import { Component, useMemo, useState, useSyncExternalStore, type ErrorInfo, type FormEvent, type ReactNode } from "react";
 import { BarChart3, LineChart, PhoneCall, PlayCircle, TrendingUp } from "lucide-react";
 
 import {
@@ -11,6 +11,7 @@ import {
   validateOperatorAnalyticsSnapshotDraft,
   type OperatorAnalyticsSnapshot,
   type OperatorAnalyticsSnapshotDraft,
+  type OperatorCommandCenterModel,
   type TrendPoint,
 } from "@/lib/operator-command-center-analytics";
 import type { StoredLead } from "@/lib/leads-storage";
@@ -30,6 +31,50 @@ const emptyDraft: OperatorAnalyticsSnapshotDraft = {
   youtubeEngagement: 0,
   topEducationalPagesText: "",
 };
+
+const emptyModel: OperatorCommandCenterModel = {
+  sourceTrends: [],
+  websiteSessionsTrend: [],
+  ga4ConversionsTrend: [],
+  gbpCallsTrend: [],
+  contactFormTrend: [],
+  youtubeViewsTrend: [],
+  youtubeEngagementTrend: [],
+  topEducationalPages: [],
+  latestSnapshot: null,
+  snapshotCount: 0,
+};
+
+class OperatorCommandCenterSectionBoundary extends Component<
+  { children: ReactNode; label: string },
+  { hasError: boolean }
+> {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error("Operator command center section failed:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <article className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-950">
+          <p className="font-bold">{this.props.label} unavailable</p>
+          <p className="mt-1">
+            This section could not render from the current dashboard data. The dashboard stayed read-only and no outreach,
+            provider call, assignment, reminder, or CRM mutation was executed.
+          </p>
+        </article>
+      );
+    }
+
+    return this.props.children;
+  }
+}
 
 function sum(points: TrendPoint[]) {
   return points.reduce((total, point) => total + point.value, 0);
@@ -319,9 +364,23 @@ function NumberField({ label, value, onChange }: { label: string; value: number;
 }
 
 export function OperatorCommandCenter({ leads, isLoadingLeads }: OperatorCommandCenterProps) {
-  const snapshots = useSyncExternalStore(subscribeToOperatorAnalyticsSnapshots, readOperatorAnalyticsSnapshots, () => []);
+  const snapshots = useSyncExternalStore(subscribeToOperatorAnalyticsSnapshots, readOperatorAnalyticsSnapshots, readOperatorAnalyticsSnapshots);
 
-  const model = useMemo(() => createOperatorCommandCenterModel(leads, snapshots), [leads, snapshots]);
+  const { model, modelError } = useMemo(() => {
+    try {
+      return {
+        model: createOperatorCommandCenterModel(leads, snapshots),
+        modelError: null,
+      };
+    } catch (error) {
+      console.error("Operator command center model failed:", error);
+
+      return {
+        model: emptyModel,
+        modelError: error,
+      };
+    }
+  }, [leads, snapshots]);
 
   function handleAddSnapshot(snapshot: OperatorAnalyticsSnapshot) {
     saveOperatorAnalyticsSnapshots([...snapshots, snapshot]);
@@ -348,24 +407,47 @@ export function OperatorCommandCenter({ leads, isLoadingLeads }: OperatorCommand
 
       {isLoadingLeads ? <p className="mt-4 rounded-xl border border-blue-100 bg-blue-50 p-3 text-sm text-blue-900">Loading lead trends...</p> : null}
 
+      {modelError ? (
+        <p className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm font-semibold leading-6 text-amber-950">
+          Analytics snapshot data could not be read safely, so empty command-center cards are shown. No outreach, provider
+          call, assignment, reminder, or CRM mutation was executed.
+        </p>
+      ) : null}
+
       <div className="mt-5 grid gap-4 sm:grid-cols-2 2xl:grid-cols-4">
-        <CommandMetricCard label="Website traffic" value={sum(model.websiteSessionsTrend)} helper="Manual sessions snapshot total" points={model.websiteSessionsTrend} icon={TrendingUp} />
-        <CommandMetricCard label="GA4 conversions" value={sum(model.ga4ConversionsTrend)} helper="Manual conversion snapshot total" points={model.ga4ConversionsTrend} icon={BarChart3} />
-        <CommandMetricCard label="GBP calls" value={sum(model.gbpCallsTrend)} helper="Manual Google Business Profile calls" points={model.gbpCallsTrend} icon={PhoneCall} />
-        <CommandMetricCard label="YouTube views" value={sum(model.youtubeViewsTrend)} helper="Manual video performance signal" points={model.youtubeViewsTrend} icon={PlayCircle} />
+        <OperatorCommandCenterSectionBoundary label="Website traffic metric">
+          <CommandMetricCard label="Website traffic" value={sum(model.websiteSessionsTrend)} helper="Manual sessions snapshot total" points={model.websiteSessionsTrend} icon={TrendingUp} />
+        </OperatorCommandCenterSectionBoundary>
+        <OperatorCommandCenterSectionBoundary label="GA4 conversions metric">
+          <CommandMetricCard label="GA4 conversions" value={sum(model.ga4ConversionsTrend)} helper="Manual conversion snapshot total" points={model.ga4ConversionsTrend} icon={BarChart3} />
+        </OperatorCommandCenterSectionBoundary>
+        <OperatorCommandCenterSectionBoundary label="GBP calls metric">
+          <CommandMetricCard label="GBP calls" value={sum(model.gbpCallsTrend)} helper="Manual Google Business Profile calls" points={model.gbpCallsTrend} icon={PhoneCall} />
+        </OperatorCommandCenterSectionBoundary>
+        <OperatorCommandCenterSectionBoundary label="YouTube views metric">
+          <CommandMetricCard label="YouTube views" value={sum(model.youtubeViewsTrend)} helper="Manual video performance signal" points={model.youtubeViewsTrend} icon={PlayCircle} />
+        </OperatorCommandCenterSectionBoundary>
       </div>
 
       <div className="mt-4 grid gap-4 xl:grid-cols-[1.05fr_0.95fr]">
-        <SourceTrendPanel model={model} />
-        <TopPagesPanel model={model} />
+        <OperatorCommandCenterSectionBoundary label="Source trend">
+          <SourceTrendPanel model={model} />
+        </OperatorCommandCenterSectionBoundary>
+        <OperatorCommandCenterSectionBoundary label="Top educational pages">
+          <TopPagesPanel model={model} />
+        </OperatorCommandCenterSectionBoundary>
       </div>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-[0.95fr_1.05fr]">
-        <div className="grid gap-4 sm:grid-cols-2">
-          <CommandMetricCard label="Contact forms" value={sum(model.contactFormTrend)} helper="Manual form submission count" points={model.contactFormTrend} icon={BarChart3} />
-          <CommandMetricCard label="YouTube engagement" value={sum(model.youtubeEngagementTrend)} helper="Manual watch or engagement signal" points={model.youtubeEngagementTrend} icon={PlayCircle} />
-        </div>
-        <SnapshotForm onAddSnapshot={handleAddSnapshot} />
+        <OperatorCommandCenterSectionBoundary label="Lower channel metrics">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <CommandMetricCard label="Contact forms" value={sum(model.contactFormTrend)} helper="Manual form submission count" points={model.contactFormTrend} icon={BarChart3} />
+            <CommandMetricCard label="YouTube engagement" value={sum(model.youtubeEngagementTrend)} helper="Manual watch or engagement signal" points={model.youtubeEngagementTrend} icon={PlayCircle} />
+          </div>
+        </OperatorCommandCenterSectionBoundary>
+        <OperatorCommandCenterSectionBoundary label="Snapshot form">
+          <SnapshotForm onAddSnapshot={handleAddSnapshot} />
+        </OperatorCommandCenterSectionBoundary>
       </div>
     </section>
   );
