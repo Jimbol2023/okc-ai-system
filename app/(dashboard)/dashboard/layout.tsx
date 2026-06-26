@@ -1,7 +1,7 @@
 import type { Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { BarChart3, Building2, ClipboardCheck, HousePlus, LayoutGrid, Lock, Search, Shield, Upload, Users } from "lucide-react";
+import { BarChart3, Building2, ClipboardCheck, HousePlus, LayoutGrid, Lock, Megaphone, Search, Shield, Upload, Users } from "lucide-react";
 
 import { getAuthenticatedAdmin } from "@/lib/auth";
 import { brandConfig } from "@/lib/brand-config";
@@ -10,6 +10,7 @@ const navItems = [
   { href: "/dashboard" as Route, label: "Overview", icon: LayoutGrid },
   { href: "/dashboard/leads" as Route, label: "Leads", icon: Users },
   { href: "/dashboard/approvals" as Route, label: "Approvals", icon: ClipboardCheck },
+  { href: "/dashboard/marketing" as Route, label: "Marketing Hub", icon: Megaphone },
   { href: "/dashboard/research" as Route, label: "Research", icon: Search },
   { href: "/dashboard/security-review" as Route, label: "Security", icon: Shield },
   { href: "/dashboard/production-readiness" as Route, label: "Hardening", icon: Lock },
