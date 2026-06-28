@@ -70,6 +70,27 @@ type ExecutiveRecommendation = {
   advisoryOnly: true;
 };
 
+type MorningBrief = {
+  greeting: string;
+  summary: string;
+  keySignals: Array<{
+    id: string;
+    label: string;
+    value: string | number;
+    detail: string;
+    status: MetricStatus;
+  }>;
+  recommendedWorkOrder: string[];
+  memoryInsight: {
+    title: string;
+    summary: string;
+    confidenceLabel: ExecutiveRecommendation["confidenceLabel"];
+    confidenceScore: number;
+    sampleWindowDays: 90;
+  } | null;
+  safetyBadges: string[];
+};
+
 type BusinessIntelligenceReport = {
   kpis: BusinessKpiCard[];
   channelPerformance: MarketingChannelPerformance[];
@@ -80,6 +101,9 @@ type BusinessIntelligenceReport = {
 type ExecutiveDashboardResponse = {
   ok: boolean;
   widgets?: ExecutiveWidget[];
+  morningBrief?: MorningBrief;
+  todayPriorities?: ExecutiveWidget[];
+  kpiInterpretations?: Record<string, string>;
   businessIntelligence?: BusinessIntelligenceReport;
   departmentHealth?: DepartmentHealthCard[];
   trendCharts?: TrendChart[];
@@ -108,6 +132,22 @@ function getStatusClass(status: MetricStatus) {
   if (status === "watch") return "border-amber-200 bg-amber-50 text-amber-900";
   if (status === "missing") return "border-slate-200 bg-slate-50 text-slate-700";
   return "border-emerald-200 bg-emerald-50 text-emerald-900";
+}
+
+function getStatusLabel(status: MetricStatus) {
+  if (status === "good") return "Healthy";
+  if (status === "watch") return "Watch";
+  if (status === "urgent") return "Needs Attention";
+
+  return "Missing";
+}
+
+function getStatusColor(status: MetricStatus) {
+  if (status === "urgent") return "#dc2626";
+  if (status === "watch") return "#d97706";
+  if (status === "missing") return "#64748b";
+
+  return "#059669";
 }
 
 function getConfidenceClass(confidence: ExecutiveRecommendation["confidenceLabel"]) {
@@ -150,14 +190,34 @@ async function readJsonResponse<T>(response: Response): Promise<T> {
   return response.json() as Promise<T>;
 }
 
-function TrendSparkline({ chart }: { chart: TrendChart }) {
-  const width = 220;
-  const height = 72;
+function getChartStatus(chart: TrendChart): MetricStatus {
+  const latest = chart.points.at(-1)?.value ?? 0;
+  const previous = chart.points.at(-2)?.value ?? latest;
+
+  if (chart.id === "finance_cash_flow") {
+    if (latest > 0) return "good";
+    if (latest < 0) return "urgent";
+
+    return "watch";
+  }
+
+  if (latest > previous) return "good";
+  if (latest === 0) return "missing";
+  if (latest < previous) return "watch";
+
+  return "watch";
+}
+
+function TrendAreaChart({ chart }: { chart: TrendChart }) {
+  const width = 320;
+  const height = 128;
+  const status = getChartStatus(chart);
+  const stroke = getStatusColor(status);
   const values = chart.points.map((point) => point.value);
   const min = Math.min(0, ...values);
   const max = Math.max(1, ...values);
   const range = max - min || 1;
-  const points = chart.points
+  const linePoints = chart.points
     .map((point, index) => {
       const x = chart.points.length <= 1 ? 0 : (index / (chart.points.length - 1)) * width;
       const y = height - ((point.value - min) / range) * height;
@@ -165,6 +225,7 @@ function TrendSparkline({ chart }: { chart: TrendChart }) {
       return `${x.toFixed(1)},${y.toFixed(1)}`;
     })
     .join(" ");
+  const areaPoints = `0,${height} ${linePoints} ${width},${height}`;
   const latest = chart.points.at(-1);
 
   return (
@@ -174,10 +235,18 @@ function TrendSparkline({ chart }: { chart: TrendChart }) {
           <h3 className="break-words text-sm font-semibold text-primary">{chart.label}</h3>
           <p className="mt-1 break-words text-xs leading-5 text-muted">{chart.detail}</p>
         </div>
-        {latest ? <span className="shrink-0 text-sm font-semibold text-primary">{formatChartValue(latest.value, chart.unit)}</span> : null}
+        <span className={`shrink-0 rounded-full border px-2 py-1 text-xs font-bold ${getStatusClass(status)}`}>
+          {getStatusLabel(status)}
+        </span>
       </div>
-      <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`${chart.label} trend`} className="mt-4 h-20 w-full overflow-visible">
-        <polyline fill="none" points={points} stroke="#02213d" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" />
+      <div className="mt-4 flex items-end justify-between gap-3">
+        {latest ? <span className="text-xl font-semibold text-primary">{formatChartValue(latest.value, chart.unit)}</span> : null}
+        <span className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">30 days</span>
+      </div>
+      <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`${chart.label} 30-day trend`} className="mt-4 h-36 w-full overflow-visible">
+        <line x1="0" x2={width} y1={height} y2={height} stroke="#e2e8f0" strokeWidth="2" />
+        <polygon fill={stroke} fillOpacity="0.14" points={areaPoints} />
+        <polyline fill="none" points={linePoints} stroke={stroke} strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" />
       </svg>
       <div className="mt-2 flex justify-between text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
         <span>{chart.points[0]?.label ?? ""}</span>
@@ -188,7 +257,9 @@ function TrendSparkline({ chart }: { chart: TrendChart }) {
 }
 
 export function ExecutiveDashboardClient() {
-  const [widgets, setWidgets] = useState<ExecutiveWidget[]>([]);
+  const [morningBrief, setMorningBrief] = useState<MorningBrief | null>(null);
+  const [todayPriorities, setTodayPriorities] = useState<ExecutiveWidget[]>([]);
+  const [kpiInterpretations, setKpiInterpretations] = useState<Record<string, string>>({});
   const [businessIntelligence, setBusinessIntelligence] = useState<BusinessIntelligenceReport | null>(null);
   const [departmentHealth, setDepartmentHealth] = useState<DepartmentHealthCard[]>([]);
   const [trendCharts, setTrendCharts] = useState<TrendChart[]>([]);
@@ -214,7 +285,12 @@ export function ExecutiveDashboardClient() {
         throw new Error(data.error || "Failed to load executive dashboard.");
       }
 
-      setWidgets(data.widgets);
+      setMorningBrief(data.morningBrief ?? null);
+      setTodayPriorities(
+        data.todayPriorities ??
+          data.widgets.filter((widget) => ["follow_ups_due", "revenue_pipeline", "offer_ready", "marketing_approval", "website_seo"].includes(widget.id)),
+      );
+      setKpiInterpretations(data.kpiInterpretations ?? {});
       setBusinessIntelligence(data.businessIntelligence ?? null);
       setDepartmentHealth(data.departmentHealth ?? data.businessIntelligence?.departmentHealth ?? []);
       setTrendCharts(data.trendCharts ?? data.businessIntelligence?.trendCharts ?? []);
@@ -236,44 +312,90 @@ export function ExecutiveDashboardClient() {
 
   return (
     <div className="space-y-6">
-      <div className="flex min-w-0 flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-        <div className="min-w-0 space-y-2">
-          <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-muted">Executive Dashboard</p>
-          <h1 className="break-words text-3xl font-semibold text-primary">Daily command center</h1>
-          <p className="max-w-3xl break-words text-sm leading-6 text-muted">
-            Start here each workday. Every widget is advisory and manual-review only; no outreach, provider calls, ad spend, scraping, or automated tasks are triggered.
-          </p>
-        </div>
-        <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
-          <span className="max-w-full break-words rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-blue-900">
-            providerCalled:false
-          </span>
-          <span className="max-w-full break-words rounded-full border border-red-200 bg-red-50 px-3 py-1 text-red-800">
-            outreachSent:false
-          </span>
-        </div>
-      </div>
-
       {loading ? <p className="text-sm text-muted">Loading executive dashboard...</p> : null}
       {error ? <p className="rounded-xl border border-red-100 bg-red-50 p-3 text-sm font-semibold text-red-700">{error}</p> : null}
 
-      <section aria-labelledby="executive-widgets-heading" className="space-y-3">
-        <h2 id="executive-widgets-heading" className="break-words text-xl font-semibold text-primary">
-          Today&apos;s operating signals
+      <section aria-labelledby="morning-brief-heading" className="rounded-lg border border-border bg-surface p-5 md:p-6">
+        <div className="flex min-w-0 flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+          <div className="min-w-0 space-y-3">
+            <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-muted">Executive Dashboard</p>
+            <h1 id="morning-brief-heading" className="break-words text-3xl font-semibold text-primary md:text-4xl">
+              {morningBrief?.greeting ?? "Good morning Moses."}
+            </h1>
+            <p className="max-w-4xl break-words text-sm leading-6 text-muted">
+              {morningBrief?.summary ??
+                "Start here each workday. Every signal is advisory and manual-review only; no outreach, provider calls, ad spend, scraping, or automated tasks are triggered."}
+            </p>
+          </div>
+          <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+            {(morningBrief?.safetyBadges ?? ["providerCalled:false", "outreachSent:false", "manualReviewOnly:true"]).map((badge) => (
+              <span key={badge} className="max-w-full break-words rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-blue-900">
+                {badge}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-5 grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+            {(morningBrief?.keySignals ?? todayPriorities.slice(0, 5)).map((signal) => (
+              <div key={signal.id} className="rounded-lg border border-border bg-white p-4">
+                <span className={`w-fit max-w-full break-words rounded-full border px-2 py-1 text-xs font-bold ${getStatusClass(signal.status)}`}>
+                  {getStatusLabel(signal.status)}
+                </span>
+                <p className="mt-3 break-words text-xs font-bold uppercase tracking-[0.08em] text-muted">{signal.label}</p>
+                <p className="mt-1 break-words text-2xl font-semibold text-primary">{signal.value}</p>
+                <p className="mt-2 break-words text-xs leading-5 text-muted">{signal.detail}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="rounded-lg border border-border bg-white p-4">
+            <h2 className="break-words text-lg font-semibold text-primary">Recommended order</h2>
+            <ol className="mt-3 space-y-2 text-sm leading-6 text-muted">
+              {(morningBrief?.recommendedWorkOrder ?? recommendedPriorities).slice(0, 5).map((item, index) => (
+                <li key={`${item}-${index}`} className="flex min-w-0 gap-3">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
+                    {index + 1}
+                  </span>
+                  <span className="break-words">{item}</span>
+                </li>
+              ))}
+            </ol>
+            {morningBrief?.memoryInsight ? (
+              <div className="mt-4 rounded-lg border border-blue-100 bg-blue-50 p-3">
+                <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                  <p className="break-words text-sm font-semibold text-blue-950">{morningBrief.memoryInsight.title}</p>
+                  <span className={`w-fit shrink-0 rounded-full border px-2 py-1 text-[11px] font-bold uppercase tracking-[0.08em] ${getConfidenceClass(morningBrief.memoryInsight.confidenceLabel)}`}>
+                    {morningBrief.memoryInsight.confidenceLabel} confidence
+                  </span>
+                </div>
+                <p className="mt-2 break-words text-xs leading-5 text-blue-900">
+                  {morningBrief.memoryInsight.summary} Score {morningBrief.memoryInsight.confidenceScore}/100 over {morningBrief.memoryInsight.sampleWindowDays} days.
+                </p>
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="today-priorities-heading" className="space-y-3">
+        <h2 id="today-priorities-heading" className="break-words text-xl font-semibold text-primary">
+          Today&apos;s priorities
         </h2>
-        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
-          {widgets.map((widget) => (
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+          {todayPriorities.map((widget) => (
             <Link
               key={widget.id}
               href={widget.href as Route}
-              className="min-w-0 rounded-lg border border-border bg-surface p-4 transition hover:border-primary/30"
+              className="min-w-0 rounded-lg border border-border bg-surface p-5 transition hover:border-primary/30"
             >
               <div className="flex min-w-0 flex-col gap-2">
-                <span className={`w-fit max-w-full break-words rounded-full border px-2 py-1 text-xs font-bold uppercase leading-5 ${getStatusClass(widget.status)}`}>
-                  {widget.status}
+                <span className={`w-fit max-w-full break-words rounded-full border px-2 py-1 text-xs font-bold leading-5 ${getStatusClass(widget.status)}`}>
+                  {getStatusLabel(widget.status)}
                 </span>
                 <p className="break-words text-sm font-semibold text-muted">{widget.label}</p>
-                <p className="break-words text-2xl font-semibold text-primary">{widget.value}</p>
+                <p className="break-words text-3xl font-semibold text-primary">{widget.value}</p>
                 <p className="break-words text-sm leading-6 text-muted">{widget.detail}</p>
               </div>
             </Link>
@@ -294,6 +416,9 @@ export function ExecutiveDashboardClient() {
                 </span>
                 <p className="mt-3 break-words text-sm font-semibold text-muted">{kpi.label}</p>
                 <p className="mt-1 break-words text-2xl font-semibold text-primary">{kpi.value}</p>
+                {kpiInterpretations[kpi.id] ? (
+                  <p className="mt-2 break-words text-sm font-semibold text-primary">{kpiInterpretations[kpi.id]}</p>
+                ) : null}
                 <p className="mt-2 break-words text-sm leading-6 text-muted">{kpi.detail}</p>
               </div>
             ))}
@@ -315,7 +440,7 @@ export function ExecutiveDashboardClient() {
                     <p className="mt-1 break-words text-xs leading-5 text-muted">{department.reason}</p>
                   </div>
                   <span className={`shrink-0 rounded-full border px-2 py-1 text-xs font-bold ${getStatusClass(department.status)}`}>
-                    {department.status}
+                    {getStatusLabel(department.status)}
                   </span>
                 </div>
                 <div className="mt-4 h-2 overflow-hidden rounded-full bg-slate-100">
@@ -335,7 +460,7 @@ export function ExecutiveDashboardClient() {
           </h2>
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
             {trendCharts.map((chart) => (
-              <TrendSparkline key={chart.id} chart={chart} />
+              <TrendAreaChart key={chart.id} chart={chart} />
             ))}
           </div>
         </section>

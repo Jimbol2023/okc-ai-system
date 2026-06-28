@@ -21,9 +21,33 @@ export type ExecutiveWidget = {
   status: "good" | "watch" | "urgent" | "missing";
 };
 
+export type ExecutiveMorningBrief = {
+  greeting: string;
+  summary: string;
+  keySignals: Array<{
+    id: string;
+    label: string;
+    value: string | number;
+    detail: string;
+    status: ExecutiveWidget["status"];
+  }>;
+  recommendedWorkOrder: string[];
+  memoryInsight: {
+    title: string;
+    summary: string;
+    confidenceLabel: ExecutiveLearningRecommendation["confidenceLabel"];
+    confidenceScore: number;
+    sampleWindowDays: 90;
+  } | null;
+  safetyBadges: string[];
+};
+
 export type ExecutiveDashboardReport = {
   ok: true;
   widgets: ExecutiveWidget[];
+  morningBrief: ExecutiveMorningBrief;
+  todayPriorities: ExecutiveWidget[];
+  kpiInterpretations: Record<string, string>;
   businessIntelligence: BusinessIntelligenceReport;
   departmentHealth: DepartmentHealthCard[];
   trendCharts: TrendChart[];
@@ -187,6 +211,85 @@ export function createExecutiveRecommendations(input: {
   return recommendations.length > 0 ? recommendations : ["Monitor new leads, keep source tracking clean, and maintain manual review discipline."];
 }
 
+function createKpiInterpretations(report: BusinessIntelligenceReport) {
+  return Object.fromEntries(
+    report.kpis.map((kpi) => {
+      if (kpi.id === "lead_conversion_rate" && kpi.value === "0%") {
+        return [kpi.id, "Need first closed deal."];
+      }
+
+      if ((kpi.id === "cost_per_lead" || kpi.id === "cost_per_acquisition") && kpi.status === "missing") {
+        return [kpi.id, "Manual finance entries needed."];
+      }
+
+      if ((kpi.id === "lead_to_offer_time" || kpi.id === "offer_to_close_time") && kpi.status === "missing") {
+        return [kpi.id, "Transition timestamps not stored yet."];
+      }
+
+      if (kpi.id === "follow_up_completion" && kpi.status === "missing") {
+        return [kpi.id, "No stored follow-up task history yet."];
+      }
+
+      if (kpi.status === "good") {
+        return [kpi.id, "Current stored data supports this metric."];
+      }
+
+      if (kpi.status === "watch") {
+        return [kpi.id, "Review manually before changing priorities."];
+      }
+
+      return [kpi.id, "More complete records will improve this metric."];
+    }),
+  );
+}
+
+function createMorningBrief({
+  widgets,
+  executiveRecommendations,
+  followUpsDue,
+  offerReadyCount,
+  financeGapCount,
+  marketingAwaitingApproval,
+}: {
+  widgets: ExecutiveWidget[];
+  executiveRecommendations: ExecutiveLearningRecommendation[];
+  followUpsDue: number;
+  offerReadyCount: number;
+  financeGapCount: number;
+  marketingAwaitingApproval: number;
+}): ExecutiveMorningBrief {
+  const priorityIds = ["follow_ups_due", "offer_ready", "finance_kpis", "marketing_approval", "website_seo"];
+  const keySignals = priorityIds
+    .map((id) => widgets.find((widget) => widget.id === id))
+    .filter((widget): widget is ExecutiveWidget => Boolean(widget))
+    .map(({ id, label, value, detail, status }) => ({ id, label, value, detail, status }));
+  const recommendedWorkOrder = [
+    followUpsDue > 0 ? "Review due follow-ups manually." : "",
+    offerReadyCount > 0 ? "Verify offer-ready assumptions." : "",
+    financeGapCount > 0 ? "Add missing manual finance records." : "",
+    marketingAwaitingApproval > 0 ? "Review marketing approvals manually." : "",
+    "Scan system health and data gaps.",
+  ].filter(Boolean);
+  const memory = executiveRecommendations[0] ?? null;
+
+  return {
+    greeting: "Good morning Moses.",
+    summary: `${followUpsDue} follow-up(s), ${offerReadyCount} offer-ready opportunity/opportunities, ${financeGapCount} finance gap(s), and ${marketingAwaitingApproval} marketing approval(s) need manual review context.`,
+    keySignals,
+    recommendedWorkOrder,
+    memoryInsight: memory
+      ? {
+          title: memory.title,
+          summary: memory.summary,
+          confidenceLabel: memory.confidenceLabel,
+          confidenceScore: memory.confidenceScore,
+          sampleWindowDays: memory.sampleWindowDays,
+        }
+      : null,
+    safetyBadges: ["providerCalled:false", "outreachSent:false", "manualReviewOnly:true"],
+  };
+}
+
 export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboardReport> {
   const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, memoryEventsResult, systemHealth, recentSystemActivity] = await Promise.all([
     loadDashboardSection("Lead", listDbLeads, [] as StoredLead[]),
@@ -231,11 +334,8 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
   const providerMissingCount = providerReadiness.providers.filter((provider) => provider.status === "missing").length;
   const activeKnowledgeItems = knowledgeItems.filter((item) => item.status === "active").length;
   const websiteSeoReady = publicSiteUrl.startsWith("https://") && systemHealth?.database === "ok";
-
-  return {
-    ok: true,
-    widgets: [
-      {
+  const widgets: ExecutiveWidget[] = [
+    {
         id: "new_leads_today",
         label: "New leads today",
         value: newLeadsToday,
@@ -315,11 +415,30 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
         href: "/dashboard/knowledge",
         status: activeKnowledgeItems > 0 ? "good" : "missing",
       },
-    ],
+    ];
+  const recommendedPriorities = createExecutiveRecommendationsFromBi(businessIntelligence);
+  const todayPriorityIds = new Set(["follow_ups_due", "revenue_pipeline", "offer_ready", "marketing_approval", "website_seo"]);
+  const todayPriorities = widgets.filter((widget) => todayPriorityIds.has(widget.id));
+  const kpiInterpretations = createKpiInterpretations(businessIntelligence);
+  const morningBrief = createMorningBrief({
+    widgets,
+    executiveRecommendations,
+    followUpsDue,
+    offerReadyCount,
+    financeGapCount: financeKpis.missingData.length,
+    marketingAwaitingApproval,
+  });
+
+  return {
+    ok: true,
+    widgets,
+    morningBrief,
+    todayPriorities,
+    kpiInterpretations,
     businessIntelligence,
     departmentHealth: businessIntelligence.departmentHealth,
     trendCharts: businessIntelligence.trendCharts,
-    recommendedPriorities: createExecutiveRecommendationsFromBi(businessIntelligence),
+    recommendedPriorities,
     executiveRecommendations,
     dataGaps: [...new Set([
       leadsResult.gap,
