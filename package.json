@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint app components lib --ext .ts,.tsx",
+    "test:e2e": "playwright test",
     "postinstall": "prisma generate",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
@@ -25,6 +26,7 @@
     "zod": "^4.1.5"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
     "@tailwindcss/postcss": "^4.1.13",
     "@types/node": "^24.3.0",
     "@types/react": "^19.1.13",

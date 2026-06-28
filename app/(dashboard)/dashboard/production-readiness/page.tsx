@@ -3,6 +3,7 @@ import {
   getProductionReadinessStatus,
   productionHardeningChecklist
 } from "@/lib/production-readiness";
+import { WorkflowOrchestrationReadinessPanel } from "@/components/dashboard/workflow-orchestration-readiness-panel";
 
 export default function DashboardProductionReadinessPage() {
   const readinessStatus = getProductionReadinessStatus();
@@ -32,6 +33,8 @@ export default function DashboardProductionReadinessPage() {
           </p>
         </div>
       </section>
+
+      <WorkflowOrchestrationReadinessPanel />
 
       <section className="space-y-4">
         {productionHardeningChecklist.map((item) => (

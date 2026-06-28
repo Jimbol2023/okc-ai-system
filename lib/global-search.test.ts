@@ -81,6 +81,9 @@ test("searchGlobalRecords returns normalized internal results and safety flags",
   assert.equal(response.providerCalled, false);
   assert.equal(response.outreachSent, false);
   assert.equal(response.generatedPropertyFacts, false);
+  assert.ok(response.resultCounts.sop >= 1);
+  assert.ok(response.resultCounts.property >= 1);
+  assert.ok(response.resultCounts.marketing >= 1);
   assert.ok(response.results.some((result) => result.sourceType === "sop" && result.title === "Probate Seller SOP"));
   assert.ok(response.results.some((result) => result.sourceType === "property" && result.title === "123 Probate Ave"));
   assert.ok(response.results.every((result) => result.providerCalled === false));

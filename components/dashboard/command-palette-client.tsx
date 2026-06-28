@@ -22,6 +22,7 @@ type GlobalSearchResult = {
 type GlobalSearchResponse = {
   ok: boolean;
   results?: GlobalSearchResult[];
+  resultCounts?: Record<string, number>;
   error?: string;
   providerCalled?: boolean;
   outreachSent?: boolean;
@@ -45,6 +46,7 @@ export function CommandPaletteClient() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<GlobalSearchResult[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [resultCounts, setResultCounts] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const fallbackResults = useMemo(
@@ -109,11 +111,13 @@ export function CommandPaletteClient() {
           }
 
           setResults(data.results ?? []);
+          setResultCounts(data.resultCounts ?? {});
           setError("");
         })
         .catch((err) => {
           if (err instanceof DOMException && err.name === "AbortError") return;
           setResults([]);
+          setResultCounts({});
           setError(err instanceof Error ? err.message : "Unable to search internal records.");
         })
         .finally(() => setLoading(false));
@@ -139,6 +143,7 @@ export function CommandPaletteClient() {
 
     if (value.trim().length < 2) {
       setResults([]);
+      setResultCounts({});
       setError("");
       setLoading(false);
     }
@@ -209,6 +214,16 @@ export function CommandPaletteClient() {
               <span className="rounded-full border border-red-200 bg-red-50 px-2 py-1 text-red-800">generatedFacts:false</span>
             </div>
 
+            {query.trim().length >= 2 ? (
+              <div className="mt-2 flex flex-wrap gap-2 px-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                {["lead", "property", "knowledge", "sop", "marketing", "navigation"].map((sourceType) => (
+                  <span key={sourceType} className="rounded-full border border-border bg-white px-2 py-1">
+                    {sourceType}:{resultCounts[sourceType] ?? 0}
+                  </span>
+                ))}
+              </div>
+            ) : null}
+
             {error ? <p className="mt-3 rounded-lg border border-red-100 bg-red-50 p-3 text-sm font-semibold text-red-700">{error}</p> : null}
             {loading ? <p className="mt-3 text-sm text-muted">Searching internal records...</p> : null}
 
@@ -228,6 +243,11 @@ export function CommandPaletteClient() {
                   <span className={`mt-1 block break-words text-xs ${activeIndex === index ? "text-white/75" : "text-muted"}`}>
                     {result.sourceType} / {result.subtitle}
                   </span>
+                  {result.matchReasons.length > 0 ? (
+                    <span className={`mt-2 block break-words text-[11px] font-semibold uppercase tracking-[0.08em] ${activeIndex === index ? "text-white/70" : "text-muted"}`}>
+                      {result.matchReasons.slice(0, 2).join(" / ")}
+                    </span>
+                  ) : null}
                 </button>
               ))}
             </div>

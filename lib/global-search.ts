@@ -30,6 +30,7 @@ export type GlobalSearchResponse = {
   ok: true;
   query: string;
   results: GlobalSearchResult[];
+  resultCounts: Record<GlobalSearchSourceType, number>;
   providerCalled: false;
   outreachSent: false;
   generatedPropertyFacts: false;
@@ -250,7 +251,7 @@ export function searchGlobalRecords({
     ...buildKnowledgeDocuments(knowledgeItems, docReferences),
     ...buildMarketingDocuments(marketingDrafts),
   ];
-  const results = documents
+  const scoredResults = documents
     .map((document) => {
       const score = scoreDocument(document, normalizedQuery, terms);
 
@@ -260,7 +261,22 @@ export function searchGlobalRecords({
       };
     })
     .filter((result) => result.score > 0)
-    .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
+    .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title));
+  const resultCounts = scoredResults.reduce<Record<GlobalSearchSourceType, number>>(
+    (counts, result) => ({
+      ...counts,
+      [result.sourceType]: counts[result.sourceType] + 1,
+    }),
+    {
+      lead: 0,
+      property: 0,
+      knowledge: 0,
+      sop: 0,
+      marketing: 0,
+      navigation: 0,
+    },
+  );
+  const results = scoredResults
     .slice(0, limit)
     .map((result): GlobalSearchResult => ({
       id: result.id,
@@ -278,6 +294,7 @@ export function searchGlobalRecords({
     ok: true,
     query: normalizedQuery,
     results,
+    resultCounts,
     providerCalled: false,
     outreachSent: false,
     generatedPropertyFacts: false,
