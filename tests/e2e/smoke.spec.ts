@@ -100,4 +100,20 @@ test.describe("authenticated dashboard smoke", () => {
     expect(data.capabilities.every((capability) => capability.safetyFlags.fileSystemWriteAuthorized === false)).toBe(true);
     expect(data.capabilities.every((capability) => capability.safetyFlags.outreachSent === false)).toBe(true);
   });
+
+  test("Safety Center centralizes blocked operational capabilities", async ({ page }) => {
+    await signIn(page);
+    await page.goto("/dashboard/safety");
+
+    await expect(page.getByRole("heading", { name: "Safety Center" })).toBeVisible();
+    await expect(page.getByText("Provider Readiness")).toBeVisible();
+    await expect(page.getByText("Workflow Orchestration")).toBeVisible();
+    await expect(page.getByText("AI Memory Governance")).toBeVisible();
+    await expect(page.getByText("OpenAI + Semantic Search Gates")).toBeVisible();
+    await expect(page.getByText("Twilio + SMS Boundary")).toBeVisible();
+    await expect(page.getByText("n8n Readiness")).toBeVisible();
+    await expect(page.getByText("providerCalled:false")).toBeVisible();
+    await expect(page.getByText("workflowTriggered:false")).toBeVisible();
+    await expect(page.getByText("generatedFacts:false")).toBeVisible();
+  });
 });

@@ -15,6 +15,7 @@ export const dashboardNavigationItems: DashboardNavigationItem[] = [
   { href: "/dashboard/marketing", label: "Marketing Hub", keywords: ["campaign", "draft", "content", "gbp"] },
   { href: "/dashboard/research", label: "Research", keywords: ["market", "analysis", "source"] },
   { href: "/dashboard/security-review", label: "Security", keywords: ["security", "audit", "risk"] },
+  { href: "/dashboard/safety", label: "Safety Center", keywords: ["safety", "governance", "provider", "workflow", "twilio", "openai", "n8n"] },
   { href: "/dashboard/production-readiness", label: "Hardening", keywords: ["readiness", "deployment", "provider"] },
   { href: "/dashboard/importer", label: "Importer", keywords: ["tax list", "csv", "import"] },
   { href: "/dashboard/properties", label: "Properties", keywords: ["property", "review", "source"] },

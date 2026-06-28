@@ -1,7 +1,7 @@
 import type { Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { BarChart3, BookOpen, Briefcase, Building2, ClipboardCheck, DollarSign, HousePlus, LayoutGrid, Lock, Megaphone, Search, Shield, Upload, Users, Wrench } from "lucide-react";
+import { BarChart3, BookOpen, Briefcase, Building2, ClipboardCheck, DollarSign, HousePlus, LayoutGrid, Lock, Megaphone, Search, Shield, ShieldCheck, Upload, Users, Wrench } from "lucide-react";
 
 import { CommandPaletteClient } from "@/components/dashboard/command-palette-client";
 import { getAuthenticatedAdmin } from "@/lib/auth";
@@ -21,6 +21,7 @@ const navIconByHref = {
   "/dashboard/marketing": Megaphone,
   "/dashboard/research": Search,
   "/dashboard/security-review": Shield,
+  "/dashboard/safety": ShieldCheck,
   "/dashboard/production-readiness": Lock,
   "/dashboard/importer": Upload,
   "/dashboard/properties": Building2,
