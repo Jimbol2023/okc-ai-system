@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+import { ActionButton, DashboardCard, EmptyState, ErrorState, SafetyBadge } from "@/components/dashboard/dashboard-ui";
+
 type KnowledgeItem = {
   id: string;
   title: string;
@@ -197,10 +199,10 @@ export function KnowledgeHubClient() {
 
   return (
     <div className="space-y-6">
-      {error ? <p className="rounded-lg border border-red-100 bg-red-50 p-3 text-sm font-semibold text-red-700">{error}</p> : null}
+      {error ? <ErrorState message={error} /> : null}
       {message ? <p className="rounded-lg border border-emerald-100 bg-emerald-50 p-3 text-sm font-semibold text-emerald-800">{message}</p> : null}
 
-      <section className="rounded-lg border border-border bg-surface p-4">
+      <DashboardCard>
         <div className="flex min-w-0 flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
           <div className="min-w-0">
             <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-muted">Internal Search Engine</p>
@@ -210,10 +212,10 @@ export function KnowledgeHubClient() {
             </p>
           </div>
           <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.08em]">
-            <span className="max-w-full break-words rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-900">internal search</span>
-            <span className="max-w-full break-words rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-blue-900">providerCalled:{String(searchProviderCalled)}</span>
-            <span className="max-w-full break-words rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-slate-700">semantic:{String(semanticSearchUsed)}</span>
-            <span className="max-w-full break-words rounded-full border border-red-200 bg-red-50 px-3 py-1 text-red-800">generatedFacts:false</span>
+            <SafetyBadge tone="good">internal search</SafetyBadge>
+            <SafetyBadge>providerCalled:{String(searchProviderCalled)}</SafetyBadge>
+            <SafetyBadge tone="missing">semantic:{String(semanticSearchUsed)}</SafetyBadge>
+            <SafetyBadge tone="urgent">generatedFacts:false</SafetyBadge>
           </div>
         </div>
 
@@ -227,9 +229,9 @@ export function KnowledgeHubClient() {
               placeholder="Search probate, offer checklist, follow-up, marketing..."
             />
           </label>
-          <button disabled={searching} className="inline-flex min-h-11 items-center justify-center rounded-full bg-primary px-5 text-sm font-bold text-white transition hover:bg-primary/90 disabled:opacity-70">
+          <ActionButton type="submit" disabled={searching} className="min-h-11 px-5">
             {searching ? "Searching..." : "Search"}
-          </button>
+          </ActionButton>
         </form>
 
         {searchMessage ? <p className="mt-3 break-words text-sm leading-6 text-muted">{searchMessage}</p> : null}
@@ -237,7 +239,7 @@ export function KnowledgeHubClient() {
         {searched ? (
           <div className="mt-4 grid gap-3 md:grid-cols-2">
             {searchResults.length === 0 ? (
-              <p className="text-sm leading-6 text-muted">No internal knowledge matched {searchQuery.trim() || "that search"}.</p>
+              <EmptyState title={`No internal knowledge matched ${searchQuery.trim() || "that search"}.`} detail="Only saved Knowledge Hub records and known documentation references are searched." />
             ) : null}
             {searchResults.map((result) => (
               <article key={`${result.sourceType}-${result.sourceId}`} className="rounded-lg border border-border bg-white p-4">
@@ -266,7 +268,7 @@ export function KnowledgeHubClient() {
             ))}
           </div>
         ) : null}
-      </section>
+      </DashboardCard>
 
       <form onSubmit={handleSubmit} className="rounded-lg border border-border bg-surface p-4">
         <h2 className="text-xl font-semibold text-primary">Add knowledge item</h2>
@@ -280,15 +282,15 @@ export function KnowledgeHubClient() {
           <span className="mb-2 block text-sm font-medium text-primary">Content</span>
           <textarea name="content" required rows={7} className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm" placeholder="Internal SOP, script, prompt, template, Oklahoma guidance, or lesson learned." />
         </label>
-        <button disabled={saving} className="mt-4 inline-flex min-h-10 items-center justify-center rounded-full bg-[#d89a42] px-5 text-sm font-bold text-[#102437] disabled:opacity-70">
+        <ActionButton type="submit" disabled={saving} className="mt-4 bg-[#d89a42] text-[#102437] hover:bg-[#c4852d]">
           {saving ? "Saving..." : "Save knowledge item"}
-        </button>
+        </ActionButton>
       </form>
 
       <section className="rounded-lg border border-border bg-surface p-4">
         <h2 className="text-xl font-semibold text-primary">Internal knowledge records</h2>
         <div className="mt-3 grid gap-3 md:grid-cols-2">
-          {items.length === 0 ? <p className="text-sm text-muted">No knowledge items saved yet.</p> : null}
+          {items.length === 0 ? <EmptyState title="No knowledge items saved yet." detail="Add SOPs, scripts, templates, prompts, guidance, or lessons learned manually." /> : null}
           {items.map((item) => (
             <article key={item.id} className="rounded-lg border border-border bg-white p-4">
               <p className="break-words text-sm font-semibold text-primary">{item.title}</p>
@@ -302,6 +304,7 @@ export function KnowledgeHubClient() {
       <section className="rounded-lg border border-border bg-surface p-4">
         <h2 className="text-xl font-semibold text-primary">Existing documentation index</h2>
         <div className="mt-3 grid gap-3 md:grid-cols-2">
+          {docReferences.length === 0 ? <EmptyState title="No documentation references are indexed." /> : null}
           {docReferences.map((doc) => (
             <article key={doc.path} className="rounded-lg border border-border bg-white p-4">
               <p className="break-words text-sm font-semibold text-primary">{doc.title}</p>

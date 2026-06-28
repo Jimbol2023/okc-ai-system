@@ -4,6 +4,9 @@ import Link from "next/link";
 import type { Route } from "next";
 import { useCallback, useEffect, useState } from "react";
 
+import { DashboardCard, ErrorState, LoadingState, SafetyBadge, StatusBadge } from "@/components/dashboard/dashboard-ui";
+import { getDashboardStatusColor } from "@/lib/dashboard-ui-status";
+
 type ExecutiveWidget = {
   id: string;
   label: string;
@@ -127,27 +130,8 @@ type ExecutiveDashboardResponse = {
   error?: string;
 };
 
-function getStatusClass(status: MetricStatus) {
-  if (status === "urgent") return "border-red-200 bg-red-50 text-red-900";
-  if (status === "watch") return "border-amber-200 bg-amber-50 text-amber-900";
-  if (status === "missing") return "border-slate-200 bg-slate-50 text-slate-700";
-  return "border-emerald-200 bg-emerald-50 text-emerald-900";
-}
-
-function getStatusLabel(status: MetricStatus) {
-  if (status === "good") return "Healthy";
-  if (status === "watch") return "Watch";
-  if (status === "urgent") return "Needs Attention";
-
-  return "Missing";
-}
-
 function getStatusColor(status: MetricStatus) {
-  if (status === "urgent") return "#dc2626";
-  if (status === "watch") return "#d97706";
-  if (status === "missing") return "#64748b";
-
-  return "#059669";
+  return getDashboardStatusColor(status);
 }
 
 function getConfidenceClass(confidence: ExecutiveRecommendation["confidenceLabel"]) {
@@ -229,15 +213,13 @@ function TrendAreaChart({ chart }: { chart: TrendChart }) {
   const latest = chart.points.at(-1);
 
   return (
-    <div className="rounded-lg border border-border bg-surface p-4">
+    <DashboardCard>
       <div className="flex min-w-0 items-start justify-between gap-3">
         <div className="min-w-0">
           <h3 className="break-words text-sm font-semibold text-primary">{chart.label}</h3>
           <p className="mt-1 break-words text-xs leading-5 text-muted">{chart.detail}</p>
         </div>
-        <span className={`shrink-0 rounded-full border px-2 py-1 text-xs font-bold ${getStatusClass(status)}`}>
-          {getStatusLabel(status)}
-        </span>
+        <StatusBadge status={status} />
       </div>
       <div className="mt-4 flex items-end justify-between gap-3">
         {latest ? <span className="text-xl font-semibold text-primary">{formatChartValue(latest.value, chart.unit)}</span> : null}
@@ -252,7 +234,7 @@ function TrendAreaChart({ chart }: { chart: TrendChart }) {
         <span>{chart.points[0]?.label ?? ""}</span>
         <span>{latest?.label ?? ""}</span>
       </div>
-    </div>
+    </DashboardCard>
   );
 }
 
@@ -312,8 +294,8 @@ export function ExecutiveDashboardClient() {
 
   return (
     <div className="space-y-6">
-      {loading ? <p className="text-sm text-muted">Loading executive dashboard...</p> : null}
-      {error ? <p className="rounded-xl border border-red-100 bg-red-50 p-3 text-sm font-semibold text-red-700">{error}</p> : null}
+      {loading ? <LoadingState label="Loading executive dashboard..." /> : null}
+      {error ? <ErrorState message={error} /> : null}
 
       <section aria-labelledby="morning-brief-heading" className="rounded-lg border border-border bg-surface p-5 md:p-6">
         <div className="flex min-w-0 flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
@@ -329,9 +311,7 @@ export function ExecutiveDashboardClient() {
           </div>
           <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
             {(morningBrief?.safetyBadges ?? ["providerCalled:false", "outreachSent:false", "manualReviewOnly:true"]).map((badge) => (
-              <span key={badge} className="max-w-full break-words rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-blue-900">
-                {badge}
-              </span>
+              <SafetyBadge key={badge}>{badge}</SafetyBadge>
             ))}
           </div>
         </div>
@@ -340,9 +320,7 @@ export function ExecutiveDashboardClient() {
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
             {(morningBrief?.keySignals ?? todayPriorities.slice(0, 5)).map((signal) => (
               <div key={signal.id} className="rounded-lg border border-border bg-white p-4">
-                <span className={`w-fit max-w-full break-words rounded-full border px-2 py-1 text-xs font-bold ${getStatusClass(signal.status)}`}>
-                  {getStatusLabel(signal.status)}
-                </span>
+                <StatusBadge status={signal.status} />
                 <p className="mt-3 break-words text-xs font-bold uppercase tracking-[0.08em] text-muted">{signal.label}</p>
                 <p className="mt-1 break-words text-2xl font-semibold text-primary">{signal.value}</p>
                 <p className="mt-2 break-words text-xs leading-5 text-muted">{signal.detail}</p>
@@ -391,9 +369,7 @@ export function ExecutiveDashboardClient() {
               className="min-w-0 rounded-lg border border-border bg-surface p-5 transition hover:border-primary/30"
             >
               <div className="flex min-w-0 flex-col gap-2">
-                <span className={`w-fit max-w-full break-words rounded-full border px-2 py-1 text-xs font-bold leading-5 ${getStatusClass(widget.status)}`}>
-                  {getStatusLabel(widget.status)}
-                </span>
+                <StatusBadge status={widget.status} />
                 <p className="break-words text-sm font-semibold text-muted">{widget.label}</p>
                 <p className="break-words text-3xl font-semibold text-primary">{widget.value}</p>
                 <p className="break-words text-sm leading-6 text-muted">{widget.detail}</p>
@@ -411,9 +387,7 @@ export function ExecutiveDashboardClient() {
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
             {businessIntelligence.kpis.map((kpi) => (
               <div key={kpi.id} className="rounded-lg border border-border bg-surface p-4">
-                <span className={`w-fit max-w-full break-words rounded-full border px-2 py-1 text-xs font-bold uppercase leading-5 ${getStatusClass(kpi.status)}`}>
-                  {kpi.status}
-                </span>
+                <StatusBadge status={kpi.status} />
                 <p className="mt-3 break-words text-sm font-semibold text-muted">{kpi.label}</p>
                 <p className="mt-1 break-words text-2xl font-semibold text-primary">{kpi.value}</p>
                 {kpiInterpretations[kpi.id] ? (
@@ -439,9 +413,7 @@ export function ExecutiveDashboardClient() {
                     <p className="break-words text-sm font-semibold text-primary">{department.department}</p>
                     <p className="mt-1 break-words text-xs leading-5 text-muted">{department.reason}</p>
                   </div>
-                  <span className={`shrink-0 rounded-full border px-2 py-1 text-xs font-bold ${getStatusClass(department.status)}`}>
-                    {getStatusLabel(department.status)}
-                  </span>
+                  <StatusBadge status={department.status} />
                 </div>
                 <div className="mt-4 h-2 overflow-hidden rounded-full bg-slate-100">
                   <div className="h-full rounded-full bg-primary" style={{ width: `${department.score}%` }} />

@@ -3,28 +3,30 @@ import Image from "next/image";
 import Link from "next/link";
 import { BarChart3, BookOpen, Briefcase, Building2, ClipboardCheck, DollarSign, HousePlus, LayoutGrid, Lock, Megaphone, Search, Shield, Upload, Users, Wrench } from "lucide-react";
 
+import { CommandPaletteClient } from "@/components/dashboard/command-palette-client";
 import { getAuthenticatedAdmin } from "@/lib/auth";
 import { brandConfig } from "@/lib/brand-config";
+import { dashboardNavigationItems } from "@/lib/dashboard-navigation";
 
 export const dynamic = "force-dynamic";
 
-const navItems = [
-  { href: "/dashboard" as Route, label: "Overview", icon: LayoutGrid },
-  { href: "/dashboard/acquisitions" as Route, label: "Acquisitions", icon: Briefcase },
-  { href: "/dashboard/operations" as Route, label: "Operations", icon: Wrench },
-  { href: "/dashboard/finance" as Route, label: "Finance", icon: DollarSign },
-  { href: "/dashboard/knowledge" as Route, label: "Knowledge", icon: BookOpen },
-  { href: "/dashboard/leads" as Route, label: "Leads", icon: Users },
-  { href: "/dashboard/approvals" as Route, label: "Approvals", icon: ClipboardCheck },
-  { href: "/dashboard/marketing" as Route, label: "Marketing Hub", icon: Megaphone },
-  { href: "/dashboard/research" as Route, label: "Research", icon: Search },
-  { href: "/dashboard/security-review" as Route, label: "Security", icon: Shield },
-  { href: "/dashboard/production-readiness" as Route, label: "Hardening", icon: Lock },
-  { href: "/dashboard/importer" as Route, label: "Importer", icon: Upload },
-  { href: "/dashboard/properties" as Route, label: "Properties", icon: Building2 },
-  { href: "/dashboard/analyzer" as Route, label: "Analyzer", icon: BarChart3 },
-  { href: "/dashboard/driving-for-dollars" as Route, label: "D4D", icon: HousePlus }
-];
+const navIconByHref = {
+  "/dashboard": LayoutGrid,
+  "/dashboard/acquisitions": Briefcase,
+  "/dashboard/operations": Wrench,
+  "/dashboard/finance": DollarSign,
+  "/dashboard/knowledge": BookOpen,
+  "/dashboard/leads": Users,
+  "/dashboard/approvals": ClipboardCheck,
+  "/dashboard/marketing": Megaphone,
+  "/dashboard/research": Search,
+  "/dashboard/security-review": Shield,
+  "/dashboard/production-readiness": Lock,
+  "/dashboard/importer": Upload,
+  "/dashboard/properties": Building2,
+  "/dashboard/analyzer": BarChart3,
+  "/dashboard/driving-for-dollars": HousePlus,
+};
 
 export default async function DashboardLayout({
   children
@@ -66,16 +68,20 @@ export default async function DashboardLayout({
               </form>
             </div>
             <div className="mt-8 space-y-1">
-              {navItems.map(({ href, label, icon: Icon }) => (
+              {dashboardNavigationItems.map(({ href, label }) => {
+                const Icon = navIconByHref[href as keyof typeof navIconByHref] ?? LayoutGrid;
+
+                return (
                 <Link
                   key={href}
-                  href={href}
-                  className="flex items-center gap-3 rounded-2xl px-4 py-3 text-sm text-white/78 transition hover:bg-white/10 hover:text-white"
+                  href={href as Route}
+                  className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-white/78 transition hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                 >
                   <Icon className="h-4 w-4" />
                   {label}
                 </Link>
-              ))}
+                );
+              })}
             </div>
           </aside>
           <div className="min-w-0 rounded-2xl border border-border bg-surface-strong p-4 md:p-6 xl:p-7">
@@ -83,6 +89,7 @@ export default async function DashboardLayout({
           </div>
         </div>
       </div>
+      <CommandPaletteClient />
     </div>
   );
 }

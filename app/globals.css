@@ -49,6 +49,15 @@ a {
   text-decoration: none;
 }
 
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
 .public-site a:focus-visible {
   outline: 3px solid var(--accent);
   outline-offset: 4px;

@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
-
+import { apiError } from "@/lib/api-response";
 import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
 import { createExecutiveDashboardReport } from "@/lib/executive-dashboard";
+import { getCachedValue } from "@/lib/server-cache";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -12,19 +12,10 @@ export async function GET(request: Request) {
       return getUnauthorizedApiResponse();
     }
 
-    return NextResponse.json(await createExecutiveDashboardReport());
+    return Response.json(await getCachedValue("executive-dashboard-report", 15_000, createExecutiveDashboardReport));
   } catch (error) {
     console.error("GET /api/executive-dashboard failed:", error);
 
-    return NextResponse.json(
-      {
-        ok: false,
-        error: "Unable to load executive dashboard.",
-        providerCalled: false,
-        outreachSent: false,
-        adsCreated: false,
-      },
-      { status: 500 },
-    );
+    return apiError("Unable to load executive dashboard.", 500);
   }
 }

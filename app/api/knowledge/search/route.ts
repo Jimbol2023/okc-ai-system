@@ -1,5 +1,4 @@
-import { NextResponse } from "next/server";
-
+import { apiError } from "@/lib/api-response";
 import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
 import { normalizeKnowledgeSearchQuery, searchKnowledge } from "@/lib/knowledge-search";
 
@@ -16,29 +15,13 @@ export async function GET(request: Request) {
     const query = normalizeKnowledgeSearchQuery(url.searchParams.get("q") ?? "");
 
     if (query.length < 2) {
-      return NextResponse.json(
-        {
-          ok: false,
-          error: "Search query must be at least 2 characters.",
-          providerCalled: false,
-          semanticSearchUsed: false,
-        },
-        { status: 400 },
-      );
+      return apiError("Search query must be at least 2 characters.", 400);
     }
 
-    return NextResponse.json(await searchKnowledge({ query }));
+    return Response.json(await searchKnowledge({ query }));
   } catch (error) {
     console.error("GET /api/knowledge/search failed:", error);
 
-    return NextResponse.json(
-      {
-        ok: false,
-        error: "Unable to search internal knowledge.",
-        providerCalled: false,
-        semanticSearchUsed: false,
-      },
-      { status: 500 },
-    );
+    return apiError("Unable to search internal knowledge.", 500);
   }
 }

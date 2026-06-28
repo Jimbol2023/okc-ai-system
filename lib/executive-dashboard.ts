@@ -1,4 +1,5 @@
 import { createBusinessIntelligenceReport, type BusinessIntelligenceReport, type DepartmentHealthCard, type TrendChart } from "@/lib/business-intelligence";
+import { loadPartialData } from "@/lib/api-response";
 import { createExecutiveLearningRecommendations, type ExecutiveLearningMemoryEvent, type ExecutiveLearningRecommendation } from "@/lib/executive-learning";
 import { createExecutiveRecommendationsFromBi } from "@/lib/executive-recommendations";
 import { listFinanceEntries, calculateFinanceKpis, formatFinanceDollars } from "@/lib/finance";
@@ -118,22 +119,6 @@ function getWidgetStatus(count: number, goodWhenPositive = false): ExecutiveWidg
   if (count === 0) return goodWhenPositive ? "missing" : "good";
   if (count >= 5) return "urgent";
   return "watch";
-}
-
-async function loadDashboardSection<T>(section: string, loader: () => Promise<T>, fallback: T) {
-  try {
-    return {
-      data: await loader(),
-      gap: "",
-    };
-  } catch (error) {
-    console.error(`Executive dashboard ${section} load failed:`, error);
-
-    return {
-      data: fallback,
-      gap: `${section} records could not be loaded; review database readiness before relying on this section.`,
-    };
-  }
 }
 
 async function getRecentSystemActivity() {
@@ -292,11 +277,11 @@ function createMorningBrief({
 
 export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboardReport> {
   const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, memoryEventsResult, systemHealth, recentSystemActivity] = await Promise.all([
-    loadDashboardSection("Lead", listDbLeads, [] as StoredLead[]),
-    loadDashboardSection("Marketing workflow", listMarketingWorkflow, null),
-    loadDashboardSection("Finance", listFinanceEntries, []),
-    loadDashboardSection("Knowledge", listKnowledgeItems, []),
-    loadDashboardSection("AI memory", loadExecutiveLearningMemoryEvents, [] as ExecutiveLearningMemoryEvent[]),
+    loadPartialData("Lead", listDbLeads, [] as StoredLead[]),
+    loadPartialData("Marketing workflow", listMarketingWorkflow, null),
+    loadPartialData("Finance", listFinanceEntries, []),
+    loadPartialData("Knowledge", listKnowledgeItems, []),
+    loadPartialData("AI memory", loadExecutiveLearningMemoryEvents, [] as ExecutiveLearningMemoryEvent[]),
     getSystemHealth().catch(() => null),
     getRecentSystemActivity().catch(() => []),
   ]);
