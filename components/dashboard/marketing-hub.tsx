@@ -15,6 +15,7 @@ import {
 } from "@/lib/marketing-hub";
 import { MarketingWorkflowClient } from "@/components/dashboard/marketing-workflow-client";
 import { ManualLeadIntakeClient } from "@/components/dashboard/manual-lead-intake-client";
+import { OfferReadinessWorkspaceClient } from "@/components/dashboard/offer-readiness-workspace-client";
 import { SalesConversionAssistClient } from "@/components/dashboard/sales-conversion-assist-client";
 import { SalesFollowUpWorkspaceClient } from "@/components/dashboard/sales-follow-up-workspace-client";
 import type { ReactNode } from "react";
@@ -89,6 +90,8 @@ export function MarketingHub() {
       <SalesConversionAssistClient />
 
       <SalesFollowUpWorkspaceClient />
+
+      <OfferReadinessWorkspaceClient />
 
       <ManualLeadIntakeClient />
 
