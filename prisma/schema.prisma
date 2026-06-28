@@ -525,3 +525,21 @@ model KnowledgeItem {
   @@index([source])
   @@index([createdAt])
 }
+
+model KnowledgeSearchEmbedding {
+  id          String   @id @default(uuid())
+  sourceType  String
+  sourceId    String
+  contentHash String
+  embedding   Json
+  model       String
+  dimensions  Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([sourceType, sourceId])
+  @@index([sourceType])
+  @@index([sourceId])
+  @@index([model])
+  @@index([createdAt])
+}

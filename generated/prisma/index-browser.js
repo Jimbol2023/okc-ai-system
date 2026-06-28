@@ -438,6 +438,18 @@ exports.Prisma.KnowledgeItemScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.KnowledgeSearchEmbeddingScalarFieldEnum = {
+  id: 'id',
+  sourceType: 'sourceType',
+  sourceId: 'sourceId',
+  contentHash: 'contentHash',
+  embedding: 'embedding',
+  model: 'model',
+  dimensions: 'dimensions',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -516,7 +528,8 @@ exports.Prisma.ModelName = {
   MarketingSalesAttribution: 'MarketingSalesAttribution',
   SalesConversionAssist: 'SalesConversionAssist',
   FinanceEntry: 'FinanceEntry',
-  KnowledgeItem: 'KnowledgeItem'
+  KnowledgeItem: 'KnowledgeItem',
+  KnowledgeSearchEmbedding: 'KnowledgeSearchEmbedding'
 };
 
 /**
