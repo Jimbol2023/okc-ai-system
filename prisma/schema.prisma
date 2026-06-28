@@ -310,8 +310,9 @@ model MarketingDraft {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  approvals      MarketingApproval[]
-  publishAssists MarketingPublishAssist[]
+  approvals        MarketingApproval[]
+  publishAssists   MarketingPublishAssist[]
+  canvaAssetAssists MarketingCanvaAssetAssist[]
 
   @@index([channel])
   @@index([status])
@@ -369,5 +370,25 @@ model MarketingPublishAssist {
   @@index([draftId])
   @@index([status])
   @@index([sourceLabel])
+  @@index([createdAt])
+}
+
+model MarketingCanvaAssetAssist {
+  id                    String   @id @default(uuid())
+  draftId               String
+  recommendedFormat     String
+  designBrief           String
+  brandSafeCopyBlocks   Json
+  assetNotes            String?
+  manualApprovalStatus  String   @default("pending_manual_asset_approval")
+  safetyFlags           Json
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  draft MarketingDraft @relation(fields: [draftId], references: [id], onDelete: Cascade)
+
+  @@index([draftId])
+  @@index([recommendedFormat])
+  @@index([manualApprovalStatus])
   @@index([createdAt])
 }

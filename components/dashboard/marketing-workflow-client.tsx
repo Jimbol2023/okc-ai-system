@@ -22,6 +22,19 @@ type MarketingPublishAssist = {
   createdAt: string;
 };
 
+type MarketingCanvaAssetAssist = {
+  id: string;
+  recommendedFormat: string;
+  designBrief: string;
+  brandSafeCopyBlocks: Array<{
+    label: string;
+    copy: string;
+  }>;
+  assetNotes?: string | null;
+  manualApprovalStatus: string;
+  createdAt: string;
+};
+
 type MarketingDraft = {
   id: string;
   channel: MarketingChannel;
@@ -33,6 +46,7 @@ type MarketingDraft = {
   createdAt: string;
   approvals: MarketingApproval[];
   publishAssists: MarketingPublishAssist[];
+  canvaAssetAssists: MarketingCanvaAssetAssist[];
 };
 
 type MarketingAccount = {
@@ -91,6 +105,7 @@ export function MarketingWorkflowClient() {
   const [notes, setNotes] = useState<Record<string, string>>({});
   const [editedCopies, setEditedCopies] = useState<Record<string, string>>({});
   const [publishedUrls, setPublishedUrls] = useState<Record<string, string>>({});
+  const [canvaAssetNotes, setCanvaAssetNotes] = useState<Record<string, string>>({});
   const [message, setMessage] = useState("Loading marketing workflow...");
   const [busy, setBusy] = useState(false);
 
@@ -184,6 +199,14 @@ export function MarketingWorkflowClient() {
       markManuallyPublished,
     });
     setMessage(markManuallyPublished ? "Manual published snapshot recorded." : "Manual publish assist prepared. No platform was called.");
+  }
+
+  async function prepareCanvaAssetAssist(draft: MarketingDraft) {
+    await submitJson(`/api/marketing/drafts/${draft.id}/canva-asset-assist`, {
+      assetNotes: canvaAssetNotes[draft.id] || draft.assetNotes || "",
+      manualApprovalStatus: "pending_manual_asset_approval",
+    });
+    setMessage("Canva design brief prepared for manual approval. No Canva API, export, or design creation occurred.");
   }
 
   return (
@@ -340,6 +363,60 @@ export function MarketingWorkflowClient() {
             </article>
           ))}
           {approvedDrafts.length === 0 ? <p className="rounded-2xl border border-border bg-white p-4 text-sm text-muted">Approve a draft before preparing manual publish assist.</p> : null}
+        </div>
+      </section>
+
+      <section className="rounded-[1.5rem] border border-border bg-surface p-5 shadow-[0_18px_40px_rgba(17,37,52,0.05)] sm:p-6">
+        {sectionTitle("Phase 2D.5", "Canva Asset Assist", "Generate Canva-ready design briefs and brand-safe copy blocks for approved drafts only.")}
+        <div className="mt-5 grid gap-3">
+          {approvedDrafts.map((draft) => (
+            <article key={draft.id} className="rounded-2xl border border-border bg-white p-4">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <h3 className="text-sm font-semibold text-primary">{draft.topic}</h3>
+                  <p className="mt-1 text-xs font-bold uppercase tracking-[0.08em] text-muted">{marketingChannelLabels[draft.channel]} | {draft.sourceLabel}</p>
+                </div>
+                <span className="w-fit rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.08em] text-blue-950">
+                  Manual Canva only
+                </span>
+              </div>
+              <textarea
+                className="mt-3 min-h-20 w-full rounded-xl border border-border px-3 py-3 text-sm"
+                maxLength={1000}
+                placeholder="Optional Canva asset notes"
+                value={canvaAssetNotes[draft.id] ?? ""}
+                onChange={(event) => setCanvaAssetNotes((current) => ({ ...current, [draft.id]: event.target.value }))}
+              />
+              <button onClick={() => prepareCanvaAssetAssist(draft)} disabled={busy} className="mt-3 rounded-xl bg-primary px-4 py-2 text-sm font-bold text-white disabled:opacity-60">
+                Generate Canva Brief
+              </button>
+
+              {draft.canvaAssetAssists.length > 0 ? (
+                <div className="mt-4 space-y-3">
+                  {draft.canvaAssetAssists.map((assist) => (
+                    <div key={assist.id} className="rounded-xl border border-blue-100 bg-blue-50 p-4 text-blue-950">
+                      <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                        <p className="text-sm font-bold">{assist.recommendedFormat}</p>
+                        <span className="w-fit rounded-full border border-blue-200 bg-white px-3 py-1 text-xs font-bold uppercase tracking-[0.08em]">
+                          {formatStatus(assist.manualApprovalStatus)}
+                        </span>
+                      </div>
+                      <p className="mt-3 whitespace-pre-wrap text-sm leading-6">{assist.designBrief}</p>
+                      <div className="mt-3 grid gap-2 md:grid-cols-2">
+                        {assist.brandSafeCopyBlocks.map((block) => (
+                          <div key={`${assist.id}-${block.label}`} className="rounded-lg border border-blue-100 bg-white p-3">
+                            <p className="text-xs font-bold uppercase tracking-[0.08em] text-blue-900">{block.label}</p>
+                            <p className="mt-1 text-sm leading-6 text-blue-950">{block.copy}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+            </article>
+          ))}
+          {approvedDrafts.length === 0 ? <p className="rounded-2xl border border-border bg-white p-4 text-sm text-muted">Approve a draft before generating Canva asset briefs.</p> : null}
         </div>
       </section>
     </div>

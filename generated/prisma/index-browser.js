@@ -343,6 +343,19 @@ exports.Prisma.MarketingPublishAssistScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.MarketingCanvaAssetAssistScalarFieldEnum = {
+  id: 'id',
+  draftId: 'draftId',
+  recommendedFormat: 'recommendedFormat',
+  designBrief: 'designBrief',
+  brandSafeCopyBlocks: 'brandSafeCopyBlocks',
+  assetNotes: 'assetNotes',
+  manualApprovalStatus: 'manualApprovalStatus',
+  safetyFlags: 'safetyFlags',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -415,7 +428,8 @@ exports.Prisma.ModelName = {
   MarketingDraft: 'MarketingDraft',
   MarketingApproval: 'MarketingApproval',
   MarketingAccountConnection: 'MarketingAccountConnection',
-  MarketingPublishAssist: 'MarketingPublishAssist'
+  MarketingPublishAssist: 'MarketingPublishAssist',
+  MarketingCanvaAssetAssist: 'MarketingCanvaAssetAssist'
 };
 
 /**

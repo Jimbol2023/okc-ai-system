@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import {
   marketingApprovalDecisions,
+  marketingCanvaAssetApprovalStatuses,
   marketingChannels,
   marketingConnectionStatuses,
   marketingDraftStatuses,
@@ -11,6 +12,7 @@ export const marketingChannelSchema = z.enum(marketingChannels);
 export const marketingDraftStatusSchema = z.enum(marketingDraftStatuses);
 export const marketingApprovalDecisionSchema = z.enum(marketingApprovalDecisions);
 export const marketingConnectionStatusSchema = z.enum(marketingConnectionStatuses);
+export const marketingCanvaAssetApprovalStatusSchema = z.enum(marketingCanvaAssetApprovalStatuses);
 
 const shortText = (field: string) => z.string().trim().min(2, `${field} is required.`);
 
@@ -50,8 +52,14 @@ export const publishAssistSchema = z.object({
   markManuallyPublished: z.boolean().optional(),
 });
 
+export const canvaAssetAssistSchema = z.object({
+  assetNotes: z.string().trim().max(1000, "Asset notes must stay under 1,000 characters.").optional().or(z.literal("")),
+  manualApprovalStatus: marketingCanvaAssetApprovalStatusSchema.optional(),
+});
+
 export type CreateMarketingDraftInput = z.infer<typeof createMarketingDraftSchema>;
 export type UpdateMarketingDraftInput = z.infer<typeof updateMarketingDraftSchema>;
 export type MarketingApprovalInput = z.infer<typeof marketingApprovalSchema>;
 export type MarketingAccountConnectionInput = z.infer<typeof marketingAccountConnectionSchema>;
 export type PublishAssistInput = z.infer<typeof publishAssistSchema>;
+export type CanvaAssetAssistInput = z.infer<typeof canvaAssetAssistSchema>;

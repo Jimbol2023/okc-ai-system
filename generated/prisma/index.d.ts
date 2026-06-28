@@ -83,6 +83,11 @@ export type MarketingAccountConnection = $Result.DefaultSelection<Prisma.$Market
  * 
  */
 export type MarketingPublishAssist = $Result.DefaultSelection<Prisma.$MarketingPublishAssistPayload>
+/**
+ * Model MarketingCanvaAssetAssist
+ * 
+ */
+export type MarketingCanvaAssetAssist = $Result.DefaultSelection<Prisma.$MarketingCanvaAssetAssistPayload>
 
 /**
  * Enums
@@ -396,6 +401,16 @@ export class PrismaClient<
     * ```
     */
   get marketingPublishAssist(): Prisma.MarketingPublishAssistDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.marketingCanvaAssetAssist`: Exposes CRUD operations for the **MarketingCanvaAssetAssist** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MarketingCanvaAssetAssists
+    * const marketingCanvaAssetAssists = await prisma.marketingCanvaAssetAssist.findMany()
+    * ```
+    */
+  get marketingCanvaAssetAssist(): Prisma.MarketingCanvaAssetAssistDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -850,7 +865,8 @@ export namespace Prisma {
     MarketingDraft: 'MarketingDraft',
     MarketingApproval: 'MarketingApproval',
     MarketingAccountConnection: 'MarketingAccountConnection',
-    MarketingPublishAssist: 'MarketingPublishAssist'
+    MarketingPublishAssist: 'MarketingPublishAssist',
+    MarketingCanvaAssetAssist: 'MarketingCanvaAssetAssist'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -869,7 +885,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "lead" | "sellerCallOutcome" | "aiPerformanceMetric" | "aiJob" | "aiJobAction" | "aiJobLog" | "aiMemoryEvent" | "aiLearningRecommendation" | "buyer" | "buyerActivity" | "marketingDraft" | "marketingApproval" | "marketingAccountConnection" | "marketingPublishAssist"
+      modelProps: "lead" | "sellerCallOutcome" | "aiPerformanceMetric" | "aiJob" | "aiJobAction" | "aiJobLog" | "aiMemoryEvent" | "aiLearningRecommendation" | "buyer" | "buyerActivity" | "marketingDraft" | "marketingApproval" | "marketingAccountConnection" | "marketingPublishAssist" | "marketingCanvaAssetAssist"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1909,6 +1925,80 @@ export namespace Prisma {
           }
         }
       }
+      MarketingCanvaAssetAssist: {
+        payload: Prisma.$MarketingCanvaAssetAssistPayload<ExtArgs>
+        fields: Prisma.MarketingCanvaAssetAssistFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MarketingCanvaAssetAssistFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingCanvaAssetAssistPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MarketingCanvaAssetAssistFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingCanvaAssetAssistPayload>
+          }
+          findFirst: {
+            args: Prisma.MarketingCanvaAssetAssistFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingCanvaAssetAssistPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MarketingCanvaAssetAssistFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingCanvaAssetAssistPayload>
+          }
+          findMany: {
+            args: Prisma.MarketingCanvaAssetAssistFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingCanvaAssetAssistPayload>[]
+          }
+          create: {
+            args: Prisma.MarketingCanvaAssetAssistCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingCanvaAssetAssistPayload>
+          }
+          createMany: {
+            args: Prisma.MarketingCanvaAssetAssistCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MarketingCanvaAssetAssistCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingCanvaAssetAssistPayload>[]
+          }
+          delete: {
+            args: Prisma.MarketingCanvaAssetAssistDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingCanvaAssetAssistPayload>
+          }
+          update: {
+            args: Prisma.MarketingCanvaAssetAssistUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingCanvaAssetAssistPayload>
+          }
+          deleteMany: {
+            args: Prisma.MarketingCanvaAssetAssistDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MarketingCanvaAssetAssistUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.MarketingCanvaAssetAssistUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingCanvaAssetAssistPayload>[]
+          }
+          upsert: {
+            args: Prisma.MarketingCanvaAssetAssistUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingCanvaAssetAssistPayload>
+          }
+          aggregate: {
+            args: Prisma.MarketingCanvaAssetAssistAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMarketingCanvaAssetAssist>
+          }
+          groupBy: {
+            args: Prisma.MarketingCanvaAssetAssistGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MarketingCanvaAssetAssistGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MarketingCanvaAssetAssistCountArgs<ExtArgs>
+            result: $Utils.Optional<MarketingCanvaAssetAssistCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2019,6 +2109,7 @@ export namespace Prisma {
     marketingApproval?: MarketingApprovalOmit
     marketingAccountConnection?: MarketingAccountConnectionOmit
     marketingPublishAssist?: MarketingPublishAssistOmit
+    marketingCanvaAssetAssist?: MarketingCanvaAssetAssistOmit
   }
 
   /* Types for Logging */
@@ -2172,11 +2263,13 @@ export namespace Prisma {
   export type MarketingDraftCountOutputType = {
     approvals: number
     publishAssists: number
+    canvaAssetAssists: number
   }
 
   export type MarketingDraftCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     approvals?: boolean | MarketingDraftCountOutputTypeCountApprovalsArgs
     publishAssists?: boolean | MarketingDraftCountOutputTypeCountPublishAssistsArgs
+    canvaAssetAssists?: boolean | MarketingDraftCountOutputTypeCountCanvaAssetAssistsArgs
   }
 
   // Custom InputTypes
@@ -2202,6 +2295,13 @@ export namespace Prisma {
    */
   export type MarketingDraftCountOutputTypeCountPublishAssistsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MarketingPublishAssistWhereInput
+  }
+
+  /**
+   * MarketingDraftCountOutputType without action
+   */
+  export type MarketingDraftCountOutputTypeCountCanvaAssetAssistsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MarketingCanvaAssetAssistWhereInput
   }
 
 
@@ -14161,6 +14261,7 @@ export namespace Prisma {
     updatedAt?: boolean
     approvals?: boolean | MarketingDraft$approvalsArgs<ExtArgs>
     publishAssists?: boolean | MarketingDraft$publishAssistsArgs<ExtArgs>
+    canvaAssetAssists?: boolean | MarketingDraft$canvaAssetAssistsArgs<ExtArgs>
     _count?: boolean | MarketingDraftCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["marketingDraft"]>
 
@@ -14216,6 +14317,7 @@ export namespace Prisma {
   export type MarketingDraftInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     approvals?: boolean | MarketingDraft$approvalsArgs<ExtArgs>
     publishAssists?: boolean | MarketingDraft$publishAssistsArgs<ExtArgs>
+    canvaAssetAssists?: boolean | MarketingDraft$canvaAssetAssistsArgs<ExtArgs>
     _count?: boolean | MarketingDraftCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type MarketingDraftIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -14226,6 +14328,7 @@ export namespace Prisma {
     objects: {
       approvals: Prisma.$MarketingApprovalPayload<ExtArgs>[]
       publishAssists: Prisma.$MarketingPublishAssistPayload<ExtArgs>[]
+      canvaAssetAssists: Prisma.$MarketingCanvaAssetAssistPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -14637,6 +14740,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     approvals<T extends MarketingDraft$approvalsArgs<ExtArgs> = {}>(args?: Subset<T, MarketingDraft$approvalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingApprovalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     publishAssists<T extends MarketingDraft$publishAssistsArgs<ExtArgs> = {}>(args?: Subset<T, MarketingDraft$publishAssistsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingPublishAssistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    canvaAssetAssists<T extends MarketingDraft$canvaAssetAssistsArgs<ExtArgs> = {}>(args?: Subset<T, MarketingDraft$canvaAssetAssistsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingCanvaAssetAssistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -15112,6 +15216,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MarketingPublishAssistScalarFieldEnum | MarketingPublishAssistScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingDraft.canvaAssetAssists
+   */
+  export type MarketingDraft$canvaAssetAssistsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingCanvaAssetAssist
+     */
+    select?: MarketingCanvaAssetAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingCanvaAssetAssist
+     */
+    omit?: MarketingCanvaAssetAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingCanvaAssetAssistInclude<ExtArgs> | null
+    where?: MarketingCanvaAssetAssistWhereInput
+    orderBy?: MarketingCanvaAssetAssistOrderByWithRelationInput | MarketingCanvaAssetAssistOrderByWithRelationInput[]
+    cursor?: MarketingCanvaAssetAssistWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MarketingCanvaAssetAssistScalarFieldEnum | MarketingCanvaAssetAssistScalarFieldEnum[]
   }
 
   /**
@@ -18406,6 +18534,1121 @@ export namespace Prisma {
 
 
   /**
+   * Model MarketingCanvaAssetAssist
+   */
+
+  export type AggregateMarketingCanvaAssetAssist = {
+    _count: MarketingCanvaAssetAssistCountAggregateOutputType | null
+    _min: MarketingCanvaAssetAssistMinAggregateOutputType | null
+    _max: MarketingCanvaAssetAssistMaxAggregateOutputType | null
+  }
+
+  export type MarketingCanvaAssetAssistMinAggregateOutputType = {
+    id: string | null
+    draftId: string | null
+    recommendedFormat: string | null
+    designBrief: string | null
+    assetNotes: string | null
+    manualApprovalStatus: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MarketingCanvaAssetAssistMaxAggregateOutputType = {
+    id: string | null
+    draftId: string | null
+    recommendedFormat: string | null
+    designBrief: string | null
+    assetNotes: string | null
+    manualApprovalStatus: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MarketingCanvaAssetAssistCountAggregateOutputType = {
+    id: number
+    draftId: number
+    recommendedFormat: number
+    designBrief: number
+    brandSafeCopyBlocks: number
+    assetNotes: number
+    manualApprovalStatus: number
+    safetyFlags: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MarketingCanvaAssetAssistMinAggregateInputType = {
+    id?: true
+    draftId?: true
+    recommendedFormat?: true
+    designBrief?: true
+    assetNotes?: true
+    manualApprovalStatus?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MarketingCanvaAssetAssistMaxAggregateInputType = {
+    id?: true
+    draftId?: true
+    recommendedFormat?: true
+    designBrief?: true
+    assetNotes?: true
+    manualApprovalStatus?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MarketingCanvaAssetAssistCountAggregateInputType = {
+    id?: true
+    draftId?: true
+    recommendedFormat?: true
+    designBrief?: true
+    brandSafeCopyBlocks?: true
+    assetNotes?: true
+    manualApprovalStatus?: true
+    safetyFlags?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MarketingCanvaAssetAssistAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MarketingCanvaAssetAssist to aggregate.
+     */
+    where?: MarketingCanvaAssetAssistWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingCanvaAssetAssists to fetch.
+     */
+    orderBy?: MarketingCanvaAssetAssistOrderByWithRelationInput | MarketingCanvaAssetAssistOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MarketingCanvaAssetAssistWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingCanvaAssetAssists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingCanvaAssetAssists.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MarketingCanvaAssetAssists
+    **/
+    _count?: true | MarketingCanvaAssetAssistCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MarketingCanvaAssetAssistMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MarketingCanvaAssetAssistMaxAggregateInputType
+  }
+
+  export type GetMarketingCanvaAssetAssistAggregateType<T extends MarketingCanvaAssetAssistAggregateArgs> = {
+        [P in keyof T & keyof AggregateMarketingCanvaAssetAssist]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMarketingCanvaAssetAssist[P]>
+      : GetScalarType<T[P], AggregateMarketingCanvaAssetAssist[P]>
+  }
+
+
+
+
+  export type MarketingCanvaAssetAssistGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MarketingCanvaAssetAssistWhereInput
+    orderBy?: MarketingCanvaAssetAssistOrderByWithAggregationInput | MarketingCanvaAssetAssistOrderByWithAggregationInput[]
+    by: MarketingCanvaAssetAssistScalarFieldEnum[] | MarketingCanvaAssetAssistScalarFieldEnum
+    having?: MarketingCanvaAssetAssistScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MarketingCanvaAssetAssistCountAggregateInputType | true
+    _min?: MarketingCanvaAssetAssistMinAggregateInputType
+    _max?: MarketingCanvaAssetAssistMaxAggregateInputType
+  }
+
+  export type MarketingCanvaAssetAssistGroupByOutputType = {
+    id: string
+    draftId: string
+    recommendedFormat: string
+    designBrief: string
+    brandSafeCopyBlocks: JsonValue
+    assetNotes: string | null
+    manualApprovalStatus: string
+    safetyFlags: JsonValue
+    createdAt: Date
+    updatedAt: Date
+    _count: MarketingCanvaAssetAssistCountAggregateOutputType | null
+    _min: MarketingCanvaAssetAssistMinAggregateOutputType | null
+    _max: MarketingCanvaAssetAssistMaxAggregateOutputType | null
+  }
+
+  type GetMarketingCanvaAssetAssistGroupByPayload<T extends MarketingCanvaAssetAssistGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MarketingCanvaAssetAssistGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MarketingCanvaAssetAssistGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MarketingCanvaAssetAssistGroupByOutputType[P]>
+            : GetScalarType<T[P], MarketingCanvaAssetAssistGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MarketingCanvaAssetAssistSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    draftId?: boolean
+    recommendedFormat?: boolean
+    designBrief?: boolean
+    brandSafeCopyBlocks?: boolean
+    assetNotes?: boolean
+    manualApprovalStatus?: boolean
+    safetyFlags?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    draft?: boolean | MarketingDraftDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["marketingCanvaAssetAssist"]>
+
+  export type MarketingCanvaAssetAssistSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    draftId?: boolean
+    recommendedFormat?: boolean
+    designBrief?: boolean
+    brandSafeCopyBlocks?: boolean
+    assetNotes?: boolean
+    manualApprovalStatus?: boolean
+    safetyFlags?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    draft?: boolean | MarketingDraftDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["marketingCanvaAssetAssist"]>
+
+  export type MarketingCanvaAssetAssistSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    draftId?: boolean
+    recommendedFormat?: boolean
+    designBrief?: boolean
+    brandSafeCopyBlocks?: boolean
+    assetNotes?: boolean
+    manualApprovalStatus?: boolean
+    safetyFlags?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    draft?: boolean | MarketingDraftDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["marketingCanvaAssetAssist"]>
+
+  export type MarketingCanvaAssetAssistSelectScalar = {
+    id?: boolean
+    draftId?: boolean
+    recommendedFormat?: boolean
+    designBrief?: boolean
+    brandSafeCopyBlocks?: boolean
+    assetNotes?: boolean
+    manualApprovalStatus?: boolean
+    safetyFlags?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MarketingCanvaAssetAssistOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "draftId" | "recommendedFormat" | "designBrief" | "brandSafeCopyBlocks" | "assetNotes" | "manualApprovalStatus" | "safetyFlags" | "createdAt" | "updatedAt", ExtArgs["result"]["marketingCanvaAssetAssist"]>
+  export type MarketingCanvaAssetAssistInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    draft?: boolean | MarketingDraftDefaultArgs<ExtArgs>
+  }
+  export type MarketingCanvaAssetAssistIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    draft?: boolean | MarketingDraftDefaultArgs<ExtArgs>
+  }
+  export type MarketingCanvaAssetAssistIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    draft?: boolean | MarketingDraftDefaultArgs<ExtArgs>
+  }
+
+  export type $MarketingCanvaAssetAssistPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MarketingCanvaAssetAssist"
+    objects: {
+      draft: Prisma.$MarketingDraftPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      draftId: string
+      recommendedFormat: string
+      designBrief: string
+      brandSafeCopyBlocks: Prisma.JsonValue
+      assetNotes: string | null
+      manualApprovalStatus: string
+      safetyFlags: Prisma.JsonValue
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["marketingCanvaAssetAssist"]>
+    composites: {}
+  }
+
+  type MarketingCanvaAssetAssistGetPayload<S extends boolean | null | undefined | MarketingCanvaAssetAssistDefaultArgs> = $Result.GetResult<Prisma.$MarketingCanvaAssetAssistPayload, S>
+
+  type MarketingCanvaAssetAssistCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MarketingCanvaAssetAssistFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MarketingCanvaAssetAssistCountAggregateInputType | true
+    }
+
+  export interface MarketingCanvaAssetAssistDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MarketingCanvaAssetAssist'], meta: { name: 'MarketingCanvaAssetAssist' } }
+    /**
+     * Find zero or one MarketingCanvaAssetAssist that matches the filter.
+     * @param {MarketingCanvaAssetAssistFindUniqueArgs} args - Arguments to find a MarketingCanvaAssetAssist
+     * @example
+     * // Get one MarketingCanvaAssetAssist
+     * const marketingCanvaAssetAssist = await prisma.marketingCanvaAssetAssist.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MarketingCanvaAssetAssistFindUniqueArgs>(args: SelectSubset<T, MarketingCanvaAssetAssistFindUniqueArgs<ExtArgs>>): Prisma__MarketingCanvaAssetAssistClient<$Result.GetResult<Prisma.$MarketingCanvaAssetAssistPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MarketingCanvaAssetAssist that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MarketingCanvaAssetAssistFindUniqueOrThrowArgs} args - Arguments to find a MarketingCanvaAssetAssist
+     * @example
+     * // Get one MarketingCanvaAssetAssist
+     * const marketingCanvaAssetAssist = await prisma.marketingCanvaAssetAssist.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MarketingCanvaAssetAssistFindUniqueOrThrowArgs>(args: SelectSubset<T, MarketingCanvaAssetAssistFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MarketingCanvaAssetAssistClient<$Result.GetResult<Prisma.$MarketingCanvaAssetAssistPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MarketingCanvaAssetAssist that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingCanvaAssetAssistFindFirstArgs} args - Arguments to find a MarketingCanvaAssetAssist
+     * @example
+     * // Get one MarketingCanvaAssetAssist
+     * const marketingCanvaAssetAssist = await prisma.marketingCanvaAssetAssist.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MarketingCanvaAssetAssistFindFirstArgs>(args?: SelectSubset<T, MarketingCanvaAssetAssistFindFirstArgs<ExtArgs>>): Prisma__MarketingCanvaAssetAssistClient<$Result.GetResult<Prisma.$MarketingCanvaAssetAssistPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MarketingCanvaAssetAssist that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingCanvaAssetAssistFindFirstOrThrowArgs} args - Arguments to find a MarketingCanvaAssetAssist
+     * @example
+     * // Get one MarketingCanvaAssetAssist
+     * const marketingCanvaAssetAssist = await prisma.marketingCanvaAssetAssist.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MarketingCanvaAssetAssistFindFirstOrThrowArgs>(args?: SelectSubset<T, MarketingCanvaAssetAssistFindFirstOrThrowArgs<ExtArgs>>): Prisma__MarketingCanvaAssetAssistClient<$Result.GetResult<Prisma.$MarketingCanvaAssetAssistPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MarketingCanvaAssetAssists that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingCanvaAssetAssistFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MarketingCanvaAssetAssists
+     * const marketingCanvaAssetAssists = await prisma.marketingCanvaAssetAssist.findMany()
+     * 
+     * // Get first 10 MarketingCanvaAssetAssists
+     * const marketingCanvaAssetAssists = await prisma.marketingCanvaAssetAssist.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const marketingCanvaAssetAssistWithIdOnly = await prisma.marketingCanvaAssetAssist.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MarketingCanvaAssetAssistFindManyArgs>(args?: SelectSubset<T, MarketingCanvaAssetAssistFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingCanvaAssetAssistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MarketingCanvaAssetAssist.
+     * @param {MarketingCanvaAssetAssistCreateArgs} args - Arguments to create a MarketingCanvaAssetAssist.
+     * @example
+     * // Create one MarketingCanvaAssetAssist
+     * const MarketingCanvaAssetAssist = await prisma.marketingCanvaAssetAssist.create({
+     *   data: {
+     *     // ... data to create a MarketingCanvaAssetAssist
+     *   }
+     * })
+     * 
+     */
+    create<T extends MarketingCanvaAssetAssistCreateArgs>(args: SelectSubset<T, MarketingCanvaAssetAssistCreateArgs<ExtArgs>>): Prisma__MarketingCanvaAssetAssistClient<$Result.GetResult<Prisma.$MarketingCanvaAssetAssistPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MarketingCanvaAssetAssists.
+     * @param {MarketingCanvaAssetAssistCreateManyArgs} args - Arguments to create many MarketingCanvaAssetAssists.
+     * @example
+     * // Create many MarketingCanvaAssetAssists
+     * const marketingCanvaAssetAssist = await prisma.marketingCanvaAssetAssist.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MarketingCanvaAssetAssistCreateManyArgs>(args?: SelectSubset<T, MarketingCanvaAssetAssistCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many MarketingCanvaAssetAssists and returns the data saved in the database.
+     * @param {MarketingCanvaAssetAssistCreateManyAndReturnArgs} args - Arguments to create many MarketingCanvaAssetAssists.
+     * @example
+     * // Create many MarketingCanvaAssetAssists
+     * const marketingCanvaAssetAssist = await prisma.marketingCanvaAssetAssist.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many MarketingCanvaAssetAssists and only return the `id`
+     * const marketingCanvaAssetAssistWithIdOnly = await prisma.marketingCanvaAssetAssist.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MarketingCanvaAssetAssistCreateManyAndReturnArgs>(args?: SelectSubset<T, MarketingCanvaAssetAssistCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingCanvaAssetAssistPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a MarketingCanvaAssetAssist.
+     * @param {MarketingCanvaAssetAssistDeleteArgs} args - Arguments to delete one MarketingCanvaAssetAssist.
+     * @example
+     * // Delete one MarketingCanvaAssetAssist
+     * const MarketingCanvaAssetAssist = await prisma.marketingCanvaAssetAssist.delete({
+     *   where: {
+     *     // ... filter to delete one MarketingCanvaAssetAssist
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MarketingCanvaAssetAssistDeleteArgs>(args: SelectSubset<T, MarketingCanvaAssetAssistDeleteArgs<ExtArgs>>): Prisma__MarketingCanvaAssetAssistClient<$Result.GetResult<Prisma.$MarketingCanvaAssetAssistPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MarketingCanvaAssetAssist.
+     * @param {MarketingCanvaAssetAssistUpdateArgs} args - Arguments to update one MarketingCanvaAssetAssist.
+     * @example
+     * // Update one MarketingCanvaAssetAssist
+     * const marketingCanvaAssetAssist = await prisma.marketingCanvaAssetAssist.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MarketingCanvaAssetAssistUpdateArgs>(args: SelectSubset<T, MarketingCanvaAssetAssistUpdateArgs<ExtArgs>>): Prisma__MarketingCanvaAssetAssistClient<$Result.GetResult<Prisma.$MarketingCanvaAssetAssistPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MarketingCanvaAssetAssists.
+     * @param {MarketingCanvaAssetAssistDeleteManyArgs} args - Arguments to filter MarketingCanvaAssetAssists to delete.
+     * @example
+     * // Delete a few MarketingCanvaAssetAssists
+     * const { count } = await prisma.marketingCanvaAssetAssist.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MarketingCanvaAssetAssistDeleteManyArgs>(args?: SelectSubset<T, MarketingCanvaAssetAssistDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MarketingCanvaAssetAssists.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingCanvaAssetAssistUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MarketingCanvaAssetAssists
+     * const marketingCanvaAssetAssist = await prisma.marketingCanvaAssetAssist.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MarketingCanvaAssetAssistUpdateManyArgs>(args: SelectSubset<T, MarketingCanvaAssetAssistUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MarketingCanvaAssetAssists and returns the data updated in the database.
+     * @param {MarketingCanvaAssetAssistUpdateManyAndReturnArgs} args - Arguments to update many MarketingCanvaAssetAssists.
+     * @example
+     * // Update many MarketingCanvaAssetAssists
+     * const marketingCanvaAssetAssist = await prisma.marketingCanvaAssetAssist.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more MarketingCanvaAssetAssists and only return the `id`
+     * const marketingCanvaAssetAssistWithIdOnly = await prisma.marketingCanvaAssetAssist.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends MarketingCanvaAssetAssistUpdateManyAndReturnArgs>(args: SelectSubset<T, MarketingCanvaAssetAssistUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingCanvaAssetAssistPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one MarketingCanvaAssetAssist.
+     * @param {MarketingCanvaAssetAssistUpsertArgs} args - Arguments to update or create a MarketingCanvaAssetAssist.
+     * @example
+     * // Update or create a MarketingCanvaAssetAssist
+     * const marketingCanvaAssetAssist = await prisma.marketingCanvaAssetAssist.upsert({
+     *   create: {
+     *     // ... data to create a MarketingCanvaAssetAssist
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MarketingCanvaAssetAssist we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MarketingCanvaAssetAssistUpsertArgs>(args: SelectSubset<T, MarketingCanvaAssetAssistUpsertArgs<ExtArgs>>): Prisma__MarketingCanvaAssetAssistClient<$Result.GetResult<Prisma.$MarketingCanvaAssetAssistPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MarketingCanvaAssetAssists.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingCanvaAssetAssistCountArgs} args - Arguments to filter MarketingCanvaAssetAssists to count.
+     * @example
+     * // Count the number of MarketingCanvaAssetAssists
+     * const count = await prisma.marketingCanvaAssetAssist.count({
+     *   where: {
+     *     // ... the filter for the MarketingCanvaAssetAssists we want to count
+     *   }
+     * })
+    **/
+    count<T extends MarketingCanvaAssetAssistCountArgs>(
+      args?: Subset<T, MarketingCanvaAssetAssistCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MarketingCanvaAssetAssistCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MarketingCanvaAssetAssist.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingCanvaAssetAssistAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MarketingCanvaAssetAssistAggregateArgs>(args: Subset<T, MarketingCanvaAssetAssistAggregateArgs>): Prisma.PrismaPromise<GetMarketingCanvaAssetAssistAggregateType<T>>
+
+    /**
+     * Group by MarketingCanvaAssetAssist.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingCanvaAssetAssistGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MarketingCanvaAssetAssistGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MarketingCanvaAssetAssistGroupByArgs['orderBy'] }
+        : { orderBy?: MarketingCanvaAssetAssistGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MarketingCanvaAssetAssistGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMarketingCanvaAssetAssistGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MarketingCanvaAssetAssist model
+   */
+  readonly fields: MarketingCanvaAssetAssistFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MarketingCanvaAssetAssist.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MarketingCanvaAssetAssistClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    draft<T extends MarketingDraftDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MarketingDraftDefaultArgs<ExtArgs>>): Prisma__MarketingDraftClient<$Result.GetResult<Prisma.$MarketingDraftPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MarketingCanvaAssetAssist model
+   */
+  interface MarketingCanvaAssetAssistFieldRefs {
+    readonly id: FieldRef<"MarketingCanvaAssetAssist", 'String'>
+    readonly draftId: FieldRef<"MarketingCanvaAssetAssist", 'String'>
+    readonly recommendedFormat: FieldRef<"MarketingCanvaAssetAssist", 'String'>
+    readonly designBrief: FieldRef<"MarketingCanvaAssetAssist", 'String'>
+    readonly brandSafeCopyBlocks: FieldRef<"MarketingCanvaAssetAssist", 'Json'>
+    readonly assetNotes: FieldRef<"MarketingCanvaAssetAssist", 'String'>
+    readonly manualApprovalStatus: FieldRef<"MarketingCanvaAssetAssist", 'String'>
+    readonly safetyFlags: FieldRef<"MarketingCanvaAssetAssist", 'Json'>
+    readonly createdAt: FieldRef<"MarketingCanvaAssetAssist", 'DateTime'>
+    readonly updatedAt: FieldRef<"MarketingCanvaAssetAssist", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MarketingCanvaAssetAssist findUnique
+   */
+  export type MarketingCanvaAssetAssistFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingCanvaAssetAssist
+     */
+    select?: MarketingCanvaAssetAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingCanvaAssetAssist
+     */
+    omit?: MarketingCanvaAssetAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingCanvaAssetAssistInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingCanvaAssetAssist to fetch.
+     */
+    where: MarketingCanvaAssetAssistWhereUniqueInput
+  }
+
+  /**
+   * MarketingCanvaAssetAssist findUniqueOrThrow
+   */
+  export type MarketingCanvaAssetAssistFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingCanvaAssetAssist
+     */
+    select?: MarketingCanvaAssetAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingCanvaAssetAssist
+     */
+    omit?: MarketingCanvaAssetAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingCanvaAssetAssistInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingCanvaAssetAssist to fetch.
+     */
+    where: MarketingCanvaAssetAssistWhereUniqueInput
+  }
+
+  /**
+   * MarketingCanvaAssetAssist findFirst
+   */
+  export type MarketingCanvaAssetAssistFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingCanvaAssetAssist
+     */
+    select?: MarketingCanvaAssetAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingCanvaAssetAssist
+     */
+    omit?: MarketingCanvaAssetAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingCanvaAssetAssistInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingCanvaAssetAssist to fetch.
+     */
+    where?: MarketingCanvaAssetAssistWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingCanvaAssetAssists to fetch.
+     */
+    orderBy?: MarketingCanvaAssetAssistOrderByWithRelationInput | MarketingCanvaAssetAssistOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MarketingCanvaAssetAssists.
+     */
+    cursor?: MarketingCanvaAssetAssistWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingCanvaAssetAssists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingCanvaAssetAssists.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MarketingCanvaAssetAssists.
+     */
+    distinct?: MarketingCanvaAssetAssistScalarFieldEnum | MarketingCanvaAssetAssistScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingCanvaAssetAssist findFirstOrThrow
+   */
+  export type MarketingCanvaAssetAssistFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingCanvaAssetAssist
+     */
+    select?: MarketingCanvaAssetAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingCanvaAssetAssist
+     */
+    omit?: MarketingCanvaAssetAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingCanvaAssetAssistInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingCanvaAssetAssist to fetch.
+     */
+    where?: MarketingCanvaAssetAssistWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingCanvaAssetAssists to fetch.
+     */
+    orderBy?: MarketingCanvaAssetAssistOrderByWithRelationInput | MarketingCanvaAssetAssistOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MarketingCanvaAssetAssists.
+     */
+    cursor?: MarketingCanvaAssetAssistWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingCanvaAssetAssists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingCanvaAssetAssists.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MarketingCanvaAssetAssists.
+     */
+    distinct?: MarketingCanvaAssetAssistScalarFieldEnum | MarketingCanvaAssetAssistScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingCanvaAssetAssist findMany
+   */
+  export type MarketingCanvaAssetAssistFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingCanvaAssetAssist
+     */
+    select?: MarketingCanvaAssetAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingCanvaAssetAssist
+     */
+    omit?: MarketingCanvaAssetAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingCanvaAssetAssistInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingCanvaAssetAssists to fetch.
+     */
+    where?: MarketingCanvaAssetAssistWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingCanvaAssetAssists to fetch.
+     */
+    orderBy?: MarketingCanvaAssetAssistOrderByWithRelationInput | MarketingCanvaAssetAssistOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MarketingCanvaAssetAssists.
+     */
+    cursor?: MarketingCanvaAssetAssistWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingCanvaAssetAssists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingCanvaAssetAssists.
+     */
+    skip?: number
+    distinct?: MarketingCanvaAssetAssistScalarFieldEnum | MarketingCanvaAssetAssistScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingCanvaAssetAssist create
+   */
+  export type MarketingCanvaAssetAssistCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingCanvaAssetAssist
+     */
+    select?: MarketingCanvaAssetAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingCanvaAssetAssist
+     */
+    omit?: MarketingCanvaAssetAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingCanvaAssetAssistInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MarketingCanvaAssetAssist.
+     */
+    data: XOR<MarketingCanvaAssetAssistCreateInput, MarketingCanvaAssetAssistUncheckedCreateInput>
+  }
+
+  /**
+   * MarketingCanvaAssetAssist createMany
+   */
+  export type MarketingCanvaAssetAssistCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MarketingCanvaAssetAssists.
+     */
+    data: MarketingCanvaAssetAssistCreateManyInput | MarketingCanvaAssetAssistCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MarketingCanvaAssetAssist createManyAndReturn
+   */
+  export type MarketingCanvaAssetAssistCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingCanvaAssetAssist
+     */
+    select?: MarketingCanvaAssetAssistSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingCanvaAssetAssist
+     */
+    omit?: MarketingCanvaAssetAssistOmit<ExtArgs> | null
+    /**
+     * The data used to create many MarketingCanvaAssetAssists.
+     */
+    data: MarketingCanvaAssetAssistCreateManyInput | MarketingCanvaAssetAssistCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingCanvaAssetAssistIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MarketingCanvaAssetAssist update
+   */
+  export type MarketingCanvaAssetAssistUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingCanvaAssetAssist
+     */
+    select?: MarketingCanvaAssetAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingCanvaAssetAssist
+     */
+    omit?: MarketingCanvaAssetAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingCanvaAssetAssistInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MarketingCanvaAssetAssist.
+     */
+    data: XOR<MarketingCanvaAssetAssistUpdateInput, MarketingCanvaAssetAssistUncheckedUpdateInput>
+    /**
+     * Choose, which MarketingCanvaAssetAssist to update.
+     */
+    where: MarketingCanvaAssetAssistWhereUniqueInput
+  }
+
+  /**
+   * MarketingCanvaAssetAssist updateMany
+   */
+  export type MarketingCanvaAssetAssistUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MarketingCanvaAssetAssists.
+     */
+    data: XOR<MarketingCanvaAssetAssistUpdateManyMutationInput, MarketingCanvaAssetAssistUncheckedUpdateManyInput>
+    /**
+     * Filter which MarketingCanvaAssetAssists to update
+     */
+    where?: MarketingCanvaAssetAssistWhereInput
+    /**
+     * Limit how many MarketingCanvaAssetAssists to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MarketingCanvaAssetAssist updateManyAndReturn
+   */
+  export type MarketingCanvaAssetAssistUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingCanvaAssetAssist
+     */
+    select?: MarketingCanvaAssetAssistSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingCanvaAssetAssist
+     */
+    omit?: MarketingCanvaAssetAssistOmit<ExtArgs> | null
+    /**
+     * The data used to update MarketingCanvaAssetAssists.
+     */
+    data: XOR<MarketingCanvaAssetAssistUpdateManyMutationInput, MarketingCanvaAssetAssistUncheckedUpdateManyInput>
+    /**
+     * Filter which MarketingCanvaAssetAssists to update
+     */
+    where?: MarketingCanvaAssetAssistWhereInput
+    /**
+     * Limit how many MarketingCanvaAssetAssists to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingCanvaAssetAssistIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MarketingCanvaAssetAssist upsert
+   */
+  export type MarketingCanvaAssetAssistUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingCanvaAssetAssist
+     */
+    select?: MarketingCanvaAssetAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingCanvaAssetAssist
+     */
+    omit?: MarketingCanvaAssetAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingCanvaAssetAssistInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MarketingCanvaAssetAssist to update in case it exists.
+     */
+    where: MarketingCanvaAssetAssistWhereUniqueInput
+    /**
+     * In case the MarketingCanvaAssetAssist found by the `where` argument doesn't exist, create a new MarketingCanvaAssetAssist with this data.
+     */
+    create: XOR<MarketingCanvaAssetAssistCreateInput, MarketingCanvaAssetAssistUncheckedCreateInput>
+    /**
+     * In case the MarketingCanvaAssetAssist was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MarketingCanvaAssetAssistUpdateInput, MarketingCanvaAssetAssistUncheckedUpdateInput>
+  }
+
+  /**
+   * MarketingCanvaAssetAssist delete
+   */
+  export type MarketingCanvaAssetAssistDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingCanvaAssetAssist
+     */
+    select?: MarketingCanvaAssetAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingCanvaAssetAssist
+     */
+    omit?: MarketingCanvaAssetAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingCanvaAssetAssistInclude<ExtArgs> | null
+    /**
+     * Filter which MarketingCanvaAssetAssist to delete.
+     */
+    where: MarketingCanvaAssetAssistWhereUniqueInput
+  }
+
+  /**
+   * MarketingCanvaAssetAssist deleteMany
+   */
+  export type MarketingCanvaAssetAssistDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MarketingCanvaAssetAssists to delete
+     */
+    where?: MarketingCanvaAssetAssistWhereInput
+    /**
+     * Limit how many MarketingCanvaAssetAssists to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MarketingCanvaAssetAssist without action
+   */
+  export type MarketingCanvaAssetAssistDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingCanvaAssetAssist
+     */
+    select?: MarketingCanvaAssetAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingCanvaAssetAssist
+     */
+    omit?: MarketingCanvaAssetAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingCanvaAssetAssistInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -18681,6 +19924,22 @@ export namespace Prisma {
   };
 
   export type MarketingPublishAssistScalarFieldEnum = (typeof MarketingPublishAssistScalarFieldEnum)[keyof typeof MarketingPublishAssistScalarFieldEnum]
+
+
+  export const MarketingCanvaAssetAssistScalarFieldEnum: {
+    id: 'id',
+    draftId: 'draftId',
+    recommendedFormat: 'recommendedFormat',
+    designBrief: 'designBrief',
+    brandSafeCopyBlocks: 'brandSafeCopyBlocks',
+    assetNotes: 'assetNotes',
+    manualApprovalStatus: 'manualApprovalStatus',
+    safetyFlags: 'safetyFlags',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MarketingCanvaAssetAssistScalarFieldEnum = (typeof MarketingCanvaAssetAssistScalarFieldEnum)[keyof typeof MarketingCanvaAssetAssistScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -19873,6 +21132,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"MarketingDraft"> | Date | string
     approvals?: MarketingApprovalListRelationFilter
     publishAssists?: MarketingPublishAssistListRelationFilter
+    canvaAssetAssists?: MarketingCanvaAssetAssistListRelationFilter
   }
 
   export type MarketingDraftOrderByWithRelationInput = {
@@ -19891,6 +21151,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     approvals?: MarketingApprovalOrderByRelationAggregateInput
     publishAssists?: MarketingPublishAssistOrderByRelationAggregateInput
+    canvaAssetAssists?: MarketingCanvaAssetAssistOrderByRelationAggregateInput
   }
 
   export type MarketingDraftWhereUniqueInput = Prisma.AtLeast<{
@@ -19912,6 +21173,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"MarketingDraft"> | Date | string
     approvals?: MarketingApprovalListRelationFilter
     publishAssists?: MarketingPublishAssistListRelationFilter
+    canvaAssetAssists?: MarketingCanvaAssetAssistListRelationFilter
   }, "id">
 
   export type MarketingDraftOrderByWithAggregationInput = {
@@ -20177,6 +21439,86 @@ export namespace Prisma {
     manualPublishedAt?: DateTimeNullableWithAggregatesFilter<"MarketingPublishAssist"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"MarketingPublishAssist"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"MarketingPublishAssist"> | Date | string
+  }
+
+  export type MarketingCanvaAssetAssistWhereInput = {
+    AND?: MarketingCanvaAssetAssistWhereInput | MarketingCanvaAssetAssistWhereInput[]
+    OR?: MarketingCanvaAssetAssistWhereInput[]
+    NOT?: MarketingCanvaAssetAssistWhereInput | MarketingCanvaAssetAssistWhereInput[]
+    id?: StringFilter<"MarketingCanvaAssetAssist"> | string
+    draftId?: StringFilter<"MarketingCanvaAssetAssist"> | string
+    recommendedFormat?: StringFilter<"MarketingCanvaAssetAssist"> | string
+    designBrief?: StringFilter<"MarketingCanvaAssetAssist"> | string
+    brandSafeCopyBlocks?: JsonFilter<"MarketingCanvaAssetAssist">
+    assetNotes?: StringNullableFilter<"MarketingCanvaAssetAssist"> | string | null
+    manualApprovalStatus?: StringFilter<"MarketingCanvaAssetAssist"> | string
+    safetyFlags?: JsonFilter<"MarketingCanvaAssetAssist">
+    createdAt?: DateTimeFilter<"MarketingCanvaAssetAssist"> | Date | string
+    updatedAt?: DateTimeFilter<"MarketingCanvaAssetAssist"> | Date | string
+    draft?: XOR<MarketingDraftScalarRelationFilter, MarketingDraftWhereInput>
+  }
+
+  export type MarketingCanvaAssetAssistOrderByWithRelationInput = {
+    id?: SortOrder
+    draftId?: SortOrder
+    recommendedFormat?: SortOrder
+    designBrief?: SortOrder
+    brandSafeCopyBlocks?: SortOrder
+    assetNotes?: SortOrderInput | SortOrder
+    manualApprovalStatus?: SortOrder
+    safetyFlags?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    draft?: MarketingDraftOrderByWithRelationInput
+  }
+
+  export type MarketingCanvaAssetAssistWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: MarketingCanvaAssetAssistWhereInput | MarketingCanvaAssetAssistWhereInput[]
+    OR?: MarketingCanvaAssetAssistWhereInput[]
+    NOT?: MarketingCanvaAssetAssistWhereInput | MarketingCanvaAssetAssistWhereInput[]
+    draftId?: StringFilter<"MarketingCanvaAssetAssist"> | string
+    recommendedFormat?: StringFilter<"MarketingCanvaAssetAssist"> | string
+    designBrief?: StringFilter<"MarketingCanvaAssetAssist"> | string
+    brandSafeCopyBlocks?: JsonFilter<"MarketingCanvaAssetAssist">
+    assetNotes?: StringNullableFilter<"MarketingCanvaAssetAssist"> | string | null
+    manualApprovalStatus?: StringFilter<"MarketingCanvaAssetAssist"> | string
+    safetyFlags?: JsonFilter<"MarketingCanvaAssetAssist">
+    createdAt?: DateTimeFilter<"MarketingCanvaAssetAssist"> | Date | string
+    updatedAt?: DateTimeFilter<"MarketingCanvaAssetAssist"> | Date | string
+    draft?: XOR<MarketingDraftScalarRelationFilter, MarketingDraftWhereInput>
+  }, "id">
+
+  export type MarketingCanvaAssetAssistOrderByWithAggregationInput = {
+    id?: SortOrder
+    draftId?: SortOrder
+    recommendedFormat?: SortOrder
+    designBrief?: SortOrder
+    brandSafeCopyBlocks?: SortOrder
+    assetNotes?: SortOrderInput | SortOrder
+    manualApprovalStatus?: SortOrder
+    safetyFlags?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MarketingCanvaAssetAssistCountOrderByAggregateInput
+    _max?: MarketingCanvaAssetAssistMaxOrderByAggregateInput
+    _min?: MarketingCanvaAssetAssistMinOrderByAggregateInput
+  }
+
+  export type MarketingCanvaAssetAssistScalarWhereWithAggregatesInput = {
+    AND?: MarketingCanvaAssetAssistScalarWhereWithAggregatesInput | MarketingCanvaAssetAssistScalarWhereWithAggregatesInput[]
+    OR?: MarketingCanvaAssetAssistScalarWhereWithAggregatesInput[]
+    NOT?: MarketingCanvaAssetAssistScalarWhereWithAggregatesInput | MarketingCanvaAssetAssistScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"MarketingCanvaAssetAssist"> | string
+    draftId?: StringWithAggregatesFilter<"MarketingCanvaAssetAssist"> | string
+    recommendedFormat?: StringWithAggregatesFilter<"MarketingCanvaAssetAssist"> | string
+    designBrief?: StringWithAggregatesFilter<"MarketingCanvaAssetAssist"> | string
+    brandSafeCopyBlocks?: JsonWithAggregatesFilter<"MarketingCanvaAssetAssist">
+    assetNotes?: StringNullableWithAggregatesFilter<"MarketingCanvaAssetAssist"> | string | null
+    manualApprovalStatus?: StringWithAggregatesFilter<"MarketingCanvaAssetAssist"> | string
+    safetyFlags?: JsonWithAggregatesFilter<"MarketingCanvaAssetAssist">
+    createdAt?: DateTimeWithAggregatesFilter<"MarketingCanvaAssetAssist"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MarketingCanvaAssetAssist"> | Date | string
   }
 
   export type LeadCreateInput = {
@@ -21387,6 +22729,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     approvals?: MarketingApprovalCreateNestedManyWithoutDraftInput
     publishAssists?: MarketingPublishAssistCreateNestedManyWithoutDraftInput
+    canvaAssetAssists?: MarketingCanvaAssetAssistCreateNestedManyWithoutDraftInput
   }
 
   export type MarketingDraftUncheckedCreateInput = {
@@ -21405,6 +22748,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     approvals?: MarketingApprovalUncheckedCreateNestedManyWithoutDraftInput
     publishAssists?: MarketingPublishAssistUncheckedCreateNestedManyWithoutDraftInput
+    canvaAssetAssists?: MarketingCanvaAssetAssistUncheckedCreateNestedManyWithoutDraftInput
   }
 
   export type MarketingDraftUpdateInput = {
@@ -21423,6 +22767,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvals?: MarketingApprovalUpdateManyWithoutDraftNestedInput
     publishAssists?: MarketingPublishAssistUpdateManyWithoutDraftNestedInput
+    canvaAssetAssists?: MarketingCanvaAssetAssistUpdateManyWithoutDraftNestedInput
   }
 
   export type MarketingDraftUncheckedUpdateInput = {
@@ -21441,6 +22786,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvals?: MarketingApprovalUncheckedUpdateManyWithoutDraftNestedInput
     publishAssists?: MarketingPublishAssistUncheckedUpdateManyWithoutDraftNestedInput
+    canvaAssetAssists?: MarketingCanvaAssetAssistUncheckedUpdateManyWithoutDraftNestedInput
   }
 
   export type MarketingDraftCreateManyInput = {
@@ -21744,6 +23090,96 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     manualPublishedUrl?: NullableStringFieldUpdateOperationsInput | string | null
     manualPublishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingCanvaAssetAssistCreateInput = {
+    id?: string
+    recommendedFormat: string
+    designBrief: string
+    brandSafeCopyBlocks: JsonNullValueInput | InputJsonValue
+    assetNotes?: string | null
+    manualApprovalStatus?: string
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    draft: MarketingDraftCreateNestedOneWithoutCanvaAssetAssistsInput
+  }
+
+  export type MarketingCanvaAssetAssistUncheckedCreateInput = {
+    id?: string
+    draftId: string
+    recommendedFormat: string
+    designBrief: string
+    brandSafeCopyBlocks: JsonNullValueInput | InputJsonValue
+    assetNotes?: string | null
+    manualApprovalStatus?: string
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingCanvaAssetAssistUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recommendedFormat?: StringFieldUpdateOperationsInput | string
+    designBrief?: StringFieldUpdateOperationsInput | string
+    brandSafeCopyBlocks?: JsonNullValueInput | InputJsonValue
+    assetNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    manualApprovalStatus?: StringFieldUpdateOperationsInput | string
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    draft?: MarketingDraftUpdateOneRequiredWithoutCanvaAssetAssistsNestedInput
+  }
+
+  export type MarketingCanvaAssetAssistUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    draftId?: StringFieldUpdateOperationsInput | string
+    recommendedFormat?: StringFieldUpdateOperationsInput | string
+    designBrief?: StringFieldUpdateOperationsInput | string
+    brandSafeCopyBlocks?: JsonNullValueInput | InputJsonValue
+    assetNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    manualApprovalStatus?: StringFieldUpdateOperationsInput | string
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingCanvaAssetAssistCreateManyInput = {
+    id?: string
+    draftId: string
+    recommendedFormat: string
+    designBrief: string
+    brandSafeCopyBlocks: JsonNullValueInput | InputJsonValue
+    assetNotes?: string | null
+    manualApprovalStatus?: string
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingCanvaAssetAssistUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recommendedFormat?: StringFieldUpdateOperationsInput | string
+    designBrief?: StringFieldUpdateOperationsInput | string
+    brandSafeCopyBlocks?: JsonNullValueInput | InputJsonValue
+    assetNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    manualApprovalStatus?: StringFieldUpdateOperationsInput | string
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingCanvaAssetAssistUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    draftId?: StringFieldUpdateOperationsInput | string
+    recommendedFormat?: StringFieldUpdateOperationsInput | string
+    designBrief?: StringFieldUpdateOperationsInput | string
+    brandSafeCopyBlocks?: JsonNullValueInput | InputJsonValue
+    assetNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    manualApprovalStatus?: StringFieldUpdateOperationsInput | string
+    safetyFlags?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22777,11 +24213,21 @@ export namespace Prisma {
     none?: MarketingPublishAssistWhereInput
   }
 
+  export type MarketingCanvaAssetAssistListRelationFilter = {
+    every?: MarketingCanvaAssetAssistWhereInput
+    some?: MarketingCanvaAssetAssistWhereInput
+    none?: MarketingCanvaAssetAssistWhereInput
+  }
+
   export type MarketingApprovalOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type MarketingPublishAssistOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MarketingCanvaAssetAssistOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -22937,6 +24383,41 @@ export namespace Prisma {
     status?: SortOrder
     manualPublishedUrl?: SortOrder
     manualPublishedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MarketingCanvaAssetAssistCountOrderByAggregateInput = {
+    id?: SortOrder
+    draftId?: SortOrder
+    recommendedFormat?: SortOrder
+    designBrief?: SortOrder
+    brandSafeCopyBlocks?: SortOrder
+    assetNotes?: SortOrder
+    manualApprovalStatus?: SortOrder
+    safetyFlags?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MarketingCanvaAssetAssistMaxOrderByAggregateInput = {
+    id?: SortOrder
+    draftId?: SortOrder
+    recommendedFormat?: SortOrder
+    designBrief?: SortOrder
+    assetNotes?: SortOrder
+    manualApprovalStatus?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MarketingCanvaAssetAssistMinOrderByAggregateInput = {
+    id?: SortOrder
+    draftId?: SortOrder
+    recommendedFormat?: SortOrder
+    designBrief?: SortOrder
+    assetNotes?: SortOrder
+    manualApprovalStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -23187,6 +24668,13 @@ export namespace Prisma {
     connect?: MarketingPublishAssistWhereUniqueInput | MarketingPublishAssistWhereUniqueInput[]
   }
 
+  export type MarketingCanvaAssetAssistCreateNestedManyWithoutDraftInput = {
+    create?: XOR<MarketingCanvaAssetAssistCreateWithoutDraftInput, MarketingCanvaAssetAssistUncheckedCreateWithoutDraftInput> | MarketingCanvaAssetAssistCreateWithoutDraftInput[] | MarketingCanvaAssetAssistUncheckedCreateWithoutDraftInput[]
+    connectOrCreate?: MarketingCanvaAssetAssistCreateOrConnectWithoutDraftInput | MarketingCanvaAssetAssistCreateOrConnectWithoutDraftInput[]
+    createMany?: MarketingCanvaAssetAssistCreateManyDraftInputEnvelope
+    connect?: MarketingCanvaAssetAssistWhereUniqueInput | MarketingCanvaAssetAssistWhereUniqueInput[]
+  }
+
   export type MarketingApprovalUncheckedCreateNestedManyWithoutDraftInput = {
     create?: XOR<MarketingApprovalCreateWithoutDraftInput, MarketingApprovalUncheckedCreateWithoutDraftInput> | MarketingApprovalCreateWithoutDraftInput[] | MarketingApprovalUncheckedCreateWithoutDraftInput[]
     connectOrCreate?: MarketingApprovalCreateOrConnectWithoutDraftInput | MarketingApprovalCreateOrConnectWithoutDraftInput[]
@@ -23199,6 +24687,13 @@ export namespace Prisma {
     connectOrCreate?: MarketingPublishAssistCreateOrConnectWithoutDraftInput | MarketingPublishAssistCreateOrConnectWithoutDraftInput[]
     createMany?: MarketingPublishAssistCreateManyDraftInputEnvelope
     connect?: MarketingPublishAssistWhereUniqueInput | MarketingPublishAssistWhereUniqueInput[]
+  }
+
+  export type MarketingCanvaAssetAssistUncheckedCreateNestedManyWithoutDraftInput = {
+    create?: XOR<MarketingCanvaAssetAssistCreateWithoutDraftInput, MarketingCanvaAssetAssistUncheckedCreateWithoutDraftInput> | MarketingCanvaAssetAssistCreateWithoutDraftInput[] | MarketingCanvaAssetAssistUncheckedCreateWithoutDraftInput[]
+    connectOrCreate?: MarketingCanvaAssetAssistCreateOrConnectWithoutDraftInput | MarketingCanvaAssetAssistCreateOrConnectWithoutDraftInput[]
+    createMany?: MarketingCanvaAssetAssistCreateManyDraftInputEnvelope
+    connect?: MarketingCanvaAssetAssistWhereUniqueInput | MarketingCanvaAssetAssistWhereUniqueInput[]
   }
 
   export type MarketingApprovalUpdateManyWithoutDraftNestedInput = {
@@ -23229,6 +24724,20 @@ export namespace Prisma {
     deleteMany?: MarketingPublishAssistScalarWhereInput | MarketingPublishAssistScalarWhereInput[]
   }
 
+  export type MarketingCanvaAssetAssistUpdateManyWithoutDraftNestedInput = {
+    create?: XOR<MarketingCanvaAssetAssistCreateWithoutDraftInput, MarketingCanvaAssetAssistUncheckedCreateWithoutDraftInput> | MarketingCanvaAssetAssistCreateWithoutDraftInput[] | MarketingCanvaAssetAssistUncheckedCreateWithoutDraftInput[]
+    connectOrCreate?: MarketingCanvaAssetAssistCreateOrConnectWithoutDraftInput | MarketingCanvaAssetAssistCreateOrConnectWithoutDraftInput[]
+    upsert?: MarketingCanvaAssetAssistUpsertWithWhereUniqueWithoutDraftInput | MarketingCanvaAssetAssistUpsertWithWhereUniqueWithoutDraftInput[]
+    createMany?: MarketingCanvaAssetAssistCreateManyDraftInputEnvelope
+    set?: MarketingCanvaAssetAssistWhereUniqueInput | MarketingCanvaAssetAssistWhereUniqueInput[]
+    disconnect?: MarketingCanvaAssetAssistWhereUniqueInput | MarketingCanvaAssetAssistWhereUniqueInput[]
+    delete?: MarketingCanvaAssetAssistWhereUniqueInput | MarketingCanvaAssetAssistWhereUniqueInput[]
+    connect?: MarketingCanvaAssetAssistWhereUniqueInput | MarketingCanvaAssetAssistWhereUniqueInput[]
+    update?: MarketingCanvaAssetAssistUpdateWithWhereUniqueWithoutDraftInput | MarketingCanvaAssetAssistUpdateWithWhereUniqueWithoutDraftInput[]
+    updateMany?: MarketingCanvaAssetAssistUpdateManyWithWhereWithoutDraftInput | MarketingCanvaAssetAssistUpdateManyWithWhereWithoutDraftInput[]
+    deleteMany?: MarketingCanvaAssetAssistScalarWhereInput | MarketingCanvaAssetAssistScalarWhereInput[]
+  }
+
   export type MarketingApprovalUncheckedUpdateManyWithoutDraftNestedInput = {
     create?: XOR<MarketingApprovalCreateWithoutDraftInput, MarketingApprovalUncheckedCreateWithoutDraftInput> | MarketingApprovalCreateWithoutDraftInput[] | MarketingApprovalUncheckedCreateWithoutDraftInput[]
     connectOrCreate?: MarketingApprovalCreateOrConnectWithoutDraftInput | MarketingApprovalCreateOrConnectWithoutDraftInput[]
@@ -23257,6 +24766,20 @@ export namespace Prisma {
     deleteMany?: MarketingPublishAssistScalarWhereInput | MarketingPublishAssistScalarWhereInput[]
   }
 
+  export type MarketingCanvaAssetAssistUncheckedUpdateManyWithoutDraftNestedInput = {
+    create?: XOR<MarketingCanvaAssetAssistCreateWithoutDraftInput, MarketingCanvaAssetAssistUncheckedCreateWithoutDraftInput> | MarketingCanvaAssetAssistCreateWithoutDraftInput[] | MarketingCanvaAssetAssistUncheckedCreateWithoutDraftInput[]
+    connectOrCreate?: MarketingCanvaAssetAssistCreateOrConnectWithoutDraftInput | MarketingCanvaAssetAssistCreateOrConnectWithoutDraftInput[]
+    upsert?: MarketingCanvaAssetAssistUpsertWithWhereUniqueWithoutDraftInput | MarketingCanvaAssetAssistUpsertWithWhereUniqueWithoutDraftInput[]
+    createMany?: MarketingCanvaAssetAssistCreateManyDraftInputEnvelope
+    set?: MarketingCanvaAssetAssistWhereUniqueInput | MarketingCanvaAssetAssistWhereUniqueInput[]
+    disconnect?: MarketingCanvaAssetAssistWhereUniqueInput | MarketingCanvaAssetAssistWhereUniqueInput[]
+    delete?: MarketingCanvaAssetAssistWhereUniqueInput | MarketingCanvaAssetAssistWhereUniqueInput[]
+    connect?: MarketingCanvaAssetAssistWhereUniqueInput | MarketingCanvaAssetAssistWhereUniqueInput[]
+    update?: MarketingCanvaAssetAssistUpdateWithWhereUniqueWithoutDraftInput | MarketingCanvaAssetAssistUpdateWithWhereUniqueWithoutDraftInput[]
+    updateMany?: MarketingCanvaAssetAssistUpdateManyWithWhereWithoutDraftInput | MarketingCanvaAssetAssistUpdateManyWithWhereWithoutDraftInput[]
+    deleteMany?: MarketingCanvaAssetAssistScalarWhereInput | MarketingCanvaAssetAssistScalarWhereInput[]
+  }
+
   export type MarketingDraftCreateNestedOneWithoutApprovalsInput = {
     create?: XOR<MarketingDraftCreateWithoutApprovalsInput, MarketingDraftUncheckedCreateWithoutApprovalsInput>
     connectOrCreate?: MarketingDraftCreateOrConnectWithoutApprovalsInput
@@ -23283,6 +24806,20 @@ export namespace Prisma {
     upsert?: MarketingDraftUpsertWithoutPublishAssistsInput
     connect?: MarketingDraftWhereUniqueInput
     update?: XOR<XOR<MarketingDraftUpdateToOneWithWhereWithoutPublishAssistsInput, MarketingDraftUpdateWithoutPublishAssistsInput>, MarketingDraftUncheckedUpdateWithoutPublishAssistsInput>
+  }
+
+  export type MarketingDraftCreateNestedOneWithoutCanvaAssetAssistsInput = {
+    create?: XOR<MarketingDraftCreateWithoutCanvaAssetAssistsInput, MarketingDraftUncheckedCreateWithoutCanvaAssetAssistsInput>
+    connectOrCreate?: MarketingDraftCreateOrConnectWithoutCanvaAssetAssistsInput
+    connect?: MarketingDraftWhereUniqueInput
+  }
+
+  export type MarketingDraftUpdateOneRequiredWithoutCanvaAssetAssistsNestedInput = {
+    create?: XOR<MarketingDraftCreateWithoutCanvaAssetAssistsInput, MarketingDraftUncheckedCreateWithoutCanvaAssetAssistsInput>
+    connectOrCreate?: MarketingDraftCreateOrConnectWithoutCanvaAssetAssistsInput
+    upsert?: MarketingDraftUpsertWithoutCanvaAssetAssistsInput
+    connect?: MarketingDraftWhereUniqueInput
+    update?: XOR<XOR<MarketingDraftUpdateToOneWithWhereWithoutCanvaAssetAssistsInput, MarketingDraftUpdateWithoutCanvaAssetAssistsInput>, MarketingDraftUncheckedUpdateWithoutCanvaAssetAssistsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -24075,6 +25612,40 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type MarketingCanvaAssetAssistCreateWithoutDraftInput = {
+    id?: string
+    recommendedFormat: string
+    designBrief: string
+    brandSafeCopyBlocks: JsonNullValueInput | InputJsonValue
+    assetNotes?: string | null
+    manualApprovalStatus?: string
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingCanvaAssetAssistUncheckedCreateWithoutDraftInput = {
+    id?: string
+    recommendedFormat: string
+    designBrief: string
+    brandSafeCopyBlocks: JsonNullValueInput | InputJsonValue
+    assetNotes?: string | null
+    manualApprovalStatus?: string
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingCanvaAssetAssistCreateOrConnectWithoutDraftInput = {
+    where: MarketingCanvaAssetAssistWhereUniqueInput
+    create: XOR<MarketingCanvaAssetAssistCreateWithoutDraftInput, MarketingCanvaAssetAssistUncheckedCreateWithoutDraftInput>
+  }
+
+  export type MarketingCanvaAssetAssistCreateManyDraftInputEnvelope = {
+    data: MarketingCanvaAssetAssistCreateManyDraftInput | MarketingCanvaAssetAssistCreateManyDraftInput[]
+    skipDuplicates?: boolean
+  }
+
   export type MarketingApprovalUpsertWithWhereUniqueWithoutDraftInput = {
     where: MarketingApprovalWhereUniqueInput
     update: XOR<MarketingApprovalUpdateWithoutDraftInput, MarketingApprovalUncheckedUpdateWithoutDraftInput>
@@ -24137,6 +25708,38 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"MarketingPublishAssist"> | Date | string
   }
 
+  export type MarketingCanvaAssetAssistUpsertWithWhereUniqueWithoutDraftInput = {
+    where: MarketingCanvaAssetAssistWhereUniqueInput
+    update: XOR<MarketingCanvaAssetAssistUpdateWithoutDraftInput, MarketingCanvaAssetAssistUncheckedUpdateWithoutDraftInput>
+    create: XOR<MarketingCanvaAssetAssistCreateWithoutDraftInput, MarketingCanvaAssetAssistUncheckedCreateWithoutDraftInput>
+  }
+
+  export type MarketingCanvaAssetAssistUpdateWithWhereUniqueWithoutDraftInput = {
+    where: MarketingCanvaAssetAssistWhereUniqueInput
+    data: XOR<MarketingCanvaAssetAssistUpdateWithoutDraftInput, MarketingCanvaAssetAssistUncheckedUpdateWithoutDraftInput>
+  }
+
+  export type MarketingCanvaAssetAssistUpdateManyWithWhereWithoutDraftInput = {
+    where: MarketingCanvaAssetAssistScalarWhereInput
+    data: XOR<MarketingCanvaAssetAssistUpdateManyMutationInput, MarketingCanvaAssetAssistUncheckedUpdateManyWithoutDraftInput>
+  }
+
+  export type MarketingCanvaAssetAssistScalarWhereInput = {
+    AND?: MarketingCanvaAssetAssistScalarWhereInput | MarketingCanvaAssetAssistScalarWhereInput[]
+    OR?: MarketingCanvaAssetAssistScalarWhereInput[]
+    NOT?: MarketingCanvaAssetAssistScalarWhereInput | MarketingCanvaAssetAssistScalarWhereInput[]
+    id?: StringFilter<"MarketingCanvaAssetAssist"> | string
+    draftId?: StringFilter<"MarketingCanvaAssetAssist"> | string
+    recommendedFormat?: StringFilter<"MarketingCanvaAssetAssist"> | string
+    designBrief?: StringFilter<"MarketingCanvaAssetAssist"> | string
+    brandSafeCopyBlocks?: JsonFilter<"MarketingCanvaAssetAssist">
+    assetNotes?: StringNullableFilter<"MarketingCanvaAssetAssist"> | string | null
+    manualApprovalStatus?: StringFilter<"MarketingCanvaAssetAssist"> | string
+    safetyFlags?: JsonFilter<"MarketingCanvaAssetAssist">
+    createdAt?: DateTimeFilter<"MarketingCanvaAssetAssist"> | Date | string
+    updatedAt?: DateTimeFilter<"MarketingCanvaAssetAssist"> | Date | string
+  }
+
   export type MarketingDraftCreateWithoutApprovalsInput = {
     id?: string
     channel: string
@@ -24152,6 +25755,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     publishAssists?: MarketingPublishAssistCreateNestedManyWithoutDraftInput
+    canvaAssetAssists?: MarketingCanvaAssetAssistCreateNestedManyWithoutDraftInput
   }
 
   export type MarketingDraftUncheckedCreateWithoutApprovalsInput = {
@@ -24169,6 +25773,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     publishAssists?: MarketingPublishAssistUncheckedCreateNestedManyWithoutDraftInput
+    canvaAssetAssists?: MarketingCanvaAssetAssistUncheckedCreateNestedManyWithoutDraftInput
   }
 
   export type MarketingDraftCreateOrConnectWithoutApprovalsInput = {
@@ -24202,6 +25807,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     publishAssists?: MarketingPublishAssistUpdateManyWithoutDraftNestedInput
+    canvaAssetAssists?: MarketingCanvaAssetAssistUpdateManyWithoutDraftNestedInput
   }
 
   export type MarketingDraftUncheckedUpdateWithoutApprovalsInput = {
@@ -24219,6 +25825,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     publishAssists?: MarketingPublishAssistUncheckedUpdateManyWithoutDraftNestedInput
+    canvaAssetAssists?: MarketingCanvaAssetAssistUncheckedUpdateManyWithoutDraftNestedInput
   }
 
   export type MarketingDraftCreateWithoutPublishAssistsInput = {
@@ -24236,6 +25843,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     approvals?: MarketingApprovalCreateNestedManyWithoutDraftInput
+    canvaAssetAssists?: MarketingCanvaAssetAssistCreateNestedManyWithoutDraftInput
   }
 
   export type MarketingDraftUncheckedCreateWithoutPublishAssistsInput = {
@@ -24253,6 +25861,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     approvals?: MarketingApprovalUncheckedCreateNestedManyWithoutDraftInput
+    canvaAssetAssists?: MarketingCanvaAssetAssistUncheckedCreateNestedManyWithoutDraftInput
   }
 
   export type MarketingDraftCreateOrConnectWithoutPublishAssistsInput = {
@@ -24286,6 +25895,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvals?: MarketingApprovalUpdateManyWithoutDraftNestedInput
+    canvaAssetAssists?: MarketingCanvaAssetAssistUpdateManyWithoutDraftNestedInput
   }
 
   export type MarketingDraftUncheckedUpdateWithoutPublishAssistsInput = {
@@ -24303,6 +25913,95 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvals?: MarketingApprovalUncheckedUpdateManyWithoutDraftNestedInput
+    canvaAssetAssists?: MarketingCanvaAssetAssistUncheckedUpdateManyWithoutDraftNestedInput
+  }
+
+  export type MarketingDraftCreateWithoutCanvaAssetAssistsInput = {
+    id?: string
+    channel: string
+    topic: string
+    sourceLabel: string
+    status?: string
+    draftCopy: string
+    assetNotes?: string | null
+    assumptions?: NullableJsonNullValueInput | InputJsonValue
+    safetyFlags?: NullableJsonNullValueInput | InputJsonValue
+    createdSource?: string
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    approvals?: MarketingApprovalCreateNestedManyWithoutDraftInput
+    publishAssists?: MarketingPublishAssistCreateNestedManyWithoutDraftInput
+  }
+
+  export type MarketingDraftUncheckedCreateWithoutCanvaAssetAssistsInput = {
+    id?: string
+    channel: string
+    topic: string
+    sourceLabel: string
+    status?: string
+    draftCopy: string
+    assetNotes?: string | null
+    assumptions?: NullableJsonNullValueInput | InputJsonValue
+    safetyFlags?: NullableJsonNullValueInput | InputJsonValue
+    createdSource?: string
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    approvals?: MarketingApprovalUncheckedCreateNestedManyWithoutDraftInput
+    publishAssists?: MarketingPublishAssistUncheckedCreateNestedManyWithoutDraftInput
+  }
+
+  export type MarketingDraftCreateOrConnectWithoutCanvaAssetAssistsInput = {
+    where: MarketingDraftWhereUniqueInput
+    create: XOR<MarketingDraftCreateWithoutCanvaAssetAssistsInput, MarketingDraftUncheckedCreateWithoutCanvaAssetAssistsInput>
+  }
+
+  export type MarketingDraftUpsertWithoutCanvaAssetAssistsInput = {
+    update: XOR<MarketingDraftUpdateWithoutCanvaAssetAssistsInput, MarketingDraftUncheckedUpdateWithoutCanvaAssetAssistsInput>
+    create: XOR<MarketingDraftCreateWithoutCanvaAssetAssistsInput, MarketingDraftUncheckedCreateWithoutCanvaAssetAssistsInput>
+    where?: MarketingDraftWhereInput
+  }
+
+  export type MarketingDraftUpdateToOneWithWhereWithoutCanvaAssetAssistsInput = {
+    where?: MarketingDraftWhereInput
+    data: XOR<MarketingDraftUpdateWithoutCanvaAssetAssistsInput, MarketingDraftUncheckedUpdateWithoutCanvaAssetAssistsInput>
+  }
+
+  export type MarketingDraftUpdateWithoutCanvaAssetAssistsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    draftCopy?: StringFieldUpdateOperationsInput | string
+    assetNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    assumptions?: NullableJsonNullValueInput | InputJsonValue
+    safetyFlags?: NullableJsonNullValueInput | InputJsonValue
+    createdSource?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    approvals?: MarketingApprovalUpdateManyWithoutDraftNestedInput
+    publishAssists?: MarketingPublishAssistUpdateManyWithoutDraftNestedInput
+  }
+
+  export type MarketingDraftUncheckedUpdateWithoutCanvaAssetAssistsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    draftCopy?: StringFieldUpdateOperationsInput | string
+    assetNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    assumptions?: NullableJsonNullValueInput | InputJsonValue
+    safetyFlags?: NullableJsonNullValueInput | InputJsonValue
+    createdSource?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    approvals?: MarketingApprovalUncheckedUpdateManyWithoutDraftNestedInput
+    publishAssists?: MarketingPublishAssistUncheckedUpdateManyWithoutDraftNestedInput
   }
 
   export type AiJobActionCreateManyJobInput = {
@@ -24415,6 +26114,18 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type MarketingCanvaAssetAssistCreateManyDraftInput = {
+    id?: string
+    recommendedFormat: string
+    designBrief: string
+    brandSafeCopyBlocks: JsonNullValueInput | InputJsonValue
+    assetNotes?: string | null
+    manualApprovalStatus?: string
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type MarketingApprovalUpdateWithoutDraftInput = {
     id?: StringFieldUpdateOperationsInput | string
     decision?: StringFieldUpdateOperationsInput | string
@@ -24477,6 +26188,42 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     manualPublishedUrl?: NullableStringFieldUpdateOperationsInput | string | null
     manualPublishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingCanvaAssetAssistUpdateWithoutDraftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recommendedFormat?: StringFieldUpdateOperationsInput | string
+    designBrief?: StringFieldUpdateOperationsInput | string
+    brandSafeCopyBlocks?: JsonNullValueInput | InputJsonValue
+    assetNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    manualApprovalStatus?: StringFieldUpdateOperationsInput | string
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingCanvaAssetAssistUncheckedUpdateWithoutDraftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recommendedFormat?: StringFieldUpdateOperationsInput | string
+    designBrief?: StringFieldUpdateOperationsInput | string
+    brandSafeCopyBlocks?: JsonNullValueInput | InputJsonValue
+    assetNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    manualApprovalStatus?: StringFieldUpdateOperationsInput | string
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingCanvaAssetAssistUncheckedUpdateManyWithoutDraftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recommendedFormat?: StringFieldUpdateOperationsInput | string
+    designBrief?: StringFieldUpdateOperationsInput | string
+    brandSafeCopyBlocks?: JsonNullValueInput | InputJsonValue
+    assetNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    manualApprovalStatus?: StringFieldUpdateOperationsInput | string
+    safetyFlags?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

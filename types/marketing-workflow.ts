@@ -27,11 +27,22 @@ export const marketingConnectionStatuses = ["manual_setup", "verified", "needs_r
 
 export type MarketingConnectionStatus = (typeof marketingConnectionStatuses)[number];
 
+export const marketingCanvaAssetApprovalStatuses = [
+  "pending_manual_asset_approval",
+  "approved_for_manual_canva_use",
+  "rejected",
+] as const;
+
+export type MarketingCanvaAssetApprovalStatus = (typeof marketingCanvaAssetApprovalStatuses)[number];
+
 export type MarketingSafetyFlags = {
   noOAuth: true;
   noLiveApis: true;
   noExternalFetchCalls: true;
   noProviderCalls: true;
+  noCanvaApiCalls: true;
+  noCanvaExports: true;
+  noAutomaticDesignCreation: true;
   noPosting: true;
   noScheduling: true;
   noMessaging: true;

@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import type {
   CreateMarketingDraftInput,
+  CanvaAssetAssistInput,
   MarketingAccountConnectionInput,
   MarketingApprovalInput,
   PublishAssistInput,
@@ -17,6 +18,9 @@ const safetyFlags: MarketingSafetyFlags = {
   noLiveApis: true,
   noExternalFetchCalls: true,
   noProviderCalls: true,
+  noCanvaApiCalls: true,
+  noCanvaExports: true,
+  noAutomaticDesignCreation: true,
   noPosting: true,
   noScheduling: true,
   noMessaging: true,
@@ -44,6 +48,64 @@ function getAssetChecklist(channel: MarketingChannel) {
   }
 
   return ["Select approved brand image.", "Confirm Facebook page access manually.", "Record post URL after manual publication."];
+}
+
+function getCanvaFormat(channel: MarketingChannel) {
+  if (channel === "instagram") return "Instagram post";
+  if (channel === "google_business_profile") return "Google Business Profile update image";
+
+  return "Facebook post";
+}
+
+function getCanvaCopyBlocks(draft: {
+  channel: string;
+  topic: string;
+  sourceLabel: string;
+  draftCopy: string;
+}) {
+  return [
+    {
+      label: "Headline",
+      copy: draft.topic,
+    },
+    {
+      label: "Body copy",
+      copy: draft.draftCopy,
+    },
+    {
+      label: "Source tracking note",
+      copy: `Source label: ${draft.sourceLabel}`,
+    },
+    {
+      label: "Safety note",
+      copy: "Educational marketing only. Do not include property-specific claims or owner-specific facts.",
+    },
+  ];
+}
+
+function buildCanvaDesignBrief(draft: {
+  channel: string;
+  topic: string;
+  sourceLabel: string;
+  draftCopy: string;
+  assetNotes: string | null;
+}) {
+  const channel = draft.channel as MarketingChannel;
+  const format = getCanvaFormat(channel);
+
+  return `Create a clean J Capital Property Group ${format} visual for "${draft.topic}".
+
+Goal: prepare a professional manual-posting asset for Oklahoma City property-owner education.
+
+Use the approved copy blocks from this record. Keep the visual simple, mobile-first, and professional. Do not add property-specific facts, owner names, tax status, repair claims, valuation claims, legal claims, urgency claims, or guarantees.
+
+Recommended visual direction: brand-safe real estate education graphic with calm typography, clear spacing, and no scraped or unapproved property imagery.
+
+Manual source tracking: ${draft.sourceLabel}.
+
+Asset notes: ${draft.assetNotes || "No extra asset notes provided."}
+
+Approval boundary: this brief is for manual Canva work only. The app must not create, export, publish, schedule, or send anything through Canva or any social platform.`;
 }
 
 function buildDraftCopy(input: CreateMarketingDraftInput) {
@@ -103,6 +165,12 @@ export async function listMarketingWorkflow() {
           },
           take: 3,
         },
+        canvaAssetAssists: {
+          orderBy: {
+            createdAt: "desc",
+          },
+          take: 3,
+        },
       },
     }),
     prisma.marketingAccountConnection.findMany({
@@ -135,6 +203,7 @@ export async function createMarketingDraft(input: CreateMarketingDraftInput) {
     include: {
       approvals: true,
       publishAssists: true,
+      canvaAssetAssists: true,
     },
   });
 }
@@ -158,6 +227,11 @@ export async function updateMarketingDraft(id: string, input: UpdateMarketingDra
         },
       },
       publishAssists: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+      canvaAssetAssists: {
         orderBy: {
           createdAt: "desc",
         },
@@ -209,6 +283,11 @@ export async function reviewMarketingDraft(draftId: string, input: MarketingAppr
         },
       },
       publishAssists: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+      canvaAssetAssists: {
         orderBy: {
           createdAt: "desc",
         },
@@ -300,6 +379,11 @@ export async function createMarketingPublishAssist(draftId: string, input: Publi
           createdAt: "desc",
         },
       },
+      canvaAssetAssists: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
     },
   });
 
@@ -309,5 +393,72 @@ export async function createMarketingPublishAssist(draftId: string, input: Publi
     sent: false,
     providerCalled: false,
     publishedBySystem: false,
+  };
+}
+
+export async function createMarketingCanvaAssetAssist(draftId: string, input: CanvaAssetAssistInput = {}) {
+  const draft = await prisma.marketingDraft.findUnique({
+    where: {
+      id: draftId,
+    },
+  });
+
+  if (!draft) {
+    throw new Error("Marketing draft not found.");
+  }
+
+  if (draft.status !== "approved" && draft.status !== "ready_for_manual_publish" && draft.status !== "manually_published") {
+    throw new Error("Only approved drafts can generate Canva asset briefs.");
+  }
+
+  const channel = draft.channel as MarketingChannel;
+  const canvaAssetAssist = await prisma.marketingCanvaAssetAssist.create({
+    data: {
+      draftId,
+      recommendedFormat: getCanvaFormat(channel),
+      designBrief: buildCanvaDesignBrief({
+        channel: draft.channel,
+        topic: draft.topic,
+        sourceLabel: draft.sourceLabel,
+        draftCopy: draft.draftCopy,
+        assetNotes: input.assetNotes?.trim() || draft.assetNotes,
+      }),
+      brandSafeCopyBlocks: getCanvaCopyBlocks(draft),
+      assetNotes: input.assetNotes?.trim() || draft.assetNotes,
+      manualApprovalStatus: input.manualApprovalStatus || "pending_manual_asset_approval",
+      safetyFlags,
+    },
+  });
+
+  const updatedDraft = await prisma.marketingDraft.findUnique({
+    where: {
+      id: draftId,
+    },
+    include: {
+      approvals: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+      publishAssists: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+      canvaAssetAssists: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+    },
+  });
+
+  return {
+    canvaAssetAssist,
+    draft: updatedDraft,
+    canvaApiCalled: false,
+    designCreated: false,
+    exported: false,
+    providerCalled: false,
   };
 }
