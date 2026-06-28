@@ -103,6 +103,16 @@ export type MarketingSalesAttribution = $Result.DefaultSelection<Prisma.$Marketi
  * 
  */
 export type SalesConversionAssist = $Result.DefaultSelection<Prisma.$SalesConversionAssistPayload>
+/**
+ * Model FinanceEntry
+ * 
+ */
+export type FinanceEntry = $Result.DefaultSelection<Prisma.$FinanceEntryPayload>
+/**
+ * Model KnowledgeItem
+ * 
+ */
+export type KnowledgeItem = $Result.DefaultSelection<Prisma.$KnowledgeItemPayload>
 
 /**
  * Enums
@@ -456,6 +466,26 @@ export class PrismaClient<
     * ```
     */
   get salesConversionAssist(): Prisma.SalesConversionAssistDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.financeEntry`: Exposes CRUD operations for the **FinanceEntry** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FinanceEntries
+    * const financeEntries = await prisma.financeEntry.findMany()
+    * ```
+    */
+  get financeEntry(): Prisma.FinanceEntryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.knowledgeItem`: Exposes CRUD operations for the **KnowledgeItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more KnowledgeItems
+    * const knowledgeItems = await prisma.knowledgeItem.findMany()
+    * ```
+    */
+  get knowledgeItem(): Prisma.KnowledgeItemDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -914,7 +944,9 @@ export namespace Prisma {
     MarketingPublishAssist: 'MarketingPublishAssist',
     MarketingCanvaAssetAssist: 'MarketingCanvaAssetAssist',
     MarketingSalesAttribution: 'MarketingSalesAttribution',
-    SalesConversionAssist: 'SalesConversionAssist'
+    SalesConversionAssist: 'SalesConversionAssist',
+    FinanceEntry: 'FinanceEntry',
+    KnowledgeItem: 'KnowledgeItem'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -933,7 +965,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "lead" | "manualLeadIntake" | "sellerCallOutcome" | "aiPerformanceMetric" | "aiJob" | "aiJobAction" | "aiJobLog" | "aiMemoryEvent" | "aiLearningRecommendation" | "buyer" | "buyerActivity" | "marketingDraft" | "marketingApproval" | "marketingAccountConnection" | "marketingPublishAssist" | "marketingCanvaAssetAssist" | "marketingSalesAttribution" | "salesConversionAssist"
+      modelProps: "lead" | "manualLeadIntake" | "sellerCallOutcome" | "aiPerformanceMetric" | "aiJob" | "aiJobAction" | "aiJobLog" | "aiMemoryEvent" | "aiLearningRecommendation" | "buyer" | "buyerActivity" | "marketingDraft" | "marketingApproval" | "marketingAccountConnection" | "marketingPublishAssist" | "marketingCanvaAssetAssist" | "marketingSalesAttribution" | "salesConversionAssist" | "financeEntry" | "knowledgeItem"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2269,6 +2301,154 @@ export namespace Prisma {
           }
         }
       }
+      FinanceEntry: {
+        payload: Prisma.$FinanceEntryPayload<ExtArgs>
+        fields: Prisma.FinanceEntryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FinanceEntryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FinanceEntryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FinanceEntryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FinanceEntryPayload>
+          }
+          findFirst: {
+            args: Prisma.FinanceEntryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FinanceEntryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FinanceEntryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FinanceEntryPayload>
+          }
+          findMany: {
+            args: Prisma.FinanceEntryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FinanceEntryPayload>[]
+          }
+          create: {
+            args: Prisma.FinanceEntryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FinanceEntryPayload>
+          }
+          createMany: {
+            args: Prisma.FinanceEntryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FinanceEntryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FinanceEntryPayload>[]
+          }
+          delete: {
+            args: Prisma.FinanceEntryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FinanceEntryPayload>
+          }
+          update: {
+            args: Prisma.FinanceEntryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FinanceEntryPayload>
+          }
+          deleteMany: {
+            args: Prisma.FinanceEntryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FinanceEntryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FinanceEntryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FinanceEntryPayload>[]
+          }
+          upsert: {
+            args: Prisma.FinanceEntryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FinanceEntryPayload>
+          }
+          aggregate: {
+            args: Prisma.FinanceEntryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFinanceEntry>
+          }
+          groupBy: {
+            args: Prisma.FinanceEntryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FinanceEntryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FinanceEntryCountArgs<ExtArgs>
+            result: $Utils.Optional<FinanceEntryCountAggregateOutputType> | number
+          }
+        }
+      }
+      KnowledgeItem: {
+        payload: Prisma.$KnowledgeItemPayload<ExtArgs>
+        fields: Prisma.KnowledgeItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.KnowledgeItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$KnowledgeItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.KnowledgeItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$KnowledgeItemPayload>
+          }
+          findFirst: {
+            args: Prisma.KnowledgeItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$KnowledgeItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.KnowledgeItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$KnowledgeItemPayload>
+          }
+          findMany: {
+            args: Prisma.KnowledgeItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$KnowledgeItemPayload>[]
+          }
+          create: {
+            args: Prisma.KnowledgeItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$KnowledgeItemPayload>
+          }
+          createMany: {
+            args: Prisma.KnowledgeItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.KnowledgeItemCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$KnowledgeItemPayload>[]
+          }
+          delete: {
+            args: Prisma.KnowledgeItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$KnowledgeItemPayload>
+          }
+          update: {
+            args: Prisma.KnowledgeItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$KnowledgeItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.KnowledgeItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.KnowledgeItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.KnowledgeItemUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$KnowledgeItemPayload>[]
+          }
+          upsert: {
+            args: Prisma.KnowledgeItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$KnowledgeItemPayload>
+          }
+          aggregate: {
+            args: Prisma.KnowledgeItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateKnowledgeItem>
+          }
+          groupBy: {
+            args: Prisma.KnowledgeItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<KnowledgeItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.KnowledgeItemCountArgs<ExtArgs>
+            result: $Utils.Optional<KnowledgeItemCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2383,6 +2563,8 @@ export namespace Prisma {
     marketingCanvaAssetAssist?: MarketingCanvaAssetAssistOmit
     marketingSalesAttribution?: MarketingSalesAttributionOmit
     salesConversionAssist?: SalesConversionAssistOmit
+    financeEntry?: FinanceEntryOmit
+    knowledgeItem?: KnowledgeItemOmit
   }
 
   /* Types for Logging */
@@ -23910,6 +24092,2169 @@ export namespace Prisma {
 
 
   /**
+   * Model FinanceEntry
+   */
+
+  export type AggregateFinanceEntry = {
+    _count: FinanceEntryCountAggregateOutputType | null
+    _avg: FinanceEntryAvgAggregateOutputType | null
+    _sum: FinanceEntrySumAggregateOutputType | null
+    _min: FinanceEntryMinAggregateOutputType | null
+    _max: FinanceEntryMaxAggregateOutputType | null
+  }
+
+  export type FinanceEntryAvgAggregateOutputType = {
+    amountCents: number | null
+  }
+
+  export type FinanceEntrySumAggregateOutputType = {
+    amountCents: number | null
+  }
+
+  export type FinanceEntryMinAggregateOutputType = {
+    id: string | null
+    entryType: string | null
+    category: string | null
+    source: string | null
+    amountCents: number | null
+    entryDate: Date | null
+    notes: string | null
+    leadId: string | null
+    dealReference: string | null
+    assumption: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FinanceEntryMaxAggregateOutputType = {
+    id: string | null
+    entryType: string | null
+    category: string | null
+    source: string | null
+    amountCents: number | null
+    entryDate: Date | null
+    notes: string | null
+    leadId: string | null
+    dealReference: string | null
+    assumption: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FinanceEntryCountAggregateOutputType = {
+    id: number
+    entryType: number
+    category: number
+    source: number
+    amountCents: number
+    entryDate: number
+    notes: number
+    leadId: number
+    dealReference: number
+    assumption: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type FinanceEntryAvgAggregateInputType = {
+    amountCents?: true
+  }
+
+  export type FinanceEntrySumAggregateInputType = {
+    amountCents?: true
+  }
+
+  export type FinanceEntryMinAggregateInputType = {
+    id?: true
+    entryType?: true
+    category?: true
+    source?: true
+    amountCents?: true
+    entryDate?: true
+    notes?: true
+    leadId?: true
+    dealReference?: true
+    assumption?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FinanceEntryMaxAggregateInputType = {
+    id?: true
+    entryType?: true
+    category?: true
+    source?: true
+    amountCents?: true
+    entryDate?: true
+    notes?: true
+    leadId?: true
+    dealReference?: true
+    assumption?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FinanceEntryCountAggregateInputType = {
+    id?: true
+    entryType?: true
+    category?: true
+    source?: true
+    amountCents?: true
+    entryDate?: true
+    notes?: true
+    leadId?: true
+    dealReference?: true
+    assumption?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type FinanceEntryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FinanceEntry to aggregate.
+     */
+    where?: FinanceEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FinanceEntries to fetch.
+     */
+    orderBy?: FinanceEntryOrderByWithRelationInput | FinanceEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FinanceEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FinanceEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FinanceEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FinanceEntries
+    **/
+    _count?: true | FinanceEntryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: FinanceEntryAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: FinanceEntrySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FinanceEntryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FinanceEntryMaxAggregateInputType
+  }
+
+  export type GetFinanceEntryAggregateType<T extends FinanceEntryAggregateArgs> = {
+        [P in keyof T & keyof AggregateFinanceEntry]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFinanceEntry[P]>
+      : GetScalarType<T[P], AggregateFinanceEntry[P]>
+  }
+
+
+
+
+  export type FinanceEntryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FinanceEntryWhereInput
+    orderBy?: FinanceEntryOrderByWithAggregationInput | FinanceEntryOrderByWithAggregationInput[]
+    by: FinanceEntryScalarFieldEnum[] | FinanceEntryScalarFieldEnum
+    having?: FinanceEntryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FinanceEntryCountAggregateInputType | true
+    _avg?: FinanceEntryAvgAggregateInputType
+    _sum?: FinanceEntrySumAggregateInputType
+    _min?: FinanceEntryMinAggregateInputType
+    _max?: FinanceEntryMaxAggregateInputType
+  }
+
+  export type FinanceEntryGroupByOutputType = {
+    id: string
+    entryType: string
+    category: string
+    source: string
+    amountCents: number
+    entryDate: Date
+    notes: string
+    leadId: string | null
+    dealReference: string | null
+    assumption: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: FinanceEntryCountAggregateOutputType | null
+    _avg: FinanceEntryAvgAggregateOutputType | null
+    _sum: FinanceEntrySumAggregateOutputType | null
+    _min: FinanceEntryMinAggregateOutputType | null
+    _max: FinanceEntryMaxAggregateOutputType | null
+  }
+
+  type GetFinanceEntryGroupByPayload<T extends FinanceEntryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FinanceEntryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FinanceEntryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FinanceEntryGroupByOutputType[P]>
+            : GetScalarType<T[P], FinanceEntryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FinanceEntrySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    entryType?: boolean
+    category?: boolean
+    source?: boolean
+    amountCents?: boolean
+    entryDate?: boolean
+    notes?: boolean
+    leadId?: boolean
+    dealReference?: boolean
+    assumption?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["financeEntry"]>
+
+  export type FinanceEntrySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    entryType?: boolean
+    category?: boolean
+    source?: boolean
+    amountCents?: boolean
+    entryDate?: boolean
+    notes?: boolean
+    leadId?: boolean
+    dealReference?: boolean
+    assumption?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["financeEntry"]>
+
+  export type FinanceEntrySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    entryType?: boolean
+    category?: boolean
+    source?: boolean
+    amountCents?: boolean
+    entryDate?: boolean
+    notes?: boolean
+    leadId?: boolean
+    dealReference?: boolean
+    assumption?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["financeEntry"]>
+
+  export type FinanceEntrySelectScalar = {
+    id?: boolean
+    entryType?: boolean
+    category?: boolean
+    source?: boolean
+    amountCents?: boolean
+    entryDate?: boolean
+    notes?: boolean
+    leadId?: boolean
+    dealReference?: boolean
+    assumption?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type FinanceEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "entryType" | "category" | "source" | "amountCents" | "entryDate" | "notes" | "leadId" | "dealReference" | "assumption" | "createdAt" | "updatedAt", ExtArgs["result"]["financeEntry"]>
+
+  export type $FinanceEntryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FinanceEntry"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      entryType: string
+      category: string
+      source: string
+      amountCents: number
+      entryDate: Date
+      notes: string
+      leadId: string | null
+      dealReference: string | null
+      assumption: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["financeEntry"]>
+    composites: {}
+  }
+
+  type FinanceEntryGetPayload<S extends boolean | null | undefined | FinanceEntryDefaultArgs> = $Result.GetResult<Prisma.$FinanceEntryPayload, S>
+
+  type FinanceEntryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FinanceEntryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FinanceEntryCountAggregateInputType | true
+    }
+
+  export interface FinanceEntryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FinanceEntry'], meta: { name: 'FinanceEntry' } }
+    /**
+     * Find zero or one FinanceEntry that matches the filter.
+     * @param {FinanceEntryFindUniqueArgs} args - Arguments to find a FinanceEntry
+     * @example
+     * // Get one FinanceEntry
+     * const financeEntry = await prisma.financeEntry.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FinanceEntryFindUniqueArgs>(args: SelectSubset<T, FinanceEntryFindUniqueArgs<ExtArgs>>): Prisma__FinanceEntryClient<$Result.GetResult<Prisma.$FinanceEntryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FinanceEntry that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FinanceEntryFindUniqueOrThrowArgs} args - Arguments to find a FinanceEntry
+     * @example
+     * // Get one FinanceEntry
+     * const financeEntry = await prisma.financeEntry.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FinanceEntryFindUniqueOrThrowArgs>(args: SelectSubset<T, FinanceEntryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FinanceEntryClient<$Result.GetResult<Prisma.$FinanceEntryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FinanceEntry that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FinanceEntryFindFirstArgs} args - Arguments to find a FinanceEntry
+     * @example
+     * // Get one FinanceEntry
+     * const financeEntry = await prisma.financeEntry.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FinanceEntryFindFirstArgs>(args?: SelectSubset<T, FinanceEntryFindFirstArgs<ExtArgs>>): Prisma__FinanceEntryClient<$Result.GetResult<Prisma.$FinanceEntryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FinanceEntry that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FinanceEntryFindFirstOrThrowArgs} args - Arguments to find a FinanceEntry
+     * @example
+     * // Get one FinanceEntry
+     * const financeEntry = await prisma.financeEntry.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FinanceEntryFindFirstOrThrowArgs>(args?: SelectSubset<T, FinanceEntryFindFirstOrThrowArgs<ExtArgs>>): Prisma__FinanceEntryClient<$Result.GetResult<Prisma.$FinanceEntryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FinanceEntries that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FinanceEntryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FinanceEntries
+     * const financeEntries = await prisma.financeEntry.findMany()
+     * 
+     * // Get first 10 FinanceEntries
+     * const financeEntries = await prisma.financeEntry.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const financeEntryWithIdOnly = await prisma.financeEntry.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FinanceEntryFindManyArgs>(args?: SelectSubset<T, FinanceEntryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FinanceEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FinanceEntry.
+     * @param {FinanceEntryCreateArgs} args - Arguments to create a FinanceEntry.
+     * @example
+     * // Create one FinanceEntry
+     * const FinanceEntry = await prisma.financeEntry.create({
+     *   data: {
+     *     // ... data to create a FinanceEntry
+     *   }
+     * })
+     * 
+     */
+    create<T extends FinanceEntryCreateArgs>(args: SelectSubset<T, FinanceEntryCreateArgs<ExtArgs>>): Prisma__FinanceEntryClient<$Result.GetResult<Prisma.$FinanceEntryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FinanceEntries.
+     * @param {FinanceEntryCreateManyArgs} args - Arguments to create many FinanceEntries.
+     * @example
+     * // Create many FinanceEntries
+     * const financeEntry = await prisma.financeEntry.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FinanceEntryCreateManyArgs>(args?: SelectSubset<T, FinanceEntryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FinanceEntries and returns the data saved in the database.
+     * @param {FinanceEntryCreateManyAndReturnArgs} args - Arguments to create many FinanceEntries.
+     * @example
+     * // Create many FinanceEntries
+     * const financeEntry = await prisma.financeEntry.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FinanceEntries and only return the `id`
+     * const financeEntryWithIdOnly = await prisma.financeEntry.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FinanceEntryCreateManyAndReturnArgs>(args?: SelectSubset<T, FinanceEntryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FinanceEntryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FinanceEntry.
+     * @param {FinanceEntryDeleteArgs} args - Arguments to delete one FinanceEntry.
+     * @example
+     * // Delete one FinanceEntry
+     * const FinanceEntry = await prisma.financeEntry.delete({
+     *   where: {
+     *     // ... filter to delete one FinanceEntry
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FinanceEntryDeleteArgs>(args: SelectSubset<T, FinanceEntryDeleteArgs<ExtArgs>>): Prisma__FinanceEntryClient<$Result.GetResult<Prisma.$FinanceEntryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FinanceEntry.
+     * @param {FinanceEntryUpdateArgs} args - Arguments to update one FinanceEntry.
+     * @example
+     * // Update one FinanceEntry
+     * const financeEntry = await prisma.financeEntry.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FinanceEntryUpdateArgs>(args: SelectSubset<T, FinanceEntryUpdateArgs<ExtArgs>>): Prisma__FinanceEntryClient<$Result.GetResult<Prisma.$FinanceEntryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FinanceEntries.
+     * @param {FinanceEntryDeleteManyArgs} args - Arguments to filter FinanceEntries to delete.
+     * @example
+     * // Delete a few FinanceEntries
+     * const { count } = await prisma.financeEntry.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FinanceEntryDeleteManyArgs>(args?: SelectSubset<T, FinanceEntryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FinanceEntries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FinanceEntryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FinanceEntries
+     * const financeEntry = await prisma.financeEntry.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FinanceEntryUpdateManyArgs>(args: SelectSubset<T, FinanceEntryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FinanceEntries and returns the data updated in the database.
+     * @param {FinanceEntryUpdateManyAndReturnArgs} args - Arguments to update many FinanceEntries.
+     * @example
+     * // Update many FinanceEntries
+     * const financeEntry = await prisma.financeEntry.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FinanceEntries and only return the `id`
+     * const financeEntryWithIdOnly = await prisma.financeEntry.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FinanceEntryUpdateManyAndReturnArgs>(args: SelectSubset<T, FinanceEntryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FinanceEntryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FinanceEntry.
+     * @param {FinanceEntryUpsertArgs} args - Arguments to update or create a FinanceEntry.
+     * @example
+     * // Update or create a FinanceEntry
+     * const financeEntry = await prisma.financeEntry.upsert({
+     *   create: {
+     *     // ... data to create a FinanceEntry
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FinanceEntry we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FinanceEntryUpsertArgs>(args: SelectSubset<T, FinanceEntryUpsertArgs<ExtArgs>>): Prisma__FinanceEntryClient<$Result.GetResult<Prisma.$FinanceEntryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FinanceEntries.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FinanceEntryCountArgs} args - Arguments to filter FinanceEntries to count.
+     * @example
+     * // Count the number of FinanceEntries
+     * const count = await prisma.financeEntry.count({
+     *   where: {
+     *     // ... the filter for the FinanceEntries we want to count
+     *   }
+     * })
+    **/
+    count<T extends FinanceEntryCountArgs>(
+      args?: Subset<T, FinanceEntryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FinanceEntryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FinanceEntry.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FinanceEntryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FinanceEntryAggregateArgs>(args: Subset<T, FinanceEntryAggregateArgs>): Prisma.PrismaPromise<GetFinanceEntryAggregateType<T>>
+
+    /**
+     * Group by FinanceEntry.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FinanceEntryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FinanceEntryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FinanceEntryGroupByArgs['orderBy'] }
+        : { orderBy?: FinanceEntryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FinanceEntryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFinanceEntryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FinanceEntry model
+   */
+  readonly fields: FinanceEntryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FinanceEntry.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FinanceEntryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FinanceEntry model
+   */
+  interface FinanceEntryFieldRefs {
+    readonly id: FieldRef<"FinanceEntry", 'String'>
+    readonly entryType: FieldRef<"FinanceEntry", 'String'>
+    readonly category: FieldRef<"FinanceEntry", 'String'>
+    readonly source: FieldRef<"FinanceEntry", 'String'>
+    readonly amountCents: FieldRef<"FinanceEntry", 'Int'>
+    readonly entryDate: FieldRef<"FinanceEntry", 'DateTime'>
+    readonly notes: FieldRef<"FinanceEntry", 'String'>
+    readonly leadId: FieldRef<"FinanceEntry", 'String'>
+    readonly dealReference: FieldRef<"FinanceEntry", 'String'>
+    readonly assumption: FieldRef<"FinanceEntry", 'String'>
+    readonly createdAt: FieldRef<"FinanceEntry", 'DateTime'>
+    readonly updatedAt: FieldRef<"FinanceEntry", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FinanceEntry findUnique
+   */
+  export type FinanceEntryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FinanceEntry
+     */
+    select?: FinanceEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FinanceEntry
+     */
+    omit?: FinanceEntryOmit<ExtArgs> | null
+    /**
+     * Filter, which FinanceEntry to fetch.
+     */
+    where: FinanceEntryWhereUniqueInput
+  }
+
+  /**
+   * FinanceEntry findUniqueOrThrow
+   */
+  export type FinanceEntryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FinanceEntry
+     */
+    select?: FinanceEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FinanceEntry
+     */
+    omit?: FinanceEntryOmit<ExtArgs> | null
+    /**
+     * Filter, which FinanceEntry to fetch.
+     */
+    where: FinanceEntryWhereUniqueInput
+  }
+
+  /**
+   * FinanceEntry findFirst
+   */
+  export type FinanceEntryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FinanceEntry
+     */
+    select?: FinanceEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FinanceEntry
+     */
+    omit?: FinanceEntryOmit<ExtArgs> | null
+    /**
+     * Filter, which FinanceEntry to fetch.
+     */
+    where?: FinanceEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FinanceEntries to fetch.
+     */
+    orderBy?: FinanceEntryOrderByWithRelationInput | FinanceEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FinanceEntries.
+     */
+    cursor?: FinanceEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FinanceEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FinanceEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FinanceEntries.
+     */
+    distinct?: FinanceEntryScalarFieldEnum | FinanceEntryScalarFieldEnum[]
+  }
+
+  /**
+   * FinanceEntry findFirstOrThrow
+   */
+  export type FinanceEntryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FinanceEntry
+     */
+    select?: FinanceEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FinanceEntry
+     */
+    omit?: FinanceEntryOmit<ExtArgs> | null
+    /**
+     * Filter, which FinanceEntry to fetch.
+     */
+    where?: FinanceEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FinanceEntries to fetch.
+     */
+    orderBy?: FinanceEntryOrderByWithRelationInput | FinanceEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FinanceEntries.
+     */
+    cursor?: FinanceEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FinanceEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FinanceEntries.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FinanceEntries.
+     */
+    distinct?: FinanceEntryScalarFieldEnum | FinanceEntryScalarFieldEnum[]
+  }
+
+  /**
+   * FinanceEntry findMany
+   */
+  export type FinanceEntryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FinanceEntry
+     */
+    select?: FinanceEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FinanceEntry
+     */
+    omit?: FinanceEntryOmit<ExtArgs> | null
+    /**
+     * Filter, which FinanceEntries to fetch.
+     */
+    where?: FinanceEntryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FinanceEntries to fetch.
+     */
+    orderBy?: FinanceEntryOrderByWithRelationInput | FinanceEntryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FinanceEntries.
+     */
+    cursor?: FinanceEntryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FinanceEntries from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FinanceEntries.
+     */
+    skip?: number
+    distinct?: FinanceEntryScalarFieldEnum | FinanceEntryScalarFieldEnum[]
+  }
+
+  /**
+   * FinanceEntry create
+   */
+  export type FinanceEntryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FinanceEntry
+     */
+    select?: FinanceEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FinanceEntry
+     */
+    omit?: FinanceEntryOmit<ExtArgs> | null
+    /**
+     * The data needed to create a FinanceEntry.
+     */
+    data: XOR<FinanceEntryCreateInput, FinanceEntryUncheckedCreateInput>
+  }
+
+  /**
+   * FinanceEntry createMany
+   */
+  export type FinanceEntryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FinanceEntries.
+     */
+    data: FinanceEntryCreateManyInput | FinanceEntryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FinanceEntry createManyAndReturn
+   */
+  export type FinanceEntryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FinanceEntry
+     */
+    select?: FinanceEntrySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FinanceEntry
+     */
+    omit?: FinanceEntryOmit<ExtArgs> | null
+    /**
+     * The data used to create many FinanceEntries.
+     */
+    data: FinanceEntryCreateManyInput | FinanceEntryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FinanceEntry update
+   */
+  export type FinanceEntryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FinanceEntry
+     */
+    select?: FinanceEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FinanceEntry
+     */
+    omit?: FinanceEntryOmit<ExtArgs> | null
+    /**
+     * The data needed to update a FinanceEntry.
+     */
+    data: XOR<FinanceEntryUpdateInput, FinanceEntryUncheckedUpdateInput>
+    /**
+     * Choose, which FinanceEntry to update.
+     */
+    where: FinanceEntryWhereUniqueInput
+  }
+
+  /**
+   * FinanceEntry updateMany
+   */
+  export type FinanceEntryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FinanceEntries.
+     */
+    data: XOR<FinanceEntryUpdateManyMutationInput, FinanceEntryUncheckedUpdateManyInput>
+    /**
+     * Filter which FinanceEntries to update
+     */
+    where?: FinanceEntryWhereInput
+    /**
+     * Limit how many FinanceEntries to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FinanceEntry updateManyAndReturn
+   */
+  export type FinanceEntryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FinanceEntry
+     */
+    select?: FinanceEntrySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FinanceEntry
+     */
+    omit?: FinanceEntryOmit<ExtArgs> | null
+    /**
+     * The data used to update FinanceEntries.
+     */
+    data: XOR<FinanceEntryUpdateManyMutationInput, FinanceEntryUncheckedUpdateManyInput>
+    /**
+     * Filter which FinanceEntries to update
+     */
+    where?: FinanceEntryWhereInput
+    /**
+     * Limit how many FinanceEntries to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FinanceEntry upsert
+   */
+  export type FinanceEntryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FinanceEntry
+     */
+    select?: FinanceEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FinanceEntry
+     */
+    omit?: FinanceEntryOmit<ExtArgs> | null
+    /**
+     * The filter to search for the FinanceEntry to update in case it exists.
+     */
+    where: FinanceEntryWhereUniqueInput
+    /**
+     * In case the FinanceEntry found by the `where` argument doesn't exist, create a new FinanceEntry with this data.
+     */
+    create: XOR<FinanceEntryCreateInput, FinanceEntryUncheckedCreateInput>
+    /**
+     * In case the FinanceEntry was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FinanceEntryUpdateInput, FinanceEntryUncheckedUpdateInput>
+  }
+
+  /**
+   * FinanceEntry delete
+   */
+  export type FinanceEntryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FinanceEntry
+     */
+    select?: FinanceEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FinanceEntry
+     */
+    omit?: FinanceEntryOmit<ExtArgs> | null
+    /**
+     * Filter which FinanceEntry to delete.
+     */
+    where: FinanceEntryWhereUniqueInput
+  }
+
+  /**
+   * FinanceEntry deleteMany
+   */
+  export type FinanceEntryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FinanceEntries to delete
+     */
+    where?: FinanceEntryWhereInput
+    /**
+     * Limit how many FinanceEntries to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FinanceEntry without action
+   */
+  export type FinanceEntryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FinanceEntry
+     */
+    select?: FinanceEntrySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FinanceEntry
+     */
+    omit?: FinanceEntryOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model KnowledgeItem
+   */
+
+  export type AggregateKnowledgeItem = {
+    _count: KnowledgeItemCountAggregateOutputType | null
+    _min: KnowledgeItemMinAggregateOutputType | null
+    _max: KnowledgeItemMaxAggregateOutputType | null
+  }
+
+  export type KnowledgeItemMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    category: string | null
+    content: string | null
+    status: string | null
+    source: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type KnowledgeItemMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    category: string | null
+    content: string | null
+    status: string | null
+    source: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type KnowledgeItemCountAggregateOutputType = {
+    id: number
+    title: number
+    category: number
+    content: number
+    tags: number
+    status: number
+    source: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type KnowledgeItemMinAggregateInputType = {
+    id?: true
+    title?: true
+    category?: true
+    content?: true
+    status?: true
+    source?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type KnowledgeItemMaxAggregateInputType = {
+    id?: true
+    title?: true
+    category?: true
+    content?: true
+    status?: true
+    source?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type KnowledgeItemCountAggregateInputType = {
+    id?: true
+    title?: true
+    category?: true
+    content?: true
+    tags?: true
+    status?: true
+    source?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type KnowledgeItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which KnowledgeItem to aggregate.
+     */
+    where?: KnowledgeItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of KnowledgeItems to fetch.
+     */
+    orderBy?: KnowledgeItemOrderByWithRelationInput | KnowledgeItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: KnowledgeItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` KnowledgeItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` KnowledgeItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned KnowledgeItems
+    **/
+    _count?: true | KnowledgeItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: KnowledgeItemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: KnowledgeItemMaxAggregateInputType
+  }
+
+  export type GetKnowledgeItemAggregateType<T extends KnowledgeItemAggregateArgs> = {
+        [P in keyof T & keyof AggregateKnowledgeItem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateKnowledgeItem[P]>
+      : GetScalarType<T[P], AggregateKnowledgeItem[P]>
+  }
+
+
+
+
+  export type KnowledgeItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: KnowledgeItemWhereInput
+    orderBy?: KnowledgeItemOrderByWithAggregationInput | KnowledgeItemOrderByWithAggregationInput[]
+    by: KnowledgeItemScalarFieldEnum[] | KnowledgeItemScalarFieldEnum
+    having?: KnowledgeItemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: KnowledgeItemCountAggregateInputType | true
+    _min?: KnowledgeItemMinAggregateInputType
+    _max?: KnowledgeItemMaxAggregateInputType
+  }
+
+  export type KnowledgeItemGroupByOutputType = {
+    id: string
+    title: string
+    category: string
+    content: string
+    tags: JsonValue
+    status: string
+    source: string
+    createdAt: Date
+    updatedAt: Date
+    _count: KnowledgeItemCountAggregateOutputType | null
+    _min: KnowledgeItemMinAggregateOutputType | null
+    _max: KnowledgeItemMaxAggregateOutputType | null
+  }
+
+  type GetKnowledgeItemGroupByPayload<T extends KnowledgeItemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<KnowledgeItemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof KnowledgeItemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], KnowledgeItemGroupByOutputType[P]>
+            : GetScalarType<T[P], KnowledgeItemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type KnowledgeItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    category?: boolean
+    content?: boolean
+    tags?: boolean
+    status?: boolean
+    source?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["knowledgeItem"]>
+
+  export type KnowledgeItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    category?: boolean
+    content?: boolean
+    tags?: boolean
+    status?: boolean
+    source?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["knowledgeItem"]>
+
+  export type KnowledgeItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    category?: boolean
+    content?: boolean
+    tags?: boolean
+    status?: boolean
+    source?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["knowledgeItem"]>
+
+  export type KnowledgeItemSelectScalar = {
+    id?: boolean
+    title?: boolean
+    category?: boolean
+    content?: boolean
+    tags?: boolean
+    status?: boolean
+    source?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type KnowledgeItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "category" | "content" | "tags" | "status" | "source" | "createdAt" | "updatedAt", ExtArgs["result"]["knowledgeItem"]>
+
+  export type $KnowledgeItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "KnowledgeItem"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      category: string
+      content: string
+      tags: Prisma.JsonValue
+      status: string
+      source: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["knowledgeItem"]>
+    composites: {}
+  }
+
+  type KnowledgeItemGetPayload<S extends boolean | null | undefined | KnowledgeItemDefaultArgs> = $Result.GetResult<Prisma.$KnowledgeItemPayload, S>
+
+  type KnowledgeItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<KnowledgeItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: KnowledgeItemCountAggregateInputType | true
+    }
+
+  export interface KnowledgeItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['KnowledgeItem'], meta: { name: 'KnowledgeItem' } }
+    /**
+     * Find zero or one KnowledgeItem that matches the filter.
+     * @param {KnowledgeItemFindUniqueArgs} args - Arguments to find a KnowledgeItem
+     * @example
+     * // Get one KnowledgeItem
+     * const knowledgeItem = await prisma.knowledgeItem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends KnowledgeItemFindUniqueArgs>(args: SelectSubset<T, KnowledgeItemFindUniqueArgs<ExtArgs>>): Prisma__KnowledgeItemClient<$Result.GetResult<Prisma.$KnowledgeItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one KnowledgeItem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {KnowledgeItemFindUniqueOrThrowArgs} args - Arguments to find a KnowledgeItem
+     * @example
+     * // Get one KnowledgeItem
+     * const knowledgeItem = await prisma.knowledgeItem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends KnowledgeItemFindUniqueOrThrowArgs>(args: SelectSubset<T, KnowledgeItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__KnowledgeItemClient<$Result.GetResult<Prisma.$KnowledgeItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first KnowledgeItem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {KnowledgeItemFindFirstArgs} args - Arguments to find a KnowledgeItem
+     * @example
+     * // Get one KnowledgeItem
+     * const knowledgeItem = await prisma.knowledgeItem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends KnowledgeItemFindFirstArgs>(args?: SelectSubset<T, KnowledgeItemFindFirstArgs<ExtArgs>>): Prisma__KnowledgeItemClient<$Result.GetResult<Prisma.$KnowledgeItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first KnowledgeItem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {KnowledgeItemFindFirstOrThrowArgs} args - Arguments to find a KnowledgeItem
+     * @example
+     * // Get one KnowledgeItem
+     * const knowledgeItem = await prisma.knowledgeItem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends KnowledgeItemFindFirstOrThrowArgs>(args?: SelectSubset<T, KnowledgeItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__KnowledgeItemClient<$Result.GetResult<Prisma.$KnowledgeItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more KnowledgeItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {KnowledgeItemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all KnowledgeItems
+     * const knowledgeItems = await prisma.knowledgeItem.findMany()
+     * 
+     * // Get first 10 KnowledgeItems
+     * const knowledgeItems = await prisma.knowledgeItem.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const knowledgeItemWithIdOnly = await prisma.knowledgeItem.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends KnowledgeItemFindManyArgs>(args?: SelectSubset<T, KnowledgeItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KnowledgeItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a KnowledgeItem.
+     * @param {KnowledgeItemCreateArgs} args - Arguments to create a KnowledgeItem.
+     * @example
+     * // Create one KnowledgeItem
+     * const KnowledgeItem = await prisma.knowledgeItem.create({
+     *   data: {
+     *     // ... data to create a KnowledgeItem
+     *   }
+     * })
+     * 
+     */
+    create<T extends KnowledgeItemCreateArgs>(args: SelectSubset<T, KnowledgeItemCreateArgs<ExtArgs>>): Prisma__KnowledgeItemClient<$Result.GetResult<Prisma.$KnowledgeItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many KnowledgeItems.
+     * @param {KnowledgeItemCreateManyArgs} args - Arguments to create many KnowledgeItems.
+     * @example
+     * // Create many KnowledgeItems
+     * const knowledgeItem = await prisma.knowledgeItem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends KnowledgeItemCreateManyArgs>(args?: SelectSubset<T, KnowledgeItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many KnowledgeItems and returns the data saved in the database.
+     * @param {KnowledgeItemCreateManyAndReturnArgs} args - Arguments to create many KnowledgeItems.
+     * @example
+     * // Create many KnowledgeItems
+     * const knowledgeItem = await prisma.knowledgeItem.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many KnowledgeItems and only return the `id`
+     * const knowledgeItemWithIdOnly = await prisma.knowledgeItem.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends KnowledgeItemCreateManyAndReturnArgs>(args?: SelectSubset<T, KnowledgeItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KnowledgeItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a KnowledgeItem.
+     * @param {KnowledgeItemDeleteArgs} args - Arguments to delete one KnowledgeItem.
+     * @example
+     * // Delete one KnowledgeItem
+     * const KnowledgeItem = await prisma.knowledgeItem.delete({
+     *   where: {
+     *     // ... filter to delete one KnowledgeItem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends KnowledgeItemDeleteArgs>(args: SelectSubset<T, KnowledgeItemDeleteArgs<ExtArgs>>): Prisma__KnowledgeItemClient<$Result.GetResult<Prisma.$KnowledgeItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one KnowledgeItem.
+     * @param {KnowledgeItemUpdateArgs} args - Arguments to update one KnowledgeItem.
+     * @example
+     * // Update one KnowledgeItem
+     * const knowledgeItem = await prisma.knowledgeItem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends KnowledgeItemUpdateArgs>(args: SelectSubset<T, KnowledgeItemUpdateArgs<ExtArgs>>): Prisma__KnowledgeItemClient<$Result.GetResult<Prisma.$KnowledgeItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more KnowledgeItems.
+     * @param {KnowledgeItemDeleteManyArgs} args - Arguments to filter KnowledgeItems to delete.
+     * @example
+     * // Delete a few KnowledgeItems
+     * const { count } = await prisma.knowledgeItem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends KnowledgeItemDeleteManyArgs>(args?: SelectSubset<T, KnowledgeItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more KnowledgeItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {KnowledgeItemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many KnowledgeItems
+     * const knowledgeItem = await prisma.knowledgeItem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends KnowledgeItemUpdateManyArgs>(args: SelectSubset<T, KnowledgeItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more KnowledgeItems and returns the data updated in the database.
+     * @param {KnowledgeItemUpdateManyAndReturnArgs} args - Arguments to update many KnowledgeItems.
+     * @example
+     * // Update many KnowledgeItems
+     * const knowledgeItem = await prisma.knowledgeItem.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more KnowledgeItems and only return the `id`
+     * const knowledgeItemWithIdOnly = await prisma.knowledgeItem.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends KnowledgeItemUpdateManyAndReturnArgs>(args: SelectSubset<T, KnowledgeItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KnowledgeItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one KnowledgeItem.
+     * @param {KnowledgeItemUpsertArgs} args - Arguments to update or create a KnowledgeItem.
+     * @example
+     * // Update or create a KnowledgeItem
+     * const knowledgeItem = await prisma.knowledgeItem.upsert({
+     *   create: {
+     *     // ... data to create a KnowledgeItem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the KnowledgeItem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends KnowledgeItemUpsertArgs>(args: SelectSubset<T, KnowledgeItemUpsertArgs<ExtArgs>>): Prisma__KnowledgeItemClient<$Result.GetResult<Prisma.$KnowledgeItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of KnowledgeItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {KnowledgeItemCountArgs} args - Arguments to filter KnowledgeItems to count.
+     * @example
+     * // Count the number of KnowledgeItems
+     * const count = await prisma.knowledgeItem.count({
+     *   where: {
+     *     // ... the filter for the KnowledgeItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends KnowledgeItemCountArgs>(
+      args?: Subset<T, KnowledgeItemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], KnowledgeItemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a KnowledgeItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {KnowledgeItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends KnowledgeItemAggregateArgs>(args: Subset<T, KnowledgeItemAggregateArgs>): Prisma.PrismaPromise<GetKnowledgeItemAggregateType<T>>
+
+    /**
+     * Group by KnowledgeItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {KnowledgeItemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends KnowledgeItemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: KnowledgeItemGroupByArgs['orderBy'] }
+        : { orderBy?: KnowledgeItemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, KnowledgeItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetKnowledgeItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the KnowledgeItem model
+   */
+  readonly fields: KnowledgeItemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for KnowledgeItem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__KnowledgeItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the KnowledgeItem model
+   */
+  interface KnowledgeItemFieldRefs {
+    readonly id: FieldRef<"KnowledgeItem", 'String'>
+    readonly title: FieldRef<"KnowledgeItem", 'String'>
+    readonly category: FieldRef<"KnowledgeItem", 'String'>
+    readonly content: FieldRef<"KnowledgeItem", 'String'>
+    readonly tags: FieldRef<"KnowledgeItem", 'Json'>
+    readonly status: FieldRef<"KnowledgeItem", 'String'>
+    readonly source: FieldRef<"KnowledgeItem", 'String'>
+    readonly createdAt: FieldRef<"KnowledgeItem", 'DateTime'>
+    readonly updatedAt: FieldRef<"KnowledgeItem", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * KnowledgeItem findUnique
+   */
+  export type KnowledgeItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KnowledgeItem
+     */
+    select?: KnowledgeItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the KnowledgeItem
+     */
+    omit?: KnowledgeItemOmit<ExtArgs> | null
+    /**
+     * Filter, which KnowledgeItem to fetch.
+     */
+    where: KnowledgeItemWhereUniqueInput
+  }
+
+  /**
+   * KnowledgeItem findUniqueOrThrow
+   */
+  export type KnowledgeItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KnowledgeItem
+     */
+    select?: KnowledgeItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the KnowledgeItem
+     */
+    omit?: KnowledgeItemOmit<ExtArgs> | null
+    /**
+     * Filter, which KnowledgeItem to fetch.
+     */
+    where: KnowledgeItemWhereUniqueInput
+  }
+
+  /**
+   * KnowledgeItem findFirst
+   */
+  export type KnowledgeItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KnowledgeItem
+     */
+    select?: KnowledgeItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the KnowledgeItem
+     */
+    omit?: KnowledgeItemOmit<ExtArgs> | null
+    /**
+     * Filter, which KnowledgeItem to fetch.
+     */
+    where?: KnowledgeItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of KnowledgeItems to fetch.
+     */
+    orderBy?: KnowledgeItemOrderByWithRelationInput | KnowledgeItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for KnowledgeItems.
+     */
+    cursor?: KnowledgeItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` KnowledgeItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` KnowledgeItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of KnowledgeItems.
+     */
+    distinct?: KnowledgeItemScalarFieldEnum | KnowledgeItemScalarFieldEnum[]
+  }
+
+  /**
+   * KnowledgeItem findFirstOrThrow
+   */
+  export type KnowledgeItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KnowledgeItem
+     */
+    select?: KnowledgeItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the KnowledgeItem
+     */
+    omit?: KnowledgeItemOmit<ExtArgs> | null
+    /**
+     * Filter, which KnowledgeItem to fetch.
+     */
+    where?: KnowledgeItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of KnowledgeItems to fetch.
+     */
+    orderBy?: KnowledgeItemOrderByWithRelationInput | KnowledgeItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for KnowledgeItems.
+     */
+    cursor?: KnowledgeItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` KnowledgeItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` KnowledgeItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of KnowledgeItems.
+     */
+    distinct?: KnowledgeItemScalarFieldEnum | KnowledgeItemScalarFieldEnum[]
+  }
+
+  /**
+   * KnowledgeItem findMany
+   */
+  export type KnowledgeItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KnowledgeItem
+     */
+    select?: KnowledgeItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the KnowledgeItem
+     */
+    omit?: KnowledgeItemOmit<ExtArgs> | null
+    /**
+     * Filter, which KnowledgeItems to fetch.
+     */
+    where?: KnowledgeItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of KnowledgeItems to fetch.
+     */
+    orderBy?: KnowledgeItemOrderByWithRelationInput | KnowledgeItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing KnowledgeItems.
+     */
+    cursor?: KnowledgeItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` KnowledgeItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` KnowledgeItems.
+     */
+    skip?: number
+    distinct?: KnowledgeItemScalarFieldEnum | KnowledgeItemScalarFieldEnum[]
+  }
+
+  /**
+   * KnowledgeItem create
+   */
+  export type KnowledgeItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KnowledgeItem
+     */
+    select?: KnowledgeItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the KnowledgeItem
+     */
+    omit?: KnowledgeItemOmit<ExtArgs> | null
+    /**
+     * The data needed to create a KnowledgeItem.
+     */
+    data: XOR<KnowledgeItemCreateInput, KnowledgeItemUncheckedCreateInput>
+  }
+
+  /**
+   * KnowledgeItem createMany
+   */
+  export type KnowledgeItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many KnowledgeItems.
+     */
+    data: KnowledgeItemCreateManyInput | KnowledgeItemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * KnowledgeItem createManyAndReturn
+   */
+  export type KnowledgeItemCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KnowledgeItem
+     */
+    select?: KnowledgeItemSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the KnowledgeItem
+     */
+    omit?: KnowledgeItemOmit<ExtArgs> | null
+    /**
+     * The data used to create many KnowledgeItems.
+     */
+    data: KnowledgeItemCreateManyInput | KnowledgeItemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * KnowledgeItem update
+   */
+  export type KnowledgeItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KnowledgeItem
+     */
+    select?: KnowledgeItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the KnowledgeItem
+     */
+    omit?: KnowledgeItemOmit<ExtArgs> | null
+    /**
+     * The data needed to update a KnowledgeItem.
+     */
+    data: XOR<KnowledgeItemUpdateInput, KnowledgeItemUncheckedUpdateInput>
+    /**
+     * Choose, which KnowledgeItem to update.
+     */
+    where: KnowledgeItemWhereUniqueInput
+  }
+
+  /**
+   * KnowledgeItem updateMany
+   */
+  export type KnowledgeItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update KnowledgeItems.
+     */
+    data: XOR<KnowledgeItemUpdateManyMutationInput, KnowledgeItemUncheckedUpdateManyInput>
+    /**
+     * Filter which KnowledgeItems to update
+     */
+    where?: KnowledgeItemWhereInput
+    /**
+     * Limit how many KnowledgeItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * KnowledgeItem updateManyAndReturn
+   */
+  export type KnowledgeItemUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KnowledgeItem
+     */
+    select?: KnowledgeItemSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the KnowledgeItem
+     */
+    omit?: KnowledgeItemOmit<ExtArgs> | null
+    /**
+     * The data used to update KnowledgeItems.
+     */
+    data: XOR<KnowledgeItemUpdateManyMutationInput, KnowledgeItemUncheckedUpdateManyInput>
+    /**
+     * Filter which KnowledgeItems to update
+     */
+    where?: KnowledgeItemWhereInput
+    /**
+     * Limit how many KnowledgeItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * KnowledgeItem upsert
+   */
+  export type KnowledgeItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KnowledgeItem
+     */
+    select?: KnowledgeItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the KnowledgeItem
+     */
+    omit?: KnowledgeItemOmit<ExtArgs> | null
+    /**
+     * The filter to search for the KnowledgeItem to update in case it exists.
+     */
+    where: KnowledgeItemWhereUniqueInput
+    /**
+     * In case the KnowledgeItem found by the `where` argument doesn't exist, create a new KnowledgeItem with this data.
+     */
+    create: XOR<KnowledgeItemCreateInput, KnowledgeItemUncheckedCreateInput>
+    /**
+     * In case the KnowledgeItem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<KnowledgeItemUpdateInput, KnowledgeItemUncheckedUpdateInput>
+  }
+
+  /**
+   * KnowledgeItem delete
+   */
+  export type KnowledgeItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KnowledgeItem
+     */
+    select?: KnowledgeItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the KnowledgeItem
+     */
+    omit?: KnowledgeItemOmit<ExtArgs> | null
+    /**
+     * Filter which KnowledgeItem to delete.
+     */
+    where: KnowledgeItemWhereUniqueInput
+  }
+
+  /**
+   * KnowledgeItem deleteMany
+   */
+  export type KnowledgeItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which KnowledgeItems to delete
+     */
+    where?: KnowledgeItemWhereInput
+    /**
+     * Limit how many KnowledgeItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * KnowledgeItem without action
+   */
+  export type KnowledgeItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KnowledgeItem
+     */
+    select?: KnowledgeItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the KnowledgeItem
+     */
+    omit?: KnowledgeItemOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -24265,6 +26610,39 @@ export namespace Prisma {
   };
 
   export type SalesConversionAssistScalarFieldEnum = (typeof SalesConversionAssistScalarFieldEnum)[keyof typeof SalesConversionAssistScalarFieldEnum]
+
+
+  export const FinanceEntryScalarFieldEnum: {
+    id: 'id',
+    entryType: 'entryType',
+    category: 'category',
+    source: 'source',
+    amountCents: 'amountCents',
+    entryDate: 'entryDate',
+    notes: 'notes',
+    leadId: 'leadId',
+    dealReference: 'dealReference',
+    assumption: 'assumption',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type FinanceEntryScalarFieldEnum = (typeof FinanceEntryScalarFieldEnum)[keyof typeof FinanceEntryScalarFieldEnum]
+
+
+  export const KnowledgeItemScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    category: 'category',
+    content: 'content',
+    tags: 'tags',
+    status: 'status',
+    source: 'source',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type KnowledgeItemScalarFieldEnum = (typeof KnowledgeItemScalarFieldEnum)[keyof typeof KnowledgeItemScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -26191,6 +28569,167 @@ export namespace Prisma {
     manualApprovalStatus?: StringWithAggregatesFilter<"SalesConversionAssist"> | string
     createdAt?: DateTimeWithAggregatesFilter<"SalesConversionAssist"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"SalesConversionAssist"> | Date | string
+  }
+
+  export type FinanceEntryWhereInput = {
+    AND?: FinanceEntryWhereInput | FinanceEntryWhereInput[]
+    OR?: FinanceEntryWhereInput[]
+    NOT?: FinanceEntryWhereInput | FinanceEntryWhereInput[]
+    id?: StringFilter<"FinanceEntry"> | string
+    entryType?: StringFilter<"FinanceEntry"> | string
+    category?: StringFilter<"FinanceEntry"> | string
+    source?: StringFilter<"FinanceEntry"> | string
+    amountCents?: IntFilter<"FinanceEntry"> | number
+    entryDate?: DateTimeFilter<"FinanceEntry"> | Date | string
+    notes?: StringFilter<"FinanceEntry"> | string
+    leadId?: StringNullableFilter<"FinanceEntry"> | string | null
+    dealReference?: StringNullableFilter<"FinanceEntry"> | string | null
+    assumption?: StringNullableFilter<"FinanceEntry"> | string | null
+    createdAt?: DateTimeFilter<"FinanceEntry"> | Date | string
+    updatedAt?: DateTimeFilter<"FinanceEntry"> | Date | string
+  }
+
+  export type FinanceEntryOrderByWithRelationInput = {
+    id?: SortOrder
+    entryType?: SortOrder
+    category?: SortOrder
+    source?: SortOrder
+    amountCents?: SortOrder
+    entryDate?: SortOrder
+    notes?: SortOrder
+    leadId?: SortOrderInput | SortOrder
+    dealReference?: SortOrderInput | SortOrder
+    assumption?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FinanceEntryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: FinanceEntryWhereInput | FinanceEntryWhereInput[]
+    OR?: FinanceEntryWhereInput[]
+    NOT?: FinanceEntryWhereInput | FinanceEntryWhereInput[]
+    entryType?: StringFilter<"FinanceEntry"> | string
+    category?: StringFilter<"FinanceEntry"> | string
+    source?: StringFilter<"FinanceEntry"> | string
+    amountCents?: IntFilter<"FinanceEntry"> | number
+    entryDate?: DateTimeFilter<"FinanceEntry"> | Date | string
+    notes?: StringFilter<"FinanceEntry"> | string
+    leadId?: StringNullableFilter<"FinanceEntry"> | string | null
+    dealReference?: StringNullableFilter<"FinanceEntry"> | string | null
+    assumption?: StringNullableFilter<"FinanceEntry"> | string | null
+    createdAt?: DateTimeFilter<"FinanceEntry"> | Date | string
+    updatedAt?: DateTimeFilter<"FinanceEntry"> | Date | string
+  }, "id">
+
+  export type FinanceEntryOrderByWithAggregationInput = {
+    id?: SortOrder
+    entryType?: SortOrder
+    category?: SortOrder
+    source?: SortOrder
+    amountCents?: SortOrder
+    entryDate?: SortOrder
+    notes?: SortOrder
+    leadId?: SortOrderInput | SortOrder
+    dealReference?: SortOrderInput | SortOrder
+    assumption?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: FinanceEntryCountOrderByAggregateInput
+    _avg?: FinanceEntryAvgOrderByAggregateInput
+    _max?: FinanceEntryMaxOrderByAggregateInput
+    _min?: FinanceEntryMinOrderByAggregateInput
+    _sum?: FinanceEntrySumOrderByAggregateInput
+  }
+
+  export type FinanceEntryScalarWhereWithAggregatesInput = {
+    AND?: FinanceEntryScalarWhereWithAggregatesInput | FinanceEntryScalarWhereWithAggregatesInput[]
+    OR?: FinanceEntryScalarWhereWithAggregatesInput[]
+    NOT?: FinanceEntryScalarWhereWithAggregatesInput | FinanceEntryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FinanceEntry"> | string
+    entryType?: StringWithAggregatesFilter<"FinanceEntry"> | string
+    category?: StringWithAggregatesFilter<"FinanceEntry"> | string
+    source?: StringWithAggregatesFilter<"FinanceEntry"> | string
+    amountCents?: IntWithAggregatesFilter<"FinanceEntry"> | number
+    entryDate?: DateTimeWithAggregatesFilter<"FinanceEntry"> | Date | string
+    notes?: StringWithAggregatesFilter<"FinanceEntry"> | string
+    leadId?: StringNullableWithAggregatesFilter<"FinanceEntry"> | string | null
+    dealReference?: StringNullableWithAggregatesFilter<"FinanceEntry"> | string | null
+    assumption?: StringNullableWithAggregatesFilter<"FinanceEntry"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"FinanceEntry"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"FinanceEntry"> | Date | string
+  }
+
+  export type KnowledgeItemWhereInput = {
+    AND?: KnowledgeItemWhereInput | KnowledgeItemWhereInput[]
+    OR?: KnowledgeItemWhereInput[]
+    NOT?: KnowledgeItemWhereInput | KnowledgeItemWhereInput[]
+    id?: StringFilter<"KnowledgeItem"> | string
+    title?: StringFilter<"KnowledgeItem"> | string
+    category?: StringFilter<"KnowledgeItem"> | string
+    content?: StringFilter<"KnowledgeItem"> | string
+    tags?: JsonFilter<"KnowledgeItem">
+    status?: StringFilter<"KnowledgeItem"> | string
+    source?: StringFilter<"KnowledgeItem"> | string
+    createdAt?: DateTimeFilter<"KnowledgeItem"> | Date | string
+    updatedAt?: DateTimeFilter<"KnowledgeItem"> | Date | string
+  }
+
+  export type KnowledgeItemOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    category?: SortOrder
+    content?: SortOrder
+    tags?: SortOrder
+    status?: SortOrder
+    source?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type KnowledgeItemWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: KnowledgeItemWhereInput | KnowledgeItemWhereInput[]
+    OR?: KnowledgeItemWhereInput[]
+    NOT?: KnowledgeItemWhereInput | KnowledgeItemWhereInput[]
+    title?: StringFilter<"KnowledgeItem"> | string
+    category?: StringFilter<"KnowledgeItem"> | string
+    content?: StringFilter<"KnowledgeItem"> | string
+    tags?: JsonFilter<"KnowledgeItem">
+    status?: StringFilter<"KnowledgeItem"> | string
+    source?: StringFilter<"KnowledgeItem"> | string
+    createdAt?: DateTimeFilter<"KnowledgeItem"> | Date | string
+    updatedAt?: DateTimeFilter<"KnowledgeItem"> | Date | string
+  }, "id">
+
+  export type KnowledgeItemOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    category?: SortOrder
+    content?: SortOrder
+    tags?: SortOrder
+    status?: SortOrder
+    source?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: KnowledgeItemCountOrderByAggregateInput
+    _max?: KnowledgeItemMaxOrderByAggregateInput
+    _min?: KnowledgeItemMinOrderByAggregateInput
+  }
+
+  export type KnowledgeItemScalarWhereWithAggregatesInput = {
+    AND?: KnowledgeItemScalarWhereWithAggregatesInput | KnowledgeItemScalarWhereWithAggregatesInput[]
+    OR?: KnowledgeItemScalarWhereWithAggregatesInput[]
+    NOT?: KnowledgeItemScalarWhereWithAggregatesInput | KnowledgeItemScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"KnowledgeItem"> | string
+    title?: StringWithAggregatesFilter<"KnowledgeItem"> | string
+    category?: StringWithAggregatesFilter<"KnowledgeItem"> | string
+    content?: StringWithAggregatesFilter<"KnowledgeItem"> | string
+    tags?: JsonWithAggregatesFilter<"KnowledgeItem">
+    status?: StringWithAggregatesFilter<"KnowledgeItem"> | string
+    source?: StringWithAggregatesFilter<"KnowledgeItem"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"KnowledgeItem"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"KnowledgeItem"> | Date | string
   }
 
   export type LeadCreateInput = {
@@ -28259,6 +30798,195 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type FinanceEntryCreateInput = {
+    id?: string
+    entryType: string
+    category: string
+    source: string
+    amountCents: number
+    entryDate: Date | string
+    notes: string
+    leadId?: string | null
+    dealReference?: string | null
+    assumption?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FinanceEntryUncheckedCreateInput = {
+    id?: string
+    entryType: string
+    category: string
+    source: string
+    amountCents: number
+    entryDate: Date | string
+    notes: string
+    leadId?: string | null
+    dealReference?: string | null
+    assumption?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FinanceEntryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    entryType?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    amountCents?: IntFieldUpdateOperationsInput | number
+    entryDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: StringFieldUpdateOperationsInput | string
+    leadId?: NullableStringFieldUpdateOperationsInput | string | null
+    dealReference?: NullableStringFieldUpdateOperationsInput | string | null
+    assumption?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FinanceEntryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    entryType?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    amountCents?: IntFieldUpdateOperationsInput | number
+    entryDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: StringFieldUpdateOperationsInput | string
+    leadId?: NullableStringFieldUpdateOperationsInput | string | null
+    dealReference?: NullableStringFieldUpdateOperationsInput | string | null
+    assumption?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FinanceEntryCreateManyInput = {
+    id?: string
+    entryType: string
+    category: string
+    source: string
+    amountCents: number
+    entryDate: Date | string
+    notes: string
+    leadId?: string | null
+    dealReference?: string | null
+    assumption?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FinanceEntryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    entryType?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    amountCents?: IntFieldUpdateOperationsInput | number
+    entryDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: StringFieldUpdateOperationsInput | string
+    leadId?: NullableStringFieldUpdateOperationsInput | string | null
+    dealReference?: NullableStringFieldUpdateOperationsInput | string | null
+    assumption?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FinanceEntryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    entryType?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    amountCents?: IntFieldUpdateOperationsInput | number
+    entryDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: StringFieldUpdateOperationsInput | string
+    leadId?: NullableStringFieldUpdateOperationsInput | string | null
+    dealReference?: NullableStringFieldUpdateOperationsInput | string | null
+    assumption?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type KnowledgeItemCreateInput = {
+    id?: string
+    title: string
+    category: string
+    content: string
+    tags: JsonNullValueInput | InputJsonValue
+    status?: string
+    source?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type KnowledgeItemUncheckedCreateInput = {
+    id?: string
+    title: string
+    category: string
+    content: string
+    tags: JsonNullValueInput | InputJsonValue
+    status?: string
+    source?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type KnowledgeItemUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    tags?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type KnowledgeItemUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    tags?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type KnowledgeItemCreateManyInput = {
+    id?: string
+    title: string
+    category: string
+    content: string
+    tags: JsonNullValueInput | InputJsonValue
+    status?: string
+    source?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type KnowledgeItemUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    tags?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type KnowledgeItemUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    tags?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -29699,6 +32427,93 @@ export namespace Prisma {
     nextSalesAction?: SortOrder
     callOpener?: SortOrder
     manualApprovalStatus?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FinanceEntryCountOrderByAggregateInput = {
+    id?: SortOrder
+    entryType?: SortOrder
+    category?: SortOrder
+    source?: SortOrder
+    amountCents?: SortOrder
+    entryDate?: SortOrder
+    notes?: SortOrder
+    leadId?: SortOrder
+    dealReference?: SortOrder
+    assumption?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FinanceEntryAvgOrderByAggregateInput = {
+    amountCents?: SortOrder
+  }
+
+  export type FinanceEntryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    entryType?: SortOrder
+    category?: SortOrder
+    source?: SortOrder
+    amountCents?: SortOrder
+    entryDate?: SortOrder
+    notes?: SortOrder
+    leadId?: SortOrder
+    dealReference?: SortOrder
+    assumption?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FinanceEntryMinOrderByAggregateInput = {
+    id?: SortOrder
+    entryType?: SortOrder
+    category?: SortOrder
+    source?: SortOrder
+    amountCents?: SortOrder
+    entryDate?: SortOrder
+    notes?: SortOrder
+    leadId?: SortOrder
+    dealReference?: SortOrder
+    assumption?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FinanceEntrySumOrderByAggregateInput = {
+    amountCents?: SortOrder
+  }
+
+  export type KnowledgeItemCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    category?: SortOrder
+    content?: SortOrder
+    tags?: SortOrder
+    status?: SortOrder
+    source?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type KnowledgeItemMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    category?: SortOrder
+    content?: SortOrder
+    status?: SortOrder
+    source?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type KnowledgeItemMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    category?: SortOrder
+    content?: SortOrder
+    status?: SortOrder
+    source?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }

@@ -486,3 +486,42 @@ model SalesConversionAssist {
   @@index([manualApprovalStatus])
   @@index([createdAt])
 }
+
+model FinanceEntry {
+  id            String   @id @default(uuid())
+  entryType     String
+  category      String
+  source        String
+  amountCents   Int
+  entryDate     DateTime
+  notes         String
+  leadId        String?
+  dealReference String?
+  assumption    String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([entryType])
+  @@index([category])
+  @@index([source])
+  @@index([entryDate])
+  @@index([leadId])
+  @@index([createdAt])
+}
+
+model KnowledgeItem {
+  id        String   @id @default(uuid())
+  title     String
+  category  String
+  content   String
+  tags      Json
+  status    String   @default("draft")
+  source    String   @default("manual")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+  @@index([status])
+  @@index([source])
+  @@index([createdAt])
+}

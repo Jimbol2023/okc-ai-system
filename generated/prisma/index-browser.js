@@ -411,6 +411,33 @@ exports.Prisma.SalesConversionAssistScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.FinanceEntryScalarFieldEnum = {
+  id: 'id',
+  entryType: 'entryType',
+  category: 'category',
+  source: 'source',
+  amountCents: 'amountCents',
+  entryDate: 'entryDate',
+  notes: 'notes',
+  leadId: 'leadId',
+  dealReference: 'dealReference',
+  assumption: 'assumption',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.KnowledgeItemScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  category: 'category',
+  content: 'content',
+  tags: 'tags',
+  status: 'status',
+  source: 'source',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -487,7 +514,9 @@ exports.Prisma.ModelName = {
   MarketingPublishAssist: 'MarketingPublishAssist',
   MarketingCanvaAssetAssist: 'MarketingCanvaAssetAssist',
   MarketingSalesAttribution: 'MarketingSalesAttribution',
-  SalesConversionAssist: 'SalesConversionAssist'
+  SalesConversionAssist: 'SalesConversionAssist',
+  FinanceEntry: 'FinanceEntry',
+  KnowledgeItem: 'KnowledgeItem'
 };
 
 /**
