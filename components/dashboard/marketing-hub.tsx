@@ -16,6 +16,7 @@ import {
 import { MarketingWorkflowClient } from "@/components/dashboard/marketing-workflow-client";
 import { ManualLeadIntakeClient } from "@/components/dashboard/manual-lead-intake-client";
 import { SalesConversionAssistClient } from "@/components/dashboard/sales-conversion-assist-client";
+import { SalesFollowUpWorkspaceClient } from "@/components/dashboard/sales-follow-up-workspace-client";
 import type { ReactNode } from "react";
 
 function formatStatus(status: MarketingConnectionStatus) {
@@ -86,6 +87,8 @@ export function MarketingHub() {
       <MarketingWorkflowClient />
 
       <SalesConversionAssistClient />
+
+      <SalesFollowUpWorkspaceClient />
 
       <ManualLeadIntakeClient />
 

@@ -20,6 +20,13 @@ type SalesQueueLead = {
   };
   salesConversionAssists: SalesAssist[];
   marketingSalesAttributions: SalesAttribution[];
+  latestSellerCallOutcome: {
+    id: string;
+    outcome: string;
+    operatorSummary: string;
+    manualNextStep: string;
+    callCompletedAt: string;
+  } | null;
 };
 
 type SalesAttribution = {
@@ -201,6 +208,19 @@ export function SalesConversionAssistClient() {
                   Missing: {selectedLead.offerReadiness.missing.join(", ")}
                 </p>
               ) : null}
+              {selectedLead.latestSellerCallOutcome ? (
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 text-slate-800">
+                  <p className="text-sm font-bold">Latest seller outcome: {formatStatus(selectedLead.latestSellerCallOutcome.outcome)}</p>
+                  <p className="mt-2 text-sm leading-6">{selectedLead.latestSellerCallOutcome.operatorSummary}</p>
+                  <p className="mt-2 text-xs font-bold uppercase tracking-[0.08em] text-muted">
+                    Next: {formatStatus(selectedLead.latestSellerCallOutcome.manualNextStep)}
+                  </p>
+                </div>
+              ) : (
+                <p className="rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm leading-6 text-slate-700">
+                  Seller call outcome has not been captured yet.
+                </p>
+              )}
               <button
                 type="button"
                 disabled={busy}

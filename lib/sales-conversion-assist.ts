@@ -176,7 +176,7 @@ function getSalesQueueRank(lead: {
 }
 
 export async function getSalesConversionDashboard() {
-  const [leads, attributions, assists] = await Promise.all([
+  const [leads, attributions, assists, sellerCallOutcomes] = await Promise.all([
     prisma.lead.findMany({
       orderBy: [{ score: "desc" }, { createdAt: "desc" }],
       include: {
@@ -206,7 +206,18 @@ export async function getSalesConversionDashboard() {
       },
       take: 50,
     }),
+    prisma.sellerCallOutcome.findMany({
+      orderBy: [{ callCompletedAt: "desc" }, { createdAt: "desc" }],
+      take: 200,
+    }),
   ]);
+
+  const latestOutcomeByLeadId = new Map<string, (typeof sellerCallOutcomes)[number]>();
+  sellerCallOutcomes.forEach((outcome) => {
+    if (!latestOutcomeByLeadId.has(outcome.leadId)) {
+      latestOutcomeByLeadId.set(outcome.leadId, outcome);
+    }
+  });
 
   const salesQueue = leads
     .map((lead) => ({
@@ -214,6 +225,7 @@ export async function getSalesConversionDashboard() {
       salesQueueRank: getSalesQueueRank(lead),
       nextSalesAction: getNextSalesAction(lead),
       offerReadiness: getOfferReadiness(lead),
+      latestSellerCallOutcome: latestOutcomeByLeadId.get(lead.id) ?? null,
     }))
     .sort((a, b) => b.salesQueueRank - a.salesQueueRank)
     .slice(0, 25);
