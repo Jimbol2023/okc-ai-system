@@ -13,9 +13,58 @@ type ExecutiveWidget = {
   status: "good" | "watch" | "urgent" | "missing";
 };
 
+type MetricStatus = ExecutiveWidget["status"];
+
+type BusinessKpiCard = {
+  id: string;
+  label: string;
+  value: string;
+  detail: string;
+  status: MetricStatus;
+};
+
+type MarketingChannelPerformance = {
+  source: string;
+  totalLeads: number;
+  qualifiedLeads: number;
+  closedLeads: number;
+  conversionRate: number;
+  qualifiedShare: number;
+};
+
+type DepartmentHealthCard = {
+  id: string;
+  department: string;
+  score: number;
+  status: MetricStatus;
+  reason: string;
+};
+
+type TrendChart = {
+  id: string;
+  label: string;
+  detail: string;
+  unit: "count" | "currency";
+  points: Array<{
+    date: string;
+    label: string;
+    value: number;
+  }>;
+};
+
+type BusinessIntelligenceReport = {
+  kpis: BusinessKpiCard[];
+  channelPerformance: MarketingChannelPerformance[];
+  departmentHealth: DepartmentHealthCard[];
+  trendCharts: TrendChart[];
+};
+
 type ExecutiveDashboardResponse = {
   ok: boolean;
   widgets?: ExecutiveWidget[];
+  businessIntelligence?: BusinessIntelligenceReport;
+  departmentHealth?: DepartmentHealthCard[];
+  trendCharts?: TrendChart[];
   recommendedPriorities?: string[];
   dataGaps?: string[];
   recentSystemActivity?: Array<{
@@ -35,11 +84,23 @@ type ExecutiveDashboardResponse = {
   error?: string;
 };
 
-function getStatusClass(status: ExecutiveWidget["status"]) {
+function getStatusClass(status: MetricStatus) {
   if (status === "urgent") return "border-red-200 bg-red-50 text-red-900";
   if (status === "watch") return "border-amber-200 bg-amber-50 text-amber-900";
   if (status === "missing") return "border-slate-200 bg-slate-50 text-slate-700";
   return "border-emerald-200 bg-emerald-50 text-emerald-900";
+}
+
+function formatChartValue(value: number, unit: TrendChart["unit"]) {
+  if (unit === "currency") {
+    return new Intl.NumberFormat("en-US", {
+      currency: "USD",
+      maximumFractionDigits: 0,
+      style: "currency",
+    }).format(value / 100);
+  }
+
+  return String(value);
 }
 
 function formatTime(value: string) {
@@ -63,8 +124,48 @@ async function readJsonResponse<T>(response: Response): Promise<T> {
   return response.json() as Promise<T>;
 }
 
+function TrendSparkline({ chart }: { chart: TrendChart }) {
+  const width = 220;
+  const height = 72;
+  const values = chart.points.map((point) => point.value);
+  const min = Math.min(0, ...values);
+  const max = Math.max(1, ...values);
+  const range = max - min || 1;
+  const points = chart.points
+    .map((point, index) => {
+      const x = chart.points.length <= 1 ? 0 : (index / (chart.points.length - 1)) * width;
+      const y = height - ((point.value - min) / range) * height;
+
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    })
+    .join(" ");
+  const latest = chart.points.at(-1);
+
+  return (
+    <div className="rounded-lg border border-border bg-surface p-4">
+      <div className="flex min-w-0 items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h3 className="break-words text-sm font-semibold text-primary">{chart.label}</h3>
+          <p className="mt-1 break-words text-xs leading-5 text-muted">{chart.detail}</p>
+        </div>
+        {latest ? <span className="shrink-0 text-sm font-semibold text-primary">{formatChartValue(latest.value, chart.unit)}</span> : null}
+      </div>
+      <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`${chart.label} trend`} className="mt-4 h-20 w-full overflow-visible">
+        <polyline fill="none" points={points} stroke="#02213d" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" />
+      </svg>
+      <div className="mt-2 flex justify-between text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+        <span>{chart.points[0]?.label ?? ""}</span>
+        <span>{latest?.label ?? ""}</span>
+      </div>
+    </div>
+  );
+}
+
 export function ExecutiveDashboardClient() {
   const [widgets, setWidgets] = useState<ExecutiveWidget[]>([]);
+  const [businessIntelligence, setBusinessIntelligence] = useState<BusinessIntelligenceReport | null>(null);
+  const [departmentHealth, setDepartmentHealth] = useState<DepartmentHealthCard[]>([]);
+  const [trendCharts, setTrendCharts] = useState<TrendChart[]>([]);
   const [recommendedPriorities, setRecommendedPriorities] = useState<string[]>([]);
   const [dataGaps, setDataGaps] = useState<string[]>([]);
   const [recentSystemActivity, setRecentSystemActivity] = useState<NonNullable<ExecutiveDashboardResponse["recentSystemActivity"]>>([]);
@@ -87,6 +188,9 @@ export function ExecutiveDashboardClient() {
       }
 
       setWidgets(data.widgets);
+      setBusinessIntelligence(data.businessIntelligence ?? null);
+      setDepartmentHealth(data.departmentHealth ?? data.businessIntelligence?.departmentHealth ?? []);
+      setTrendCharts(data.trendCharts ?? data.businessIntelligence?.trendCharts ?? []);
       setRecommendedPriorities(data.recommendedPriorities ?? []);
       setDataGaps(data.dataGaps ?? []);
       setRecentSystemActivity(data.recentSystemActivity ?? []);
@@ -148,6 +252,87 @@ export function ExecutiveDashboardClient() {
           ))}
         </div>
       </section>
+
+      {businessIntelligence ? (
+        <section aria-labelledby="business-intelligence-heading" className="space-y-3">
+          <h2 id="business-intelligence-heading" className="break-words text-xl font-semibold text-primary">
+            Business intelligence KPIs
+          </h2>
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            {businessIntelligence.kpis.map((kpi) => (
+              <div key={kpi.id} className="rounded-lg border border-border bg-surface p-4">
+                <span className={`w-fit max-w-full break-words rounded-full border px-2 py-1 text-xs font-bold uppercase leading-5 ${getStatusClass(kpi.status)}`}>
+                  {kpi.status}
+                </span>
+                <p className="mt-3 break-words text-sm font-semibold text-muted">{kpi.label}</p>
+                <p className="mt-1 break-words text-2xl font-semibold text-primary">{kpi.value}</p>
+                <p className="mt-2 break-words text-sm leading-6 text-muted">{kpi.detail}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {departmentHealth.length > 0 ? (
+        <section aria-labelledby="department-health-heading" className="space-y-3">
+          <h2 id="department-health-heading" className="break-words text-xl font-semibold text-primary">
+            Department health
+          </h2>
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            {departmentHealth.map((department) => (
+              <div key={department.id} className="rounded-lg border border-border bg-surface p-4">
+                <div className="flex min-w-0 items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="break-words text-sm font-semibold text-primary">{department.department}</p>
+                    <p className="mt-1 break-words text-xs leading-5 text-muted">{department.reason}</p>
+                  </div>
+                  <span className={`shrink-0 rounded-full border px-2 py-1 text-xs font-bold ${getStatusClass(department.status)}`}>
+                    {department.status}
+                  </span>
+                </div>
+                <div className="mt-4 h-2 overflow-hidden rounded-full bg-slate-100">
+                  <div className="h-full rounded-full bg-primary" style={{ width: `${department.score}%` }} />
+                </div>
+                <p className="mt-2 text-sm font-semibold text-primary">{department.score}/100</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {trendCharts.length > 0 ? (
+        <section aria-labelledby="trend-heading" className="space-y-3">
+          <h2 id="trend-heading" className="break-words text-xl font-semibold text-primary">
+            Executive trend charts
+          </h2>
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+            {trendCharts.map((chart) => (
+              <TrendSparkline key={chart.id} chart={chart} />
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {businessIntelligence?.channelPerformance.length ? (
+        <section aria-labelledby="channel-performance-heading" className="rounded-lg border border-border bg-surface p-4">
+          <h2 id="channel-performance-heading" className="break-words text-lg font-semibold text-primary">
+            Marketing channel performance
+          </h2>
+          <div className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+            {businessIntelligence.channelPerformance.slice(0, 6).map((channel) => (
+              <div key={channel.source} className="rounded-lg border border-border bg-white p-3">
+                <p className="break-words text-sm font-semibold text-primary">{channel.source}</p>
+                <p className="mt-2 text-sm leading-6 text-muted">
+                  {channel.qualifiedLeads} qualified / {channel.totalLeads} total lead(s)
+                </p>
+                <p className="text-sm leading-6 text-muted">
+                  {channel.conversionRate}% conversion, {channel.qualifiedShare}% qualified-share
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <div className="grid gap-4 xl:grid-cols-[1fr_1fr_1fr]">
         <section className="rounded-lg border border-border bg-surface p-4">

@@ -1,3 +1,5 @@
+import { createBusinessIntelligenceReport, type BusinessIntelligenceReport, type DepartmentHealthCard, type TrendChart } from "@/lib/business-intelligence";
+import { createExecutiveRecommendationsFromBi } from "@/lib/executive-recommendations";
 import { listFinanceEntries, calculateFinanceKpis, formatFinanceDollars } from "@/lib/finance";
 import { listKnowledgeItems } from "@/lib/knowledge";
 import { listDbLeads } from "@/lib/leads-db";
@@ -21,6 +23,9 @@ export type ExecutiveWidget = {
 export type ExecutiveDashboardReport = {
   ok: true;
   widgets: ExecutiveWidget[];
+  businessIntelligence: BusinessIntelligenceReport;
+  departmentHealth: DepartmentHealthCard[];
+  trendCharts: TrendChart[];
   recommendedPriorities: string[];
   dataGaps: string[];
   recentSystemActivity: Array<{
@@ -172,6 +177,12 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
   const revenuePipeline = getRevenuePipelineSummary(leads);
   const providerReadiness = createProviderReadinessReport();
   const financeKpis = calculateFinanceKpis({ entries: financeEntries, leadCount: leads.length });
+  const businessIntelligence = createBusinessIntelligenceReport({
+    leads,
+    financeEntries,
+    marketingWorkflow: marketingResult.data,
+    knowledgeItems,
+  });
 
   const newLeadsToday = leads.filter((lead) => getTime(lead.timestamp) >= today.getTime()).length;
   const followUpsDue = leads.filter(isFollowUpDue).length;
@@ -184,7 +195,6 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
     0,
   );
   const providerMissingCount = providerReadiness.providers.filter((provider) => provider.status === "missing").length;
-  const financeGapCount = financeKpis.missingData.length;
   const activeKnowledgeItems = knowledgeItems.filter((item) => item.status === "active").length;
   const websiteSeoReady = publicSiteUrl.startsWith("https://") && systemHealth?.database === "ok";
 
@@ -272,23 +282,19 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
         status: activeKnowledgeItems > 0 ? "good" : "missing",
       },
     ],
-    recommendedPriorities: createExecutiveRecommendations({
-      followUpsDue,
-      missingInfoCount,
-      offerReadyCount,
-      marketingAwaitingApproval,
-      canvaAwaitingDesign,
-      financeGapCount,
-      providerMissingCount,
-    }),
-    dataGaps: [
+    businessIntelligence,
+    departmentHealth: businessIntelligence.departmentHealth,
+    trendCharts: businessIntelligence.trendCharts,
+    recommendedPriorities: createExecutiveRecommendationsFromBi(businessIntelligence),
+    dataGaps: [...new Set([
       leadsResult.gap,
       marketingResult.gap,
       financeEntriesResult.gap,
       knowledgeItemsResult.gap,
+      ...businessIntelligence.dataGaps,
       ...financeKpis.missingData,
       providerMissingCount > 0 ? `${providerMissingCount} provider readiness credential set(s) are missing.` : "",
-    ].filter(Boolean),
+    ].filter(Boolean))],
     recentSystemActivity,
     safetyFlags: {
       readOnly: true,
