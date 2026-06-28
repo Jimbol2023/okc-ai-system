@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint app components lib --ext .ts,.tsx",
     "test:e2e": "playwright test",
+    "test:safety": "node --import tsx --test tests/safety/safety-invariants.test.ts",
     "postinstall": "prisma generate",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
@@ -35,6 +36,7 @@
     "eslint-config-next": "^16.2.3",
     "prisma": "^6.15.0",
     "tailwindcss": "^4.1.13",
+    "tsx": "^4.22.4",
     "typescript": "^5.9.2"
   }
 }
