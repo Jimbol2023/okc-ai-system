@@ -1,14 +1,19 @@
 import type { Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { BarChart3, Building2, ClipboardCheck, HousePlus, LayoutGrid, Lock, Megaphone, Search, Shield, Upload, Users } from "lucide-react";
+import { BarChart3, BookOpen, Briefcase, Building2, ClipboardCheck, DollarSign, HousePlus, LayoutGrid, Lock, Megaphone, Search, Shield, Upload, Users, Wrench } from "lucide-react";
 
 import { getAuthenticatedAdmin } from "@/lib/auth";
 import { brandConfig } from "@/lib/brand-config";
+
 export const dynamic = "force-dynamic";
 
 const navItems = [
   { href: "/dashboard" as Route, label: "Overview", icon: LayoutGrid },
+  { href: "/dashboard/acquisitions" as Route, label: "Acquisitions", icon: Briefcase },
+  { href: "/dashboard/operations" as Route, label: "Operations", icon: Wrench },
+  { href: "/dashboard/finance" as Route, label: "Finance", icon: DollarSign },
+  { href: "/dashboard/knowledge" as Route, label: "Knowledge", icon: BookOpen },
   { href: "/dashboard/leads" as Route, label: "Leads", icon: Users },
   { href: "/dashboard/approvals" as Route, label: "Approvals", icon: ClipboardCheck },
   { href: "/dashboard/marketing" as Route, label: "Marketing Hub", icon: Megaphone },

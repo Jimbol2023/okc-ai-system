@@ -89,6 +89,22 @@ function getWidgetStatus(count: number, goodWhenPositive = false): ExecutiveWidg
   return "watch";
 }
 
+async function loadDashboardSection<T>(section: string, loader: () => Promise<T>, fallback: T) {
+  try {
+    return {
+      data: await loader(),
+      gap: "",
+    };
+  } catch (error) {
+    console.error(`Executive dashboard ${section} load failed:`, error);
+
+    return {
+      data: fallback,
+      gap: `${section} records could not be loaded; review database readiness before relying on this section.`,
+    };
+  }
+}
+
 async function getRecentSystemActivity() {
   const [jobs, memory] = await Promise.all([
     prisma.aiJob.findMany({
@@ -140,14 +156,18 @@ export function createExecutiveRecommendations(input: {
 }
 
 export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboardReport> {
-  const [leads, marketing, financeEntries, knowledgeItems, systemHealth, recentSystemActivity] = await Promise.all([
-    listDbLeads(),
-    listMarketingWorkflow(),
-    listFinanceEntries().catch(() => []),
-    listKnowledgeItems().catch(() => []),
+  const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, systemHealth, recentSystemActivity] = await Promise.all([
+    loadDashboardSection("Lead", listDbLeads, [] as StoredLead[]),
+    loadDashboardSection("Marketing workflow", listMarketingWorkflow, null),
+    loadDashboardSection("Finance", listFinanceEntries, []),
+    loadDashboardSection("Knowledge", listKnowledgeItems, []),
     getSystemHealth().catch(() => null),
     getRecentSystemActivity().catch(() => []),
   ]);
+  const leads = leadsResult.data;
+  const marketingDrafts = marketingResult.data?.drafts ?? [];
+  const financeEntries = financeEntriesResult.data;
+  const knowledgeItems = knowledgeItemsResult.data;
   const today = startOfToday();
   const revenuePipeline = getRevenuePipelineSummary(leads);
   const providerReadiness = createProviderReadinessReport();
@@ -157,8 +177,8 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
   const followUpsDue = leads.filter(isFollowUpDue).length;
   const offerReadyCount = getOfferReadyCount(leads);
   const missingInfoCount = getMissingInfoCount(leads);
-  const marketingAwaitingApproval = marketing.drafts.filter((draft) => draft.status === "pending_approval").length;
-  const canvaAwaitingDesign = marketing.drafts.reduce(
+  const marketingAwaitingApproval = marketingDrafts.filter((draft) => draft.status === "pending_approval").length;
+  const canvaAwaitingDesign = marketingDrafts.reduce(
     (count, draft) =>
       count + draft.canvaAssetAssists.filter((assist) => assist.manualApprovalStatus === "pending_manual_asset_approval").length,
     0,
@@ -261,7 +281,14 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
       financeGapCount,
       providerMissingCount,
     }),
-    dataGaps: [...financeKpis.missingData, providerMissingCount > 0 ? `${providerMissingCount} provider readiness credential set(s) are missing.` : ""].filter(Boolean),
+    dataGaps: [
+      leadsResult.gap,
+      marketingResult.gap,
+      financeEntriesResult.gap,
+      knowledgeItemsResult.gap,
+      ...financeKpis.missingData,
+      providerMissingCount > 0 ? `${providerMissingCount} provider readiness credential set(s) are missing.` : "",
+    ].filter(Boolean),
     recentSystemActivity,
     safetyFlags: {
       readOnly: true,
