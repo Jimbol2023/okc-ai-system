@@ -356,6 +356,39 @@ exports.Prisma.MarketingCanvaAssetAssistScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.MarketingSalesAttributionScalarFieldEnum = {
+  id: 'id',
+  leadId: 'leadId',
+  marketingDraftId: 'marketingDraftId',
+  canvaAssetAssistId: 'canvaAssetAssistId',
+  publishAssistId: 'publishAssistId',
+  channel: 'channel',
+  topic: 'topic',
+  sourceLabel: 'sourceLabel',
+  manualPostUrl: 'manualPostUrl',
+  attributionStatus: 'attributionStatus',
+  attributionNote: 'attributionNote',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SalesConversionAssistScalarFieldEnum = {
+  id: 'id',
+  leadId: 'leadId',
+  assistType: 'assistType',
+  nextSalesAction: 'nextSalesAction',
+  callOpener: 'callOpener',
+  sellerQuestions: 'sellerQuestions',
+  objectionNotes: 'objectionNotes',
+  followUpDrafts: 'followUpDrafts',
+  offerReadiness: 'offerReadiness',
+  roiSignals: 'roiSignals',
+  safetyFlags: 'safetyFlags',
+  manualApprovalStatus: 'manualApprovalStatus',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -429,7 +462,9 @@ exports.Prisma.ModelName = {
   MarketingApproval: 'MarketingApproval',
   MarketingAccountConnection: 'MarketingAccountConnection',
   MarketingPublishAssist: 'MarketingPublishAssist',
-  MarketingCanvaAssetAssist: 'MarketingCanvaAssetAssist'
+  MarketingCanvaAssetAssist: 'MarketingCanvaAssetAssist',
+  MarketingSalesAttribution: 'MarketingSalesAttribution',
+  SalesConversionAssist: 'SalesConversionAssist'
 };
 
 /**

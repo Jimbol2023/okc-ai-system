@@ -57,6 +57,9 @@ model Lead {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  marketingSalesAttributions MarketingSalesAttribution[]
+  salesConversionAssists     SalesConversionAssist[]
+
   // INDEXES
   @@unique([propertyAddress, phone])
   @@index([createdAt])
@@ -312,7 +315,8 @@ model MarketingDraft {
 
   approvals        MarketingApproval[]
   publishAssists   MarketingPublishAssist[]
-  canvaAssetAssists MarketingCanvaAssetAssist[]
+  canvaAssetAssists         MarketingCanvaAssetAssist[]
+  marketingSalesAttributions MarketingSalesAttribution[]
 
   @@index([channel])
   @@index([status])
@@ -367,6 +371,8 @@ model MarketingPublishAssist {
 
   draft MarketingDraft @relation(fields: [draftId], references: [id], onDelete: Cascade)
 
+  marketingSalesAttributions MarketingSalesAttribution[]
+
   @@index([draftId])
   @@index([status])
   @@index([sourceLabel])
@@ -387,8 +393,64 @@ model MarketingCanvaAssetAssist {
 
   draft MarketingDraft @relation(fields: [draftId], references: [id], onDelete: Cascade)
 
+  marketingSalesAttributions MarketingSalesAttribution[]
+
   @@index([draftId])
   @@index([recommendedFormat])
+  @@index([manualApprovalStatus])
+  @@index([createdAt])
+}
+
+model MarketingSalesAttribution {
+  id                 String   @id @default(uuid())
+  leadId             String
+  marketingDraftId   String?
+  canvaAssetAssistId String?
+  publishAssistId    String?
+  channel            String
+  topic              String
+  sourceLabel        String
+  manualPostUrl      String?
+  attributionStatus  String   @default("manual_review")
+  attributionNote    String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  lead             Lead                       @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  marketingDraft   MarketingDraft?            @relation(fields: [marketingDraftId], references: [id], onDelete: SetNull)
+  canvaAssetAssist MarketingCanvaAssetAssist? @relation(fields: [canvaAssetAssistId], references: [id], onDelete: SetNull)
+  publishAssist    MarketingPublishAssist?    @relation(fields: [publishAssistId], references: [id], onDelete: SetNull)
+
+  @@index([leadId])
+  @@index([marketingDraftId])
+  @@index([canvaAssetAssistId])
+  @@index([publishAssistId])
+  @@index([channel])
+  @@index([sourceLabel])
+  @@index([attributionStatus])
+  @@index([createdAt])
+}
+
+model SalesConversionAssist {
+  id                  String   @id @default(uuid())
+  leadId              String
+  assistType          String   @default("manual_sales_conversion")
+  nextSalesAction     String
+  callOpener          String
+  sellerQuestions     Json
+  objectionNotes      Json
+  followUpDrafts      Json
+  offerReadiness      Json
+  roiSignals          Json
+  safetyFlags         Json
+  manualApprovalStatus String  @default("pending_manual_review")
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@index([leadId])
+  @@index([assistType])
   @@index([manualApprovalStatus])
   @@index([createdAt])
 }

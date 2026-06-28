@@ -13,6 +13,7 @@ import {
   type MarketingRiskLevel,
 } from "@/lib/marketing-hub";
 import { MarketingWorkflowClient } from "@/components/dashboard/marketing-workflow-client";
+import { SalesConversionAssistClient } from "@/components/dashboard/sales-conversion-assist-client";
 import type { ReactNode } from "react";
 
 function formatStatus(status: MarketingConnectionStatus) {
@@ -81,6 +82,8 @@ export function MarketingHub() {
       </div>
 
       <MarketingWorkflowClient />
+
+      <SalesConversionAssistClient />
 
       <SectionCard
         eyebrow="Highest ROI focus"

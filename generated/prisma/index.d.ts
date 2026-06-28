@@ -88,6 +88,16 @@ export type MarketingPublishAssist = $Result.DefaultSelection<Prisma.$MarketingP
  * 
  */
 export type MarketingCanvaAssetAssist = $Result.DefaultSelection<Prisma.$MarketingCanvaAssetAssistPayload>
+/**
+ * Model MarketingSalesAttribution
+ * 
+ */
+export type MarketingSalesAttribution = $Result.DefaultSelection<Prisma.$MarketingSalesAttributionPayload>
+/**
+ * Model SalesConversionAssist
+ * 
+ */
+export type SalesConversionAssist = $Result.DefaultSelection<Prisma.$SalesConversionAssistPayload>
 
 /**
  * Enums
@@ -411,6 +421,26 @@ export class PrismaClient<
     * ```
     */
   get marketingCanvaAssetAssist(): Prisma.MarketingCanvaAssetAssistDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.marketingSalesAttribution`: Exposes CRUD operations for the **MarketingSalesAttribution** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MarketingSalesAttributions
+    * const marketingSalesAttributions = await prisma.marketingSalesAttribution.findMany()
+    * ```
+    */
+  get marketingSalesAttribution(): Prisma.MarketingSalesAttributionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.salesConversionAssist`: Exposes CRUD operations for the **SalesConversionAssist** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SalesConversionAssists
+    * const salesConversionAssists = await prisma.salesConversionAssist.findMany()
+    * ```
+    */
+  get salesConversionAssist(): Prisma.SalesConversionAssistDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -866,7 +896,9 @@ export namespace Prisma {
     MarketingApproval: 'MarketingApproval',
     MarketingAccountConnection: 'MarketingAccountConnection',
     MarketingPublishAssist: 'MarketingPublishAssist',
-    MarketingCanvaAssetAssist: 'MarketingCanvaAssetAssist'
+    MarketingCanvaAssetAssist: 'MarketingCanvaAssetAssist',
+    MarketingSalesAttribution: 'MarketingSalesAttribution',
+    SalesConversionAssist: 'SalesConversionAssist'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -885,7 +917,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "lead" | "sellerCallOutcome" | "aiPerformanceMetric" | "aiJob" | "aiJobAction" | "aiJobLog" | "aiMemoryEvent" | "aiLearningRecommendation" | "buyer" | "buyerActivity" | "marketingDraft" | "marketingApproval" | "marketingAccountConnection" | "marketingPublishAssist" | "marketingCanvaAssetAssist"
+      modelProps: "lead" | "sellerCallOutcome" | "aiPerformanceMetric" | "aiJob" | "aiJobAction" | "aiJobLog" | "aiMemoryEvent" | "aiLearningRecommendation" | "buyer" | "buyerActivity" | "marketingDraft" | "marketingApproval" | "marketingAccountConnection" | "marketingPublishAssist" | "marketingCanvaAssetAssist" | "marketingSalesAttribution" | "salesConversionAssist"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1999,6 +2031,154 @@ export namespace Prisma {
           }
         }
       }
+      MarketingSalesAttribution: {
+        payload: Prisma.$MarketingSalesAttributionPayload<ExtArgs>
+        fields: Prisma.MarketingSalesAttributionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MarketingSalesAttributionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingSalesAttributionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MarketingSalesAttributionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingSalesAttributionPayload>
+          }
+          findFirst: {
+            args: Prisma.MarketingSalesAttributionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingSalesAttributionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MarketingSalesAttributionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingSalesAttributionPayload>
+          }
+          findMany: {
+            args: Prisma.MarketingSalesAttributionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingSalesAttributionPayload>[]
+          }
+          create: {
+            args: Prisma.MarketingSalesAttributionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingSalesAttributionPayload>
+          }
+          createMany: {
+            args: Prisma.MarketingSalesAttributionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MarketingSalesAttributionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingSalesAttributionPayload>[]
+          }
+          delete: {
+            args: Prisma.MarketingSalesAttributionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingSalesAttributionPayload>
+          }
+          update: {
+            args: Prisma.MarketingSalesAttributionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingSalesAttributionPayload>
+          }
+          deleteMany: {
+            args: Prisma.MarketingSalesAttributionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MarketingSalesAttributionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.MarketingSalesAttributionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingSalesAttributionPayload>[]
+          }
+          upsert: {
+            args: Prisma.MarketingSalesAttributionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingSalesAttributionPayload>
+          }
+          aggregate: {
+            args: Prisma.MarketingSalesAttributionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMarketingSalesAttribution>
+          }
+          groupBy: {
+            args: Prisma.MarketingSalesAttributionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MarketingSalesAttributionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MarketingSalesAttributionCountArgs<ExtArgs>
+            result: $Utils.Optional<MarketingSalesAttributionCountAggregateOutputType> | number
+          }
+        }
+      }
+      SalesConversionAssist: {
+        payload: Prisma.$SalesConversionAssistPayload<ExtArgs>
+        fields: Prisma.SalesConversionAssistFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SalesConversionAssistFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesConversionAssistPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SalesConversionAssistFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesConversionAssistPayload>
+          }
+          findFirst: {
+            args: Prisma.SalesConversionAssistFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesConversionAssistPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SalesConversionAssistFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesConversionAssistPayload>
+          }
+          findMany: {
+            args: Prisma.SalesConversionAssistFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesConversionAssistPayload>[]
+          }
+          create: {
+            args: Prisma.SalesConversionAssistCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesConversionAssistPayload>
+          }
+          createMany: {
+            args: Prisma.SalesConversionAssistCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SalesConversionAssistCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesConversionAssistPayload>[]
+          }
+          delete: {
+            args: Prisma.SalesConversionAssistDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesConversionAssistPayload>
+          }
+          update: {
+            args: Prisma.SalesConversionAssistUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesConversionAssistPayload>
+          }
+          deleteMany: {
+            args: Prisma.SalesConversionAssistDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SalesConversionAssistUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SalesConversionAssistUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesConversionAssistPayload>[]
+          }
+          upsert: {
+            args: Prisma.SalesConversionAssistUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalesConversionAssistPayload>
+          }
+          aggregate: {
+            args: Prisma.SalesConversionAssistAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSalesConversionAssist>
+          }
+          groupBy: {
+            args: Prisma.SalesConversionAssistGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SalesConversionAssistGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SalesConversionAssistCountArgs<ExtArgs>
+            result: $Utils.Optional<SalesConversionAssistCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2110,6 +2290,8 @@ export namespace Prisma {
     marketingAccountConnection?: MarketingAccountConnectionOmit
     marketingPublishAssist?: MarketingPublishAssistOmit
     marketingCanvaAssetAssist?: MarketingCanvaAssetAssistOmit
+    marketingSalesAttribution?: MarketingSalesAttributionOmit
+    salesConversionAssist?: SalesConversionAssistOmit
   }
 
   /* Types for Logging */
@@ -2183,6 +2365,46 @@ export namespace Prisma {
   /**
    * Count Types
    */
+
+
+  /**
+   * Count Type LeadCountOutputType
+   */
+
+  export type LeadCountOutputType = {
+    marketingSalesAttributions: number
+    salesConversionAssists: number
+  }
+
+  export type LeadCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    marketingSalesAttributions?: boolean | LeadCountOutputTypeCountMarketingSalesAttributionsArgs
+    salesConversionAssists?: boolean | LeadCountOutputTypeCountSalesConversionAssistsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * LeadCountOutputType without action
+   */
+  export type LeadCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LeadCountOutputType
+     */
+    select?: LeadCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * LeadCountOutputType without action
+   */
+  export type LeadCountOutputTypeCountMarketingSalesAttributionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MarketingSalesAttributionWhereInput
+  }
+
+  /**
+   * LeadCountOutputType without action
+   */
+  export type LeadCountOutputTypeCountSalesConversionAssistsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SalesConversionAssistWhereInput
+  }
 
 
   /**
@@ -2264,12 +2486,14 @@ export namespace Prisma {
     approvals: number
     publishAssists: number
     canvaAssetAssists: number
+    marketingSalesAttributions: number
   }
 
   export type MarketingDraftCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     approvals?: boolean | MarketingDraftCountOutputTypeCountApprovalsArgs
     publishAssists?: boolean | MarketingDraftCountOutputTypeCountPublishAssistsArgs
     canvaAssetAssists?: boolean | MarketingDraftCountOutputTypeCountCanvaAssetAssistsArgs
+    marketingSalesAttributions?: boolean | MarketingDraftCountOutputTypeCountMarketingSalesAttributionsArgs
   }
 
   // Custom InputTypes
@@ -2302,6 +2526,75 @@ export namespace Prisma {
    */
   export type MarketingDraftCountOutputTypeCountCanvaAssetAssistsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MarketingCanvaAssetAssistWhereInput
+  }
+
+  /**
+   * MarketingDraftCountOutputType without action
+   */
+  export type MarketingDraftCountOutputTypeCountMarketingSalesAttributionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MarketingSalesAttributionWhereInput
+  }
+
+
+  /**
+   * Count Type MarketingPublishAssistCountOutputType
+   */
+
+  export type MarketingPublishAssistCountOutputType = {
+    marketingSalesAttributions: number
+  }
+
+  export type MarketingPublishAssistCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    marketingSalesAttributions?: boolean | MarketingPublishAssistCountOutputTypeCountMarketingSalesAttributionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * MarketingPublishAssistCountOutputType without action
+   */
+  export type MarketingPublishAssistCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingPublishAssistCountOutputType
+     */
+    select?: MarketingPublishAssistCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * MarketingPublishAssistCountOutputType without action
+   */
+  export type MarketingPublishAssistCountOutputTypeCountMarketingSalesAttributionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MarketingSalesAttributionWhereInput
+  }
+
+
+  /**
+   * Count Type MarketingCanvaAssetAssistCountOutputType
+   */
+
+  export type MarketingCanvaAssetAssistCountOutputType = {
+    marketingSalesAttributions: number
+  }
+
+  export type MarketingCanvaAssetAssistCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    marketingSalesAttributions?: boolean | MarketingCanvaAssetAssistCountOutputTypeCountMarketingSalesAttributionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * MarketingCanvaAssetAssistCountOutputType without action
+   */
+  export type MarketingCanvaAssetAssistCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingCanvaAssetAssistCountOutputType
+     */
+    select?: MarketingCanvaAssetAssistCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * MarketingCanvaAssetAssistCountOutputType without action
+   */
+  export type MarketingCanvaAssetAssistCountOutputTypeCountMarketingSalesAttributionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MarketingSalesAttributionWhereInput
   }
 
 
@@ -2699,6 +2992,9 @@ export namespace Prisma {
     optOutAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    marketingSalesAttributions?: boolean | Lead$marketingSalesAttributionsArgs<ExtArgs>
+    salesConversionAssists?: boolean | Lead$salesConversionAssistsArgs<ExtArgs>
+    _count?: boolean | LeadCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["lead"]>
 
   export type LeadSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2795,10 +3091,20 @@ export namespace Prisma {
   }
 
   export type LeadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "phone" | "propertyAddress" | "source" | "status" | "score" | "priority" | "notes" | "payload" | "lastContactedAt" | "nextFollowUpAt" | "followUpCount" | "lastFollowUpMessage" | "automationStatus" | "approvalStatus" | "isHot" | "lastSellerReply" | "lastSellerReplyAt" | "lastSellerReplyIntent" | "lastSellerReplyConfidence" | "suggestedReply" | "requiresHumanApproval" | "doNotContact" | "optOutReason" | "optOutAt" | "createdAt" | "updatedAt", ExtArgs["result"]["lead"]>
+  export type LeadInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    marketingSalesAttributions?: boolean | Lead$marketingSalesAttributionsArgs<ExtArgs>
+    salesConversionAssists?: boolean | Lead$salesConversionAssistsArgs<ExtArgs>
+    _count?: boolean | LeadCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type LeadIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type LeadIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $LeadPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Lead"
-    objects: {}
+    objects: {
+      marketingSalesAttributions: Prisma.$MarketingSalesAttributionPayload<ExtArgs>[]
+      salesConversionAssists: Prisma.$SalesConversionAssistPayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
@@ -3222,6 +3528,8 @@ export namespace Prisma {
    */
   export interface Prisma__LeadClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    marketingSalesAttributions<T extends Lead$marketingSalesAttributionsArgs<ExtArgs> = {}>(args?: Subset<T, Lead$marketingSalesAttributionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingSalesAttributionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    salesConversionAssists<T extends Lead$salesConversionAssistsArgs<ExtArgs> = {}>(args?: Subset<T, Lead$salesConversionAssistsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesConversionAssistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3296,6 +3604,10 @@ export namespace Prisma {
      */
     omit?: LeadOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+    /**
      * Filter, which Lead to fetch.
      */
     where: LeadWhereUniqueInput
@@ -3314,6 +3626,10 @@ export namespace Prisma {
      */
     omit?: LeadOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+    /**
      * Filter, which Lead to fetch.
      */
     where: LeadWhereUniqueInput
@@ -3331,6 +3647,10 @@ export namespace Prisma {
      * Omit specific fields from the Lead
      */
     omit?: LeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
     /**
      * Filter, which Lead to fetch.
      */
@@ -3380,6 +3700,10 @@ export namespace Prisma {
      */
     omit?: LeadOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+    /**
      * Filter, which Lead to fetch.
      */
     where?: LeadWhereInput
@@ -3428,6 +3752,10 @@ export namespace Prisma {
      */
     omit?: LeadOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+    /**
      * Filter, which Leads to fetch.
      */
     where?: LeadWhereInput
@@ -3470,6 +3798,10 @@ export namespace Prisma {
      * Omit specific fields from the Lead
      */
     omit?: LeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
     /**
      * The data needed to create a Lead.
      */
@@ -3518,6 +3850,10 @@ export namespace Prisma {
      * Omit specific fields from the Lead
      */
     omit?: LeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
     /**
      * The data needed to update a Lead.
      */
@@ -3585,6 +3921,10 @@ export namespace Prisma {
      */
     omit?: LeadOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+    /**
      * The filter to search for the Lead to update in case it exists.
      */
     where: LeadWhereUniqueInput
@@ -3611,6 +3951,10 @@ export namespace Prisma {
      */
     omit?: LeadOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+    /**
      * Filter which Lead to delete.
      */
     where: LeadWhereUniqueInput
@@ -3631,6 +3975,54 @@ export namespace Prisma {
   }
 
   /**
+   * Lead.marketingSalesAttributions
+   */
+  export type Lead$marketingSalesAttributionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingSalesAttribution
+     */
+    select?: MarketingSalesAttributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingSalesAttribution
+     */
+    omit?: MarketingSalesAttributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingSalesAttributionInclude<ExtArgs> | null
+    where?: MarketingSalesAttributionWhereInput
+    orderBy?: MarketingSalesAttributionOrderByWithRelationInput | MarketingSalesAttributionOrderByWithRelationInput[]
+    cursor?: MarketingSalesAttributionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MarketingSalesAttributionScalarFieldEnum | MarketingSalesAttributionScalarFieldEnum[]
+  }
+
+  /**
+   * Lead.salesConversionAssists
+   */
+  export type Lead$salesConversionAssistsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesConversionAssist
+     */
+    select?: SalesConversionAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesConversionAssist
+     */
+    omit?: SalesConversionAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesConversionAssistInclude<ExtArgs> | null
+    where?: SalesConversionAssistWhereInput
+    orderBy?: SalesConversionAssistOrderByWithRelationInput | SalesConversionAssistOrderByWithRelationInput[]
+    cursor?: SalesConversionAssistWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SalesConversionAssistScalarFieldEnum | SalesConversionAssistScalarFieldEnum[]
+  }
+
+  /**
    * Lead without action
    */
   export type LeadDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3642,6 +4034,10 @@ export namespace Prisma {
      * Omit specific fields from the Lead
      */
     omit?: LeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
   }
 
 
@@ -14262,6 +14658,7 @@ export namespace Prisma {
     approvals?: boolean | MarketingDraft$approvalsArgs<ExtArgs>
     publishAssists?: boolean | MarketingDraft$publishAssistsArgs<ExtArgs>
     canvaAssetAssists?: boolean | MarketingDraft$canvaAssetAssistsArgs<ExtArgs>
+    marketingSalesAttributions?: boolean | MarketingDraft$marketingSalesAttributionsArgs<ExtArgs>
     _count?: boolean | MarketingDraftCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["marketingDraft"]>
 
@@ -14318,6 +14715,7 @@ export namespace Prisma {
     approvals?: boolean | MarketingDraft$approvalsArgs<ExtArgs>
     publishAssists?: boolean | MarketingDraft$publishAssistsArgs<ExtArgs>
     canvaAssetAssists?: boolean | MarketingDraft$canvaAssetAssistsArgs<ExtArgs>
+    marketingSalesAttributions?: boolean | MarketingDraft$marketingSalesAttributionsArgs<ExtArgs>
     _count?: boolean | MarketingDraftCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type MarketingDraftIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -14329,6 +14727,7 @@ export namespace Prisma {
       approvals: Prisma.$MarketingApprovalPayload<ExtArgs>[]
       publishAssists: Prisma.$MarketingPublishAssistPayload<ExtArgs>[]
       canvaAssetAssists: Prisma.$MarketingCanvaAssetAssistPayload<ExtArgs>[]
+      marketingSalesAttributions: Prisma.$MarketingSalesAttributionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -14741,6 +15140,7 @@ export namespace Prisma {
     approvals<T extends MarketingDraft$approvalsArgs<ExtArgs> = {}>(args?: Subset<T, MarketingDraft$approvalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingApprovalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     publishAssists<T extends MarketingDraft$publishAssistsArgs<ExtArgs> = {}>(args?: Subset<T, MarketingDraft$publishAssistsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingPublishAssistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     canvaAssetAssists<T extends MarketingDraft$canvaAssetAssistsArgs<ExtArgs> = {}>(args?: Subset<T, MarketingDraft$canvaAssetAssistsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingCanvaAssetAssistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    marketingSalesAttributions<T extends MarketingDraft$marketingSalesAttributionsArgs<ExtArgs> = {}>(args?: Subset<T, MarketingDraft$marketingSalesAttributionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingSalesAttributionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -15240,6 +15640,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MarketingCanvaAssetAssistScalarFieldEnum | MarketingCanvaAssetAssistScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingDraft.marketingSalesAttributions
+   */
+  export type MarketingDraft$marketingSalesAttributionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingSalesAttribution
+     */
+    select?: MarketingSalesAttributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingSalesAttribution
+     */
+    omit?: MarketingSalesAttributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingSalesAttributionInclude<ExtArgs> | null
+    where?: MarketingSalesAttributionWhereInput
+    orderBy?: MarketingSalesAttributionOrderByWithRelationInput | MarketingSalesAttributionOrderByWithRelationInput[]
+    cursor?: MarketingSalesAttributionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MarketingSalesAttributionScalarFieldEnum | MarketingSalesAttributionScalarFieldEnum[]
   }
 
   /**
@@ -17610,6 +18034,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     draft?: boolean | MarketingDraftDefaultArgs<ExtArgs>
+    marketingSalesAttributions?: boolean | MarketingPublishAssist$marketingSalesAttributionsArgs<ExtArgs>
+    _count?: boolean | MarketingPublishAssistCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["marketingPublishAssist"]>
 
   export type MarketingPublishAssistSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -17659,6 +18085,8 @@ export namespace Prisma {
   export type MarketingPublishAssistOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "draftId" | "preparedCopy" | "assetChecklist" | "manualPostingChecklist" | "sourceLabel" | "status" | "manualPublishedUrl" | "manualPublishedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["marketingPublishAssist"]>
   export type MarketingPublishAssistInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     draft?: boolean | MarketingDraftDefaultArgs<ExtArgs>
+    marketingSalesAttributions?: boolean | MarketingPublishAssist$marketingSalesAttributionsArgs<ExtArgs>
+    _count?: boolean | MarketingPublishAssistCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type MarketingPublishAssistIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     draft?: boolean | MarketingDraftDefaultArgs<ExtArgs>
@@ -17671,6 +18099,7 @@ export namespace Prisma {
     name: "MarketingPublishAssist"
     objects: {
       draft: Prisma.$MarketingDraftPayload<ExtArgs>
+      marketingSalesAttributions: Prisma.$MarketingSalesAttributionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -18079,6 +18508,7 @@ export namespace Prisma {
   export interface Prisma__MarketingPublishAssistClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     draft<T extends MarketingDraftDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MarketingDraftDefaultArgs<ExtArgs>>): Prisma__MarketingDraftClient<$Result.GetResult<Prisma.$MarketingDraftPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    marketingSalesAttributions<T extends MarketingPublishAssist$marketingSalesAttributionsArgs<ExtArgs> = {}>(args?: Subset<T, MarketingPublishAssist$marketingSalesAttributionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingSalesAttributionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18515,6 +18945,30 @@ export namespace Prisma {
   }
 
   /**
+   * MarketingPublishAssist.marketingSalesAttributions
+   */
+  export type MarketingPublishAssist$marketingSalesAttributionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingSalesAttribution
+     */
+    select?: MarketingSalesAttributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingSalesAttribution
+     */
+    omit?: MarketingSalesAttributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingSalesAttributionInclude<ExtArgs> | null
+    where?: MarketingSalesAttributionWhereInput
+    orderBy?: MarketingSalesAttributionOrderByWithRelationInput | MarketingSalesAttributionOrderByWithRelationInput[]
+    cursor?: MarketingSalesAttributionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MarketingSalesAttributionScalarFieldEnum | MarketingSalesAttributionScalarFieldEnum[]
+  }
+
+  /**
    * MarketingPublishAssist without action
    */
   export type MarketingPublishAssistDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -18730,6 +19184,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     draft?: boolean | MarketingDraftDefaultArgs<ExtArgs>
+    marketingSalesAttributions?: boolean | MarketingCanvaAssetAssist$marketingSalesAttributionsArgs<ExtArgs>
+    _count?: boolean | MarketingCanvaAssetAssistCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["marketingCanvaAssetAssist"]>
 
   export type MarketingCanvaAssetAssistSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -18776,6 +19232,8 @@ export namespace Prisma {
   export type MarketingCanvaAssetAssistOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "draftId" | "recommendedFormat" | "designBrief" | "brandSafeCopyBlocks" | "assetNotes" | "manualApprovalStatus" | "safetyFlags" | "createdAt" | "updatedAt", ExtArgs["result"]["marketingCanvaAssetAssist"]>
   export type MarketingCanvaAssetAssistInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     draft?: boolean | MarketingDraftDefaultArgs<ExtArgs>
+    marketingSalesAttributions?: boolean | MarketingCanvaAssetAssist$marketingSalesAttributionsArgs<ExtArgs>
+    _count?: boolean | MarketingCanvaAssetAssistCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type MarketingCanvaAssetAssistIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     draft?: boolean | MarketingDraftDefaultArgs<ExtArgs>
@@ -18788,6 +19246,7 @@ export namespace Prisma {
     name: "MarketingCanvaAssetAssist"
     objects: {
       draft: Prisma.$MarketingDraftPayload<ExtArgs>
+      marketingSalesAttributions: Prisma.$MarketingSalesAttributionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -19195,6 +19654,7 @@ export namespace Prisma {
   export interface Prisma__MarketingCanvaAssetAssistClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     draft<T extends MarketingDraftDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MarketingDraftDefaultArgs<ExtArgs>>): Prisma__MarketingDraftClient<$Result.GetResult<Prisma.$MarketingDraftPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    marketingSalesAttributions<T extends MarketingCanvaAssetAssist$marketingSalesAttributionsArgs<ExtArgs> = {}>(args?: Subset<T, MarketingCanvaAssetAssist$marketingSalesAttributionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingSalesAttributionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -19630,6 +20090,30 @@ export namespace Prisma {
   }
 
   /**
+   * MarketingCanvaAssetAssist.marketingSalesAttributions
+   */
+  export type MarketingCanvaAssetAssist$marketingSalesAttributionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingSalesAttribution
+     */
+    select?: MarketingSalesAttributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingSalesAttribution
+     */
+    omit?: MarketingSalesAttributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingSalesAttributionInclude<ExtArgs> | null
+    where?: MarketingSalesAttributionWhereInput
+    orderBy?: MarketingSalesAttributionOrderByWithRelationInput | MarketingSalesAttributionOrderByWithRelationInput[]
+    cursor?: MarketingSalesAttributionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MarketingSalesAttributionScalarFieldEnum | MarketingSalesAttributionScalarFieldEnum[]
+  }
+
+  /**
    * MarketingCanvaAssetAssist without action
    */
   export type MarketingCanvaAssetAssistDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -19645,6 +20129,2400 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: MarketingCanvaAssetAssistInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MarketingSalesAttribution
+   */
+
+  export type AggregateMarketingSalesAttribution = {
+    _count: MarketingSalesAttributionCountAggregateOutputType | null
+    _min: MarketingSalesAttributionMinAggregateOutputType | null
+    _max: MarketingSalesAttributionMaxAggregateOutputType | null
+  }
+
+  export type MarketingSalesAttributionMinAggregateOutputType = {
+    id: string | null
+    leadId: string | null
+    marketingDraftId: string | null
+    canvaAssetAssistId: string | null
+    publishAssistId: string | null
+    channel: string | null
+    topic: string | null
+    sourceLabel: string | null
+    manualPostUrl: string | null
+    attributionStatus: string | null
+    attributionNote: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MarketingSalesAttributionMaxAggregateOutputType = {
+    id: string | null
+    leadId: string | null
+    marketingDraftId: string | null
+    canvaAssetAssistId: string | null
+    publishAssistId: string | null
+    channel: string | null
+    topic: string | null
+    sourceLabel: string | null
+    manualPostUrl: string | null
+    attributionStatus: string | null
+    attributionNote: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MarketingSalesAttributionCountAggregateOutputType = {
+    id: number
+    leadId: number
+    marketingDraftId: number
+    canvaAssetAssistId: number
+    publishAssistId: number
+    channel: number
+    topic: number
+    sourceLabel: number
+    manualPostUrl: number
+    attributionStatus: number
+    attributionNote: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MarketingSalesAttributionMinAggregateInputType = {
+    id?: true
+    leadId?: true
+    marketingDraftId?: true
+    canvaAssetAssistId?: true
+    publishAssistId?: true
+    channel?: true
+    topic?: true
+    sourceLabel?: true
+    manualPostUrl?: true
+    attributionStatus?: true
+    attributionNote?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MarketingSalesAttributionMaxAggregateInputType = {
+    id?: true
+    leadId?: true
+    marketingDraftId?: true
+    canvaAssetAssistId?: true
+    publishAssistId?: true
+    channel?: true
+    topic?: true
+    sourceLabel?: true
+    manualPostUrl?: true
+    attributionStatus?: true
+    attributionNote?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MarketingSalesAttributionCountAggregateInputType = {
+    id?: true
+    leadId?: true
+    marketingDraftId?: true
+    canvaAssetAssistId?: true
+    publishAssistId?: true
+    channel?: true
+    topic?: true
+    sourceLabel?: true
+    manualPostUrl?: true
+    attributionStatus?: true
+    attributionNote?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MarketingSalesAttributionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MarketingSalesAttribution to aggregate.
+     */
+    where?: MarketingSalesAttributionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingSalesAttributions to fetch.
+     */
+    orderBy?: MarketingSalesAttributionOrderByWithRelationInput | MarketingSalesAttributionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MarketingSalesAttributionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingSalesAttributions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingSalesAttributions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MarketingSalesAttributions
+    **/
+    _count?: true | MarketingSalesAttributionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MarketingSalesAttributionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MarketingSalesAttributionMaxAggregateInputType
+  }
+
+  export type GetMarketingSalesAttributionAggregateType<T extends MarketingSalesAttributionAggregateArgs> = {
+        [P in keyof T & keyof AggregateMarketingSalesAttribution]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMarketingSalesAttribution[P]>
+      : GetScalarType<T[P], AggregateMarketingSalesAttribution[P]>
+  }
+
+
+
+
+  export type MarketingSalesAttributionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MarketingSalesAttributionWhereInput
+    orderBy?: MarketingSalesAttributionOrderByWithAggregationInput | MarketingSalesAttributionOrderByWithAggregationInput[]
+    by: MarketingSalesAttributionScalarFieldEnum[] | MarketingSalesAttributionScalarFieldEnum
+    having?: MarketingSalesAttributionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MarketingSalesAttributionCountAggregateInputType | true
+    _min?: MarketingSalesAttributionMinAggregateInputType
+    _max?: MarketingSalesAttributionMaxAggregateInputType
+  }
+
+  export type MarketingSalesAttributionGroupByOutputType = {
+    id: string
+    leadId: string
+    marketingDraftId: string | null
+    canvaAssetAssistId: string | null
+    publishAssistId: string | null
+    channel: string
+    topic: string
+    sourceLabel: string
+    manualPostUrl: string | null
+    attributionStatus: string
+    attributionNote: string
+    createdAt: Date
+    updatedAt: Date
+    _count: MarketingSalesAttributionCountAggregateOutputType | null
+    _min: MarketingSalesAttributionMinAggregateOutputType | null
+    _max: MarketingSalesAttributionMaxAggregateOutputType | null
+  }
+
+  type GetMarketingSalesAttributionGroupByPayload<T extends MarketingSalesAttributionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MarketingSalesAttributionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MarketingSalesAttributionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MarketingSalesAttributionGroupByOutputType[P]>
+            : GetScalarType<T[P], MarketingSalesAttributionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MarketingSalesAttributionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    marketingDraftId?: boolean
+    canvaAssetAssistId?: boolean
+    publishAssistId?: boolean
+    channel?: boolean
+    topic?: boolean
+    sourceLabel?: boolean
+    manualPostUrl?: boolean
+    attributionStatus?: boolean
+    attributionNote?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    marketingDraft?: boolean | MarketingSalesAttribution$marketingDraftArgs<ExtArgs>
+    canvaAssetAssist?: boolean | MarketingSalesAttribution$canvaAssetAssistArgs<ExtArgs>
+    publishAssist?: boolean | MarketingSalesAttribution$publishAssistArgs<ExtArgs>
+  }, ExtArgs["result"]["marketingSalesAttribution"]>
+
+  export type MarketingSalesAttributionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    marketingDraftId?: boolean
+    canvaAssetAssistId?: boolean
+    publishAssistId?: boolean
+    channel?: boolean
+    topic?: boolean
+    sourceLabel?: boolean
+    manualPostUrl?: boolean
+    attributionStatus?: boolean
+    attributionNote?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    marketingDraft?: boolean | MarketingSalesAttribution$marketingDraftArgs<ExtArgs>
+    canvaAssetAssist?: boolean | MarketingSalesAttribution$canvaAssetAssistArgs<ExtArgs>
+    publishAssist?: boolean | MarketingSalesAttribution$publishAssistArgs<ExtArgs>
+  }, ExtArgs["result"]["marketingSalesAttribution"]>
+
+  export type MarketingSalesAttributionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    marketingDraftId?: boolean
+    canvaAssetAssistId?: boolean
+    publishAssistId?: boolean
+    channel?: boolean
+    topic?: boolean
+    sourceLabel?: boolean
+    manualPostUrl?: boolean
+    attributionStatus?: boolean
+    attributionNote?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    marketingDraft?: boolean | MarketingSalesAttribution$marketingDraftArgs<ExtArgs>
+    canvaAssetAssist?: boolean | MarketingSalesAttribution$canvaAssetAssistArgs<ExtArgs>
+    publishAssist?: boolean | MarketingSalesAttribution$publishAssistArgs<ExtArgs>
+  }, ExtArgs["result"]["marketingSalesAttribution"]>
+
+  export type MarketingSalesAttributionSelectScalar = {
+    id?: boolean
+    leadId?: boolean
+    marketingDraftId?: boolean
+    canvaAssetAssistId?: boolean
+    publishAssistId?: boolean
+    channel?: boolean
+    topic?: boolean
+    sourceLabel?: boolean
+    manualPostUrl?: boolean
+    attributionStatus?: boolean
+    attributionNote?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MarketingSalesAttributionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "marketingDraftId" | "canvaAssetAssistId" | "publishAssistId" | "channel" | "topic" | "sourceLabel" | "manualPostUrl" | "attributionStatus" | "attributionNote" | "createdAt" | "updatedAt", ExtArgs["result"]["marketingSalesAttribution"]>
+  export type MarketingSalesAttributionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    marketingDraft?: boolean | MarketingSalesAttribution$marketingDraftArgs<ExtArgs>
+    canvaAssetAssist?: boolean | MarketingSalesAttribution$canvaAssetAssistArgs<ExtArgs>
+    publishAssist?: boolean | MarketingSalesAttribution$publishAssistArgs<ExtArgs>
+  }
+  export type MarketingSalesAttributionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    marketingDraft?: boolean | MarketingSalesAttribution$marketingDraftArgs<ExtArgs>
+    canvaAssetAssist?: boolean | MarketingSalesAttribution$canvaAssetAssistArgs<ExtArgs>
+    publishAssist?: boolean | MarketingSalesAttribution$publishAssistArgs<ExtArgs>
+  }
+  export type MarketingSalesAttributionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+    marketingDraft?: boolean | MarketingSalesAttribution$marketingDraftArgs<ExtArgs>
+    canvaAssetAssist?: boolean | MarketingSalesAttribution$canvaAssetAssistArgs<ExtArgs>
+    publishAssist?: boolean | MarketingSalesAttribution$publishAssistArgs<ExtArgs>
+  }
+
+  export type $MarketingSalesAttributionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MarketingSalesAttribution"
+    objects: {
+      lead: Prisma.$LeadPayload<ExtArgs>
+      marketingDraft: Prisma.$MarketingDraftPayload<ExtArgs> | null
+      canvaAssetAssist: Prisma.$MarketingCanvaAssetAssistPayload<ExtArgs> | null
+      publishAssist: Prisma.$MarketingPublishAssistPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      leadId: string
+      marketingDraftId: string | null
+      canvaAssetAssistId: string | null
+      publishAssistId: string | null
+      channel: string
+      topic: string
+      sourceLabel: string
+      manualPostUrl: string | null
+      attributionStatus: string
+      attributionNote: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["marketingSalesAttribution"]>
+    composites: {}
+  }
+
+  type MarketingSalesAttributionGetPayload<S extends boolean | null | undefined | MarketingSalesAttributionDefaultArgs> = $Result.GetResult<Prisma.$MarketingSalesAttributionPayload, S>
+
+  type MarketingSalesAttributionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MarketingSalesAttributionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MarketingSalesAttributionCountAggregateInputType | true
+    }
+
+  export interface MarketingSalesAttributionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MarketingSalesAttribution'], meta: { name: 'MarketingSalesAttribution' } }
+    /**
+     * Find zero or one MarketingSalesAttribution that matches the filter.
+     * @param {MarketingSalesAttributionFindUniqueArgs} args - Arguments to find a MarketingSalesAttribution
+     * @example
+     * // Get one MarketingSalesAttribution
+     * const marketingSalesAttribution = await prisma.marketingSalesAttribution.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MarketingSalesAttributionFindUniqueArgs>(args: SelectSubset<T, MarketingSalesAttributionFindUniqueArgs<ExtArgs>>): Prisma__MarketingSalesAttributionClient<$Result.GetResult<Prisma.$MarketingSalesAttributionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MarketingSalesAttribution that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MarketingSalesAttributionFindUniqueOrThrowArgs} args - Arguments to find a MarketingSalesAttribution
+     * @example
+     * // Get one MarketingSalesAttribution
+     * const marketingSalesAttribution = await prisma.marketingSalesAttribution.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MarketingSalesAttributionFindUniqueOrThrowArgs>(args: SelectSubset<T, MarketingSalesAttributionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MarketingSalesAttributionClient<$Result.GetResult<Prisma.$MarketingSalesAttributionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MarketingSalesAttribution that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingSalesAttributionFindFirstArgs} args - Arguments to find a MarketingSalesAttribution
+     * @example
+     * // Get one MarketingSalesAttribution
+     * const marketingSalesAttribution = await prisma.marketingSalesAttribution.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MarketingSalesAttributionFindFirstArgs>(args?: SelectSubset<T, MarketingSalesAttributionFindFirstArgs<ExtArgs>>): Prisma__MarketingSalesAttributionClient<$Result.GetResult<Prisma.$MarketingSalesAttributionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MarketingSalesAttribution that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingSalesAttributionFindFirstOrThrowArgs} args - Arguments to find a MarketingSalesAttribution
+     * @example
+     * // Get one MarketingSalesAttribution
+     * const marketingSalesAttribution = await prisma.marketingSalesAttribution.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MarketingSalesAttributionFindFirstOrThrowArgs>(args?: SelectSubset<T, MarketingSalesAttributionFindFirstOrThrowArgs<ExtArgs>>): Prisma__MarketingSalesAttributionClient<$Result.GetResult<Prisma.$MarketingSalesAttributionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MarketingSalesAttributions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingSalesAttributionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MarketingSalesAttributions
+     * const marketingSalesAttributions = await prisma.marketingSalesAttribution.findMany()
+     * 
+     * // Get first 10 MarketingSalesAttributions
+     * const marketingSalesAttributions = await prisma.marketingSalesAttribution.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const marketingSalesAttributionWithIdOnly = await prisma.marketingSalesAttribution.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MarketingSalesAttributionFindManyArgs>(args?: SelectSubset<T, MarketingSalesAttributionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingSalesAttributionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MarketingSalesAttribution.
+     * @param {MarketingSalesAttributionCreateArgs} args - Arguments to create a MarketingSalesAttribution.
+     * @example
+     * // Create one MarketingSalesAttribution
+     * const MarketingSalesAttribution = await prisma.marketingSalesAttribution.create({
+     *   data: {
+     *     // ... data to create a MarketingSalesAttribution
+     *   }
+     * })
+     * 
+     */
+    create<T extends MarketingSalesAttributionCreateArgs>(args: SelectSubset<T, MarketingSalesAttributionCreateArgs<ExtArgs>>): Prisma__MarketingSalesAttributionClient<$Result.GetResult<Prisma.$MarketingSalesAttributionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MarketingSalesAttributions.
+     * @param {MarketingSalesAttributionCreateManyArgs} args - Arguments to create many MarketingSalesAttributions.
+     * @example
+     * // Create many MarketingSalesAttributions
+     * const marketingSalesAttribution = await prisma.marketingSalesAttribution.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MarketingSalesAttributionCreateManyArgs>(args?: SelectSubset<T, MarketingSalesAttributionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many MarketingSalesAttributions and returns the data saved in the database.
+     * @param {MarketingSalesAttributionCreateManyAndReturnArgs} args - Arguments to create many MarketingSalesAttributions.
+     * @example
+     * // Create many MarketingSalesAttributions
+     * const marketingSalesAttribution = await prisma.marketingSalesAttribution.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many MarketingSalesAttributions and only return the `id`
+     * const marketingSalesAttributionWithIdOnly = await prisma.marketingSalesAttribution.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MarketingSalesAttributionCreateManyAndReturnArgs>(args?: SelectSubset<T, MarketingSalesAttributionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingSalesAttributionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a MarketingSalesAttribution.
+     * @param {MarketingSalesAttributionDeleteArgs} args - Arguments to delete one MarketingSalesAttribution.
+     * @example
+     * // Delete one MarketingSalesAttribution
+     * const MarketingSalesAttribution = await prisma.marketingSalesAttribution.delete({
+     *   where: {
+     *     // ... filter to delete one MarketingSalesAttribution
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MarketingSalesAttributionDeleteArgs>(args: SelectSubset<T, MarketingSalesAttributionDeleteArgs<ExtArgs>>): Prisma__MarketingSalesAttributionClient<$Result.GetResult<Prisma.$MarketingSalesAttributionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MarketingSalesAttribution.
+     * @param {MarketingSalesAttributionUpdateArgs} args - Arguments to update one MarketingSalesAttribution.
+     * @example
+     * // Update one MarketingSalesAttribution
+     * const marketingSalesAttribution = await prisma.marketingSalesAttribution.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MarketingSalesAttributionUpdateArgs>(args: SelectSubset<T, MarketingSalesAttributionUpdateArgs<ExtArgs>>): Prisma__MarketingSalesAttributionClient<$Result.GetResult<Prisma.$MarketingSalesAttributionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MarketingSalesAttributions.
+     * @param {MarketingSalesAttributionDeleteManyArgs} args - Arguments to filter MarketingSalesAttributions to delete.
+     * @example
+     * // Delete a few MarketingSalesAttributions
+     * const { count } = await prisma.marketingSalesAttribution.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MarketingSalesAttributionDeleteManyArgs>(args?: SelectSubset<T, MarketingSalesAttributionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MarketingSalesAttributions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingSalesAttributionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MarketingSalesAttributions
+     * const marketingSalesAttribution = await prisma.marketingSalesAttribution.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MarketingSalesAttributionUpdateManyArgs>(args: SelectSubset<T, MarketingSalesAttributionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MarketingSalesAttributions and returns the data updated in the database.
+     * @param {MarketingSalesAttributionUpdateManyAndReturnArgs} args - Arguments to update many MarketingSalesAttributions.
+     * @example
+     * // Update many MarketingSalesAttributions
+     * const marketingSalesAttribution = await prisma.marketingSalesAttribution.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more MarketingSalesAttributions and only return the `id`
+     * const marketingSalesAttributionWithIdOnly = await prisma.marketingSalesAttribution.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends MarketingSalesAttributionUpdateManyAndReturnArgs>(args: SelectSubset<T, MarketingSalesAttributionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingSalesAttributionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one MarketingSalesAttribution.
+     * @param {MarketingSalesAttributionUpsertArgs} args - Arguments to update or create a MarketingSalesAttribution.
+     * @example
+     * // Update or create a MarketingSalesAttribution
+     * const marketingSalesAttribution = await prisma.marketingSalesAttribution.upsert({
+     *   create: {
+     *     // ... data to create a MarketingSalesAttribution
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MarketingSalesAttribution we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MarketingSalesAttributionUpsertArgs>(args: SelectSubset<T, MarketingSalesAttributionUpsertArgs<ExtArgs>>): Prisma__MarketingSalesAttributionClient<$Result.GetResult<Prisma.$MarketingSalesAttributionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MarketingSalesAttributions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingSalesAttributionCountArgs} args - Arguments to filter MarketingSalesAttributions to count.
+     * @example
+     * // Count the number of MarketingSalesAttributions
+     * const count = await prisma.marketingSalesAttribution.count({
+     *   where: {
+     *     // ... the filter for the MarketingSalesAttributions we want to count
+     *   }
+     * })
+    **/
+    count<T extends MarketingSalesAttributionCountArgs>(
+      args?: Subset<T, MarketingSalesAttributionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MarketingSalesAttributionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MarketingSalesAttribution.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingSalesAttributionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MarketingSalesAttributionAggregateArgs>(args: Subset<T, MarketingSalesAttributionAggregateArgs>): Prisma.PrismaPromise<GetMarketingSalesAttributionAggregateType<T>>
+
+    /**
+     * Group by MarketingSalesAttribution.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingSalesAttributionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MarketingSalesAttributionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MarketingSalesAttributionGroupByArgs['orderBy'] }
+        : { orderBy?: MarketingSalesAttributionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MarketingSalesAttributionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMarketingSalesAttributionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MarketingSalesAttribution model
+   */
+  readonly fields: MarketingSalesAttributionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MarketingSalesAttribution.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MarketingSalesAttributionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    lead<T extends LeadDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LeadDefaultArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    marketingDraft<T extends MarketingSalesAttribution$marketingDraftArgs<ExtArgs> = {}>(args?: Subset<T, MarketingSalesAttribution$marketingDraftArgs<ExtArgs>>): Prisma__MarketingDraftClient<$Result.GetResult<Prisma.$MarketingDraftPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    canvaAssetAssist<T extends MarketingSalesAttribution$canvaAssetAssistArgs<ExtArgs> = {}>(args?: Subset<T, MarketingSalesAttribution$canvaAssetAssistArgs<ExtArgs>>): Prisma__MarketingCanvaAssetAssistClient<$Result.GetResult<Prisma.$MarketingCanvaAssetAssistPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    publishAssist<T extends MarketingSalesAttribution$publishAssistArgs<ExtArgs> = {}>(args?: Subset<T, MarketingSalesAttribution$publishAssistArgs<ExtArgs>>): Prisma__MarketingPublishAssistClient<$Result.GetResult<Prisma.$MarketingPublishAssistPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MarketingSalesAttribution model
+   */
+  interface MarketingSalesAttributionFieldRefs {
+    readonly id: FieldRef<"MarketingSalesAttribution", 'String'>
+    readonly leadId: FieldRef<"MarketingSalesAttribution", 'String'>
+    readonly marketingDraftId: FieldRef<"MarketingSalesAttribution", 'String'>
+    readonly canvaAssetAssistId: FieldRef<"MarketingSalesAttribution", 'String'>
+    readonly publishAssistId: FieldRef<"MarketingSalesAttribution", 'String'>
+    readonly channel: FieldRef<"MarketingSalesAttribution", 'String'>
+    readonly topic: FieldRef<"MarketingSalesAttribution", 'String'>
+    readonly sourceLabel: FieldRef<"MarketingSalesAttribution", 'String'>
+    readonly manualPostUrl: FieldRef<"MarketingSalesAttribution", 'String'>
+    readonly attributionStatus: FieldRef<"MarketingSalesAttribution", 'String'>
+    readonly attributionNote: FieldRef<"MarketingSalesAttribution", 'String'>
+    readonly createdAt: FieldRef<"MarketingSalesAttribution", 'DateTime'>
+    readonly updatedAt: FieldRef<"MarketingSalesAttribution", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MarketingSalesAttribution findUnique
+   */
+  export type MarketingSalesAttributionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingSalesAttribution
+     */
+    select?: MarketingSalesAttributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingSalesAttribution
+     */
+    omit?: MarketingSalesAttributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingSalesAttributionInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingSalesAttribution to fetch.
+     */
+    where: MarketingSalesAttributionWhereUniqueInput
+  }
+
+  /**
+   * MarketingSalesAttribution findUniqueOrThrow
+   */
+  export type MarketingSalesAttributionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingSalesAttribution
+     */
+    select?: MarketingSalesAttributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingSalesAttribution
+     */
+    omit?: MarketingSalesAttributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingSalesAttributionInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingSalesAttribution to fetch.
+     */
+    where: MarketingSalesAttributionWhereUniqueInput
+  }
+
+  /**
+   * MarketingSalesAttribution findFirst
+   */
+  export type MarketingSalesAttributionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingSalesAttribution
+     */
+    select?: MarketingSalesAttributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingSalesAttribution
+     */
+    omit?: MarketingSalesAttributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingSalesAttributionInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingSalesAttribution to fetch.
+     */
+    where?: MarketingSalesAttributionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingSalesAttributions to fetch.
+     */
+    orderBy?: MarketingSalesAttributionOrderByWithRelationInput | MarketingSalesAttributionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MarketingSalesAttributions.
+     */
+    cursor?: MarketingSalesAttributionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingSalesAttributions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingSalesAttributions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MarketingSalesAttributions.
+     */
+    distinct?: MarketingSalesAttributionScalarFieldEnum | MarketingSalesAttributionScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingSalesAttribution findFirstOrThrow
+   */
+  export type MarketingSalesAttributionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingSalesAttribution
+     */
+    select?: MarketingSalesAttributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingSalesAttribution
+     */
+    omit?: MarketingSalesAttributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingSalesAttributionInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingSalesAttribution to fetch.
+     */
+    where?: MarketingSalesAttributionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingSalesAttributions to fetch.
+     */
+    orderBy?: MarketingSalesAttributionOrderByWithRelationInput | MarketingSalesAttributionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MarketingSalesAttributions.
+     */
+    cursor?: MarketingSalesAttributionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingSalesAttributions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingSalesAttributions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MarketingSalesAttributions.
+     */
+    distinct?: MarketingSalesAttributionScalarFieldEnum | MarketingSalesAttributionScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingSalesAttribution findMany
+   */
+  export type MarketingSalesAttributionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingSalesAttribution
+     */
+    select?: MarketingSalesAttributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingSalesAttribution
+     */
+    omit?: MarketingSalesAttributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingSalesAttributionInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingSalesAttributions to fetch.
+     */
+    where?: MarketingSalesAttributionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingSalesAttributions to fetch.
+     */
+    orderBy?: MarketingSalesAttributionOrderByWithRelationInput | MarketingSalesAttributionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MarketingSalesAttributions.
+     */
+    cursor?: MarketingSalesAttributionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingSalesAttributions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingSalesAttributions.
+     */
+    skip?: number
+    distinct?: MarketingSalesAttributionScalarFieldEnum | MarketingSalesAttributionScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingSalesAttribution create
+   */
+  export type MarketingSalesAttributionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingSalesAttribution
+     */
+    select?: MarketingSalesAttributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingSalesAttribution
+     */
+    omit?: MarketingSalesAttributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingSalesAttributionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MarketingSalesAttribution.
+     */
+    data: XOR<MarketingSalesAttributionCreateInput, MarketingSalesAttributionUncheckedCreateInput>
+  }
+
+  /**
+   * MarketingSalesAttribution createMany
+   */
+  export type MarketingSalesAttributionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MarketingSalesAttributions.
+     */
+    data: MarketingSalesAttributionCreateManyInput | MarketingSalesAttributionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MarketingSalesAttribution createManyAndReturn
+   */
+  export type MarketingSalesAttributionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingSalesAttribution
+     */
+    select?: MarketingSalesAttributionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingSalesAttribution
+     */
+    omit?: MarketingSalesAttributionOmit<ExtArgs> | null
+    /**
+     * The data used to create many MarketingSalesAttributions.
+     */
+    data: MarketingSalesAttributionCreateManyInput | MarketingSalesAttributionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingSalesAttributionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MarketingSalesAttribution update
+   */
+  export type MarketingSalesAttributionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingSalesAttribution
+     */
+    select?: MarketingSalesAttributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingSalesAttribution
+     */
+    omit?: MarketingSalesAttributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingSalesAttributionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MarketingSalesAttribution.
+     */
+    data: XOR<MarketingSalesAttributionUpdateInput, MarketingSalesAttributionUncheckedUpdateInput>
+    /**
+     * Choose, which MarketingSalesAttribution to update.
+     */
+    where: MarketingSalesAttributionWhereUniqueInput
+  }
+
+  /**
+   * MarketingSalesAttribution updateMany
+   */
+  export type MarketingSalesAttributionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MarketingSalesAttributions.
+     */
+    data: XOR<MarketingSalesAttributionUpdateManyMutationInput, MarketingSalesAttributionUncheckedUpdateManyInput>
+    /**
+     * Filter which MarketingSalesAttributions to update
+     */
+    where?: MarketingSalesAttributionWhereInput
+    /**
+     * Limit how many MarketingSalesAttributions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MarketingSalesAttribution updateManyAndReturn
+   */
+  export type MarketingSalesAttributionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingSalesAttribution
+     */
+    select?: MarketingSalesAttributionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingSalesAttribution
+     */
+    omit?: MarketingSalesAttributionOmit<ExtArgs> | null
+    /**
+     * The data used to update MarketingSalesAttributions.
+     */
+    data: XOR<MarketingSalesAttributionUpdateManyMutationInput, MarketingSalesAttributionUncheckedUpdateManyInput>
+    /**
+     * Filter which MarketingSalesAttributions to update
+     */
+    where?: MarketingSalesAttributionWhereInput
+    /**
+     * Limit how many MarketingSalesAttributions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingSalesAttributionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MarketingSalesAttribution upsert
+   */
+  export type MarketingSalesAttributionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingSalesAttribution
+     */
+    select?: MarketingSalesAttributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingSalesAttribution
+     */
+    omit?: MarketingSalesAttributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingSalesAttributionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MarketingSalesAttribution to update in case it exists.
+     */
+    where: MarketingSalesAttributionWhereUniqueInput
+    /**
+     * In case the MarketingSalesAttribution found by the `where` argument doesn't exist, create a new MarketingSalesAttribution with this data.
+     */
+    create: XOR<MarketingSalesAttributionCreateInput, MarketingSalesAttributionUncheckedCreateInput>
+    /**
+     * In case the MarketingSalesAttribution was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MarketingSalesAttributionUpdateInput, MarketingSalesAttributionUncheckedUpdateInput>
+  }
+
+  /**
+   * MarketingSalesAttribution delete
+   */
+  export type MarketingSalesAttributionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingSalesAttribution
+     */
+    select?: MarketingSalesAttributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingSalesAttribution
+     */
+    omit?: MarketingSalesAttributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingSalesAttributionInclude<ExtArgs> | null
+    /**
+     * Filter which MarketingSalesAttribution to delete.
+     */
+    where: MarketingSalesAttributionWhereUniqueInput
+  }
+
+  /**
+   * MarketingSalesAttribution deleteMany
+   */
+  export type MarketingSalesAttributionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MarketingSalesAttributions to delete
+     */
+    where?: MarketingSalesAttributionWhereInput
+    /**
+     * Limit how many MarketingSalesAttributions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MarketingSalesAttribution.marketingDraft
+   */
+  export type MarketingSalesAttribution$marketingDraftArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingDraft
+     */
+    select?: MarketingDraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingDraft
+     */
+    omit?: MarketingDraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingDraftInclude<ExtArgs> | null
+    where?: MarketingDraftWhereInput
+  }
+
+  /**
+   * MarketingSalesAttribution.canvaAssetAssist
+   */
+  export type MarketingSalesAttribution$canvaAssetAssistArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingCanvaAssetAssist
+     */
+    select?: MarketingCanvaAssetAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingCanvaAssetAssist
+     */
+    omit?: MarketingCanvaAssetAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingCanvaAssetAssistInclude<ExtArgs> | null
+    where?: MarketingCanvaAssetAssistWhereInput
+  }
+
+  /**
+   * MarketingSalesAttribution.publishAssist
+   */
+  export type MarketingSalesAttribution$publishAssistArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingPublishAssist
+     */
+    select?: MarketingPublishAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingPublishAssist
+     */
+    omit?: MarketingPublishAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingPublishAssistInclude<ExtArgs> | null
+    where?: MarketingPublishAssistWhereInput
+  }
+
+  /**
+   * MarketingSalesAttribution without action
+   */
+  export type MarketingSalesAttributionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingSalesAttribution
+     */
+    select?: MarketingSalesAttributionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingSalesAttribution
+     */
+    omit?: MarketingSalesAttributionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingSalesAttributionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SalesConversionAssist
+   */
+
+  export type AggregateSalesConversionAssist = {
+    _count: SalesConversionAssistCountAggregateOutputType | null
+    _min: SalesConversionAssistMinAggregateOutputType | null
+    _max: SalesConversionAssistMaxAggregateOutputType | null
+  }
+
+  export type SalesConversionAssistMinAggregateOutputType = {
+    id: string | null
+    leadId: string | null
+    assistType: string | null
+    nextSalesAction: string | null
+    callOpener: string | null
+    manualApprovalStatus: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SalesConversionAssistMaxAggregateOutputType = {
+    id: string | null
+    leadId: string | null
+    assistType: string | null
+    nextSalesAction: string | null
+    callOpener: string | null
+    manualApprovalStatus: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SalesConversionAssistCountAggregateOutputType = {
+    id: number
+    leadId: number
+    assistType: number
+    nextSalesAction: number
+    callOpener: number
+    sellerQuestions: number
+    objectionNotes: number
+    followUpDrafts: number
+    offerReadiness: number
+    roiSignals: number
+    safetyFlags: number
+    manualApprovalStatus: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SalesConversionAssistMinAggregateInputType = {
+    id?: true
+    leadId?: true
+    assistType?: true
+    nextSalesAction?: true
+    callOpener?: true
+    manualApprovalStatus?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SalesConversionAssistMaxAggregateInputType = {
+    id?: true
+    leadId?: true
+    assistType?: true
+    nextSalesAction?: true
+    callOpener?: true
+    manualApprovalStatus?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SalesConversionAssistCountAggregateInputType = {
+    id?: true
+    leadId?: true
+    assistType?: true
+    nextSalesAction?: true
+    callOpener?: true
+    sellerQuestions?: true
+    objectionNotes?: true
+    followUpDrafts?: true
+    offerReadiness?: true
+    roiSignals?: true
+    safetyFlags?: true
+    manualApprovalStatus?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SalesConversionAssistAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SalesConversionAssist to aggregate.
+     */
+    where?: SalesConversionAssistWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalesConversionAssists to fetch.
+     */
+    orderBy?: SalesConversionAssistOrderByWithRelationInput | SalesConversionAssistOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SalesConversionAssistWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalesConversionAssists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalesConversionAssists.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SalesConversionAssists
+    **/
+    _count?: true | SalesConversionAssistCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SalesConversionAssistMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SalesConversionAssistMaxAggregateInputType
+  }
+
+  export type GetSalesConversionAssistAggregateType<T extends SalesConversionAssistAggregateArgs> = {
+        [P in keyof T & keyof AggregateSalesConversionAssist]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSalesConversionAssist[P]>
+      : GetScalarType<T[P], AggregateSalesConversionAssist[P]>
+  }
+
+
+
+
+  export type SalesConversionAssistGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SalesConversionAssistWhereInput
+    orderBy?: SalesConversionAssistOrderByWithAggregationInput | SalesConversionAssistOrderByWithAggregationInput[]
+    by: SalesConversionAssistScalarFieldEnum[] | SalesConversionAssistScalarFieldEnum
+    having?: SalesConversionAssistScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SalesConversionAssistCountAggregateInputType | true
+    _min?: SalesConversionAssistMinAggregateInputType
+    _max?: SalesConversionAssistMaxAggregateInputType
+  }
+
+  export type SalesConversionAssistGroupByOutputType = {
+    id: string
+    leadId: string
+    assistType: string
+    nextSalesAction: string
+    callOpener: string
+    sellerQuestions: JsonValue
+    objectionNotes: JsonValue
+    followUpDrafts: JsonValue
+    offerReadiness: JsonValue
+    roiSignals: JsonValue
+    safetyFlags: JsonValue
+    manualApprovalStatus: string
+    createdAt: Date
+    updatedAt: Date
+    _count: SalesConversionAssistCountAggregateOutputType | null
+    _min: SalesConversionAssistMinAggregateOutputType | null
+    _max: SalesConversionAssistMaxAggregateOutputType | null
+  }
+
+  type GetSalesConversionAssistGroupByPayload<T extends SalesConversionAssistGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SalesConversionAssistGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SalesConversionAssistGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SalesConversionAssistGroupByOutputType[P]>
+            : GetScalarType<T[P], SalesConversionAssistGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SalesConversionAssistSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    assistType?: boolean
+    nextSalesAction?: boolean
+    callOpener?: boolean
+    sellerQuestions?: boolean
+    objectionNotes?: boolean
+    followUpDrafts?: boolean
+    offerReadiness?: boolean
+    roiSignals?: boolean
+    safetyFlags?: boolean
+    manualApprovalStatus?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["salesConversionAssist"]>
+
+  export type SalesConversionAssistSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    assistType?: boolean
+    nextSalesAction?: boolean
+    callOpener?: boolean
+    sellerQuestions?: boolean
+    objectionNotes?: boolean
+    followUpDrafts?: boolean
+    offerReadiness?: boolean
+    roiSignals?: boolean
+    safetyFlags?: boolean
+    manualApprovalStatus?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["salesConversionAssist"]>
+
+  export type SalesConversionAssistSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    assistType?: boolean
+    nextSalesAction?: boolean
+    callOpener?: boolean
+    sellerQuestions?: boolean
+    objectionNotes?: boolean
+    followUpDrafts?: boolean
+    offerReadiness?: boolean
+    roiSignals?: boolean
+    safetyFlags?: boolean
+    manualApprovalStatus?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["salesConversionAssist"]>
+
+  export type SalesConversionAssistSelectScalar = {
+    id?: boolean
+    leadId?: boolean
+    assistType?: boolean
+    nextSalesAction?: boolean
+    callOpener?: boolean
+    sellerQuestions?: boolean
+    objectionNotes?: boolean
+    followUpDrafts?: boolean
+    offerReadiness?: boolean
+    roiSignals?: boolean
+    safetyFlags?: boolean
+    manualApprovalStatus?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SalesConversionAssistOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "assistType" | "nextSalesAction" | "callOpener" | "sellerQuestions" | "objectionNotes" | "followUpDrafts" | "offerReadiness" | "roiSignals" | "safetyFlags" | "manualApprovalStatus" | "createdAt" | "updatedAt", ExtArgs["result"]["salesConversionAssist"]>
+  export type SalesConversionAssistInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+  }
+  export type SalesConversionAssistIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+  }
+  export type SalesConversionAssistIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+  }
+
+  export type $SalesConversionAssistPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SalesConversionAssist"
+    objects: {
+      lead: Prisma.$LeadPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      leadId: string
+      assistType: string
+      nextSalesAction: string
+      callOpener: string
+      sellerQuestions: Prisma.JsonValue
+      objectionNotes: Prisma.JsonValue
+      followUpDrafts: Prisma.JsonValue
+      offerReadiness: Prisma.JsonValue
+      roiSignals: Prisma.JsonValue
+      safetyFlags: Prisma.JsonValue
+      manualApprovalStatus: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["salesConversionAssist"]>
+    composites: {}
+  }
+
+  type SalesConversionAssistGetPayload<S extends boolean | null | undefined | SalesConversionAssistDefaultArgs> = $Result.GetResult<Prisma.$SalesConversionAssistPayload, S>
+
+  type SalesConversionAssistCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SalesConversionAssistFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SalesConversionAssistCountAggregateInputType | true
+    }
+
+  export interface SalesConversionAssistDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SalesConversionAssist'], meta: { name: 'SalesConversionAssist' } }
+    /**
+     * Find zero or one SalesConversionAssist that matches the filter.
+     * @param {SalesConversionAssistFindUniqueArgs} args - Arguments to find a SalesConversionAssist
+     * @example
+     * // Get one SalesConversionAssist
+     * const salesConversionAssist = await prisma.salesConversionAssist.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SalesConversionAssistFindUniqueArgs>(args: SelectSubset<T, SalesConversionAssistFindUniqueArgs<ExtArgs>>): Prisma__SalesConversionAssistClient<$Result.GetResult<Prisma.$SalesConversionAssistPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SalesConversionAssist that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SalesConversionAssistFindUniqueOrThrowArgs} args - Arguments to find a SalesConversionAssist
+     * @example
+     * // Get one SalesConversionAssist
+     * const salesConversionAssist = await prisma.salesConversionAssist.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SalesConversionAssistFindUniqueOrThrowArgs>(args: SelectSubset<T, SalesConversionAssistFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SalesConversionAssistClient<$Result.GetResult<Prisma.$SalesConversionAssistPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SalesConversionAssist that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesConversionAssistFindFirstArgs} args - Arguments to find a SalesConversionAssist
+     * @example
+     * // Get one SalesConversionAssist
+     * const salesConversionAssist = await prisma.salesConversionAssist.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SalesConversionAssistFindFirstArgs>(args?: SelectSubset<T, SalesConversionAssistFindFirstArgs<ExtArgs>>): Prisma__SalesConversionAssistClient<$Result.GetResult<Prisma.$SalesConversionAssistPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SalesConversionAssist that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesConversionAssistFindFirstOrThrowArgs} args - Arguments to find a SalesConversionAssist
+     * @example
+     * // Get one SalesConversionAssist
+     * const salesConversionAssist = await prisma.salesConversionAssist.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SalesConversionAssistFindFirstOrThrowArgs>(args?: SelectSubset<T, SalesConversionAssistFindFirstOrThrowArgs<ExtArgs>>): Prisma__SalesConversionAssistClient<$Result.GetResult<Prisma.$SalesConversionAssistPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SalesConversionAssists that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesConversionAssistFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SalesConversionAssists
+     * const salesConversionAssists = await prisma.salesConversionAssist.findMany()
+     * 
+     * // Get first 10 SalesConversionAssists
+     * const salesConversionAssists = await prisma.salesConversionAssist.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const salesConversionAssistWithIdOnly = await prisma.salesConversionAssist.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SalesConversionAssistFindManyArgs>(args?: SelectSubset<T, SalesConversionAssistFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesConversionAssistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SalesConversionAssist.
+     * @param {SalesConversionAssistCreateArgs} args - Arguments to create a SalesConversionAssist.
+     * @example
+     * // Create one SalesConversionAssist
+     * const SalesConversionAssist = await prisma.salesConversionAssist.create({
+     *   data: {
+     *     // ... data to create a SalesConversionAssist
+     *   }
+     * })
+     * 
+     */
+    create<T extends SalesConversionAssistCreateArgs>(args: SelectSubset<T, SalesConversionAssistCreateArgs<ExtArgs>>): Prisma__SalesConversionAssistClient<$Result.GetResult<Prisma.$SalesConversionAssistPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SalesConversionAssists.
+     * @param {SalesConversionAssistCreateManyArgs} args - Arguments to create many SalesConversionAssists.
+     * @example
+     * // Create many SalesConversionAssists
+     * const salesConversionAssist = await prisma.salesConversionAssist.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SalesConversionAssistCreateManyArgs>(args?: SelectSubset<T, SalesConversionAssistCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SalesConversionAssists and returns the data saved in the database.
+     * @param {SalesConversionAssistCreateManyAndReturnArgs} args - Arguments to create many SalesConversionAssists.
+     * @example
+     * // Create many SalesConversionAssists
+     * const salesConversionAssist = await prisma.salesConversionAssist.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SalesConversionAssists and only return the `id`
+     * const salesConversionAssistWithIdOnly = await prisma.salesConversionAssist.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SalesConversionAssistCreateManyAndReturnArgs>(args?: SelectSubset<T, SalesConversionAssistCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesConversionAssistPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SalesConversionAssist.
+     * @param {SalesConversionAssistDeleteArgs} args - Arguments to delete one SalesConversionAssist.
+     * @example
+     * // Delete one SalesConversionAssist
+     * const SalesConversionAssist = await prisma.salesConversionAssist.delete({
+     *   where: {
+     *     // ... filter to delete one SalesConversionAssist
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SalesConversionAssistDeleteArgs>(args: SelectSubset<T, SalesConversionAssistDeleteArgs<ExtArgs>>): Prisma__SalesConversionAssistClient<$Result.GetResult<Prisma.$SalesConversionAssistPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SalesConversionAssist.
+     * @param {SalesConversionAssistUpdateArgs} args - Arguments to update one SalesConversionAssist.
+     * @example
+     * // Update one SalesConversionAssist
+     * const salesConversionAssist = await prisma.salesConversionAssist.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SalesConversionAssistUpdateArgs>(args: SelectSubset<T, SalesConversionAssistUpdateArgs<ExtArgs>>): Prisma__SalesConversionAssistClient<$Result.GetResult<Prisma.$SalesConversionAssistPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SalesConversionAssists.
+     * @param {SalesConversionAssistDeleteManyArgs} args - Arguments to filter SalesConversionAssists to delete.
+     * @example
+     * // Delete a few SalesConversionAssists
+     * const { count } = await prisma.salesConversionAssist.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SalesConversionAssistDeleteManyArgs>(args?: SelectSubset<T, SalesConversionAssistDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SalesConversionAssists.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesConversionAssistUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SalesConversionAssists
+     * const salesConversionAssist = await prisma.salesConversionAssist.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SalesConversionAssistUpdateManyArgs>(args: SelectSubset<T, SalesConversionAssistUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SalesConversionAssists and returns the data updated in the database.
+     * @param {SalesConversionAssistUpdateManyAndReturnArgs} args - Arguments to update many SalesConversionAssists.
+     * @example
+     * // Update many SalesConversionAssists
+     * const salesConversionAssist = await prisma.salesConversionAssist.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SalesConversionAssists and only return the `id`
+     * const salesConversionAssistWithIdOnly = await prisma.salesConversionAssist.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SalesConversionAssistUpdateManyAndReturnArgs>(args: SelectSubset<T, SalesConversionAssistUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesConversionAssistPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SalesConversionAssist.
+     * @param {SalesConversionAssistUpsertArgs} args - Arguments to update or create a SalesConversionAssist.
+     * @example
+     * // Update or create a SalesConversionAssist
+     * const salesConversionAssist = await prisma.salesConversionAssist.upsert({
+     *   create: {
+     *     // ... data to create a SalesConversionAssist
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SalesConversionAssist we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SalesConversionAssistUpsertArgs>(args: SelectSubset<T, SalesConversionAssistUpsertArgs<ExtArgs>>): Prisma__SalesConversionAssistClient<$Result.GetResult<Prisma.$SalesConversionAssistPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SalesConversionAssists.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesConversionAssistCountArgs} args - Arguments to filter SalesConversionAssists to count.
+     * @example
+     * // Count the number of SalesConversionAssists
+     * const count = await prisma.salesConversionAssist.count({
+     *   where: {
+     *     // ... the filter for the SalesConversionAssists we want to count
+     *   }
+     * })
+    **/
+    count<T extends SalesConversionAssistCountArgs>(
+      args?: Subset<T, SalesConversionAssistCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SalesConversionAssistCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SalesConversionAssist.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesConversionAssistAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SalesConversionAssistAggregateArgs>(args: Subset<T, SalesConversionAssistAggregateArgs>): Prisma.PrismaPromise<GetSalesConversionAssistAggregateType<T>>
+
+    /**
+     * Group by SalesConversionAssist.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesConversionAssistGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SalesConversionAssistGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SalesConversionAssistGroupByArgs['orderBy'] }
+        : { orderBy?: SalesConversionAssistGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SalesConversionAssistGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSalesConversionAssistGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SalesConversionAssist model
+   */
+  readonly fields: SalesConversionAssistFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SalesConversionAssist.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SalesConversionAssistClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    lead<T extends LeadDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LeadDefaultArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SalesConversionAssist model
+   */
+  interface SalesConversionAssistFieldRefs {
+    readonly id: FieldRef<"SalesConversionAssist", 'String'>
+    readonly leadId: FieldRef<"SalesConversionAssist", 'String'>
+    readonly assistType: FieldRef<"SalesConversionAssist", 'String'>
+    readonly nextSalesAction: FieldRef<"SalesConversionAssist", 'String'>
+    readonly callOpener: FieldRef<"SalesConversionAssist", 'String'>
+    readonly sellerQuestions: FieldRef<"SalesConversionAssist", 'Json'>
+    readonly objectionNotes: FieldRef<"SalesConversionAssist", 'Json'>
+    readonly followUpDrafts: FieldRef<"SalesConversionAssist", 'Json'>
+    readonly offerReadiness: FieldRef<"SalesConversionAssist", 'Json'>
+    readonly roiSignals: FieldRef<"SalesConversionAssist", 'Json'>
+    readonly safetyFlags: FieldRef<"SalesConversionAssist", 'Json'>
+    readonly manualApprovalStatus: FieldRef<"SalesConversionAssist", 'String'>
+    readonly createdAt: FieldRef<"SalesConversionAssist", 'DateTime'>
+    readonly updatedAt: FieldRef<"SalesConversionAssist", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SalesConversionAssist findUnique
+   */
+  export type SalesConversionAssistFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesConversionAssist
+     */
+    select?: SalesConversionAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesConversionAssist
+     */
+    omit?: SalesConversionAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesConversionAssistInclude<ExtArgs> | null
+    /**
+     * Filter, which SalesConversionAssist to fetch.
+     */
+    where: SalesConversionAssistWhereUniqueInput
+  }
+
+  /**
+   * SalesConversionAssist findUniqueOrThrow
+   */
+  export type SalesConversionAssistFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesConversionAssist
+     */
+    select?: SalesConversionAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesConversionAssist
+     */
+    omit?: SalesConversionAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesConversionAssistInclude<ExtArgs> | null
+    /**
+     * Filter, which SalesConversionAssist to fetch.
+     */
+    where: SalesConversionAssistWhereUniqueInput
+  }
+
+  /**
+   * SalesConversionAssist findFirst
+   */
+  export type SalesConversionAssistFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesConversionAssist
+     */
+    select?: SalesConversionAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesConversionAssist
+     */
+    omit?: SalesConversionAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesConversionAssistInclude<ExtArgs> | null
+    /**
+     * Filter, which SalesConversionAssist to fetch.
+     */
+    where?: SalesConversionAssistWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalesConversionAssists to fetch.
+     */
+    orderBy?: SalesConversionAssistOrderByWithRelationInput | SalesConversionAssistOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SalesConversionAssists.
+     */
+    cursor?: SalesConversionAssistWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalesConversionAssists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalesConversionAssists.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SalesConversionAssists.
+     */
+    distinct?: SalesConversionAssistScalarFieldEnum | SalesConversionAssistScalarFieldEnum[]
+  }
+
+  /**
+   * SalesConversionAssist findFirstOrThrow
+   */
+  export type SalesConversionAssistFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesConversionAssist
+     */
+    select?: SalesConversionAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesConversionAssist
+     */
+    omit?: SalesConversionAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesConversionAssistInclude<ExtArgs> | null
+    /**
+     * Filter, which SalesConversionAssist to fetch.
+     */
+    where?: SalesConversionAssistWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalesConversionAssists to fetch.
+     */
+    orderBy?: SalesConversionAssistOrderByWithRelationInput | SalesConversionAssistOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SalesConversionAssists.
+     */
+    cursor?: SalesConversionAssistWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalesConversionAssists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalesConversionAssists.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SalesConversionAssists.
+     */
+    distinct?: SalesConversionAssistScalarFieldEnum | SalesConversionAssistScalarFieldEnum[]
+  }
+
+  /**
+   * SalesConversionAssist findMany
+   */
+  export type SalesConversionAssistFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesConversionAssist
+     */
+    select?: SalesConversionAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesConversionAssist
+     */
+    omit?: SalesConversionAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesConversionAssistInclude<ExtArgs> | null
+    /**
+     * Filter, which SalesConversionAssists to fetch.
+     */
+    where?: SalesConversionAssistWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalesConversionAssists to fetch.
+     */
+    orderBy?: SalesConversionAssistOrderByWithRelationInput | SalesConversionAssistOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SalesConversionAssists.
+     */
+    cursor?: SalesConversionAssistWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalesConversionAssists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalesConversionAssists.
+     */
+    skip?: number
+    distinct?: SalesConversionAssistScalarFieldEnum | SalesConversionAssistScalarFieldEnum[]
+  }
+
+  /**
+   * SalesConversionAssist create
+   */
+  export type SalesConversionAssistCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesConversionAssist
+     */
+    select?: SalesConversionAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesConversionAssist
+     */
+    omit?: SalesConversionAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesConversionAssistInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SalesConversionAssist.
+     */
+    data: XOR<SalesConversionAssistCreateInput, SalesConversionAssistUncheckedCreateInput>
+  }
+
+  /**
+   * SalesConversionAssist createMany
+   */
+  export type SalesConversionAssistCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SalesConversionAssists.
+     */
+    data: SalesConversionAssistCreateManyInput | SalesConversionAssistCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SalesConversionAssist createManyAndReturn
+   */
+  export type SalesConversionAssistCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesConversionAssist
+     */
+    select?: SalesConversionAssistSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesConversionAssist
+     */
+    omit?: SalesConversionAssistOmit<ExtArgs> | null
+    /**
+     * The data used to create many SalesConversionAssists.
+     */
+    data: SalesConversionAssistCreateManyInput | SalesConversionAssistCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesConversionAssistIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SalesConversionAssist update
+   */
+  export type SalesConversionAssistUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesConversionAssist
+     */
+    select?: SalesConversionAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesConversionAssist
+     */
+    omit?: SalesConversionAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesConversionAssistInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SalesConversionAssist.
+     */
+    data: XOR<SalesConversionAssistUpdateInput, SalesConversionAssistUncheckedUpdateInput>
+    /**
+     * Choose, which SalesConversionAssist to update.
+     */
+    where: SalesConversionAssistWhereUniqueInput
+  }
+
+  /**
+   * SalesConversionAssist updateMany
+   */
+  export type SalesConversionAssistUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SalesConversionAssists.
+     */
+    data: XOR<SalesConversionAssistUpdateManyMutationInput, SalesConversionAssistUncheckedUpdateManyInput>
+    /**
+     * Filter which SalesConversionAssists to update
+     */
+    where?: SalesConversionAssistWhereInput
+    /**
+     * Limit how many SalesConversionAssists to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SalesConversionAssist updateManyAndReturn
+   */
+  export type SalesConversionAssistUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesConversionAssist
+     */
+    select?: SalesConversionAssistSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesConversionAssist
+     */
+    omit?: SalesConversionAssistOmit<ExtArgs> | null
+    /**
+     * The data used to update SalesConversionAssists.
+     */
+    data: XOR<SalesConversionAssistUpdateManyMutationInput, SalesConversionAssistUncheckedUpdateManyInput>
+    /**
+     * Filter which SalesConversionAssists to update
+     */
+    where?: SalesConversionAssistWhereInput
+    /**
+     * Limit how many SalesConversionAssists to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesConversionAssistIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SalesConversionAssist upsert
+   */
+  export type SalesConversionAssistUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesConversionAssist
+     */
+    select?: SalesConversionAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesConversionAssist
+     */
+    omit?: SalesConversionAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesConversionAssistInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SalesConversionAssist to update in case it exists.
+     */
+    where: SalesConversionAssistWhereUniqueInput
+    /**
+     * In case the SalesConversionAssist found by the `where` argument doesn't exist, create a new SalesConversionAssist with this data.
+     */
+    create: XOR<SalesConversionAssistCreateInput, SalesConversionAssistUncheckedCreateInput>
+    /**
+     * In case the SalesConversionAssist was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SalesConversionAssistUpdateInput, SalesConversionAssistUncheckedUpdateInput>
+  }
+
+  /**
+   * SalesConversionAssist delete
+   */
+  export type SalesConversionAssistDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesConversionAssist
+     */
+    select?: SalesConversionAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesConversionAssist
+     */
+    omit?: SalesConversionAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesConversionAssistInclude<ExtArgs> | null
+    /**
+     * Filter which SalesConversionAssist to delete.
+     */
+    where: SalesConversionAssistWhereUniqueInput
+  }
+
+  /**
+   * SalesConversionAssist deleteMany
+   */
+  export type SalesConversionAssistDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SalesConversionAssists to delete
+     */
+    where?: SalesConversionAssistWhereInput
+    /**
+     * Limit how many SalesConversionAssists to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SalesConversionAssist without action
+   */
+  export type SalesConversionAssistDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalesConversionAssist
+     */
+    select?: SalesConversionAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalesConversionAssist
+     */
+    omit?: SalesConversionAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalesConversionAssistInclude<ExtArgs> | null
   }
 
 
@@ -19942,6 +22820,45 @@ export namespace Prisma {
   export type MarketingCanvaAssetAssistScalarFieldEnum = (typeof MarketingCanvaAssetAssistScalarFieldEnum)[keyof typeof MarketingCanvaAssetAssistScalarFieldEnum]
 
 
+  export const MarketingSalesAttributionScalarFieldEnum: {
+    id: 'id',
+    leadId: 'leadId',
+    marketingDraftId: 'marketingDraftId',
+    canvaAssetAssistId: 'canvaAssetAssistId',
+    publishAssistId: 'publishAssistId',
+    channel: 'channel',
+    topic: 'topic',
+    sourceLabel: 'sourceLabel',
+    manualPostUrl: 'manualPostUrl',
+    attributionStatus: 'attributionStatus',
+    attributionNote: 'attributionNote',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MarketingSalesAttributionScalarFieldEnum = (typeof MarketingSalesAttributionScalarFieldEnum)[keyof typeof MarketingSalesAttributionScalarFieldEnum]
+
+
+  export const SalesConversionAssistScalarFieldEnum: {
+    id: 'id',
+    leadId: 'leadId',
+    assistType: 'assistType',
+    nextSalesAction: 'nextSalesAction',
+    callOpener: 'callOpener',
+    sellerQuestions: 'sellerQuestions',
+    objectionNotes: 'objectionNotes',
+    followUpDrafts: 'followUpDrafts',
+    offerReadiness: 'offerReadiness',
+    roiSignals: 'roiSignals',
+    safetyFlags: 'safetyFlags',
+    manualApprovalStatus: 'manualApprovalStatus',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SalesConversionAssistScalarFieldEnum = (typeof SalesConversionAssistScalarFieldEnum)[keyof typeof SalesConversionAssistScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -20149,6 +23066,8 @@ export namespace Prisma {
     optOutAt?: DateTimeNullableFilter<"Lead"> | Date | string | null
     createdAt?: DateTimeFilter<"Lead"> | Date | string
     updatedAt?: DateTimeFilter<"Lead"> | Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionListRelationFilter
+    salesConversionAssists?: SalesConversionAssistListRelationFilter
   }
 
   export type LeadOrderByWithRelationInput = {
@@ -20180,6 +23099,8 @@ export namespace Prisma {
     optOutAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    marketingSalesAttributions?: MarketingSalesAttributionOrderByRelationAggregateInput
+    salesConversionAssists?: SalesConversionAssistOrderByRelationAggregateInput
   }
 
   export type LeadWhereUniqueInput = Prisma.AtLeast<{
@@ -20215,6 +23136,8 @@ export namespace Prisma {
     optOutAt?: DateTimeNullableFilter<"Lead"> | Date | string | null
     createdAt?: DateTimeFilter<"Lead"> | Date | string
     updatedAt?: DateTimeFilter<"Lead"> | Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionListRelationFilter
+    salesConversionAssists?: SalesConversionAssistListRelationFilter
   }, "id" | "propertyAddress_phone">
 
   export type LeadOrderByWithAggregationInput = {
@@ -21133,6 +24056,7 @@ export namespace Prisma {
     approvals?: MarketingApprovalListRelationFilter
     publishAssists?: MarketingPublishAssistListRelationFilter
     canvaAssetAssists?: MarketingCanvaAssetAssistListRelationFilter
+    marketingSalesAttributions?: MarketingSalesAttributionListRelationFilter
   }
 
   export type MarketingDraftOrderByWithRelationInput = {
@@ -21152,6 +24076,7 @@ export namespace Prisma {
     approvals?: MarketingApprovalOrderByRelationAggregateInput
     publishAssists?: MarketingPublishAssistOrderByRelationAggregateInput
     canvaAssetAssists?: MarketingCanvaAssetAssistOrderByRelationAggregateInput
+    marketingSalesAttributions?: MarketingSalesAttributionOrderByRelationAggregateInput
   }
 
   export type MarketingDraftWhereUniqueInput = Prisma.AtLeast<{
@@ -21174,6 +24099,7 @@ export namespace Prisma {
     approvals?: MarketingApprovalListRelationFilter
     publishAssists?: MarketingPublishAssistListRelationFilter
     canvaAssetAssists?: MarketingCanvaAssetAssistListRelationFilter
+    marketingSalesAttributions?: MarketingSalesAttributionListRelationFilter
   }, "id">
 
   export type MarketingDraftOrderByWithAggregationInput = {
@@ -21372,6 +24298,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"MarketingPublishAssist"> | Date | string
     updatedAt?: DateTimeFilter<"MarketingPublishAssist"> | Date | string
     draft?: XOR<MarketingDraftScalarRelationFilter, MarketingDraftWhereInput>
+    marketingSalesAttributions?: MarketingSalesAttributionListRelationFilter
   }
 
   export type MarketingPublishAssistOrderByWithRelationInput = {
@@ -21387,6 +24314,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     draft?: MarketingDraftOrderByWithRelationInput
+    marketingSalesAttributions?: MarketingSalesAttributionOrderByRelationAggregateInput
   }
 
   export type MarketingPublishAssistWhereUniqueInput = Prisma.AtLeast<{
@@ -21405,6 +24333,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"MarketingPublishAssist"> | Date | string
     updatedAt?: DateTimeFilter<"MarketingPublishAssist"> | Date | string
     draft?: XOR<MarketingDraftScalarRelationFilter, MarketingDraftWhereInput>
+    marketingSalesAttributions?: MarketingSalesAttributionListRelationFilter
   }, "id">
 
   export type MarketingPublishAssistOrderByWithAggregationInput = {
@@ -21456,6 +24385,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"MarketingCanvaAssetAssist"> | Date | string
     updatedAt?: DateTimeFilter<"MarketingCanvaAssetAssist"> | Date | string
     draft?: XOR<MarketingDraftScalarRelationFilter, MarketingDraftWhereInput>
+    marketingSalesAttributions?: MarketingSalesAttributionListRelationFilter
   }
 
   export type MarketingCanvaAssetAssistOrderByWithRelationInput = {
@@ -21470,6 +24400,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     draft?: MarketingDraftOrderByWithRelationInput
+    marketingSalesAttributions?: MarketingSalesAttributionOrderByRelationAggregateInput
   }
 
   export type MarketingCanvaAssetAssistWhereUniqueInput = Prisma.AtLeast<{
@@ -21487,6 +24418,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"MarketingCanvaAssetAssist"> | Date | string
     updatedAt?: DateTimeFilter<"MarketingCanvaAssetAssist"> | Date | string
     draft?: XOR<MarketingDraftScalarRelationFilter, MarketingDraftWhereInput>
+    marketingSalesAttributions?: MarketingSalesAttributionListRelationFilter
   }, "id">
 
   export type MarketingCanvaAssetAssistOrderByWithAggregationInput = {
@@ -21521,6 +24453,210 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"MarketingCanvaAssetAssist"> | Date | string
   }
 
+  export type MarketingSalesAttributionWhereInput = {
+    AND?: MarketingSalesAttributionWhereInput | MarketingSalesAttributionWhereInput[]
+    OR?: MarketingSalesAttributionWhereInput[]
+    NOT?: MarketingSalesAttributionWhereInput | MarketingSalesAttributionWhereInput[]
+    id?: StringFilter<"MarketingSalesAttribution"> | string
+    leadId?: StringFilter<"MarketingSalesAttribution"> | string
+    marketingDraftId?: StringNullableFilter<"MarketingSalesAttribution"> | string | null
+    canvaAssetAssistId?: StringNullableFilter<"MarketingSalesAttribution"> | string | null
+    publishAssistId?: StringNullableFilter<"MarketingSalesAttribution"> | string | null
+    channel?: StringFilter<"MarketingSalesAttribution"> | string
+    topic?: StringFilter<"MarketingSalesAttribution"> | string
+    sourceLabel?: StringFilter<"MarketingSalesAttribution"> | string
+    manualPostUrl?: StringNullableFilter<"MarketingSalesAttribution"> | string | null
+    attributionStatus?: StringFilter<"MarketingSalesAttribution"> | string
+    attributionNote?: StringFilter<"MarketingSalesAttribution"> | string
+    createdAt?: DateTimeFilter<"MarketingSalesAttribution"> | Date | string
+    updatedAt?: DateTimeFilter<"MarketingSalesAttribution"> | Date | string
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+    marketingDraft?: XOR<MarketingDraftNullableScalarRelationFilter, MarketingDraftWhereInput> | null
+    canvaAssetAssist?: XOR<MarketingCanvaAssetAssistNullableScalarRelationFilter, MarketingCanvaAssetAssistWhereInput> | null
+    publishAssist?: XOR<MarketingPublishAssistNullableScalarRelationFilter, MarketingPublishAssistWhereInput> | null
+  }
+
+  export type MarketingSalesAttributionOrderByWithRelationInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    marketingDraftId?: SortOrderInput | SortOrder
+    canvaAssetAssistId?: SortOrderInput | SortOrder
+    publishAssistId?: SortOrderInput | SortOrder
+    channel?: SortOrder
+    topic?: SortOrder
+    sourceLabel?: SortOrder
+    manualPostUrl?: SortOrderInput | SortOrder
+    attributionStatus?: SortOrder
+    attributionNote?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    lead?: LeadOrderByWithRelationInput
+    marketingDraft?: MarketingDraftOrderByWithRelationInput
+    canvaAssetAssist?: MarketingCanvaAssetAssistOrderByWithRelationInput
+    publishAssist?: MarketingPublishAssistOrderByWithRelationInput
+  }
+
+  export type MarketingSalesAttributionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: MarketingSalesAttributionWhereInput | MarketingSalesAttributionWhereInput[]
+    OR?: MarketingSalesAttributionWhereInput[]
+    NOT?: MarketingSalesAttributionWhereInput | MarketingSalesAttributionWhereInput[]
+    leadId?: StringFilter<"MarketingSalesAttribution"> | string
+    marketingDraftId?: StringNullableFilter<"MarketingSalesAttribution"> | string | null
+    canvaAssetAssistId?: StringNullableFilter<"MarketingSalesAttribution"> | string | null
+    publishAssistId?: StringNullableFilter<"MarketingSalesAttribution"> | string | null
+    channel?: StringFilter<"MarketingSalesAttribution"> | string
+    topic?: StringFilter<"MarketingSalesAttribution"> | string
+    sourceLabel?: StringFilter<"MarketingSalesAttribution"> | string
+    manualPostUrl?: StringNullableFilter<"MarketingSalesAttribution"> | string | null
+    attributionStatus?: StringFilter<"MarketingSalesAttribution"> | string
+    attributionNote?: StringFilter<"MarketingSalesAttribution"> | string
+    createdAt?: DateTimeFilter<"MarketingSalesAttribution"> | Date | string
+    updatedAt?: DateTimeFilter<"MarketingSalesAttribution"> | Date | string
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+    marketingDraft?: XOR<MarketingDraftNullableScalarRelationFilter, MarketingDraftWhereInput> | null
+    canvaAssetAssist?: XOR<MarketingCanvaAssetAssistNullableScalarRelationFilter, MarketingCanvaAssetAssistWhereInput> | null
+    publishAssist?: XOR<MarketingPublishAssistNullableScalarRelationFilter, MarketingPublishAssistWhereInput> | null
+  }, "id">
+
+  export type MarketingSalesAttributionOrderByWithAggregationInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    marketingDraftId?: SortOrderInput | SortOrder
+    canvaAssetAssistId?: SortOrderInput | SortOrder
+    publishAssistId?: SortOrderInput | SortOrder
+    channel?: SortOrder
+    topic?: SortOrder
+    sourceLabel?: SortOrder
+    manualPostUrl?: SortOrderInput | SortOrder
+    attributionStatus?: SortOrder
+    attributionNote?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MarketingSalesAttributionCountOrderByAggregateInput
+    _max?: MarketingSalesAttributionMaxOrderByAggregateInput
+    _min?: MarketingSalesAttributionMinOrderByAggregateInput
+  }
+
+  export type MarketingSalesAttributionScalarWhereWithAggregatesInput = {
+    AND?: MarketingSalesAttributionScalarWhereWithAggregatesInput | MarketingSalesAttributionScalarWhereWithAggregatesInput[]
+    OR?: MarketingSalesAttributionScalarWhereWithAggregatesInput[]
+    NOT?: MarketingSalesAttributionScalarWhereWithAggregatesInput | MarketingSalesAttributionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"MarketingSalesAttribution"> | string
+    leadId?: StringWithAggregatesFilter<"MarketingSalesAttribution"> | string
+    marketingDraftId?: StringNullableWithAggregatesFilter<"MarketingSalesAttribution"> | string | null
+    canvaAssetAssistId?: StringNullableWithAggregatesFilter<"MarketingSalesAttribution"> | string | null
+    publishAssistId?: StringNullableWithAggregatesFilter<"MarketingSalesAttribution"> | string | null
+    channel?: StringWithAggregatesFilter<"MarketingSalesAttribution"> | string
+    topic?: StringWithAggregatesFilter<"MarketingSalesAttribution"> | string
+    sourceLabel?: StringWithAggregatesFilter<"MarketingSalesAttribution"> | string
+    manualPostUrl?: StringNullableWithAggregatesFilter<"MarketingSalesAttribution"> | string | null
+    attributionStatus?: StringWithAggregatesFilter<"MarketingSalesAttribution"> | string
+    attributionNote?: StringWithAggregatesFilter<"MarketingSalesAttribution"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"MarketingSalesAttribution"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MarketingSalesAttribution"> | Date | string
+  }
+
+  export type SalesConversionAssistWhereInput = {
+    AND?: SalesConversionAssistWhereInput | SalesConversionAssistWhereInput[]
+    OR?: SalesConversionAssistWhereInput[]
+    NOT?: SalesConversionAssistWhereInput | SalesConversionAssistWhereInput[]
+    id?: StringFilter<"SalesConversionAssist"> | string
+    leadId?: StringFilter<"SalesConversionAssist"> | string
+    assistType?: StringFilter<"SalesConversionAssist"> | string
+    nextSalesAction?: StringFilter<"SalesConversionAssist"> | string
+    callOpener?: StringFilter<"SalesConversionAssist"> | string
+    sellerQuestions?: JsonFilter<"SalesConversionAssist">
+    objectionNotes?: JsonFilter<"SalesConversionAssist">
+    followUpDrafts?: JsonFilter<"SalesConversionAssist">
+    offerReadiness?: JsonFilter<"SalesConversionAssist">
+    roiSignals?: JsonFilter<"SalesConversionAssist">
+    safetyFlags?: JsonFilter<"SalesConversionAssist">
+    manualApprovalStatus?: StringFilter<"SalesConversionAssist"> | string
+    createdAt?: DateTimeFilter<"SalesConversionAssist"> | Date | string
+    updatedAt?: DateTimeFilter<"SalesConversionAssist"> | Date | string
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+  }
+
+  export type SalesConversionAssistOrderByWithRelationInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    assistType?: SortOrder
+    nextSalesAction?: SortOrder
+    callOpener?: SortOrder
+    sellerQuestions?: SortOrder
+    objectionNotes?: SortOrder
+    followUpDrafts?: SortOrder
+    offerReadiness?: SortOrder
+    roiSignals?: SortOrder
+    safetyFlags?: SortOrder
+    manualApprovalStatus?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    lead?: LeadOrderByWithRelationInput
+  }
+
+  export type SalesConversionAssistWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SalesConversionAssistWhereInput | SalesConversionAssistWhereInput[]
+    OR?: SalesConversionAssistWhereInput[]
+    NOT?: SalesConversionAssistWhereInput | SalesConversionAssistWhereInput[]
+    leadId?: StringFilter<"SalesConversionAssist"> | string
+    assistType?: StringFilter<"SalesConversionAssist"> | string
+    nextSalesAction?: StringFilter<"SalesConversionAssist"> | string
+    callOpener?: StringFilter<"SalesConversionAssist"> | string
+    sellerQuestions?: JsonFilter<"SalesConversionAssist">
+    objectionNotes?: JsonFilter<"SalesConversionAssist">
+    followUpDrafts?: JsonFilter<"SalesConversionAssist">
+    offerReadiness?: JsonFilter<"SalesConversionAssist">
+    roiSignals?: JsonFilter<"SalesConversionAssist">
+    safetyFlags?: JsonFilter<"SalesConversionAssist">
+    manualApprovalStatus?: StringFilter<"SalesConversionAssist"> | string
+    createdAt?: DateTimeFilter<"SalesConversionAssist"> | Date | string
+    updatedAt?: DateTimeFilter<"SalesConversionAssist"> | Date | string
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+  }, "id">
+
+  export type SalesConversionAssistOrderByWithAggregationInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    assistType?: SortOrder
+    nextSalesAction?: SortOrder
+    callOpener?: SortOrder
+    sellerQuestions?: SortOrder
+    objectionNotes?: SortOrder
+    followUpDrafts?: SortOrder
+    offerReadiness?: SortOrder
+    roiSignals?: SortOrder
+    safetyFlags?: SortOrder
+    manualApprovalStatus?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SalesConversionAssistCountOrderByAggregateInput
+    _max?: SalesConversionAssistMaxOrderByAggregateInput
+    _min?: SalesConversionAssistMinOrderByAggregateInput
+  }
+
+  export type SalesConversionAssistScalarWhereWithAggregatesInput = {
+    AND?: SalesConversionAssistScalarWhereWithAggregatesInput | SalesConversionAssistScalarWhereWithAggregatesInput[]
+    OR?: SalesConversionAssistScalarWhereWithAggregatesInput[]
+    NOT?: SalesConversionAssistScalarWhereWithAggregatesInput | SalesConversionAssistScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SalesConversionAssist"> | string
+    leadId?: StringWithAggregatesFilter<"SalesConversionAssist"> | string
+    assistType?: StringWithAggregatesFilter<"SalesConversionAssist"> | string
+    nextSalesAction?: StringWithAggregatesFilter<"SalesConversionAssist"> | string
+    callOpener?: StringWithAggregatesFilter<"SalesConversionAssist"> | string
+    sellerQuestions?: JsonWithAggregatesFilter<"SalesConversionAssist">
+    objectionNotes?: JsonWithAggregatesFilter<"SalesConversionAssist">
+    followUpDrafts?: JsonWithAggregatesFilter<"SalesConversionAssist">
+    offerReadiness?: JsonWithAggregatesFilter<"SalesConversionAssist">
+    roiSignals?: JsonWithAggregatesFilter<"SalesConversionAssist">
+    safetyFlags?: JsonWithAggregatesFilter<"SalesConversionAssist">
+    manualApprovalStatus?: StringWithAggregatesFilter<"SalesConversionAssist"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"SalesConversionAssist"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"SalesConversionAssist"> | Date | string
+  }
+
   export type LeadCreateInput = {
     id?: string
     name: string
@@ -21550,6 +24686,8 @@ export namespace Prisma {
     optOutAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutLeadInput
+    salesConversionAssists?: SalesConversionAssistCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateInput = {
@@ -21581,6 +24719,8 @@ export namespace Prisma {
     optOutAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput
+    salesConversionAssists?: SalesConversionAssistUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUpdateInput = {
@@ -21612,6 +24752,8 @@ export namespace Prisma {
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutLeadNestedInput
+    salesConversionAssists?: SalesConversionAssistUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateInput = {
@@ -21643,6 +24785,8 @@ export namespace Prisma {
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput
+    salesConversionAssists?: SalesConversionAssistUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadCreateManyInput = {
@@ -22730,6 +25874,7 @@ export namespace Prisma {
     approvals?: MarketingApprovalCreateNestedManyWithoutDraftInput
     publishAssists?: MarketingPublishAssistCreateNestedManyWithoutDraftInput
     canvaAssetAssists?: MarketingCanvaAssetAssistCreateNestedManyWithoutDraftInput
+    marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutMarketingDraftInput
   }
 
   export type MarketingDraftUncheckedCreateInput = {
@@ -22749,6 +25894,7 @@ export namespace Prisma {
     approvals?: MarketingApprovalUncheckedCreateNestedManyWithoutDraftInput
     publishAssists?: MarketingPublishAssistUncheckedCreateNestedManyWithoutDraftInput
     canvaAssetAssists?: MarketingCanvaAssetAssistUncheckedCreateNestedManyWithoutDraftInput
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutMarketingDraftInput
   }
 
   export type MarketingDraftUpdateInput = {
@@ -22768,6 +25914,7 @@ export namespace Prisma {
     approvals?: MarketingApprovalUpdateManyWithoutDraftNestedInput
     publishAssists?: MarketingPublishAssistUpdateManyWithoutDraftNestedInput
     canvaAssetAssists?: MarketingCanvaAssetAssistUpdateManyWithoutDraftNestedInput
+    marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutMarketingDraftNestedInput
   }
 
   export type MarketingDraftUncheckedUpdateInput = {
@@ -22787,6 +25934,7 @@ export namespace Prisma {
     approvals?: MarketingApprovalUncheckedUpdateManyWithoutDraftNestedInput
     publishAssists?: MarketingPublishAssistUncheckedUpdateManyWithoutDraftNestedInput
     canvaAssetAssists?: MarketingCanvaAssetAssistUncheckedUpdateManyWithoutDraftNestedInput
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutMarketingDraftNestedInput
   }
 
   export type MarketingDraftCreateManyInput = {
@@ -23009,6 +26157,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     draft: MarketingDraftCreateNestedOneWithoutPublishAssistsInput
+    marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutPublishAssistInput
   }
 
   export type MarketingPublishAssistUncheckedCreateInput = {
@@ -23023,6 +26172,7 @@ export namespace Prisma {
     manualPublishedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutPublishAssistInput
   }
 
   export type MarketingPublishAssistUpdateInput = {
@@ -23037,6 +26187,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     draft?: MarketingDraftUpdateOneRequiredWithoutPublishAssistsNestedInput
+    marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutPublishAssistNestedInput
   }
 
   export type MarketingPublishAssistUncheckedUpdateInput = {
@@ -23051,6 +26202,7 @@ export namespace Prisma {
     manualPublishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutPublishAssistNestedInput
   }
 
   export type MarketingPublishAssistCreateManyInput = {
@@ -23105,6 +26257,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     draft: MarketingDraftCreateNestedOneWithoutCanvaAssetAssistsInput
+    marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutCanvaAssetAssistInput
   }
 
   export type MarketingCanvaAssetAssistUncheckedCreateInput = {
@@ -23118,6 +26271,7 @@ export namespace Prisma {
     safetyFlags: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutCanvaAssetAssistInput
   }
 
   export type MarketingCanvaAssetAssistUpdateInput = {
@@ -23131,6 +26285,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     draft?: MarketingDraftUpdateOneRequiredWithoutCanvaAssetAssistsNestedInput
+    marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutCanvaAssetAssistNestedInput
   }
 
   export type MarketingCanvaAssetAssistUncheckedUpdateInput = {
@@ -23144,6 +26299,7 @@ export namespace Prisma {
     safetyFlags?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutCanvaAssetAssistNestedInput
   }
 
   export type MarketingCanvaAssetAssistCreateManyInput = {
@@ -23180,6 +26336,232 @@ export namespace Prisma {
     assetNotes?: NullableStringFieldUpdateOperationsInput | string | null
     manualApprovalStatus?: StringFieldUpdateOperationsInput | string
     safetyFlags?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingSalesAttributionCreateInput = {
+    id?: string
+    channel: string
+    topic: string
+    sourceLabel: string
+    manualPostUrl?: string | null
+    attributionStatus?: string
+    attributionNote: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lead: LeadCreateNestedOneWithoutMarketingSalesAttributionsInput
+    marketingDraft?: MarketingDraftCreateNestedOneWithoutMarketingSalesAttributionsInput
+    canvaAssetAssist?: MarketingCanvaAssetAssistCreateNestedOneWithoutMarketingSalesAttributionsInput
+    publishAssist?: MarketingPublishAssistCreateNestedOneWithoutMarketingSalesAttributionsInput
+  }
+
+  export type MarketingSalesAttributionUncheckedCreateInput = {
+    id?: string
+    leadId: string
+    marketingDraftId?: string | null
+    canvaAssetAssistId?: string | null
+    publishAssistId?: string | null
+    channel: string
+    topic: string
+    sourceLabel: string
+    manualPostUrl?: string | null
+    attributionStatus?: string
+    attributionNote: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingSalesAttributionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    manualPostUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attributionStatus?: StringFieldUpdateOperationsInput | string
+    attributionNote?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutMarketingSalesAttributionsNestedInput
+    marketingDraft?: MarketingDraftUpdateOneWithoutMarketingSalesAttributionsNestedInput
+    canvaAssetAssist?: MarketingCanvaAssetAssistUpdateOneWithoutMarketingSalesAttributionsNestedInput
+    publishAssist?: MarketingPublishAssistUpdateOneWithoutMarketingSalesAttributionsNestedInput
+  }
+
+  export type MarketingSalesAttributionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    marketingDraftId?: NullableStringFieldUpdateOperationsInput | string | null
+    canvaAssetAssistId?: NullableStringFieldUpdateOperationsInput | string | null
+    publishAssistId?: NullableStringFieldUpdateOperationsInput | string | null
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    manualPostUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attributionStatus?: StringFieldUpdateOperationsInput | string
+    attributionNote?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingSalesAttributionCreateManyInput = {
+    id?: string
+    leadId: string
+    marketingDraftId?: string | null
+    canvaAssetAssistId?: string | null
+    publishAssistId?: string | null
+    channel: string
+    topic: string
+    sourceLabel: string
+    manualPostUrl?: string | null
+    attributionStatus?: string
+    attributionNote: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingSalesAttributionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    manualPostUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attributionStatus?: StringFieldUpdateOperationsInput | string
+    attributionNote?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingSalesAttributionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    marketingDraftId?: NullableStringFieldUpdateOperationsInput | string | null
+    canvaAssetAssistId?: NullableStringFieldUpdateOperationsInput | string | null
+    publishAssistId?: NullableStringFieldUpdateOperationsInput | string | null
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    manualPostUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attributionStatus?: StringFieldUpdateOperationsInput | string
+    attributionNote?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesConversionAssistCreateInput = {
+    id?: string
+    assistType?: string
+    nextSalesAction: string
+    callOpener: string
+    sellerQuestions: JsonNullValueInput | InputJsonValue
+    objectionNotes: JsonNullValueInput | InputJsonValue
+    followUpDrafts: JsonNullValueInput | InputJsonValue
+    offerReadiness: JsonNullValueInput | InputJsonValue
+    roiSignals: JsonNullValueInput | InputJsonValue
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    manualApprovalStatus?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lead: LeadCreateNestedOneWithoutSalesConversionAssistsInput
+  }
+
+  export type SalesConversionAssistUncheckedCreateInput = {
+    id?: string
+    leadId: string
+    assistType?: string
+    nextSalesAction: string
+    callOpener: string
+    sellerQuestions: JsonNullValueInput | InputJsonValue
+    objectionNotes: JsonNullValueInput | InputJsonValue
+    followUpDrafts: JsonNullValueInput | InputJsonValue
+    offerReadiness: JsonNullValueInput | InputJsonValue
+    roiSignals: JsonNullValueInput | InputJsonValue
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    manualApprovalStatus?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SalesConversionAssistUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    assistType?: StringFieldUpdateOperationsInput | string
+    nextSalesAction?: StringFieldUpdateOperationsInput | string
+    callOpener?: StringFieldUpdateOperationsInput | string
+    sellerQuestions?: JsonNullValueInput | InputJsonValue
+    objectionNotes?: JsonNullValueInput | InputJsonValue
+    followUpDrafts?: JsonNullValueInput | InputJsonValue
+    offerReadiness?: JsonNullValueInput | InputJsonValue
+    roiSignals?: JsonNullValueInput | InputJsonValue
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    manualApprovalStatus?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutSalesConversionAssistsNestedInput
+  }
+
+  export type SalesConversionAssistUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    assistType?: StringFieldUpdateOperationsInput | string
+    nextSalesAction?: StringFieldUpdateOperationsInput | string
+    callOpener?: StringFieldUpdateOperationsInput | string
+    sellerQuestions?: JsonNullValueInput | InputJsonValue
+    objectionNotes?: JsonNullValueInput | InputJsonValue
+    followUpDrafts?: JsonNullValueInput | InputJsonValue
+    offerReadiness?: JsonNullValueInput | InputJsonValue
+    roiSignals?: JsonNullValueInput | InputJsonValue
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    manualApprovalStatus?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesConversionAssistCreateManyInput = {
+    id?: string
+    leadId: string
+    assistType?: string
+    nextSalesAction: string
+    callOpener: string
+    sellerQuestions: JsonNullValueInput | InputJsonValue
+    objectionNotes: JsonNullValueInput | InputJsonValue
+    followUpDrafts: JsonNullValueInput | InputJsonValue
+    offerReadiness: JsonNullValueInput | InputJsonValue
+    roiSignals: JsonNullValueInput | InputJsonValue
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    manualApprovalStatus?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SalesConversionAssistUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    assistType?: StringFieldUpdateOperationsInput | string
+    nextSalesAction?: StringFieldUpdateOperationsInput | string
+    callOpener?: StringFieldUpdateOperationsInput | string
+    sellerQuestions?: JsonNullValueInput | InputJsonValue
+    objectionNotes?: JsonNullValueInput | InputJsonValue
+    followUpDrafts?: JsonNullValueInput | InputJsonValue
+    offerReadiness?: JsonNullValueInput | InputJsonValue
+    roiSignals?: JsonNullValueInput | InputJsonValue
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    manualApprovalStatus?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesConversionAssistUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    assistType?: StringFieldUpdateOperationsInput | string
+    nextSalesAction?: StringFieldUpdateOperationsInput | string
+    callOpener?: StringFieldUpdateOperationsInput | string
+    sellerQuestions?: JsonNullValueInput | InputJsonValue
+    objectionNotes?: JsonNullValueInput | InputJsonValue
+    followUpDrafts?: JsonNullValueInput | InputJsonValue
+    offerReadiness?: JsonNullValueInput | InputJsonValue
+    roiSignals?: JsonNullValueInput | InputJsonValue
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    manualApprovalStatus?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23270,9 +26652,29 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type MarketingSalesAttributionListRelationFilter = {
+    every?: MarketingSalesAttributionWhereInput
+    some?: MarketingSalesAttributionWhereInput
+    none?: MarketingSalesAttributionWhereInput
+  }
+
+  export type SalesConversionAssistListRelationFilter = {
+    every?: SalesConversionAssistWhereInput
+    some?: SalesConversionAssistWhereInput
+    none?: SalesConversionAssistWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
+  }
+
+  export type MarketingSalesAttributionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SalesConversionAssistOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type LeadPropertyAddressPhoneCompoundUniqueInput = {
@@ -24422,6 +27824,141 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type LeadScalarRelationFilter = {
+    is?: LeadWhereInput
+    isNot?: LeadWhereInput
+  }
+
+  export type MarketingDraftNullableScalarRelationFilter = {
+    is?: MarketingDraftWhereInput | null
+    isNot?: MarketingDraftWhereInput | null
+  }
+
+  export type MarketingCanvaAssetAssistNullableScalarRelationFilter = {
+    is?: MarketingCanvaAssetAssistWhereInput | null
+    isNot?: MarketingCanvaAssetAssistWhereInput | null
+  }
+
+  export type MarketingPublishAssistNullableScalarRelationFilter = {
+    is?: MarketingPublishAssistWhereInput | null
+    isNot?: MarketingPublishAssistWhereInput | null
+  }
+
+  export type MarketingSalesAttributionCountOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    marketingDraftId?: SortOrder
+    canvaAssetAssistId?: SortOrder
+    publishAssistId?: SortOrder
+    channel?: SortOrder
+    topic?: SortOrder
+    sourceLabel?: SortOrder
+    manualPostUrl?: SortOrder
+    attributionStatus?: SortOrder
+    attributionNote?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MarketingSalesAttributionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    marketingDraftId?: SortOrder
+    canvaAssetAssistId?: SortOrder
+    publishAssistId?: SortOrder
+    channel?: SortOrder
+    topic?: SortOrder
+    sourceLabel?: SortOrder
+    manualPostUrl?: SortOrder
+    attributionStatus?: SortOrder
+    attributionNote?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MarketingSalesAttributionMinOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    marketingDraftId?: SortOrder
+    canvaAssetAssistId?: SortOrder
+    publishAssistId?: SortOrder
+    channel?: SortOrder
+    topic?: SortOrder
+    sourceLabel?: SortOrder
+    manualPostUrl?: SortOrder
+    attributionStatus?: SortOrder
+    attributionNote?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SalesConversionAssistCountOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    assistType?: SortOrder
+    nextSalesAction?: SortOrder
+    callOpener?: SortOrder
+    sellerQuestions?: SortOrder
+    objectionNotes?: SortOrder
+    followUpDrafts?: SortOrder
+    offerReadiness?: SortOrder
+    roiSignals?: SortOrder
+    safetyFlags?: SortOrder
+    manualApprovalStatus?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SalesConversionAssistMaxOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    assistType?: SortOrder
+    nextSalesAction?: SortOrder
+    callOpener?: SortOrder
+    manualApprovalStatus?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SalesConversionAssistMinOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    assistType?: SortOrder
+    nextSalesAction?: SortOrder
+    callOpener?: SortOrder
+    manualApprovalStatus?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MarketingSalesAttributionCreateNestedManyWithoutLeadInput = {
+    create?: XOR<MarketingSalesAttributionCreateWithoutLeadInput, MarketingSalesAttributionUncheckedCreateWithoutLeadInput> | MarketingSalesAttributionCreateWithoutLeadInput[] | MarketingSalesAttributionUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: MarketingSalesAttributionCreateOrConnectWithoutLeadInput | MarketingSalesAttributionCreateOrConnectWithoutLeadInput[]
+    createMany?: MarketingSalesAttributionCreateManyLeadInputEnvelope
+    connect?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+  }
+
+  export type SalesConversionAssistCreateNestedManyWithoutLeadInput = {
+    create?: XOR<SalesConversionAssistCreateWithoutLeadInput, SalesConversionAssistUncheckedCreateWithoutLeadInput> | SalesConversionAssistCreateWithoutLeadInput[] | SalesConversionAssistUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: SalesConversionAssistCreateOrConnectWithoutLeadInput | SalesConversionAssistCreateOrConnectWithoutLeadInput[]
+    createMany?: SalesConversionAssistCreateManyLeadInputEnvelope
+    connect?: SalesConversionAssistWhereUniqueInput | SalesConversionAssistWhereUniqueInput[]
+  }
+
+  export type MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput = {
+    create?: XOR<MarketingSalesAttributionCreateWithoutLeadInput, MarketingSalesAttributionUncheckedCreateWithoutLeadInput> | MarketingSalesAttributionCreateWithoutLeadInput[] | MarketingSalesAttributionUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: MarketingSalesAttributionCreateOrConnectWithoutLeadInput | MarketingSalesAttributionCreateOrConnectWithoutLeadInput[]
+    createMany?: MarketingSalesAttributionCreateManyLeadInputEnvelope
+    connect?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+  }
+
+  export type SalesConversionAssistUncheckedCreateNestedManyWithoutLeadInput = {
+    create?: XOR<SalesConversionAssistCreateWithoutLeadInput, SalesConversionAssistUncheckedCreateWithoutLeadInput> | SalesConversionAssistCreateWithoutLeadInput[] | SalesConversionAssistUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: SalesConversionAssistCreateOrConnectWithoutLeadInput | SalesConversionAssistCreateOrConnectWithoutLeadInput[]
+    createMany?: SalesConversionAssistCreateManyLeadInputEnvelope
+    connect?: SalesConversionAssistWhereUniqueInput | SalesConversionAssistWhereUniqueInput[]
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -24460,6 +27997,62 @@ export namespace Prisma {
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type MarketingSalesAttributionUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<MarketingSalesAttributionCreateWithoutLeadInput, MarketingSalesAttributionUncheckedCreateWithoutLeadInput> | MarketingSalesAttributionCreateWithoutLeadInput[] | MarketingSalesAttributionUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: MarketingSalesAttributionCreateOrConnectWithoutLeadInput | MarketingSalesAttributionCreateOrConnectWithoutLeadInput[]
+    upsert?: MarketingSalesAttributionUpsertWithWhereUniqueWithoutLeadInput | MarketingSalesAttributionUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: MarketingSalesAttributionCreateManyLeadInputEnvelope
+    set?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    disconnect?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    delete?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    connect?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    update?: MarketingSalesAttributionUpdateWithWhereUniqueWithoutLeadInput | MarketingSalesAttributionUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: MarketingSalesAttributionUpdateManyWithWhereWithoutLeadInput | MarketingSalesAttributionUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: MarketingSalesAttributionScalarWhereInput | MarketingSalesAttributionScalarWhereInput[]
+  }
+
+  export type SalesConversionAssistUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<SalesConversionAssistCreateWithoutLeadInput, SalesConversionAssistUncheckedCreateWithoutLeadInput> | SalesConversionAssistCreateWithoutLeadInput[] | SalesConversionAssistUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: SalesConversionAssistCreateOrConnectWithoutLeadInput | SalesConversionAssistCreateOrConnectWithoutLeadInput[]
+    upsert?: SalesConversionAssistUpsertWithWhereUniqueWithoutLeadInput | SalesConversionAssistUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: SalesConversionAssistCreateManyLeadInputEnvelope
+    set?: SalesConversionAssistWhereUniqueInput | SalesConversionAssistWhereUniqueInput[]
+    disconnect?: SalesConversionAssistWhereUniqueInput | SalesConversionAssistWhereUniqueInput[]
+    delete?: SalesConversionAssistWhereUniqueInput | SalesConversionAssistWhereUniqueInput[]
+    connect?: SalesConversionAssistWhereUniqueInput | SalesConversionAssistWhereUniqueInput[]
+    update?: SalesConversionAssistUpdateWithWhereUniqueWithoutLeadInput | SalesConversionAssistUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: SalesConversionAssistUpdateManyWithWhereWithoutLeadInput | SalesConversionAssistUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: SalesConversionAssistScalarWhereInput | SalesConversionAssistScalarWhereInput[]
+  }
+
+  export type MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<MarketingSalesAttributionCreateWithoutLeadInput, MarketingSalesAttributionUncheckedCreateWithoutLeadInput> | MarketingSalesAttributionCreateWithoutLeadInput[] | MarketingSalesAttributionUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: MarketingSalesAttributionCreateOrConnectWithoutLeadInput | MarketingSalesAttributionCreateOrConnectWithoutLeadInput[]
+    upsert?: MarketingSalesAttributionUpsertWithWhereUniqueWithoutLeadInput | MarketingSalesAttributionUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: MarketingSalesAttributionCreateManyLeadInputEnvelope
+    set?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    disconnect?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    delete?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    connect?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    update?: MarketingSalesAttributionUpdateWithWhereUniqueWithoutLeadInput | MarketingSalesAttributionUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: MarketingSalesAttributionUpdateManyWithWhereWithoutLeadInput | MarketingSalesAttributionUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: MarketingSalesAttributionScalarWhereInput | MarketingSalesAttributionScalarWhereInput[]
+  }
+
+  export type SalesConversionAssistUncheckedUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<SalesConversionAssistCreateWithoutLeadInput, SalesConversionAssistUncheckedCreateWithoutLeadInput> | SalesConversionAssistCreateWithoutLeadInput[] | SalesConversionAssistUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: SalesConversionAssistCreateOrConnectWithoutLeadInput | SalesConversionAssistCreateOrConnectWithoutLeadInput[]
+    upsert?: SalesConversionAssistUpsertWithWhereUniqueWithoutLeadInput | SalesConversionAssistUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: SalesConversionAssistCreateManyLeadInputEnvelope
+    set?: SalesConversionAssistWhereUniqueInput | SalesConversionAssistWhereUniqueInput[]
+    disconnect?: SalesConversionAssistWhereUniqueInput | SalesConversionAssistWhereUniqueInput[]
+    delete?: SalesConversionAssistWhereUniqueInput | SalesConversionAssistWhereUniqueInput[]
+    connect?: SalesConversionAssistWhereUniqueInput | SalesConversionAssistWhereUniqueInput[]
+    update?: SalesConversionAssistUpdateWithWhereUniqueWithoutLeadInput | SalesConversionAssistUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: SalesConversionAssistUpdateManyWithWhereWithoutLeadInput | SalesConversionAssistUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: SalesConversionAssistScalarWhereInput | SalesConversionAssistScalarWhereInput[]
   }
 
   export type FloatFieldUpdateOperationsInput = {
@@ -24675,6 +28268,13 @@ export namespace Prisma {
     connect?: MarketingCanvaAssetAssistWhereUniqueInput | MarketingCanvaAssetAssistWhereUniqueInput[]
   }
 
+  export type MarketingSalesAttributionCreateNestedManyWithoutMarketingDraftInput = {
+    create?: XOR<MarketingSalesAttributionCreateWithoutMarketingDraftInput, MarketingSalesAttributionUncheckedCreateWithoutMarketingDraftInput> | MarketingSalesAttributionCreateWithoutMarketingDraftInput[] | MarketingSalesAttributionUncheckedCreateWithoutMarketingDraftInput[]
+    connectOrCreate?: MarketingSalesAttributionCreateOrConnectWithoutMarketingDraftInput | MarketingSalesAttributionCreateOrConnectWithoutMarketingDraftInput[]
+    createMany?: MarketingSalesAttributionCreateManyMarketingDraftInputEnvelope
+    connect?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+  }
+
   export type MarketingApprovalUncheckedCreateNestedManyWithoutDraftInput = {
     create?: XOR<MarketingApprovalCreateWithoutDraftInput, MarketingApprovalUncheckedCreateWithoutDraftInput> | MarketingApprovalCreateWithoutDraftInput[] | MarketingApprovalUncheckedCreateWithoutDraftInput[]
     connectOrCreate?: MarketingApprovalCreateOrConnectWithoutDraftInput | MarketingApprovalCreateOrConnectWithoutDraftInput[]
@@ -24694,6 +28294,13 @@ export namespace Prisma {
     connectOrCreate?: MarketingCanvaAssetAssistCreateOrConnectWithoutDraftInput | MarketingCanvaAssetAssistCreateOrConnectWithoutDraftInput[]
     createMany?: MarketingCanvaAssetAssistCreateManyDraftInputEnvelope
     connect?: MarketingCanvaAssetAssistWhereUniqueInput | MarketingCanvaAssetAssistWhereUniqueInput[]
+  }
+
+  export type MarketingSalesAttributionUncheckedCreateNestedManyWithoutMarketingDraftInput = {
+    create?: XOR<MarketingSalesAttributionCreateWithoutMarketingDraftInput, MarketingSalesAttributionUncheckedCreateWithoutMarketingDraftInput> | MarketingSalesAttributionCreateWithoutMarketingDraftInput[] | MarketingSalesAttributionUncheckedCreateWithoutMarketingDraftInput[]
+    connectOrCreate?: MarketingSalesAttributionCreateOrConnectWithoutMarketingDraftInput | MarketingSalesAttributionCreateOrConnectWithoutMarketingDraftInput[]
+    createMany?: MarketingSalesAttributionCreateManyMarketingDraftInputEnvelope
+    connect?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
   }
 
   export type MarketingApprovalUpdateManyWithoutDraftNestedInput = {
@@ -24738,6 +28345,20 @@ export namespace Prisma {
     deleteMany?: MarketingCanvaAssetAssistScalarWhereInput | MarketingCanvaAssetAssistScalarWhereInput[]
   }
 
+  export type MarketingSalesAttributionUpdateManyWithoutMarketingDraftNestedInput = {
+    create?: XOR<MarketingSalesAttributionCreateWithoutMarketingDraftInput, MarketingSalesAttributionUncheckedCreateWithoutMarketingDraftInput> | MarketingSalesAttributionCreateWithoutMarketingDraftInput[] | MarketingSalesAttributionUncheckedCreateWithoutMarketingDraftInput[]
+    connectOrCreate?: MarketingSalesAttributionCreateOrConnectWithoutMarketingDraftInput | MarketingSalesAttributionCreateOrConnectWithoutMarketingDraftInput[]
+    upsert?: MarketingSalesAttributionUpsertWithWhereUniqueWithoutMarketingDraftInput | MarketingSalesAttributionUpsertWithWhereUniqueWithoutMarketingDraftInput[]
+    createMany?: MarketingSalesAttributionCreateManyMarketingDraftInputEnvelope
+    set?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    disconnect?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    delete?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    connect?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    update?: MarketingSalesAttributionUpdateWithWhereUniqueWithoutMarketingDraftInput | MarketingSalesAttributionUpdateWithWhereUniqueWithoutMarketingDraftInput[]
+    updateMany?: MarketingSalesAttributionUpdateManyWithWhereWithoutMarketingDraftInput | MarketingSalesAttributionUpdateManyWithWhereWithoutMarketingDraftInput[]
+    deleteMany?: MarketingSalesAttributionScalarWhereInput | MarketingSalesAttributionScalarWhereInput[]
+  }
+
   export type MarketingApprovalUncheckedUpdateManyWithoutDraftNestedInput = {
     create?: XOR<MarketingApprovalCreateWithoutDraftInput, MarketingApprovalUncheckedCreateWithoutDraftInput> | MarketingApprovalCreateWithoutDraftInput[] | MarketingApprovalUncheckedCreateWithoutDraftInput[]
     connectOrCreate?: MarketingApprovalCreateOrConnectWithoutDraftInput | MarketingApprovalCreateOrConnectWithoutDraftInput[]
@@ -24780,6 +28401,20 @@ export namespace Prisma {
     deleteMany?: MarketingCanvaAssetAssistScalarWhereInput | MarketingCanvaAssetAssistScalarWhereInput[]
   }
 
+  export type MarketingSalesAttributionUncheckedUpdateManyWithoutMarketingDraftNestedInput = {
+    create?: XOR<MarketingSalesAttributionCreateWithoutMarketingDraftInput, MarketingSalesAttributionUncheckedCreateWithoutMarketingDraftInput> | MarketingSalesAttributionCreateWithoutMarketingDraftInput[] | MarketingSalesAttributionUncheckedCreateWithoutMarketingDraftInput[]
+    connectOrCreate?: MarketingSalesAttributionCreateOrConnectWithoutMarketingDraftInput | MarketingSalesAttributionCreateOrConnectWithoutMarketingDraftInput[]
+    upsert?: MarketingSalesAttributionUpsertWithWhereUniqueWithoutMarketingDraftInput | MarketingSalesAttributionUpsertWithWhereUniqueWithoutMarketingDraftInput[]
+    createMany?: MarketingSalesAttributionCreateManyMarketingDraftInputEnvelope
+    set?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    disconnect?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    delete?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    connect?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    update?: MarketingSalesAttributionUpdateWithWhereUniqueWithoutMarketingDraftInput | MarketingSalesAttributionUpdateWithWhereUniqueWithoutMarketingDraftInput[]
+    updateMany?: MarketingSalesAttributionUpdateManyWithWhereWithoutMarketingDraftInput | MarketingSalesAttributionUpdateManyWithWhereWithoutMarketingDraftInput[]
+    deleteMany?: MarketingSalesAttributionScalarWhereInput | MarketingSalesAttributionScalarWhereInput[]
+  }
+
   export type MarketingDraftCreateNestedOneWithoutApprovalsInput = {
     create?: XOR<MarketingDraftCreateWithoutApprovalsInput, MarketingDraftUncheckedCreateWithoutApprovalsInput>
     connectOrCreate?: MarketingDraftCreateOrConnectWithoutApprovalsInput
@@ -24800,6 +28435,20 @@ export namespace Prisma {
     connect?: MarketingDraftWhereUniqueInput
   }
 
+  export type MarketingSalesAttributionCreateNestedManyWithoutPublishAssistInput = {
+    create?: XOR<MarketingSalesAttributionCreateWithoutPublishAssistInput, MarketingSalesAttributionUncheckedCreateWithoutPublishAssistInput> | MarketingSalesAttributionCreateWithoutPublishAssistInput[] | MarketingSalesAttributionUncheckedCreateWithoutPublishAssistInput[]
+    connectOrCreate?: MarketingSalesAttributionCreateOrConnectWithoutPublishAssistInput | MarketingSalesAttributionCreateOrConnectWithoutPublishAssistInput[]
+    createMany?: MarketingSalesAttributionCreateManyPublishAssistInputEnvelope
+    connect?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+  }
+
+  export type MarketingSalesAttributionUncheckedCreateNestedManyWithoutPublishAssistInput = {
+    create?: XOR<MarketingSalesAttributionCreateWithoutPublishAssistInput, MarketingSalesAttributionUncheckedCreateWithoutPublishAssistInput> | MarketingSalesAttributionCreateWithoutPublishAssistInput[] | MarketingSalesAttributionUncheckedCreateWithoutPublishAssistInput[]
+    connectOrCreate?: MarketingSalesAttributionCreateOrConnectWithoutPublishAssistInput | MarketingSalesAttributionCreateOrConnectWithoutPublishAssistInput[]
+    createMany?: MarketingSalesAttributionCreateManyPublishAssistInputEnvelope
+    connect?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+  }
+
   export type MarketingDraftUpdateOneRequiredWithoutPublishAssistsNestedInput = {
     create?: XOR<MarketingDraftCreateWithoutPublishAssistsInput, MarketingDraftUncheckedCreateWithoutPublishAssistsInput>
     connectOrCreate?: MarketingDraftCreateOrConnectWithoutPublishAssistsInput
@@ -24808,10 +28457,52 @@ export namespace Prisma {
     update?: XOR<XOR<MarketingDraftUpdateToOneWithWhereWithoutPublishAssistsInput, MarketingDraftUpdateWithoutPublishAssistsInput>, MarketingDraftUncheckedUpdateWithoutPublishAssistsInput>
   }
 
+  export type MarketingSalesAttributionUpdateManyWithoutPublishAssistNestedInput = {
+    create?: XOR<MarketingSalesAttributionCreateWithoutPublishAssistInput, MarketingSalesAttributionUncheckedCreateWithoutPublishAssistInput> | MarketingSalesAttributionCreateWithoutPublishAssistInput[] | MarketingSalesAttributionUncheckedCreateWithoutPublishAssistInput[]
+    connectOrCreate?: MarketingSalesAttributionCreateOrConnectWithoutPublishAssistInput | MarketingSalesAttributionCreateOrConnectWithoutPublishAssistInput[]
+    upsert?: MarketingSalesAttributionUpsertWithWhereUniqueWithoutPublishAssistInput | MarketingSalesAttributionUpsertWithWhereUniqueWithoutPublishAssistInput[]
+    createMany?: MarketingSalesAttributionCreateManyPublishAssistInputEnvelope
+    set?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    disconnect?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    delete?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    connect?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    update?: MarketingSalesAttributionUpdateWithWhereUniqueWithoutPublishAssistInput | MarketingSalesAttributionUpdateWithWhereUniqueWithoutPublishAssistInput[]
+    updateMany?: MarketingSalesAttributionUpdateManyWithWhereWithoutPublishAssistInput | MarketingSalesAttributionUpdateManyWithWhereWithoutPublishAssistInput[]
+    deleteMany?: MarketingSalesAttributionScalarWhereInput | MarketingSalesAttributionScalarWhereInput[]
+  }
+
+  export type MarketingSalesAttributionUncheckedUpdateManyWithoutPublishAssistNestedInput = {
+    create?: XOR<MarketingSalesAttributionCreateWithoutPublishAssistInput, MarketingSalesAttributionUncheckedCreateWithoutPublishAssistInput> | MarketingSalesAttributionCreateWithoutPublishAssistInput[] | MarketingSalesAttributionUncheckedCreateWithoutPublishAssistInput[]
+    connectOrCreate?: MarketingSalesAttributionCreateOrConnectWithoutPublishAssistInput | MarketingSalesAttributionCreateOrConnectWithoutPublishAssistInput[]
+    upsert?: MarketingSalesAttributionUpsertWithWhereUniqueWithoutPublishAssistInput | MarketingSalesAttributionUpsertWithWhereUniqueWithoutPublishAssistInput[]
+    createMany?: MarketingSalesAttributionCreateManyPublishAssistInputEnvelope
+    set?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    disconnect?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    delete?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    connect?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    update?: MarketingSalesAttributionUpdateWithWhereUniqueWithoutPublishAssistInput | MarketingSalesAttributionUpdateWithWhereUniqueWithoutPublishAssistInput[]
+    updateMany?: MarketingSalesAttributionUpdateManyWithWhereWithoutPublishAssistInput | MarketingSalesAttributionUpdateManyWithWhereWithoutPublishAssistInput[]
+    deleteMany?: MarketingSalesAttributionScalarWhereInput | MarketingSalesAttributionScalarWhereInput[]
+  }
+
   export type MarketingDraftCreateNestedOneWithoutCanvaAssetAssistsInput = {
     create?: XOR<MarketingDraftCreateWithoutCanvaAssetAssistsInput, MarketingDraftUncheckedCreateWithoutCanvaAssetAssistsInput>
     connectOrCreate?: MarketingDraftCreateOrConnectWithoutCanvaAssetAssistsInput
     connect?: MarketingDraftWhereUniqueInput
+  }
+
+  export type MarketingSalesAttributionCreateNestedManyWithoutCanvaAssetAssistInput = {
+    create?: XOR<MarketingSalesAttributionCreateWithoutCanvaAssetAssistInput, MarketingSalesAttributionUncheckedCreateWithoutCanvaAssetAssistInput> | MarketingSalesAttributionCreateWithoutCanvaAssetAssistInput[] | MarketingSalesAttributionUncheckedCreateWithoutCanvaAssetAssistInput[]
+    connectOrCreate?: MarketingSalesAttributionCreateOrConnectWithoutCanvaAssetAssistInput | MarketingSalesAttributionCreateOrConnectWithoutCanvaAssetAssistInput[]
+    createMany?: MarketingSalesAttributionCreateManyCanvaAssetAssistInputEnvelope
+    connect?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+  }
+
+  export type MarketingSalesAttributionUncheckedCreateNestedManyWithoutCanvaAssetAssistInput = {
+    create?: XOR<MarketingSalesAttributionCreateWithoutCanvaAssetAssistInput, MarketingSalesAttributionUncheckedCreateWithoutCanvaAssetAssistInput> | MarketingSalesAttributionCreateWithoutCanvaAssetAssistInput[] | MarketingSalesAttributionUncheckedCreateWithoutCanvaAssetAssistInput[]
+    connectOrCreate?: MarketingSalesAttributionCreateOrConnectWithoutCanvaAssetAssistInput | MarketingSalesAttributionCreateOrConnectWithoutCanvaAssetAssistInput[]
+    createMany?: MarketingSalesAttributionCreateManyCanvaAssetAssistInputEnvelope
+    connect?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
   }
 
   export type MarketingDraftUpdateOneRequiredWithoutCanvaAssetAssistsNestedInput = {
@@ -24820,6 +28511,110 @@ export namespace Prisma {
     upsert?: MarketingDraftUpsertWithoutCanvaAssetAssistsInput
     connect?: MarketingDraftWhereUniqueInput
     update?: XOR<XOR<MarketingDraftUpdateToOneWithWhereWithoutCanvaAssetAssistsInput, MarketingDraftUpdateWithoutCanvaAssetAssistsInput>, MarketingDraftUncheckedUpdateWithoutCanvaAssetAssistsInput>
+  }
+
+  export type MarketingSalesAttributionUpdateManyWithoutCanvaAssetAssistNestedInput = {
+    create?: XOR<MarketingSalesAttributionCreateWithoutCanvaAssetAssistInput, MarketingSalesAttributionUncheckedCreateWithoutCanvaAssetAssistInput> | MarketingSalesAttributionCreateWithoutCanvaAssetAssistInput[] | MarketingSalesAttributionUncheckedCreateWithoutCanvaAssetAssistInput[]
+    connectOrCreate?: MarketingSalesAttributionCreateOrConnectWithoutCanvaAssetAssistInput | MarketingSalesAttributionCreateOrConnectWithoutCanvaAssetAssistInput[]
+    upsert?: MarketingSalesAttributionUpsertWithWhereUniqueWithoutCanvaAssetAssistInput | MarketingSalesAttributionUpsertWithWhereUniqueWithoutCanvaAssetAssistInput[]
+    createMany?: MarketingSalesAttributionCreateManyCanvaAssetAssistInputEnvelope
+    set?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    disconnect?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    delete?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    connect?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    update?: MarketingSalesAttributionUpdateWithWhereUniqueWithoutCanvaAssetAssistInput | MarketingSalesAttributionUpdateWithWhereUniqueWithoutCanvaAssetAssistInput[]
+    updateMany?: MarketingSalesAttributionUpdateManyWithWhereWithoutCanvaAssetAssistInput | MarketingSalesAttributionUpdateManyWithWhereWithoutCanvaAssetAssistInput[]
+    deleteMany?: MarketingSalesAttributionScalarWhereInput | MarketingSalesAttributionScalarWhereInput[]
+  }
+
+  export type MarketingSalesAttributionUncheckedUpdateManyWithoutCanvaAssetAssistNestedInput = {
+    create?: XOR<MarketingSalesAttributionCreateWithoutCanvaAssetAssistInput, MarketingSalesAttributionUncheckedCreateWithoutCanvaAssetAssistInput> | MarketingSalesAttributionCreateWithoutCanvaAssetAssistInput[] | MarketingSalesAttributionUncheckedCreateWithoutCanvaAssetAssistInput[]
+    connectOrCreate?: MarketingSalesAttributionCreateOrConnectWithoutCanvaAssetAssistInput | MarketingSalesAttributionCreateOrConnectWithoutCanvaAssetAssistInput[]
+    upsert?: MarketingSalesAttributionUpsertWithWhereUniqueWithoutCanvaAssetAssistInput | MarketingSalesAttributionUpsertWithWhereUniqueWithoutCanvaAssetAssistInput[]
+    createMany?: MarketingSalesAttributionCreateManyCanvaAssetAssistInputEnvelope
+    set?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    disconnect?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    delete?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    connect?: MarketingSalesAttributionWhereUniqueInput | MarketingSalesAttributionWhereUniqueInput[]
+    update?: MarketingSalesAttributionUpdateWithWhereUniqueWithoutCanvaAssetAssistInput | MarketingSalesAttributionUpdateWithWhereUniqueWithoutCanvaAssetAssistInput[]
+    updateMany?: MarketingSalesAttributionUpdateManyWithWhereWithoutCanvaAssetAssistInput | MarketingSalesAttributionUpdateManyWithWhereWithoutCanvaAssetAssistInput[]
+    deleteMany?: MarketingSalesAttributionScalarWhereInput | MarketingSalesAttributionScalarWhereInput[]
+  }
+
+  export type LeadCreateNestedOneWithoutMarketingSalesAttributionsInput = {
+    create?: XOR<LeadCreateWithoutMarketingSalesAttributionsInput, LeadUncheckedCreateWithoutMarketingSalesAttributionsInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutMarketingSalesAttributionsInput
+    connect?: LeadWhereUniqueInput
+  }
+
+  export type MarketingDraftCreateNestedOneWithoutMarketingSalesAttributionsInput = {
+    create?: XOR<MarketingDraftCreateWithoutMarketingSalesAttributionsInput, MarketingDraftUncheckedCreateWithoutMarketingSalesAttributionsInput>
+    connectOrCreate?: MarketingDraftCreateOrConnectWithoutMarketingSalesAttributionsInput
+    connect?: MarketingDraftWhereUniqueInput
+  }
+
+  export type MarketingCanvaAssetAssistCreateNestedOneWithoutMarketingSalesAttributionsInput = {
+    create?: XOR<MarketingCanvaAssetAssistCreateWithoutMarketingSalesAttributionsInput, MarketingCanvaAssetAssistUncheckedCreateWithoutMarketingSalesAttributionsInput>
+    connectOrCreate?: MarketingCanvaAssetAssistCreateOrConnectWithoutMarketingSalesAttributionsInput
+    connect?: MarketingCanvaAssetAssistWhereUniqueInput
+  }
+
+  export type MarketingPublishAssistCreateNestedOneWithoutMarketingSalesAttributionsInput = {
+    create?: XOR<MarketingPublishAssistCreateWithoutMarketingSalesAttributionsInput, MarketingPublishAssistUncheckedCreateWithoutMarketingSalesAttributionsInput>
+    connectOrCreate?: MarketingPublishAssistCreateOrConnectWithoutMarketingSalesAttributionsInput
+    connect?: MarketingPublishAssistWhereUniqueInput
+  }
+
+  export type LeadUpdateOneRequiredWithoutMarketingSalesAttributionsNestedInput = {
+    create?: XOR<LeadCreateWithoutMarketingSalesAttributionsInput, LeadUncheckedCreateWithoutMarketingSalesAttributionsInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutMarketingSalesAttributionsInput
+    upsert?: LeadUpsertWithoutMarketingSalesAttributionsInput
+    connect?: LeadWhereUniqueInput
+    update?: XOR<XOR<LeadUpdateToOneWithWhereWithoutMarketingSalesAttributionsInput, LeadUpdateWithoutMarketingSalesAttributionsInput>, LeadUncheckedUpdateWithoutMarketingSalesAttributionsInput>
+  }
+
+  export type MarketingDraftUpdateOneWithoutMarketingSalesAttributionsNestedInput = {
+    create?: XOR<MarketingDraftCreateWithoutMarketingSalesAttributionsInput, MarketingDraftUncheckedCreateWithoutMarketingSalesAttributionsInput>
+    connectOrCreate?: MarketingDraftCreateOrConnectWithoutMarketingSalesAttributionsInput
+    upsert?: MarketingDraftUpsertWithoutMarketingSalesAttributionsInput
+    disconnect?: MarketingDraftWhereInput | boolean
+    delete?: MarketingDraftWhereInput | boolean
+    connect?: MarketingDraftWhereUniqueInput
+    update?: XOR<XOR<MarketingDraftUpdateToOneWithWhereWithoutMarketingSalesAttributionsInput, MarketingDraftUpdateWithoutMarketingSalesAttributionsInput>, MarketingDraftUncheckedUpdateWithoutMarketingSalesAttributionsInput>
+  }
+
+  export type MarketingCanvaAssetAssistUpdateOneWithoutMarketingSalesAttributionsNestedInput = {
+    create?: XOR<MarketingCanvaAssetAssistCreateWithoutMarketingSalesAttributionsInput, MarketingCanvaAssetAssistUncheckedCreateWithoutMarketingSalesAttributionsInput>
+    connectOrCreate?: MarketingCanvaAssetAssistCreateOrConnectWithoutMarketingSalesAttributionsInput
+    upsert?: MarketingCanvaAssetAssistUpsertWithoutMarketingSalesAttributionsInput
+    disconnect?: MarketingCanvaAssetAssistWhereInput | boolean
+    delete?: MarketingCanvaAssetAssistWhereInput | boolean
+    connect?: MarketingCanvaAssetAssistWhereUniqueInput
+    update?: XOR<XOR<MarketingCanvaAssetAssistUpdateToOneWithWhereWithoutMarketingSalesAttributionsInput, MarketingCanvaAssetAssistUpdateWithoutMarketingSalesAttributionsInput>, MarketingCanvaAssetAssistUncheckedUpdateWithoutMarketingSalesAttributionsInput>
+  }
+
+  export type MarketingPublishAssistUpdateOneWithoutMarketingSalesAttributionsNestedInput = {
+    create?: XOR<MarketingPublishAssistCreateWithoutMarketingSalesAttributionsInput, MarketingPublishAssistUncheckedCreateWithoutMarketingSalesAttributionsInput>
+    connectOrCreate?: MarketingPublishAssistCreateOrConnectWithoutMarketingSalesAttributionsInput
+    upsert?: MarketingPublishAssistUpsertWithoutMarketingSalesAttributionsInput
+    disconnect?: MarketingPublishAssistWhereInput | boolean
+    delete?: MarketingPublishAssistWhereInput | boolean
+    connect?: MarketingPublishAssistWhereUniqueInput
+    update?: XOR<XOR<MarketingPublishAssistUpdateToOneWithWhereWithoutMarketingSalesAttributionsInput, MarketingPublishAssistUpdateWithoutMarketingSalesAttributionsInput>, MarketingPublishAssistUncheckedUpdateWithoutMarketingSalesAttributionsInput>
+  }
+
+  export type LeadCreateNestedOneWithoutSalesConversionAssistsInput = {
+    create?: XOR<LeadCreateWithoutSalesConversionAssistsInput, LeadUncheckedCreateWithoutSalesConversionAssistsInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutSalesConversionAssistsInput
+    connect?: LeadWhereUniqueInput
+  }
+
+  export type LeadUpdateOneRequiredWithoutSalesConversionAssistsNestedInput = {
+    create?: XOR<LeadCreateWithoutSalesConversionAssistsInput, LeadUncheckedCreateWithoutSalesConversionAssistsInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutSalesConversionAssistsInput
+    upsert?: LeadUpsertWithoutSalesConversionAssistsInput
+    connect?: LeadWhereUniqueInput
+    update?: XOR<XOR<LeadUpdateToOneWithWhereWithoutSalesConversionAssistsInput, LeadUpdateWithoutSalesConversionAssistsInput>, LeadUncheckedUpdateWithoutSalesConversionAssistsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -25150,6 +28945,159 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumBuyerActivityEventTypeFilter<$PrismaModel>
     _max?: NestedEnumBuyerActivityEventTypeFilter<$PrismaModel>
+  }
+
+  export type MarketingSalesAttributionCreateWithoutLeadInput = {
+    id?: string
+    channel: string
+    topic: string
+    sourceLabel: string
+    manualPostUrl?: string | null
+    attributionStatus?: string
+    attributionNote: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    marketingDraft?: MarketingDraftCreateNestedOneWithoutMarketingSalesAttributionsInput
+    canvaAssetAssist?: MarketingCanvaAssetAssistCreateNestedOneWithoutMarketingSalesAttributionsInput
+    publishAssist?: MarketingPublishAssistCreateNestedOneWithoutMarketingSalesAttributionsInput
+  }
+
+  export type MarketingSalesAttributionUncheckedCreateWithoutLeadInput = {
+    id?: string
+    marketingDraftId?: string | null
+    canvaAssetAssistId?: string | null
+    publishAssistId?: string | null
+    channel: string
+    topic: string
+    sourceLabel: string
+    manualPostUrl?: string | null
+    attributionStatus?: string
+    attributionNote: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingSalesAttributionCreateOrConnectWithoutLeadInput = {
+    where: MarketingSalesAttributionWhereUniqueInput
+    create: XOR<MarketingSalesAttributionCreateWithoutLeadInput, MarketingSalesAttributionUncheckedCreateWithoutLeadInput>
+  }
+
+  export type MarketingSalesAttributionCreateManyLeadInputEnvelope = {
+    data: MarketingSalesAttributionCreateManyLeadInput | MarketingSalesAttributionCreateManyLeadInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SalesConversionAssistCreateWithoutLeadInput = {
+    id?: string
+    assistType?: string
+    nextSalesAction: string
+    callOpener: string
+    sellerQuestions: JsonNullValueInput | InputJsonValue
+    objectionNotes: JsonNullValueInput | InputJsonValue
+    followUpDrafts: JsonNullValueInput | InputJsonValue
+    offerReadiness: JsonNullValueInput | InputJsonValue
+    roiSignals: JsonNullValueInput | InputJsonValue
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    manualApprovalStatus?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SalesConversionAssistUncheckedCreateWithoutLeadInput = {
+    id?: string
+    assistType?: string
+    nextSalesAction: string
+    callOpener: string
+    sellerQuestions: JsonNullValueInput | InputJsonValue
+    objectionNotes: JsonNullValueInput | InputJsonValue
+    followUpDrafts: JsonNullValueInput | InputJsonValue
+    offerReadiness: JsonNullValueInput | InputJsonValue
+    roiSignals: JsonNullValueInput | InputJsonValue
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    manualApprovalStatus?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SalesConversionAssistCreateOrConnectWithoutLeadInput = {
+    where: SalesConversionAssistWhereUniqueInput
+    create: XOR<SalesConversionAssistCreateWithoutLeadInput, SalesConversionAssistUncheckedCreateWithoutLeadInput>
+  }
+
+  export type SalesConversionAssistCreateManyLeadInputEnvelope = {
+    data: SalesConversionAssistCreateManyLeadInput | SalesConversionAssistCreateManyLeadInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MarketingSalesAttributionUpsertWithWhereUniqueWithoutLeadInput = {
+    where: MarketingSalesAttributionWhereUniqueInput
+    update: XOR<MarketingSalesAttributionUpdateWithoutLeadInput, MarketingSalesAttributionUncheckedUpdateWithoutLeadInput>
+    create: XOR<MarketingSalesAttributionCreateWithoutLeadInput, MarketingSalesAttributionUncheckedCreateWithoutLeadInput>
+  }
+
+  export type MarketingSalesAttributionUpdateWithWhereUniqueWithoutLeadInput = {
+    where: MarketingSalesAttributionWhereUniqueInput
+    data: XOR<MarketingSalesAttributionUpdateWithoutLeadInput, MarketingSalesAttributionUncheckedUpdateWithoutLeadInput>
+  }
+
+  export type MarketingSalesAttributionUpdateManyWithWhereWithoutLeadInput = {
+    where: MarketingSalesAttributionScalarWhereInput
+    data: XOR<MarketingSalesAttributionUpdateManyMutationInput, MarketingSalesAttributionUncheckedUpdateManyWithoutLeadInput>
+  }
+
+  export type MarketingSalesAttributionScalarWhereInput = {
+    AND?: MarketingSalesAttributionScalarWhereInput | MarketingSalesAttributionScalarWhereInput[]
+    OR?: MarketingSalesAttributionScalarWhereInput[]
+    NOT?: MarketingSalesAttributionScalarWhereInput | MarketingSalesAttributionScalarWhereInput[]
+    id?: StringFilter<"MarketingSalesAttribution"> | string
+    leadId?: StringFilter<"MarketingSalesAttribution"> | string
+    marketingDraftId?: StringNullableFilter<"MarketingSalesAttribution"> | string | null
+    canvaAssetAssistId?: StringNullableFilter<"MarketingSalesAttribution"> | string | null
+    publishAssistId?: StringNullableFilter<"MarketingSalesAttribution"> | string | null
+    channel?: StringFilter<"MarketingSalesAttribution"> | string
+    topic?: StringFilter<"MarketingSalesAttribution"> | string
+    sourceLabel?: StringFilter<"MarketingSalesAttribution"> | string
+    manualPostUrl?: StringNullableFilter<"MarketingSalesAttribution"> | string | null
+    attributionStatus?: StringFilter<"MarketingSalesAttribution"> | string
+    attributionNote?: StringFilter<"MarketingSalesAttribution"> | string
+    createdAt?: DateTimeFilter<"MarketingSalesAttribution"> | Date | string
+    updatedAt?: DateTimeFilter<"MarketingSalesAttribution"> | Date | string
+  }
+
+  export type SalesConversionAssistUpsertWithWhereUniqueWithoutLeadInput = {
+    where: SalesConversionAssistWhereUniqueInput
+    update: XOR<SalesConversionAssistUpdateWithoutLeadInput, SalesConversionAssistUncheckedUpdateWithoutLeadInput>
+    create: XOR<SalesConversionAssistCreateWithoutLeadInput, SalesConversionAssistUncheckedCreateWithoutLeadInput>
+  }
+
+  export type SalesConversionAssistUpdateWithWhereUniqueWithoutLeadInput = {
+    where: SalesConversionAssistWhereUniqueInput
+    data: XOR<SalesConversionAssistUpdateWithoutLeadInput, SalesConversionAssistUncheckedUpdateWithoutLeadInput>
+  }
+
+  export type SalesConversionAssistUpdateManyWithWhereWithoutLeadInput = {
+    where: SalesConversionAssistScalarWhereInput
+    data: XOR<SalesConversionAssistUpdateManyMutationInput, SalesConversionAssistUncheckedUpdateManyWithoutLeadInput>
+  }
+
+  export type SalesConversionAssistScalarWhereInput = {
+    AND?: SalesConversionAssistScalarWhereInput | SalesConversionAssistScalarWhereInput[]
+    OR?: SalesConversionAssistScalarWhereInput[]
+    NOT?: SalesConversionAssistScalarWhereInput | SalesConversionAssistScalarWhereInput[]
+    id?: StringFilter<"SalesConversionAssist"> | string
+    leadId?: StringFilter<"SalesConversionAssist"> | string
+    assistType?: StringFilter<"SalesConversionAssist"> | string
+    nextSalesAction?: StringFilter<"SalesConversionAssist"> | string
+    callOpener?: StringFilter<"SalesConversionAssist"> | string
+    sellerQuestions?: JsonFilter<"SalesConversionAssist">
+    objectionNotes?: JsonFilter<"SalesConversionAssist">
+    followUpDrafts?: JsonFilter<"SalesConversionAssist">
+    offerReadiness?: JsonFilter<"SalesConversionAssist">
+    roiSignals?: JsonFilter<"SalesConversionAssist">
+    safetyFlags?: JsonFilter<"SalesConversionAssist">
+    manualApprovalStatus?: StringFilter<"SalesConversionAssist"> | string
+    createdAt?: DateTimeFilter<"SalesConversionAssist"> | Date | string
+    updatedAt?: DateTimeFilter<"SalesConversionAssist"> | Date | string
   }
 
   export type AiJobActionCreateWithoutJobInput = {
@@ -25587,6 +29535,7 @@ export namespace Prisma {
     manualPublishedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutPublishAssistInput
   }
 
   export type MarketingPublishAssistUncheckedCreateWithoutDraftInput = {
@@ -25600,6 +29549,7 @@ export namespace Prisma {
     manualPublishedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutPublishAssistInput
   }
 
   export type MarketingPublishAssistCreateOrConnectWithoutDraftInput = {
@@ -25622,6 +29572,7 @@ export namespace Prisma {
     safetyFlags: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutCanvaAssetAssistInput
   }
 
   export type MarketingCanvaAssetAssistUncheckedCreateWithoutDraftInput = {
@@ -25634,6 +29585,7 @@ export namespace Prisma {
     safetyFlags: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutCanvaAssetAssistInput
   }
 
   export type MarketingCanvaAssetAssistCreateOrConnectWithoutDraftInput = {
@@ -25643,6 +29595,46 @@ export namespace Prisma {
 
   export type MarketingCanvaAssetAssistCreateManyDraftInputEnvelope = {
     data: MarketingCanvaAssetAssistCreateManyDraftInput | MarketingCanvaAssetAssistCreateManyDraftInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MarketingSalesAttributionCreateWithoutMarketingDraftInput = {
+    id?: string
+    channel: string
+    topic: string
+    sourceLabel: string
+    manualPostUrl?: string | null
+    attributionStatus?: string
+    attributionNote: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lead: LeadCreateNestedOneWithoutMarketingSalesAttributionsInput
+    canvaAssetAssist?: MarketingCanvaAssetAssistCreateNestedOneWithoutMarketingSalesAttributionsInput
+    publishAssist?: MarketingPublishAssistCreateNestedOneWithoutMarketingSalesAttributionsInput
+  }
+
+  export type MarketingSalesAttributionUncheckedCreateWithoutMarketingDraftInput = {
+    id?: string
+    leadId: string
+    canvaAssetAssistId?: string | null
+    publishAssistId?: string | null
+    channel: string
+    topic: string
+    sourceLabel: string
+    manualPostUrl?: string | null
+    attributionStatus?: string
+    attributionNote: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingSalesAttributionCreateOrConnectWithoutMarketingDraftInput = {
+    where: MarketingSalesAttributionWhereUniqueInput
+    create: XOR<MarketingSalesAttributionCreateWithoutMarketingDraftInput, MarketingSalesAttributionUncheckedCreateWithoutMarketingDraftInput>
+  }
+
+  export type MarketingSalesAttributionCreateManyMarketingDraftInputEnvelope = {
+    data: MarketingSalesAttributionCreateManyMarketingDraftInput | MarketingSalesAttributionCreateManyMarketingDraftInput[]
     skipDuplicates?: boolean
   }
 
@@ -25740,6 +29732,22 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"MarketingCanvaAssetAssist"> | Date | string
   }
 
+  export type MarketingSalesAttributionUpsertWithWhereUniqueWithoutMarketingDraftInput = {
+    where: MarketingSalesAttributionWhereUniqueInput
+    update: XOR<MarketingSalesAttributionUpdateWithoutMarketingDraftInput, MarketingSalesAttributionUncheckedUpdateWithoutMarketingDraftInput>
+    create: XOR<MarketingSalesAttributionCreateWithoutMarketingDraftInput, MarketingSalesAttributionUncheckedCreateWithoutMarketingDraftInput>
+  }
+
+  export type MarketingSalesAttributionUpdateWithWhereUniqueWithoutMarketingDraftInput = {
+    where: MarketingSalesAttributionWhereUniqueInput
+    data: XOR<MarketingSalesAttributionUpdateWithoutMarketingDraftInput, MarketingSalesAttributionUncheckedUpdateWithoutMarketingDraftInput>
+  }
+
+  export type MarketingSalesAttributionUpdateManyWithWhereWithoutMarketingDraftInput = {
+    where: MarketingSalesAttributionScalarWhereInput
+    data: XOR<MarketingSalesAttributionUpdateManyMutationInput, MarketingSalesAttributionUncheckedUpdateManyWithoutMarketingDraftInput>
+  }
+
   export type MarketingDraftCreateWithoutApprovalsInput = {
     id?: string
     channel: string
@@ -25756,6 +29764,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     publishAssists?: MarketingPublishAssistCreateNestedManyWithoutDraftInput
     canvaAssetAssists?: MarketingCanvaAssetAssistCreateNestedManyWithoutDraftInput
+    marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutMarketingDraftInput
   }
 
   export type MarketingDraftUncheckedCreateWithoutApprovalsInput = {
@@ -25774,6 +29783,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     publishAssists?: MarketingPublishAssistUncheckedCreateNestedManyWithoutDraftInput
     canvaAssetAssists?: MarketingCanvaAssetAssistUncheckedCreateNestedManyWithoutDraftInput
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutMarketingDraftInput
   }
 
   export type MarketingDraftCreateOrConnectWithoutApprovalsInput = {
@@ -25808,6 +29818,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     publishAssists?: MarketingPublishAssistUpdateManyWithoutDraftNestedInput
     canvaAssetAssists?: MarketingCanvaAssetAssistUpdateManyWithoutDraftNestedInput
+    marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutMarketingDraftNestedInput
   }
 
   export type MarketingDraftUncheckedUpdateWithoutApprovalsInput = {
@@ -25826,6 +29837,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     publishAssists?: MarketingPublishAssistUncheckedUpdateManyWithoutDraftNestedInput
     canvaAssetAssists?: MarketingCanvaAssetAssistUncheckedUpdateManyWithoutDraftNestedInput
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutMarketingDraftNestedInput
   }
 
   export type MarketingDraftCreateWithoutPublishAssistsInput = {
@@ -25844,6 +29856,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     approvals?: MarketingApprovalCreateNestedManyWithoutDraftInput
     canvaAssetAssists?: MarketingCanvaAssetAssistCreateNestedManyWithoutDraftInput
+    marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutMarketingDraftInput
   }
 
   export type MarketingDraftUncheckedCreateWithoutPublishAssistsInput = {
@@ -25862,11 +29875,52 @@ export namespace Prisma {
     updatedAt?: Date | string
     approvals?: MarketingApprovalUncheckedCreateNestedManyWithoutDraftInput
     canvaAssetAssists?: MarketingCanvaAssetAssistUncheckedCreateNestedManyWithoutDraftInput
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutMarketingDraftInput
   }
 
   export type MarketingDraftCreateOrConnectWithoutPublishAssistsInput = {
     where: MarketingDraftWhereUniqueInput
     create: XOR<MarketingDraftCreateWithoutPublishAssistsInput, MarketingDraftUncheckedCreateWithoutPublishAssistsInput>
+  }
+
+  export type MarketingSalesAttributionCreateWithoutPublishAssistInput = {
+    id?: string
+    channel: string
+    topic: string
+    sourceLabel: string
+    manualPostUrl?: string | null
+    attributionStatus?: string
+    attributionNote: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lead: LeadCreateNestedOneWithoutMarketingSalesAttributionsInput
+    marketingDraft?: MarketingDraftCreateNestedOneWithoutMarketingSalesAttributionsInput
+    canvaAssetAssist?: MarketingCanvaAssetAssistCreateNestedOneWithoutMarketingSalesAttributionsInput
+  }
+
+  export type MarketingSalesAttributionUncheckedCreateWithoutPublishAssistInput = {
+    id?: string
+    leadId: string
+    marketingDraftId?: string | null
+    canvaAssetAssistId?: string | null
+    channel: string
+    topic: string
+    sourceLabel: string
+    manualPostUrl?: string | null
+    attributionStatus?: string
+    attributionNote: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingSalesAttributionCreateOrConnectWithoutPublishAssistInput = {
+    where: MarketingSalesAttributionWhereUniqueInput
+    create: XOR<MarketingSalesAttributionCreateWithoutPublishAssistInput, MarketingSalesAttributionUncheckedCreateWithoutPublishAssistInput>
+  }
+
+  export type MarketingSalesAttributionCreateManyPublishAssistInputEnvelope = {
+    data: MarketingSalesAttributionCreateManyPublishAssistInput | MarketingSalesAttributionCreateManyPublishAssistInput[]
+    skipDuplicates?: boolean
   }
 
   export type MarketingDraftUpsertWithoutPublishAssistsInput = {
@@ -25896,6 +29950,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvals?: MarketingApprovalUpdateManyWithoutDraftNestedInput
     canvaAssetAssists?: MarketingCanvaAssetAssistUpdateManyWithoutDraftNestedInput
+    marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutMarketingDraftNestedInput
   }
 
   export type MarketingDraftUncheckedUpdateWithoutPublishAssistsInput = {
@@ -25914,6 +29969,23 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvals?: MarketingApprovalUncheckedUpdateManyWithoutDraftNestedInput
     canvaAssetAssists?: MarketingCanvaAssetAssistUncheckedUpdateManyWithoutDraftNestedInput
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutMarketingDraftNestedInput
+  }
+
+  export type MarketingSalesAttributionUpsertWithWhereUniqueWithoutPublishAssistInput = {
+    where: MarketingSalesAttributionWhereUniqueInput
+    update: XOR<MarketingSalesAttributionUpdateWithoutPublishAssistInput, MarketingSalesAttributionUncheckedUpdateWithoutPublishAssistInput>
+    create: XOR<MarketingSalesAttributionCreateWithoutPublishAssistInput, MarketingSalesAttributionUncheckedCreateWithoutPublishAssistInput>
+  }
+
+  export type MarketingSalesAttributionUpdateWithWhereUniqueWithoutPublishAssistInput = {
+    where: MarketingSalesAttributionWhereUniqueInput
+    data: XOR<MarketingSalesAttributionUpdateWithoutPublishAssistInput, MarketingSalesAttributionUncheckedUpdateWithoutPublishAssistInput>
+  }
+
+  export type MarketingSalesAttributionUpdateManyWithWhereWithoutPublishAssistInput = {
+    where: MarketingSalesAttributionScalarWhereInput
+    data: XOR<MarketingSalesAttributionUpdateManyMutationInput, MarketingSalesAttributionUncheckedUpdateManyWithoutPublishAssistInput>
   }
 
   export type MarketingDraftCreateWithoutCanvaAssetAssistsInput = {
@@ -25932,6 +30004,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     approvals?: MarketingApprovalCreateNestedManyWithoutDraftInput
     publishAssists?: MarketingPublishAssistCreateNestedManyWithoutDraftInput
+    marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutMarketingDraftInput
   }
 
   export type MarketingDraftUncheckedCreateWithoutCanvaAssetAssistsInput = {
@@ -25950,11 +30023,52 @@ export namespace Prisma {
     updatedAt?: Date | string
     approvals?: MarketingApprovalUncheckedCreateNestedManyWithoutDraftInput
     publishAssists?: MarketingPublishAssistUncheckedCreateNestedManyWithoutDraftInput
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutMarketingDraftInput
   }
 
   export type MarketingDraftCreateOrConnectWithoutCanvaAssetAssistsInput = {
     where: MarketingDraftWhereUniqueInput
     create: XOR<MarketingDraftCreateWithoutCanvaAssetAssistsInput, MarketingDraftUncheckedCreateWithoutCanvaAssetAssistsInput>
+  }
+
+  export type MarketingSalesAttributionCreateWithoutCanvaAssetAssistInput = {
+    id?: string
+    channel: string
+    topic: string
+    sourceLabel: string
+    manualPostUrl?: string | null
+    attributionStatus?: string
+    attributionNote: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lead: LeadCreateNestedOneWithoutMarketingSalesAttributionsInput
+    marketingDraft?: MarketingDraftCreateNestedOneWithoutMarketingSalesAttributionsInput
+    publishAssist?: MarketingPublishAssistCreateNestedOneWithoutMarketingSalesAttributionsInput
+  }
+
+  export type MarketingSalesAttributionUncheckedCreateWithoutCanvaAssetAssistInput = {
+    id?: string
+    leadId: string
+    marketingDraftId?: string | null
+    publishAssistId?: string | null
+    channel: string
+    topic: string
+    sourceLabel: string
+    manualPostUrl?: string | null
+    attributionStatus?: string
+    attributionNote: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingSalesAttributionCreateOrConnectWithoutCanvaAssetAssistInput = {
+    where: MarketingSalesAttributionWhereUniqueInput
+    create: XOR<MarketingSalesAttributionCreateWithoutCanvaAssetAssistInput, MarketingSalesAttributionUncheckedCreateWithoutCanvaAssetAssistInput>
+  }
+
+  export type MarketingSalesAttributionCreateManyCanvaAssetAssistInputEnvelope = {
+    data: MarketingSalesAttributionCreateManyCanvaAssetAssistInput | MarketingSalesAttributionCreateManyCanvaAssetAssistInput[]
+    skipDuplicates?: boolean
   }
 
   export type MarketingDraftUpsertWithoutCanvaAssetAssistsInput = {
@@ -25984,6 +30098,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvals?: MarketingApprovalUpdateManyWithoutDraftNestedInput
     publishAssists?: MarketingPublishAssistUpdateManyWithoutDraftNestedInput
+    marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutMarketingDraftNestedInput
   }
 
   export type MarketingDraftUncheckedUpdateWithoutCanvaAssetAssistsInput = {
@@ -26002,6 +30117,667 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvals?: MarketingApprovalUncheckedUpdateManyWithoutDraftNestedInput
     publishAssists?: MarketingPublishAssistUncheckedUpdateManyWithoutDraftNestedInput
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutMarketingDraftNestedInput
+  }
+
+  export type MarketingSalesAttributionUpsertWithWhereUniqueWithoutCanvaAssetAssistInput = {
+    where: MarketingSalesAttributionWhereUniqueInput
+    update: XOR<MarketingSalesAttributionUpdateWithoutCanvaAssetAssistInput, MarketingSalesAttributionUncheckedUpdateWithoutCanvaAssetAssistInput>
+    create: XOR<MarketingSalesAttributionCreateWithoutCanvaAssetAssistInput, MarketingSalesAttributionUncheckedCreateWithoutCanvaAssetAssistInput>
+  }
+
+  export type MarketingSalesAttributionUpdateWithWhereUniqueWithoutCanvaAssetAssistInput = {
+    where: MarketingSalesAttributionWhereUniqueInput
+    data: XOR<MarketingSalesAttributionUpdateWithoutCanvaAssetAssistInput, MarketingSalesAttributionUncheckedUpdateWithoutCanvaAssetAssistInput>
+  }
+
+  export type MarketingSalesAttributionUpdateManyWithWhereWithoutCanvaAssetAssistInput = {
+    where: MarketingSalesAttributionScalarWhereInput
+    data: XOR<MarketingSalesAttributionUpdateManyMutationInput, MarketingSalesAttributionUncheckedUpdateManyWithoutCanvaAssetAssistInput>
+  }
+
+  export type LeadCreateWithoutMarketingSalesAttributionsInput = {
+    id?: string
+    name: string
+    phone: string
+    propertyAddress: string
+    source: string
+    status?: $Enums.LeadStatus
+    score?: number
+    priority?: string
+    notes?: string | null
+    payload?: string | null
+    lastContactedAt?: Date | string | null
+    nextFollowUpAt?: Date | string | null
+    followUpCount?: number
+    lastFollowUpMessage?: string | null
+    automationStatus?: string
+    approvalStatus?: string
+    isHot?: boolean
+    lastSellerReply?: string | null
+    lastSellerReplyAt?: Date | string | null
+    lastSellerReplyIntent?: string | null
+    lastSellerReplyConfidence?: number | null
+    suggestedReply?: string | null
+    requiresHumanApproval?: boolean
+    doNotContact?: boolean
+    optOutReason?: string | null
+    optOutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    salesConversionAssists?: SalesConversionAssistCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadUncheckedCreateWithoutMarketingSalesAttributionsInput = {
+    id?: string
+    name: string
+    phone: string
+    propertyAddress: string
+    source: string
+    status?: $Enums.LeadStatus
+    score?: number
+    priority?: string
+    notes?: string | null
+    payload?: string | null
+    lastContactedAt?: Date | string | null
+    nextFollowUpAt?: Date | string | null
+    followUpCount?: number
+    lastFollowUpMessage?: string | null
+    automationStatus?: string
+    approvalStatus?: string
+    isHot?: boolean
+    lastSellerReply?: string | null
+    lastSellerReplyAt?: Date | string | null
+    lastSellerReplyIntent?: string | null
+    lastSellerReplyConfidence?: number | null
+    suggestedReply?: string | null
+    requiresHumanApproval?: boolean
+    doNotContact?: boolean
+    optOutReason?: string | null
+    optOutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    salesConversionAssists?: SalesConversionAssistUncheckedCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadCreateOrConnectWithoutMarketingSalesAttributionsInput = {
+    where: LeadWhereUniqueInput
+    create: XOR<LeadCreateWithoutMarketingSalesAttributionsInput, LeadUncheckedCreateWithoutMarketingSalesAttributionsInput>
+  }
+
+  export type MarketingDraftCreateWithoutMarketingSalesAttributionsInput = {
+    id?: string
+    channel: string
+    topic: string
+    sourceLabel: string
+    status?: string
+    draftCopy: string
+    assetNotes?: string | null
+    assumptions?: NullableJsonNullValueInput | InputJsonValue
+    safetyFlags?: NullableJsonNullValueInput | InputJsonValue
+    createdSource?: string
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    approvals?: MarketingApprovalCreateNestedManyWithoutDraftInput
+    publishAssists?: MarketingPublishAssistCreateNestedManyWithoutDraftInput
+    canvaAssetAssists?: MarketingCanvaAssetAssistCreateNestedManyWithoutDraftInput
+  }
+
+  export type MarketingDraftUncheckedCreateWithoutMarketingSalesAttributionsInput = {
+    id?: string
+    channel: string
+    topic: string
+    sourceLabel: string
+    status?: string
+    draftCopy: string
+    assetNotes?: string | null
+    assumptions?: NullableJsonNullValueInput | InputJsonValue
+    safetyFlags?: NullableJsonNullValueInput | InputJsonValue
+    createdSource?: string
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    approvals?: MarketingApprovalUncheckedCreateNestedManyWithoutDraftInput
+    publishAssists?: MarketingPublishAssistUncheckedCreateNestedManyWithoutDraftInput
+    canvaAssetAssists?: MarketingCanvaAssetAssistUncheckedCreateNestedManyWithoutDraftInput
+  }
+
+  export type MarketingDraftCreateOrConnectWithoutMarketingSalesAttributionsInput = {
+    where: MarketingDraftWhereUniqueInput
+    create: XOR<MarketingDraftCreateWithoutMarketingSalesAttributionsInput, MarketingDraftUncheckedCreateWithoutMarketingSalesAttributionsInput>
+  }
+
+  export type MarketingCanvaAssetAssistCreateWithoutMarketingSalesAttributionsInput = {
+    id?: string
+    recommendedFormat: string
+    designBrief: string
+    brandSafeCopyBlocks: JsonNullValueInput | InputJsonValue
+    assetNotes?: string | null
+    manualApprovalStatus?: string
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    draft: MarketingDraftCreateNestedOneWithoutCanvaAssetAssistsInput
+  }
+
+  export type MarketingCanvaAssetAssistUncheckedCreateWithoutMarketingSalesAttributionsInput = {
+    id?: string
+    draftId: string
+    recommendedFormat: string
+    designBrief: string
+    brandSafeCopyBlocks: JsonNullValueInput | InputJsonValue
+    assetNotes?: string | null
+    manualApprovalStatus?: string
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingCanvaAssetAssistCreateOrConnectWithoutMarketingSalesAttributionsInput = {
+    where: MarketingCanvaAssetAssistWhereUniqueInput
+    create: XOR<MarketingCanvaAssetAssistCreateWithoutMarketingSalesAttributionsInput, MarketingCanvaAssetAssistUncheckedCreateWithoutMarketingSalesAttributionsInput>
+  }
+
+  export type MarketingPublishAssistCreateWithoutMarketingSalesAttributionsInput = {
+    id?: string
+    preparedCopy: string
+    assetChecklist: JsonNullValueInput | InputJsonValue
+    manualPostingChecklist: JsonNullValueInput | InputJsonValue
+    sourceLabel: string
+    status?: string
+    manualPublishedUrl?: string | null
+    manualPublishedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    draft: MarketingDraftCreateNestedOneWithoutPublishAssistsInput
+  }
+
+  export type MarketingPublishAssistUncheckedCreateWithoutMarketingSalesAttributionsInput = {
+    id?: string
+    draftId: string
+    preparedCopy: string
+    assetChecklist: JsonNullValueInput | InputJsonValue
+    manualPostingChecklist: JsonNullValueInput | InputJsonValue
+    sourceLabel: string
+    status?: string
+    manualPublishedUrl?: string | null
+    manualPublishedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingPublishAssistCreateOrConnectWithoutMarketingSalesAttributionsInput = {
+    where: MarketingPublishAssistWhereUniqueInput
+    create: XOR<MarketingPublishAssistCreateWithoutMarketingSalesAttributionsInput, MarketingPublishAssistUncheckedCreateWithoutMarketingSalesAttributionsInput>
+  }
+
+  export type LeadUpsertWithoutMarketingSalesAttributionsInput = {
+    update: XOR<LeadUpdateWithoutMarketingSalesAttributionsInput, LeadUncheckedUpdateWithoutMarketingSalesAttributionsInput>
+    create: XOR<LeadCreateWithoutMarketingSalesAttributionsInput, LeadUncheckedCreateWithoutMarketingSalesAttributionsInput>
+    where?: LeadWhereInput
+  }
+
+  export type LeadUpdateToOneWithWhereWithoutMarketingSalesAttributionsInput = {
+    where?: LeadWhereInput
+    data: XOR<LeadUpdateWithoutMarketingSalesAttributionsInput, LeadUncheckedUpdateWithoutMarketingSalesAttributionsInput>
+  }
+
+  export type LeadUpdateWithoutMarketingSalesAttributionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    propertyAddress?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    score?: IntFieldUpdateOperationsInput | number
+    priority?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableStringFieldUpdateOperationsInput | string | null
+    lastContactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
+    lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    automationStatus?: StringFieldUpdateOperationsInput | string
+    approvalStatus?: StringFieldUpdateOperationsInput | string
+    isHot?: BoolFieldUpdateOperationsInput | boolean
+    lastSellerReply?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSellerReplyIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    suggestedReply?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresHumanApproval?: BoolFieldUpdateOperationsInput | boolean
+    doNotContact?: BoolFieldUpdateOperationsInput | boolean
+    optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    salesConversionAssists?: SalesConversionAssistUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateWithoutMarketingSalesAttributionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    propertyAddress?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    score?: IntFieldUpdateOperationsInput | number
+    priority?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableStringFieldUpdateOperationsInput | string | null
+    lastContactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
+    lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    automationStatus?: StringFieldUpdateOperationsInput | string
+    approvalStatus?: StringFieldUpdateOperationsInput | string
+    isHot?: BoolFieldUpdateOperationsInput | boolean
+    lastSellerReply?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSellerReplyIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    suggestedReply?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresHumanApproval?: BoolFieldUpdateOperationsInput | boolean
+    doNotContact?: BoolFieldUpdateOperationsInput | boolean
+    optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    salesConversionAssists?: SalesConversionAssistUncheckedUpdateManyWithoutLeadNestedInput
+  }
+
+  export type MarketingDraftUpsertWithoutMarketingSalesAttributionsInput = {
+    update: XOR<MarketingDraftUpdateWithoutMarketingSalesAttributionsInput, MarketingDraftUncheckedUpdateWithoutMarketingSalesAttributionsInput>
+    create: XOR<MarketingDraftCreateWithoutMarketingSalesAttributionsInput, MarketingDraftUncheckedCreateWithoutMarketingSalesAttributionsInput>
+    where?: MarketingDraftWhereInput
+  }
+
+  export type MarketingDraftUpdateToOneWithWhereWithoutMarketingSalesAttributionsInput = {
+    where?: MarketingDraftWhereInput
+    data: XOR<MarketingDraftUpdateWithoutMarketingSalesAttributionsInput, MarketingDraftUncheckedUpdateWithoutMarketingSalesAttributionsInput>
+  }
+
+  export type MarketingDraftUpdateWithoutMarketingSalesAttributionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    draftCopy?: StringFieldUpdateOperationsInput | string
+    assetNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    assumptions?: NullableJsonNullValueInput | InputJsonValue
+    safetyFlags?: NullableJsonNullValueInput | InputJsonValue
+    createdSource?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    approvals?: MarketingApprovalUpdateManyWithoutDraftNestedInput
+    publishAssists?: MarketingPublishAssistUpdateManyWithoutDraftNestedInput
+    canvaAssetAssists?: MarketingCanvaAssetAssistUpdateManyWithoutDraftNestedInput
+  }
+
+  export type MarketingDraftUncheckedUpdateWithoutMarketingSalesAttributionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    draftCopy?: StringFieldUpdateOperationsInput | string
+    assetNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    assumptions?: NullableJsonNullValueInput | InputJsonValue
+    safetyFlags?: NullableJsonNullValueInput | InputJsonValue
+    createdSource?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    approvals?: MarketingApprovalUncheckedUpdateManyWithoutDraftNestedInput
+    publishAssists?: MarketingPublishAssistUncheckedUpdateManyWithoutDraftNestedInput
+    canvaAssetAssists?: MarketingCanvaAssetAssistUncheckedUpdateManyWithoutDraftNestedInput
+  }
+
+  export type MarketingCanvaAssetAssistUpsertWithoutMarketingSalesAttributionsInput = {
+    update: XOR<MarketingCanvaAssetAssistUpdateWithoutMarketingSalesAttributionsInput, MarketingCanvaAssetAssistUncheckedUpdateWithoutMarketingSalesAttributionsInput>
+    create: XOR<MarketingCanvaAssetAssistCreateWithoutMarketingSalesAttributionsInput, MarketingCanvaAssetAssistUncheckedCreateWithoutMarketingSalesAttributionsInput>
+    where?: MarketingCanvaAssetAssistWhereInput
+  }
+
+  export type MarketingCanvaAssetAssistUpdateToOneWithWhereWithoutMarketingSalesAttributionsInput = {
+    where?: MarketingCanvaAssetAssistWhereInput
+    data: XOR<MarketingCanvaAssetAssistUpdateWithoutMarketingSalesAttributionsInput, MarketingCanvaAssetAssistUncheckedUpdateWithoutMarketingSalesAttributionsInput>
+  }
+
+  export type MarketingCanvaAssetAssistUpdateWithoutMarketingSalesAttributionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recommendedFormat?: StringFieldUpdateOperationsInput | string
+    designBrief?: StringFieldUpdateOperationsInput | string
+    brandSafeCopyBlocks?: JsonNullValueInput | InputJsonValue
+    assetNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    manualApprovalStatus?: StringFieldUpdateOperationsInput | string
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    draft?: MarketingDraftUpdateOneRequiredWithoutCanvaAssetAssistsNestedInput
+  }
+
+  export type MarketingCanvaAssetAssistUncheckedUpdateWithoutMarketingSalesAttributionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    draftId?: StringFieldUpdateOperationsInput | string
+    recommendedFormat?: StringFieldUpdateOperationsInput | string
+    designBrief?: StringFieldUpdateOperationsInput | string
+    brandSafeCopyBlocks?: JsonNullValueInput | InputJsonValue
+    assetNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    manualApprovalStatus?: StringFieldUpdateOperationsInput | string
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingPublishAssistUpsertWithoutMarketingSalesAttributionsInput = {
+    update: XOR<MarketingPublishAssistUpdateWithoutMarketingSalesAttributionsInput, MarketingPublishAssistUncheckedUpdateWithoutMarketingSalesAttributionsInput>
+    create: XOR<MarketingPublishAssistCreateWithoutMarketingSalesAttributionsInput, MarketingPublishAssistUncheckedCreateWithoutMarketingSalesAttributionsInput>
+    where?: MarketingPublishAssistWhereInput
+  }
+
+  export type MarketingPublishAssistUpdateToOneWithWhereWithoutMarketingSalesAttributionsInput = {
+    where?: MarketingPublishAssistWhereInput
+    data: XOR<MarketingPublishAssistUpdateWithoutMarketingSalesAttributionsInput, MarketingPublishAssistUncheckedUpdateWithoutMarketingSalesAttributionsInput>
+  }
+
+  export type MarketingPublishAssistUpdateWithoutMarketingSalesAttributionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    preparedCopy?: StringFieldUpdateOperationsInput | string
+    assetChecklist?: JsonNullValueInput | InputJsonValue
+    manualPostingChecklist?: JsonNullValueInput | InputJsonValue
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    manualPublishedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    manualPublishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    draft?: MarketingDraftUpdateOneRequiredWithoutPublishAssistsNestedInput
+  }
+
+  export type MarketingPublishAssistUncheckedUpdateWithoutMarketingSalesAttributionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    draftId?: StringFieldUpdateOperationsInput | string
+    preparedCopy?: StringFieldUpdateOperationsInput | string
+    assetChecklist?: JsonNullValueInput | InputJsonValue
+    manualPostingChecklist?: JsonNullValueInput | InputJsonValue
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    manualPublishedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    manualPublishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LeadCreateWithoutSalesConversionAssistsInput = {
+    id?: string
+    name: string
+    phone: string
+    propertyAddress: string
+    source: string
+    status?: $Enums.LeadStatus
+    score?: number
+    priority?: string
+    notes?: string | null
+    payload?: string | null
+    lastContactedAt?: Date | string | null
+    nextFollowUpAt?: Date | string | null
+    followUpCount?: number
+    lastFollowUpMessage?: string | null
+    automationStatus?: string
+    approvalStatus?: string
+    isHot?: boolean
+    lastSellerReply?: string | null
+    lastSellerReplyAt?: Date | string | null
+    lastSellerReplyIntent?: string | null
+    lastSellerReplyConfidence?: number | null
+    suggestedReply?: string | null
+    requiresHumanApproval?: boolean
+    doNotContact?: boolean
+    optOutReason?: string | null
+    optOutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadUncheckedCreateWithoutSalesConversionAssistsInput = {
+    id?: string
+    name: string
+    phone: string
+    propertyAddress: string
+    source: string
+    status?: $Enums.LeadStatus
+    score?: number
+    priority?: string
+    notes?: string | null
+    payload?: string | null
+    lastContactedAt?: Date | string | null
+    nextFollowUpAt?: Date | string | null
+    followUpCount?: number
+    lastFollowUpMessage?: string | null
+    automationStatus?: string
+    approvalStatus?: string
+    isHot?: boolean
+    lastSellerReply?: string | null
+    lastSellerReplyAt?: Date | string | null
+    lastSellerReplyIntent?: string | null
+    lastSellerReplyConfidence?: number | null
+    suggestedReply?: string | null
+    requiresHumanApproval?: boolean
+    doNotContact?: boolean
+    optOutReason?: string | null
+    optOutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadCreateOrConnectWithoutSalesConversionAssistsInput = {
+    where: LeadWhereUniqueInput
+    create: XOR<LeadCreateWithoutSalesConversionAssistsInput, LeadUncheckedCreateWithoutSalesConversionAssistsInput>
+  }
+
+  export type LeadUpsertWithoutSalesConversionAssistsInput = {
+    update: XOR<LeadUpdateWithoutSalesConversionAssistsInput, LeadUncheckedUpdateWithoutSalesConversionAssistsInput>
+    create: XOR<LeadCreateWithoutSalesConversionAssistsInput, LeadUncheckedCreateWithoutSalesConversionAssistsInput>
+    where?: LeadWhereInput
+  }
+
+  export type LeadUpdateToOneWithWhereWithoutSalesConversionAssistsInput = {
+    where?: LeadWhereInput
+    data: XOR<LeadUpdateWithoutSalesConversionAssistsInput, LeadUncheckedUpdateWithoutSalesConversionAssistsInput>
+  }
+
+  export type LeadUpdateWithoutSalesConversionAssistsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    propertyAddress?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    score?: IntFieldUpdateOperationsInput | number
+    priority?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableStringFieldUpdateOperationsInput | string | null
+    lastContactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
+    lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    automationStatus?: StringFieldUpdateOperationsInput | string
+    approvalStatus?: StringFieldUpdateOperationsInput | string
+    isHot?: BoolFieldUpdateOperationsInput | boolean
+    lastSellerReply?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSellerReplyIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    suggestedReply?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresHumanApproval?: BoolFieldUpdateOperationsInput | boolean
+    doNotContact?: BoolFieldUpdateOperationsInput | boolean
+    optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateWithoutSalesConversionAssistsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    propertyAddress?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    score?: IntFieldUpdateOperationsInput | number
+    priority?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableStringFieldUpdateOperationsInput | string | null
+    lastContactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
+    lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    automationStatus?: StringFieldUpdateOperationsInput | string
+    approvalStatus?: StringFieldUpdateOperationsInput | string
+    isHot?: BoolFieldUpdateOperationsInput | boolean
+    lastSellerReply?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSellerReplyIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    suggestedReply?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresHumanApproval?: BoolFieldUpdateOperationsInput | boolean
+    doNotContact?: BoolFieldUpdateOperationsInput | boolean
+    optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput
+  }
+
+  export type MarketingSalesAttributionCreateManyLeadInput = {
+    id?: string
+    marketingDraftId?: string | null
+    canvaAssetAssistId?: string | null
+    publishAssistId?: string | null
+    channel: string
+    topic: string
+    sourceLabel: string
+    manualPostUrl?: string | null
+    attributionStatus?: string
+    attributionNote: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SalesConversionAssistCreateManyLeadInput = {
+    id?: string
+    assistType?: string
+    nextSalesAction: string
+    callOpener: string
+    sellerQuestions: JsonNullValueInput | InputJsonValue
+    objectionNotes: JsonNullValueInput | InputJsonValue
+    followUpDrafts: JsonNullValueInput | InputJsonValue
+    offerReadiness: JsonNullValueInput | InputJsonValue
+    roiSignals: JsonNullValueInput | InputJsonValue
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    manualApprovalStatus?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingSalesAttributionUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    manualPostUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attributionStatus?: StringFieldUpdateOperationsInput | string
+    attributionNote?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    marketingDraft?: MarketingDraftUpdateOneWithoutMarketingSalesAttributionsNestedInput
+    canvaAssetAssist?: MarketingCanvaAssetAssistUpdateOneWithoutMarketingSalesAttributionsNestedInput
+    publishAssist?: MarketingPublishAssistUpdateOneWithoutMarketingSalesAttributionsNestedInput
+  }
+
+  export type MarketingSalesAttributionUncheckedUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    marketingDraftId?: NullableStringFieldUpdateOperationsInput | string | null
+    canvaAssetAssistId?: NullableStringFieldUpdateOperationsInput | string | null
+    publishAssistId?: NullableStringFieldUpdateOperationsInput | string | null
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    manualPostUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attributionStatus?: StringFieldUpdateOperationsInput | string
+    attributionNote?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingSalesAttributionUncheckedUpdateManyWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    marketingDraftId?: NullableStringFieldUpdateOperationsInput | string | null
+    canvaAssetAssistId?: NullableStringFieldUpdateOperationsInput | string | null
+    publishAssistId?: NullableStringFieldUpdateOperationsInput | string | null
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    manualPostUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attributionStatus?: StringFieldUpdateOperationsInput | string
+    attributionNote?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesConversionAssistUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    assistType?: StringFieldUpdateOperationsInput | string
+    nextSalesAction?: StringFieldUpdateOperationsInput | string
+    callOpener?: StringFieldUpdateOperationsInput | string
+    sellerQuestions?: JsonNullValueInput | InputJsonValue
+    objectionNotes?: JsonNullValueInput | InputJsonValue
+    followUpDrafts?: JsonNullValueInput | InputJsonValue
+    offerReadiness?: JsonNullValueInput | InputJsonValue
+    roiSignals?: JsonNullValueInput | InputJsonValue
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    manualApprovalStatus?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesConversionAssistUncheckedUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    assistType?: StringFieldUpdateOperationsInput | string
+    nextSalesAction?: StringFieldUpdateOperationsInput | string
+    callOpener?: StringFieldUpdateOperationsInput | string
+    sellerQuestions?: JsonNullValueInput | InputJsonValue
+    objectionNotes?: JsonNullValueInput | InputJsonValue
+    followUpDrafts?: JsonNullValueInput | InputJsonValue
+    offerReadiness?: JsonNullValueInput | InputJsonValue
+    roiSignals?: JsonNullValueInput | InputJsonValue
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    manualApprovalStatus?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalesConversionAssistUncheckedUpdateManyWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    assistType?: StringFieldUpdateOperationsInput | string
+    nextSalesAction?: StringFieldUpdateOperationsInput | string
+    callOpener?: StringFieldUpdateOperationsInput | string
+    sellerQuestions?: JsonNullValueInput | InputJsonValue
+    objectionNotes?: JsonNullValueInput | InputJsonValue
+    followUpDrafts?: JsonNullValueInput | InputJsonValue
+    offerReadiness?: JsonNullValueInput | InputJsonValue
+    roiSignals?: JsonNullValueInput | InputJsonValue
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    manualApprovalStatus?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AiJobActionCreateManyJobInput = {
@@ -26126,6 +30902,21 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type MarketingSalesAttributionCreateManyMarketingDraftInput = {
+    id?: string
+    leadId: string
+    canvaAssetAssistId?: string | null
+    publishAssistId?: string | null
+    channel: string
+    topic: string
+    sourceLabel: string
+    manualPostUrl?: string | null
+    attributionStatus?: string
+    attributionNote: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type MarketingApprovalUpdateWithoutDraftInput = {
     id?: StringFieldUpdateOperationsInput | string
     decision?: StringFieldUpdateOperationsInput | string
@@ -26164,6 +30955,7 @@ export namespace Prisma {
     manualPublishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutPublishAssistNestedInput
   }
 
   export type MarketingPublishAssistUncheckedUpdateWithoutDraftInput = {
@@ -26177,6 +30969,7 @@ export namespace Prisma {
     manualPublishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutPublishAssistNestedInput
   }
 
   export type MarketingPublishAssistUncheckedUpdateManyWithoutDraftInput = {
@@ -26202,6 +30995,7 @@ export namespace Prisma {
     safetyFlags?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutCanvaAssetAssistNestedInput
   }
 
   export type MarketingCanvaAssetAssistUncheckedUpdateWithoutDraftInput = {
@@ -26214,6 +31008,7 @@ export namespace Prisma {
     safetyFlags?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutCanvaAssetAssistNestedInput
   }
 
   export type MarketingCanvaAssetAssistUncheckedUpdateManyWithoutDraftInput = {
@@ -26224,6 +31019,171 @@ export namespace Prisma {
     assetNotes?: NullableStringFieldUpdateOperationsInput | string | null
     manualApprovalStatus?: StringFieldUpdateOperationsInput | string
     safetyFlags?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingSalesAttributionUpdateWithoutMarketingDraftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    manualPostUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attributionStatus?: StringFieldUpdateOperationsInput | string
+    attributionNote?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutMarketingSalesAttributionsNestedInput
+    canvaAssetAssist?: MarketingCanvaAssetAssistUpdateOneWithoutMarketingSalesAttributionsNestedInput
+    publishAssist?: MarketingPublishAssistUpdateOneWithoutMarketingSalesAttributionsNestedInput
+  }
+
+  export type MarketingSalesAttributionUncheckedUpdateWithoutMarketingDraftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    canvaAssetAssistId?: NullableStringFieldUpdateOperationsInput | string | null
+    publishAssistId?: NullableStringFieldUpdateOperationsInput | string | null
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    manualPostUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attributionStatus?: StringFieldUpdateOperationsInput | string
+    attributionNote?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingSalesAttributionUncheckedUpdateManyWithoutMarketingDraftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    canvaAssetAssistId?: NullableStringFieldUpdateOperationsInput | string | null
+    publishAssistId?: NullableStringFieldUpdateOperationsInput | string | null
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    manualPostUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attributionStatus?: StringFieldUpdateOperationsInput | string
+    attributionNote?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingSalesAttributionCreateManyPublishAssistInput = {
+    id?: string
+    leadId: string
+    marketingDraftId?: string | null
+    canvaAssetAssistId?: string | null
+    channel: string
+    topic: string
+    sourceLabel: string
+    manualPostUrl?: string | null
+    attributionStatus?: string
+    attributionNote: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingSalesAttributionUpdateWithoutPublishAssistInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    manualPostUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attributionStatus?: StringFieldUpdateOperationsInput | string
+    attributionNote?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutMarketingSalesAttributionsNestedInput
+    marketingDraft?: MarketingDraftUpdateOneWithoutMarketingSalesAttributionsNestedInput
+    canvaAssetAssist?: MarketingCanvaAssetAssistUpdateOneWithoutMarketingSalesAttributionsNestedInput
+  }
+
+  export type MarketingSalesAttributionUncheckedUpdateWithoutPublishAssistInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    marketingDraftId?: NullableStringFieldUpdateOperationsInput | string | null
+    canvaAssetAssistId?: NullableStringFieldUpdateOperationsInput | string | null
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    manualPostUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attributionStatus?: StringFieldUpdateOperationsInput | string
+    attributionNote?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingSalesAttributionUncheckedUpdateManyWithoutPublishAssistInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    marketingDraftId?: NullableStringFieldUpdateOperationsInput | string | null
+    canvaAssetAssistId?: NullableStringFieldUpdateOperationsInput | string | null
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    manualPostUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attributionStatus?: StringFieldUpdateOperationsInput | string
+    attributionNote?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingSalesAttributionCreateManyCanvaAssetAssistInput = {
+    id?: string
+    leadId: string
+    marketingDraftId?: string | null
+    publishAssistId?: string | null
+    channel: string
+    topic: string
+    sourceLabel: string
+    manualPostUrl?: string | null
+    attributionStatus?: string
+    attributionNote: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingSalesAttributionUpdateWithoutCanvaAssetAssistInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    manualPostUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attributionStatus?: StringFieldUpdateOperationsInput | string
+    attributionNote?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutMarketingSalesAttributionsNestedInput
+    marketingDraft?: MarketingDraftUpdateOneWithoutMarketingSalesAttributionsNestedInput
+    publishAssist?: MarketingPublishAssistUpdateOneWithoutMarketingSalesAttributionsNestedInput
+  }
+
+  export type MarketingSalesAttributionUncheckedUpdateWithoutCanvaAssetAssistInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    marketingDraftId?: NullableStringFieldUpdateOperationsInput | string | null
+    publishAssistId?: NullableStringFieldUpdateOperationsInput | string | null
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    manualPostUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attributionStatus?: StringFieldUpdateOperationsInput | string
+    attributionNote?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingSalesAttributionUncheckedUpdateManyWithoutCanvaAssetAssistInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    marketingDraftId?: NullableStringFieldUpdateOperationsInput | string | null
+    publishAssistId?: NullableStringFieldUpdateOperationsInput | string | null
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    manualPostUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    attributionStatus?: StringFieldUpdateOperationsInput | string
+    attributionNote?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
