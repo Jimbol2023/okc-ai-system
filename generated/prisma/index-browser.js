@@ -152,6 +152,28 @@ exports.Prisma.LeadScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ManualLeadIntakeScalarFieldEnum = {
+  id: 'id',
+  leadId: 'leadId',
+  source: 'source',
+  sourceLabel: 'sourceLabel',
+  sellerName: 'sellerName',
+  phone: 'phone',
+  email: 'email',
+  socialHandle: 'socialHandle',
+  propertyAddress: 'propertyAddress',
+  city: 'city',
+  state: 'state',
+  zipCode: 'zipCode',
+  notes: 'notes',
+  captureContext: 'captureContext',
+  intakeStatus: 'intakeStatus',
+  manualReviewStatus: 'manualReviewStatus',
+  safetyFlags: 'safetyFlags',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SellerCallOutcomeScalarFieldEnum = {
   id: 'id',
   leadId: 'leadId',
@@ -449,6 +471,7 @@ exports.BuyerActivityEventType = exports.$Enums.BuyerActivityEventType = {
 
 exports.Prisma.ModelName = {
   Lead: 'Lead',
+  ManualLeadIntake: 'ManualLeadIntake',
   SellerCallOutcome: 'SellerCallOutcome',
   AiPerformanceMetric: 'AiPerformanceMetric',
   AiJob: 'AiJob',

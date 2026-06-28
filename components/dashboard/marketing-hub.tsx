@@ -1,4 +1,5 @@
 import {
+  marketingApiRoadmap,
   marketingConnectedAccounts,
   marketingContentPipeline,
   marketingDraftQueue,
@@ -13,6 +14,7 @@ import {
   type MarketingRiskLevel,
 } from "@/lib/marketing-hub";
 import { MarketingWorkflowClient } from "@/components/dashboard/marketing-workflow-client";
+import { ManualLeadIntakeClient } from "@/components/dashboard/manual-lead-intake-client";
 import { SalesConversionAssistClient } from "@/components/dashboard/sales-conversion-assist-client";
 import type { ReactNode } from "react";
 
@@ -84,6 +86,25 @@ export function MarketingHub() {
       <MarketingWorkflowClient />
 
       <SalesConversionAssistClient />
+
+      <ManualLeadIntakeClient />
+
+      <SectionCard
+        eyebrow="Phase 2F+ Roadmap"
+        title="Social, analytics, content, and publishing gates"
+        description="Provider integrations stay phased behind connection readiness, read-only analytics, draft-only content, and explicit human publish approval."
+      >
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          {marketingApiRoadmap.map((phase) => (
+            <article key={phase.phase} className="rounded-2xl border border-border bg-white p-4">
+              <p className="text-xs font-bold uppercase tracking-[0.12em] text-muted">{phase.phase}</p>
+              <h3 className="mt-2 text-base font-semibold text-primary">{phase.title}</h3>
+              <p className="mt-2 text-sm leading-6 text-muted">{phase.summary}</p>
+              <p className="mt-3 text-xs font-bold uppercase leading-5 tracking-[0.08em] text-blue-950">{phase.guardrail}</p>
+            </article>
+          ))}
+        </div>
+      </SectionCard>
 
       <SectionCard
         eyebrow="Highest ROI focus"

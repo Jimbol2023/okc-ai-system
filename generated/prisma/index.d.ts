@@ -19,6 +19,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type Lead = $Result.DefaultSelection<Prisma.$LeadPayload>
 /**
+ * Model ManualLeadIntake
+ * 
+ */
+export type ManualLeadIntake = $Result.DefaultSelection<Prisma.$ManualLeadIntakePayload>
+/**
  * Model SellerCallOutcome
  * 
  */
@@ -281,6 +286,16 @@ export class PrismaClient<
     * ```
     */
   get lead(): Prisma.LeadDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.manualLeadIntake`: Exposes CRUD operations for the **ManualLeadIntake** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ManualLeadIntakes
+    * const manualLeadIntakes = await prisma.manualLeadIntake.findMany()
+    * ```
+    */
+  get manualLeadIntake(): Prisma.ManualLeadIntakeDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.sellerCallOutcome`: Exposes CRUD operations for the **SellerCallOutcome** model.
@@ -883,6 +898,7 @@ export namespace Prisma {
 
   export const ModelName: {
     Lead: 'Lead',
+    ManualLeadIntake: 'ManualLeadIntake',
     SellerCallOutcome: 'SellerCallOutcome',
     AiPerformanceMetric: 'AiPerformanceMetric',
     AiJob: 'AiJob',
@@ -917,7 +933,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "lead" | "sellerCallOutcome" | "aiPerformanceMetric" | "aiJob" | "aiJobAction" | "aiJobLog" | "aiMemoryEvent" | "aiLearningRecommendation" | "buyer" | "buyerActivity" | "marketingDraft" | "marketingApproval" | "marketingAccountConnection" | "marketingPublishAssist" | "marketingCanvaAssetAssist" | "marketingSalesAttribution" | "salesConversionAssist"
+      modelProps: "lead" | "manualLeadIntake" | "sellerCallOutcome" | "aiPerformanceMetric" | "aiJob" | "aiJobAction" | "aiJobLog" | "aiMemoryEvent" | "aiLearningRecommendation" | "buyer" | "buyerActivity" | "marketingDraft" | "marketingApproval" | "marketingAccountConnection" | "marketingPublishAssist" | "marketingCanvaAssetAssist" | "marketingSalesAttribution" | "salesConversionAssist"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -992,6 +1008,80 @@ export namespace Prisma {
           count: {
             args: Prisma.LeadCountArgs<ExtArgs>
             result: $Utils.Optional<LeadCountAggregateOutputType> | number
+          }
+        }
+      }
+      ManualLeadIntake: {
+        payload: Prisma.$ManualLeadIntakePayload<ExtArgs>
+        fields: Prisma.ManualLeadIntakeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ManualLeadIntakeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManualLeadIntakePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ManualLeadIntakeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManualLeadIntakePayload>
+          }
+          findFirst: {
+            args: Prisma.ManualLeadIntakeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManualLeadIntakePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ManualLeadIntakeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManualLeadIntakePayload>
+          }
+          findMany: {
+            args: Prisma.ManualLeadIntakeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManualLeadIntakePayload>[]
+          }
+          create: {
+            args: Prisma.ManualLeadIntakeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManualLeadIntakePayload>
+          }
+          createMany: {
+            args: Prisma.ManualLeadIntakeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ManualLeadIntakeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManualLeadIntakePayload>[]
+          }
+          delete: {
+            args: Prisma.ManualLeadIntakeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManualLeadIntakePayload>
+          }
+          update: {
+            args: Prisma.ManualLeadIntakeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManualLeadIntakePayload>
+          }
+          deleteMany: {
+            args: Prisma.ManualLeadIntakeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ManualLeadIntakeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ManualLeadIntakeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManualLeadIntakePayload>[]
+          }
+          upsert: {
+            args: Prisma.ManualLeadIntakeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ManualLeadIntakePayload>
+          }
+          aggregate: {
+            args: Prisma.ManualLeadIntakeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateManualLeadIntake>
+          }
+          groupBy: {
+            args: Prisma.ManualLeadIntakeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ManualLeadIntakeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ManualLeadIntakeCountArgs<ExtArgs>
+            result: $Utils.Optional<ManualLeadIntakeCountAggregateOutputType> | number
           }
         }
       }
@@ -2276,6 +2366,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     lead?: LeadOmit
+    manualLeadIntake?: ManualLeadIntakeOmit
     sellerCallOutcome?: SellerCallOutcomeOmit
     aiPerformanceMetric?: AiPerformanceMetricOmit
     aiJob?: AiJobOmit
@@ -2374,11 +2465,13 @@ export namespace Prisma {
   export type LeadCountOutputType = {
     marketingSalesAttributions: number
     salesConversionAssists: number
+    manualLeadIntakes: number
   }
 
   export type LeadCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     marketingSalesAttributions?: boolean | LeadCountOutputTypeCountMarketingSalesAttributionsArgs
     salesConversionAssists?: boolean | LeadCountOutputTypeCountSalesConversionAssistsArgs
+    manualLeadIntakes?: boolean | LeadCountOutputTypeCountManualLeadIntakesArgs
   }
 
   // Custom InputTypes
@@ -2404,6 +2497,13 @@ export namespace Prisma {
    */
   export type LeadCountOutputTypeCountSalesConversionAssistsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SalesConversionAssistWhereInput
+  }
+
+  /**
+   * LeadCountOutputType without action
+   */
+  export type LeadCountOutputTypeCountManualLeadIntakesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ManualLeadIntakeWhereInput
   }
 
 
@@ -2994,6 +3094,7 @@ export namespace Prisma {
     updatedAt?: boolean
     marketingSalesAttributions?: boolean | Lead$marketingSalesAttributionsArgs<ExtArgs>
     salesConversionAssists?: boolean | Lead$salesConversionAssistsArgs<ExtArgs>
+    manualLeadIntakes?: boolean | Lead$manualLeadIntakesArgs<ExtArgs>
     _count?: boolean | LeadCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["lead"]>
 
@@ -3094,6 +3195,7 @@ export namespace Prisma {
   export type LeadInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     marketingSalesAttributions?: boolean | Lead$marketingSalesAttributionsArgs<ExtArgs>
     salesConversionAssists?: boolean | Lead$salesConversionAssistsArgs<ExtArgs>
+    manualLeadIntakes?: boolean | Lead$manualLeadIntakesArgs<ExtArgs>
     _count?: boolean | LeadCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type LeadIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3104,6 +3206,7 @@ export namespace Prisma {
     objects: {
       marketingSalesAttributions: Prisma.$MarketingSalesAttributionPayload<ExtArgs>[]
       salesConversionAssists: Prisma.$SalesConversionAssistPayload<ExtArgs>[]
+      manualLeadIntakes: Prisma.$ManualLeadIntakePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3530,6 +3633,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     marketingSalesAttributions<T extends Lead$marketingSalesAttributionsArgs<ExtArgs> = {}>(args?: Subset<T, Lead$marketingSalesAttributionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingSalesAttributionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     salesConversionAssists<T extends Lead$salesConversionAssistsArgs<ExtArgs> = {}>(args?: Subset<T, Lead$salesConversionAssistsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesConversionAssistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    manualLeadIntakes<T extends Lead$manualLeadIntakesArgs<ExtArgs> = {}>(args?: Subset<T, Lead$manualLeadIntakesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ManualLeadIntakePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4023,6 +4127,30 @@ export namespace Prisma {
   }
 
   /**
+   * Lead.manualLeadIntakes
+   */
+  export type Lead$manualLeadIntakesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ManualLeadIntake
+     */
+    select?: ManualLeadIntakeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ManualLeadIntake
+     */
+    omit?: ManualLeadIntakeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManualLeadIntakeInclude<ExtArgs> | null
+    where?: ManualLeadIntakeWhereInput
+    orderBy?: ManualLeadIntakeOrderByWithRelationInput | ManualLeadIntakeOrderByWithRelationInput[]
+    cursor?: ManualLeadIntakeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ManualLeadIntakeScalarFieldEnum | ManualLeadIntakeScalarFieldEnum[]
+  }
+
+  /**
    * Lead without action
    */
   export type LeadDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4038,6 +4166,1261 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: LeadInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ManualLeadIntake
+   */
+
+  export type AggregateManualLeadIntake = {
+    _count: ManualLeadIntakeCountAggregateOutputType | null
+    _min: ManualLeadIntakeMinAggregateOutputType | null
+    _max: ManualLeadIntakeMaxAggregateOutputType | null
+  }
+
+  export type ManualLeadIntakeMinAggregateOutputType = {
+    id: string | null
+    leadId: string | null
+    source: string | null
+    sourceLabel: string | null
+    sellerName: string | null
+    phone: string | null
+    email: string | null
+    socialHandle: string | null
+    propertyAddress: string | null
+    city: string | null
+    state: string | null
+    zipCode: string | null
+    notes: string | null
+    captureContext: string | null
+    intakeStatus: string | null
+    manualReviewStatus: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ManualLeadIntakeMaxAggregateOutputType = {
+    id: string | null
+    leadId: string | null
+    source: string | null
+    sourceLabel: string | null
+    sellerName: string | null
+    phone: string | null
+    email: string | null
+    socialHandle: string | null
+    propertyAddress: string | null
+    city: string | null
+    state: string | null
+    zipCode: string | null
+    notes: string | null
+    captureContext: string | null
+    intakeStatus: string | null
+    manualReviewStatus: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ManualLeadIntakeCountAggregateOutputType = {
+    id: number
+    leadId: number
+    source: number
+    sourceLabel: number
+    sellerName: number
+    phone: number
+    email: number
+    socialHandle: number
+    propertyAddress: number
+    city: number
+    state: number
+    zipCode: number
+    notes: number
+    captureContext: number
+    intakeStatus: number
+    manualReviewStatus: number
+    safetyFlags: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ManualLeadIntakeMinAggregateInputType = {
+    id?: true
+    leadId?: true
+    source?: true
+    sourceLabel?: true
+    sellerName?: true
+    phone?: true
+    email?: true
+    socialHandle?: true
+    propertyAddress?: true
+    city?: true
+    state?: true
+    zipCode?: true
+    notes?: true
+    captureContext?: true
+    intakeStatus?: true
+    manualReviewStatus?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ManualLeadIntakeMaxAggregateInputType = {
+    id?: true
+    leadId?: true
+    source?: true
+    sourceLabel?: true
+    sellerName?: true
+    phone?: true
+    email?: true
+    socialHandle?: true
+    propertyAddress?: true
+    city?: true
+    state?: true
+    zipCode?: true
+    notes?: true
+    captureContext?: true
+    intakeStatus?: true
+    manualReviewStatus?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ManualLeadIntakeCountAggregateInputType = {
+    id?: true
+    leadId?: true
+    source?: true
+    sourceLabel?: true
+    sellerName?: true
+    phone?: true
+    email?: true
+    socialHandle?: true
+    propertyAddress?: true
+    city?: true
+    state?: true
+    zipCode?: true
+    notes?: true
+    captureContext?: true
+    intakeStatus?: true
+    manualReviewStatus?: true
+    safetyFlags?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ManualLeadIntakeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ManualLeadIntake to aggregate.
+     */
+    where?: ManualLeadIntakeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ManualLeadIntakes to fetch.
+     */
+    orderBy?: ManualLeadIntakeOrderByWithRelationInput | ManualLeadIntakeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ManualLeadIntakeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ManualLeadIntakes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ManualLeadIntakes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ManualLeadIntakes
+    **/
+    _count?: true | ManualLeadIntakeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ManualLeadIntakeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ManualLeadIntakeMaxAggregateInputType
+  }
+
+  export type GetManualLeadIntakeAggregateType<T extends ManualLeadIntakeAggregateArgs> = {
+        [P in keyof T & keyof AggregateManualLeadIntake]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateManualLeadIntake[P]>
+      : GetScalarType<T[P], AggregateManualLeadIntake[P]>
+  }
+
+
+
+
+  export type ManualLeadIntakeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ManualLeadIntakeWhereInput
+    orderBy?: ManualLeadIntakeOrderByWithAggregationInput | ManualLeadIntakeOrderByWithAggregationInput[]
+    by: ManualLeadIntakeScalarFieldEnum[] | ManualLeadIntakeScalarFieldEnum
+    having?: ManualLeadIntakeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ManualLeadIntakeCountAggregateInputType | true
+    _min?: ManualLeadIntakeMinAggregateInputType
+    _max?: ManualLeadIntakeMaxAggregateInputType
+  }
+
+  export type ManualLeadIntakeGroupByOutputType = {
+    id: string
+    leadId: string | null
+    source: string
+    sourceLabel: string
+    sellerName: string
+    phone: string | null
+    email: string | null
+    socialHandle: string | null
+    propertyAddress: string | null
+    city: string | null
+    state: string | null
+    zipCode: string | null
+    notes: string
+    captureContext: string
+    intakeStatus: string
+    manualReviewStatus: string
+    safetyFlags: JsonValue
+    createdAt: Date
+    updatedAt: Date
+    _count: ManualLeadIntakeCountAggregateOutputType | null
+    _min: ManualLeadIntakeMinAggregateOutputType | null
+    _max: ManualLeadIntakeMaxAggregateOutputType | null
+  }
+
+  type GetManualLeadIntakeGroupByPayload<T extends ManualLeadIntakeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ManualLeadIntakeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ManualLeadIntakeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ManualLeadIntakeGroupByOutputType[P]>
+            : GetScalarType<T[P], ManualLeadIntakeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ManualLeadIntakeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    source?: boolean
+    sourceLabel?: boolean
+    sellerName?: boolean
+    phone?: boolean
+    email?: boolean
+    socialHandle?: boolean
+    propertyAddress?: boolean
+    city?: boolean
+    state?: boolean
+    zipCode?: boolean
+    notes?: boolean
+    captureContext?: boolean
+    intakeStatus?: boolean
+    manualReviewStatus?: boolean
+    safetyFlags?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lead?: boolean | ManualLeadIntake$leadArgs<ExtArgs>
+  }, ExtArgs["result"]["manualLeadIntake"]>
+
+  export type ManualLeadIntakeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    source?: boolean
+    sourceLabel?: boolean
+    sellerName?: boolean
+    phone?: boolean
+    email?: boolean
+    socialHandle?: boolean
+    propertyAddress?: boolean
+    city?: boolean
+    state?: boolean
+    zipCode?: boolean
+    notes?: boolean
+    captureContext?: boolean
+    intakeStatus?: boolean
+    manualReviewStatus?: boolean
+    safetyFlags?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lead?: boolean | ManualLeadIntake$leadArgs<ExtArgs>
+  }, ExtArgs["result"]["manualLeadIntake"]>
+
+  export type ManualLeadIntakeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    source?: boolean
+    sourceLabel?: boolean
+    sellerName?: boolean
+    phone?: boolean
+    email?: boolean
+    socialHandle?: boolean
+    propertyAddress?: boolean
+    city?: boolean
+    state?: boolean
+    zipCode?: boolean
+    notes?: boolean
+    captureContext?: boolean
+    intakeStatus?: boolean
+    manualReviewStatus?: boolean
+    safetyFlags?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lead?: boolean | ManualLeadIntake$leadArgs<ExtArgs>
+  }, ExtArgs["result"]["manualLeadIntake"]>
+
+  export type ManualLeadIntakeSelectScalar = {
+    id?: boolean
+    leadId?: boolean
+    source?: boolean
+    sourceLabel?: boolean
+    sellerName?: boolean
+    phone?: boolean
+    email?: boolean
+    socialHandle?: boolean
+    propertyAddress?: boolean
+    city?: boolean
+    state?: boolean
+    zipCode?: boolean
+    notes?: boolean
+    captureContext?: boolean
+    intakeStatus?: boolean
+    manualReviewStatus?: boolean
+    safetyFlags?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ManualLeadIntakeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "source" | "sourceLabel" | "sellerName" | "phone" | "email" | "socialHandle" | "propertyAddress" | "city" | "state" | "zipCode" | "notes" | "captureContext" | "intakeStatus" | "manualReviewStatus" | "safetyFlags" | "createdAt" | "updatedAt", ExtArgs["result"]["manualLeadIntake"]>
+  export type ManualLeadIntakeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | ManualLeadIntake$leadArgs<ExtArgs>
+  }
+  export type ManualLeadIntakeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | ManualLeadIntake$leadArgs<ExtArgs>
+  }
+  export type ManualLeadIntakeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | ManualLeadIntake$leadArgs<ExtArgs>
+  }
+
+  export type $ManualLeadIntakePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ManualLeadIntake"
+    objects: {
+      lead: Prisma.$LeadPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      leadId: string | null
+      source: string
+      sourceLabel: string
+      sellerName: string
+      phone: string | null
+      email: string | null
+      socialHandle: string | null
+      propertyAddress: string | null
+      city: string | null
+      state: string | null
+      zipCode: string | null
+      notes: string
+      captureContext: string
+      intakeStatus: string
+      manualReviewStatus: string
+      safetyFlags: Prisma.JsonValue
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["manualLeadIntake"]>
+    composites: {}
+  }
+
+  type ManualLeadIntakeGetPayload<S extends boolean | null | undefined | ManualLeadIntakeDefaultArgs> = $Result.GetResult<Prisma.$ManualLeadIntakePayload, S>
+
+  type ManualLeadIntakeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ManualLeadIntakeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ManualLeadIntakeCountAggregateInputType | true
+    }
+
+  export interface ManualLeadIntakeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ManualLeadIntake'], meta: { name: 'ManualLeadIntake' } }
+    /**
+     * Find zero or one ManualLeadIntake that matches the filter.
+     * @param {ManualLeadIntakeFindUniqueArgs} args - Arguments to find a ManualLeadIntake
+     * @example
+     * // Get one ManualLeadIntake
+     * const manualLeadIntake = await prisma.manualLeadIntake.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ManualLeadIntakeFindUniqueArgs>(args: SelectSubset<T, ManualLeadIntakeFindUniqueArgs<ExtArgs>>): Prisma__ManualLeadIntakeClient<$Result.GetResult<Prisma.$ManualLeadIntakePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ManualLeadIntake that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ManualLeadIntakeFindUniqueOrThrowArgs} args - Arguments to find a ManualLeadIntake
+     * @example
+     * // Get one ManualLeadIntake
+     * const manualLeadIntake = await prisma.manualLeadIntake.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ManualLeadIntakeFindUniqueOrThrowArgs>(args: SelectSubset<T, ManualLeadIntakeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ManualLeadIntakeClient<$Result.GetResult<Prisma.$ManualLeadIntakePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ManualLeadIntake that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ManualLeadIntakeFindFirstArgs} args - Arguments to find a ManualLeadIntake
+     * @example
+     * // Get one ManualLeadIntake
+     * const manualLeadIntake = await prisma.manualLeadIntake.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ManualLeadIntakeFindFirstArgs>(args?: SelectSubset<T, ManualLeadIntakeFindFirstArgs<ExtArgs>>): Prisma__ManualLeadIntakeClient<$Result.GetResult<Prisma.$ManualLeadIntakePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ManualLeadIntake that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ManualLeadIntakeFindFirstOrThrowArgs} args - Arguments to find a ManualLeadIntake
+     * @example
+     * // Get one ManualLeadIntake
+     * const manualLeadIntake = await prisma.manualLeadIntake.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ManualLeadIntakeFindFirstOrThrowArgs>(args?: SelectSubset<T, ManualLeadIntakeFindFirstOrThrowArgs<ExtArgs>>): Prisma__ManualLeadIntakeClient<$Result.GetResult<Prisma.$ManualLeadIntakePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ManualLeadIntakes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ManualLeadIntakeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ManualLeadIntakes
+     * const manualLeadIntakes = await prisma.manualLeadIntake.findMany()
+     * 
+     * // Get first 10 ManualLeadIntakes
+     * const manualLeadIntakes = await prisma.manualLeadIntake.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const manualLeadIntakeWithIdOnly = await prisma.manualLeadIntake.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ManualLeadIntakeFindManyArgs>(args?: SelectSubset<T, ManualLeadIntakeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ManualLeadIntakePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ManualLeadIntake.
+     * @param {ManualLeadIntakeCreateArgs} args - Arguments to create a ManualLeadIntake.
+     * @example
+     * // Create one ManualLeadIntake
+     * const ManualLeadIntake = await prisma.manualLeadIntake.create({
+     *   data: {
+     *     // ... data to create a ManualLeadIntake
+     *   }
+     * })
+     * 
+     */
+    create<T extends ManualLeadIntakeCreateArgs>(args: SelectSubset<T, ManualLeadIntakeCreateArgs<ExtArgs>>): Prisma__ManualLeadIntakeClient<$Result.GetResult<Prisma.$ManualLeadIntakePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ManualLeadIntakes.
+     * @param {ManualLeadIntakeCreateManyArgs} args - Arguments to create many ManualLeadIntakes.
+     * @example
+     * // Create many ManualLeadIntakes
+     * const manualLeadIntake = await prisma.manualLeadIntake.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ManualLeadIntakeCreateManyArgs>(args?: SelectSubset<T, ManualLeadIntakeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ManualLeadIntakes and returns the data saved in the database.
+     * @param {ManualLeadIntakeCreateManyAndReturnArgs} args - Arguments to create many ManualLeadIntakes.
+     * @example
+     * // Create many ManualLeadIntakes
+     * const manualLeadIntake = await prisma.manualLeadIntake.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ManualLeadIntakes and only return the `id`
+     * const manualLeadIntakeWithIdOnly = await prisma.manualLeadIntake.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ManualLeadIntakeCreateManyAndReturnArgs>(args?: SelectSubset<T, ManualLeadIntakeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ManualLeadIntakePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ManualLeadIntake.
+     * @param {ManualLeadIntakeDeleteArgs} args - Arguments to delete one ManualLeadIntake.
+     * @example
+     * // Delete one ManualLeadIntake
+     * const ManualLeadIntake = await prisma.manualLeadIntake.delete({
+     *   where: {
+     *     // ... filter to delete one ManualLeadIntake
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ManualLeadIntakeDeleteArgs>(args: SelectSubset<T, ManualLeadIntakeDeleteArgs<ExtArgs>>): Prisma__ManualLeadIntakeClient<$Result.GetResult<Prisma.$ManualLeadIntakePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ManualLeadIntake.
+     * @param {ManualLeadIntakeUpdateArgs} args - Arguments to update one ManualLeadIntake.
+     * @example
+     * // Update one ManualLeadIntake
+     * const manualLeadIntake = await prisma.manualLeadIntake.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ManualLeadIntakeUpdateArgs>(args: SelectSubset<T, ManualLeadIntakeUpdateArgs<ExtArgs>>): Prisma__ManualLeadIntakeClient<$Result.GetResult<Prisma.$ManualLeadIntakePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ManualLeadIntakes.
+     * @param {ManualLeadIntakeDeleteManyArgs} args - Arguments to filter ManualLeadIntakes to delete.
+     * @example
+     * // Delete a few ManualLeadIntakes
+     * const { count } = await prisma.manualLeadIntake.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ManualLeadIntakeDeleteManyArgs>(args?: SelectSubset<T, ManualLeadIntakeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ManualLeadIntakes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ManualLeadIntakeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ManualLeadIntakes
+     * const manualLeadIntake = await prisma.manualLeadIntake.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ManualLeadIntakeUpdateManyArgs>(args: SelectSubset<T, ManualLeadIntakeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ManualLeadIntakes and returns the data updated in the database.
+     * @param {ManualLeadIntakeUpdateManyAndReturnArgs} args - Arguments to update many ManualLeadIntakes.
+     * @example
+     * // Update many ManualLeadIntakes
+     * const manualLeadIntake = await prisma.manualLeadIntake.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ManualLeadIntakes and only return the `id`
+     * const manualLeadIntakeWithIdOnly = await prisma.manualLeadIntake.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ManualLeadIntakeUpdateManyAndReturnArgs>(args: SelectSubset<T, ManualLeadIntakeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ManualLeadIntakePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ManualLeadIntake.
+     * @param {ManualLeadIntakeUpsertArgs} args - Arguments to update or create a ManualLeadIntake.
+     * @example
+     * // Update or create a ManualLeadIntake
+     * const manualLeadIntake = await prisma.manualLeadIntake.upsert({
+     *   create: {
+     *     // ... data to create a ManualLeadIntake
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ManualLeadIntake we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ManualLeadIntakeUpsertArgs>(args: SelectSubset<T, ManualLeadIntakeUpsertArgs<ExtArgs>>): Prisma__ManualLeadIntakeClient<$Result.GetResult<Prisma.$ManualLeadIntakePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ManualLeadIntakes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ManualLeadIntakeCountArgs} args - Arguments to filter ManualLeadIntakes to count.
+     * @example
+     * // Count the number of ManualLeadIntakes
+     * const count = await prisma.manualLeadIntake.count({
+     *   where: {
+     *     // ... the filter for the ManualLeadIntakes we want to count
+     *   }
+     * })
+    **/
+    count<T extends ManualLeadIntakeCountArgs>(
+      args?: Subset<T, ManualLeadIntakeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ManualLeadIntakeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ManualLeadIntake.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ManualLeadIntakeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ManualLeadIntakeAggregateArgs>(args: Subset<T, ManualLeadIntakeAggregateArgs>): Prisma.PrismaPromise<GetManualLeadIntakeAggregateType<T>>
+
+    /**
+     * Group by ManualLeadIntake.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ManualLeadIntakeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ManualLeadIntakeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ManualLeadIntakeGroupByArgs['orderBy'] }
+        : { orderBy?: ManualLeadIntakeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ManualLeadIntakeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetManualLeadIntakeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ManualLeadIntake model
+   */
+  readonly fields: ManualLeadIntakeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ManualLeadIntake.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ManualLeadIntakeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    lead<T extends ManualLeadIntake$leadArgs<ExtArgs> = {}>(args?: Subset<T, ManualLeadIntake$leadArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ManualLeadIntake model
+   */
+  interface ManualLeadIntakeFieldRefs {
+    readonly id: FieldRef<"ManualLeadIntake", 'String'>
+    readonly leadId: FieldRef<"ManualLeadIntake", 'String'>
+    readonly source: FieldRef<"ManualLeadIntake", 'String'>
+    readonly sourceLabel: FieldRef<"ManualLeadIntake", 'String'>
+    readonly sellerName: FieldRef<"ManualLeadIntake", 'String'>
+    readonly phone: FieldRef<"ManualLeadIntake", 'String'>
+    readonly email: FieldRef<"ManualLeadIntake", 'String'>
+    readonly socialHandle: FieldRef<"ManualLeadIntake", 'String'>
+    readonly propertyAddress: FieldRef<"ManualLeadIntake", 'String'>
+    readonly city: FieldRef<"ManualLeadIntake", 'String'>
+    readonly state: FieldRef<"ManualLeadIntake", 'String'>
+    readonly zipCode: FieldRef<"ManualLeadIntake", 'String'>
+    readonly notes: FieldRef<"ManualLeadIntake", 'String'>
+    readonly captureContext: FieldRef<"ManualLeadIntake", 'String'>
+    readonly intakeStatus: FieldRef<"ManualLeadIntake", 'String'>
+    readonly manualReviewStatus: FieldRef<"ManualLeadIntake", 'String'>
+    readonly safetyFlags: FieldRef<"ManualLeadIntake", 'Json'>
+    readonly createdAt: FieldRef<"ManualLeadIntake", 'DateTime'>
+    readonly updatedAt: FieldRef<"ManualLeadIntake", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ManualLeadIntake findUnique
+   */
+  export type ManualLeadIntakeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ManualLeadIntake
+     */
+    select?: ManualLeadIntakeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ManualLeadIntake
+     */
+    omit?: ManualLeadIntakeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManualLeadIntakeInclude<ExtArgs> | null
+    /**
+     * Filter, which ManualLeadIntake to fetch.
+     */
+    where: ManualLeadIntakeWhereUniqueInput
+  }
+
+  /**
+   * ManualLeadIntake findUniqueOrThrow
+   */
+  export type ManualLeadIntakeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ManualLeadIntake
+     */
+    select?: ManualLeadIntakeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ManualLeadIntake
+     */
+    omit?: ManualLeadIntakeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManualLeadIntakeInclude<ExtArgs> | null
+    /**
+     * Filter, which ManualLeadIntake to fetch.
+     */
+    where: ManualLeadIntakeWhereUniqueInput
+  }
+
+  /**
+   * ManualLeadIntake findFirst
+   */
+  export type ManualLeadIntakeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ManualLeadIntake
+     */
+    select?: ManualLeadIntakeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ManualLeadIntake
+     */
+    omit?: ManualLeadIntakeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManualLeadIntakeInclude<ExtArgs> | null
+    /**
+     * Filter, which ManualLeadIntake to fetch.
+     */
+    where?: ManualLeadIntakeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ManualLeadIntakes to fetch.
+     */
+    orderBy?: ManualLeadIntakeOrderByWithRelationInput | ManualLeadIntakeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ManualLeadIntakes.
+     */
+    cursor?: ManualLeadIntakeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ManualLeadIntakes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ManualLeadIntakes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ManualLeadIntakes.
+     */
+    distinct?: ManualLeadIntakeScalarFieldEnum | ManualLeadIntakeScalarFieldEnum[]
+  }
+
+  /**
+   * ManualLeadIntake findFirstOrThrow
+   */
+  export type ManualLeadIntakeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ManualLeadIntake
+     */
+    select?: ManualLeadIntakeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ManualLeadIntake
+     */
+    omit?: ManualLeadIntakeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManualLeadIntakeInclude<ExtArgs> | null
+    /**
+     * Filter, which ManualLeadIntake to fetch.
+     */
+    where?: ManualLeadIntakeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ManualLeadIntakes to fetch.
+     */
+    orderBy?: ManualLeadIntakeOrderByWithRelationInput | ManualLeadIntakeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ManualLeadIntakes.
+     */
+    cursor?: ManualLeadIntakeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ManualLeadIntakes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ManualLeadIntakes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ManualLeadIntakes.
+     */
+    distinct?: ManualLeadIntakeScalarFieldEnum | ManualLeadIntakeScalarFieldEnum[]
+  }
+
+  /**
+   * ManualLeadIntake findMany
+   */
+  export type ManualLeadIntakeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ManualLeadIntake
+     */
+    select?: ManualLeadIntakeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ManualLeadIntake
+     */
+    omit?: ManualLeadIntakeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManualLeadIntakeInclude<ExtArgs> | null
+    /**
+     * Filter, which ManualLeadIntakes to fetch.
+     */
+    where?: ManualLeadIntakeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ManualLeadIntakes to fetch.
+     */
+    orderBy?: ManualLeadIntakeOrderByWithRelationInput | ManualLeadIntakeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ManualLeadIntakes.
+     */
+    cursor?: ManualLeadIntakeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ManualLeadIntakes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ManualLeadIntakes.
+     */
+    skip?: number
+    distinct?: ManualLeadIntakeScalarFieldEnum | ManualLeadIntakeScalarFieldEnum[]
+  }
+
+  /**
+   * ManualLeadIntake create
+   */
+  export type ManualLeadIntakeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ManualLeadIntake
+     */
+    select?: ManualLeadIntakeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ManualLeadIntake
+     */
+    omit?: ManualLeadIntakeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManualLeadIntakeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ManualLeadIntake.
+     */
+    data: XOR<ManualLeadIntakeCreateInput, ManualLeadIntakeUncheckedCreateInput>
+  }
+
+  /**
+   * ManualLeadIntake createMany
+   */
+  export type ManualLeadIntakeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ManualLeadIntakes.
+     */
+    data: ManualLeadIntakeCreateManyInput | ManualLeadIntakeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ManualLeadIntake createManyAndReturn
+   */
+  export type ManualLeadIntakeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ManualLeadIntake
+     */
+    select?: ManualLeadIntakeSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ManualLeadIntake
+     */
+    omit?: ManualLeadIntakeOmit<ExtArgs> | null
+    /**
+     * The data used to create many ManualLeadIntakes.
+     */
+    data: ManualLeadIntakeCreateManyInput | ManualLeadIntakeCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManualLeadIntakeIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ManualLeadIntake update
+   */
+  export type ManualLeadIntakeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ManualLeadIntake
+     */
+    select?: ManualLeadIntakeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ManualLeadIntake
+     */
+    omit?: ManualLeadIntakeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManualLeadIntakeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ManualLeadIntake.
+     */
+    data: XOR<ManualLeadIntakeUpdateInput, ManualLeadIntakeUncheckedUpdateInput>
+    /**
+     * Choose, which ManualLeadIntake to update.
+     */
+    where: ManualLeadIntakeWhereUniqueInput
+  }
+
+  /**
+   * ManualLeadIntake updateMany
+   */
+  export type ManualLeadIntakeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ManualLeadIntakes.
+     */
+    data: XOR<ManualLeadIntakeUpdateManyMutationInput, ManualLeadIntakeUncheckedUpdateManyInput>
+    /**
+     * Filter which ManualLeadIntakes to update
+     */
+    where?: ManualLeadIntakeWhereInput
+    /**
+     * Limit how many ManualLeadIntakes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ManualLeadIntake updateManyAndReturn
+   */
+  export type ManualLeadIntakeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ManualLeadIntake
+     */
+    select?: ManualLeadIntakeSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ManualLeadIntake
+     */
+    omit?: ManualLeadIntakeOmit<ExtArgs> | null
+    /**
+     * The data used to update ManualLeadIntakes.
+     */
+    data: XOR<ManualLeadIntakeUpdateManyMutationInput, ManualLeadIntakeUncheckedUpdateManyInput>
+    /**
+     * Filter which ManualLeadIntakes to update
+     */
+    where?: ManualLeadIntakeWhereInput
+    /**
+     * Limit how many ManualLeadIntakes to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManualLeadIntakeIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ManualLeadIntake upsert
+   */
+  export type ManualLeadIntakeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ManualLeadIntake
+     */
+    select?: ManualLeadIntakeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ManualLeadIntake
+     */
+    omit?: ManualLeadIntakeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManualLeadIntakeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ManualLeadIntake to update in case it exists.
+     */
+    where: ManualLeadIntakeWhereUniqueInput
+    /**
+     * In case the ManualLeadIntake found by the `where` argument doesn't exist, create a new ManualLeadIntake with this data.
+     */
+    create: XOR<ManualLeadIntakeCreateInput, ManualLeadIntakeUncheckedCreateInput>
+    /**
+     * In case the ManualLeadIntake was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ManualLeadIntakeUpdateInput, ManualLeadIntakeUncheckedUpdateInput>
+  }
+
+  /**
+   * ManualLeadIntake delete
+   */
+  export type ManualLeadIntakeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ManualLeadIntake
+     */
+    select?: ManualLeadIntakeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ManualLeadIntake
+     */
+    omit?: ManualLeadIntakeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManualLeadIntakeInclude<ExtArgs> | null
+    /**
+     * Filter which ManualLeadIntake to delete.
+     */
+    where: ManualLeadIntakeWhereUniqueInput
+  }
+
+  /**
+   * ManualLeadIntake deleteMany
+   */
+  export type ManualLeadIntakeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ManualLeadIntakes to delete
+     */
+    where?: ManualLeadIntakeWhereInput
+    /**
+     * Limit how many ManualLeadIntakes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ManualLeadIntake.lead
+   */
+  export type ManualLeadIntake$leadArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Lead
+     */
+    select?: LeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Lead
+     */
+    omit?: LeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+    where?: LeadWhereInput
+  }
+
+  /**
+   * ManualLeadIntake without action
+   */
+  export type ManualLeadIntakeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ManualLeadIntake
+     */
+    select?: ManualLeadIntakeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ManualLeadIntake
+     */
+    omit?: ManualLeadIntakeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ManualLeadIntakeInclude<ExtArgs> | null
   }
 
 
@@ -22574,6 +23957,31 @@ export namespace Prisma {
   export type LeadScalarFieldEnum = (typeof LeadScalarFieldEnum)[keyof typeof LeadScalarFieldEnum]
 
 
+  export const ManualLeadIntakeScalarFieldEnum: {
+    id: 'id',
+    leadId: 'leadId',
+    source: 'source',
+    sourceLabel: 'sourceLabel',
+    sellerName: 'sellerName',
+    phone: 'phone',
+    email: 'email',
+    socialHandle: 'socialHandle',
+    propertyAddress: 'propertyAddress',
+    city: 'city',
+    state: 'state',
+    zipCode: 'zipCode',
+    notes: 'notes',
+    captureContext: 'captureContext',
+    intakeStatus: 'intakeStatus',
+    manualReviewStatus: 'manualReviewStatus',
+    safetyFlags: 'safetyFlags',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ManualLeadIntakeScalarFieldEnum = (typeof ManualLeadIntakeScalarFieldEnum)[keyof typeof ManualLeadIntakeScalarFieldEnum]
+
+
   export const SellerCallOutcomeScalarFieldEnum: {
     id: 'id',
     leadId: 'leadId',
@@ -23068,6 +24476,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Lead"> | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionListRelationFilter
     salesConversionAssists?: SalesConversionAssistListRelationFilter
+    manualLeadIntakes?: ManualLeadIntakeListRelationFilter
   }
 
   export type LeadOrderByWithRelationInput = {
@@ -23101,6 +24510,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     marketingSalesAttributions?: MarketingSalesAttributionOrderByRelationAggregateInput
     salesConversionAssists?: SalesConversionAssistOrderByRelationAggregateInput
+    manualLeadIntakes?: ManualLeadIntakeOrderByRelationAggregateInput
   }
 
   export type LeadWhereUniqueInput = Prisma.AtLeast<{
@@ -23138,6 +24548,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Lead"> | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionListRelationFilter
     salesConversionAssists?: SalesConversionAssistListRelationFilter
+    manualLeadIntakes?: ManualLeadIntakeListRelationFilter
   }, "id" | "propertyAddress_phone">
 
   export type LeadOrderByWithAggregationInput = {
@@ -23208,6 +24619,131 @@ export namespace Prisma {
     optOutAt?: DateTimeNullableWithAggregatesFilter<"Lead"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Lead"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Lead"> | Date | string
+  }
+
+  export type ManualLeadIntakeWhereInput = {
+    AND?: ManualLeadIntakeWhereInput | ManualLeadIntakeWhereInput[]
+    OR?: ManualLeadIntakeWhereInput[]
+    NOT?: ManualLeadIntakeWhereInput | ManualLeadIntakeWhereInput[]
+    id?: StringFilter<"ManualLeadIntake"> | string
+    leadId?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    source?: StringFilter<"ManualLeadIntake"> | string
+    sourceLabel?: StringFilter<"ManualLeadIntake"> | string
+    sellerName?: StringFilter<"ManualLeadIntake"> | string
+    phone?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    email?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    socialHandle?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    propertyAddress?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    city?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    state?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    zipCode?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    notes?: StringFilter<"ManualLeadIntake"> | string
+    captureContext?: StringFilter<"ManualLeadIntake"> | string
+    intakeStatus?: StringFilter<"ManualLeadIntake"> | string
+    manualReviewStatus?: StringFilter<"ManualLeadIntake"> | string
+    safetyFlags?: JsonFilter<"ManualLeadIntake">
+    createdAt?: DateTimeFilter<"ManualLeadIntake"> | Date | string
+    updatedAt?: DateTimeFilter<"ManualLeadIntake"> | Date | string
+    lead?: XOR<LeadNullableScalarRelationFilter, LeadWhereInput> | null
+  }
+
+  export type ManualLeadIntakeOrderByWithRelationInput = {
+    id?: SortOrder
+    leadId?: SortOrderInput | SortOrder
+    source?: SortOrder
+    sourceLabel?: SortOrder
+    sellerName?: SortOrder
+    phone?: SortOrderInput | SortOrder
+    email?: SortOrderInput | SortOrder
+    socialHandle?: SortOrderInput | SortOrder
+    propertyAddress?: SortOrderInput | SortOrder
+    city?: SortOrderInput | SortOrder
+    state?: SortOrderInput | SortOrder
+    zipCode?: SortOrderInput | SortOrder
+    notes?: SortOrder
+    captureContext?: SortOrder
+    intakeStatus?: SortOrder
+    manualReviewStatus?: SortOrder
+    safetyFlags?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    lead?: LeadOrderByWithRelationInput
+  }
+
+  export type ManualLeadIntakeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ManualLeadIntakeWhereInput | ManualLeadIntakeWhereInput[]
+    OR?: ManualLeadIntakeWhereInput[]
+    NOT?: ManualLeadIntakeWhereInput | ManualLeadIntakeWhereInput[]
+    leadId?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    source?: StringFilter<"ManualLeadIntake"> | string
+    sourceLabel?: StringFilter<"ManualLeadIntake"> | string
+    sellerName?: StringFilter<"ManualLeadIntake"> | string
+    phone?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    email?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    socialHandle?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    propertyAddress?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    city?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    state?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    zipCode?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    notes?: StringFilter<"ManualLeadIntake"> | string
+    captureContext?: StringFilter<"ManualLeadIntake"> | string
+    intakeStatus?: StringFilter<"ManualLeadIntake"> | string
+    manualReviewStatus?: StringFilter<"ManualLeadIntake"> | string
+    safetyFlags?: JsonFilter<"ManualLeadIntake">
+    createdAt?: DateTimeFilter<"ManualLeadIntake"> | Date | string
+    updatedAt?: DateTimeFilter<"ManualLeadIntake"> | Date | string
+    lead?: XOR<LeadNullableScalarRelationFilter, LeadWhereInput> | null
+  }, "id">
+
+  export type ManualLeadIntakeOrderByWithAggregationInput = {
+    id?: SortOrder
+    leadId?: SortOrderInput | SortOrder
+    source?: SortOrder
+    sourceLabel?: SortOrder
+    sellerName?: SortOrder
+    phone?: SortOrderInput | SortOrder
+    email?: SortOrderInput | SortOrder
+    socialHandle?: SortOrderInput | SortOrder
+    propertyAddress?: SortOrderInput | SortOrder
+    city?: SortOrderInput | SortOrder
+    state?: SortOrderInput | SortOrder
+    zipCode?: SortOrderInput | SortOrder
+    notes?: SortOrder
+    captureContext?: SortOrder
+    intakeStatus?: SortOrder
+    manualReviewStatus?: SortOrder
+    safetyFlags?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ManualLeadIntakeCountOrderByAggregateInput
+    _max?: ManualLeadIntakeMaxOrderByAggregateInput
+    _min?: ManualLeadIntakeMinOrderByAggregateInput
+  }
+
+  export type ManualLeadIntakeScalarWhereWithAggregatesInput = {
+    AND?: ManualLeadIntakeScalarWhereWithAggregatesInput | ManualLeadIntakeScalarWhereWithAggregatesInput[]
+    OR?: ManualLeadIntakeScalarWhereWithAggregatesInput[]
+    NOT?: ManualLeadIntakeScalarWhereWithAggregatesInput | ManualLeadIntakeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ManualLeadIntake"> | string
+    leadId?: StringNullableWithAggregatesFilter<"ManualLeadIntake"> | string | null
+    source?: StringWithAggregatesFilter<"ManualLeadIntake"> | string
+    sourceLabel?: StringWithAggregatesFilter<"ManualLeadIntake"> | string
+    sellerName?: StringWithAggregatesFilter<"ManualLeadIntake"> | string
+    phone?: StringNullableWithAggregatesFilter<"ManualLeadIntake"> | string | null
+    email?: StringNullableWithAggregatesFilter<"ManualLeadIntake"> | string | null
+    socialHandle?: StringNullableWithAggregatesFilter<"ManualLeadIntake"> | string | null
+    propertyAddress?: StringNullableWithAggregatesFilter<"ManualLeadIntake"> | string | null
+    city?: StringNullableWithAggregatesFilter<"ManualLeadIntake"> | string | null
+    state?: StringNullableWithAggregatesFilter<"ManualLeadIntake"> | string | null
+    zipCode?: StringNullableWithAggregatesFilter<"ManualLeadIntake"> | string | null
+    notes?: StringWithAggregatesFilter<"ManualLeadIntake"> | string
+    captureContext?: StringWithAggregatesFilter<"ManualLeadIntake"> | string
+    intakeStatus?: StringWithAggregatesFilter<"ManualLeadIntake"> | string
+    manualReviewStatus?: StringWithAggregatesFilter<"ManualLeadIntake"> | string
+    safetyFlags?: JsonWithAggregatesFilter<"ManualLeadIntake">
+    createdAt?: DateTimeWithAggregatesFilter<"ManualLeadIntake"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ManualLeadIntake"> | Date | string
   }
 
   export type SellerCallOutcomeWhereInput = {
@@ -24688,6 +26224,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutLeadInput
     salesConversionAssists?: SalesConversionAssistCreateNestedManyWithoutLeadInput
+    manualLeadIntakes?: ManualLeadIntakeCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateInput = {
@@ -24721,6 +26258,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput
     salesConversionAssists?: SalesConversionAssistUncheckedCreateNestedManyWithoutLeadInput
+    manualLeadIntakes?: ManualLeadIntakeUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUpdateInput = {
@@ -24754,6 +26292,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutLeadNestedInput
     salesConversionAssists?: SalesConversionAssistUpdateManyWithoutLeadNestedInput
+    manualLeadIntakes?: ManualLeadIntakeUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateInput = {
@@ -24787,6 +26326,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput
     salesConversionAssists?: SalesConversionAssistUncheckedUpdateManyWithoutLeadNestedInput
+    manualLeadIntakes?: ManualLeadIntakeUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadCreateManyInput = {
@@ -24878,6 +26418,159 @@ export namespace Prisma {
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ManualLeadIntakeCreateInput = {
+    id?: string
+    source: string
+    sourceLabel: string
+    sellerName: string
+    phone?: string | null
+    email?: string | null
+    socialHandle?: string | null
+    propertyAddress?: string | null
+    city?: string | null
+    state?: string | null
+    zipCode?: string | null
+    notes: string
+    captureContext: string
+    intakeStatus?: string
+    manualReviewStatus?: string
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lead?: LeadCreateNestedOneWithoutManualLeadIntakesInput
+  }
+
+  export type ManualLeadIntakeUncheckedCreateInput = {
+    id?: string
+    leadId?: string | null
+    source: string
+    sourceLabel: string
+    sellerName: string
+    phone?: string | null
+    email?: string | null
+    socialHandle?: string | null
+    propertyAddress?: string | null
+    city?: string | null
+    state?: string | null
+    zipCode?: string | null
+    notes: string
+    captureContext: string
+    intakeStatus?: string
+    manualReviewStatus?: string
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ManualLeadIntakeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    sellerName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    socialHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    propertyAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+    captureContext?: StringFieldUpdateOperationsInput | string
+    intakeStatus?: StringFieldUpdateOperationsInput | string
+    manualReviewStatus?: StringFieldUpdateOperationsInput | string
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneWithoutManualLeadIntakesNestedInput
+  }
+
+  export type ManualLeadIntakeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    sellerName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    socialHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    propertyAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+    captureContext?: StringFieldUpdateOperationsInput | string
+    intakeStatus?: StringFieldUpdateOperationsInput | string
+    manualReviewStatus?: StringFieldUpdateOperationsInput | string
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ManualLeadIntakeCreateManyInput = {
+    id?: string
+    leadId?: string | null
+    source: string
+    sourceLabel: string
+    sellerName: string
+    phone?: string | null
+    email?: string | null
+    socialHandle?: string | null
+    propertyAddress?: string | null
+    city?: string | null
+    state?: string | null
+    zipCode?: string | null
+    notes: string
+    captureContext: string
+    intakeStatus?: string
+    manualReviewStatus?: string
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ManualLeadIntakeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    sellerName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    socialHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    propertyAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+    captureContext?: StringFieldUpdateOperationsInput | string
+    intakeStatus?: StringFieldUpdateOperationsInput | string
+    manualReviewStatus?: StringFieldUpdateOperationsInput | string
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ManualLeadIntakeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    sellerName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    socialHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    propertyAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+    captureContext?: StringFieldUpdateOperationsInput | string
+    intakeStatus?: StringFieldUpdateOperationsInput | string
+    manualReviewStatus?: StringFieldUpdateOperationsInput | string
+    safetyFlags?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -26664,6 +28357,12 @@ export namespace Prisma {
     none?: SalesConversionAssistWhereInput
   }
 
+  export type ManualLeadIntakeListRelationFilter = {
+    every?: ManualLeadIntakeWhereInput
+    some?: ManualLeadIntakeWhereInput
+    none?: ManualLeadIntakeWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -26674,6 +28373,10 @@ export namespace Prisma {
   }
 
   export type SalesConversionAssistOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ManualLeadIntakeOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -26924,6 +28627,101 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type LeadNullableScalarRelationFilter = {
+    is?: LeadWhereInput | null
+    isNot?: LeadWhereInput | null
+  }
+
+  export type ManualLeadIntakeCountOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    source?: SortOrder
+    sourceLabel?: SortOrder
+    sellerName?: SortOrder
+    phone?: SortOrder
+    email?: SortOrder
+    socialHandle?: SortOrder
+    propertyAddress?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    zipCode?: SortOrder
+    notes?: SortOrder
+    captureContext?: SortOrder
+    intakeStatus?: SortOrder
+    manualReviewStatus?: SortOrder
+    safetyFlags?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ManualLeadIntakeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    source?: SortOrder
+    sourceLabel?: SortOrder
+    sellerName?: SortOrder
+    phone?: SortOrder
+    email?: SortOrder
+    socialHandle?: SortOrder
+    propertyAddress?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    zipCode?: SortOrder
+    notes?: SortOrder
+    captureContext?: SortOrder
+    intakeStatus?: SortOrder
+    manualReviewStatus?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ManualLeadIntakeMinOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    source?: SortOrder
+    sourceLabel?: SortOrder
+    sellerName?: SortOrder
+    phone?: SortOrder
+    email?: SortOrder
+    socialHandle?: SortOrder
+    propertyAddress?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    zipCode?: SortOrder
+    notes?: SortOrder
+    captureContext?: SortOrder
+    intakeStatus?: SortOrder
+    manualReviewStatus?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+  export type JsonWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedJsonFilter<$PrismaModel>
+    _max?: NestedJsonFilter<$PrismaModel>
+  }
+
   export type SellerCallOutcomeCountOrderByAggregateInput = {
     id?: SortOrder
     leadId?: SortOrder
@@ -26965,32 +28763,6 @@ export namespace Prisma {
     priceExpectationSignal?: SortOrder
     manualNextStep?: SortOrder
     createdAt?: SortOrder
-  }
-  export type JsonWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedJsonFilter<$PrismaModel>
-    _max?: NestedJsonFilter<$PrismaModel>
   }
 
   export type FloatFilter<$PrismaModel = never> = {
@@ -27945,6 +29717,13 @@ export namespace Prisma {
     connect?: SalesConversionAssistWhereUniqueInput | SalesConversionAssistWhereUniqueInput[]
   }
 
+  export type ManualLeadIntakeCreateNestedManyWithoutLeadInput = {
+    create?: XOR<ManualLeadIntakeCreateWithoutLeadInput, ManualLeadIntakeUncheckedCreateWithoutLeadInput> | ManualLeadIntakeCreateWithoutLeadInput[] | ManualLeadIntakeUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: ManualLeadIntakeCreateOrConnectWithoutLeadInput | ManualLeadIntakeCreateOrConnectWithoutLeadInput[]
+    createMany?: ManualLeadIntakeCreateManyLeadInputEnvelope
+    connect?: ManualLeadIntakeWhereUniqueInput | ManualLeadIntakeWhereUniqueInput[]
+  }
+
   export type MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput = {
     create?: XOR<MarketingSalesAttributionCreateWithoutLeadInput, MarketingSalesAttributionUncheckedCreateWithoutLeadInput> | MarketingSalesAttributionCreateWithoutLeadInput[] | MarketingSalesAttributionUncheckedCreateWithoutLeadInput[]
     connectOrCreate?: MarketingSalesAttributionCreateOrConnectWithoutLeadInput | MarketingSalesAttributionCreateOrConnectWithoutLeadInput[]
@@ -27957,6 +29736,13 @@ export namespace Prisma {
     connectOrCreate?: SalesConversionAssistCreateOrConnectWithoutLeadInput | SalesConversionAssistCreateOrConnectWithoutLeadInput[]
     createMany?: SalesConversionAssistCreateManyLeadInputEnvelope
     connect?: SalesConversionAssistWhereUniqueInput | SalesConversionAssistWhereUniqueInput[]
+  }
+
+  export type ManualLeadIntakeUncheckedCreateNestedManyWithoutLeadInput = {
+    create?: XOR<ManualLeadIntakeCreateWithoutLeadInput, ManualLeadIntakeUncheckedCreateWithoutLeadInput> | ManualLeadIntakeCreateWithoutLeadInput[] | ManualLeadIntakeUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: ManualLeadIntakeCreateOrConnectWithoutLeadInput | ManualLeadIntakeCreateOrConnectWithoutLeadInput[]
+    createMany?: ManualLeadIntakeCreateManyLeadInputEnvelope
+    connect?: ManualLeadIntakeWhereUniqueInput | ManualLeadIntakeWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -28027,6 +29813,20 @@ export namespace Prisma {
     deleteMany?: SalesConversionAssistScalarWhereInput | SalesConversionAssistScalarWhereInput[]
   }
 
+  export type ManualLeadIntakeUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<ManualLeadIntakeCreateWithoutLeadInput, ManualLeadIntakeUncheckedCreateWithoutLeadInput> | ManualLeadIntakeCreateWithoutLeadInput[] | ManualLeadIntakeUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: ManualLeadIntakeCreateOrConnectWithoutLeadInput | ManualLeadIntakeCreateOrConnectWithoutLeadInput[]
+    upsert?: ManualLeadIntakeUpsertWithWhereUniqueWithoutLeadInput | ManualLeadIntakeUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: ManualLeadIntakeCreateManyLeadInputEnvelope
+    set?: ManualLeadIntakeWhereUniqueInput | ManualLeadIntakeWhereUniqueInput[]
+    disconnect?: ManualLeadIntakeWhereUniqueInput | ManualLeadIntakeWhereUniqueInput[]
+    delete?: ManualLeadIntakeWhereUniqueInput | ManualLeadIntakeWhereUniqueInput[]
+    connect?: ManualLeadIntakeWhereUniqueInput | ManualLeadIntakeWhereUniqueInput[]
+    update?: ManualLeadIntakeUpdateWithWhereUniqueWithoutLeadInput | ManualLeadIntakeUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: ManualLeadIntakeUpdateManyWithWhereWithoutLeadInput | ManualLeadIntakeUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: ManualLeadIntakeScalarWhereInput | ManualLeadIntakeScalarWhereInput[]
+  }
+
   export type MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput = {
     create?: XOR<MarketingSalesAttributionCreateWithoutLeadInput, MarketingSalesAttributionUncheckedCreateWithoutLeadInput> | MarketingSalesAttributionCreateWithoutLeadInput[] | MarketingSalesAttributionUncheckedCreateWithoutLeadInput[]
     connectOrCreate?: MarketingSalesAttributionCreateOrConnectWithoutLeadInput | MarketingSalesAttributionCreateOrConnectWithoutLeadInput[]
@@ -28053,6 +29853,36 @@ export namespace Prisma {
     update?: SalesConversionAssistUpdateWithWhereUniqueWithoutLeadInput | SalesConversionAssistUpdateWithWhereUniqueWithoutLeadInput[]
     updateMany?: SalesConversionAssistUpdateManyWithWhereWithoutLeadInput | SalesConversionAssistUpdateManyWithWhereWithoutLeadInput[]
     deleteMany?: SalesConversionAssistScalarWhereInput | SalesConversionAssistScalarWhereInput[]
+  }
+
+  export type ManualLeadIntakeUncheckedUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<ManualLeadIntakeCreateWithoutLeadInput, ManualLeadIntakeUncheckedCreateWithoutLeadInput> | ManualLeadIntakeCreateWithoutLeadInput[] | ManualLeadIntakeUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: ManualLeadIntakeCreateOrConnectWithoutLeadInput | ManualLeadIntakeCreateOrConnectWithoutLeadInput[]
+    upsert?: ManualLeadIntakeUpsertWithWhereUniqueWithoutLeadInput | ManualLeadIntakeUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: ManualLeadIntakeCreateManyLeadInputEnvelope
+    set?: ManualLeadIntakeWhereUniqueInput | ManualLeadIntakeWhereUniqueInput[]
+    disconnect?: ManualLeadIntakeWhereUniqueInput | ManualLeadIntakeWhereUniqueInput[]
+    delete?: ManualLeadIntakeWhereUniqueInput | ManualLeadIntakeWhereUniqueInput[]
+    connect?: ManualLeadIntakeWhereUniqueInput | ManualLeadIntakeWhereUniqueInput[]
+    update?: ManualLeadIntakeUpdateWithWhereUniqueWithoutLeadInput | ManualLeadIntakeUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: ManualLeadIntakeUpdateManyWithWhereWithoutLeadInput | ManualLeadIntakeUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: ManualLeadIntakeScalarWhereInput | ManualLeadIntakeScalarWhereInput[]
+  }
+
+  export type LeadCreateNestedOneWithoutManualLeadIntakesInput = {
+    create?: XOR<LeadCreateWithoutManualLeadIntakesInput, LeadUncheckedCreateWithoutManualLeadIntakesInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutManualLeadIntakesInput
+    connect?: LeadWhereUniqueInput
+  }
+
+  export type LeadUpdateOneWithoutManualLeadIntakesNestedInput = {
+    create?: XOR<LeadCreateWithoutManualLeadIntakesInput, LeadUncheckedCreateWithoutManualLeadIntakesInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutManualLeadIntakesInput
+    upsert?: LeadUpsertWithoutManualLeadIntakesInput
+    disconnect?: LeadWhereInput | boolean
+    delete?: LeadWhereInput | boolean
+    connect?: LeadWhereUniqueInput
+    update?: XOR<XOR<LeadUpdateToOneWithWhereWithoutManualLeadIntakesInput, LeadUpdateWithoutManualLeadIntakesInput>, LeadUncheckedUpdateWithoutManualLeadIntakesInput>
   }
 
   export type FloatFieldUpdateOperationsInput = {
@@ -29029,6 +30859,58 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ManualLeadIntakeCreateWithoutLeadInput = {
+    id?: string
+    source: string
+    sourceLabel: string
+    sellerName: string
+    phone?: string | null
+    email?: string | null
+    socialHandle?: string | null
+    propertyAddress?: string | null
+    city?: string | null
+    state?: string | null
+    zipCode?: string | null
+    notes: string
+    captureContext: string
+    intakeStatus?: string
+    manualReviewStatus?: string
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ManualLeadIntakeUncheckedCreateWithoutLeadInput = {
+    id?: string
+    source: string
+    sourceLabel: string
+    sellerName: string
+    phone?: string | null
+    email?: string | null
+    socialHandle?: string | null
+    propertyAddress?: string | null
+    city?: string | null
+    state?: string | null
+    zipCode?: string | null
+    notes: string
+    captureContext: string
+    intakeStatus?: string
+    manualReviewStatus?: string
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ManualLeadIntakeCreateOrConnectWithoutLeadInput = {
+    where: ManualLeadIntakeWhereUniqueInput
+    create: XOR<ManualLeadIntakeCreateWithoutLeadInput, ManualLeadIntakeUncheckedCreateWithoutLeadInput>
+  }
+
+  export type ManualLeadIntakeCreateManyLeadInputEnvelope = {
+    data: ManualLeadIntakeCreateManyLeadInput | ManualLeadIntakeCreateManyLeadInput[]
+    skipDuplicates?: boolean
+  }
+
   export type MarketingSalesAttributionUpsertWithWhereUniqueWithoutLeadInput = {
     where: MarketingSalesAttributionWhereUniqueInput
     update: XOR<MarketingSalesAttributionUpdateWithoutLeadInput, MarketingSalesAttributionUncheckedUpdateWithoutLeadInput>
@@ -29098,6 +30980,195 @@ export namespace Prisma {
     manualApprovalStatus?: StringFilter<"SalesConversionAssist"> | string
     createdAt?: DateTimeFilter<"SalesConversionAssist"> | Date | string
     updatedAt?: DateTimeFilter<"SalesConversionAssist"> | Date | string
+  }
+
+  export type ManualLeadIntakeUpsertWithWhereUniqueWithoutLeadInput = {
+    where: ManualLeadIntakeWhereUniqueInput
+    update: XOR<ManualLeadIntakeUpdateWithoutLeadInput, ManualLeadIntakeUncheckedUpdateWithoutLeadInput>
+    create: XOR<ManualLeadIntakeCreateWithoutLeadInput, ManualLeadIntakeUncheckedCreateWithoutLeadInput>
+  }
+
+  export type ManualLeadIntakeUpdateWithWhereUniqueWithoutLeadInput = {
+    where: ManualLeadIntakeWhereUniqueInput
+    data: XOR<ManualLeadIntakeUpdateWithoutLeadInput, ManualLeadIntakeUncheckedUpdateWithoutLeadInput>
+  }
+
+  export type ManualLeadIntakeUpdateManyWithWhereWithoutLeadInput = {
+    where: ManualLeadIntakeScalarWhereInput
+    data: XOR<ManualLeadIntakeUpdateManyMutationInput, ManualLeadIntakeUncheckedUpdateManyWithoutLeadInput>
+  }
+
+  export type ManualLeadIntakeScalarWhereInput = {
+    AND?: ManualLeadIntakeScalarWhereInput | ManualLeadIntakeScalarWhereInput[]
+    OR?: ManualLeadIntakeScalarWhereInput[]
+    NOT?: ManualLeadIntakeScalarWhereInput | ManualLeadIntakeScalarWhereInput[]
+    id?: StringFilter<"ManualLeadIntake"> | string
+    leadId?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    source?: StringFilter<"ManualLeadIntake"> | string
+    sourceLabel?: StringFilter<"ManualLeadIntake"> | string
+    sellerName?: StringFilter<"ManualLeadIntake"> | string
+    phone?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    email?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    socialHandle?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    propertyAddress?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    city?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    state?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    zipCode?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    notes?: StringFilter<"ManualLeadIntake"> | string
+    captureContext?: StringFilter<"ManualLeadIntake"> | string
+    intakeStatus?: StringFilter<"ManualLeadIntake"> | string
+    manualReviewStatus?: StringFilter<"ManualLeadIntake"> | string
+    safetyFlags?: JsonFilter<"ManualLeadIntake">
+    createdAt?: DateTimeFilter<"ManualLeadIntake"> | Date | string
+    updatedAt?: DateTimeFilter<"ManualLeadIntake"> | Date | string
+  }
+
+  export type LeadCreateWithoutManualLeadIntakesInput = {
+    id?: string
+    name: string
+    phone: string
+    propertyAddress: string
+    source: string
+    status?: $Enums.LeadStatus
+    score?: number
+    priority?: string
+    notes?: string | null
+    payload?: string | null
+    lastContactedAt?: Date | string | null
+    nextFollowUpAt?: Date | string | null
+    followUpCount?: number
+    lastFollowUpMessage?: string | null
+    automationStatus?: string
+    approvalStatus?: string
+    isHot?: boolean
+    lastSellerReply?: string | null
+    lastSellerReplyAt?: Date | string | null
+    lastSellerReplyIntent?: string | null
+    lastSellerReplyConfidence?: number | null
+    suggestedReply?: string | null
+    requiresHumanApproval?: boolean
+    doNotContact?: boolean
+    optOutReason?: string | null
+    optOutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutLeadInput
+    salesConversionAssists?: SalesConversionAssistCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadUncheckedCreateWithoutManualLeadIntakesInput = {
+    id?: string
+    name: string
+    phone: string
+    propertyAddress: string
+    source: string
+    status?: $Enums.LeadStatus
+    score?: number
+    priority?: string
+    notes?: string | null
+    payload?: string | null
+    lastContactedAt?: Date | string | null
+    nextFollowUpAt?: Date | string | null
+    followUpCount?: number
+    lastFollowUpMessage?: string | null
+    automationStatus?: string
+    approvalStatus?: string
+    isHot?: boolean
+    lastSellerReply?: string | null
+    lastSellerReplyAt?: Date | string | null
+    lastSellerReplyIntent?: string | null
+    lastSellerReplyConfidence?: number | null
+    suggestedReply?: string | null
+    requiresHumanApproval?: boolean
+    doNotContact?: boolean
+    optOutReason?: string | null
+    optOutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput
+    salesConversionAssists?: SalesConversionAssistUncheckedCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadCreateOrConnectWithoutManualLeadIntakesInput = {
+    where: LeadWhereUniqueInput
+    create: XOR<LeadCreateWithoutManualLeadIntakesInput, LeadUncheckedCreateWithoutManualLeadIntakesInput>
+  }
+
+  export type LeadUpsertWithoutManualLeadIntakesInput = {
+    update: XOR<LeadUpdateWithoutManualLeadIntakesInput, LeadUncheckedUpdateWithoutManualLeadIntakesInput>
+    create: XOR<LeadCreateWithoutManualLeadIntakesInput, LeadUncheckedCreateWithoutManualLeadIntakesInput>
+    where?: LeadWhereInput
+  }
+
+  export type LeadUpdateToOneWithWhereWithoutManualLeadIntakesInput = {
+    where?: LeadWhereInput
+    data: XOR<LeadUpdateWithoutManualLeadIntakesInput, LeadUncheckedUpdateWithoutManualLeadIntakesInput>
+  }
+
+  export type LeadUpdateWithoutManualLeadIntakesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    propertyAddress?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    score?: IntFieldUpdateOperationsInput | number
+    priority?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableStringFieldUpdateOperationsInput | string | null
+    lastContactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
+    lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    automationStatus?: StringFieldUpdateOperationsInput | string
+    approvalStatus?: StringFieldUpdateOperationsInput | string
+    isHot?: BoolFieldUpdateOperationsInput | boolean
+    lastSellerReply?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSellerReplyIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    suggestedReply?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresHumanApproval?: BoolFieldUpdateOperationsInput | boolean
+    doNotContact?: BoolFieldUpdateOperationsInput | boolean
+    optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutLeadNestedInput
+    salesConversionAssists?: SalesConversionAssistUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateWithoutManualLeadIntakesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    propertyAddress?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    score?: IntFieldUpdateOperationsInput | number
+    priority?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableStringFieldUpdateOperationsInput | string | null
+    lastContactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
+    lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    automationStatus?: StringFieldUpdateOperationsInput | string
+    approvalStatus?: StringFieldUpdateOperationsInput | string
+    isHot?: BoolFieldUpdateOperationsInput | boolean
+    lastSellerReply?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSellerReplyIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    suggestedReply?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresHumanApproval?: BoolFieldUpdateOperationsInput | boolean
+    doNotContact?: BoolFieldUpdateOperationsInput | boolean
+    optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput
+    salesConversionAssists?: SalesConversionAssistUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type AiJobActionCreateWithoutJobInput = {
@@ -30166,6 +32237,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     salesConversionAssists?: SalesConversionAssistCreateNestedManyWithoutLeadInput
+    manualLeadIntakes?: ManualLeadIntakeCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutMarketingSalesAttributionsInput = {
@@ -30198,6 +32270,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     salesConversionAssists?: SalesConversionAssistUncheckedCreateNestedManyWithoutLeadInput
+    manualLeadIntakes?: ManualLeadIntakeUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutMarketingSalesAttributionsInput = {
@@ -30353,6 +32426,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     salesConversionAssists?: SalesConversionAssistUpdateManyWithoutLeadNestedInput
+    manualLeadIntakes?: ManualLeadIntakeUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutMarketingSalesAttributionsInput = {
@@ -30385,6 +32459,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     salesConversionAssists?: SalesConversionAssistUncheckedUpdateManyWithoutLeadNestedInput
+    manualLeadIntakes?: ManualLeadIntakeUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type MarketingDraftUpsertWithoutMarketingSalesAttributionsInput = {
@@ -30542,6 +32617,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutLeadInput
+    manualLeadIntakes?: ManualLeadIntakeCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutSalesConversionAssistsInput = {
@@ -30574,6 +32650,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput
+    manualLeadIntakes?: ManualLeadIntakeUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutSalesConversionAssistsInput = {
@@ -30622,6 +32699,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutLeadNestedInput
+    manualLeadIntakes?: ManualLeadIntakeUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutSalesConversionAssistsInput = {
@@ -30654,6 +32732,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput
+    manualLeadIntakes?: ManualLeadIntakeUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type MarketingSalesAttributionCreateManyLeadInput = {
@@ -30683,6 +32762,27 @@ export namespace Prisma {
     roiSignals: JsonNullValueInput | InputJsonValue
     safetyFlags: JsonNullValueInput | InputJsonValue
     manualApprovalStatus?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ManualLeadIntakeCreateManyLeadInput = {
+    id?: string
+    source: string
+    sourceLabel: string
+    sellerName: string
+    phone?: string | null
+    email?: string | null
+    socialHandle?: string | null
+    propertyAddress?: string | null
+    city?: string | null
+    state?: string | null
+    zipCode?: string | null
+    notes: string
+    captureContext: string
+    intakeStatus?: string
+    manualReviewStatus?: string
+    safetyFlags: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -30776,6 +32876,69 @@ export namespace Prisma {
     roiSignals?: JsonNullValueInput | InputJsonValue
     safetyFlags?: JsonNullValueInput | InputJsonValue
     manualApprovalStatus?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ManualLeadIntakeUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    sellerName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    socialHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    propertyAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+    captureContext?: StringFieldUpdateOperationsInput | string
+    intakeStatus?: StringFieldUpdateOperationsInput | string
+    manualReviewStatus?: StringFieldUpdateOperationsInput | string
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ManualLeadIntakeUncheckedUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    sellerName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    socialHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    propertyAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+    captureContext?: StringFieldUpdateOperationsInput | string
+    intakeStatus?: StringFieldUpdateOperationsInput | string
+    manualReviewStatus?: StringFieldUpdateOperationsInput | string
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ManualLeadIntakeUncheckedUpdateManyWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    sellerName?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    socialHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    propertyAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: StringFieldUpdateOperationsInput | string
+    captureContext?: StringFieldUpdateOperationsInput | string
+    intakeStatus?: StringFieldUpdateOperationsInput | string
+    manualReviewStatus?: StringFieldUpdateOperationsInput | string
+    safetyFlags?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

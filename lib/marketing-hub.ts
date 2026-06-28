@@ -49,12 +49,46 @@ export type MarketingReadinessItem = {
   nextAction: string;
 };
 
+export type MarketingApiRoadmapItem = {
+  phase: string;
+  title: string;
+  summary: string;
+  guardrail: string;
+};
+
 export const marketingSafetyBadges = [
   "READ ONLY",
   "NO AUTO POSTING",
   "NO OUTREACH",
   "HUMAN APPROVAL REQUIRED",
 ] as const;
+
+export const marketingApiRoadmap: MarketingApiRoadmapItem[] = [
+  {
+    phase: "Phase 1",
+    title: "Provider connection readiness",
+    summary: "Validate server-side configuration for Facebook, Instagram, TikTok, LinkedIn, and YouTube before live account actions.",
+    guardrail: "canPublish:false / publishEnabled:false",
+  },
+  {
+    phase: "Phase 2",
+    title: "Read-only analytics",
+    summary: "Add GA4, Search Console, Facebook, and GBP analytics only after connection readiness is proven.",
+    guardrail: "No lead or CRM mutation",
+  },
+  {
+    phase: "Phase 3",
+    title: "Draft-only content engine",
+    summary: "Repurpose one approved topic into website, social, video, and GBP drafts through the existing approval queue.",
+    guardrail: "No external provider calls",
+  },
+  {
+    phase: "Phase 4",
+    title: "Publishing gate",
+    summary: "Start with Facebook only after approved drafts, verified connection, explicit confirmation, and audit logging exist.",
+    guardrail: "Never publish automatically",
+  },
+];
 
 export const marketingConnectedAccounts: MarketingConnectedAccount[] = [
   {

@@ -59,6 +59,7 @@ model Lead {
 
   marketingSalesAttributions MarketingSalesAttribution[]
   salesConversionAssists     SalesConversionAssist[]
+  manualLeadIntakes          ManualLeadIntake[]
 
   // INDEXES
   @@unique([propertyAddress, phone])
@@ -70,6 +71,37 @@ model Lead {
   @@index([isHot])
   @@index([doNotContact])
   @@index([lastSellerReplyIntent])
+}
+
+model ManualLeadIntake {
+  id                 String   @id @default(uuid())
+  leadId             String?
+  source             String
+  sourceLabel        String
+  sellerName         String
+  phone              String?
+  email              String?
+  socialHandle       String?
+  propertyAddress    String?
+  city               String?
+  state              String?
+  zipCode            String?
+  notes              String
+  captureContext     String
+  intakeStatus       String   @default("pending_review")
+  manualReviewStatus String   @default("needs_manual_review")
+  safetyFlags        Json
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  lead Lead? @relation(fields: [leadId], references: [id], onDelete: SetNull)
+
+  @@index([leadId])
+  @@index([source])
+  @@index([sourceLabel])
+  @@index([intakeStatus])
+  @@index([manualReviewStatus])
+  @@index([createdAt])
 }
 
 model SellerCallOutcome {
