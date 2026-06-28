@@ -9,6 +9,7 @@ Current runtime boundaries:
 - Executive Dashboard metrics come from the BI engine, revenue pipeline analysis, manual finance entries, Knowledge Hub records, and AI Memory.
 - Knowledge search is internal-first. Optional OpenAI embeddings are server-only and disabled unless explicitly gated by environment flags.
 - Global search is internal-only across navigation, leads, properties, knowledge records, documentation references, and marketing drafts.
+- Workflow orchestration readiness is audit-only. n8n is the preferred future orchestrator, while Power Automate Desktop, Playwright, terminal access, and file system access remain blocked or manual-review-only until governance exists.
 
 Safety boundaries:
 
@@ -20,6 +21,7 @@ Safety boundaries:
 Deferred work:
 
 - Live provider integrations.
+- Live workflow triggers or desktop automation.
 - Approval-controlled publishing.
 - Durable historical KPI snapshots.
 - AI-generated answers or lead enrichment.
