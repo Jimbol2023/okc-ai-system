@@ -294,3 +294,80 @@ model BuyerActivity {
   @@index([eventType])
   @@index([createdAt])
 }
+
+model MarketingDraft {
+  id            String   @id @default(uuid())
+  channel       String
+  topic         String
+  sourceLabel   String
+  status        String   @default("draft")
+  draftCopy     String
+  assetNotes    String?
+  assumptions   Json?
+  safetyFlags   Json?
+  createdSource String   @default("template")
+  createdBy     String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  approvals      MarketingApproval[]
+  publishAssists MarketingPublishAssist[]
+
+  @@index([channel])
+  @@index([status])
+  @@index([sourceLabel])
+  @@index([createdAt])
+}
+
+model MarketingApproval {
+  id         String   @id @default(uuid())
+  draftId    String
+  decision   String
+  editedCopy String?
+  note       String
+  reviewer   String?
+  createdAt  DateTime @default(now())
+
+  draft MarketingDraft @relation(fields: [draftId], references: [id], onDelete: Cascade)
+
+  @@index([draftId])
+  @@index([decision])
+  @@index([createdAt])
+}
+
+model MarketingAccountConnection {
+  id                 String    @id @default(uuid())
+  platform           String    @unique
+  accountName        String
+  handle             String
+  profileUrl         String
+  verificationStatus String    @default("manual_setup")
+  proofNote          String
+  lastVerifiedAt     DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  @@index([verificationStatus])
+  @@index([lastVerifiedAt])
+}
+
+model MarketingPublishAssist {
+  id                     String    @id @default(uuid())
+  draftId                String
+  preparedCopy           String
+  assetChecklist         Json
+  manualPostingChecklist Json
+  sourceLabel            String
+  status                 String    @default("ready_for_manual_publish")
+  manualPublishedUrl     String?
+  manualPublishedAt      DateTime?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+
+  draft MarketingDraft @relation(fields: [draftId], references: [id], onDelete: Cascade)
+
+  @@index([draftId])
+  @@index([status])
+  @@index([sourceLabel])
+  @@index([createdAt])
+}

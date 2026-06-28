@@ -290,6 +290,59 @@ exports.Prisma.BuyerActivityScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.MarketingDraftScalarFieldEnum = {
+  id: 'id',
+  channel: 'channel',
+  topic: 'topic',
+  sourceLabel: 'sourceLabel',
+  status: 'status',
+  draftCopy: 'draftCopy',
+  assetNotes: 'assetNotes',
+  assumptions: 'assumptions',
+  safetyFlags: 'safetyFlags',
+  createdSource: 'createdSource',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MarketingApprovalScalarFieldEnum = {
+  id: 'id',
+  draftId: 'draftId',
+  decision: 'decision',
+  editedCopy: 'editedCopy',
+  note: 'note',
+  reviewer: 'reviewer',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.MarketingAccountConnectionScalarFieldEnum = {
+  id: 'id',
+  platform: 'platform',
+  accountName: 'accountName',
+  handle: 'handle',
+  profileUrl: 'profileUrl',
+  verificationStatus: 'verificationStatus',
+  proofNote: 'proofNote',
+  lastVerifiedAt: 'lastVerifiedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MarketingPublishAssistScalarFieldEnum = {
+  id: 'id',
+  draftId: 'draftId',
+  preparedCopy: 'preparedCopy',
+  assetChecklist: 'assetChecklist',
+  manualPostingChecklist: 'manualPostingChecklist',
+  sourceLabel: 'sourceLabel',
+  status: 'status',
+  manualPublishedUrl: 'manualPublishedUrl',
+  manualPublishedAt: 'manualPublishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -358,7 +411,11 @@ exports.Prisma.ModelName = {
   AiMemoryEvent: 'AiMemoryEvent',
   AiLearningRecommendation: 'AiLearningRecommendation',
   Buyer: 'Buyer',
-  BuyerActivity: 'BuyerActivity'
+  BuyerActivity: 'BuyerActivity',
+  MarketingDraft: 'MarketingDraft',
+  MarketingApproval: 'MarketingApproval',
+  MarketingAccountConnection: 'MarketingAccountConnection',
+  MarketingPublishAssist: 'MarketingPublishAssist'
 };
 
 /**

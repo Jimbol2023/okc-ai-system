@@ -15,54 +15,74 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 /**
  * Model Lead
- *
+ * 
  */
 export type Lead = $Result.DefaultSelection<Prisma.$LeadPayload>
 /**
  * Model SellerCallOutcome
- *
+ * 
  */
 export type SellerCallOutcome = $Result.DefaultSelection<Prisma.$SellerCallOutcomePayload>
 /**
  * Model AiPerformanceMetric
- *
+ * 
  */
 export type AiPerformanceMetric = $Result.DefaultSelection<Prisma.$AiPerformanceMetricPayload>
 /**
  * Model AiJob
- *
+ * 
  */
 export type AiJob = $Result.DefaultSelection<Prisma.$AiJobPayload>
 /**
  * Model AiJobAction
- *
+ * 
  */
 export type AiJobAction = $Result.DefaultSelection<Prisma.$AiJobActionPayload>
 /**
  * Model AiJobLog
- *
+ * 
  */
 export type AiJobLog = $Result.DefaultSelection<Prisma.$AiJobLogPayload>
 /**
  * Model AiMemoryEvent
- *
+ * 
  */
 export type AiMemoryEvent = $Result.DefaultSelection<Prisma.$AiMemoryEventPayload>
 /**
  * Model AiLearningRecommendation
- *
+ * 
  */
 export type AiLearningRecommendation = $Result.DefaultSelection<Prisma.$AiLearningRecommendationPayload>
 /**
  * Model Buyer
- *
+ * 
  */
 export type Buyer = $Result.DefaultSelection<Prisma.$BuyerPayload>
 /**
  * Model BuyerActivity
- *
+ * 
  */
 export type BuyerActivity = $Result.DefaultSelection<Prisma.$BuyerActivityPayload>
+/**
+ * Model MarketingDraft
+ * 
+ */
+export type MarketingDraft = $Result.DefaultSelection<Prisma.$MarketingDraftPayload>
+/**
+ * Model MarketingApproval
+ * 
+ */
+export type MarketingApproval = $Result.DefaultSelection<Prisma.$MarketingApprovalPayload>
+/**
+ * Model MarketingAccountConnection
+ * 
+ */
+export type MarketingAccountConnection = $Result.DefaultSelection<Prisma.$MarketingAccountConnectionPayload>
+/**
+ * Model MarketingPublishAssist
+ * 
+ */
+export type MarketingPublishAssist = $Result.DefaultSelection<Prisma.$MarketingPublishAssistPayload>
 
 /**
  * Enums
@@ -225,7 +245,7 @@ export class PrismaClient<
    *   prisma.user.create({ data: { name: 'Alice' } }),
    * ])
    * ```
-   *
+   * 
    * Read more in our [docs](https://www.prisma.io/docs/concepts/components/prisma-client/transactions).
    */
   $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
@@ -336,6 +356,46 @@ export class PrismaClient<
     * ```
     */
   get buyerActivity(): Prisma.BuyerActivityDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.marketingDraft`: Exposes CRUD operations for the **MarketingDraft** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MarketingDrafts
+    * const marketingDrafts = await prisma.marketingDraft.findMany()
+    * ```
+    */
+  get marketingDraft(): Prisma.MarketingDraftDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.marketingApproval`: Exposes CRUD operations for the **MarketingApproval** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MarketingApprovals
+    * const marketingApprovals = await prisma.marketingApproval.findMany()
+    * ```
+    */
+  get marketingApproval(): Prisma.MarketingApprovalDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.marketingAccountConnection`: Exposes CRUD operations for the **MarketingAccountConnection** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MarketingAccountConnections
+    * const marketingAccountConnections = await prisma.marketingAccountConnection.findMany()
+    * ```
+    */
+  get marketingAccountConnection(): Prisma.MarketingAccountConnectionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.marketingPublishAssist`: Exposes CRUD operations for the **MarketingPublishAssist** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MarketingPublishAssists
+    * const marketingPublishAssists = await prisma.marketingPublishAssist.findMany()
+    * ```
+    */
+  get marketingPublishAssist(): Prisma.MarketingPublishAssistDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -786,7 +846,11 @@ export namespace Prisma {
     AiMemoryEvent: 'AiMemoryEvent',
     AiLearningRecommendation: 'AiLearningRecommendation',
     Buyer: 'Buyer',
-    BuyerActivity: 'BuyerActivity'
+    BuyerActivity: 'BuyerActivity',
+    MarketingDraft: 'MarketingDraft',
+    MarketingApproval: 'MarketingApproval',
+    MarketingAccountConnection: 'MarketingAccountConnection',
+    MarketingPublishAssist: 'MarketingPublishAssist'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -805,7 +869,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "lead" | "sellerCallOutcome" | "aiPerformanceMetric" | "aiJob" | "aiJobAction" | "aiJobLog" | "aiMemoryEvent" | "aiLearningRecommendation" | "buyer" | "buyerActivity"
+      modelProps: "lead" | "sellerCallOutcome" | "aiPerformanceMetric" | "aiJob" | "aiJobAction" | "aiJobLog" | "aiMemoryEvent" | "aiLearningRecommendation" | "buyer" | "buyerActivity" | "marketingDraft" | "marketingApproval" | "marketingAccountConnection" | "marketingPublishAssist"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1549,6 +1613,302 @@ export namespace Prisma {
           }
         }
       }
+      MarketingDraft: {
+        payload: Prisma.$MarketingDraftPayload<ExtArgs>
+        fields: Prisma.MarketingDraftFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MarketingDraftFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingDraftPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MarketingDraftFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingDraftPayload>
+          }
+          findFirst: {
+            args: Prisma.MarketingDraftFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingDraftPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MarketingDraftFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingDraftPayload>
+          }
+          findMany: {
+            args: Prisma.MarketingDraftFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingDraftPayload>[]
+          }
+          create: {
+            args: Prisma.MarketingDraftCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingDraftPayload>
+          }
+          createMany: {
+            args: Prisma.MarketingDraftCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MarketingDraftCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingDraftPayload>[]
+          }
+          delete: {
+            args: Prisma.MarketingDraftDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingDraftPayload>
+          }
+          update: {
+            args: Prisma.MarketingDraftUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingDraftPayload>
+          }
+          deleteMany: {
+            args: Prisma.MarketingDraftDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MarketingDraftUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.MarketingDraftUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingDraftPayload>[]
+          }
+          upsert: {
+            args: Prisma.MarketingDraftUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingDraftPayload>
+          }
+          aggregate: {
+            args: Prisma.MarketingDraftAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMarketingDraft>
+          }
+          groupBy: {
+            args: Prisma.MarketingDraftGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MarketingDraftGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MarketingDraftCountArgs<ExtArgs>
+            result: $Utils.Optional<MarketingDraftCountAggregateOutputType> | number
+          }
+        }
+      }
+      MarketingApproval: {
+        payload: Prisma.$MarketingApprovalPayload<ExtArgs>
+        fields: Prisma.MarketingApprovalFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MarketingApprovalFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingApprovalPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MarketingApprovalFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingApprovalPayload>
+          }
+          findFirst: {
+            args: Prisma.MarketingApprovalFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingApprovalPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MarketingApprovalFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingApprovalPayload>
+          }
+          findMany: {
+            args: Prisma.MarketingApprovalFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingApprovalPayload>[]
+          }
+          create: {
+            args: Prisma.MarketingApprovalCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingApprovalPayload>
+          }
+          createMany: {
+            args: Prisma.MarketingApprovalCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MarketingApprovalCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingApprovalPayload>[]
+          }
+          delete: {
+            args: Prisma.MarketingApprovalDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingApprovalPayload>
+          }
+          update: {
+            args: Prisma.MarketingApprovalUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingApprovalPayload>
+          }
+          deleteMany: {
+            args: Prisma.MarketingApprovalDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MarketingApprovalUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.MarketingApprovalUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingApprovalPayload>[]
+          }
+          upsert: {
+            args: Prisma.MarketingApprovalUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingApprovalPayload>
+          }
+          aggregate: {
+            args: Prisma.MarketingApprovalAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMarketingApproval>
+          }
+          groupBy: {
+            args: Prisma.MarketingApprovalGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MarketingApprovalGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MarketingApprovalCountArgs<ExtArgs>
+            result: $Utils.Optional<MarketingApprovalCountAggregateOutputType> | number
+          }
+        }
+      }
+      MarketingAccountConnection: {
+        payload: Prisma.$MarketingAccountConnectionPayload<ExtArgs>
+        fields: Prisma.MarketingAccountConnectionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MarketingAccountConnectionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingAccountConnectionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MarketingAccountConnectionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingAccountConnectionPayload>
+          }
+          findFirst: {
+            args: Prisma.MarketingAccountConnectionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingAccountConnectionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MarketingAccountConnectionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingAccountConnectionPayload>
+          }
+          findMany: {
+            args: Prisma.MarketingAccountConnectionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingAccountConnectionPayload>[]
+          }
+          create: {
+            args: Prisma.MarketingAccountConnectionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingAccountConnectionPayload>
+          }
+          createMany: {
+            args: Prisma.MarketingAccountConnectionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MarketingAccountConnectionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingAccountConnectionPayload>[]
+          }
+          delete: {
+            args: Prisma.MarketingAccountConnectionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingAccountConnectionPayload>
+          }
+          update: {
+            args: Prisma.MarketingAccountConnectionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingAccountConnectionPayload>
+          }
+          deleteMany: {
+            args: Prisma.MarketingAccountConnectionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MarketingAccountConnectionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.MarketingAccountConnectionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingAccountConnectionPayload>[]
+          }
+          upsert: {
+            args: Prisma.MarketingAccountConnectionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingAccountConnectionPayload>
+          }
+          aggregate: {
+            args: Prisma.MarketingAccountConnectionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMarketingAccountConnection>
+          }
+          groupBy: {
+            args: Prisma.MarketingAccountConnectionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MarketingAccountConnectionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MarketingAccountConnectionCountArgs<ExtArgs>
+            result: $Utils.Optional<MarketingAccountConnectionCountAggregateOutputType> | number
+          }
+        }
+      }
+      MarketingPublishAssist: {
+        payload: Prisma.$MarketingPublishAssistPayload<ExtArgs>
+        fields: Prisma.MarketingPublishAssistFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MarketingPublishAssistFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingPublishAssistPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MarketingPublishAssistFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingPublishAssistPayload>
+          }
+          findFirst: {
+            args: Prisma.MarketingPublishAssistFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingPublishAssistPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MarketingPublishAssistFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingPublishAssistPayload>
+          }
+          findMany: {
+            args: Prisma.MarketingPublishAssistFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingPublishAssistPayload>[]
+          }
+          create: {
+            args: Prisma.MarketingPublishAssistCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingPublishAssistPayload>
+          }
+          createMany: {
+            args: Prisma.MarketingPublishAssistCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MarketingPublishAssistCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingPublishAssistPayload>[]
+          }
+          delete: {
+            args: Prisma.MarketingPublishAssistDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingPublishAssistPayload>
+          }
+          update: {
+            args: Prisma.MarketingPublishAssistUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingPublishAssistPayload>
+          }
+          deleteMany: {
+            args: Prisma.MarketingPublishAssistDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MarketingPublishAssistUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.MarketingPublishAssistUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingPublishAssistPayload>[]
+          }
+          upsert: {
+            args: Prisma.MarketingPublishAssistUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MarketingPublishAssistPayload>
+          }
+          aggregate: {
+            args: Prisma.MarketingPublishAssistAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMarketingPublishAssist>
+          }
+          groupBy: {
+            args: Prisma.MarketingPublishAssistGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MarketingPublishAssistGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MarketingPublishAssistCountArgs<ExtArgs>
+            result: $Utils.Optional<MarketingPublishAssistCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1594,7 +1954,7 @@ export namespace Prisma {
      * ```
      * // Shorthand for `emit: 'stdout'`
      * log: ['query', 'info', 'warn', 'error']
-     *
+     * 
      * // Emit as events only
      * log: [
      *   { emit: 'event', level: 'query' },
@@ -1602,14 +1962,14 @@ export namespace Prisma {
      *   { emit: 'event', level: 'warn' }
      *   { emit: 'event', level: 'error' }
      * ]
-     *
+     * 
      * / Emit as events and log to stdout
      * og: [
      *  { emit: 'stdout', level: 'query' },
      *  { emit: 'stdout', level: 'info' },
      *  { emit: 'stdout', level: 'warn' }
      *  { emit: 'stdout', level: 'error' }
-     *
+     * 
      * ```
      * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/logging#the-log-option).
      */
@@ -1630,7 +1990,7 @@ export namespace Prisma {
     adapter?: runtime.SqlDriverAdapterFactory | null
     /**
      * Global configuration for omitting model fields by default.
-     *
+     * 
      * @example
      * ```
      * const prisma = new PrismaClient({
@@ -1655,6 +2015,10 @@ export namespace Prisma {
     aiLearningRecommendation?: AiLearningRecommendationOmit
     buyer?: BuyerOmit
     buyerActivity?: BuyerActivityOmit
+    marketingDraft?: MarketingDraftOmit
+    marketingApproval?: MarketingApprovalOmit
+    marketingAccountConnection?: MarketingAccountConnectionOmit
+    marketingPublishAssist?: MarketingPublishAssistOmit
   }
 
   /* Types for Logging */
@@ -1798,6 +2162,46 @@ export namespace Prisma {
    */
   export type BuyerCountOutputTypeCountActivitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BuyerActivityWhereInput
+  }
+
+
+  /**
+   * Count Type MarketingDraftCountOutputType
+   */
+
+  export type MarketingDraftCountOutputType = {
+    approvals: number
+    publishAssists: number
+  }
+
+  export type MarketingDraftCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    approvals?: boolean | MarketingDraftCountOutputTypeCountApprovalsArgs
+    publishAssists?: boolean | MarketingDraftCountOutputTypeCountPublishAssistsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * MarketingDraftCountOutputType without action
+   */
+  export type MarketingDraftCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingDraftCountOutputType
+     */
+    select?: MarketingDraftCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * MarketingDraftCountOutputType without action
+   */
+  export type MarketingDraftCountOutputTypeCountApprovalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MarketingApprovalWhereInput
+  }
+
+  /**
+   * MarketingDraftCountOutputType without action
+   */
+  export type MarketingDraftCountOutputTypeCountPublishAssistsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MarketingPublishAssistWhereInput
   }
 
 
@@ -2037,55 +2441,55 @@ export namespace Prisma {
     where?: LeadWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Leads to fetch.
      */
     orderBy?: LeadOrderByWithRelationInput | LeadOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: LeadWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Leads from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Leads.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned Leads
     **/
     _count?: true | LeadCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: LeadAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: LeadSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: LeadMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: LeadMaxAggregateInputType
@@ -2403,13 +2807,13 @@ export namespace Prisma {
      * @example
      * // Get all Leads
      * const leads = await prisma.lead.findMany()
-     *
+     * 
      * // Get first 10 Leads
      * const leads = await prisma.lead.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const leadWithIdOnly = await prisma.lead.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends LeadFindManyArgs>(args?: SelectSubset<T, LeadFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -2423,7 +2827,7 @@ export namespace Prisma {
      *     // ... data to create a Lead
      *   }
      * })
-     *
+     * 
      */
     create<T extends LeadCreateArgs>(args: SelectSubset<T, LeadCreateArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -2437,7 +2841,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends LeadCreateManyArgs>(args?: SelectSubset<T, LeadCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -2451,7 +2855,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Leads and only return the `id`
      * const leadWithIdOnly = await prisma.lead.createManyAndReturn({
      *   select: { id: true },
@@ -2461,7 +2865,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends LeadCreateManyAndReturnArgs>(args?: SelectSubset<T, LeadCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -2475,7 +2879,7 @@ export namespace Prisma {
      *     // ... filter to delete one Lead
      *   }
      * })
-     *
+     * 
      */
     delete<T extends LeadDeleteArgs>(args: SelectSubset<T, LeadDeleteArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -2492,7 +2896,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends LeadUpdateArgs>(args: SelectSubset<T, LeadUpdateArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -2506,7 +2910,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends LeadDeleteManyArgs>(args?: SelectSubset<T, LeadDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -2525,7 +2929,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends LeadUpdateManyArgs>(args: SelectSubset<T, LeadUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -2542,7 +2946,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more Leads and only return the `id`
      * const leadWithIdOnly = await prisma.lead.updateManyAndReturn({
      *   select: { id: true },
@@ -2555,7 +2959,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends LeadUpdateManyAndReturnArgs>(args: SelectSubset<T, LeadUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -2644,7 +3048,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends LeadGroupByArgs,
@@ -2776,7 +3180,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Lead", 'DateTime'>
     readonly updatedAt: FieldRef<"Lead", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -2833,31 +3237,31 @@ export namespace Prisma {
     where?: LeadWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Leads to fetch.
      */
     orderBy?: LeadOrderByWithRelationInput | LeadOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Leads.
      */
     cursor?: LeadWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Leads from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Leads.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Leads.
      */
     distinct?: LeadScalarFieldEnum | LeadScalarFieldEnum[]
@@ -2881,31 +3285,31 @@ export namespace Prisma {
     where?: LeadWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Leads to fetch.
      */
     orderBy?: LeadOrderByWithRelationInput | LeadOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Leads.
      */
     cursor?: LeadWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Leads from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Leads.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Leads.
      */
     distinct?: LeadScalarFieldEnum | LeadScalarFieldEnum[]
@@ -2929,25 +3333,25 @@ export namespace Prisma {
     where?: LeadWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Leads to fetch.
      */
     orderBy?: LeadOrderByWithRelationInput | LeadOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing Leads.
      */
     cursor?: LeadWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Leads from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Leads.
      */
     skip?: number
@@ -3247,43 +3651,43 @@ export namespace Prisma {
     where?: SellerCallOutcomeWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of SellerCallOutcomes to fetch.
      */
     orderBy?: SellerCallOutcomeOrderByWithRelationInput | SellerCallOutcomeOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: SellerCallOutcomeWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` SellerCallOutcomes from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` SellerCallOutcomes.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned SellerCallOutcomes
     **/
     _count?: true | SellerCallOutcomeCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: SellerCallOutcomeMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: SellerCallOutcomeMaxAggregateInputType
@@ -3501,13 +3905,13 @@ export namespace Prisma {
      * @example
      * // Get all SellerCallOutcomes
      * const sellerCallOutcomes = await prisma.sellerCallOutcome.findMany()
-     *
+     * 
      * // Get first 10 SellerCallOutcomes
      * const sellerCallOutcomes = await prisma.sellerCallOutcome.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const sellerCallOutcomeWithIdOnly = await prisma.sellerCallOutcome.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends SellerCallOutcomeFindManyArgs>(args?: SelectSubset<T, SellerCallOutcomeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SellerCallOutcomePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -3521,7 +3925,7 @@ export namespace Prisma {
      *     // ... data to create a SellerCallOutcome
      *   }
      * })
-     *
+     * 
      */
     create<T extends SellerCallOutcomeCreateArgs>(args: SelectSubset<T, SellerCallOutcomeCreateArgs<ExtArgs>>): Prisma__SellerCallOutcomeClient<$Result.GetResult<Prisma.$SellerCallOutcomePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -3535,7 +3939,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends SellerCallOutcomeCreateManyArgs>(args?: SelectSubset<T, SellerCallOutcomeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -3549,7 +3953,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many SellerCallOutcomes and only return the `id`
      * const sellerCallOutcomeWithIdOnly = await prisma.sellerCallOutcome.createManyAndReturn({
      *   select: { id: true },
@@ -3559,7 +3963,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends SellerCallOutcomeCreateManyAndReturnArgs>(args?: SelectSubset<T, SellerCallOutcomeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SellerCallOutcomePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -3573,7 +3977,7 @@ export namespace Prisma {
      *     // ... filter to delete one SellerCallOutcome
      *   }
      * })
-     *
+     * 
      */
     delete<T extends SellerCallOutcomeDeleteArgs>(args: SelectSubset<T, SellerCallOutcomeDeleteArgs<ExtArgs>>): Prisma__SellerCallOutcomeClient<$Result.GetResult<Prisma.$SellerCallOutcomePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -3590,7 +3994,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends SellerCallOutcomeUpdateArgs>(args: SelectSubset<T, SellerCallOutcomeUpdateArgs<ExtArgs>>): Prisma__SellerCallOutcomeClient<$Result.GetResult<Prisma.$SellerCallOutcomePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -3604,7 +4008,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends SellerCallOutcomeDeleteManyArgs>(args?: SelectSubset<T, SellerCallOutcomeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -3623,7 +4027,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends SellerCallOutcomeUpdateManyArgs>(args: SelectSubset<T, SellerCallOutcomeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -3640,7 +4044,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more SellerCallOutcomes and only return the `id`
      * const sellerCallOutcomeWithIdOnly = await prisma.sellerCallOutcome.updateManyAndReturn({
      *   select: { id: true },
@@ -3653,7 +4057,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends SellerCallOutcomeUpdateManyAndReturnArgs>(args: SelectSubset<T, SellerCallOutcomeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SellerCallOutcomePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -3742,7 +4146,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends SellerCallOutcomeGroupByArgs,
@@ -3858,7 +4262,7 @@ export namespace Prisma {
     readonly safetyFlags: FieldRef<"SellerCallOutcome", 'Json'>
     readonly createdAt: FieldRef<"SellerCallOutcome", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -3915,31 +4319,31 @@ export namespace Prisma {
     where?: SellerCallOutcomeWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of SellerCallOutcomes to fetch.
      */
     orderBy?: SellerCallOutcomeOrderByWithRelationInput | SellerCallOutcomeOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for SellerCallOutcomes.
      */
     cursor?: SellerCallOutcomeWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` SellerCallOutcomes from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` SellerCallOutcomes.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of SellerCallOutcomes.
      */
     distinct?: SellerCallOutcomeScalarFieldEnum | SellerCallOutcomeScalarFieldEnum[]
@@ -3963,31 +4367,31 @@ export namespace Prisma {
     where?: SellerCallOutcomeWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of SellerCallOutcomes to fetch.
      */
     orderBy?: SellerCallOutcomeOrderByWithRelationInput | SellerCallOutcomeOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for SellerCallOutcomes.
      */
     cursor?: SellerCallOutcomeWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` SellerCallOutcomes from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` SellerCallOutcomes.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of SellerCallOutcomes.
      */
     distinct?: SellerCallOutcomeScalarFieldEnum | SellerCallOutcomeScalarFieldEnum[]
@@ -4011,25 +4415,25 @@ export namespace Prisma {
     where?: SellerCallOutcomeWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of SellerCallOutcomes to fetch.
      */
     orderBy?: SellerCallOutcomeOrderByWithRelationInput | SellerCallOutcomeOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing SellerCallOutcomes.
      */
     cursor?: SellerCallOutcomeWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` SellerCallOutcomes from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` SellerCallOutcomes.
      */
     skip?: number
@@ -4471,55 +4875,55 @@ export namespace Prisma {
     where?: AiPerformanceMetricWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiPerformanceMetrics to fetch.
      */
     orderBy?: AiPerformanceMetricOrderByWithRelationInput | AiPerformanceMetricOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: AiPerformanceMetricWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiPerformanceMetrics from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiPerformanceMetrics.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned AiPerformanceMetrics
     **/
     _count?: true | AiPerformanceMetricCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: AiPerformanceMetricAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: AiPerformanceMetricSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: AiPerformanceMetricMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: AiPerformanceMetricMaxAggregateInputType
@@ -4801,13 +5205,13 @@ export namespace Prisma {
      * @example
      * // Get all AiPerformanceMetrics
      * const aiPerformanceMetrics = await prisma.aiPerformanceMetric.findMany()
-     *
+     * 
      * // Get first 10 AiPerformanceMetrics
      * const aiPerformanceMetrics = await prisma.aiPerformanceMetric.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const aiPerformanceMetricWithIdOnly = await prisma.aiPerformanceMetric.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends AiPerformanceMetricFindManyArgs>(args?: SelectSubset<T, AiPerformanceMetricFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiPerformanceMetricPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -4821,7 +5225,7 @@ export namespace Prisma {
      *     // ... data to create a AiPerformanceMetric
      *   }
      * })
-     *
+     * 
      */
     create<T extends AiPerformanceMetricCreateArgs>(args: SelectSubset<T, AiPerformanceMetricCreateArgs<ExtArgs>>): Prisma__AiPerformanceMetricClient<$Result.GetResult<Prisma.$AiPerformanceMetricPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -4835,7 +5239,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends AiPerformanceMetricCreateManyArgs>(args?: SelectSubset<T, AiPerformanceMetricCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -4849,7 +5253,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many AiPerformanceMetrics and only return the `id`
      * const aiPerformanceMetricWithIdOnly = await prisma.aiPerformanceMetric.createManyAndReturn({
      *   select: { id: true },
@@ -4859,7 +5263,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends AiPerformanceMetricCreateManyAndReturnArgs>(args?: SelectSubset<T, AiPerformanceMetricCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiPerformanceMetricPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -4873,7 +5277,7 @@ export namespace Prisma {
      *     // ... filter to delete one AiPerformanceMetric
      *   }
      * })
-     *
+     * 
      */
     delete<T extends AiPerformanceMetricDeleteArgs>(args: SelectSubset<T, AiPerformanceMetricDeleteArgs<ExtArgs>>): Prisma__AiPerformanceMetricClient<$Result.GetResult<Prisma.$AiPerformanceMetricPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -4890,7 +5294,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends AiPerformanceMetricUpdateArgs>(args: SelectSubset<T, AiPerformanceMetricUpdateArgs<ExtArgs>>): Prisma__AiPerformanceMetricClient<$Result.GetResult<Prisma.$AiPerformanceMetricPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -4904,7 +5308,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends AiPerformanceMetricDeleteManyArgs>(args?: SelectSubset<T, AiPerformanceMetricDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -4923,7 +5327,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends AiPerformanceMetricUpdateManyArgs>(args: SelectSubset<T, AiPerformanceMetricUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -4940,7 +5344,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more AiPerformanceMetrics and only return the `id`
      * const aiPerformanceMetricWithIdOnly = await prisma.aiPerformanceMetric.updateManyAndReturn({
      *   select: { id: true },
@@ -4953,7 +5357,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends AiPerformanceMetricUpdateManyAndReturnArgs>(args: SelectSubset<T, AiPerformanceMetricUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiPerformanceMetricPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -5042,7 +5446,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends AiPerformanceMetricGroupByArgs,
@@ -5168,7 +5572,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"AiPerformanceMetric", 'DateTime'>
     readonly updatedAt: FieldRef<"AiPerformanceMetric", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -5225,31 +5629,31 @@ export namespace Prisma {
     where?: AiPerformanceMetricWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiPerformanceMetrics to fetch.
      */
     orderBy?: AiPerformanceMetricOrderByWithRelationInput | AiPerformanceMetricOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for AiPerformanceMetrics.
      */
     cursor?: AiPerformanceMetricWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiPerformanceMetrics from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiPerformanceMetrics.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of AiPerformanceMetrics.
      */
     distinct?: AiPerformanceMetricScalarFieldEnum | AiPerformanceMetricScalarFieldEnum[]
@@ -5273,31 +5677,31 @@ export namespace Prisma {
     where?: AiPerformanceMetricWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiPerformanceMetrics to fetch.
      */
     orderBy?: AiPerformanceMetricOrderByWithRelationInput | AiPerformanceMetricOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for AiPerformanceMetrics.
      */
     cursor?: AiPerformanceMetricWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiPerformanceMetrics from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiPerformanceMetrics.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of AiPerformanceMetrics.
      */
     distinct?: AiPerformanceMetricScalarFieldEnum | AiPerformanceMetricScalarFieldEnum[]
@@ -5321,25 +5725,25 @@ export namespace Prisma {
     where?: AiPerformanceMetricWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiPerformanceMetrics to fetch.
      */
     orderBy?: AiPerformanceMetricOrderByWithRelationInput | AiPerformanceMetricOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing AiPerformanceMetrics.
      */
     cursor?: AiPerformanceMetricWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiPerformanceMetrics from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiPerformanceMetrics.
      */
     skip?: number
@@ -5613,43 +6017,43 @@ export namespace Prisma {
     where?: AiJobWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiJobs to fetch.
      */
     orderBy?: AiJobOrderByWithRelationInput | AiJobOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: AiJobWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiJobs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiJobs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned AiJobs
     **/
     _count?: true | AiJobCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: AiJobMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: AiJobMaxAggregateInputType
@@ -5850,13 +6254,13 @@ export namespace Prisma {
      * @example
      * // Get all AiJobs
      * const aiJobs = await prisma.aiJob.findMany()
-     *
+     * 
      * // Get first 10 AiJobs
      * const aiJobs = await prisma.aiJob.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const aiJobWithIdOnly = await prisma.aiJob.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends AiJobFindManyArgs>(args?: SelectSubset<T, AiJobFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -5870,7 +6274,7 @@ export namespace Prisma {
      *     // ... data to create a AiJob
      *   }
      * })
-     *
+     * 
      */
     create<T extends AiJobCreateArgs>(args: SelectSubset<T, AiJobCreateArgs<ExtArgs>>): Prisma__AiJobClient<$Result.GetResult<Prisma.$AiJobPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -5884,7 +6288,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends AiJobCreateManyArgs>(args?: SelectSubset<T, AiJobCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -5898,7 +6302,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many AiJobs and only return the `id`
      * const aiJobWithIdOnly = await prisma.aiJob.createManyAndReturn({
      *   select: { id: true },
@@ -5908,7 +6312,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends AiJobCreateManyAndReturnArgs>(args?: SelectSubset<T, AiJobCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiJobPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -5922,7 +6326,7 @@ export namespace Prisma {
      *     // ... filter to delete one AiJob
      *   }
      * })
-     *
+     * 
      */
     delete<T extends AiJobDeleteArgs>(args: SelectSubset<T, AiJobDeleteArgs<ExtArgs>>): Prisma__AiJobClient<$Result.GetResult<Prisma.$AiJobPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -5939,7 +6343,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends AiJobUpdateArgs>(args: SelectSubset<T, AiJobUpdateArgs<ExtArgs>>): Prisma__AiJobClient<$Result.GetResult<Prisma.$AiJobPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -5953,7 +6357,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends AiJobDeleteManyArgs>(args?: SelectSubset<T, AiJobDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -5972,7 +6376,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends AiJobUpdateManyArgs>(args: SelectSubset<T, AiJobUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -5989,7 +6393,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more AiJobs and only return the `id`
      * const aiJobWithIdOnly = await prisma.aiJob.updateManyAndReturn({
      *   select: { id: true },
@@ -6002,7 +6406,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends AiJobUpdateManyAndReturnArgs>(args: SelectSubset<T, AiJobUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiJobPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -6091,7 +6495,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends AiJobGroupByArgs,
@@ -6204,7 +6608,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"AiJob", 'DateTime'>
     readonly updatedAt: FieldRef<"AiJob", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -6273,31 +6677,31 @@ export namespace Prisma {
     where?: AiJobWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiJobs to fetch.
      */
     orderBy?: AiJobOrderByWithRelationInput | AiJobOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for AiJobs.
      */
     cursor?: AiJobWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiJobs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiJobs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of AiJobs.
      */
     distinct?: AiJobScalarFieldEnum | AiJobScalarFieldEnum[]
@@ -6325,31 +6729,31 @@ export namespace Prisma {
     where?: AiJobWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiJobs to fetch.
      */
     orderBy?: AiJobOrderByWithRelationInput | AiJobOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for AiJobs.
      */
     cursor?: AiJobWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiJobs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiJobs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of AiJobs.
      */
     distinct?: AiJobScalarFieldEnum | AiJobScalarFieldEnum[]
@@ -6377,25 +6781,25 @@ export namespace Prisma {
     where?: AiJobWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiJobs to fetch.
      */
     orderBy?: AiJobOrderByWithRelationInput | AiJobOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing AiJobs.
      */
     cursor?: AiJobWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiJobs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiJobs.
      */
     skip?: number
@@ -6743,55 +7147,55 @@ export namespace Prisma {
     where?: AiJobActionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiJobActions to fetch.
      */
     orderBy?: AiJobActionOrderByWithRelationInput | AiJobActionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: AiJobActionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiJobActions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiJobActions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned AiJobActions
     **/
     _count?: true | AiJobActionCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: AiJobActionAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: AiJobActionSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: AiJobActionMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: AiJobActionMaxAggregateInputType
@@ -6985,13 +7389,13 @@ export namespace Prisma {
      * @example
      * // Get all AiJobActions
      * const aiJobActions = await prisma.aiJobAction.findMany()
-     *
+     * 
      * // Get first 10 AiJobActions
      * const aiJobActions = await prisma.aiJobAction.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const aiJobActionWithIdOnly = await prisma.aiJobAction.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends AiJobActionFindManyArgs>(args?: SelectSubset<T, AiJobActionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiJobActionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -7005,7 +7409,7 @@ export namespace Prisma {
      *     // ... data to create a AiJobAction
      *   }
      * })
-     *
+     * 
      */
     create<T extends AiJobActionCreateArgs>(args: SelectSubset<T, AiJobActionCreateArgs<ExtArgs>>): Prisma__AiJobActionClient<$Result.GetResult<Prisma.$AiJobActionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -7019,7 +7423,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends AiJobActionCreateManyArgs>(args?: SelectSubset<T, AiJobActionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -7033,7 +7437,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many AiJobActions and only return the `id`
      * const aiJobActionWithIdOnly = await prisma.aiJobAction.createManyAndReturn({
      *   select: { id: true },
@@ -7043,7 +7447,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends AiJobActionCreateManyAndReturnArgs>(args?: SelectSubset<T, AiJobActionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiJobActionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -7057,7 +7461,7 @@ export namespace Prisma {
      *     // ... filter to delete one AiJobAction
      *   }
      * })
-     *
+     * 
      */
     delete<T extends AiJobActionDeleteArgs>(args: SelectSubset<T, AiJobActionDeleteArgs<ExtArgs>>): Prisma__AiJobActionClient<$Result.GetResult<Prisma.$AiJobActionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -7074,7 +7478,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends AiJobActionUpdateArgs>(args: SelectSubset<T, AiJobActionUpdateArgs<ExtArgs>>): Prisma__AiJobActionClient<$Result.GetResult<Prisma.$AiJobActionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -7088,7 +7492,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends AiJobActionDeleteManyArgs>(args?: SelectSubset<T, AiJobActionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -7107,7 +7511,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends AiJobActionUpdateManyArgs>(args: SelectSubset<T, AiJobActionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -7124,7 +7528,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more AiJobActions and only return the `id`
      * const aiJobActionWithIdOnly = await prisma.aiJobAction.updateManyAndReturn({
      *   select: { id: true },
@@ -7137,7 +7541,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends AiJobActionUpdateManyAndReturnArgs>(args: SelectSubset<T, AiJobActionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiJobActionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -7226,7 +7630,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends AiJobActionGroupByArgs,
@@ -7336,7 +7740,7 @@ export namespace Prisma {
     readonly count: FieldRef<"AiJobAction", 'Int'>
     readonly createdAt: FieldRef<"AiJobAction", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -7405,31 +7809,31 @@ export namespace Prisma {
     where?: AiJobActionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiJobActions to fetch.
      */
     orderBy?: AiJobActionOrderByWithRelationInput | AiJobActionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for AiJobActions.
      */
     cursor?: AiJobActionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiJobActions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiJobActions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of AiJobActions.
      */
     distinct?: AiJobActionScalarFieldEnum | AiJobActionScalarFieldEnum[]
@@ -7457,31 +7861,31 @@ export namespace Prisma {
     where?: AiJobActionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiJobActions to fetch.
      */
     orderBy?: AiJobActionOrderByWithRelationInput | AiJobActionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for AiJobActions.
      */
     cursor?: AiJobActionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiJobActions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiJobActions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of AiJobActions.
      */
     distinct?: AiJobActionScalarFieldEnum | AiJobActionScalarFieldEnum[]
@@ -7509,25 +7913,25 @@ export namespace Prisma {
     where?: AiJobActionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiJobActions to fetch.
      */
     orderBy?: AiJobActionOrderByWithRelationInput | AiJobActionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing AiJobActions.
      */
     cursor?: AiJobActionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiJobActions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiJobActions.
      */
     skip?: number
@@ -7817,43 +8221,43 @@ export namespace Prisma {
     where?: AiJobLogWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiJobLogs to fetch.
      */
     orderBy?: AiJobLogOrderByWithRelationInput | AiJobLogOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: AiJobLogWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiJobLogs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiJobLogs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned AiJobLogs
     **/
     _count?: true | AiJobLogCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: AiJobLogMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: AiJobLogMaxAggregateInputType
@@ -8043,13 +8447,13 @@ export namespace Prisma {
      * @example
      * // Get all AiJobLogs
      * const aiJobLogs = await prisma.aiJobLog.findMany()
-     *
+     * 
      * // Get first 10 AiJobLogs
      * const aiJobLogs = await prisma.aiJobLog.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const aiJobLogWithIdOnly = await prisma.aiJobLog.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends AiJobLogFindManyArgs>(args?: SelectSubset<T, AiJobLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiJobLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -8063,7 +8467,7 @@ export namespace Prisma {
      *     // ... data to create a AiJobLog
      *   }
      * })
-     *
+     * 
      */
     create<T extends AiJobLogCreateArgs>(args: SelectSubset<T, AiJobLogCreateArgs<ExtArgs>>): Prisma__AiJobLogClient<$Result.GetResult<Prisma.$AiJobLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -8077,7 +8481,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends AiJobLogCreateManyArgs>(args?: SelectSubset<T, AiJobLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -8091,7 +8495,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many AiJobLogs and only return the `id`
      * const aiJobLogWithIdOnly = await prisma.aiJobLog.createManyAndReturn({
      *   select: { id: true },
@@ -8101,7 +8505,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends AiJobLogCreateManyAndReturnArgs>(args?: SelectSubset<T, AiJobLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiJobLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -8115,7 +8519,7 @@ export namespace Prisma {
      *     // ... filter to delete one AiJobLog
      *   }
      * })
-     *
+     * 
      */
     delete<T extends AiJobLogDeleteArgs>(args: SelectSubset<T, AiJobLogDeleteArgs<ExtArgs>>): Prisma__AiJobLogClient<$Result.GetResult<Prisma.$AiJobLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -8132,7 +8536,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends AiJobLogUpdateArgs>(args: SelectSubset<T, AiJobLogUpdateArgs<ExtArgs>>): Prisma__AiJobLogClient<$Result.GetResult<Prisma.$AiJobLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -8146,7 +8550,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends AiJobLogDeleteManyArgs>(args?: SelectSubset<T, AiJobLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -8165,7 +8569,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends AiJobLogUpdateManyArgs>(args: SelectSubset<T, AiJobLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -8182,7 +8586,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more AiJobLogs and only return the `id`
      * const aiJobLogWithIdOnly = await prisma.aiJobLog.updateManyAndReturn({
      *   select: { id: true },
@@ -8195,7 +8599,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends AiJobLogUpdateManyAndReturnArgs>(args: SelectSubset<T, AiJobLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiJobLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -8284,7 +8688,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends AiJobLogGroupByArgs,
@@ -8394,7 +8798,7 @@ export namespace Prisma {
     readonly message: FieldRef<"AiJobLog", 'String'>
     readonly createdAt: FieldRef<"AiJobLog", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -8463,31 +8867,31 @@ export namespace Prisma {
     where?: AiJobLogWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiJobLogs to fetch.
      */
     orderBy?: AiJobLogOrderByWithRelationInput | AiJobLogOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for AiJobLogs.
      */
     cursor?: AiJobLogWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiJobLogs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiJobLogs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of AiJobLogs.
      */
     distinct?: AiJobLogScalarFieldEnum | AiJobLogScalarFieldEnum[]
@@ -8515,31 +8919,31 @@ export namespace Prisma {
     where?: AiJobLogWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiJobLogs to fetch.
      */
     orderBy?: AiJobLogOrderByWithRelationInput | AiJobLogOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for AiJobLogs.
      */
     cursor?: AiJobLogWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiJobLogs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiJobLogs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of AiJobLogs.
      */
     distinct?: AiJobLogScalarFieldEnum | AiJobLogScalarFieldEnum[]
@@ -8567,25 +8971,25 @@ export namespace Prisma {
     where?: AiJobLogWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiJobLogs to fetch.
      */
     orderBy?: AiJobLogOrderByWithRelationInput | AiJobLogOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing AiJobLogs.
      */
     cursor?: AiJobLogWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiJobLogs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiJobLogs.
      */
     skip?: number
@@ -8967,55 +9371,55 @@ export namespace Prisma {
     where?: AiMemoryEventWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiMemoryEvents to fetch.
      */
     orderBy?: AiMemoryEventOrderByWithRelationInput | AiMemoryEventOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: AiMemoryEventWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiMemoryEvents from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiMemoryEvents.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned AiMemoryEvents
     **/
     _count?: true | AiMemoryEventCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: AiMemoryEventAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: AiMemoryEventSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: AiMemoryEventMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: AiMemoryEventMaxAggregateInputType
@@ -9273,13 +9677,13 @@ export namespace Prisma {
      * @example
      * // Get all AiMemoryEvents
      * const aiMemoryEvents = await prisma.aiMemoryEvent.findMany()
-     *
+     * 
      * // Get first 10 AiMemoryEvents
      * const aiMemoryEvents = await prisma.aiMemoryEvent.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const aiMemoryEventWithIdOnly = await prisma.aiMemoryEvent.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends AiMemoryEventFindManyArgs>(args?: SelectSubset<T, AiMemoryEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiMemoryEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -9293,7 +9697,7 @@ export namespace Prisma {
      *     // ... data to create a AiMemoryEvent
      *   }
      * })
-     *
+     * 
      */
     create<T extends AiMemoryEventCreateArgs>(args: SelectSubset<T, AiMemoryEventCreateArgs<ExtArgs>>): Prisma__AiMemoryEventClient<$Result.GetResult<Prisma.$AiMemoryEventPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -9307,7 +9711,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends AiMemoryEventCreateManyArgs>(args?: SelectSubset<T, AiMemoryEventCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -9321,7 +9725,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many AiMemoryEvents and only return the `id`
      * const aiMemoryEventWithIdOnly = await prisma.aiMemoryEvent.createManyAndReturn({
      *   select: { id: true },
@@ -9331,7 +9735,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends AiMemoryEventCreateManyAndReturnArgs>(args?: SelectSubset<T, AiMemoryEventCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiMemoryEventPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -9345,7 +9749,7 @@ export namespace Prisma {
      *     // ... filter to delete one AiMemoryEvent
      *   }
      * })
-     *
+     * 
      */
     delete<T extends AiMemoryEventDeleteArgs>(args: SelectSubset<T, AiMemoryEventDeleteArgs<ExtArgs>>): Prisma__AiMemoryEventClient<$Result.GetResult<Prisma.$AiMemoryEventPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -9362,7 +9766,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends AiMemoryEventUpdateArgs>(args: SelectSubset<T, AiMemoryEventUpdateArgs<ExtArgs>>): Prisma__AiMemoryEventClient<$Result.GetResult<Prisma.$AiMemoryEventPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -9376,7 +9780,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends AiMemoryEventDeleteManyArgs>(args?: SelectSubset<T, AiMemoryEventDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -9395,7 +9799,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends AiMemoryEventUpdateManyArgs>(args: SelectSubset<T, AiMemoryEventUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -9412,7 +9816,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more AiMemoryEvents and only return the `id`
      * const aiMemoryEventWithIdOnly = await prisma.aiMemoryEvent.updateManyAndReturn({
      *   select: { id: true },
@@ -9425,7 +9829,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends AiMemoryEventUpdateManyAndReturnArgs>(args: SelectSubset<T, AiMemoryEventUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiMemoryEventPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -9514,7 +9918,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends AiMemoryEventGroupByArgs,
@@ -9636,7 +10040,7 @@ export namespace Prisma {
     readonly metadata: FieldRef<"AiMemoryEvent", 'Json'>
     readonly createdAt: FieldRef<"AiMemoryEvent", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -9693,31 +10097,31 @@ export namespace Prisma {
     where?: AiMemoryEventWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiMemoryEvents to fetch.
      */
     orderBy?: AiMemoryEventOrderByWithRelationInput | AiMemoryEventOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for AiMemoryEvents.
      */
     cursor?: AiMemoryEventWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiMemoryEvents from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiMemoryEvents.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of AiMemoryEvents.
      */
     distinct?: AiMemoryEventScalarFieldEnum | AiMemoryEventScalarFieldEnum[]
@@ -9741,31 +10145,31 @@ export namespace Prisma {
     where?: AiMemoryEventWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiMemoryEvents to fetch.
      */
     orderBy?: AiMemoryEventOrderByWithRelationInput | AiMemoryEventOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for AiMemoryEvents.
      */
     cursor?: AiMemoryEventWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiMemoryEvents from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiMemoryEvents.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of AiMemoryEvents.
      */
     distinct?: AiMemoryEventScalarFieldEnum | AiMemoryEventScalarFieldEnum[]
@@ -9789,25 +10193,25 @@ export namespace Prisma {
     where?: AiMemoryEventWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiMemoryEvents to fetch.
      */
     orderBy?: AiMemoryEventOrderByWithRelationInput | AiMemoryEventOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing AiMemoryEvents.
      */
     cursor?: AiMemoryEventWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiMemoryEvents from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiMemoryEvents.
      */
     skip?: number
@@ -10127,55 +10531,55 @@ export namespace Prisma {
     where?: AiLearningRecommendationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiLearningRecommendations to fetch.
      */
     orderBy?: AiLearningRecommendationOrderByWithRelationInput | AiLearningRecommendationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: AiLearningRecommendationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiLearningRecommendations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiLearningRecommendations.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned AiLearningRecommendations
     **/
     _count?: true | AiLearningRecommendationCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: AiLearningRecommendationAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: AiLearningRecommendationSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: AiLearningRecommendationMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: AiLearningRecommendationMaxAggregateInputType
@@ -10403,13 +10807,13 @@ export namespace Prisma {
      * @example
      * // Get all AiLearningRecommendations
      * const aiLearningRecommendations = await prisma.aiLearningRecommendation.findMany()
-     *
+     * 
      * // Get first 10 AiLearningRecommendations
      * const aiLearningRecommendations = await prisma.aiLearningRecommendation.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const aiLearningRecommendationWithIdOnly = await prisma.aiLearningRecommendation.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends AiLearningRecommendationFindManyArgs>(args?: SelectSubset<T, AiLearningRecommendationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiLearningRecommendationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -10423,7 +10827,7 @@ export namespace Prisma {
      *     // ... data to create a AiLearningRecommendation
      *   }
      * })
-     *
+     * 
      */
     create<T extends AiLearningRecommendationCreateArgs>(args: SelectSubset<T, AiLearningRecommendationCreateArgs<ExtArgs>>): Prisma__AiLearningRecommendationClient<$Result.GetResult<Prisma.$AiLearningRecommendationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -10437,7 +10841,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends AiLearningRecommendationCreateManyArgs>(args?: SelectSubset<T, AiLearningRecommendationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -10451,7 +10855,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many AiLearningRecommendations and only return the `id`
      * const aiLearningRecommendationWithIdOnly = await prisma.aiLearningRecommendation.createManyAndReturn({
      *   select: { id: true },
@@ -10461,7 +10865,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends AiLearningRecommendationCreateManyAndReturnArgs>(args?: SelectSubset<T, AiLearningRecommendationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiLearningRecommendationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -10475,7 +10879,7 @@ export namespace Prisma {
      *     // ... filter to delete one AiLearningRecommendation
      *   }
      * })
-     *
+     * 
      */
     delete<T extends AiLearningRecommendationDeleteArgs>(args: SelectSubset<T, AiLearningRecommendationDeleteArgs<ExtArgs>>): Prisma__AiLearningRecommendationClient<$Result.GetResult<Prisma.$AiLearningRecommendationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -10492,7 +10896,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends AiLearningRecommendationUpdateArgs>(args: SelectSubset<T, AiLearningRecommendationUpdateArgs<ExtArgs>>): Prisma__AiLearningRecommendationClient<$Result.GetResult<Prisma.$AiLearningRecommendationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -10506,7 +10910,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends AiLearningRecommendationDeleteManyArgs>(args?: SelectSubset<T, AiLearningRecommendationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -10525,7 +10929,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends AiLearningRecommendationUpdateManyArgs>(args: SelectSubset<T, AiLearningRecommendationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -10542,7 +10946,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more AiLearningRecommendations and only return the `id`
      * const aiLearningRecommendationWithIdOnly = await prisma.aiLearningRecommendation.updateManyAndReturn({
      *   select: { id: true },
@@ -10555,7 +10959,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends AiLearningRecommendationUpdateManyAndReturnArgs>(args: SelectSubset<T, AiLearningRecommendationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiLearningRecommendationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -10644,7 +11048,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends AiLearningRecommendationGroupByArgs,
@@ -10761,7 +11165,7 @@ export namespace Prisma {
     readonly autoPromotable: FieldRef<"AiLearningRecommendation", 'Boolean'>
     readonly promotedAt: FieldRef<"AiLearningRecommendation", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -10818,31 +11222,31 @@ export namespace Prisma {
     where?: AiLearningRecommendationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiLearningRecommendations to fetch.
      */
     orderBy?: AiLearningRecommendationOrderByWithRelationInput | AiLearningRecommendationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for AiLearningRecommendations.
      */
     cursor?: AiLearningRecommendationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiLearningRecommendations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiLearningRecommendations.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of AiLearningRecommendations.
      */
     distinct?: AiLearningRecommendationScalarFieldEnum | AiLearningRecommendationScalarFieldEnum[]
@@ -10866,31 +11270,31 @@ export namespace Prisma {
     where?: AiLearningRecommendationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiLearningRecommendations to fetch.
      */
     orderBy?: AiLearningRecommendationOrderByWithRelationInput | AiLearningRecommendationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for AiLearningRecommendations.
      */
     cursor?: AiLearningRecommendationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiLearningRecommendations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiLearningRecommendations.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of AiLearningRecommendations.
      */
     distinct?: AiLearningRecommendationScalarFieldEnum | AiLearningRecommendationScalarFieldEnum[]
@@ -10914,25 +11318,25 @@ export namespace Prisma {
     where?: AiLearningRecommendationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiLearningRecommendations to fetch.
      */
     orderBy?: AiLearningRecommendationOrderByWithRelationInput | AiLearningRecommendationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing AiLearningRecommendations.
      */
     cursor?: AiLearningRecommendationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiLearningRecommendations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiLearningRecommendations.
      */
     skip?: number
@@ -11324,55 +11728,55 @@ export namespace Prisma {
     where?: BuyerWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Buyers to fetch.
      */
     orderBy?: BuyerOrderByWithRelationInput | BuyerOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: BuyerWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Buyers from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Buyers.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned Buyers
     **/
     _count?: true | BuyerCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: BuyerAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: BuyerSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: BuyerMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: BuyerMaxAggregateInputType
@@ -11670,13 +12074,13 @@ export namespace Prisma {
      * @example
      * // Get all Buyers
      * const buyers = await prisma.buyer.findMany()
-     *
+     * 
      * // Get first 10 Buyers
      * const buyers = await prisma.buyer.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const buyerWithIdOnly = await prisma.buyer.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends BuyerFindManyArgs>(args?: SelectSubset<T, BuyerFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BuyerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -11690,7 +12094,7 @@ export namespace Prisma {
      *     // ... data to create a Buyer
      *   }
      * })
-     *
+     * 
      */
     create<T extends BuyerCreateArgs>(args: SelectSubset<T, BuyerCreateArgs<ExtArgs>>): Prisma__BuyerClient<$Result.GetResult<Prisma.$BuyerPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -11704,7 +12108,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends BuyerCreateManyArgs>(args?: SelectSubset<T, BuyerCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -11718,7 +12122,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Buyers and only return the `id`
      * const buyerWithIdOnly = await prisma.buyer.createManyAndReturn({
      *   select: { id: true },
@@ -11728,7 +12132,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends BuyerCreateManyAndReturnArgs>(args?: SelectSubset<T, BuyerCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BuyerPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -11742,7 +12146,7 @@ export namespace Prisma {
      *     // ... filter to delete one Buyer
      *   }
      * })
-     *
+     * 
      */
     delete<T extends BuyerDeleteArgs>(args: SelectSubset<T, BuyerDeleteArgs<ExtArgs>>): Prisma__BuyerClient<$Result.GetResult<Prisma.$BuyerPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -11759,7 +12163,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends BuyerUpdateArgs>(args: SelectSubset<T, BuyerUpdateArgs<ExtArgs>>): Prisma__BuyerClient<$Result.GetResult<Prisma.$BuyerPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -11773,7 +12177,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends BuyerDeleteManyArgs>(args?: SelectSubset<T, BuyerDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -11792,7 +12196,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends BuyerUpdateManyArgs>(args: SelectSubset<T, BuyerUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -11809,7 +12213,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more Buyers and only return the `id`
      * const buyerWithIdOnly = await prisma.buyer.updateManyAndReturn({
      *   select: { id: true },
@@ -11822,7 +12226,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends BuyerUpdateManyAndReturnArgs>(args: SelectSubset<T, BuyerUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BuyerPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -11911,7 +12315,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends BuyerGroupByArgs,
@@ -12039,7 +12443,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Buyer", 'DateTime'>
     readonly updatedAt: FieldRef<"Buyer", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -12108,31 +12512,31 @@ export namespace Prisma {
     where?: BuyerWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Buyers to fetch.
      */
     orderBy?: BuyerOrderByWithRelationInput | BuyerOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Buyers.
      */
     cursor?: BuyerWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Buyers from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Buyers.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Buyers.
      */
     distinct?: BuyerScalarFieldEnum | BuyerScalarFieldEnum[]
@@ -12160,31 +12564,31 @@ export namespace Prisma {
     where?: BuyerWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Buyers to fetch.
      */
     orderBy?: BuyerOrderByWithRelationInput | BuyerOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Buyers.
      */
     cursor?: BuyerWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Buyers from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Buyers.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Buyers.
      */
     distinct?: BuyerScalarFieldEnum | BuyerScalarFieldEnum[]
@@ -12212,25 +12616,25 @@ export namespace Prisma {
     where?: BuyerWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Buyers to fetch.
      */
     orderBy?: BuyerOrderByWithRelationInput | BuyerOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing Buyers.
      */
     cursor?: BuyerWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Buyers from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Buyers.
      */
     skip?: number
@@ -12538,43 +12942,43 @@ export namespace Prisma {
     where?: BuyerActivityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of BuyerActivities to fetch.
      */
     orderBy?: BuyerActivityOrderByWithRelationInput | BuyerActivityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: BuyerActivityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` BuyerActivities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` BuyerActivities.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned BuyerActivities
     **/
     _count?: true | BuyerActivityCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: BuyerActivityMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: BuyerActivityMaxAggregateInputType
@@ -12770,13 +13174,13 @@ export namespace Prisma {
      * @example
      * // Get all BuyerActivities
      * const buyerActivities = await prisma.buyerActivity.findMany()
-     *
+     * 
      * // Get first 10 BuyerActivities
      * const buyerActivities = await prisma.buyerActivity.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const buyerActivityWithIdOnly = await prisma.buyerActivity.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends BuyerActivityFindManyArgs>(args?: SelectSubset<T, BuyerActivityFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BuyerActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -12790,7 +13194,7 @@ export namespace Prisma {
      *     // ... data to create a BuyerActivity
      *   }
      * })
-     *
+     * 
      */
     create<T extends BuyerActivityCreateArgs>(args: SelectSubset<T, BuyerActivityCreateArgs<ExtArgs>>): Prisma__BuyerActivityClient<$Result.GetResult<Prisma.$BuyerActivityPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -12804,7 +13208,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends BuyerActivityCreateManyArgs>(args?: SelectSubset<T, BuyerActivityCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -12818,7 +13222,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many BuyerActivities and only return the `id`
      * const buyerActivityWithIdOnly = await prisma.buyerActivity.createManyAndReturn({
      *   select: { id: true },
@@ -12828,7 +13232,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends BuyerActivityCreateManyAndReturnArgs>(args?: SelectSubset<T, BuyerActivityCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BuyerActivityPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -12842,7 +13246,7 @@ export namespace Prisma {
      *     // ... filter to delete one BuyerActivity
      *   }
      * })
-     *
+     * 
      */
     delete<T extends BuyerActivityDeleteArgs>(args: SelectSubset<T, BuyerActivityDeleteArgs<ExtArgs>>): Prisma__BuyerActivityClient<$Result.GetResult<Prisma.$BuyerActivityPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -12859,7 +13263,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends BuyerActivityUpdateArgs>(args: SelectSubset<T, BuyerActivityUpdateArgs<ExtArgs>>): Prisma__BuyerActivityClient<$Result.GetResult<Prisma.$BuyerActivityPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -12873,7 +13277,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends BuyerActivityDeleteManyArgs>(args?: SelectSubset<T, BuyerActivityDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -12892,7 +13296,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends BuyerActivityUpdateManyArgs>(args: SelectSubset<T, BuyerActivityUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -12909,7 +13313,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more BuyerActivities and only return the `id`
      * const buyerActivityWithIdOnly = await prisma.buyerActivity.updateManyAndReturn({
      *   select: { id: true },
@@ -12922,7 +13326,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends BuyerActivityUpdateManyAndReturnArgs>(args: SelectSubset<T, BuyerActivityUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BuyerActivityPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -13011,7 +13415,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends BuyerActivityGroupByArgs,
@@ -13122,7 +13526,7 @@ export namespace Prisma {
     readonly metadata: FieldRef<"BuyerActivity", 'Json'>
     readonly createdAt: FieldRef<"BuyerActivity", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -13191,31 +13595,31 @@ export namespace Prisma {
     where?: BuyerActivityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of BuyerActivities to fetch.
      */
     orderBy?: BuyerActivityOrderByWithRelationInput | BuyerActivityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for BuyerActivities.
      */
     cursor?: BuyerActivityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` BuyerActivities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` BuyerActivities.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of BuyerActivities.
      */
     distinct?: BuyerActivityScalarFieldEnum | BuyerActivityScalarFieldEnum[]
@@ -13243,31 +13647,31 @@ export namespace Prisma {
     where?: BuyerActivityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of BuyerActivities to fetch.
      */
     orderBy?: BuyerActivityOrderByWithRelationInput | BuyerActivityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for BuyerActivities.
      */
     cursor?: BuyerActivityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` BuyerActivities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` BuyerActivities.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of BuyerActivities.
      */
     distinct?: BuyerActivityScalarFieldEnum | BuyerActivityScalarFieldEnum[]
@@ -13295,25 +13699,25 @@ export namespace Prisma {
     where?: BuyerActivityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of BuyerActivities to fetch.
      */
     orderBy?: BuyerActivityOrderByWithRelationInput | BuyerActivityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing BuyerActivities.
      */
     cursor?: BuyerActivityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` BuyerActivities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` BuyerActivities.
      */
     skip?: number
@@ -13536,6 +13940,4472 @@ export namespace Prisma {
 
 
   /**
+   * Model MarketingDraft
+   */
+
+  export type AggregateMarketingDraft = {
+    _count: MarketingDraftCountAggregateOutputType | null
+    _min: MarketingDraftMinAggregateOutputType | null
+    _max: MarketingDraftMaxAggregateOutputType | null
+  }
+
+  export type MarketingDraftMinAggregateOutputType = {
+    id: string | null
+    channel: string | null
+    topic: string | null
+    sourceLabel: string | null
+    status: string | null
+    draftCopy: string | null
+    assetNotes: string | null
+    createdSource: string | null
+    createdBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MarketingDraftMaxAggregateOutputType = {
+    id: string | null
+    channel: string | null
+    topic: string | null
+    sourceLabel: string | null
+    status: string | null
+    draftCopy: string | null
+    assetNotes: string | null
+    createdSource: string | null
+    createdBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MarketingDraftCountAggregateOutputType = {
+    id: number
+    channel: number
+    topic: number
+    sourceLabel: number
+    status: number
+    draftCopy: number
+    assetNotes: number
+    assumptions: number
+    safetyFlags: number
+    createdSource: number
+    createdBy: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MarketingDraftMinAggregateInputType = {
+    id?: true
+    channel?: true
+    topic?: true
+    sourceLabel?: true
+    status?: true
+    draftCopy?: true
+    assetNotes?: true
+    createdSource?: true
+    createdBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MarketingDraftMaxAggregateInputType = {
+    id?: true
+    channel?: true
+    topic?: true
+    sourceLabel?: true
+    status?: true
+    draftCopy?: true
+    assetNotes?: true
+    createdSource?: true
+    createdBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MarketingDraftCountAggregateInputType = {
+    id?: true
+    channel?: true
+    topic?: true
+    sourceLabel?: true
+    status?: true
+    draftCopy?: true
+    assetNotes?: true
+    assumptions?: true
+    safetyFlags?: true
+    createdSource?: true
+    createdBy?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MarketingDraftAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MarketingDraft to aggregate.
+     */
+    where?: MarketingDraftWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingDrafts to fetch.
+     */
+    orderBy?: MarketingDraftOrderByWithRelationInput | MarketingDraftOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MarketingDraftWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingDrafts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingDrafts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MarketingDrafts
+    **/
+    _count?: true | MarketingDraftCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MarketingDraftMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MarketingDraftMaxAggregateInputType
+  }
+
+  export type GetMarketingDraftAggregateType<T extends MarketingDraftAggregateArgs> = {
+        [P in keyof T & keyof AggregateMarketingDraft]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMarketingDraft[P]>
+      : GetScalarType<T[P], AggregateMarketingDraft[P]>
+  }
+
+
+
+
+  export type MarketingDraftGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MarketingDraftWhereInput
+    orderBy?: MarketingDraftOrderByWithAggregationInput | MarketingDraftOrderByWithAggregationInput[]
+    by: MarketingDraftScalarFieldEnum[] | MarketingDraftScalarFieldEnum
+    having?: MarketingDraftScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MarketingDraftCountAggregateInputType | true
+    _min?: MarketingDraftMinAggregateInputType
+    _max?: MarketingDraftMaxAggregateInputType
+  }
+
+  export type MarketingDraftGroupByOutputType = {
+    id: string
+    channel: string
+    topic: string
+    sourceLabel: string
+    status: string
+    draftCopy: string
+    assetNotes: string | null
+    assumptions: JsonValue | null
+    safetyFlags: JsonValue | null
+    createdSource: string
+    createdBy: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: MarketingDraftCountAggregateOutputType | null
+    _min: MarketingDraftMinAggregateOutputType | null
+    _max: MarketingDraftMaxAggregateOutputType | null
+  }
+
+  type GetMarketingDraftGroupByPayload<T extends MarketingDraftGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MarketingDraftGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MarketingDraftGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MarketingDraftGroupByOutputType[P]>
+            : GetScalarType<T[P], MarketingDraftGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MarketingDraftSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    channel?: boolean
+    topic?: boolean
+    sourceLabel?: boolean
+    status?: boolean
+    draftCopy?: boolean
+    assetNotes?: boolean
+    assumptions?: boolean
+    safetyFlags?: boolean
+    createdSource?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    approvals?: boolean | MarketingDraft$approvalsArgs<ExtArgs>
+    publishAssists?: boolean | MarketingDraft$publishAssistsArgs<ExtArgs>
+    _count?: boolean | MarketingDraftCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["marketingDraft"]>
+
+  export type MarketingDraftSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    channel?: boolean
+    topic?: boolean
+    sourceLabel?: boolean
+    status?: boolean
+    draftCopy?: boolean
+    assetNotes?: boolean
+    assumptions?: boolean
+    safetyFlags?: boolean
+    createdSource?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["marketingDraft"]>
+
+  export type MarketingDraftSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    channel?: boolean
+    topic?: boolean
+    sourceLabel?: boolean
+    status?: boolean
+    draftCopy?: boolean
+    assetNotes?: boolean
+    assumptions?: boolean
+    safetyFlags?: boolean
+    createdSource?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["marketingDraft"]>
+
+  export type MarketingDraftSelectScalar = {
+    id?: boolean
+    channel?: boolean
+    topic?: boolean
+    sourceLabel?: boolean
+    status?: boolean
+    draftCopy?: boolean
+    assetNotes?: boolean
+    assumptions?: boolean
+    safetyFlags?: boolean
+    createdSource?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MarketingDraftOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "channel" | "topic" | "sourceLabel" | "status" | "draftCopy" | "assetNotes" | "assumptions" | "safetyFlags" | "createdSource" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["marketingDraft"]>
+  export type MarketingDraftInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    approvals?: boolean | MarketingDraft$approvalsArgs<ExtArgs>
+    publishAssists?: boolean | MarketingDraft$publishAssistsArgs<ExtArgs>
+    _count?: boolean | MarketingDraftCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type MarketingDraftIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type MarketingDraftIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $MarketingDraftPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MarketingDraft"
+    objects: {
+      approvals: Prisma.$MarketingApprovalPayload<ExtArgs>[]
+      publishAssists: Prisma.$MarketingPublishAssistPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      channel: string
+      topic: string
+      sourceLabel: string
+      status: string
+      draftCopy: string
+      assetNotes: string | null
+      assumptions: Prisma.JsonValue | null
+      safetyFlags: Prisma.JsonValue | null
+      createdSource: string
+      createdBy: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["marketingDraft"]>
+    composites: {}
+  }
+
+  type MarketingDraftGetPayload<S extends boolean | null | undefined | MarketingDraftDefaultArgs> = $Result.GetResult<Prisma.$MarketingDraftPayload, S>
+
+  type MarketingDraftCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MarketingDraftFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MarketingDraftCountAggregateInputType | true
+    }
+
+  export interface MarketingDraftDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MarketingDraft'], meta: { name: 'MarketingDraft' } }
+    /**
+     * Find zero or one MarketingDraft that matches the filter.
+     * @param {MarketingDraftFindUniqueArgs} args - Arguments to find a MarketingDraft
+     * @example
+     * // Get one MarketingDraft
+     * const marketingDraft = await prisma.marketingDraft.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MarketingDraftFindUniqueArgs>(args: SelectSubset<T, MarketingDraftFindUniqueArgs<ExtArgs>>): Prisma__MarketingDraftClient<$Result.GetResult<Prisma.$MarketingDraftPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MarketingDraft that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MarketingDraftFindUniqueOrThrowArgs} args - Arguments to find a MarketingDraft
+     * @example
+     * // Get one MarketingDraft
+     * const marketingDraft = await prisma.marketingDraft.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MarketingDraftFindUniqueOrThrowArgs>(args: SelectSubset<T, MarketingDraftFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MarketingDraftClient<$Result.GetResult<Prisma.$MarketingDraftPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MarketingDraft that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingDraftFindFirstArgs} args - Arguments to find a MarketingDraft
+     * @example
+     * // Get one MarketingDraft
+     * const marketingDraft = await prisma.marketingDraft.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MarketingDraftFindFirstArgs>(args?: SelectSubset<T, MarketingDraftFindFirstArgs<ExtArgs>>): Prisma__MarketingDraftClient<$Result.GetResult<Prisma.$MarketingDraftPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MarketingDraft that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingDraftFindFirstOrThrowArgs} args - Arguments to find a MarketingDraft
+     * @example
+     * // Get one MarketingDraft
+     * const marketingDraft = await prisma.marketingDraft.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MarketingDraftFindFirstOrThrowArgs>(args?: SelectSubset<T, MarketingDraftFindFirstOrThrowArgs<ExtArgs>>): Prisma__MarketingDraftClient<$Result.GetResult<Prisma.$MarketingDraftPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MarketingDrafts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingDraftFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MarketingDrafts
+     * const marketingDrafts = await prisma.marketingDraft.findMany()
+     * 
+     * // Get first 10 MarketingDrafts
+     * const marketingDrafts = await prisma.marketingDraft.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const marketingDraftWithIdOnly = await prisma.marketingDraft.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MarketingDraftFindManyArgs>(args?: SelectSubset<T, MarketingDraftFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingDraftPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MarketingDraft.
+     * @param {MarketingDraftCreateArgs} args - Arguments to create a MarketingDraft.
+     * @example
+     * // Create one MarketingDraft
+     * const MarketingDraft = await prisma.marketingDraft.create({
+     *   data: {
+     *     // ... data to create a MarketingDraft
+     *   }
+     * })
+     * 
+     */
+    create<T extends MarketingDraftCreateArgs>(args: SelectSubset<T, MarketingDraftCreateArgs<ExtArgs>>): Prisma__MarketingDraftClient<$Result.GetResult<Prisma.$MarketingDraftPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MarketingDrafts.
+     * @param {MarketingDraftCreateManyArgs} args - Arguments to create many MarketingDrafts.
+     * @example
+     * // Create many MarketingDrafts
+     * const marketingDraft = await prisma.marketingDraft.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MarketingDraftCreateManyArgs>(args?: SelectSubset<T, MarketingDraftCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many MarketingDrafts and returns the data saved in the database.
+     * @param {MarketingDraftCreateManyAndReturnArgs} args - Arguments to create many MarketingDrafts.
+     * @example
+     * // Create many MarketingDrafts
+     * const marketingDraft = await prisma.marketingDraft.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many MarketingDrafts and only return the `id`
+     * const marketingDraftWithIdOnly = await prisma.marketingDraft.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MarketingDraftCreateManyAndReturnArgs>(args?: SelectSubset<T, MarketingDraftCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingDraftPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a MarketingDraft.
+     * @param {MarketingDraftDeleteArgs} args - Arguments to delete one MarketingDraft.
+     * @example
+     * // Delete one MarketingDraft
+     * const MarketingDraft = await prisma.marketingDraft.delete({
+     *   where: {
+     *     // ... filter to delete one MarketingDraft
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MarketingDraftDeleteArgs>(args: SelectSubset<T, MarketingDraftDeleteArgs<ExtArgs>>): Prisma__MarketingDraftClient<$Result.GetResult<Prisma.$MarketingDraftPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MarketingDraft.
+     * @param {MarketingDraftUpdateArgs} args - Arguments to update one MarketingDraft.
+     * @example
+     * // Update one MarketingDraft
+     * const marketingDraft = await prisma.marketingDraft.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MarketingDraftUpdateArgs>(args: SelectSubset<T, MarketingDraftUpdateArgs<ExtArgs>>): Prisma__MarketingDraftClient<$Result.GetResult<Prisma.$MarketingDraftPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MarketingDrafts.
+     * @param {MarketingDraftDeleteManyArgs} args - Arguments to filter MarketingDrafts to delete.
+     * @example
+     * // Delete a few MarketingDrafts
+     * const { count } = await prisma.marketingDraft.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MarketingDraftDeleteManyArgs>(args?: SelectSubset<T, MarketingDraftDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MarketingDrafts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingDraftUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MarketingDrafts
+     * const marketingDraft = await prisma.marketingDraft.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MarketingDraftUpdateManyArgs>(args: SelectSubset<T, MarketingDraftUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MarketingDrafts and returns the data updated in the database.
+     * @param {MarketingDraftUpdateManyAndReturnArgs} args - Arguments to update many MarketingDrafts.
+     * @example
+     * // Update many MarketingDrafts
+     * const marketingDraft = await prisma.marketingDraft.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more MarketingDrafts and only return the `id`
+     * const marketingDraftWithIdOnly = await prisma.marketingDraft.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends MarketingDraftUpdateManyAndReturnArgs>(args: SelectSubset<T, MarketingDraftUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingDraftPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one MarketingDraft.
+     * @param {MarketingDraftUpsertArgs} args - Arguments to update or create a MarketingDraft.
+     * @example
+     * // Update or create a MarketingDraft
+     * const marketingDraft = await prisma.marketingDraft.upsert({
+     *   create: {
+     *     // ... data to create a MarketingDraft
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MarketingDraft we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MarketingDraftUpsertArgs>(args: SelectSubset<T, MarketingDraftUpsertArgs<ExtArgs>>): Prisma__MarketingDraftClient<$Result.GetResult<Prisma.$MarketingDraftPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MarketingDrafts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingDraftCountArgs} args - Arguments to filter MarketingDrafts to count.
+     * @example
+     * // Count the number of MarketingDrafts
+     * const count = await prisma.marketingDraft.count({
+     *   where: {
+     *     // ... the filter for the MarketingDrafts we want to count
+     *   }
+     * })
+    **/
+    count<T extends MarketingDraftCountArgs>(
+      args?: Subset<T, MarketingDraftCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MarketingDraftCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MarketingDraft.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingDraftAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MarketingDraftAggregateArgs>(args: Subset<T, MarketingDraftAggregateArgs>): Prisma.PrismaPromise<GetMarketingDraftAggregateType<T>>
+
+    /**
+     * Group by MarketingDraft.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingDraftGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MarketingDraftGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MarketingDraftGroupByArgs['orderBy'] }
+        : { orderBy?: MarketingDraftGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MarketingDraftGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMarketingDraftGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MarketingDraft model
+   */
+  readonly fields: MarketingDraftFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MarketingDraft.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MarketingDraftClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    approvals<T extends MarketingDraft$approvalsArgs<ExtArgs> = {}>(args?: Subset<T, MarketingDraft$approvalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingApprovalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    publishAssists<T extends MarketingDraft$publishAssistsArgs<ExtArgs> = {}>(args?: Subset<T, MarketingDraft$publishAssistsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingPublishAssistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MarketingDraft model
+   */
+  interface MarketingDraftFieldRefs {
+    readonly id: FieldRef<"MarketingDraft", 'String'>
+    readonly channel: FieldRef<"MarketingDraft", 'String'>
+    readonly topic: FieldRef<"MarketingDraft", 'String'>
+    readonly sourceLabel: FieldRef<"MarketingDraft", 'String'>
+    readonly status: FieldRef<"MarketingDraft", 'String'>
+    readonly draftCopy: FieldRef<"MarketingDraft", 'String'>
+    readonly assetNotes: FieldRef<"MarketingDraft", 'String'>
+    readonly assumptions: FieldRef<"MarketingDraft", 'Json'>
+    readonly safetyFlags: FieldRef<"MarketingDraft", 'Json'>
+    readonly createdSource: FieldRef<"MarketingDraft", 'String'>
+    readonly createdBy: FieldRef<"MarketingDraft", 'String'>
+    readonly createdAt: FieldRef<"MarketingDraft", 'DateTime'>
+    readonly updatedAt: FieldRef<"MarketingDraft", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MarketingDraft findUnique
+   */
+  export type MarketingDraftFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingDraft
+     */
+    select?: MarketingDraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingDraft
+     */
+    omit?: MarketingDraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingDraftInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingDraft to fetch.
+     */
+    where: MarketingDraftWhereUniqueInput
+  }
+
+  /**
+   * MarketingDraft findUniqueOrThrow
+   */
+  export type MarketingDraftFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingDraft
+     */
+    select?: MarketingDraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingDraft
+     */
+    omit?: MarketingDraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingDraftInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingDraft to fetch.
+     */
+    where: MarketingDraftWhereUniqueInput
+  }
+
+  /**
+   * MarketingDraft findFirst
+   */
+  export type MarketingDraftFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingDraft
+     */
+    select?: MarketingDraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingDraft
+     */
+    omit?: MarketingDraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingDraftInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingDraft to fetch.
+     */
+    where?: MarketingDraftWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingDrafts to fetch.
+     */
+    orderBy?: MarketingDraftOrderByWithRelationInput | MarketingDraftOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MarketingDrafts.
+     */
+    cursor?: MarketingDraftWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingDrafts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingDrafts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MarketingDrafts.
+     */
+    distinct?: MarketingDraftScalarFieldEnum | MarketingDraftScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingDraft findFirstOrThrow
+   */
+  export type MarketingDraftFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingDraft
+     */
+    select?: MarketingDraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingDraft
+     */
+    omit?: MarketingDraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingDraftInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingDraft to fetch.
+     */
+    where?: MarketingDraftWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingDrafts to fetch.
+     */
+    orderBy?: MarketingDraftOrderByWithRelationInput | MarketingDraftOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MarketingDrafts.
+     */
+    cursor?: MarketingDraftWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingDrafts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingDrafts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MarketingDrafts.
+     */
+    distinct?: MarketingDraftScalarFieldEnum | MarketingDraftScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingDraft findMany
+   */
+  export type MarketingDraftFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingDraft
+     */
+    select?: MarketingDraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingDraft
+     */
+    omit?: MarketingDraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingDraftInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingDrafts to fetch.
+     */
+    where?: MarketingDraftWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingDrafts to fetch.
+     */
+    orderBy?: MarketingDraftOrderByWithRelationInput | MarketingDraftOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MarketingDrafts.
+     */
+    cursor?: MarketingDraftWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingDrafts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingDrafts.
+     */
+    skip?: number
+    distinct?: MarketingDraftScalarFieldEnum | MarketingDraftScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingDraft create
+   */
+  export type MarketingDraftCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingDraft
+     */
+    select?: MarketingDraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingDraft
+     */
+    omit?: MarketingDraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingDraftInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MarketingDraft.
+     */
+    data: XOR<MarketingDraftCreateInput, MarketingDraftUncheckedCreateInput>
+  }
+
+  /**
+   * MarketingDraft createMany
+   */
+  export type MarketingDraftCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MarketingDrafts.
+     */
+    data: MarketingDraftCreateManyInput | MarketingDraftCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MarketingDraft createManyAndReturn
+   */
+  export type MarketingDraftCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingDraft
+     */
+    select?: MarketingDraftSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingDraft
+     */
+    omit?: MarketingDraftOmit<ExtArgs> | null
+    /**
+     * The data used to create many MarketingDrafts.
+     */
+    data: MarketingDraftCreateManyInput | MarketingDraftCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MarketingDraft update
+   */
+  export type MarketingDraftUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingDraft
+     */
+    select?: MarketingDraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingDraft
+     */
+    omit?: MarketingDraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingDraftInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MarketingDraft.
+     */
+    data: XOR<MarketingDraftUpdateInput, MarketingDraftUncheckedUpdateInput>
+    /**
+     * Choose, which MarketingDraft to update.
+     */
+    where: MarketingDraftWhereUniqueInput
+  }
+
+  /**
+   * MarketingDraft updateMany
+   */
+  export type MarketingDraftUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MarketingDrafts.
+     */
+    data: XOR<MarketingDraftUpdateManyMutationInput, MarketingDraftUncheckedUpdateManyInput>
+    /**
+     * Filter which MarketingDrafts to update
+     */
+    where?: MarketingDraftWhereInput
+    /**
+     * Limit how many MarketingDrafts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MarketingDraft updateManyAndReturn
+   */
+  export type MarketingDraftUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingDraft
+     */
+    select?: MarketingDraftSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingDraft
+     */
+    omit?: MarketingDraftOmit<ExtArgs> | null
+    /**
+     * The data used to update MarketingDrafts.
+     */
+    data: XOR<MarketingDraftUpdateManyMutationInput, MarketingDraftUncheckedUpdateManyInput>
+    /**
+     * Filter which MarketingDrafts to update
+     */
+    where?: MarketingDraftWhereInput
+    /**
+     * Limit how many MarketingDrafts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MarketingDraft upsert
+   */
+  export type MarketingDraftUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingDraft
+     */
+    select?: MarketingDraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingDraft
+     */
+    omit?: MarketingDraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingDraftInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MarketingDraft to update in case it exists.
+     */
+    where: MarketingDraftWhereUniqueInput
+    /**
+     * In case the MarketingDraft found by the `where` argument doesn't exist, create a new MarketingDraft with this data.
+     */
+    create: XOR<MarketingDraftCreateInput, MarketingDraftUncheckedCreateInput>
+    /**
+     * In case the MarketingDraft was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MarketingDraftUpdateInput, MarketingDraftUncheckedUpdateInput>
+  }
+
+  /**
+   * MarketingDraft delete
+   */
+  export type MarketingDraftDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingDraft
+     */
+    select?: MarketingDraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingDraft
+     */
+    omit?: MarketingDraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingDraftInclude<ExtArgs> | null
+    /**
+     * Filter which MarketingDraft to delete.
+     */
+    where: MarketingDraftWhereUniqueInput
+  }
+
+  /**
+   * MarketingDraft deleteMany
+   */
+  export type MarketingDraftDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MarketingDrafts to delete
+     */
+    where?: MarketingDraftWhereInput
+    /**
+     * Limit how many MarketingDrafts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MarketingDraft.approvals
+   */
+  export type MarketingDraft$approvalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingApproval
+     */
+    select?: MarketingApprovalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingApproval
+     */
+    omit?: MarketingApprovalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingApprovalInclude<ExtArgs> | null
+    where?: MarketingApprovalWhereInput
+    orderBy?: MarketingApprovalOrderByWithRelationInput | MarketingApprovalOrderByWithRelationInput[]
+    cursor?: MarketingApprovalWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MarketingApprovalScalarFieldEnum | MarketingApprovalScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingDraft.publishAssists
+   */
+  export type MarketingDraft$publishAssistsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingPublishAssist
+     */
+    select?: MarketingPublishAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingPublishAssist
+     */
+    omit?: MarketingPublishAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingPublishAssistInclude<ExtArgs> | null
+    where?: MarketingPublishAssistWhereInput
+    orderBy?: MarketingPublishAssistOrderByWithRelationInput | MarketingPublishAssistOrderByWithRelationInput[]
+    cursor?: MarketingPublishAssistWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MarketingPublishAssistScalarFieldEnum | MarketingPublishAssistScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingDraft without action
+   */
+  export type MarketingDraftDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingDraft
+     */
+    select?: MarketingDraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingDraft
+     */
+    omit?: MarketingDraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingDraftInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MarketingApproval
+   */
+
+  export type AggregateMarketingApproval = {
+    _count: MarketingApprovalCountAggregateOutputType | null
+    _min: MarketingApprovalMinAggregateOutputType | null
+    _max: MarketingApprovalMaxAggregateOutputType | null
+  }
+
+  export type MarketingApprovalMinAggregateOutputType = {
+    id: string | null
+    draftId: string | null
+    decision: string | null
+    editedCopy: string | null
+    note: string | null
+    reviewer: string | null
+    createdAt: Date | null
+  }
+
+  export type MarketingApprovalMaxAggregateOutputType = {
+    id: string | null
+    draftId: string | null
+    decision: string | null
+    editedCopy: string | null
+    note: string | null
+    reviewer: string | null
+    createdAt: Date | null
+  }
+
+  export type MarketingApprovalCountAggregateOutputType = {
+    id: number
+    draftId: number
+    decision: number
+    editedCopy: number
+    note: number
+    reviewer: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type MarketingApprovalMinAggregateInputType = {
+    id?: true
+    draftId?: true
+    decision?: true
+    editedCopy?: true
+    note?: true
+    reviewer?: true
+    createdAt?: true
+  }
+
+  export type MarketingApprovalMaxAggregateInputType = {
+    id?: true
+    draftId?: true
+    decision?: true
+    editedCopy?: true
+    note?: true
+    reviewer?: true
+    createdAt?: true
+  }
+
+  export type MarketingApprovalCountAggregateInputType = {
+    id?: true
+    draftId?: true
+    decision?: true
+    editedCopy?: true
+    note?: true
+    reviewer?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type MarketingApprovalAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MarketingApproval to aggregate.
+     */
+    where?: MarketingApprovalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingApprovals to fetch.
+     */
+    orderBy?: MarketingApprovalOrderByWithRelationInput | MarketingApprovalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MarketingApprovalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingApprovals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingApprovals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MarketingApprovals
+    **/
+    _count?: true | MarketingApprovalCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MarketingApprovalMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MarketingApprovalMaxAggregateInputType
+  }
+
+  export type GetMarketingApprovalAggregateType<T extends MarketingApprovalAggregateArgs> = {
+        [P in keyof T & keyof AggregateMarketingApproval]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMarketingApproval[P]>
+      : GetScalarType<T[P], AggregateMarketingApproval[P]>
+  }
+
+
+
+
+  export type MarketingApprovalGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MarketingApprovalWhereInput
+    orderBy?: MarketingApprovalOrderByWithAggregationInput | MarketingApprovalOrderByWithAggregationInput[]
+    by: MarketingApprovalScalarFieldEnum[] | MarketingApprovalScalarFieldEnum
+    having?: MarketingApprovalScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MarketingApprovalCountAggregateInputType | true
+    _min?: MarketingApprovalMinAggregateInputType
+    _max?: MarketingApprovalMaxAggregateInputType
+  }
+
+  export type MarketingApprovalGroupByOutputType = {
+    id: string
+    draftId: string
+    decision: string
+    editedCopy: string | null
+    note: string
+    reviewer: string | null
+    createdAt: Date
+    _count: MarketingApprovalCountAggregateOutputType | null
+    _min: MarketingApprovalMinAggregateOutputType | null
+    _max: MarketingApprovalMaxAggregateOutputType | null
+  }
+
+  type GetMarketingApprovalGroupByPayload<T extends MarketingApprovalGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MarketingApprovalGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MarketingApprovalGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MarketingApprovalGroupByOutputType[P]>
+            : GetScalarType<T[P], MarketingApprovalGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MarketingApprovalSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    draftId?: boolean
+    decision?: boolean
+    editedCopy?: boolean
+    note?: boolean
+    reviewer?: boolean
+    createdAt?: boolean
+    draft?: boolean | MarketingDraftDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["marketingApproval"]>
+
+  export type MarketingApprovalSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    draftId?: boolean
+    decision?: boolean
+    editedCopy?: boolean
+    note?: boolean
+    reviewer?: boolean
+    createdAt?: boolean
+    draft?: boolean | MarketingDraftDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["marketingApproval"]>
+
+  export type MarketingApprovalSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    draftId?: boolean
+    decision?: boolean
+    editedCopy?: boolean
+    note?: boolean
+    reviewer?: boolean
+    createdAt?: boolean
+    draft?: boolean | MarketingDraftDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["marketingApproval"]>
+
+  export type MarketingApprovalSelectScalar = {
+    id?: boolean
+    draftId?: boolean
+    decision?: boolean
+    editedCopy?: boolean
+    note?: boolean
+    reviewer?: boolean
+    createdAt?: boolean
+  }
+
+  export type MarketingApprovalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "draftId" | "decision" | "editedCopy" | "note" | "reviewer" | "createdAt", ExtArgs["result"]["marketingApproval"]>
+  export type MarketingApprovalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    draft?: boolean | MarketingDraftDefaultArgs<ExtArgs>
+  }
+  export type MarketingApprovalIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    draft?: boolean | MarketingDraftDefaultArgs<ExtArgs>
+  }
+  export type MarketingApprovalIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    draft?: boolean | MarketingDraftDefaultArgs<ExtArgs>
+  }
+
+  export type $MarketingApprovalPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MarketingApproval"
+    objects: {
+      draft: Prisma.$MarketingDraftPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      draftId: string
+      decision: string
+      editedCopy: string | null
+      note: string
+      reviewer: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["marketingApproval"]>
+    composites: {}
+  }
+
+  type MarketingApprovalGetPayload<S extends boolean | null | undefined | MarketingApprovalDefaultArgs> = $Result.GetResult<Prisma.$MarketingApprovalPayload, S>
+
+  type MarketingApprovalCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MarketingApprovalFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MarketingApprovalCountAggregateInputType | true
+    }
+
+  export interface MarketingApprovalDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MarketingApproval'], meta: { name: 'MarketingApproval' } }
+    /**
+     * Find zero or one MarketingApproval that matches the filter.
+     * @param {MarketingApprovalFindUniqueArgs} args - Arguments to find a MarketingApproval
+     * @example
+     * // Get one MarketingApproval
+     * const marketingApproval = await prisma.marketingApproval.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MarketingApprovalFindUniqueArgs>(args: SelectSubset<T, MarketingApprovalFindUniqueArgs<ExtArgs>>): Prisma__MarketingApprovalClient<$Result.GetResult<Prisma.$MarketingApprovalPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MarketingApproval that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MarketingApprovalFindUniqueOrThrowArgs} args - Arguments to find a MarketingApproval
+     * @example
+     * // Get one MarketingApproval
+     * const marketingApproval = await prisma.marketingApproval.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MarketingApprovalFindUniqueOrThrowArgs>(args: SelectSubset<T, MarketingApprovalFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MarketingApprovalClient<$Result.GetResult<Prisma.$MarketingApprovalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MarketingApproval that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingApprovalFindFirstArgs} args - Arguments to find a MarketingApproval
+     * @example
+     * // Get one MarketingApproval
+     * const marketingApproval = await prisma.marketingApproval.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MarketingApprovalFindFirstArgs>(args?: SelectSubset<T, MarketingApprovalFindFirstArgs<ExtArgs>>): Prisma__MarketingApprovalClient<$Result.GetResult<Prisma.$MarketingApprovalPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MarketingApproval that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingApprovalFindFirstOrThrowArgs} args - Arguments to find a MarketingApproval
+     * @example
+     * // Get one MarketingApproval
+     * const marketingApproval = await prisma.marketingApproval.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MarketingApprovalFindFirstOrThrowArgs>(args?: SelectSubset<T, MarketingApprovalFindFirstOrThrowArgs<ExtArgs>>): Prisma__MarketingApprovalClient<$Result.GetResult<Prisma.$MarketingApprovalPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MarketingApprovals that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingApprovalFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MarketingApprovals
+     * const marketingApprovals = await prisma.marketingApproval.findMany()
+     * 
+     * // Get first 10 MarketingApprovals
+     * const marketingApprovals = await prisma.marketingApproval.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const marketingApprovalWithIdOnly = await prisma.marketingApproval.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MarketingApprovalFindManyArgs>(args?: SelectSubset<T, MarketingApprovalFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingApprovalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MarketingApproval.
+     * @param {MarketingApprovalCreateArgs} args - Arguments to create a MarketingApproval.
+     * @example
+     * // Create one MarketingApproval
+     * const MarketingApproval = await prisma.marketingApproval.create({
+     *   data: {
+     *     // ... data to create a MarketingApproval
+     *   }
+     * })
+     * 
+     */
+    create<T extends MarketingApprovalCreateArgs>(args: SelectSubset<T, MarketingApprovalCreateArgs<ExtArgs>>): Prisma__MarketingApprovalClient<$Result.GetResult<Prisma.$MarketingApprovalPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MarketingApprovals.
+     * @param {MarketingApprovalCreateManyArgs} args - Arguments to create many MarketingApprovals.
+     * @example
+     * // Create many MarketingApprovals
+     * const marketingApproval = await prisma.marketingApproval.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MarketingApprovalCreateManyArgs>(args?: SelectSubset<T, MarketingApprovalCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many MarketingApprovals and returns the data saved in the database.
+     * @param {MarketingApprovalCreateManyAndReturnArgs} args - Arguments to create many MarketingApprovals.
+     * @example
+     * // Create many MarketingApprovals
+     * const marketingApproval = await prisma.marketingApproval.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many MarketingApprovals and only return the `id`
+     * const marketingApprovalWithIdOnly = await prisma.marketingApproval.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MarketingApprovalCreateManyAndReturnArgs>(args?: SelectSubset<T, MarketingApprovalCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingApprovalPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a MarketingApproval.
+     * @param {MarketingApprovalDeleteArgs} args - Arguments to delete one MarketingApproval.
+     * @example
+     * // Delete one MarketingApproval
+     * const MarketingApproval = await prisma.marketingApproval.delete({
+     *   where: {
+     *     // ... filter to delete one MarketingApproval
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MarketingApprovalDeleteArgs>(args: SelectSubset<T, MarketingApprovalDeleteArgs<ExtArgs>>): Prisma__MarketingApprovalClient<$Result.GetResult<Prisma.$MarketingApprovalPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MarketingApproval.
+     * @param {MarketingApprovalUpdateArgs} args - Arguments to update one MarketingApproval.
+     * @example
+     * // Update one MarketingApproval
+     * const marketingApproval = await prisma.marketingApproval.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MarketingApprovalUpdateArgs>(args: SelectSubset<T, MarketingApprovalUpdateArgs<ExtArgs>>): Prisma__MarketingApprovalClient<$Result.GetResult<Prisma.$MarketingApprovalPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MarketingApprovals.
+     * @param {MarketingApprovalDeleteManyArgs} args - Arguments to filter MarketingApprovals to delete.
+     * @example
+     * // Delete a few MarketingApprovals
+     * const { count } = await prisma.marketingApproval.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MarketingApprovalDeleteManyArgs>(args?: SelectSubset<T, MarketingApprovalDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MarketingApprovals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingApprovalUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MarketingApprovals
+     * const marketingApproval = await prisma.marketingApproval.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MarketingApprovalUpdateManyArgs>(args: SelectSubset<T, MarketingApprovalUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MarketingApprovals and returns the data updated in the database.
+     * @param {MarketingApprovalUpdateManyAndReturnArgs} args - Arguments to update many MarketingApprovals.
+     * @example
+     * // Update many MarketingApprovals
+     * const marketingApproval = await prisma.marketingApproval.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more MarketingApprovals and only return the `id`
+     * const marketingApprovalWithIdOnly = await prisma.marketingApproval.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends MarketingApprovalUpdateManyAndReturnArgs>(args: SelectSubset<T, MarketingApprovalUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingApprovalPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one MarketingApproval.
+     * @param {MarketingApprovalUpsertArgs} args - Arguments to update or create a MarketingApproval.
+     * @example
+     * // Update or create a MarketingApproval
+     * const marketingApproval = await prisma.marketingApproval.upsert({
+     *   create: {
+     *     // ... data to create a MarketingApproval
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MarketingApproval we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MarketingApprovalUpsertArgs>(args: SelectSubset<T, MarketingApprovalUpsertArgs<ExtArgs>>): Prisma__MarketingApprovalClient<$Result.GetResult<Prisma.$MarketingApprovalPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MarketingApprovals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingApprovalCountArgs} args - Arguments to filter MarketingApprovals to count.
+     * @example
+     * // Count the number of MarketingApprovals
+     * const count = await prisma.marketingApproval.count({
+     *   where: {
+     *     // ... the filter for the MarketingApprovals we want to count
+     *   }
+     * })
+    **/
+    count<T extends MarketingApprovalCountArgs>(
+      args?: Subset<T, MarketingApprovalCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MarketingApprovalCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MarketingApproval.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingApprovalAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MarketingApprovalAggregateArgs>(args: Subset<T, MarketingApprovalAggregateArgs>): Prisma.PrismaPromise<GetMarketingApprovalAggregateType<T>>
+
+    /**
+     * Group by MarketingApproval.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingApprovalGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MarketingApprovalGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MarketingApprovalGroupByArgs['orderBy'] }
+        : { orderBy?: MarketingApprovalGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MarketingApprovalGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMarketingApprovalGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MarketingApproval model
+   */
+  readonly fields: MarketingApprovalFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MarketingApproval.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MarketingApprovalClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    draft<T extends MarketingDraftDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MarketingDraftDefaultArgs<ExtArgs>>): Prisma__MarketingDraftClient<$Result.GetResult<Prisma.$MarketingDraftPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MarketingApproval model
+   */
+  interface MarketingApprovalFieldRefs {
+    readonly id: FieldRef<"MarketingApproval", 'String'>
+    readonly draftId: FieldRef<"MarketingApproval", 'String'>
+    readonly decision: FieldRef<"MarketingApproval", 'String'>
+    readonly editedCopy: FieldRef<"MarketingApproval", 'String'>
+    readonly note: FieldRef<"MarketingApproval", 'String'>
+    readonly reviewer: FieldRef<"MarketingApproval", 'String'>
+    readonly createdAt: FieldRef<"MarketingApproval", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MarketingApproval findUnique
+   */
+  export type MarketingApprovalFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingApproval
+     */
+    select?: MarketingApprovalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingApproval
+     */
+    omit?: MarketingApprovalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingApprovalInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingApproval to fetch.
+     */
+    where: MarketingApprovalWhereUniqueInput
+  }
+
+  /**
+   * MarketingApproval findUniqueOrThrow
+   */
+  export type MarketingApprovalFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingApproval
+     */
+    select?: MarketingApprovalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingApproval
+     */
+    omit?: MarketingApprovalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingApprovalInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingApproval to fetch.
+     */
+    where: MarketingApprovalWhereUniqueInput
+  }
+
+  /**
+   * MarketingApproval findFirst
+   */
+  export type MarketingApprovalFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingApproval
+     */
+    select?: MarketingApprovalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingApproval
+     */
+    omit?: MarketingApprovalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingApprovalInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingApproval to fetch.
+     */
+    where?: MarketingApprovalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingApprovals to fetch.
+     */
+    orderBy?: MarketingApprovalOrderByWithRelationInput | MarketingApprovalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MarketingApprovals.
+     */
+    cursor?: MarketingApprovalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingApprovals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingApprovals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MarketingApprovals.
+     */
+    distinct?: MarketingApprovalScalarFieldEnum | MarketingApprovalScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingApproval findFirstOrThrow
+   */
+  export type MarketingApprovalFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingApproval
+     */
+    select?: MarketingApprovalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingApproval
+     */
+    omit?: MarketingApprovalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingApprovalInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingApproval to fetch.
+     */
+    where?: MarketingApprovalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingApprovals to fetch.
+     */
+    orderBy?: MarketingApprovalOrderByWithRelationInput | MarketingApprovalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MarketingApprovals.
+     */
+    cursor?: MarketingApprovalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingApprovals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingApprovals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MarketingApprovals.
+     */
+    distinct?: MarketingApprovalScalarFieldEnum | MarketingApprovalScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingApproval findMany
+   */
+  export type MarketingApprovalFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingApproval
+     */
+    select?: MarketingApprovalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingApproval
+     */
+    omit?: MarketingApprovalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingApprovalInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingApprovals to fetch.
+     */
+    where?: MarketingApprovalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingApprovals to fetch.
+     */
+    orderBy?: MarketingApprovalOrderByWithRelationInput | MarketingApprovalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MarketingApprovals.
+     */
+    cursor?: MarketingApprovalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingApprovals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingApprovals.
+     */
+    skip?: number
+    distinct?: MarketingApprovalScalarFieldEnum | MarketingApprovalScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingApproval create
+   */
+  export type MarketingApprovalCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingApproval
+     */
+    select?: MarketingApprovalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingApproval
+     */
+    omit?: MarketingApprovalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingApprovalInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MarketingApproval.
+     */
+    data: XOR<MarketingApprovalCreateInput, MarketingApprovalUncheckedCreateInput>
+  }
+
+  /**
+   * MarketingApproval createMany
+   */
+  export type MarketingApprovalCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MarketingApprovals.
+     */
+    data: MarketingApprovalCreateManyInput | MarketingApprovalCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MarketingApproval createManyAndReturn
+   */
+  export type MarketingApprovalCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingApproval
+     */
+    select?: MarketingApprovalSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingApproval
+     */
+    omit?: MarketingApprovalOmit<ExtArgs> | null
+    /**
+     * The data used to create many MarketingApprovals.
+     */
+    data: MarketingApprovalCreateManyInput | MarketingApprovalCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingApprovalIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MarketingApproval update
+   */
+  export type MarketingApprovalUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingApproval
+     */
+    select?: MarketingApprovalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingApproval
+     */
+    omit?: MarketingApprovalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingApprovalInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MarketingApproval.
+     */
+    data: XOR<MarketingApprovalUpdateInput, MarketingApprovalUncheckedUpdateInput>
+    /**
+     * Choose, which MarketingApproval to update.
+     */
+    where: MarketingApprovalWhereUniqueInput
+  }
+
+  /**
+   * MarketingApproval updateMany
+   */
+  export type MarketingApprovalUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MarketingApprovals.
+     */
+    data: XOR<MarketingApprovalUpdateManyMutationInput, MarketingApprovalUncheckedUpdateManyInput>
+    /**
+     * Filter which MarketingApprovals to update
+     */
+    where?: MarketingApprovalWhereInput
+    /**
+     * Limit how many MarketingApprovals to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MarketingApproval updateManyAndReturn
+   */
+  export type MarketingApprovalUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingApproval
+     */
+    select?: MarketingApprovalSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingApproval
+     */
+    omit?: MarketingApprovalOmit<ExtArgs> | null
+    /**
+     * The data used to update MarketingApprovals.
+     */
+    data: XOR<MarketingApprovalUpdateManyMutationInput, MarketingApprovalUncheckedUpdateManyInput>
+    /**
+     * Filter which MarketingApprovals to update
+     */
+    where?: MarketingApprovalWhereInput
+    /**
+     * Limit how many MarketingApprovals to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingApprovalIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MarketingApproval upsert
+   */
+  export type MarketingApprovalUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingApproval
+     */
+    select?: MarketingApprovalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingApproval
+     */
+    omit?: MarketingApprovalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingApprovalInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MarketingApproval to update in case it exists.
+     */
+    where: MarketingApprovalWhereUniqueInput
+    /**
+     * In case the MarketingApproval found by the `where` argument doesn't exist, create a new MarketingApproval with this data.
+     */
+    create: XOR<MarketingApprovalCreateInput, MarketingApprovalUncheckedCreateInput>
+    /**
+     * In case the MarketingApproval was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MarketingApprovalUpdateInput, MarketingApprovalUncheckedUpdateInput>
+  }
+
+  /**
+   * MarketingApproval delete
+   */
+  export type MarketingApprovalDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingApproval
+     */
+    select?: MarketingApprovalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingApproval
+     */
+    omit?: MarketingApprovalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingApprovalInclude<ExtArgs> | null
+    /**
+     * Filter which MarketingApproval to delete.
+     */
+    where: MarketingApprovalWhereUniqueInput
+  }
+
+  /**
+   * MarketingApproval deleteMany
+   */
+  export type MarketingApprovalDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MarketingApprovals to delete
+     */
+    where?: MarketingApprovalWhereInput
+    /**
+     * Limit how many MarketingApprovals to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MarketingApproval without action
+   */
+  export type MarketingApprovalDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingApproval
+     */
+    select?: MarketingApprovalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingApproval
+     */
+    omit?: MarketingApprovalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingApprovalInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MarketingAccountConnection
+   */
+
+  export type AggregateMarketingAccountConnection = {
+    _count: MarketingAccountConnectionCountAggregateOutputType | null
+    _min: MarketingAccountConnectionMinAggregateOutputType | null
+    _max: MarketingAccountConnectionMaxAggregateOutputType | null
+  }
+
+  export type MarketingAccountConnectionMinAggregateOutputType = {
+    id: string | null
+    platform: string | null
+    accountName: string | null
+    handle: string | null
+    profileUrl: string | null
+    verificationStatus: string | null
+    proofNote: string | null
+    lastVerifiedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MarketingAccountConnectionMaxAggregateOutputType = {
+    id: string | null
+    platform: string | null
+    accountName: string | null
+    handle: string | null
+    profileUrl: string | null
+    verificationStatus: string | null
+    proofNote: string | null
+    lastVerifiedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MarketingAccountConnectionCountAggregateOutputType = {
+    id: number
+    platform: number
+    accountName: number
+    handle: number
+    profileUrl: number
+    verificationStatus: number
+    proofNote: number
+    lastVerifiedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MarketingAccountConnectionMinAggregateInputType = {
+    id?: true
+    platform?: true
+    accountName?: true
+    handle?: true
+    profileUrl?: true
+    verificationStatus?: true
+    proofNote?: true
+    lastVerifiedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MarketingAccountConnectionMaxAggregateInputType = {
+    id?: true
+    platform?: true
+    accountName?: true
+    handle?: true
+    profileUrl?: true
+    verificationStatus?: true
+    proofNote?: true
+    lastVerifiedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MarketingAccountConnectionCountAggregateInputType = {
+    id?: true
+    platform?: true
+    accountName?: true
+    handle?: true
+    profileUrl?: true
+    verificationStatus?: true
+    proofNote?: true
+    lastVerifiedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MarketingAccountConnectionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MarketingAccountConnection to aggregate.
+     */
+    where?: MarketingAccountConnectionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingAccountConnections to fetch.
+     */
+    orderBy?: MarketingAccountConnectionOrderByWithRelationInput | MarketingAccountConnectionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MarketingAccountConnectionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingAccountConnections from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingAccountConnections.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MarketingAccountConnections
+    **/
+    _count?: true | MarketingAccountConnectionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MarketingAccountConnectionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MarketingAccountConnectionMaxAggregateInputType
+  }
+
+  export type GetMarketingAccountConnectionAggregateType<T extends MarketingAccountConnectionAggregateArgs> = {
+        [P in keyof T & keyof AggregateMarketingAccountConnection]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMarketingAccountConnection[P]>
+      : GetScalarType<T[P], AggregateMarketingAccountConnection[P]>
+  }
+
+
+
+
+  export type MarketingAccountConnectionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MarketingAccountConnectionWhereInput
+    orderBy?: MarketingAccountConnectionOrderByWithAggregationInput | MarketingAccountConnectionOrderByWithAggregationInput[]
+    by: MarketingAccountConnectionScalarFieldEnum[] | MarketingAccountConnectionScalarFieldEnum
+    having?: MarketingAccountConnectionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MarketingAccountConnectionCountAggregateInputType | true
+    _min?: MarketingAccountConnectionMinAggregateInputType
+    _max?: MarketingAccountConnectionMaxAggregateInputType
+  }
+
+  export type MarketingAccountConnectionGroupByOutputType = {
+    id: string
+    platform: string
+    accountName: string
+    handle: string
+    profileUrl: string
+    verificationStatus: string
+    proofNote: string
+    lastVerifiedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: MarketingAccountConnectionCountAggregateOutputType | null
+    _min: MarketingAccountConnectionMinAggregateOutputType | null
+    _max: MarketingAccountConnectionMaxAggregateOutputType | null
+  }
+
+  type GetMarketingAccountConnectionGroupByPayload<T extends MarketingAccountConnectionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MarketingAccountConnectionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MarketingAccountConnectionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MarketingAccountConnectionGroupByOutputType[P]>
+            : GetScalarType<T[P], MarketingAccountConnectionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MarketingAccountConnectionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    platform?: boolean
+    accountName?: boolean
+    handle?: boolean
+    profileUrl?: boolean
+    verificationStatus?: boolean
+    proofNote?: boolean
+    lastVerifiedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["marketingAccountConnection"]>
+
+  export type MarketingAccountConnectionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    platform?: boolean
+    accountName?: boolean
+    handle?: boolean
+    profileUrl?: boolean
+    verificationStatus?: boolean
+    proofNote?: boolean
+    lastVerifiedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["marketingAccountConnection"]>
+
+  export type MarketingAccountConnectionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    platform?: boolean
+    accountName?: boolean
+    handle?: boolean
+    profileUrl?: boolean
+    verificationStatus?: boolean
+    proofNote?: boolean
+    lastVerifiedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["marketingAccountConnection"]>
+
+  export type MarketingAccountConnectionSelectScalar = {
+    id?: boolean
+    platform?: boolean
+    accountName?: boolean
+    handle?: boolean
+    profileUrl?: boolean
+    verificationStatus?: boolean
+    proofNote?: boolean
+    lastVerifiedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MarketingAccountConnectionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "platform" | "accountName" | "handle" | "profileUrl" | "verificationStatus" | "proofNote" | "lastVerifiedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["marketingAccountConnection"]>
+
+  export type $MarketingAccountConnectionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MarketingAccountConnection"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      platform: string
+      accountName: string
+      handle: string
+      profileUrl: string
+      verificationStatus: string
+      proofNote: string
+      lastVerifiedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["marketingAccountConnection"]>
+    composites: {}
+  }
+
+  type MarketingAccountConnectionGetPayload<S extends boolean | null | undefined | MarketingAccountConnectionDefaultArgs> = $Result.GetResult<Prisma.$MarketingAccountConnectionPayload, S>
+
+  type MarketingAccountConnectionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MarketingAccountConnectionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MarketingAccountConnectionCountAggregateInputType | true
+    }
+
+  export interface MarketingAccountConnectionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MarketingAccountConnection'], meta: { name: 'MarketingAccountConnection' } }
+    /**
+     * Find zero or one MarketingAccountConnection that matches the filter.
+     * @param {MarketingAccountConnectionFindUniqueArgs} args - Arguments to find a MarketingAccountConnection
+     * @example
+     * // Get one MarketingAccountConnection
+     * const marketingAccountConnection = await prisma.marketingAccountConnection.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MarketingAccountConnectionFindUniqueArgs>(args: SelectSubset<T, MarketingAccountConnectionFindUniqueArgs<ExtArgs>>): Prisma__MarketingAccountConnectionClient<$Result.GetResult<Prisma.$MarketingAccountConnectionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MarketingAccountConnection that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MarketingAccountConnectionFindUniqueOrThrowArgs} args - Arguments to find a MarketingAccountConnection
+     * @example
+     * // Get one MarketingAccountConnection
+     * const marketingAccountConnection = await prisma.marketingAccountConnection.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MarketingAccountConnectionFindUniqueOrThrowArgs>(args: SelectSubset<T, MarketingAccountConnectionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MarketingAccountConnectionClient<$Result.GetResult<Prisma.$MarketingAccountConnectionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MarketingAccountConnection that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingAccountConnectionFindFirstArgs} args - Arguments to find a MarketingAccountConnection
+     * @example
+     * // Get one MarketingAccountConnection
+     * const marketingAccountConnection = await prisma.marketingAccountConnection.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MarketingAccountConnectionFindFirstArgs>(args?: SelectSubset<T, MarketingAccountConnectionFindFirstArgs<ExtArgs>>): Prisma__MarketingAccountConnectionClient<$Result.GetResult<Prisma.$MarketingAccountConnectionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MarketingAccountConnection that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingAccountConnectionFindFirstOrThrowArgs} args - Arguments to find a MarketingAccountConnection
+     * @example
+     * // Get one MarketingAccountConnection
+     * const marketingAccountConnection = await prisma.marketingAccountConnection.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MarketingAccountConnectionFindFirstOrThrowArgs>(args?: SelectSubset<T, MarketingAccountConnectionFindFirstOrThrowArgs<ExtArgs>>): Prisma__MarketingAccountConnectionClient<$Result.GetResult<Prisma.$MarketingAccountConnectionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MarketingAccountConnections that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingAccountConnectionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MarketingAccountConnections
+     * const marketingAccountConnections = await prisma.marketingAccountConnection.findMany()
+     * 
+     * // Get first 10 MarketingAccountConnections
+     * const marketingAccountConnections = await prisma.marketingAccountConnection.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const marketingAccountConnectionWithIdOnly = await prisma.marketingAccountConnection.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MarketingAccountConnectionFindManyArgs>(args?: SelectSubset<T, MarketingAccountConnectionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingAccountConnectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MarketingAccountConnection.
+     * @param {MarketingAccountConnectionCreateArgs} args - Arguments to create a MarketingAccountConnection.
+     * @example
+     * // Create one MarketingAccountConnection
+     * const MarketingAccountConnection = await prisma.marketingAccountConnection.create({
+     *   data: {
+     *     // ... data to create a MarketingAccountConnection
+     *   }
+     * })
+     * 
+     */
+    create<T extends MarketingAccountConnectionCreateArgs>(args: SelectSubset<T, MarketingAccountConnectionCreateArgs<ExtArgs>>): Prisma__MarketingAccountConnectionClient<$Result.GetResult<Prisma.$MarketingAccountConnectionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MarketingAccountConnections.
+     * @param {MarketingAccountConnectionCreateManyArgs} args - Arguments to create many MarketingAccountConnections.
+     * @example
+     * // Create many MarketingAccountConnections
+     * const marketingAccountConnection = await prisma.marketingAccountConnection.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MarketingAccountConnectionCreateManyArgs>(args?: SelectSubset<T, MarketingAccountConnectionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many MarketingAccountConnections and returns the data saved in the database.
+     * @param {MarketingAccountConnectionCreateManyAndReturnArgs} args - Arguments to create many MarketingAccountConnections.
+     * @example
+     * // Create many MarketingAccountConnections
+     * const marketingAccountConnection = await prisma.marketingAccountConnection.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many MarketingAccountConnections and only return the `id`
+     * const marketingAccountConnectionWithIdOnly = await prisma.marketingAccountConnection.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MarketingAccountConnectionCreateManyAndReturnArgs>(args?: SelectSubset<T, MarketingAccountConnectionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingAccountConnectionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a MarketingAccountConnection.
+     * @param {MarketingAccountConnectionDeleteArgs} args - Arguments to delete one MarketingAccountConnection.
+     * @example
+     * // Delete one MarketingAccountConnection
+     * const MarketingAccountConnection = await prisma.marketingAccountConnection.delete({
+     *   where: {
+     *     // ... filter to delete one MarketingAccountConnection
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MarketingAccountConnectionDeleteArgs>(args: SelectSubset<T, MarketingAccountConnectionDeleteArgs<ExtArgs>>): Prisma__MarketingAccountConnectionClient<$Result.GetResult<Prisma.$MarketingAccountConnectionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MarketingAccountConnection.
+     * @param {MarketingAccountConnectionUpdateArgs} args - Arguments to update one MarketingAccountConnection.
+     * @example
+     * // Update one MarketingAccountConnection
+     * const marketingAccountConnection = await prisma.marketingAccountConnection.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MarketingAccountConnectionUpdateArgs>(args: SelectSubset<T, MarketingAccountConnectionUpdateArgs<ExtArgs>>): Prisma__MarketingAccountConnectionClient<$Result.GetResult<Prisma.$MarketingAccountConnectionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MarketingAccountConnections.
+     * @param {MarketingAccountConnectionDeleteManyArgs} args - Arguments to filter MarketingAccountConnections to delete.
+     * @example
+     * // Delete a few MarketingAccountConnections
+     * const { count } = await prisma.marketingAccountConnection.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MarketingAccountConnectionDeleteManyArgs>(args?: SelectSubset<T, MarketingAccountConnectionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MarketingAccountConnections.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingAccountConnectionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MarketingAccountConnections
+     * const marketingAccountConnection = await prisma.marketingAccountConnection.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MarketingAccountConnectionUpdateManyArgs>(args: SelectSubset<T, MarketingAccountConnectionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MarketingAccountConnections and returns the data updated in the database.
+     * @param {MarketingAccountConnectionUpdateManyAndReturnArgs} args - Arguments to update many MarketingAccountConnections.
+     * @example
+     * // Update many MarketingAccountConnections
+     * const marketingAccountConnection = await prisma.marketingAccountConnection.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more MarketingAccountConnections and only return the `id`
+     * const marketingAccountConnectionWithIdOnly = await prisma.marketingAccountConnection.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends MarketingAccountConnectionUpdateManyAndReturnArgs>(args: SelectSubset<T, MarketingAccountConnectionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingAccountConnectionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one MarketingAccountConnection.
+     * @param {MarketingAccountConnectionUpsertArgs} args - Arguments to update or create a MarketingAccountConnection.
+     * @example
+     * // Update or create a MarketingAccountConnection
+     * const marketingAccountConnection = await prisma.marketingAccountConnection.upsert({
+     *   create: {
+     *     // ... data to create a MarketingAccountConnection
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MarketingAccountConnection we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MarketingAccountConnectionUpsertArgs>(args: SelectSubset<T, MarketingAccountConnectionUpsertArgs<ExtArgs>>): Prisma__MarketingAccountConnectionClient<$Result.GetResult<Prisma.$MarketingAccountConnectionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MarketingAccountConnections.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingAccountConnectionCountArgs} args - Arguments to filter MarketingAccountConnections to count.
+     * @example
+     * // Count the number of MarketingAccountConnections
+     * const count = await prisma.marketingAccountConnection.count({
+     *   where: {
+     *     // ... the filter for the MarketingAccountConnections we want to count
+     *   }
+     * })
+    **/
+    count<T extends MarketingAccountConnectionCountArgs>(
+      args?: Subset<T, MarketingAccountConnectionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MarketingAccountConnectionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MarketingAccountConnection.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingAccountConnectionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MarketingAccountConnectionAggregateArgs>(args: Subset<T, MarketingAccountConnectionAggregateArgs>): Prisma.PrismaPromise<GetMarketingAccountConnectionAggregateType<T>>
+
+    /**
+     * Group by MarketingAccountConnection.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingAccountConnectionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MarketingAccountConnectionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MarketingAccountConnectionGroupByArgs['orderBy'] }
+        : { orderBy?: MarketingAccountConnectionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MarketingAccountConnectionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMarketingAccountConnectionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MarketingAccountConnection model
+   */
+  readonly fields: MarketingAccountConnectionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MarketingAccountConnection.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MarketingAccountConnectionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MarketingAccountConnection model
+   */
+  interface MarketingAccountConnectionFieldRefs {
+    readonly id: FieldRef<"MarketingAccountConnection", 'String'>
+    readonly platform: FieldRef<"MarketingAccountConnection", 'String'>
+    readonly accountName: FieldRef<"MarketingAccountConnection", 'String'>
+    readonly handle: FieldRef<"MarketingAccountConnection", 'String'>
+    readonly profileUrl: FieldRef<"MarketingAccountConnection", 'String'>
+    readonly verificationStatus: FieldRef<"MarketingAccountConnection", 'String'>
+    readonly proofNote: FieldRef<"MarketingAccountConnection", 'String'>
+    readonly lastVerifiedAt: FieldRef<"MarketingAccountConnection", 'DateTime'>
+    readonly createdAt: FieldRef<"MarketingAccountConnection", 'DateTime'>
+    readonly updatedAt: FieldRef<"MarketingAccountConnection", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MarketingAccountConnection findUnique
+   */
+  export type MarketingAccountConnectionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingAccountConnection
+     */
+    select?: MarketingAccountConnectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingAccountConnection
+     */
+    omit?: MarketingAccountConnectionOmit<ExtArgs> | null
+    /**
+     * Filter, which MarketingAccountConnection to fetch.
+     */
+    where: MarketingAccountConnectionWhereUniqueInput
+  }
+
+  /**
+   * MarketingAccountConnection findUniqueOrThrow
+   */
+  export type MarketingAccountConnectionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingAccountConnection
+     */
+    select?: MarketingAccountConnectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingAccountConnection
+     */
+    omit?: MarketingAccountConnectionOmit<ExtArgs> | null
+    /**
+     * Filter, which MarketingAccountConnection to fetch.
+     */
+    where: MarketingAccountConnectionWhereUniqueInput
+  }
+
+  /**
+   * MarketingAccountConnection findFirst
+   */
+  export type MarketingAccountConnectionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingAccountConnection
+     */
+    select?: MarketingAccountConnectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingAccountConnection
+     */
+    omit?: MarketingAccountConnectionOmit<ExtArgs> | null
+    /**
+     * Filter, which MarketingAccountConnection to fetch.
+     */
+    where?: MarketingAccountConnectionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingAccountConnections to fetch.
+     */
+    orderBy?: MarketingAccountConnectionOrderByWithRelationInput | MarketingAccountConnectionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MarketingAccountConnections.
+     */
+    cursor?: MarketingAccountConnectionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingAccountConnections from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingAccountConnections.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MarketingAccountConnections.
+     */
+    distinct?: MarketingAccountConnectionScalarFieldEnum | MarketingAccountConnectionScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingAccountConnection findFirstOrThrow
+   */
+  export type MarketingAccountConnectionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingAccountConnection
+     */
+    select?: MarketingAccountConnectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingAccountConnection
+     */
+    omit?: MarketingAccountConnectionOmit<ExtArgs> | null
+    /**
+     * Filter, which MarketingAccountConnection to fetch.
+     */
+    where?: MarketingAccountConnectionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingAccountConnections to fetch.
+     */
+    orderBy?: MarketingAccountConnectionOrderByWithRelationInput | MarketingAccountConnectionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MarketingAccountConnections.
+     */
+    cursor?: MarketingAccountConnectionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingAccountConnections from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingAccountConnections.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MarketingAccountConnections.
+     */
+    distinct?: MarketingAccountConnectionScalarFieldEnum | MarketingAccountConnectionScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingAccountConnection findMany
+   */
+  export type MarketingAccountConnectionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingAccountConnection
+     */
+    select?: MarketingAccountConnectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingAccountConnection
+     */
+    omit?: MarketingAccountConnectionOmit<ExtArgs> | null
+    /**
+     * Filter, which MarketingAccountConnections to fetch.
+     */
+    where?: MarketingAccountConnectionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingAccountConnections to fetch.
+     */
+    orderBy?: MarketingAccountConnectionOrderByWithRelationInput | MarketingAccountConnectionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MarketingAccountConnections.
+     */
+    cursor?: MarketingAccountConnectionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingAccountConnections from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingAccountConnections.
+     */
+    skip?: number
+    distinct?: MarketingAccountConnectionScalarFieldEnum | MarketingAccountConnectionScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingAccountConnection create
+   */
+  export type MarketingAccountConnectionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingAccountConnection
+     */
+    select?: MarketingAccountConnectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingAccountConnection
+     */
+    omit?: MarketingAccountConnectionOmit<ExtArgs> | null
+    /**
+     * The data needed to create a MarketingAccountConnection.
+     */
+    data: XOR<MarketingAccountConnectionCreateInput, MarketingAccountConnectionUncheckedCreateInput>
+  }
+
+  /**
+   * MarketingAccountConnection createMany
+   */
+  export type MarketingAccountConnectionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MarketingAccountConnections.
+     */
+    data: MarketingAccountConnectionCreateManyInput | MarketingAccountConnectionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MarketingAccountConnection createManyAndReturn
+   */
+  export type MarketingAccountConnectionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingAccountConnection
+     */
+    select?: MarketingAccountConnectionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingAccountConnection
+     */
+    omit?: MarketingAccountConnectionOmit<ExtArgs> | null
+    /**
+     * The data used to create many MarketingAccountConnections.
+     */
+    data: MarketingAccountConnectionCreateManyInput | MarketingAccountConnectionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MarketingAccountConnection update
+   */
+  export type MarketingAccountConnectionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingAccountConnection
+     */
+    select?: MarketingAccountConnectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingAccountConnection
+     */
+    omit?: MarketingAccountConnectionOmit<ExtArgs> | null
+    /**
+     * The data needed to update a MarketingAccountConnection.
+     */
+    data: XOR<MarketingAccountConnectionUpdateInput, MarketingAccountConnectionUncheckedUpdateInput>
+    /**
+     * Choose, which MarketingAccountConnection to update.
+     */
+    where: MarketingAccountConnectionWhereUniqueInput
+  }
+
+  /**
+   * MarketingAccountConnection updateMany
+   */
+  export type MarketingAccountConnectionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MarketingAccountConnections.
+     */
+    data: XOR<MarketingAccountConnectionUpdateManyMutationInput, MarketingAccountConnectionUncheckedUpdateManyInput>
+    /**
+     * Filter which MarketingAccountConnections to update
+     */
+    where?: MarketingAccountConnectionWhereInput
+    /**
+     * Limit how many MarketingAccountConnections to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MarketingAccountConnection updateManyAndReturn
+   */
+  export type MarketingAccountConnectionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingAccountConnection
+     */
+    select?: MarketingAccountConnectionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingAccountConnection
+     */
+    omit?: MarketingAccountConnectionOmit<ExtArgs> | null
+    /**
+     * The data used to update MarketingAccountConnections.
+     */
+    data: XOR<MarketingAccountConnectionUpdateManyMutationInput, MarketingAccountConnectionUncheckedUpdateManyInput>
+    /**
+     * Filter which MarketingAccountConnections to update
+     */
+    where?: MarketingAccountConnectionWhereInput
+    /**
+     * Limit how many MarketingAccountConnections to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MarketingAccountConnection upsert
+   */
+  export type MarketingAccountConnectionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingAccountConnection
+     */
+    select?: MarketingAccountConnectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingAccountConnection
+     */
+    omit?: MarketingAccountConnectionOmit<ExtArgs> | null
+    /**
+     * The filter to search for the MarketingAccountConnection to update in case it exists.
+     */
+    where: MarketingAccountConnectionWhereUniqueInput
+    /**
+     * In case the MarketingAccountConnection found by the `where` argument doesn't exist, create a new MarketingAccountConnection with this data.
+     */
+    create: XOR<MarketingAccountConnectionCreateInput, MarketingAccountConnectionUncheckedCreateInput>
+    /**
+     * In case the MarketingAccountConnection was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MarketingAccountConnectionUpdateInput, MarketingAccountConnectionUncheckedUpdateInput>
+  }
+
+  /**
+   * MarketingAccountConnection delete
+   */
+  export type MarketingAccountConnectionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingAccountConnection
+     */
+    select?: MarketingAccountConnectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingAccountConnection
+     */
+    omit?: MarketingAccountConnectionOmit<ExtArgs> | null
+    /**
+     * Filter which MarketingAccountConnection to delete.
+     */
+    where: MarketingAccountConnectionWhereUniqueInput
+  }
+
+  /**
+   * MarketingAccountConnection deleteMany
+   */
+  export type MarketingAccountConnectionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MarketingAccountConnections to delete
+     */
+    where?: MarketingAccountConnectionWhereInput
+    /**
+     * Limit how many MarketingAccountConnections to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MarketingAccountConnection without action
+   */
+  export type MarketingAccountConnectionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingAccountConnection
+     */
+    select?: MarketingAccountConnectionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingAccountConnection
+     */
+    omit?: MarketingAccountConnectionOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MarketingPublishAssist
+   */
+
+  export type AggregateMarketingPublishAssist = {
+    _count: MarketingPublishAssistCountAggregateOutputType | null
+    _min: MarketingPublishAssistMinAggregateOutputType | null
+    _max: MarketingPublishAssistMaxAggregateOutputType | null
+  }
+
+  export type MarketingPublishAssistMinAggregateOutputType = {
+    id: string | null
+    draftId: string | null
+    preparedCopy: string | null
+    sourceLabel: string | null
+    status: string | null
+    manualPublishedUrl: string | null
+    manualPublishedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MarketingPublishAssistMaxAggregateOutputType = {
+    id: string | null
+    draftId: string | null
+    preparedCopy: string | null
+    sourceLabel: string | null
+    status: string | null
+    manualPublishedUrl: string | null
+    manualPublishedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MarketingPublishAssistCountAggregateOutputType = {
+    id: number
+    draftId: number
+    preparedCopy: number
+    assetChecklist: number
+    manualPostingChecklist: number
+    sourceLabel: number
+    status: number
+    manualPublishedUrl: number
+    manualPublishedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MarketingPublishAssistMinAggregateInputType = {
+    id?: true
+    draftId?: true
+    preparedCopy?: true
+    sourceLabel?: true
+    status?: true
+    manualPublishedUrl?: true
+    manualPublishedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MarketingPublishAssistMaxAggregateInputType = {
+    id?: true
+    draftId?: true
+    preparedCopy?: true
+    sourceLabel?: true
+    status?: true
+    manualPublishedUrl?: true
+    manualPublishedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MarketingPublishAssistCountAggregateInputType = {
+    id?: true
+    draftId?: true
+    preparedCopy?: true
+    assetChecklist?: true
+    manualPostingChecklist?: true
+    sourceLabel?: true
+    status?: true
+    manualPublishedUrl?: true
+    manualPublishedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MarketingPublishAssistAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MarketingPublishAssist to aggregate.
+     */
+    where?: MarketingPublishAssistWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingPublishAssists to fetch.
+     */
+    orderBy?: MarketingPublishAssistOrderByWithRelationInput | MarketingPublishAssistOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MarketingPublishAssistWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingPublishAssists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingPublishAssists.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MarketingPublishAssists
+    **/
+    _count?: true | MarketingPublishAssistCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MarketingPublishAssistMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MarketingPublishAssistMaxAggregateInputType
+  }
+
+  export type GetMarketingPublishAssistAggregateType<T extends MarketingPublishAssistAggregateArgs> = {
+        [P in keyof T & keyof AggregateMarketingPublishAssist]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMarketingPublishAssist[P]>
+      : GetScalarType<T[P], AggregateMarketingPublishAssist[P]>
+  }
+
+
+
+
+  export type MarketingPublishAssistGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MarketingPublishAssistWhereInput
+    orderBy?: MarketingPublishAssistOrderByWithAggregationInput | MarketingPublishAssistOrderByWithAggregationInput[]
+    by: MarketingPublishAssistScalarFieldEnum[] | MarketingPublishAssistScalarFieldEnum
+    having?: MarketingPublishAssistScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MarketingPublishAssistCountAggregateInputType | true
+    _min?: MarketingPublishAssistMinAggregateInputType
+    _max?: MarketingPublishAssistMaxAggregateInputType
+  }
+
+  export type MarketingPublishAssistGroupByOutputType = {
+    id: string
+    draftId: string
+    preparedCopy: string
+    assetChecklist: JsonValue
+    manualPostingChecklist: JsonValue
+    sourceLabel: string
+    status: string
+    manualPublishedUrl: string | null
+    manualPublishedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: MarketingPublishAssistCountAggregateOutputType | null
+    _min: MarketingPublishAssistMinAggregateOutputType | null
+    _max: MarketingPublishAssistMaxAggregateOutputType | null
+  }
+
+  type GetMarketingPublishAssistGroupByPayload<T extends MarketingPublishAssistGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MarketingPublishAssistGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MarketingPublishAssistGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MarketingPublishAssistGroupByOutputType[P]>
+            : GetScalarType<T[P], MarketingPublishAssistGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MarketingPublishAssistSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    draftId?: boolean
+    preparedCopy?: boolean
+    assetChecklist?: boolean
+    manualPostingChecklist?: boolean
+    sourceLabel?: boolean
+    status?: boolean
+    manualPublishedUrl?: boolean
+    manualPublishedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    draft?: boolean | MarketingDraftDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["marketingPublishAssist"]>
+
+  export type MarketingPublishAssistSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    draftId?: boolean
+    preparedCopy?: boolean
+    assetChecklist?: boolean
+    manualPostingChecklist?: boolean
+    sourceLabel?: boolean
+    status?: boolean
+    manualPublishedUrl?: boolean
+    manualPublishedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    draft?: boolean | MarketingDraftDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["marketingPublishAssist"]>
+
+  export type MarketingPublishAssistSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    draftId?: boolean
+    preparedCopy?: boolean
+    assetChecklist?: boolean
+    manualPostingChecklist?: boolean
+    sourceLabel?: boolean
+    status?: boolean
+    manualPublishedUrl?: boolean
+    manualPublishedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    draft?: boolean | MarketingDraftDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["marketingPublishAssist"]>
+
+  export type MarketingPublishAssistSelectScalar = {
+    id?: boolean
+    draftId?: boolean
+    preparedCopy?: boolean
+    assetChecklist?: boolean
+    manualPostingChecklist?: boolean
+    sourceLabel?: boolean
+    status?: boolean
+    manualPublishedUrl?: boolean
+    manualPublishedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MarketingPublishAssistOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "draftId" | "preparedCopy" | "assetChecklist" | "manualPostingChecklist" | "sourceLabel" | "status" | "manualPublishedUrl" | "manualPublishedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["marketingPublishAssist"]>
+  export type MarketingPublishAssistInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    draft?: boolean | MarketingDraftDefaultArgs<ExtArgs>
+  }
+  export type MarketingPublishAssistIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    draft?: boolean | MarketingDraftDefaultArgs<ExtArgs>
+  }
+  export type MarketingPublishAssistIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    draft?: boolean | MarketingDraftDefaultArgs<ExtArgs>
+  }
+
+  export type $MarketingPublishAssistPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MarketingPublishAssist"
+    objects: {
+      draft: Prisma.$MarketingDraftPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      draftId: string
+      preparedCopy: string
+      assetChecklist: Prisma.JsonValue
+      manualPostingChecklist: Prisma.JsonValue
+      sourceLabel: string
+      status: string
+      manualPublishedUrl: string | null
+      manualPublishedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["marketingPublishAssist"]>
+    composites: {}
+  }
+
+  type MarketingPublishAssistGetPayload<S extends boolean | null | undefined | MarketingPublishAssistDefaultArgs> = $Result.GetResult<Prisma.$MarketingPublishAssistPayload, S>
+
+  type MarketingPublishAssistCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MarketingPublishAssistFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MarketingPublishAssistCountAggregateInputType | true
+    }
+
+  export interface MarketingPublishAssistDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MarketingPublishAssist'], meta: { name: 'MarketingPublishAssist' } }
+    /**
+     * Find zero or one MarketingPublishAssist that matches the filter.
+     * @param {MarketingPublishAssistFindUniqueArgs} args - Arguments to find a MarketingPublishAssist
+     * @example
+     * // Get one MarketingPublishAssist
+     * const marketingPublishAssist = await prisma.marketingPublishAssist.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MarketingPublishAssistFindUniqueArgs>(args: SelectSubset<T, MarketingPublishAssistFindUniqueArgs<ExtArgs>>): Prisma__MarketingPublishAssistClient<$Result.GetResult<Prisma.$MarketingPublishAssistPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MarketingPublishAssist that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MarketingPublishAssistFindUniqueOrThrowArgs} args - Arguments to find a MarketingPublishAssist
+     * @example
+     * // Get one MarketingPublishAssist
+     * const marketingPublishAssist = await prisma.marketingPublishAssist.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MarketingPublishAssistFindUniqueOrThrowArgs>(args: SelectSubset<T, MarketingPublishAssistFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MarketingPublishAssistClient<$Result.GetResult<Prisma.$MarketingPublishAssistPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MarketingPublishAssist that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingPublishAssistFindFirstArgs} args - Arguments to find a MarketingPublishAssist
+     * @example
+     * // Get one MarketingPublishAssist
+     * const marketingPublishAssist = await prisma.marketingPublishAssist.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MarketingPublishAssistFindFirstArgs>(args?: SelectSubset<T, MarketingPublishAssistFindFirstArgs<ExtArgs>>): Prisma__MarketingPublishAssistClient<$Result.GetResult<Prisma.$MarketingPublishAssistPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MarketingPublishAssist that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingPublishAssistFindFirstOrThrowArgs} args - Arguments to find a MarketingPublishAssist
+     * @example
+     * // Get one MarketingPublishAssist
+     * const marketingPublishAssist = await prisma.marketingPublishAssist.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MarketingPublishAssistFindFirstOrThrowArgs>(args?: SelectSubset<T, MarketingPublishAssistFindFirstOrThrowArgs<ExtArgs>>): Prisma__MarketingPublishAssistClient<$Result.GetResult<Prisma.$MarketingPublishAssistPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MarketingPublishAssists that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingPublishAssistFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MarketingPublishAssists
+     * const marketingPublishAssists = await prisma.marketingPublishAssist.findMany()
+     * 
+     * // Get first 10 MarketingPublishAssists
+     * const marketingPublishAssists = await prisma.marketingPublishAssist.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const marketingPublishAssistWithIdOnly = await prisma.marketingPublishAssist.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MarketingPublishAssistFindManyArgs>(args?: SelectSubset<T, MarketingPublishAssistFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingPublishAssistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MarketingPublishAssist.
+     * @param {MarketingPublishAssistCreateArgs} args - Arguments to create a MarketingPublishAssist.
+     * @example
+     * // Create one MarketingPublishAssist
+     * const MarketingPublishAssist = await prisma.marketingPublishAssist.create({
+     *   data: {
+     *     // ... data to create a MarketingPublishAssist
+     *   }
+     * })
+     * 
+     */
+    create<T extends MarketingPublishAssistCreateArgs>(args: SelectSubset<T, MarketingPublishAssistCreateArgs<ExtArgs>>): Prisma__MarketingPublishAssistClient<$Result.GetResult<Prisma.$MarketingPublishAssistPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MarketingPublishAssists.
+     * @param {MarketingPublishAssistCreateManyArgs} args - Arguments to create many MarketingPublishAssists.
+     * @example
+     * // Create many MarketingPublishAssists
+     * const marketingPublishAssist = await prisma.marketingPublishAssist.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MarketingPublishAssistCreateManyArgs>(args?: SelectSubset<T, MarketingPublishAssistCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many MarketingPublishAssists and returns the data saved in the database.
+     * @param {MarketingPublishAssistCreateManyAndReturnArgs} args - Arguments to create many MarketingPublishAssists.
+     * @example
+     * // Create many MarketingPublishAssists
+     * const marketingPublishAssist = await prisma.marketingPublishAssist.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many MarketingPublishAssists and only return the `id`
+     * const marketingPublishAssistWithIdOnly = await prisma.marketingPublishAssist.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MarketingPublishAssistCreateManyAndReturnArgs>(args?: SelectSubset<T, MarketingPublishAssistCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingPublishAssistPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a MarketingPublishAssist.
+     * @param {MarketingPublishAssistDeleteArgs} args - Arguments to delete one MarketingPublishAssist.
+     * @example
+     * // Delete one MarketingPublishAssist
+     * const MarketingPublishAssist = await prisma.marketingPublishAssist.delete({
+     *   where: {
+     *     // ... filter to delete one MarketingPublishAssist
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MarketingPublishAssistDeleteArgs>(args: SelectSubset<T, MarketingPublishAssistDeleteArgs<ExtArgs>>): Prisma__MarketingPublishAssistClient<$Result.GetResult<Prisma.$MarketingPublishAssistPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MarketingPublishAssist.
+     * @param {MarketingPublishAssistUpdateArgs} args - Arguments to update one MarketingPublishAssist.
+     * @example
+     * // Update one MarketingPublishAssist
+     * const marketingPublishAssist = await prisma.marketingPublishAssist.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MarketingPublishAssistUpdateArgs>(args: SelectSubset<T, MarketingPublishAssistUpdateArgs<ExtArgs>>): Prisma__MarketingPublishAssistClient<$Result.GetResult<Prisma.$MarketingPublishAssistPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MarketingPublishAssists.
+     * @param {MarketingPublishAssistDeleteManyArgs} args - Arguments to filter MarketingPublishAssists to delete.
+     * @example
+     * // Delete a few MarketingPublishAssists
+     * const { count } = await prisma.marketingPublishAssist.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MarketingPublishAssistDeleteManyArgs>(args?: SelectSubset<T, MarketingPublishAssistDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MarketingPublishAssists.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingPublishAssistUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MarketingPublishAssists
+     * const marketingPublishAssist = await prisma.marketingPublishAssist.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MarketingPublishAssistUpdateManyArgs>(args: SelectSubset<T, MarketingPublishAssistUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MarketingPublishAssists and returns the data updated in the database.
+     * @param {MarketingPublishAssistUpdateManyAndReturnArgs} args - Arguments to update many MarketingPublishAssists.
+     * @example
+     * // Update many MarketingPublishAssists
+     * const marketingPublishAssist = await prisma.marketingPublishAssist.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more MarketingPublishAssists and only return the `id`
+     * const marketingPublishAssistWithIdOnly = await prisma.marketingPublishAssist.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends MarketingPublishAssistUpdateManyAndReturnArgs>(args: SelectSubset<T, MarketingPublishAssistUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingPublishAssistPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one MarketingPublishAssist.
+     * @param {MarketingPublishAssistUpsertArgs} args - Arguments to update or create a MarketingPublishAssist.
+     * @example
+     * // Update or create a MarketingPublishAssist
+     * const marketingPublishAssist = await prisma.marketingPublishAssist.upsert({
+     *   create: {
+     *     // ... data to create a MarketingPublishAssist
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MarketingPublishAssist we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MarketingPublishAssistUpsertArgs>(args: SelectSubset<T, MarketingPublishAssistUpsertArgs<ExtArgs>>): Prisma__MarketingPublishAssistClient<$Result.GetResult<Prisma.$MarketingPublishAssistPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MarketingPublishAssists.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingPublishAssistCountArgs} args - Arguments to filter MarketingPublishAssists to count.
+     * @example
+     * // Count the number of MarketingPublishAssists
+     * const count = await prisma.marketingPublishAssist.count({
+     *   where: {
+     *     // ... the filter for the MarketingPublishAssists we want to count
+     *   }
+     * })
+    **/
+    count<T extends MarketingPublishAssistCountArgs>(
+      args?: Subset<T, MarketingPublishAssistCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MarketingPublishAssistCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MarketingPublishAssist.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingPublishAssistAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MarketingPublishAssistAggregateArgs>(args: Subset<T, MarketingPublishAssistAggregateArgs>): Prisma.PrismaPromise<GetMarketingPublishAssistAggregateType<T>>
+
+    /**
+     * Group by MarketingPublishAssist.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MarketingPublishAssistGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MarketingPublishAssistGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MarketingPublishAssistGroupByArgs['orderBy'] }
+        : { orderBy?: MarketingPublishAssistGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MarketingPublishAssistGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMarketingPublishAssistGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MarketingPublishAssist model
+   */
+  readonly fields: MarketingPublishAssistFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MarketingPublishAssist.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MarketingPublishAssistClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    draft<T extends MarketingDraftDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MarketingDraftDefaultArgs<ExtArgs>>): Prisma__MarketingDraftClient<$Result.GetResult<Prisma.$MarketingDraftPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MarketingPublishAssist model
+   */
+  interface MarketingPublishAssistFieldRefs {
+    readonly id: FieldRef<"MarketingPublishAssist", 'String'>
+    readonly draftId: FieldRef<"MarketingPublishAssist", 'String'>
+    readonly preparedCopy: FieldRef<"MarketingPublishAssist", 'String'>
+    readonly assetChecklist: FieldRef<"MarketingPublishAssist", 'Json'>
+    readonly manualPostingChecklist: FieldRef<"MarketingPublishAssist", 'Json'>
+    readonly sourceLabel: FieldRef<"MarketingPublishAssist", 'String'>
+    readonly status: FieldRef<"MarketingPublishAssist", 'String'>
+    readonly manualPublishedUrl: FieldRef<"MarketingPublishAssist", 'String'>
+    readonly manualPublishedAt: FieldRef<"MarketingPublishAssist", 'DateTime'>
+    readonly createdAt: FieldRef<"MarketingPublishAssist", 'DateTime'>
+    readonly updatedAt: FieldRef<"MarketingPublishAssist", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MarketingPublishAssist findUnique
+   */
+  export type MarketingPublishAssistFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingPublishAssist
+     */
+    select?: MarketingPublishAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingPublishAssist
+     */
+    omit?: MarketingPublishAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingPublishAssistInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingPublishAssist to fetch.
+     */
+    where: MarketingPublishAssistWhereUniqueInput
+  }
+
+  /**
+   * MarketingPublishAssist findUniqueOrThrow
+   */
+  export type MarketingPublishAssistFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingPublishAssist
+     */
+    select?: MarketingPublishAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingPublishAssist
+     */
+    omit?: MarketingPublishAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingPublishAssistInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingPublishAssist to fetch.
+     */
+    where: MarketingPublishAssistWhereUniqueInput
+  }
+
+  /**
+   * MarketingPublishAssist findFirst
+   */
+  export type MarketingPublishAssistFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingPublishAssist
+     */
+    select?: MarketingPublishAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingPublishAssist
+     */
+    omit?: MarketingPublishAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingPublishAssistInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingPublishAssist to fetch.
+     */
+    where?: MarketingPublishAssistWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingPublishAssists to fetch.
+     */
+    orderBy?: MarketingPublishAssistOrderByWithRelationInput | MarketingPublishAssistOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MarketingPublishAssists.
+     */
+    cursor?: MarketingPublishAssistWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingPublishAssists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingPublishAssists.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MarketingPublishAssists.
+     */
+    distinct?: MarketingPublishAssistScalarFieldEnum | MarketingPublishAssistScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingPublishAssist findFirstOrThrow
+   */
+  export type MarketingPublishAssistFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingPublishAssist
+     */
+    select?: MarketingPublishAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingPublishAssist
+     */
+    omit?: MarketingPublishAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingPublishAssistInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingPublishAssist to fetch.
+     */
+    where?: MarketingPublishAssistWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingPublishAssists to fetch.
+     */
+    orderBy?: MarketingPublishAssistOrderByWithRelationInput | MarketingPublishAssistOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MarketingPublishAssists.
+     */
+    cursor?: MarketingPublishAssistWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingPublishAssists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingPublishAssists.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MarketingPublishAssists.
+     */
+    distinct?: MarketingPublishAssistScalarFieldEnum | MarketingPublishAssistScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingPublishAssist findMany
+   */
+  export type MarketingPublishAssistFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingPublishAssist
+     */
+    select?: MarketingPublishAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingPublishAssist
+     */
+    omit?: MarketingPublishAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingPublishAssistInclude<ExtArgs> | null
+    /**
+     * Filter, which MarketingPublishAssists to fetch.
+     */
+    where?: MarketingPublishAssistWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MarketingPublishAssists to fetch.
+     */
+    orderBy?: MarketingPublishAssistOrderByWithRelationInput | MarketingPublishAssistOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MarketingPublishAssists.
+     */
+    cursor?: MarketingPublishAssistWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MarketingPublishAssists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MarketingPublishAssists.
+     */
+    skip?: number
+    distinct?: MarketingPublishAssistScalarFieldEnum | MarketingPublishAssistScalarFieldEnum[]
+  }
+
+  /**
+   * MarketingPublishAssist create
+   */
+  export type MarketingPublishAssistCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingPublishAssist
+     */
+    select?: MarketingPublishAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingPublishAssist
+     */
+    omit?: MarketingPublishAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingPublishAssistInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MarketingPublishAssist.
+     */
+    data: XOR<MarketingPublishAssistCreateInput, MarketingPublishAssistUncheckedCreateInput>
+  }
+
+  /**
+   * MarketingPublishAssist createMany
+   */
+  export type MarketingPublishAssistCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MarketingPublishAssists.
+     */
+    data: MarketingPublishAssistCreateManyInput | MarketingPublishAssistCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MarketingPublishAssist createManyAndReturn
+   */
+  export type MarketingPublishAssistCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingPublishAssist
+     */
+    select?: MarketingPublishAssistSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingPublishAssist
+     */
+    omit?: MarketingPublishAssistOmit<ExtArgs> | null
+    /**
+     * The data used to create many MarketingPublishAssists.
+     */
+    data: MarketingPublishAssistCreateManyInput | MarketingPublishAssistCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingPublishAssistIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MarketingPublishAssist update
+   */
+  export type MarketingPublishAssistUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingPublishAssist
+     */
+    select?: MarketingPublishAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingPublishAssist
+     */
+    omit?: MarketingPublishAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingPublishAssistInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MarketingPublishAssist.
+     */
+    data: XOR<MarketingPublishAssistUpdateInput, MarketingPublishAssistUncheckedUpdateInput>
+    /**
+     * Choose, which MarketingPublishAssist to update.
+     */
+    where: MarketingPublishAssistWhereUniqueInput
+  }
+
+  /**
+   * MarketingPublishAssist updateMany
+   */
+  export type MarketingPublishAssistUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MarketingPublishAssists.
+     */
+    data: XOR<MarketingPublishAssistUpdateManyMutationInput, MarketingPublishAssistUncheckedUpdateManyInput>
+    /**
+     * Filter which MarketingPublishAssists to update
+     */
+    where?: MarketingPublishAssistWhereInput
+    /**
+     * Limit how many MarketingPublishAssists to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MarketingPublishAssist updateManyAndReturn
+   */
+  export type MarketingPublishAssistUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingPublishAssist
+     */
+    select?: MarketingPublishAssistSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingPublishAssist
+     */
+    omit?: MarketingPublishAssistOmit<ExtArgs> | null
+    /**
+     * The data used to update MarketingPublishAssists.
+     */
+    data: XOR<MarketingPublishAssistUpdateManyMutationInput, MarketingPublishAssistUncheckedUpdateManyInput>
+    /**
+     * Filter which MarketingPublishAssists to update
+     */
+    where?: MarketingPublishAssistWhereInput
+    /**
+     * Limit how many MarketingPublishAssists to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingPublishAssistIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MarketingPublishAssist upsert
+   */
+  export type MarketingPublishAssistUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingPublishAssist
+     */
+    select?: MarketingPublishAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingPublishAssist
+     */
+    omit?: MarketingPublishAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingPublishAssistInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MarketingPublishAssist to update in case it exists.
+     */
+    where: MarketingPublishAssistWhereUniqueInput
+    /**
+     * In case the MarketingPublishAssist found by the `where` argument doesn't exist, create a new MarketingPublishAssist with this data.
+     */
+    create: XOR<MarketingPublishAssistCreateInput, MarketingPublishAssistUncheckedCreateInput>
+    /**
+     * In case the MarketingPublishAssist was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MarketingPublishAssistUpdateInput, MarketingPublishAssistUncheckedUpdateInput>
+  }
+
+  /**
+   * MarketingPublishAssist delete
+   */
+  export type MarketingPublishAssistDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingPublishAssist
+     */
+    select?: MarketingPublishAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingPublishAssist
+     */
+    omit?: MarketingPublishAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingPublishAssistInclude<ExtArgs> | null
+    /**
+     * Filter which MarketingPublishAssist to delete.
+     */
+    where: MarketingPublishAssistWhereUniqueInput
+  }
+
+  /**
+   * MarketingPublishAssist deleteMany
+   */
+  export type MarketingPublishAssistDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MarketingPublishAssists to delete
+     */
+    where?: MarketingPublishAssistWhereInput
+    /**
+     * Limit how many MarketingPublishAssists to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MarketingPublishAssist without action
+   */
+  export type MarketingPublishAssistDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MarketingPublishAssist
+     */
+    select?: MarketingPublishAssistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MarketingPublishAssist
+     */
+    omit?: MarketingPublishAssistOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MarketingPublishAssistInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -13748,6 +18618,71 @@ export namespace Prisma {
   export type BuyerActivityScalarFieldEnum = (typeof BuyerActivityScalarFieldEnum)[keyof typeof BuyerActivityScalarFieldEnum]
 
 
+  export const MarketingDraftScalarFieldEnum: {
+    id: 'id',
+    channel: 'channel',
+    topic: 'topic',
+    sourceLabel: 'sourceLabel',
+    status: 'status',
+    draftCopy: 'draftCopy',
+    assetNotes: 'assetNotes',
+    assumptions: 'assumptions',
+    safetyFlags: 'safetyFlags',
+    createdSource: 'createdSource',
+    createdBy: 'createdBy',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MarketingDraftScalarFieldEnum = (typeof MarketingDraftScalarFieldEnum)[keyof typeof MarketingDraftScalarFieldEnum]
+
+
+  export const MarketingApprovalScalarFieldEnum: {
+    id: 'id',
+    draftId: 'draftId',
+    decision: 'decision',
+    editedCopy: 'editedCopy',
+    note: 'note',
+    reviewer: 'reviewer',
+    createdAt: 'createdAt'
+  };
+
+  export type MarketingApprovalScalarFieldEnum = (typeof MarketingApprovalScalarFieldEnum)[keyof typeof MarketingApprovalScalarFieldEnum]
+
+
+  export const MarketingAccountConnectionScalarFieldEnum: {
+    id: 'id',
+    platform: 'platform',
+    accountName: 'accountName',
+    handle: 'handle',
+    profileUrl: 'profileUrl',
+    verificationStatus: 'verificationStatus',
+    proofNote: 'proofNote',
+    lastVerifiedAt: 'lastVerifiedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MarketingAccountConnectionScalarFieldEnum = (typeof MarketingAccountConnectionScalarFieldEnum)[keyof typeof MarketingAccountConnectionScalarFieldEnum]
+
+
+  export const MarketingPublishAssistScalarFieldEnum: {
+    id: 'id',
+    draftId: 'draftId',
+    preparedCopy: 'preparedCopy',
+    assetChecklist: 'assetChecklist',
+    manualPostingChecklist: 'manualPostingChecklist',
+    sourceLabel: 'sourceLabel',
+    status: 'status',
+    manualPublishedUrl: 'manualPublishedUrl',
+    manualPublishedAt: 'manualPublishedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MarketingPublishAssistScalarFieldEnum = (typeof MarketingPublishAssistScalarFieldEnum)[keyof typeof MarketingPublishAssistScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -13805,119 +18740,119 @@ export namespace Prisma {
    * Reference to a field of type 'String'
    */
   export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>
-
+    
 
 
   /**
    * Reference to a field of type 'String[]'
    */
   export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'LeadStatus'
    */
   export type EnumLeadStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LeadStatus'>
-
+    
 
 
   /**
    * Reference to a field of type 'LeadStatus[]'
    */
   export type ListEnumLeadStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LeadStatus[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-
+    
 
 
   /**
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-
+    
 
 
   /**
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-
+    
 
 
   /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-
+    
 
 
   /**
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'Json'
    */
   export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-
+    
 
 
   /**
    * Reference to a field of type 'QueryMode'
    */
   export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
-
+    
 
 
   /**
    * Reference to a field of type 'BuyerTier'
    */
   export type EnumBuyerTierFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BuyerTier'>
-
+    
 
 
   /**
    * Reference to a field of type 'BuyerTier[]'
    */
   export type ListEnumBuyerTierFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BuyerTier[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'BuyerActivityEventType'
    */
   export type EnumBuyerActivityEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BuyerActivityEventType'>
-
+    
 
 
   /**
    * Reference to a field of type 'BuyerActivityEventType[]'
    */
   export type ListEnumBuyerActivityEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BuyerActivityEventType[]'>
-
+    
   /**
    * Deep Input Types
    */
@@ -14917,6 +19852,331 @@ export namespace Prisma {
     eventType?: EnumBuyerActivityEventTypeWithAggregatesFilter<"BuyerActivity"> | $Enums.BuyerActivityEventType
     metadata?: JsonNullableWithAggregatesFilter<"BuyerActivity">
     createdAt?: DateTimeWithAggregatesFilter<"BuyerActivity"> | Date | string
+  }
+
+  export type MarketingDraftWhereInput = {
+    AND?: MarketingDraftWhereInput | MarketingDraftWhereInput[]
+    OR?: MarketingDraftWhereInput[]
+    NOT?: MarketingDraftWhereInput | MarketingDraftWhereInput[]
+    id?: StringFilter<"MarketingDraft"> | string
+    channel?: StringFilter<"MarketingDraft"> | string
+    topic?: StringFilter<"MarketingDraft"> | string
+    sourceLabel?: StringFilter<"MarketingDraft"> | string
+    status?: StringFilter<"MarketingDraft"> | string
+    draftCopy?: StringFilter<"MarketingDraft"> | string
+    assetNotes?: StringNullableFilter<"MarketingDraft"> | string | null
+    assumptions?: JsonNullableFilter<"MarketingDraft">
+    safetyFlags?: JsonNullableFilter<"MarketingDraft">
+    createdSource?: StringFilter<"MarketingDraft"> | string
+    createdBy?: StringNullableFilter<"MarketingDraft"> | string | null
+    createdAt?: DateTimeFilter<"MarketingDraft"> | Date | string
+    updatedAt?: DateTimeFilter<"MarketingDraft"> | Date | string
+    approvals?: MarketingApprovalListRelationFilter
+    publishAssists?: MarketingPublishAssistListRelationFilter
+  }
+
+  export type MarketingDraftOrderByWithRelationInput = {
+    id?: SortOrder
+    channel?: SortOrder
+    topic?: SortOrder
+    sourceLabel?: SortOrder
+    status?: SortOrder
+    draftCopy?: SortOrder
+    assetNotes?: SortOrderInput | SortOrder
+    assumptions?: SortOrderInput | SortOrder
+    safetyFlags?: SortOrderInput | SortOrder
+    createdSource?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    approvals?: MarketingApprovalOrderByRelationAggregateInput
+    publishAssists?: MarketingPublishAssistOrderByRelationAggregateInput
+  }
+
+  export type MarketingDraftWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: MarketingDraftWhereInput | MarketingDraftWhereInput[]
+    OR?: MarketingDraftWhereInput[]
+    NOT?: MarketingDraftWhereInput | MarketingDraftWhereInput[]
+    channel?: StringFilter<"MarketingDraft"> | string
+    topic?: StringFilter<"MarketingDraft"> | string
+    sourceLabel?: StringFilter<"MarketingDraft"> | string
+    status?: StringFilter<"MarketingDraft"> | string
+    draftCopy?: StringFilter<"MarketingDraft"> | string
+    assetNotes?: StringNullableFilter<"MarketingDraft"> | string | null
+    assumptions?: JsonNullableFilter<"MarketingDraft">
+    safetyFlags?: JsonNullableFilter<"MarketingDraft">
+    createdSource?: StringFilter<"MarketingDraft"> | string
+    createdBy?: StringNullableFilter<"MarketingDraft"> | string | null
+    createdAt?: DateTimeFilter<"MarketingDraft"> | Date | string
+    updatedAt?: DateTimeFilter<"MarketingDraft"> | Date | string
+    approvals?: MarketingApprovalListRelationFilter
+    publishAssists?: MarketingPublishAssistListRelationFilter
+  }, "id">
+
+  export type MarketingDraftOrderByWithAggregationInput = {
+    id?: SortOrder
+    channel?: SortOrder
+    topic?: SortOrder
+    sourceLabel?: SortOrder
+    status?: SortOrder
+    draftCopy?: SortOrder
+    assetNotes?: SortOrderInput | SortOrder
+    assumptions?: SortOrderInput | SortOrder
+    safetyFlags?: SortOrderInput | SortOrder
+    createdSource?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MarketingDraftCountOrderByAggregateInput
+    _max?: MarketingDraftMaxOrderByAggregateInput
+    _min?: MarketingDraftMinOrderByAggregateInput
+  }
+
+  export type MarketingDraftScalarWhereWithAggregatesInput = {
+    AND?: MarketingDraftScalarWhereWithAggregatesInput | MarketingDraftScalarWhereWithAggregatesInput[]
+    OR?: MarketingDraftScalarWhereWithAggregatesInput[]
+    NOT?: MarketingDraftScalarWhereWithAggregatesInput | MarketingDraftScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"MarketingDraft"> | string
+    channel?: StringWithAggregatesFilter<"MarketingDraft"> | string
+    topic?: StringWithAggregatesFilter<"MarketingDraft"> | string
+    sourceLabel?: StringWithAggregatesFilter<"MarketingDraft"> | string
+    status?: StringWithAggregatesFilter<"MarketingDraft"> | string
+    draftCopy?: StringWithAggregatesFilter<"MarketingDraft"> | string
+    assetNotes?: StringNullableWithAggregatesFilter<"MarketingDraft"> | string | null
+    assumptions?: JsonNullableWithAggregatesFilter<"MarketingDraft">
+    safetyFlags?: JsonNullableWithAggregatesFilter<"MarketingDraft">
+    createdSource?: StringWithAggregatesFilter<"MarketingDraft"> | string
+    createdBy?: StringNullableWithAggregatesFilter<"MarketingDraft"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"MarketingDraft"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MarketingDraft"> | Date | string
+  }
+
+  export type MarketingApprovalWhereInput = {
+    AND?: MarketingApprovalWhereInput | MarketingApprovalWhereInput[]
+    OR?: MarketingApprovalWhereInput[]
+    NOT?: MarketingApprovalWhereInput | MarketingApprovalWhereInput[]
+    id?: StringFilter<"MarketingApproval"> | string
+    draftId?: StringFilter<"MarketingApproval"> | string
+    decision?: StringFilter<"MarketingApproval"> | string
+    editedCopy?: StringNullableFilter<"MarketingApproval"> | string | null
+    note?: StringFilter<"MarketingApproval"> | string
+    reviewer?: StringNullableFilter<"MarketingApproval"> | string | null
+    createdAt?: DateTimeFilter<"MarketingApproval"> | Date | string
+    draft?: XOR<MarketingDraftScalarRelationFilter, MarketingDraftWhereInput>
+  }
+
+  export type MarketingApprovalOrderByWithRelationInput = {
+    id?: SortOrder
+    draftId?: SortOrder
+    decision?: SortOrder
+    editedCopy?: SortOrderInput | SortOrder
+    note?: SortOrder
+    reviewer?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    draft?: MarketingDraftOrderByWithRelationInput
+  }
+
+  export type MarketingApprovalWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: MarketingApprovalWhereInput | MarketingApprovalWhereInput[]
+    OR?: MarketingApprovalWhereInput[]
+    NOT?: MarketingApprovalWhereInput | MarketingApprovalWhereInput[]
+    draftId?: StringFilter<"MarketingApproval"> | string
+    decision?: StringFilter<"MarketingApproval"> | string
+    editedCopy?: StringNullableFilter<"MarketingApproval"> | string | null
+    note?: StringFilter<"MarketingApproval"> | string
+    reviewer?: StringNullableFilter<"MarketingApproval"> | string | null
+    createdAt?: DateTimeFilter<"MarketingApproval"> | Date | string
+    draft?: XOR<MarketingDraftScalarRelationFilter, MarketingDraftWhereInput>
+  }, "id">
+
+  export type MarketingApprovalOrderByWithAggregationInput = {
+    id?: SortOrder
+    draftId?: SortOrder
+    decision?: SortOrder
+    editedCopy?: SortOrderInput | SortOrder
+    note?: SortOrder
+    reviewer?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: MarketingApprovalCountOrderByAggregateInput
+    _max?: MarketingApprovalMaxOrderByAggregateInput
+    _min?: MarketingApprovalMinOrderByAggregateInput
+  }
+
+  export type MarketingApprovalScalarWhereWithAggregatesInput = {
+    AND?: MarketingApprovalScalarWhereWithAggregatesInput | MarketingApprovalScalarWhereWithAggregatesInput[]
+    OR?: MarketingApprovalScalarWhereWithAggregatesInput[]
+    NOT?: MarketingApprovalScalarWhereWithAggregatesInput | MarketingApprovalScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"MarketingApproval"> | string
+    draftId?: StringWithAggregatesFilter<"MarketingApproval"> | string
+    decision?: StringWithAggregatesFilter<"MarketingApproval"> | string
+    editedCopy?: StringNullableWithAggregatesFilter<"MarketingApproval"> | string | null
+    note?: StringWithAggregatesFilter<"MarketingApproval"> | string
+    reviewer?: StringNullableWithAggregatesFilter<"MarketingApproval"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"MarketingApproval"> | Date | string
+  }
+
+  export type MarketingAccountConnectionWhereInput = {
+    AND?: MarketingAccountConnectionWhereInput | MarketingAccountConnectionWhereInput[]
+    OR?: MarketingAccountConnectionWhereInput[]
+    NOT?: MarketingAccountConnectionWhereInput | MarketingAccountConnectionWhereInput[]
+    id?: StringFilter<"MarketingAccountConnection"> | string
+    platform?: StringFilter<"MarketingAccountConnection"> | string
+    accountName?: StringFilter<"MarketingAccountConnection"> | string
+    handle?: StringFilter<"MarketingAccountConnection"> | string
+    profileUrl?: StringFilter<"MarketingAccountConnection"> | string
+    verificationStatus?: StringFilter<"MarketingAccountConnection"> | string
+    proofNote?: StringFilter<"MarketingAccountConnection"> | string
+    lastVerifiedAt?: DateTimeNullableFilter<"MarketingAccountConnection"> | Date | string | null
+    createdAt?: DateTimeFilter<"MarketingAccountConnection"> | Date | string
+    updatedAt?: DateTimeFilter<"MarketingAccountConnection"> | Date | string
+  }
+
+  export type MarketingAccountConnectionOrderByWithRelationInput = {
+    id?: SortOrder
+    platform?: SortOrder
+    accountName?: SortOrder
+    handle?: SortOrder
+    profileUrl?: SortOrder
+    verificationStatus?: SortOrder
+    proofNote?: SortOrder
+    lastVerifiedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MarketingAccountConnectionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    platform?: string
+    AND?: MarketingAccountConnectionWhereInput | MarketingAccountConnectionWhereInput[]
+    OR?: MarketingAccountConnectionWhereInput[]
+    NOT?: MarketingAccountConnectionWhereInput | MarketingAccountConnectionWhereInput[]
+    accountName?: StringFilter<"MarketingAccountConnection"> | string
+    handle?: StringFilter<"MarketingAccountConnection"> | string
+    profileUrl?: StringFilter<"MarketingAccountConnection"> | string
+    verificationStatus?: StringFilter<"MarketingAccountConnection"> | string
+    proofNote?: StringFilter<"MarketingAccountConnection"> | string
+    lastVerifiedAt?: DateTimeNullableFilter<"MarketingAccountConnection"> | Date | string | null
+    createdAt?: DateTimeFilter<"MarketingAccountConnection"> | Date | string
+    updatedAt?: DateTimeFilter<"MarketingAccountConnection"> | Date | string
+  }, "id" | "platform">
+
+  export type MarketingAccountConnectionOrderByWithAggregationInput = {
+    id?: SortOrder
+    platform?: SortOrder
+    accountName?: SortOrder
+    handle?: SortOrder
+    profileUrl?: SortOrder
+    verificationStatus?: SortOrder
+    proofNote?: SortOrder
+    lastVerifiedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MarketingAccountConnectionCountOrderByAggregateInput
+    _max?: MarketingAccountConnectionMaxOrderByAggregateInput
+    _min?: MarketingAccountConnectionMinOrderByAggregateInput
+  }
+
+  export type MarketingAccountConnectionScalarWhereWithAggregatesInput = {
+    AND?: MarketingAccountConnectionScalarWhereWithAggregatesInput | MarketingAccountConnectionScalarWhereWithAggregatesInput[]
+    OR?: MarketingAccountConnectionScalarWhereWithAggregatesInput[]
+    NOT?: MarketingAccountConnectionScalarWhereWithAggregatesInput | MarketingAccountConnectionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"MarketingAccountConnection"> | string
+    platform?: StringWithAggregatesFilter<"MarketingAccountConnection"> | string
+    accountName?: StringWithAggregatesFilter<"MarketingAccountConnection"> | string
+    handle?: StringWithAggregatesFilter<"MarketingAccountConnection"> | string
+    profileUrl?: StringWithAggregatesFilter<"MarketingAccountConnection"> | string
+    verificationStatus?: StringWithAggregatesFilter<"MarketingAccountConnection"> | string
+    proofNote?: StringWithAggregatesFilter<"MarketingAccountConnection"> | string
+    lastVerifiedAt?: DateTimeNullableWithAggregatesFilter<"MarketingAccountConnection"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"MarketingAccountConnection"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MarketingAccountConnection"> | Date | string
+  }
+
+  export type MarketingPublishAssistWhereInput = {
+    AND?: MarketingPublishAssistWhereInput | MarketingPublishAssistWhereInput[]
+    OR?: MarketingPublishAssistWhereInput[]
+    NOT?: MarketingPublishAssistWhereInput | MarketingPublishAssistWhereInput[]
+    id?: StringFilter<"MarketingPublishAssist"> | string
+    draftId?: StringFilter<"MarketingPublishAssist"> | string
+    preparedCopy?: StringFilter<"MarketingPublishAssist"> | string
+    assetChecklist?: JsonFilter<"MarketingPublishAssist">
+    manualPostingChecklist?: JsonFilter<"MarketingPublishAssist">
+    sourceLabel?: StringFilter<"MarketingPublishAssist"> | string
+    status?: StringFilter<"MarketingPublishAssist"> | string
+    manualPublishedUrl?: StringNullableFilter<"MarketingPublishAssist"> | string | null
+    manualPublishedAt?: DateTimeNullableFilter<"MarketingPublishAssist"> | Date | string | null
+    createdAt?: DateTimeFilter<"MarketingPublishAssist"> | Date | string
+    updatedAt?: DateTimeFilter<"MarketingPublishAssist"> | Date | string
+    draft?: XOR<MarketingDraftScalarRelationFilter, MarketingDraftWhereInput>
+  }
+
+  export type MarketingPublishAssistOrderByWithRelationInput = {
+    id?: SortOrder
+    draftId?: SortOrder
+    preparedCopy?: SortOrder
+    assetChecklist?: SortOrder
+    manualPostingChecklist?: SortOrder
+    sourceLabel?: SortOrder
+    status?: SortOrder
+    manualPublishedUrl?: SortOrderInput | SortOrder
+    manualPublishedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    draft?: MarketingDraftOrderByWithRelationInput
+  }
+
+  export type MarketingPublishAssistWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: MarketingPublishAssistWhereInput | MarketingPublishAssistWhereInput[]
+    OR?: MarketingPublishAssistWhereInput[]
+    NOT?: MarketingPublishAssistWhereInput | MarketingPublishAssistWhereInput[]
+    draftId?: StringFilter<"MarketingPublishAssist"> | string
+    preparedCopy?: StringFilter<"MarketingPublishAssist"> | string
+    assetChecklist?: JsonFilter<"MarketingPublishAssist">
+    manualPostingChecklist?: JsonFilter<"MarketingPublishAssist">
+    sourceLabel?: StringFilter<"MarketingPublishAssist"> | string
+    status?: StringFilter<"MarketingPublishAssist"> | string
+    manualPublishedUrl?: StringNullableFilter<"MarketingPublishAssist"> | string | null
+    manualPublishedAt?: DateTimeNullableFilter<"MarketingPublishAssist"> | Date | string | null
+    createdAt?: DateTimeFilter<"MarketingPublishAssist"> | Date | string
+    updatedAt?: DateTimeFilter<"MarketingPublishAssist"> | Date | string
+    draft?: XOR<MarketingDraftScalarRelationFilter, MarketingDraftWhereInput>
+  }, "id">
+
+  export type MarketingPublishAssistOrderByWithAggregationInput = {
+    id?: SortOrder
+    draftId?: SortOrder
+    preparedCopy?: SortOrder
+    assetChecklist?: SortOrder
+    manualPostingChecklist?: SortOrder
+    sourceLabel?: SortOrder
+    status?: SortOrder
+    manualPublishedUrl?: SortOrderInput | SortOrder
+    manualPublishedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MarketingPublishAssistCountOrderByAggregateInput
+    _max?: MarketingPublishAssistMaxOrderByAggregateInput
+    _min?: MarketingPublishAssistMinOrderByAggregateInput
+  }
+
+  export type MarketingPublishAssistScalarWhereWithAggregatesInput = {
+    AND?: MarketingPublishAssistScalarWhereWithAggregatesInput | MarketingPublishAssistScalarWhereWithAggregatesInput[]
+    OR?: MarketingPublishAssistScalarWhereWithAggregatesInput[]
+    NOT?: MarketingPublishAssistScalarWhereWithAggregatesInput | MarketingPublishAssistScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"MarketingPublishAssist"> | string
+    draftId?: StringWithAggregatesFilter<"MarketingPublishAssist"> | string
+    preparedCopy?: StringWithAggregatesFilter<"MarketingPublishAssist"> | string
+    assetChecklist?: JsonWithAggregatesFilter<"MarketingPublishAssist">
+    manualPostingChecklist?: JsonWithAggregatesFilter<"MarketingPublishAssist">
+    sourceLabel?: StringWithAggregatesFilter<"MarketingPublishAssist"> | string
+    status?: StringWithAggregatesFilter<"MarketingPublishAssist"> | string
+    manualPublishedUrl?: StringNullableWithAggregatesFilter<"MarketingPublishAssist"> | string | null
+    manualPublishedAt?: DateTimeNullableWithAggregatesFilter<"MarketingPublishAssist"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"MarketingPublishAssist"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MarketingPublishAssist"> | Date | string
   }
 
   export type LeadCreateInput = {
@@ -16111,6 +21371,383 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type MarketingDraftCreateInput = {
+    id?: string
+    channel: string
+    topic: string
+    sourceLabel: string
+    status?: string
+    draftCopy: string
+    assetNotes?: string | null
+    assumptions?: NullableJsonNullValueInput | InputJsonValue
+    safetyFlags?: NullableJsonNullValueInput | InputJsonValue
+    createdSource?: string
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    approvals?: MarketingApprovalCreateNestedManyWithoutDraftInput
+    publishAssists?: MarketingPublishAssistCreateNestedManyWithoutDraftInput
+  }
+
+  export type MarketingDraftUncheckedCreateInput = {
+    id?: string
+    channel: string
+    topic: string
+    sourceLabel: string
+    status?: string
+    draftCopy: string
+    assetNotes?: string | null
+    assumptions?: NullableJsonNullValueInput | InputJsonValue
+    safetyFlags?: NullableJsonNullValueInput | InputJsonValue
+    createdSource?: string
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    approvals?: MarketingApprovalUncheckedCreateNestedManyWithoutDraftInput
+    publishAssists?: MarketingPublishAssistUncheckedCreateNestedManyWithoutDraftInput
+  }
+
+  export type MarketingDraftUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    draftCopy?: StringFieldUpdateOperationsInput | string
+    assetNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    assumptions?: NullableJsonNullValueInput | InputJsonValue
+    safetyFlags?: NullableJsonNullValueInput | InputJsonValue
+    createdSource?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    approvals?: MarketingApprovalUpdateManyWithoutDraftNestedInput
+    publishAssists?: MarketingPublishAssistUpdateManyWithoutDraftNestedInput
+  }
+
+  export type MarketingDraftUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    draftCopy?: StringFieldUpdateOperationsInput | string
+    assetNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    assumptions?: NullableJsonNullValueInput | InputJsonValue
+    safetyFlags?: NullableJsonNullValueInput | InputJsonValue
+    createdSource?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    approvals?: MarketingApprovalUncheckedUpdateManyWithoutDraftNestedInput
+    publishAssists?: MarketingPublishAssistUncheckedUpdateManyWithoutDraftNestedInput
+  }
+
+  export type MarketingDraftCreateManyInput = {
+    id?: string
+    channel: string
+    topic: string
+    sourceLabel: string
+    status?: string
+    draftCopy: string
+    assetNotes?: string | null
+    assumptions?: NullableJsonNullValueInput | InputJsonValue
+    safetyFlags?: NullableJsonNullValueInput | InputJsonValue
+    createdSource?: string
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingDraftUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    draftCopy?: StringFieldUpdateOperationsInput | string
+    assetNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    assumptions?: NullableJsonNullValueInput | InputJsonValue
+    safetyFlags?: NullableJsonNullValueInput | InputJsonValue
+    createdSource?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingDraftUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    draftCopy?: StringFieldUpdateOperationsInput | string
+    assetNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    assumptions?: NullableJsonNullValueInput | InputJsonValue
+    safetyFlags?: NullableJsonNullValueInput | InputJsonValue
+    createdSource?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingApprovalCreateInput = {
+    id?: string
+    decision: string
+    editedCopy?: string | null
+    note: string
+    reviewer?: string | null
+    createdAt?: Date | string
+    draft: MarketingDraftCreateNestedOneWithoutApprovalsInput
+  }
+
+  export type MarketingApprovalUncheckedCreateInput = {
+    id?: string
+    draftId: string
+    decision: string
+    editedCopy?: string | null
+    note: string
+    reviewer?: string | null
+    createdAt?: Date | string
+  }
+
+  export type MarketingApprovalUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    decision?: StringFieldUpdateOperationsInput | string
+    editedCopy?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: StringFieldUpdateOperationsInput | string
+    reviewer?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    draft?: MarketingDraftUpdateOneRequiredWithoutApprovalsNestedInput
+  }
+
+  export type MarketingApprovalUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    draftId?: StringFieldUpdateOperationsInput | string
+    decision?: StringFieldUpdateOperationsInput | string
+    editedCopy?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: StringFieldUpdateOperationsInput | string
+    reviewer?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingApprovalCreateManyInput = {
+    id?: string
+    draftId: string
+    decision: string
+    editedCopy?: string | null
+    note: string
+    reviewer?: string | null
+    createdAt?: Date | string
+  }
+
+  export type MarketingApprovalUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    decision?: StringFieldUpdateOperationsInput | string
+    editedCopy?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: StringFieldUpdateOperationsInput | string
+    reviewer?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingApprovalUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    draftId?: StringFieldUpdateOperationsInput | string
+    decision?: StringFieldUpdateOperationsInput | string
+    editedCopy?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: StringFieldUpdateOperationsInput | string
+    reviewer?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingAccountConnectionCreateInput = {
+    id?: string
+    platform: string
+    accountName: string
+    handle: string
+    profileUrl: string
+    verificationStatus?: string
+    proofNote: string
+    lastVerifiedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingAccountConnectionUncheckedCreateInput = {
+    id?: string
+    platform: string
+    accountName: string
+    handle: string
+    profileUrl: string
+    verificationStatus?: string
+    proofNote: string
+    lastVerifiedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingAccountConnectionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    accountName?: StringFieldUpdateOperationsInput | string
+    handle?: StringFieldUpdateOperationsInput | string
+    profileUrl?: StringFieldUpdateOperationsInput | string
+    verificationStatus?: StringFieldUpdateOperationsInput | string
+    proofNote?: StringFieldUpdateOperationsInput | string
+    lastVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingAccountConnectionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    accountName?: StringFieldUpdateOperationsInput | string
+    handle?: StringFieldUpdateOperationsInput | string
+    profileUrl?: StringFieldUpdateOperationsInput | string
+    verificationStatus?: StringFieldUpdateOperationsInput | string
+    proofNote?: StringFieldUpdateOperationsInput | string
+    lastVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingAccountConnectionCreateManyInput = {
+    id?: string
+    platform: string
+    accountName: string
+    handle: string
+    profileUrl: string
+    verificationStatus?: string
+    proofNote: string
+    lastVerifiedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingAccountConnectionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    accountName?: StringFieldUpdateOperationsInput | string
+    handle?: StringFieldUpdateOperationsInput | string
+    profileUrl?: StringFieldUpdateOperationsInput | string
+    verificationStatus?: StringFieldUpdateOperationsInput | string
+    proofNote?: StringFieldUpdateOperationsInput | string
+    lastVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingAccountConnectionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    accountName?: StringFieldUpdateOperationsInput | string
+    handle?: StringFieldUpdateOperationsInput | string
+    profileUrl?: StringFieldUpdateOperationsInput | string
+    verificationStatus?: StringFieldUpdateOperationsInput | string
+    proofNote?: StringFieldUpdateOperationsInput | string
+    lastVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingPublishAssistCreateInput = {
+    id?: string
+    preparedCopy: string
+    assetChecklist: JsonNullValueInput | InputJsonValue
+    manualPostingChecklist: JsonNullValueInput | InputJsonValue
+    sourceLabel: string
+    status?: string
+    manualPublishedUrl?: string | null
+    manualPublishedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    draft: MarketingDraftCreateNestedOneWithoutPublishAssistsInput
+  }
+
+  export type MarketingPublishAssistUncheckedCreateInput = {
+    id?: string
+    draftId: string
+    preparedCopy: string
+    assetChecklist: JsonNullValueInput | InputJsonValue
+    manualPostingChecklist: JsonNullValueInput | InputJsonValue
+    sourceLabel: string
+    status?: string
+    manualPublishedUrl?: string | null
+    manualPublishedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingPublishAssistUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    preparedCopy?: StringFieldUpdateOperationsInput | string
+    assetChecklist?: JsonNullValueInput | InputJsonValue
+    manualPostingChecklist?: JsonNullValueInput | InputJsonValue
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    manualPublishedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    manualPublishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    draft?: MarketingDraftUpdateOneRequiredWithoutPublishAssistsNestedInput
+  }
+
+  export type MarketingPublishAssistUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    draftId?: StringFieldUpdateOperationsInput | string
+    preparedCopy?: StringFieldUpdateOperationsInput | string
+    assetChecklist?: JsonNullValueInput | InputJsonValue
+    manualPostingChecklist?: JsonNullValueInput | InputJsonValue
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    manualPublishedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    manualPublishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingPublishAssistCreateManyInput = {
+    id?: string
+    draftId: string
+    preparedCopy: string
+    assetChecklist: JsonNullValueInput | InputJsonValue
+    manualPostingChecklist: JsonNullValueInput | InputJsonValue
+    sourceLabel: string
+    status?: string
+    manualPublishedUrl?: string | null
+    manualPublishedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingPublishAssistUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    preparedCopy?: StringFieldUpdateOperationsInput | string
+    assetChecklist?: JsonNullValueInput | InputJsonValue
+    manualPostingChecklist?: JsonNullValueInput | InputJsonValue
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    manualPublishedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    manualPublishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingPublishAssistUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    draftId?: StringFieldUpdateOperationsInput | string
+    preparedCopy?: StringFieldUpdateOperationsInput | string
+    assetChecklist?: JsonNullValueInput | InputJsonValue
+    manualPostingChecklist?: JsonNullValueInput | InputJsonValue
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    manualPublishedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    manualPublishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -17128,6 +22765,182 @@ export namespace Prisma {
     _max?: NestedEnumBuyerActivityEventTypeFilter<$PrismaModel>
   }
 
+  export type MarketingApprovalListRelationFilter = {
+    every?: MarketingApprovalWhereInput
+    some?: MarketingApprovalWhereInput
+    none?: MarketingApprovalWhereInput
+  }
+
+  export type MarketingPublishAssistListRelationFilter = {
+    every?: MarketingPublishAssistWhereInput
+    some?: MarketingPublishAssistWhereInput
+    none?: MarketingPublishAssistWhereInput
+  }
+
+  export type MarketingApprovalOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MarketingPublishAssistOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MarketingDraftCountOrderByAggregateInput = {
+    id?: SortOrder
+    channel?: SortOrder
+    topic?: SortOrder
+    sourceLabel?: SortOrder
+    status?: SortOrder
+    draftCopy?: SortOrder
+    assetNotes?: SortOrder
+    assumptions?: SortOrder
+    safetyFlags?: SortOrder
+    createdSource?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MarketingDraftMaxOrderByAggregateInput = {
+    id?: SortOrder
+    channel?: SortOrder
+    topic?: SortOrder
+    sourceLabel?: SortOrder
+    status?: SortOrder
+    draftCopy?: SortOrder
+    assetNotes?: SortOrder
+    createdSource?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MarketingDraftMinOrderByAggregateInput = {
+    id?: SortOrder
+    channel?: SortOrder
+    topic?: SortOrder
+    sourceLabel?: SortOrder
+    status?: SortOrder
+    draftCopy?: SortOrder
+    assetNotes?: SortOrder
+    createdSource?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MarketingDraftScalarRelationFilter = {
+    is?: MarketingDraftWhereInput
+    isNot?: MarketingDraftWhereInput
+  }
+
+  export type MarketingApprovalCountOrderByAggregateInput = {
+    id?: SortOrder
+    draftId?: SortOrder
+    decision?: SortOrder
+    editedCopy?: SortOrder
+    note?: SortOrder
+    reviewer?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type MarketingApprovalMaxOrderByAggregateInput = {
+    id?: SortOrder
+    draftId?: SortOrder
+    decision?: SortOrder
+    editedCopy?: SortOrder
+    note?: SortOrder
+    reviewer?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type MarketingApprovalMinOrderByAggregateInput = {
+    id?: SortOrder
+    draftId?: SortOrder
+    decision?: SortOrder
+    editedCopy?: SortOrder
+    note?: SortOrder
+    reviewer?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type MarketingAccountConnectionCountOrderByAggregateInput = {
+    id?: SortOrder
+    platform?: SortOrder
+    accountName?: SortOrder
+    handle?: SortOrder
+    profileUrl?: SortOrder
+    verificationStatus?: SortOrder
+    proofNote?: SortOrder
+    lastVerifiedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MarketingAccountConnectionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    platform?: SortOrder
+    accountName?: SortOrder
+    handle?: SortOrder
+    profileUrl?: SortOrder
+    verificationStatus?: SortOrder
+    proofNote?: SortOrder
+    lastVerifiedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MarketingAccountConnectionMinOrderByAggregateInput = {
+    id?: SortOrder
+    platform?: SortOrder
+    accountName?: SortOrder
+    handle?: SortOrder
+    profileUrl?: SortOrder
+    verificationStatus?: SortOrder
+    proofNote?: SortOrder
+    lastVerifiedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MarketingPublishAssistCountOrderByAggregateInput = {
+    id?: SortOrder
+    draftId?: SortOrder
+    preparedCopy?: SortOrder
+    assetChecklist?: SortOrder
+    manualPostingChecklist?: SortOrder
+    sourceLabel?: SortOrder
+    status?: SortOrder
+    manualPublishedUrl?: SortOrder
+    manualPublishedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MarketingPublishAssistMaxOrderByAggregateInput = {
+    id?: SortOrder
+    draftId?: SortOrder
+    preparedCopy?: SortOrder
+    sourceLabel?: SortOrder
+    status?: SortOrder
+    manualPublishedUrl?: SortOrder
+    manualPublishedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MarketingPublishAssistMinOrderByAggregateInput = {
+    id?: SortOrder
+    draftId?: SortOrder
+    preparedCopy?: SortOrder
+    sourceLabel?: SortOrder
+    status?: SortOrder
+    manualPublishedUrl?: SortOrder
+    manualPublishedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -17358,6 +23171,118 @@ export namespace Prisma {
     upsert?: BuyerUpsertWithoutActivitiesInput
     connect?: BuyerWhereUniqueInput
     update?: XOR<XOR<BuyerUpdateToOneWithWhereWithoutActivitiesInput, BuyerUpdateWithoutActivitiesInput>, BuyerUncheckedUpdateWithoutActivitiesInput>
+  }
+
+  export type MarketingApprovalCreateNestedManyWithoutDraftInput = {
+    create?: XOR<MarketingApprovalCreateWithoutDraftInput, MarketingApprovalUncheckedCreateWithoutDraftInput> | MarketingApprovalCreateWithoutDraftInput[] | MarketingApprovalUncheckedCreateWithoutDraftInput[]
+    connectOrCreate?: MarketingApprovalCreateOrConnectWithoutDraftInput | MarketingApprovalCreateOrConnectWithoutDraftInput[]
+    createMany?: MarketingApprovalCreateManyDraftInputEnvelope
+    connect?: MarketingApprovalWhereUniqueInput | MarketingApprovalWhereUniqueInput[]
+  }
+
+  export type MarketingPublishAssistCreateNestedManyWithoutDraftInput = {
+    create?: XOR<MarketingPublishAssistCreateWithoutDraftInput, MarketingPublishAssistUncheckedCreateWithoutDraftInput> | MarketingPublishAssistCreateWithoutDraftInput[] | MarketingPublishAssistUncheckedCreateWithoutDraftInput[]
+    connectOrCreate?: MarketingPublishAssistCreateOrConnectWithoutDraftInput | MarketingPublishAssistCreateOrConnectWithoutDraftInput[]
+    createMany?: MarketingPublishAssistCreateManyDraftInputEnvelope
+    connect?: MarketingPublishAssistWhereUniqueInput | MarketingPublishAssistWhereUniqueInput[]
+  }
+
+  export type MarketingApprovalUncheckedCreateNestedManyWithoutDraftInput = {
+    create?: XOR<MarketingApprovalCreateWithoutDraftInput, MarketingApprovalUncheckedCreateWithoutDraftInput> | MarketingApprovalCreateWithoutDraftInput[] | MarketingApprovalUncheckedCreateWithoutDraftInput[]
+    connectOrCreate?: MarketingApprovalCreateOrConnectWithoutDraftInput | MarketingApprovalCreateOrConnectWithoutDraftInput[]
+    createMany?: MarketingApprovalCreateManyDraftInputEnvelope
+    connect?: MarketingApprovalWhereUniqueInput | MarketingApprovalWhereUniqueInput[]
+  }
+
+  export type MarketingPublishAssistUncheckedCreateNestedManyWithoutDraftInput = {
+    create?: XOR<MarketingPublishAssistCreateWithoutDraftInput, MarketingPublishAssistUncheckedCreateWithoutDraftInput> | MarketingPublishAssistCreateWithoutDraftInput[] | MarketingPublishAssistUncheckedCreateWithoutDraftInput[]
+    connectOrCreate?: MarketingPublishAssistCreateOrConnectWithoutDraftInput | MarketingPublishAssistCreateOrConnectWithoutDraftInput[]
+    createMany?: MarketingPublishAssistCreateManyDraftInputEnvelope
+    connect?: MarketingPublishAssistWhereUniqueInput | MarketingPublishAssistWhereUniqueInput[]
+  }
+
+  export type MarketingApprovalUpdateManyWithoutDraftNestedInput = {
+    create?: XOR<MarketingApprovalCreateWithoutDraftInput, MarketingApprovalUncheckedCreateWithoutDraftInput> | MarketingApprovalCreateWithoutDraftInput[] | MarketingApprovalUncheckedCreateWithoutDraftInput[]
+    connectOrCreate?: MarketingApprovalCreateOrConnectWithoutDraftInput | MarketingApprovalCreateOrConnectWithoutDraftInput[]
+    upsert?: MarketingApprovalUpsertWithWhereUniqueWithoutDraftInput | MarketingApprovalUpsertWithWhereUniqueWithoutDraftInput[]
+    createMany?: MarketingApprovalCreateManyDraftInputEnvelope
+    set?: MarketingApprovalWhereUniqueInput | MarketingApprovalWhereUniqueInput[]
+    disconnect?: MarketingApprovalWhereUniqueInput | MarketingApprovalWhereUniqueInput[]
+    delete?: MarketingApprovalWhereUniqueInput | MarketingApprovalWhereUniqueInput[]
+    connect?: MarketingApprovalWhereUniqueInput | MarketingApprovalWhereUniqueInput[]
+    update?: MarketingApprovalUpdateWithWhereUniqueWithoutDraftInput | MarketingApprovalUpdateWithWhereUniqueWithoutDraftInput[]
+    updateMany?: MarketingApprovalUpdateManyWithWhereWithoutDraftInput | MarketingApprovalUpdateManyWithWhereWithoutDraftInput[]
+    deleteMany?: MarketingApprovalScalarWhereInput | MarketingApprovalScalarWhereInput[]
+  }
+
+  export type MarketingPublishAssistUpdateManyWithoutDraftNestedInput = {
+    create?: XOR<MarketingPublishAssistCreateWithoutDraftInput, MarketingPublishAssistUncheckedCreateWithoutDraftInput> | MarketingPublishAssistCreateWithoutDraftInput[] | MarketingPublishAssistUncheckedCreateWithoutDraftInput[]
+    connectOrCreate?: MarketingPublishAssistCreateOrConnectWithoutDraftInput | MarketingPublishAssistCreateOrConnectWithoutDraftInput[]
+    upsert?: MarketingPublishAssistUpsertWithWhereUniqueWithoutDraftInput | MarketingPublishAssistUpsertWithWhereUniqueWithoutDraftInput[]
+    createMany?: MarketingPublishAssistCreateManyDraftInputEnvelope
+    set?: MarketingPublishAssistWhereUniqueInput | MarketingPublishAssistWhereUniqueInput[]
+    disconnect?: MarketingPublishAssistWhereUniqueInput | MarketingPublishAssistWhereUniqueInput[]
+    delete?: MarketingPublishAssistWhereUniqueInput | MarketingPublishAssistWhereUniqueInput[]
+    connect?: MarketingPublishAssistWhereUniqueInput | MarketingPublishAssistWhereUniqueInput[]
+    update?: MarketingPublishAssistUpdateWithWhereUniqueWithoutDraftInput | MarketingPublishAssistUpdateWithWhereUniqueWithoutDraftInput[]
+    updateMany?: MarketingPublishAssistUpdateManyWithWhereWithoutDraftInput | MarketingPublishAssistUpdateManyWithWhereWithoutDraftInput[]
+    deleteMany?: MarketingPublishAssistScalarWhereInput | MarketingPublishAssistScalarWhereInput[]
+  }
+
+  export type MarketingApprovalUncheckedUpdateManyWithoutDraftNestedInput = {
+    create?: XOR<MarketingApprovalCreateWithoutDraftInput, MarketingApprovalUncheckedCreateWithoutDraftInput> | MarketingApprovalCreateWithoutDraftInput[] | MarketingApprovalUncheckedCreateWithoutDraftInput[]
+    connectOrCreate?: MarketingApprovalCreateOrConnectWithoutDraftInput | MarketingApprovalCreateOrConnectWithoutDraftInput[]
+    upsert?: MarketingApprovalUpsertWithWhereUniqueWithoutDraftInput | MarketingApprovalUpsertWithWhereUniqueWithoutDraftInput[]
+    createMany?: MarketingApprovalCreateManyDraftInputEnvelope
+    set?: MarketingApprovalWhereUniqueInput | MarketingApprovalWhereUniqueInput[]
+    disconnect?: MarketingApprovalWhereUniqueInput | MarketingApprovalWhereUniqueInput[]
+    delete?: MarketingApprovalWhereUniqueInput | MarketingApprovalWhereUniqueInput[]
+    connect?: MarketingApprovalWhereUniqueInput | MarketingApprovalWhereUniqueInput[]
+    update?: MarketingApprovalUpdateWithWhereUniqueWithoutDraftInput | MarketingApprovalUpdateWithWhereUniqueWithoutDraftInput[]
+    updateMany?: MarketingApprovalUpdateManyWithWhereWithoutDraftInput | MarketingApprovalUpdateManyWithWhereWithoutDraftInput[]
+    deleteMany?: MarketingApprovalScalarWhereInput | MarketingApprovalScalarWhereInput[]
+  }
+
+  export type MarketingPublishAssistUncheckedUpdateManyWithoutDraftNestedInput = {
+    create?: XOR<MarketingPublishAssistCreateWithoutDraftInput, MarketingPublishAssistUncheckedCreateWithoutDraftInput> | MarketingPublishAssistCreateWithoutDraftInput[] | MarketingPublishAssistUncheckedCreateWithoutDraftInput[]
+    connectOrCreate?: MarketingPublishAssistCreateOrConnectWithoutDraftInput | MarketingPublishAssistCreateOrConnectWithoutDraftInput[]
+    upsert?: MarketingPublishAssistUpsertWithWhereUniqueWithoutDraftInput | MarketingPublishAssistUpsertWithWhereUniqueWithoutDraftInput[]
+    createMany?: MarketingPublishAssistCreateManyDraftInputEnvelope
+    set?: MarketingPublishAssistWhereUniqueInput | MarketingPublishAssistWhereUniqueInput[]
+    disconnect?: MarketingPublishAssistWhereUniqueInput | MarketingPublishAssistWhereUniqueInput[]
+    delete?: MarketingPublishAssistWhereUniqueInput | MarketingPublishAssistWhereUniqueInput[]
+    connect?: MarketingPublishAssistWhereUniqueInput | MarketingPublishAssistWhereUniqueInput[]
+    update?: MarketingPublishAssistUpdateWithWhereUniqueWithoutDraftInput | MarketingPublishAssistUpdateWithWhereUniqueWithoutDraftInput[]
+    updateMany?: MarketingPublishAssistUpdateManyWithWhereWithoutDraftInput | MarketingPublishAssistUpdateManyWithWhereWithoutDraftInput[]
+    deleteMany?: MarketingPublishAssistScalarWhereInput | MarketingPublishAssistScalarWhereInput[]
+  }
+
+  export type MarketingDraftCreateNestedOneWithoutApprovalsInput = {
+    create?: XOR<MarketingDraftCreateWithoutApprovalsInput, MarketingDraftUncheckedCreateWithoutApprovalsInput>
+    connectOrCreate?: MarketingDraftCreateOrConnectWithoutApprovalsInput
+    connect?: MarketingDraftWhereUniqueInput
+  }
+
+  export type MarketingDraftUpdateOneRequiredWithoutApprovalsNestedInput = {
+    create?: XOR<MarketingDraftCreateWithoutApprovalsInput, MarketingDraftUncheckedCreateWithoutApprovalsInput>
+    connectOrCreate?: MarketingDraftCreateOrConnectWithoutApprovalsInput
+    upsert?: MarketingDraftUpsertWithoutApprovalsInput
+    connect?: MarketingDraftWhereUniqueInput
+    update?: XOR<XOR<MarketingDraftUpdateToOneWithWhereWithoutApprovalsInput, MarketingDraftUpdateWithoutApprovalsInput>, MarketingDraftUncheckedUpdateWithoutApprovalsInput>
+  }
+
+  export type MarketingDraftCreateNestedOneWithoutPublishAssistsInput = {
+    create?: XOR<MarketingDraftCreateWithoutPublishAssistsInput, MarketingDraftUncheckedCreateWithoutPublishAssistsInput>
+    connectOrCreate?: MarketingDraftCreateOrConnectWithoutPublishAssistsInput
+    connect?: MarketingDraftWhereUniqueInput
+  }
+
+  export type MarketingDraftUpdateOneRequiredWithoutPublishAssistsNestedInput = {
+    create?: XOR<MarketingDraftCreateWithoutPublishAssistsInput, MarketingDraftUncheckedCreateWithoutPublishAssistsInput>
+    connectOrCreate?: MarketingDraftCreateOrConnectWithoutPublishAssistsInput
+    upsert?: MarketingDraftUpsertWithoutPublishAssistsInput
+    connect?: MarketingDraftWhereUniqueInput
+    update?: XOR<XOR<MarketingDraftUpdateToOneWithWhereWithoutPublishAssistsInput, MarketingDraftUpdateWithoutPublishAssistsInput>, MarketingDraftUncheckedUpdateWithoutPublishAssistsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -18086,6 +24011,300 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type MarketingApprovalCreateWithoutDraftInput = {
+    id?: string
+    decision: string
+    editedCopy?: string | null
+    note: string
+    reviewer?: string | null
+    createdAt?: Date | string
+  }
+
+  export type MarketingApprovalUncheckedCreateWithoutDraftInput = {
+    id?: string
+    decision: string
+    editedCopy?: string | null
+    note: string
+    reviewer?: string | null
+    createdAt?: Date | string
+  }
+
+  export type MarketingApprovalCreateOrConnectWithoutDraftInput = {
+    where: MarketingApprovalWhereUniqueInput
+    create: XOR<MarketingApprovalCreateWithoutDraftInput, MarketingApprovalUncheckedCreateWithoutDraftInput>
+  }
+
+  export type MarketingApprovalCreateManyDraftInputEnvelope = {
+    data: MarketingApprovalCreateManyDraftInput | MarketingApprovalCreateManyDraftInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MarketingPublishAssistCreateWithoutDraftInput = {
+    id?: string
+    preparedCopy: string
+    assetChecklist: JsonNullValueInput | InputJsonValue
+    manualPostingChecklist: JsonNullValueInput | InputJsonValue
+    sourceLabel: string
+    status?: string
+    manualPublishedUrl?: string | null
+    manualPublishedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingPublishAssistUncheckedCreateWithoutDraftInput = {
+    id?: string
+    preparedCopy: string
+    assetChecklist: JsonNullValueInput | InputJsonValue
+    manualPostingChecklist: JsonNullValueInput | InputJsonValue
+    sourceLabel: string
+    status?: string
+    manualPublishedUrl?: string | null
+    manualPublishedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingPublishAssistCreateOrConnectWithoutDraftInput = {
+    where: MarketingPublishAssistWhereUniqueInput
+    create: XOR<MarketingPublishAssistCreateWithoutDraftInput, MarketingPublishAssistUncheckedCreateWithoutDraftInput>
+  }
+
+  export type MarketingPublishAssistCreateManyDraftInputEnvelope = {
+    data: MarketingPublishAssistCreateManyDraftInput | MarketingPublishAssistCreateManyDraftInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MarketingApprovalUpsertWithWhereUniqueWithoutDraftInput = {
+    where: MarketingApprovalWhereUniqueInput
+    update: XOR<MarketingApprovalUpdateWithoutDraftInput, MarketingApprovalUncheckedUpdateWithoutDraftInput>
+    create: XOR<MarketingApprovalCreateWithoutDraftInput, MarketingApprovalUncheckedCreateWithoutDraftInput>
+  }
+
+  export type MarketingApprovalUpdateWithWhereUniqueWithoutDraftInput = {
+    where: MarketingApprovalWhereUniqueInput
+    data: XOR<MarketingApprovalUpdateWithoutDraftInput, MarketingApprovalUncheckedUpdateWithoutDraftInput>
+  }
+
+  export type MarketingApprovalUpdateManyWithWhereWithoutDraftInput = {
+    where: MarketingApprovalScalarWhereInput
+    data: XOR<MarketingApprovalUpdateManyMutationInput, MarketingApprovalUncheckedUpdateManyWithoutDraftInput>
+  }
+
+  export type MarketingApprovalScalarWhereInput = {
+    AND?: MarketingApprovalScalarWhereInput | MarketingApprovalScalarWhereInput[]
+    OR?: MarketingApprovalScalarWhereInput[]
+    NOT?: MarketingApprovalScalarWhereInput | MarketingApprovalScalarWhereInput[]
+    id?: StringFilter<"MarketingApproval"> | string
+    draftId?: StringFilter<"MarketingApproval"> | string
+    decision?: StringFilter<"MarketingApproval"> | string
+    editedCopy?: StringNullableFilter<"MarketingApproval"> | string | null
+    note?: StringFilter<"MarketingApproval"> | string
+    reviewer?: StringNullableFilter<"MarketingApproval"> | string | null
+    createdAt?: DateTimeFilter<"MarketingApproval"> | Date | string
+  }
+
+  export type MarketingPublishAssistUpsertWithWhereUniqueWithoutDraftInput = {
+    where: MarketingPublishAssistWhereUniqueInput
+    update: XOR<MarketingPublishAssistUpdateWithoutDraftInput, MarketingPublishAssistUncheckedUpdateWithoutDraftInput>
+    create: XOR<MarketingPublishAssistCreateWithoutDraftInput, MarketingPublishAssistUncheckedCreateWithoutDraftInput>
+  }
+
+  export type MarketingPublishAssistUpdateWithWhereUniqueWithoutDraftInput = {
+    where: MarketingPublishAssistWhereUniqueInput
+    data: XOR<MarketingPublishAssistUpdateWithoutDraftInput, MarketingPublishAssistUncheckedUpdateWithoutDraftInput>
+  }
+
+  export type MarketingPublishAssistUpdateManyWithWhereWithoutDraftInput = {
+    where: MarketingPublishAssistScalarWhereInput
+    data: XOR<MarketingPublishAssistUpdateManyMutationInput, MarketingPublishAssistUncheckedUpdateManyWithoutDraftInput>
+  }
+
+  export type MarketingPublishAssistScalarWhereInput = {
+    AND?: MarketingPublishAssistScalarWhereInput | MarketingPublishAssistScalarWhereInput[]
+    OR?: MarketingPublishAssistScalarWhereInput[]
+    NOT?: MarketingPublishAssistScalarWhereInput | MarketingPublishAssistScalarWhereInput[]
+    id?: StringFilter<"MarketingPublishAssist"> | string
+    draftId?: StringFilter<"MarketingPublishAssist"> | string
+    preparedCopy?: StringFilter<"MarketingPublishAssist"> | string
+    assetChecklist?: JsonFilter<"MarketingPublishAssist">
+    manualPostingChecklist?: JsonFilter<"MarketingPublishAssist">
+    sourceLabel?: StringFilter<"MarketingPublishAssist"> | string
+    status?: StringFilter<"MarketingPublishAssist"> | string
+    manualPublishedUrl?: StringNullableFilter<"MarketingPublishAssist"> | string | null
+    manualPublishedAt?: DateTimeNullableFilter<"MarketingPublishAssist"> | Date | string | null
+    createdAt?: DateTimeFilter<"MarketingPublishAssist"> | Date | string
+    updatedAt?: DateTimeFilter<"MarketingPublishAssist"> | Date | string
+  }
+
+  export type MarketingDraftCreateWithoutApprovalsInput = {
+    id?: string
+    channel: string
+    topic: string
+    sourceLabel: string
+    status?: string
+    draftCopy: string
+    assetNotes?: string | null
+    assumptions?: NullableJsonNullValueInput | InputJsonValue
+    safetyFlags?: NullableJsonNullValueInput | InputJsonValue
+    createdSource?: string
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    publishAssists?: MarketingPublishAssistCreateNestedManyWithoutDraftInput
+  }
+
+  export type MarketingDraftUncheckedCreateWithoutApprovalsInput = {
+    id?: string
+    channel: string
+    topic: string
+    sourceLabel: string
+    status?: string
+    draftCopy: string
+    assetNotes?: string | null
+    assumptions?: NullableJsonNullValueInput | InputJsonValue
+    safetyFlags?: NullableJsonNullValueInput | InputJsonValue
+    createdSource?: string
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    publishAssists?: MarketingPublishAssistUncheckedCreateNestedManyWithoutDraftInput
+  }
+
+  export type MarketingDraftCreateOrConnectWithoutApprovalsInput = {
+    where: MarketingDraftWhereUniqueInput
+    create: XOR<MarketingDraftCreateWithoutApprovalsInput, MarketingDraftUncheckedCreateWithoutApprovalsInput>
+  }
+
+  export type MarketingDraftUpsertWithoutApprovalsInput = {
+    update: XOR<MarketingDraftUpdateWithoutApprovalsInput, MarketingDraftUncheckedUpdateWithoutApprovalsInput>
+    create: XOR<MarketingDraftCreateWithoutApprovalsInput, MarketingDraftUncheckedCreateWithoutApprovalsInput>
+    where?: MarketingDraftWhereInput
+  }
+
+  export type MarketingDraftUpdateToOneWithWhereWithoutApprovalsInput = {
+    where?: MarketingDraftWhereInput
+    data: XOR<MarketingDraftUpdateWithoutApprovalsInput, MarketingDraftUncheckedUpdateWithoutApprovalsInput>
+  }
+
+  export type MarketingDraftUpdateWithoutApprovalsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    draftCopy?: StringFieldUpdateOperationsInput | string
+    assetNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    assumptions?: NullableJsonNullValueInput | InputJsonValue
+    safetyFlags?: NullableJsonNullValueInput | InputJsonValue
+    createdSource?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    publishAssists?: MarketingPublishAssistUpdateManyWithoutDraftNestedInput
+  }
+
+  export type MarketingDraftUncheckedUpdateWithoutApprovalsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    draftCopy?: StringFieldUpdateOperationsInput | string
+    assetNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    assumptions?: NullableJsonNullValueInput | InputJsonValue
+    safetyFlags?: NullableJsonNullValueInput | InputJsonValue
+    createdSource?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    publishAssists?: MarketingPublishAssistUncheckedUpdateManyWithoutDraftNestedInput
+  }
+
+  export type MarketingDraftCreateWithoutPublishAssistsInput = {
+    id?: string
+    channel: string
+    topic: string
+    sourceLabel: string
+    status?: string
+    draftCopy: string
+    assetNotes?: string | null
+    assumptions?: NullableJsonNullValueInput | InputJsonValue
+    safetyFlags?: NullableJsonNullValueInput | InputJsonValue
+    createdSource?: string
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    approvals?: MarketingApprovalCreateNestedManyWithoutDraftInput
+  }
+
+  export type MarketingDraftUncheckedCreateWithoutPublishAssistsInput = {
+    id?: string
+    channel: string
+    topic: string
+    sourceLabel: string
+    status?: string
+    draftCopy: string
+    assetNotes?: string | null
+    assumptions?: NullableJsonNullValueInput | InputJsonValue
+    safetyFlags?: NullableJsonNullValueInput | InputJsonValue
+    createdSource?: string
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    approvals?: MarketingApprovalUncheckedCreateNestedManyWithoutDraftInput
+  }
+
+  export type MarketingDraftCreateOrConnectWithoutPublishAssistsInput = {
+    where: MarketingDraftWhereUniqueInput
+    create: XOR<MarketingDraftCreateWithoutPublishAssistsInput, MarketingDraftUncheckedCreateWithoutPublishAssistsInput>
+  }
+
+  export type MarketingDraftUpsertWithoutPublishAssistsInput = {
+    update: XOR<MarketingDraftUpdateWithoutPublishAssistsInput, MarketingDraftUncheckedUpdateWithoutPublishAssistsInput>
+    create: XOR<MarketingDraftCreateWithoutPublishAssistsInput, MarketingDraftUncheckedCreateWithoutPublishAssistsInput>
+    where?: MarketingDraftWhereInput
+  }
+
+  export type MarketingDraftUpdateToOneWithWhereWithoutPublishAssistsInput = {
+    where?: MarketingDraftWhereInput
+    data: XOR<MarketingDraftUpdateWithoutPublishAssistsInput, MarketingDraftUncheckedUpdateWithoutPublishAssistsInput>
+  }
+
+  export type MarketingDraftUpdateWithoutPublishAssistsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    draftCopy?: StringFieldUpdateOperationsInput | string
+    assetNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    assumptions?: NullableJsonNullValueInput | InputJsonValue
+    safetyFlags?: NullableJsonNullValueInput | InputJsonValue
+    createdSource?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    approvals?: MarketingApprovalUpdateManyWithoutDraftNestedInput
+  }
+
+  export type MarketingDraftUncheckedUpdateWithoutPublishAssistsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    topic?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    draftCopy?: StringFieldUpdateOperationsInput | string
+    assetNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    assumptions?: NullableJsonNullValueInput | InputJsonValue
+    safetyFlags?: NullableJsonNullValueInput | InputJsonValue
+    createdSource?: StringFieldUpdateOperationsInput | string
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    approvals?: MarketingApprovalUncheckedUpdateManyWithoutDraftNestedInput
+  }
+
   export type AiJobActionCreateManyJobInput = {
     id?: string
     action: string
@@ -18172,6 +24391,94 @@ export namespace Prisma {
     eventType?: EnumBuyerActivityEventTypeFieldUpdateOperationsInput | $Enums.BuyerActivityEventType
     metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingApprovalCreateManyDraftInput = {
+    id?: string
+    decision: string
+    editedCopy?: string | null
+    note: string
+    reviewer?: string | null
+    createdAt?: Date | string
+  }
+
+  export type MarketingPublishAssistCreateManyDraftInput = {
+    id?: string
+    preparedCopy: string
+    assetChecklist: JsonNullValueInput | InputJsonValue
+    manualPostingChecklist: JsonNullValueInput | InputJsonValue
+    sourceLabel: string
+    status?: string
+    manualPublishedUrl?: string | null
+    manualPublishedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MarketingApprovalUpdateWithoutDraftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    decision?: StringFieldUpdateOperationsInput | string
+    editedCopy?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: StringFieldUpdateOperationsInput | string
+    reviewer?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingApprovalUncheckedUpdateWithoutDraftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    decision?: StringFieldUpdateOperationsInput | string
+    editedCopy?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: StringFieldUpdateOperationsInput | string
+    reviewer?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingApprovalUncheckedUpdateManyWithoutDraftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    decision?: StringFieldUpdateOperationsInput | string
+    editedCopy?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: StringFieldUpdateOperationsInput | string
+    reviewer?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingPublishAssistUpdateWithoutDraftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    preparedCopy?: StringFieldUpdateOperationsInput | string
+    assetChecklist?: JsonNullValueInput | InputJsonValue
+    manualPostingChecklist?: JsonNullValueInput | InputJsonValue
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    manualPublishedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    manualPublishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingPublishAssistUncheckedUpdateWithoutDraftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    preparedCopy?: StringFieldUpdateOperationsInput | string
+    assetChecklist?: JsonNullValueInput | InputJsonValue
+    manualPostingChecklist?: JsonNullValueInput | InputJsonValue
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    manualPublishedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    manualPublishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MarketingPublishAssistUncheckedUpdateManyWithoutDraftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    preparedCopy?: StringFieldUpdateOperationsInput | string
+    assetChecklist?: JsonNullValueInput | InputJsonValue
+    manualPostingChecklist?: JsonNullValueInput | InputJsonValue
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    manualPublishedUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    manualPublishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 
