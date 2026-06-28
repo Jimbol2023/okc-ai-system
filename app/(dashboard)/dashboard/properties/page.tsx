@@ -181,7 +181,7 @@ function PropertyRecordCard({ record }: { record: DashboardPropertyRecord }) {
       <div className="mt-4 flex flex-wrap items-center gap-3">
         <Link
           href={`/dashboard/leads/${record.leadId}`}
-          className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#12324e]"
+          className="rounded-full bg-primary px-4 py-2 text-sm font-semibold !text-white shadow-sm transition hover:bg-primary-strong hover:!text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
           Open Lead
         </Link>
