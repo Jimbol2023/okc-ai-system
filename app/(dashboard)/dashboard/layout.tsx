@@ -5,6 +5,7 @@ import { BarChart3, Building2, ClipboardCheck, HousePlus, LayoutGrid, Lock, Mega
 
 import { getAuthenticatedAdmin } from "@/lib/auth";
 import { brandConfig } from "@/lib/brand-config";
+export const dynamic = "force-dynamic";
 
 const navItems = [
   { href: "/dashboard" as Route, label: "Overview", icon: LayoutGrid },
