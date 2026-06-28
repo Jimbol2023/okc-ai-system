@@ -1,6 +1,12 @@
 import type { BusinessIntelligenceReport } from "@/lib/business-intelligence";
 
-const forbiddenExecutionLanguage = /send now|publish now|call provider|start outreach|trigger outreach|auto[- ]?send|activate provider/i;
+export const forbiddenExecutionLanguage = /send now|publish now|call provider|start outreach|trigger outreach|auto[- ]?send|activate provider/i;
+
+export function sanitizeAdvisoryRecommendationText(recommendation: string) {
+  return forbiddenExecutionLanguage.test(recommendation)
+    ? "Review the flagged opportunity manually; automated execution remains disabled."
+    : recommendation;
+}
 
 export function createExecutiveRecommendationsFromBi(report: BusinessIntelligenceReport) {
   const recommendations = [
@@ -23,11 +29,7 @@ export function createExecutiveRecommendationsFromBi(report: BusinessIntelligenc
       ? recommendations
       : ["Monitor lead quality, finance entries, and department health before changing operating priorities."];
 
-  return safeRecommendations.map((recommendation) =>
-    forbiddenExecutionLanguage.test(recommendation)
-      ? "Review the flagged opportunity manually; automated execution remains disabled."
-      : recommendation,
-  );
+  return safeRecommendations.map(sanitizeAdvisoryRecommendationText);
 }
 
 export function assertExecutiveRecommendationsAreAdvisory(recommendations: string[]) {

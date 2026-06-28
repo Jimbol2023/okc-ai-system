@@ -52,6 +52,24 @@ type TrendChart = {
   }>;
 };
 
+type ExecutiveRecommendation = {
+  id: string;
+  title: string;
+  summary: string;
+  confidenceLabel: "low" | "medium" | "high";
+  confidenceScore: number;
+  reason: string;
+  sampleWindowDays: 90;
+  knowledgeLinks: Array<{
+    title: string;
+    category: string;
+    href: "/dashboard/knowledge";
+    detail: string;
+    source: "knowledge_item" | "doc_reference";
+  }>;
+  advisoryOnly: true;
+};
+
 type BusinessIntelligenceReport = {
   kpis: BusinessKpiCard[];
   channelPerformance: MarketingChannelPerformance[];
@@ -66,6 +84,7 @@ type ExecutiveDashboardResponse = {
   departmentHealth?: DepartmentHealthCard[];
   trendCharts?: TrendChart[];
   recommendedPriorities?: string[];
+  executiveRecommendations?: ExecutiveRecommendation[];
   dataGaps?: string[];
   recentSystemActivity?: Array<{
     label: string;
@@ -89,6 +108,13 @@ function getStatusClass(status: MetricStatus) {
   if (status === "watch") return "border-amber-200 bg-amber-50 text-amber-900";
   if (status === "missing") return "border-slate-200 bg-slate-50 text-slate-700";
   return "border-emerald-200 bg-emerald-50 text-emerald-900";
+}
+
+function getConfidenceClass(confidence: ExecutiveRecommendation["confidenceLabel"]) {
+  if (confidence === "high") return "border-emerald-200 bg-emerald-50 text-emerald-900";
+  if (confidence === "medium") return "border-blue-200 bg-blue-50 text-blue-900";
+
+  return "border-slate-200 bg-slate-50 text-slate-700";
 }
 
 function formatChartValue(value: number, unit: TrendChart["unit"]) {
@@ -167,6 +193,7 @@ export function ExecutiveDashboardClient() {
   const [departmentHealth, setDepartmentHealth] = useState<DepartmentHealthCard[]>([]);
   const [trendCharts, setTrendCharts] = useState<TrendChart[]>([]);
   const [recommendedPriorities, setRecommendedPriorities] = useState<string[]>([]);
+  const [executiveRecommendations, setExecutiveRecommendations] = useState<ExecutiveRecommendation[]>([]);
   const [dataGaps, setDataGaps] = useState<string[]>([]);
   const [recentSystemActivity, setRecentSystemActivity] = useState<NonNullable<ExecutiveDashboardResponse["recentSystemActivity"]>>([]);
   const [loading, setLoading] = useState(true);
@@ -192,6 +219,7 @@ export function ExecutiveDashboardClient() {
       setDepartmentHealth(data.departmentHealth ?? data.businessIntelligence?.departmentHealth ?? []);
       setTrendCharts(data.trendCharts ?? data.businessIntelligence?.trendCharts ?? []);
       setRecommendedPriorities(data.recommendedPriorities ?? []);
+      setExecutiveRecommendations(data.executiveRecommendations ?? []);
       setDataGaps(data.dataGaps ?? []);
       setRecentSystemActivity(data.recentSystemActivity ?? []);
       setError("");
@@ -337,11 +365,44 @@ export function ExecutiveDashboardClient() {
       <div className="grid gap-4 xl:grid-cols-[1fr_1fr_1fr]">
         <section className="rounded-lg border border-border bg-surface p-4">
           <h2 className="break-words text-lg font-semibold text-primary">AI executive recommendations</h2>
-          <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-6 text-muted">
-            {recommendedPriorities.map((priority) => (
-              <li key={priority} className="break-words">{priority}</li>
-            ))}
-          </ul>
+          {executiveRecommendations.length > 0 ? (
+            <div className="mt-3 space-y-3">
+              {executiveRecommendations.map((recommendation) => (
+                <div key={recommendation.id} className="rounded-lg border border-border bg-white p-3">
+                  <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                    <h3 className="break-words text-sm font-semibold text-primary">{recommendation.title}</h3>
+                    <span className={`w-fit shrink-0 rounded-full border px-2 py-1 text-[11px] font-bold uppercase tracking-[0.08em] ${getConfidenceClass(recommendation.confidenceLabel)}`}>
+                      {recommendation.confidenceLabel} confidence
+                    </span>
+                  </div>
+                  <p className="mt-2 break-words text-sm leading-6 text-muted">{recommendation.summary}</p>
+                  <p className="mt-2 break-words text-xs leading-5 text-muted">
+                    {recommendation.reason} Confidence score: {recommendation.confidenceScore}/100 over {recommendation.sampleWindowDays} days.
+                  </p>
+                  {recommendation.knowledgeLinks.length > 0 ? (
+                    <div className="mt-3 space-y-2">
+                      {recommendation.knowledgeLinks.map((link) => (
+                        <Link
+                          key={`${recommendation.id}-${link.source}-${link.title}`}
+                          href={link.href}
+                          className="block rounded-md border border-border bg-slate-50 p-2 text-xs leading-5 text-primary transition hover:border-primary/30"
+                        >
+                          <span className="font-semibold">{link.title}</span>
+                          <span className="block text-muted">{link.detail}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-6 text-muted">
+              {recommendedPriorities.map((priority) => (
+                <li key={priority} className="break-words">{priority}</li>
+              ))}
+            </ul>
+          )}
         </section>
 
         <section className="rounded-lg border border-border bg-surface p-4">

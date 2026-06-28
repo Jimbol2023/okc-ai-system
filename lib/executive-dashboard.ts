@@ -1,4 +1,5 @@
 import { createBusinessIntelligenceReport, type BusinessIntelligenceReport, type DepartmentHealthCard, type TrendChart } from "@/lib/business-intelligence";
+import { createExecutiveLearningRecommendations, type ExecutiveLearningMemoryEvent, type ExecutiveLearningRecommendation } from "@/lib/executive-learning";
 import { createExecutiveRecommendationsFromBi } from "@/lib/executive-recommendations";
 import { listFinanceEntries, calculateFinanceKpis, formatFinanceDollars } from "@/lib/finance";
 import { listKnowledgeItems } from "@/lib/knowledge";
@@ -27,6 +28,7 @@ export type ExecutiveDashboardReport = {
   departmentHealth: DepartmentHealthCard[];
   trendCharts: TrendChart[];
   recommendedPriorities: string[];
+  executiveRecommendations: ExecutiveLearningRecommendation[];
   dataGaps: string[];
   recentSystemActivity: Array<{
     label: string;
@@ -138,6 +140,31 @@ async function getRecentSystemActivity() {
     .slice(0, 5);
 }
 
+async function loadExecutiveLearningMemoryEvents(): Promise<ExecutiveLearningMemoryEvent[]> {
+  const start = new Date();
+  start.setDate(start.getDate() - 90);
+
+  return prisma.aiMemoryEvent.findMany({
+    where: {
+      createdAt: {
+        gte: start,
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 500,
+    select: {
+      eventType: true,
+      source: true,
+      approvalDecision: true,
+      outcome: true,
+      metadata: true,
+      createdAt: true,
+    },
+  });
+}
+
 export function createExecutiveRecommendations(input: {
   followUpsDue: number;
   missingInfoCount: number;
@@ -161,11 +188,12 @@ export function createExecutiveRecommendations(input: {
 }
 
 export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboardReport> {
-  const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, systemHealth, recentSystemActivity] = await Promise.all([
+  const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, memoryEventsResult, systemHealth, recentSystemActivity] = await Promise.all([
     loadDashboardSection("Lead", listDbLeads, [] as StoredLead[]),
     loadDashboardSection("Marketing workflow", listMarketingWorkflow, null),
     loadDashboardSection("Finance", listFinanceEntries, []),
     loadDashboardSection("Knowledge", listKnowledgeItems, []),
+    loadDashboardSection("AI memory", loadExecutiveLearningMemoryEvents, [] as ExecutiveLearningMemoryEvent[]),
     getSystemHealth().catch(() => null),
     getRecentSystemActivity().catch(() => []),
   ]);
@@ -173,6 +201,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
   const marketingDrafts = marketingResult.data?.drafts ?? [];
   const financeEntries = financeEntriesResult.data;
   const knowledgeItems = knowledgeItemsResult.data;
+  const memoryEvents = memoryEventsResult.data;
   const today = startOfToday();
   const revenuePipeline = getRevenuePipelineSummary(leads);
   const providerReadiness = createProviderReadinessReport();
@@ -181,6 +210,11 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
     leads,
     financeEntries,
     marketingWorkflow: marketingResult.data,
+    knowledgeItems,
+  });
+  const executiveRecommendations = createExecutiveLearningRecommendations({
+    report: businessIntelligence,
+    memoryEvents,
     knowledgeItems,
   });
 
@@ -286,11 +320,13 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
     departmentHealth: businessIntelligence.departmentHealth,
     trendCharts: businessIntelligence.trendCharts,
     recommendedPriorities: createExecutiveRecommendationsFromBi(businessIntelligence),
+    executiveRecommendations,
     dataGaps: [...new Set([
       leadsResult.gap,
       marketingResult.gap,
       financeEntriesResult.gap,
       knowledgeItemsResult.gap,
+      memoryEventsResult.gap,
       ...businessIntelligence.dataGaps,
       ...financeKpis.missingData,
       providerMissingCount > 0 ? `${providerMissingCount} provider readiness credential set(s) are missing.` : "",
