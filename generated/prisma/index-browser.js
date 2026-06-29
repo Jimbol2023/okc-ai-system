@@ -152,6 +152,146 @@ exports.Prisma.LeadScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.RevenueAuditEventScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  actorId: 'actorId',
+  action: 'action',
+  targetType: 'targetType',
+  targetId: 'targetId',
+  requestId: 'requestId',
+  source: 'source',
+  result: 'result',
+  safeMetadata: 'safeMetadata',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.RevenueLeadSourceScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  leadId: 'leadId',
+  source: 'source',
+  sourceType: 'sourceType',
+  sourceDetail: 'sourceDetail',
+  sourceRecordId: 'sourceRecordId',
+  campaignName: 'campaignName',
+  campaignMedium: 'campaignMedium',
+  costCents: 'costCents',
+  confidence: 'confidence',
+  verified: 'verified',
+  importedBy: 'importedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.RevenueLeadScoreScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  leadId: 'leadId',
+  score: 'score',
+  confidence: 'confidence',
+  priority: 'priority',
+  explanation: 'explanation',
+  recommendedNextAction: 'recommendedNextAction',
+  missingData: 'missingData',
+  scoreBreakdown: 'scoreBreakdown',
+  assumptions: 'assumptions',
+  dataUsed: 'dataUsed',
+  advisoryOnly: 'advisoryOnly',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.RevenueTaskScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  leadId: 'leadId',
+  title: 'title',
+  taskType: 'taskType',
+  priority: 'priority',
+  status: 'status',
+  recommendedAction: 'recommendedAction',
+  reason: 'reason',
+  dueAt: 'dueAt',
+  assignedTo: 'assignedTo',
+  requiresApproval: 'requiresApproval',
+  source: 'source',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  completedAt: 'completedAt'
+};
+
+exports.Prisma.RevenuePipelineEventScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  leadId: 'leadId',
+  fromStage: 'fromStage',
+  toStage: 'toStage',
+  reason: 'reason',
+  source: 'source',
+  revenueOutcome: 'revenueOutcome',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.RevenueCommunicationEventScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  leadId: 'leadId',
+  channel: 'channel',
+  direction: 'direction',
+  status: 'status',
+  approvalStatus: 'approvalStatus',
+  provider: 'provider',
+  providerCalled: 'providerCalled',
+  messageSummary: 'messageSummary',
+  requiresApproval: 'requiresApproval',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.RevenueDecisionLogScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  leadId: 'leadId',
+  taskId: 'taskId',
+  auditEventId: 'auditEventId',
+  aiMemoryEventId: 'aiMemoryEventId',
+  connectorKey: 'connectorKey',
+  pipelineEventId: 'pipelineEventId',
+  recommendationType: 'recommendationType',
+  recommendation: 'recommendation',
+  confidence: 'confidence',
+  supportingEvidence: 'supportingEvidence',
+  assumptions: 'assumptions',
+  missingData: 'missingData',
+  userDecision: 'userDecision',
+  modifiedAction: 'modifiedAction',
+  outcome: 'outcome',
+  advisoryOnly: 'advisoryOnly',
+  providerCalled: 'providerCalled',
+  outreachSent: 'outreachSent',
+  requiresApproval: 'requiresApproval',
+  safeMetadata: 'safeMetadata',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ConnectorDefinitionScalarFieldEnum = {
+  id: 'id',
+  connectorKey: 'connectorKey',
+  label: 'label',
+  category: 'category',
+  status: 'status',
+  version: 'version',
+  supportsDryRun: 'supportsDryRun',
+  providerCallsAllowed: 'providerCallsAllowed',
+  requiredApprovals: 'requiredApprovals',
+  safetyNotes: 'safetyNotes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.ManualLeadIntakeScalarFieldEnum = {
   id: 'id',
   leadId: 'leadId',
@@ -455,12 +595,12 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.JsonNullValueInput = {
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull
 };
 
-exports.Prisma.NullableJsonNullValueInput = {
-  DbNull: Prisma.DbNull,
+exports.Prisma.JsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
@@ -510,6 +650,14 @@ exports.BuyerActivityEventType = exports.$Enums.BuyerActivityEventType = {
 
 exports.Prisma.ModelName = {
   Lead: 'Lead',
+  RevenueAuditEvent: 'RevenueAuditEvent',
+  RevenueLeadSource: 'RevenueLeadSource',
+  RevenueLeadScore: 'RevenueLeadScore',
+  RevenueTask: 'RevenueTask',
+  RevenuePipelineEvent: 'RevenuePipelineEvent',
+  RevenueCommunicationEvent: 'RevenueCommunicationEvent',
+  RevenueDecisionLog: 'RevenueDecisionLog',
+  ConnectorDefinition: 'ConnectorDefinition',
   ManualLeadIntake: 'ManualLeadIntake',
   SellerCallOutcome: 'SellerCallOutcome',
   AiPerformanceMetric: 'AiPerformanceMetric',

@@ -230,6 +230,49 @@ model RevenueCommunicationEvent {
   @@index([createdAt])
 }
 
+model RevenueDecisionLog {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  leadId                String?
+  taskId                String?
+  auditEventId          String?
+  aiMemoryEventId       String?
+  connectorKey          String?
+  pipelineEventId       String?
+  recommendationType    String
+  recommendation        String
+  confidence            Int
+  supportingEvidence    Json
+  assumptions           Json
+  missingData           Json
+  userDecision          String   @default("pending")
+  modifiedAction        String?
+  outcome               String   @default("unknown")
+  advisoryOnly          Boolean  @default(true)
+  providerCalled        Boolean  @default(false)
+  outreachSent          Boolean  @default(false)
+  requiresApproval      Boolean  @default(true)
+  safeMetadata          Json?
+  createdBy             String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([leadId])
+  @@index([taskId])
+  @@index([auditEventId])
+  @@index([aiMemoryEventId])
+  @@index([connectorKey])
+  @@index([pipelineEventId])
+  @@index([recommendationType])
+  @@index([userDecision])
+  @@index([outcome])
+  @@index([advisoryOnly])
+  @@index([providerCalled])
+  @@index([outreachSent])
+  @@index([createdAt])
+}
+
 model ConnectorDefinition {
   id                  String   @id @default(uuid())
   connectorKey        String   @unique

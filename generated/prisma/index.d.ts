@@ -15,107 +15,147 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 /**
  * Model Lead
- *
+ * 
  */
 export type Lead = $Result.DefaultSelection<Prisma.$LeadPayload>
 /**
+ * Model RevenueAuditEvent
+ * 
+ */
+export type RevenueAuditEvent = $Result.DefaultSelection<Prisma.$RevenueAuditEventPayload>
+/**
+ * Model RevenueLeadSource
+ * 
+ */
+export type RevenueLeadSource = $Result.DefaultSelection<Prisma.$RevenueLeadSourcePayload>
+/**
+ * Model RevenueLeadScore
+ * 
+ */
+export type RevenueLeadScore = $Result.DefaultSelection<Prisma.$RevenueLeadScorePayload>
+/**
+ * Model RevenueTask
+ * 
+ */
+export type RevenueTask = $Result.DefaultSelection<Prisma.$RevenueTaskPayload>
+/**
+ * Model RevenuePipelineEvent
+ * 
+ */
+export type RevenuePipelineEvent = $Result.DefaultSelection<Prisma.$RevenuePipelineEventPayload>
+/**
+ * Model RevenueCommunicationEvent
+ * 
+ */
+export type RevenueCommunicationEvent = $Result.DefaultSelection<Prisma.$RevenueCommunicationEventPayload>
+/**
+ * Model RevenueDecisionLog
+ * 
+ */
+export type RevenueDecisionLog = $Result.DefaultSelection<Prisma.$RevenueDecisionLogPayload>
+/**
+ * Model ConnectorDefinition
+ * 
+ */
+export type ConnectorDefinition = $Result.DefaultSelection<Prisma.$ConnectorDefinitionPayload>
+/**
  * Model ManualLeadIntake
- *
+ * 
  */
 export type ManualLeadIntake = $Result.DefaultSelection<Prisma.$ManualLeadIntakePayload>
 /**
  * Model SellerCallOutcome
- *
+ * 
  */
 export type SellerCallOutcome = $Result.DefaultSelection<Prisma.$SellerCallOutcomePayload>
 /**
  * Model AiPerformanceMetric
- *
+ * 
  */
 export type AiPerformanceMetric = $Result.DefaultSelection<Prisma.$AiPerformanceMetricPayload>
 /**
  * Model AiJob
- *
+ * 
  */
 export type AiJob = $Result.DefaultSelection<Prisma.$AiJobPayload>
 /**
  * Model AiJobAction
- *
+ * 
  */
 export type AiJobAction = $Result.DefaultSelection<Prisma.$AiJobActionPayload>
 /**
  * Model AiJobLog
- *
+ * 
  */
 export type AiJobLog = $Result.DefaultSelection<Prisma.$AiJobLogPayload>
 /**
  * Model AiMemoryEvent
- *
+ * 
  */
 export type AiMemoryEvent = $Result.DefaultSelection<Prisma.$AiMemoryEventPayload>
 /**
  * Model AiLearningRecommendation
- *
+ * 
  */
 export type AiLearningRecommendation = $Result.DefaultSelection<Prisma.$AiLearningRecommendationPayload>
 /**
  * Model Buyer
- *
+ * 
  */
 export type Buyer = $Result.DefaultSelection<Prisma.$BuyerPayload>
 /**
  * Model BuyerActivity
- *
+ * 
  */
 export type BuyerActivity = $Result.DefaultSelection<Prisma.$BuyerActivityPayload>
 /**
  * Model MarketingDraft
- *
+ * 
  */
 export type MarketingDraft = $Result.DefaultSelection<Prisma.$MarketingDraftPayload>
 /**
  * Model MarketingApproval
- *
+ * 
  */
 export type MarketingApproval = $Result.DefaultSelection<Prisma.$MarketingApprovalPayload>
 /**
  * Model MarketingAccountConnection
- *
+ * 
  */
 export type MarketingAccountConnection = $Result.DefaultSelection<Prisma.$MarketingAccountConnectionPayload>
 /**
  * Model MarketingPublishAssist
- *
+ * 
  */
 export type MarketingPublishAssist = $Result.DefaultSelection<Prisma.$MarketingPublishAssistPayload>
 /**
  * Model MarketingCanvaAssetAssist
- *
+ * 
  */
 export type MarketingCanvaAssetAssist = $Result.DefaultSelection<Prisma.$MarketingCanvaAssetAssistPayload>
 /**
  * Model MarketingSalesAttribution
- *
+ * 
  */
 export type MarketingSalesAttribution = $Result.DefaultSelection<Prisma.$MarketingSalesAttributionPayload>
 /**
  * Model SalesConversionAssist
- *
+ * 
  */
 export type SalesConversionAssist = $Result.DefaultSelection<Prisma.$SalesConversionAssistPayload>
 /**
  * Model FinanceEntry
- *
+ * 
  */
 export type FinanceEntry = $Result.DefaultSelection<Prisma.$FinanceEntryPayload>
 /**
  * Model KnowledgeItem
- *
+ * 
  */
 export type KnowledgeItem = $Result.DefaultSelection<Prisma.$KnowledgeItemPayload>
 /**
  * Model KnowledgeSearchEmbedding
- *
+ * 
  */
 export type KnowledgeSearchEmbedding = $Result.DefaultSelection<Prisma.$KnowledgeSearchEmbeddingPayload>
 
@@ -280,7 +320,7 @@ export class PrismaClient<
    *   prisma.user.create({ data: { name: 'Alice' } }),
    * ])
    * ```
-   *
+   * 
    * Read more in our [docs](https://www.prisma.io/docs/concepts/components/prisma-client/transactions).
    */
   $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
@@ -301,6 +341,86 @@ export class PrismaClient<
     * ```
     */
   get lead(): Prisma.LeadDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.revenueAuditEvent`: Exposes CRUD operations for the **RevenueAuditEvent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RevenueAuditEvents
+    * const revenueAuditEvents = await prisma.revenueAuditEvent.findMany()
+    * ```
+    */
+  get revenueAuditEvent(): Prisma.RevenueAuditEventDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.revenueLeadSource`: Exposes CRUD operations for the **RevenueLeadSource** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RevenueLeadSources
+    * const revenueLeadSources = await prisma.revenueLeadSource.findMany()
+    * ```
+    */
+  get revenueLeadSource(): Prisma.RevenueLeadSourceDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.revenueLeadScore`: Exposes CRUD operations for the **RevenueLeadScore** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RevenueLeadScores
+    * const revenueLeadScores = await prisma.revenueLeadScore.findMany()
+    * ```
+    */
+  get revenueLeadScore(): Prisma.RevenueLeadScoreDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.revenueTask`: Exposes CRUD operations for the **RevenueTask** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RevenueTasks
+    * const revenueTasks = await prisma.revenueTask.findMany()
+    * ```
+    */
+  get revenueTask(): Prisma.RevenueTaskDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.revenuePipelineEvent`: Exposes CRUD operations for the **RevenuePipelineEvent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RevenuePipelineEvents
+    * const revenuePipelineEvents = await prisma.revenuePipelineEvent.findMany()
+    * ```
+    */
+  get revenuePipelineEvent(): Prisma.RevenuePipelineEventDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.revenueCommunicationEvent`: Exposes CRUD operations for the **RevenueCommunicationEvent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RevenueCommunicationEvents
+    * const revenueCommunicationEvents = await prisma.revenueCommunicationEvent.findMany()
+    * ```
+    */
+  get revenueCommunicationEvent(): Prisma.RevenueCommunicationEventDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.revenueDecisionLog`: Exposes CRUD operations for the **RevenueDecisionLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RevenueDecisionLogs
+    * const revenueDecisionLogs = await prisma.revenueDecisionLog.findMany()
+    * ```
+    */
+  get revenueDecisionLog(): Prisma.RevenueDecisionLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.connectorDefinition`: Exposes CRUD operations for the **ConnectorDefinition** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ConnectorDefinitions
+    * const connectorDefinitions = await prisma.connectorDefinition.findMany()
+    * ```
+    */
+  get connectorDefinition(): Prisma.ConnectorDefinitionDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.manualLeadIntake`: Exposes CRUD operations for the **ManualLeadIntake** model.
@@ -943,6 +1063,14 @@ export namespace Prisma {
 
   export const ModelName: {
     Lead: 'Lead',
+    RevenueAuditEvent: 'RevenueAuditEvent',
+    RevenueLeadSource: 'RevenueLeadSource',
+    RevenueLeadScore: 'RevenueLeadScore',
+    RevenueTask: 'RevenueTask',
+    RevenuePipelineEvent: 'RevenuePipelineEvent',
+    RevenueCommunicationEvent: 'RevenueCommunicationEvent',
+    RevenueDecisionLog: 'RevenueDecisionLog',
+    ConnectorDefinition: 'ConnectorDefinition',
     ManualLeadIntake: 'ManualLeadIntake',
     SellerCallOutcome: 'SellerCallOutcome',
     AiPerformanceMetric: 'AiPerformanceMetric',
@@ -981,7 +1109,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "lead" | "manualLeadIntake" | "sellerCallOutcome" | "aiPerformanceMetric" | "aiJob" | "aiJobAction" | "aiJobLog" | "aiMemoryEvent" | "aiLearningRecommendation" | "buyer" | "buyerActivity" | "marketingDraft" | "marketingApproval" | "marketingAccountConnection" | "marketingPublishAssist" | "marketingCanvaAssetAssist" | "marketingSalesAttribution" | "salesConversionAssist" | "financeEntry" | "knowledgeItem" | "knowledgeSearchEmbedding"
+      modelProps: "lead" | "revenueAuditEvent" | "revenueLeadSource" | "revenueLeadScore" | "revenueTask" | "revenuePipelineEvent" | "revenueCommunicationEvent" | "revenueDecisionLog" | "connectorDefinition" | "manualLeadIntake" | "sellerCallOutcome" | "aiPerformanceMetric" | "aiJob" | "aiJobAction" | "aiJobLog" | "aiMemoryEvent" | "aiLearningRecommendation" | "buyer" | "buyerActivity" | "marketingDraft" | "marketingApproval" | "marketingAccountConnection" | "marketingPublishAssist" | "marketingCanvaAssetAssist" | "marketingSalesAttribution" | "salesConversionAssist" | "financeEntry" | "knowledgeItem" | "knowledgeSearchEmbedding"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1056,6 +1184,598 @@ export namespace Prisma {
           count: {
             args: Prisma.LeadCountArgs<ExtArgs>
             result: $Utils.Optional<LeadCountAggregateOutputType> | number
+          }
+        }
+      }
+      RevenueAuditEvent: {
+        payload: Prisma.$RevenueAuditEventPayload<ExtArgs>
+        fields: Prisma.RevenueAuditEventFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RevenueAuditEventFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueAuditEventPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RevenueAuditEventFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueAuditEventPayload>
+          }
+          findFirst: {
+            args: Prisma.RevenueAuditEventFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueAuditEventPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RevenueAuditEventFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueAuditEventPayload>
+          }
+          findMany: {
+            args: Prisma.RevenueAuditEventFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueAuditEventPayload>[]
+          }
+          create: {
+            args: Prisma.RevenueAuditEventCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueAuditEventPayload>
+          }
+          createMany: {
+            args: Prisma.RevenueAuditEventCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RevenueAuditEventCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueAuditEventPayload>[]
+          }
+          delete: {
+            args: Prisma.RevenueAuditEventDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueAuditEventPayload>
+          }
+          update: {
+            args: Prisma.RevenueAuditEventUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueAuditEventPayload>
+          }
+          deleteMany: {
+            args: Prisma.RevenueAuditEventDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RevenueAuditEventUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RevenueAuditEventUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueAuditEventPayload>[]
+          }
+          upsert: {
+            args: Prisma.RevenueAuditEventUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueAuditEventPayload>
+          }
+          aggregate: {
+            args: Prisma.RevenueAuditEventAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRevenueAuditEvent>
+          }
+          groupBy: {
+            args: Prisma.RevenueAuditEventGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RevenueAuditEventGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RevenueAuditEventCountArgs<ExtArgs>
+            result: $Utils.Optional<RevenueAuditEventCountAggregateOutputType> | number
+          }
+        }
+      }
+      RevenueLeadSource: {
+        payload: Prisma.$RevenueLeadSourcePayload<ExtArgs>
+        fields: Prisma.RevenueLeadSourceFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RevenueLeadSourceFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueLeadSourcePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RevenueLeadSourceFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueLeadSourcePayload>
+          }
+          findFirst: {
+            args: Prisma.RevenueLeadSourceFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueLeadSourcePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RevenueLeadSourceFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueLeadSourcePayload>
+          }
+          findMany: {
+            args: Prisma.RevenueLeadSourceFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueLeadSourcePayload>[]
+          }
+          create: {
+            args: Prisma.RevenueLeadSourceCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueLeadSourcePayload>
+          }
+          createMany: {
+            args: Prisma.RevenueLeadSourceCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RevenueLeadSourceCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueLeadSourcePayload>[]
+          }
+          delete: {
+            args: Prisma.RevenueLeadSourceDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueLeadSourcePayload>
+          }
+          update: {
+            args: Prisma.RevenueLeadSourceUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueLeadSourcePayload>
+          }
+          deleteMany: {
+            args: Prisma.RevenueLeadSourceDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RevenueLeadSourceUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RevenueLeadSourceUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueLeadSourcePayload>[]
+          }
+          upsert: {
+            args: Prisma.RevenueLeadSourceUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueLeadSourcePayload>
+          }
+          aggregate: {
+            args: Prisma.RevenueLeadSourceAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRevenueLeadSource>
+          }
+          groupBy: {
+            args: Prisma.RevenueLeadSourceGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RevenueLeadSourceGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RevenueLeadSourceCountArgs<ExtArgs>
+            result: $Utils.Optional<RevenueLeadSourceCountAggregateOutputType> | number
+          }
+        }
+      }
+      RevenueLeadScore: {
+        payload: Prisma.$RevenueLeadScorePayload<ExtArgs>
+        fields: Prisma.RevenueLeadScoreFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RevenueLeadScoreFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueLeadScorePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RevenueLeadScoreFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueLeadScorePayload>
+          }
+          findFirst: {
+            args: Prisma.RevenueLeadScoreFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueLeadScorePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RevenueLeadScoreFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueLeadScorePayload>
+          }
+          findMany: {
+            args: Prisma.RevenueLeadScoreFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueLeadScorePayload>[]
+          }
+          create: {
+            args: Prisma.RevenueLeadScoreCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueLeadScorePayload>
+          }
+          createMany: {
+            args: Prisma.RevenueLeadScoreCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RevenueLeadScoreCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueLeadScorePayload>[]
+          }
+          delete: {
+            args: Prisma.RevenueLeadScoreDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueLeadScorePayload>
+          }
+          update: {
+            args: Prisma.RevenueLeadScoreUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueLeadScorePayload>
+          }
+          deleteMany: {
+            args: Prisma.RevenueLeadScoreDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RevenueLeadScoreUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RevenueLeadScoreUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueLeadScorePayload>[]
+          }
+          upsert: {
+            args: Prisma.RevenueLeadScoreUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueLeadScorePayload>
+          }
+          aggregate: {
+            args: Prisma.RevenueLeadScoreAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRevenueLeadScore>
+          }
+          groupBy: {
+            args: Prisma.RevenueLeadScoreGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RevenueLeadScoreGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RevenueLeadScoreCountArgs<ExtArgs>
+            result: $Utils.Optional<RevenueLeadScoreCountAggregateOutputType> | number
+          }
+        }
+      }
+      RevenueTask: {
+        payload: Prisma.$RevenueTaskPayload<ExtArgs>
+        fields: Prisma.RevenueTaskFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RevenueTaskFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueTaskPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RevenueTaskFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueTaskPayload>
+          }
+          findFirst: {
+            args: Prisma.RevenueTaskFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueTaskPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RevenueTaskFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueTaskPayload>
+          }
+          findMany: {
+            args: Prisma.RevenueTaskFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueTaskPayload>[]
+          }
+          create: {
+            args: Prisma.RevenueTaskCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueTaskPayload>
+          }
+          createMany: {
+            args: Prisma.RevenueTaskCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RevenueTaskCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueTaskPayload>[]
+          }
+          delete: {
+            args: Prisma.RevenueTaskDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueTaskPayload>
+          }
+          update: {
+            args: Prisma.RevenueTaskUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueTaskPayload>
+          }
+          deleteMany: {
+            args: Prisma.RevenueTaskDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RevenueTaskUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RevenueTaskUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueTaskPayload>[]
+          }
+          upsert: {
+            args: Prisma.RevenueTaskUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueTaskPayload>
+          }
+          aggregate: {
+            args: Prisma.RevenueTaskAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRevenueTask>
+          }
+          groupBy: {
+            args: Prisma.RevenueTaskGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RevenueTaskGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RevenueTaskCountArgs<ExtArgs>
+            result: $Utils.Optional<RevenueTaskCountAggregateOutputType> | number
+          }
+        }
+      }
+      RevenuePipelineEvent: {
+        payload: Prisma.$RevenuePipelineEventPayload<ExtArgs>
+        fields: Prisma.RevenuePipelineEventFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RevenuePipelineEventFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenuePipelineEventPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RevenuePipelineEventFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenuePipelineEventPayload>
+          }
+          findFirst: {
+            args: Prisma.RevenuePipelineEventFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenuePipelineEventPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RevenuePipelineEventFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenuePipelineEventPayload>
+          }
+          findMany: {
+            args: Prisma.RevenuePipelineEventFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenuePipelineEventPayload>[]
+          }
+          create: {
+            args: Prisma.RevenuePipelineEventCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenuePipelineEventPayload>
+          }
+          createMany: {
+            args: Prisma.RevenuePipelineEventCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RevenuePipelineEventCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenuePipelineEventPayload>[]
+          }
+          delete: {
+            args: Prisma.RevenuePipelineEventDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenuePipelineEventPayload>
+          }
+          update: {
+            args: Prisma.RevenuePipelineEventUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenuePipelineEventPayload>
+          }
+          deleteMany: {
+            args: Prisma.RevenuePipelineEventDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RevenuePipelineEventUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RevenuePipelineEventUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenuePipelineEventPayload>[]
+          }
+          upsert: {
+            args: Prisma.RevenuePipelineEventUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenuePipelineEventPayload>
+          }
+          aggregate: {
+            args: Prisma.RevenuePipelineEventAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRevenuePipelineEvent>
+          }
+          groupBy: {
+            args: Prisma.RevenuePipelineEventGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RevenuePipelineEventGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RevenuePipelineEventCountArgs<ExtArgs>
+            result: $Utils.Optional<RevenuePipelineEventCountAggregateOutputType> | number
+          }
+        }
+      }
+      RevenueCommunicationEvent: {
+        payload: Prisma.$RevenueCommunicationEventPayload<ExtArgs>
+        fields: Prisma.RevenueCommunicationEventFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RevenueCommunicationEventFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueCommunicationEventPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RevenueCommunicationEventFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueCommunicationEventPayload>
+          }
+          findFirst: {
+            args: Prisma.RevenueCommunicationEventFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueCommunicationEventPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RevenueCommunicationEventFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueCommunicationEventPayload>
+          }
+          findMany: {
+            args: Prisma.RevenueCommunicationEventFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueCommunicationEventPayload>[]
+          }
+          create: {
+            args: Prisma.RevenueCommunicationEventCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueCommunicationEventPayload>
+          }
+          createMany: {
+            args: Prisma.RevenueCommunicationEventCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RevenueCommunicationEventCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueCommunicationEventPayload>[]
+          }
+          delete: {
+            args: Prisma.RevenueCommunicationEventDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueCommunicationEventPayload>
+          }
+          update: {
+            args: Prisma.RevenueCommunicationEventUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueCommunicationEventPayload>
+          }
+          deleteMany: {
+            args: Prisma.RevenueCommunicationEventDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RevenueCommunicationEventUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RevenueCommunicationEventUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueCommunicationEventPayload>[]
+          }
+          upsert: {
+            args: Prisma.RevenueCommunicationEventUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueCommunicationEventPayload>
+          }
+          aggregate: {
+            args: Prisma.RevenueCommunicationEventAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRevenueCommunicationEvent>
+          }
+          groupBy: {
+            args: Prisma.RevenueCommunicationEventGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RevenueCommunicationEventGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RevenueCommunicationEventCountArgs<ExtArgs>
+            result: $Utils.Optional<RevenueCommunicationEventCountAggregateOutputType> | number
+          }
+        }
+      }
+      RevenueDecisionLog: {
+        payload: Prisma.$RevenueDecisionLogPayload<ExtArgs>
+        fields: Prisma.RevenueDecisionLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RevenueDecisionLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueDecisionLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RevenueDecisionLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueDecisionLogPayload>
+          }
+          findFirst: {
+            args: Prisma.RevenueDecisionLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueDecisionLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RevenueDecisionLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueDecisionLogPayload>
+          }
+          findMany: {
+            args: Prisma.RevenueDecisionLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueDecisionLogPayload>[]
+          }
+          create: {
+            args: Prisma.RevenueDecisionLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueDecisionLogPayload>
+          }
+          createMany: {
+            args: Prisma.RevenueDecisionLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RevenueDecisionLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueDecisionLogPayload>[]
+          }
+          delete: {
+            args: Prisma.RevenueDecisionLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueDecisionLogPayload>
+          }
+          update: {
+            args: Prisma.RevenueDecisionLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueDecisionLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.RevenueDecisionLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RevenueDecisionLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RevenueDecisionLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueDecisionLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.RevenueDecisionLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RevenueDecisionLogPayload>
+          }
+          aggregate: {
+            args: Prisma.RevenueDecisionLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRevenueDecisionLog>
+          }
+          groupBy: {
+            args: Prisma.RevenueDecisionLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RevenueDecisionLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RevenueDecisionLogCountArgs<ExtArgs>
+            result: $Utils.Optional<RevenueDecisionLogCountAggregateOutputType> | number
+          }
+        }
+      }
+      ConnectorDefinition: {
+        payload: Prisma.$ConnectorDefinitionPayload<ExtArgs>
+        fields: Prisma.ConnectorDefinitionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ConnectorDefinitionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConnectorDefinitionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ConnectorDefinitionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConnectorDefinitionPayload>
+          }
+          findFirst: {
+            args: Prisma.ConnectorDefinitionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConnectorDefinitionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ConnectorDefinitionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConnectorDefinitionPayload>
+          }
+          findMany: {
+            args: Prisma.ConnectorDefinitionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConnectorDefinitionPayload>[]
+          }
+          create: {
+            args: Prisma.ConnectorDefinitionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConnectorDefinitionPayload>
+          }
+          createMany: {
+            args: Prisma.ConnectorDefinitionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ConnectorDefinitionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConnectorDefinitionPayload>[]
+          }
+          delete: {
+            args: Prisma.ConnectorDefinitionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConnectorDefinitionPayload>
+          }
+          update: {
+            args: Prisma.ConnectorDefinitionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConnectorDefinitionPayload>
+          }
+          deleteMany: {
+            args: Prisma.ConnectorDefinitionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ConnectorDefinitionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ConnectorDefinitionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConnectorDefinitionPayload>[]
+          }
+          upsert: {
+            args: Prisma.ConnectorDefinitionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConnectorDefinitionPayload>
+          }
+          aggregate: {
+            args: Prisma.ConnectorDefinitionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateConnectorDefinition>
+          }
+          groupBy: {
+            args: Prisma.ConnectorDefinitionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ConnectorDefinitionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ConnectorDefinitionCountArgs<ExtArgs>
+            result: $Utils.Optional<ConnectorDefinitionCountAggregateOutputType> | number
           }
         }
       }
@@ -2584,7 +3304,7 @@ export namespace Prisma {
      * ```
      * // Shorthand for `emit: 'stdout'`
      * log: ['query', 'info', 'warn', 'error']
-     *
+     * 
      * // Emit as events only
      * log: [
      *   { emit: 'event', level: 'query' },
@@ -2592,14 +3312,14 @@ export namespace Prisma {
      *   { emit: 'event', level: 'warn' }
      *   { emit: 'event', level: 'error' }
      * ]
-     *
+     * 
      * / Emit as events and log to stdout
      * og: [
      *  { emit: 'stdout', level: 'query' },
      *  { emit: 'stdout', level: 'info' },
      *  { emit: 'stdout', level: 'warn' }
      *  { emit: 'stdout', level: 'error' }
-     *
+     * 
      * ```
      * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/logging#the-log-option).
      */
@@ -2620,7 +3340,7 @@ export namespace Prisma {
     adapter?: runtime.SqlDriverAdapterFactory | null
     /**
      * Global configuration for omitting model fields by default.
-     *
+     * 
      * @example
      * ```
      * const prisma = new PrismaClient({
@@ -2636,6 +3356,14 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     lead?: LeadOmit
+    revenueAuditEvent?: RevenueAuditEventOmit
+    revenueLeadSource?: RevenueLeadSourceOmit
+    revenueLeadScore?: RevenueLeadScoreOmit
+    revenueTask?: RevenueTaskOmit
+    revenuePipelineEvent?: RevenuePipelineEventOmit
+    revenueCommunicationEvent?: RevenueCommunicationEventOmit
+    revenueDecisionLog?: RevenueDecisionLogOmit
+    connectorDefinition?: ConnectorDefinitionOmit
     manualLeadIntake?: ManualLeadIntakeOmit
     sellerCallOutcome?: SellerCallOutcomeOmit
     aiPerformanceMetric?: AiPerformanceMetricOmit
@@ -2739,12 +3467,22 @@ export namespace Prisma {
     marketingSalesAttributions: number
     salesConversionAssists: number
     manualLeadIntakes: number
+    revenueLeadSources: number
+    revenueLeadScores: number
+    revenueTasks: number
+    revenuePipelineEvents: number
+    revenueCommunicationEvents: number
   }
 
   export type LeadCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     marketingSalesAttributions?: boolean | LeadCountOutputTypeCountMarketingSalesAttributionsArgs
     salesConversionAssists?: boolean | LeadCountOutputTypeCountSalesConversionAssistsArgs
     manualLeadIntakes?: boolean | LeadCountOutputTypeCountManualLeadIntakesArgs
+    revenueLeadSources?: boolean | LeadCountOutputTypeCountRevenueLeadSourcesArgs
+    revenueLeadScores?: boolean | LeadCountOutputTypeCountRevenueLeadScoresArgs
+    revenueTasks?: boolean | LeadCountOutputTypeCountRevenueTasksArgs
+    revenuePipelineEvents?: boolean | LeadCountOutputTypeCountRevenuePipelineEventsArgs
+    revenueCommunicationEvents?: boolean | LeadCountOutputTypeCountRevenueCommunicationEventsArgs
   }
 
   // Custom InputTypes
@@ -2777,6 +3515,41 @@ export namespace Prisma {
    */
   export type LeadCountOutputTypeCountManualLeadIntakesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ManualLeadIntakeWhereInput
+  }
+
+  /**
+   * LeadCountOutputType without action
+   */
+  export type LeadCountOutputTypeCountRevenueLeadSourcesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RevenueLeadSourceWhereInput
+  }
+
+  /**
+   * LeadCountOutputType without action
+   */
+  export type LeadCountOutputTypeCountRevenueLeadScoresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RevenueLeadScoreWhereInput
+  }
+
+  /**
+   * LeadCountOutputType without action
+   */
+  export type LeadCountOutputTypeCountRevenueTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RevenueTaskWhereInput
+  }
+
+  /**
+   * LeadCountOutputType without action
+   */
+  export type LeadCountOutputTypeCountRevenuePipelineEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RevenuePipelineEventWhereInput
+  }
+
+  /**
+   * LeadCountOutputType without action
+   */
+  export type LeadCountOutputTypeCountRevenueCommunicationEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RevenueCommunicationEventWhereInput
   }
 
 
@@ -3207,55 +3980,55 @@ export namespace Prisma {
     where?: LeadWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Leads to fetch.
      */
     orderBy?: LeadOrderByWithRelationInput | LeadOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: LeadWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Leads from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Leads.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned Leads
     **/
     _count?: true | LeadCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: LeadAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: LeadSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: LeadMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: LeadMaxAggregateInputType
@@ -3368,6 +4141,11 @@ export namespace Prisma {
     marketingSalesAttributions?: boolean | Lead$marketingSalesAttributionsArgs<ExtArgs>
     salesConversionAssists?: boolean | Lead$salesConversionAssistsArgs<ExtArgs>
     manualLeadIntakes?: boolean | Lead$manualLeadIntakesArgs<ExtArgs>
+    revenueLeadSources?: boolean | Lead$revenueLeadSourcesArgs<ExtArgs>
+    revenueLeadScores?: boolean | Lead$revenueLeadScoresArgs<ExtArgs>
+    revenueTasks?: boolean | Lead$revenueTasksArgs<ExtArgs>
+    revenuePipelineEvents?: boolean | Lead$revenuePipelineEventsArgs<ExtArgs>
+    revenueCommunicationEvents?: boolean | Lead$revenueCommunicationEventsArgs<ExtArgs>
     _count?: boolean | LeadCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["lead"]>
 
@@ -3469,6 +4247,11 @@ export namespace Prisma {
     marketingSalesAttributions?: boolean | Lead$marketingSalesAttributionsArgs<ExtArgs>
     salesConversionAssists?: boolean | Lead$salesConversionAssistsArgs<ExtArgs>
     manualLeadIntakes?: boolean | Lead$manualLeadIntakesArgs<ExtArgs>
+    revenueLeadSources?: boolean | Lead$revenueLeadSourcesArgs<ExtArgs>
+    revenueLeadScores?: boolean | Lead$revenueLeadScoresArgs<ExtArgs>
+    revenueTasks?: boolean | Lead$revenueTasksArgs<ExtArgs>
+    revenuePipelineEvents?: boolean | Lead$revenuePipelineEventsArgs<ExtArgs>
+    revenueCommunicationEvents?: boolean | Lead$revenueCommunicationEventsArgs<ExtArgs>
     _count?: boolean | LeadCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type LeadIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3480,6 +4263,11 @@ export namespace Prisma {
       marketingSalesAttributions: Prisma.$MarketingSalesAttributionPayload<ExtArgs>[]
       salesConversionAssists: Prisma.$SalesConversionAssistPayload<ExtArgs>[]
       manualLeadIntakes: Prisma.$ManualLeadIntakePayload<ExtArgs>[]
+      revenueLeadSources: Prisma.$RevenueLeadSourcePayload<ExtArgs>[]
+      revenueLeadScores: Prisma.$RevenueLeadScorePayload<ExtArgs>[]
+      revenueTasks: Prisma.$RevenueTaskPayload<ExtArgs>[]
+      revenuePipelineEvents: Prisma.$RevenuePipelineEventPayload<ExtArgs>[]
+      revenueCommunicationEvents: Prisma.$RevenueCommunicationEventPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3589,13 +4377,13 @@ export namespace Prisma {
      * @example
      * // Get all Leads
      * const leads = await prisma.lead.findMany()
-     *
+     * 
      * // Get first 10 Leads
      * const leads = await prisma.lead.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const leadWithIdOnly = await prisma.lead.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends LeadFindManyArgs>(args?: SelectSubset<T, LeadFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -3609,7 +4397,7 @@ export namespace Prisma {
      *     // ... data to create a Lead
      *   }
      * })
-     *
+     * 
      */
     create<T extends LeadCreateArgs>(args: SelectSubset<T, LeadCreateArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -3623,7 +4411,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends LeadCreateManyArgs>(args?: SelectSubset<T, LeadCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -3637,7 +4425,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Leads and only return the `id`
      * const leadWithIdOnly = await prisma.lead.createManyAndReturn({
      *   select: { id: true },
@@ -3647,7 +4435,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends LeadCreateManyAndReturnArgs>(args?: SelectSubset<T, LeadCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -3661,7 +4449,7 @@ export namespace Prisma {
      *     // ... filter to delete one Lead
      *   }
      * })
-     *
+     * 
      */
     delete<T extends LeadDeleteArgs>(args: SelectSubset<T, LeadDeleteArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -3678,7 +4466,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends LeadUpdateArgs>(args: SelectSubset<T, LeadUpdateArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -3692,7 +4480,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends LeadDeleteManyArgs>(args?: SelectSubset<T, LeadDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -3711,7 +4499,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends LeadUpdateManyArgs>(args: SelectSubset<T, LeadUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -3728,7 +4516,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more Leads and only return the `id`
      * const leadWithIdOnly = await prisma.lead.updateManyAndReturn({
      *   select: { id: true },
@@ -3741,7 +4529,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends LeadUpdateManyAndReturnArgs>(args: SelectSubset<T, LeadUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -3830,7 +4618,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends LeadGroupByArgs,
@@ -3907,6 +4695,11 @@ export namespace Prisma {
     marketingSalesAttributions<T extends Lead$marketingSalesAttributionsArgs<ExtArgs> = {}>(args?: Subset<T, Lead$marketingSalesAttributionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingSalesAttributionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     salesConversionAssists<T extends Lead$salesConversionAssistsArgs<ExtArgs> = {}>(args?: Subset<T, Lead$salesConversionAssistsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesConversionAssistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     manualLeadIntakes<T extends Lead$manualLeadIntakesArgs<ExtArgs> = {}>(args?: Subset<T, Lead$manualLeadIntakesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ManualLeadIntakePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    revenueLeadSources<T extends Lead$revenueLeadSourcesArgs<ExtArgs> = {}>(args?: Subset<T, Lead$revenueLeadSourcesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenueLeadSourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    revenueLeadScores<T extends Lead$revenueLeadScoresArgs<ExtArgs> = {}>(args?: Subset<T, Lead$revenueLeadScoresArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenueLeadScorePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    revenueTasks<T extends Lead$revenueTasksArgs<ExtArgs> = {}>(args?: Subset<T, Lead$revenueTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenueTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    revenuePipelineEvents<T extends Lead$revenuePipelineEventsArgs<ExtArgs> = {}>(args?: Subset<T, Lead$revenuePipelineEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenuePipelineEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    revenueCommunicationEvents<T extends Lead$revenueCommunicationEventsArgs<ExtArgs> = {}>(args?: Subset<T, Lead$revenueCommunicationEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenueCommunicationEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3965,7 +4758,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Lead", 'DateTime'>
     readonly updatedAt: FieldRef<"Lead", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -4034,31 +4827,31 @@ export namespace Prisma {
     where?: LeadWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Leads to fetch.
      */
     orderBy?: LeadOrderByWithRelationInput | LeadOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Leads.
      */
     cursor?: LeadWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Leads from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Leads.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Leads.
      */
     distinct?: LeadScalarFieldEnum | LeadScalarFieldEnum[]
@@ -4086,31 +4879,31 @@ export namespace Prisma {
     where?: LeadWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Leads to fetch.
      */
     orderBy?: LeadOrderByWithRelationInput | LeadOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Leads.
      */
     cursor?: LeadWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Leads from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Leads.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Leads.
      */
     distinct?: LeadScalarFieldEnum | LeadScalarFieldEnum[]
@@ -4138,25 +4931,25 @@ export namespace Prisma {
     where?: LeadWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Leads to fetch.
      */
     orderBy?: LeadOrderByWithRelationInput | LeadOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing Leads.
      */
     cursor?: LeadWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Leads from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Leads.
      */
     skip?: number
@@ -4424,6 +5217,126 @@ export namespace Prisma {
   }
 
   /**
+   * Lead.revenueLeadSources
+   */
+  export type Lead$revenueLeadSourcesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadSource
+     */
+    select?: RevenueLeadSourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadSource
+     */
+    omit?: RevenueLeadSourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadSourceInclude<ExtArgs> | null
+    where?: RevenueLeadSourceWhereInput
+    orderBy?: RevenueLeadSourceOrderByWithRelationInput | RevenueLeadSourceOrderByWithRelationInput[]
+    cursor?: RevenueLeadSourceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RevenueLeadSourceScalarFieldEnum | RevenueLeadSourceScalarFieldEnum[]
+  }
+
+  /**
+   * Lead.revenueLeadScores
+   */
+  export type Lead$revenueLeadScoresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadScore
+     */
+    select?: RevenueLeadScoreSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadScore
+     */
+    omit?: RevenueLeadScoreOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadScoreInclude<ExtArgs> | null
+    where?: RevenueLeadScoreWhereInput
+    orderBy?: RevenueLeadScoreOrderByWithRelationInput | RevenueLeadScoreOrderByWithRelationInput[]
+    cursor?: RevenueLeadScoreWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RevenueLeadScoreScalarFieldEnum | RevenueLeadScoreScalarFieldEnum[]
+  }
+
+  /**
+   * Lead.revenueTasks
+   */
+  export type Lead$revenueTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueTask
+     */
+    select?: RevenueTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueTask
+     */
+    omit?: RevenueTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueTaskInclude<ExtArgs> | null
+    where?: RevenueTaskWhereInput
+    orderBy?: RevenueTaskOrderByWithRelationInput | RevenueTaskOrderByWithRelationInput[]
+    cursor?: RevenueTaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RevenueTaskScalarFieldEnum | RevenueTaskScalarFieldEnum[]
+  }
+
+  /**
+   * Lead.revenuePipelineEvents
+   */
+  export type Lead$revenuePipelineEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenuePipelineEvent
+     */
+    select?: RevenuePipelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenuePipelineEvent
+     */
+    omit?: RevenuePipelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenuePipelineEventInclude<ExtArgs> | null
+    where?: RevenuePipelineEventWhereInput
+    orderBy?: RevenuePipelineEventOrderByWithRelationInput | RevenuePipelineEventOrderByWithRelationInput[]
+    cursor?: RevenuePipelineEventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RevenuePipelineEventScalarFieldEnum | RevenuePipelineEventScalarFieldEnum[]
+  }
+
+  /**
+   * Lead.revenueCommunicationEvents
+   */
+  export type Lead$revenueCommunicationEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueCommunicationEvent
+     */
+    select?: RevenueCommunicationEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueCommunicationEvent
+     */
+    omit?: RevenueCommunicationEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueCommunicationEventInclude<ExtArgs> | null
+    where?: RevenueCommunicationEventWhereInput
+    orderBy?: RevenueCommunicationEventOrderByWithRelationInput | RevenueCommunicationEventOrderByWithRelationInput[]
+    cursor?: RevenueCommunicationEventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RevenueCommunicationEventScalarFieldEnum | RevenueCommunicationEventScalarFieldEnum[]
+  }
+
+  /**
    * Lead without action
    */
   export type LeadDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4439,6 +5352,9377 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: LeadInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RevenueAuditEvent
+   */
+
+  export type AggregateRevenueAuditEvent = {
+    _count: RevenueAuditEventCountAggregateOutputType | null
+    _min: RevenueAuditEventMinAggregateOutputType | null
+    _max: RevenueAuditEventMaxAggregateOutputType | null
+  }
+
+  export type RevenueAuditEventMinAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    actorId: string | null
+    action: string | null
+    targetType: string | null
+    targetId: string | null
+    requestId: string | null
+    source: string | null
+    result: string | null
+    createdAt: Date | null
+  }
+
+  export type RevenueAuditEventMaxAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    actorId: string | null
+    action: string | null
+    targetType: string | null
+    targetId: string | null
+    requestId: string | null
+    source: string | null
+    result: string | null
+    createdAt: Date | null
+  }
+
+  export type RevenueAuditEventCountAggregateOutputType = {
+    id: number
+    tenantId: number
+    actorId: number
+    action: number
+    targetType: number
+    targetId: number
+    requestId: number
+    source: number
+    result: number
+    safeMetadata: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type RevenueAuditEventMinAggregateInputType = {
+    id?: true
+    tenantId?: true
+    actorId?: true
+    action?: true
+    targetType?: true
+    targetId?: true
+    requestId?: true
+    source?: true
+    result?: true
+    createdAt?: true
+  }
+
+  export type RevenueAuditEventMaxAggregateInputType = {
+    id?: true
+    tenantId?: true
+    actorId?: true
+    action?: true
+    targetType?: true
+    targetId?: true
+    requestId?: true
+    source?: true
+    result?: true
+    createdAt?: true
+  }
+
+  export type RevenueAuditEventCountAggregateInputType = {
+    id?: true
+    tenantId?: true
+    actorId?: true
+    action?: true
+    targetType?: true
+    targetId?: true
+    requestId?: true
+    source?: true
+    result?: true
+    safeMetadata?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type RevenueAuditEventAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RevenueAuditEvent to aggregate.
+     */
+    where?: RevenueAuditEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenueAuditEvents to fetch.
+     */
+    orderBy?: RevenueAuditEventOrderByWithRelationInput | RevenueAuditEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RevenueAuditEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenueAuditEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenueAuditEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RevenueAuditEvents
+    **/
+    _count?: true | RevenueAuditEventCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RevenueAuditEventMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RevenueAuditEventMaxAggregateInputType
+  }
+
+  export type GetRevenueAuditEventAggregateType<T extends RevenueAuditEventAggregateArgs> = {
+        [P in keyof T & keyof AggregateRevenueAuditEvent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRevenueAuditEvent[P]>
+      : GetScalarType<T[P], AggregateRevenueAuditEvent[P]>
+  }
+
+
+
+
+  export type RevenueAuditEventGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RevenueAuditEventWhereInput
+    orderBy?: RevenueAuditEventOrderByWithAggregationInput | RevenueAuditEventOrderByWithAggregationInput[]
+    by: RevenueAuditEventScalarFieldEnum[] | RevenueAuditEventScalarFieldEnum
+    having?: RevenueAuditEventScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RevenueAuditEventCountAggregateInputType | true
+    _min?: RevenueAuditEventMinAggregateInputType
+    _max?: RevenueAuditEventMaxAggregateInputType
+  }
+
+  export type RevenueAuditEventGroupByOutputType = {
+    id: string
+    tenantId: string
+    actorId: string | null
+    action: string
+    targetType: string
+    targetId: string | null
+    requestId: string | null
+    source: string
+    result: string
+    safeMetadata: JsonValue | null
+    createdAt: Date
+    _count: RevenueAuditEventCountAggregateOutputType | null
+    _min: RevenueAuditEventMinAggregateOutputType | null
+    _max: RevenueAuditEventMaxAggregateOutputType | null
+  }
+
+  type GetRevenueAuditEventGroupByPayload<T extends RevenueAuditEventGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RevenueAuditEventGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RevenueAuditEventGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RevenueAuditEventGroupByOutputType[P]>
+            : GetScalarType<T[P], RevenueAuditEventGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RevenueAuditEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    actorId?: boolean
+    action?: boolean
+    targetType?: boolean
+    targetId?: boolean
+    requestId?: boolean
+    source?: boolean
+    result?: boolean
+    safeMetadata?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["revenueAuditEvent"]>
+
+  export type RevenueAuditEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    actorId?: boolean
+    action?: boolean
+    targetType?: boolean
+    targetId?: boolean
+    requestId?: boolean
+    source?: boolean
+    result?: boolean
+    safeMetadata?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["revenueAuditEvent"]>
+
+  export type RevenueAuditEventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    actorId?: boolean
+    action?: boolean
+    targetType?: boolean
+    targetId?: boolean
+    requestId?: boolean
+    source?: boolean
+    result?: boolean
+    safeMetadata?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["revenueAuditEvent"]>
+
+  export type RevenueAuditEventSelectScalar = {
+    id?: boolean
+    tenantId?: boolean
+    actorId?: boolean
+    action?: boolean
+    targetType?: boolean
+    targetId?: boolean
+    requestId?: boolean
+    source?: boolean
+    result?: boolean
+    safeMetadata?: boolean
+    createdAt?: boolean
+  }
+
+  export type RevenueAuditEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "actorId" | "action" | "targetType" | "targetId" | "requestId" | "source" | "result" | "safeMetadata" | "createdAt", ExtArgs["result"]["revenueAuditEvent"]>
+
+  export type $RevenueAuditEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RevenueAuditEvent"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenantId: string
+      actorId: string | null
+      action: string
+      targetType: string
+      targetId: string | null
+      requestId: string | null
+      source: string
+      result: string
+      safeMetadata: Prisma.JsonValue | null
+      createdAt: Date
+    }, ExtArgs["result"]["revenueAuditEvent"]>
+    composites: {}
+  }
+
+  type RevenueAuditEventGetPayload<S extends boolean | null | undefined | RevenueAuditEventDefaultArgs> = $Result.GetResult<Prisma.$RevenueAuditEventPayload, S>
+
+  type RevenueAuditEventCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RevenueAuditEventFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RevenueAuditEventCountAggregateInputType | true
+    }
+
+  export interface RevenueAuditEventDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RevenueAuditEvent'], meta: { name: 'RevenueAuditEvent' } }
+    /**
+     * Find zero or one RevenueAuditEvent that matches the filter.
+     * @param {RevenueAuditEventFindUniqueArgs} args - Arguments to find a RevenueAuditEvent
+     * @example
+     * // Get one RevenueAuditEvent
+     * const revenueAuditEvent = await prisma.revenueAuditEvent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RevenueAuditEventFindUniqueArgs>(args: SelectSubset<T, RevenueAuditEventFindUniqueArgs<ExtArgs>>): Prisma__RevenueAuditEventClient<$Result.GetResult<Prisma.$RevenueAuditEventPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RevenueAuditEvent that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RevenueAuditEventFindUniqueOrThrowArgs} args - Arguments to find a RevenueAuditEvent
+     * @example
+     * // Get one RevenueAuditEvent
+     * const revenueAuditEvent = await prisma.revenueAuditEvent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RevenueAuditEventFindUniqueOrThrowArgs>(args: SelectSubset<T, RevenueAuditEventFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RevenueAuditEventClient<$Result.GetResult<Prisma.$RevenueAuditEventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RevenueAuditEvent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueAuditEventFindFirstArgs} args - Arguments to find a RevenueAuditEvent
+     * @example
+     * // Get one RevenueAuditEvent
+     * const revenueAuditEvent = await prisma.revenueAuditEvent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RevenueAuditEventFindFirstArgs>(args?: SelectSubset<T, RevenueAuditEventFindFirstArgs<ExtArgs>>): Prisma__RevenueAuditEventClient<$Result.GetResult<Prisma.$RevenueAuditEventPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RevenueAuditEvent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueAuditEventFindFirstOrThrowArgs} args - Arguments to find a RevenueAuditEvent
+     * @example
+     * // Get one RevenueAuditEvent
+     * const revenueAuditEvent = await prisma.revenueAuditEvent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RevenueAuditEventFindFirstOrThrowArgs>(args?: SelectSubset<T, RevenueAuditEventFindFirstOrThrowArgs<ExtArgs>>): Prisma__RevenueAuditEventClient<$Result.GetResult<Prisma.$RevenueAuditEventPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RevenueAuditEvents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueAuditEventFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RevenueAuditEvents
+     * const revenueAuditEvents = await prisma.revenueAuditEvent.findMany()
+     * 
+     * // Get first 10 RevenueAuditEvents
+     * const revenueAuditEvents = await prisma.revenueAuditEvent.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const revenueAuditEventWithIdOnly = await prisma.revenueAuditEvent.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RevenueAuditEventFindManyArgs>(args?: SelectSubset<T, RevenueAuditEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenueAuditEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RevenueAuditEvent.
+     * @param {RevenueAuditEventCreateArgs} args - Arguments to create a RevenueAuditEvent.
+     * @example
+     * // Create one RevenueAuditEvent
+     * const RevenueAuditEvent = await prisma.revenueAuditEvent.create({
+     *   data: {
+     *     // ... data to create a RevenueAuditEvent
+     *   }
+     * })
+     * 
+     */
+    create<T extends RevenueAuditEventCreateArgs>(args: SelectSubset<T, RevenueAuditEventCreateArgs<ExtArgs>>): Prisma__RevenueAuditEventClient<$Result.GetResult<Prisma.$RevenueAuditEventPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RevenueAuditEvents.
+     * @param {RevenueAuditEventCreateManyArgs} args - Arguments to create many RevenueAuditEvents.
+     * @example
+     * // Create many RevenueAuditEvents
+     * const revenueAuditEvent = await prisma.revenueAuditEvent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RevenueAuditEventCreateManyArgs>(args?: SelectSubset<T, RevenueAuditEventCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RevenueAuditEvents and returns the data saved in the database.
+     * @param {RevenueAuditEventCreateManyAndReturnArgs} args - Arguments to create many RevenueAuditEvents.
+     * @example
+     * // Create many RevenueAuditEvents
+     * const revenueAuditEvent = await prisma.revenueAuditEvent.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RevenueAuditEvents and only return the `id`
+     * const revenueAuditEventWithIdOnly = await prisma.revenueAuditEvent.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RevenueAuditEventCreateManyAndReturnArgs>(args?: SelectSubset<T, RevenueAuditEventCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenueAuditEventPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RevenueAuditEvent.
+     * @param {RevenueAuditEventDeleteArgs} args - Arguments to delete one RevenueAuditEvent.
+     * @example
+     * // Delete one RevenueAuditEvent
+     * const RevenueAuditEvent = await prisma.revenueAuditEvent.delete({
+     *   where: {
+     *     // ... filter to delete one RevenueAuditEvent
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RevenueAuditEventDeleteArgs>(args: SelectSubset<T, RevenueAuditEventDeleteArgs<ExtArgs>>): Prisma__RevenueAuditEventClient<$Result.GetResult<Prisma.$RevenueAuditEventPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RevenueAuditEvent.
+     * @param {RevenueAuditEventUpdateArgs} args - Arguments to update one RevenueAuditEvent.
+     * @example
+     * // Update one RevenueAuditEvent
+     * const revenueAuditEvent = await prisma.revenueAuditEvent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RevenueAuditEventUpdateArgs>(args: SelectSubset<T, RevenueAuditEventUpdateArgs<ExtArgs>>): Prisma__RevenueAuditEventClient<$Result.GetResult<Prisma.$RevenueAuditEventPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RevenueAuditEvents.
+     * @param {RevenueAuditEventDeleteManyArgs} args - Arguments to filter RevenueAuditEvents to delete.
+     * @example
+     * // Delete a few RevenueAuditEvents
+     * const { count } = await prisma.revenueAuditEvent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RevenueAuditEventDeleteManyArgs>(args?: SelectSubset<T, RevenueAuditEventDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RevenueAuditEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueAuditEventUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RevenueAuditEvents
+     * const revenueAuditEvent = await prisma.revenueAuditEvent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RevenueAuditEventUpdateManyArgs>(args: SelectSubset<T, RevenueAuditEventUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RevenueAuditEvents and returns the data updated in the database.
+     * @param {RevenueAuditEventUpdateManyAndReturnArgs} args - Arguments to update many RevenueAuditEvents.
+     * @example
+     * // Update many RevenueAuditEvents
+     * const revenueAuditEvent = await prisma.revenueAuditEvent.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RevenueAuditEvents and only return the `id`
+     * const revenueAuditEventWithIdOnly = await prisma.revenueAuditEvent.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RevenueAuditEventUpdateManyAndReturnArgs>(args: SelectSubset<T, RevenueAuditEventUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenueAuditEventPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RevenueAuditEvent.
+     * @param {RevenueAuditEventUpsertArgs} args - Arguments to update or create a RevenueAuditEvent.
+     * @example
+     * // Update or create a RevenueAuditEvent
+     * const revenueAuditEvent = await prisma.revenueAuditEvent.upsert({
+     *   create: {
+     *     // ... data to create a RevenueAuditEvent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RevenueAuditEvent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RevenueAuditEventUpsertArgs>(args: SelectSubset<T, RevenueAuditEventUpsertArgs<ExtArgs>>): Prisma__RevenueAuditEventClient<$Result.GetResult<Prisma.$RevenueAuditEventPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RevenueAuditEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueAuditEventCountArgs} args - Arguments to filter RevenueAuditEvents to count.
+     * @example
+     * // Count the number of RevenueAuditEvents
+     * const count = await prisma.revenueAuditEvent.count({
+     *   where: {
+     *     // ... the filter for the RevenueAuditEvents we want to count
+     *   }
+     * })
+    **/
+    count<T extends RevenueAuditEventCountArgs>(
+      args?: Subset<T, RevenueAuditEventCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RevenueAuditEventCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RevenueAuditEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueAuditEventAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RevenueAuditEventAggregateArgs>(args: Subset<T, RevenueAuditEventAggregateArgs>): Prisma.PrismaPromise<GetRevenueAuditEventAggregateType<T>>
+
+    /**
+     * Group by RevenueAuditEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueAuditEventGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RevenueAuditEventGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RevenueAuditEventGroupByArgs['orderBy'] }
+        : { orderBy?: RevenueAuditEventGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RevenueAuditEventGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRevenueAuditEventGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RevenueAuditEvent model
+   */
+  readonly fields: RevenueAuditEventFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RevenueAuditEvent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RevenueAuditEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RevenueAuditEvent model
+   */
+  interface RevenueAuditEventFieldRefs {
+    readonly id: FieldRef<"RevenueAuditEvent", 'String'>
+    readonly tenantId: FieldRef<"RevenueAuditEvent", 'String'>
+    readonly actorId: FieldRef<"RevenueAuditEvent", 'String'>
+    readonly action: FieldRef<"RevenueAuditEvent", 'String'>
+    readonly targetType: FieldRef<"RevenueAuditEvent", 'String'>
+    readonly targetId: FieldRef<"RevenueAuditEvent", 'String'>
+    readonly requestId: FieldRef<"RevenueAuditEvent", 'String'>
+    readonly source: FieldRef<"RevenueAuditEvent", 'String'>
+    readonly result: FieldRef<"RevenueAuditEvent", 'String'>
+    readonly safeMetadata: FieldRef<"RevenueAuditEvent", 'Json'>
+    readonly createdAt: FieldRef<"RevenueAuditEvent", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RevenueAuditEvent findUnique
+   */
+  export type RevenueAuditEventFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueAuditEvent
+     */
+    select?: RevenueAuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueAuditEvent
+     */
+    omit?: RevenueAuditEventOmit<ExtArgs> | null
+    /**
+     * Filter, which RevenueAuditEvent to fetch.
+     */
+    where: RevenueAuditEventWhereUniqueInput
+  }
+
+  /**
+   * RevenueAuditEvent findUniqueOrThrow
+   */
+  export type RevenueAuditEventFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueAuditEvent
+     */
+    select?: RevenueAuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueAuditEvent
+     */
+    omit?: RevenueAuditEventOmit<ExtArgs> | null
+    /**
+     * Filter, which RevenueAuditEvent to fetch.
+     */
+    where: RevenueAuditEventWhereUniqueInput
+  }
+
+  /**
+   * RevenueAuditEvent findFirst
+   */
+  export type RevenueAuditEventFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueAuditEvent
+     */
+    select?: RevenueAuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueAuditEvent
+     */
+    omit?: RevenueAuditEventOmit<ExtArgs> | null
+    /**
+     * Filter, which RevenueAuditEvent to fetch.
+     */
+    where?: RevenueAuditEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenueAuditEvents to fetch.
+     */
+    orderBy?: RevenueAuditEventOrderByWithRelationInput | RevenueAuditEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RevenueAuditEvents.
+     */
+    cursor?: RevenueAuditEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenueAuditEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenueAuditEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RevenueAuditEvents.
+     */
+    distinct?: RevenueAuditEventScalarFieldEnum | RevenueAuditEventScalarFieldEnum[]
+  }
+
+  /**
+   * RevenueAuditEvent findFirstOrThrow
+   */
+  export type RevenueAuditEventFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueAuditEvent
+     */
+    select?: RevenueAuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueAuditEvent
+     */
+    omit?: RevenueAuditEventOmit<ExtArgs> | null
+    /**
+     * Filter, which RevenueAuditEvent to fetch.
+     */
+    where?: RevenueAuditEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenueAuditEvents to fetch.
+     */
+    orderBy?: RevenueAuditEventOrderByWithRelationInput | RevenueAuditEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RevenueAuditEvents.
+     */
+    cursor?: RevenueAuditEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenueAuditEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenueAuditEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RevenueAuditEvents.
+     */
+    distinct?: RevenueAuditEventScalarFieldEnum | RevenueAuditEventScalarFieldEnum[]
+  }
+
+  /**
+   * RevenueAuditEvent findMany
+   */
+  export type RevenueAuditEventFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueAuditEvent
+     */
+    select?: RevenueAuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueAuditEvent
+     */
+    omit?: RevenueAuditEventOmit<ExtArgs> | null
+    /**
+     * Filter, which RevenueAuditEvents to fetch.
+     */
+    where?: RevenueAuditEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenueAuditEvents to fetch.
+     */
+    orderBy?: RevenueAuditEventOrderByWithRelationInput | RevenueAuditEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RevenueAuditEvents.
+     */
+    cursor?: RevenueAuditEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenueAuditEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenueAuditEvents.
+     */
+    skip?: number
+    distinct?: RevenueAuditEventScalarFieldEnum | RevenueAuditEventScalarFieldEnum[]
+  }
+
+  /**
+   * RevenueAuditEvent create
+   */
+  export type RevenueAuditEventCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueAuditEvent
+     */
+    select?: RevenueAuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueAuditEvent
+     */
+    omit?: RevenueAuditEventOmit<ExtArgs> | null
+    /**
+     * The data needed to create a RevenueAuditEvent.
+     */
+    data: XOR<RevenueAuditEventCreateInput, RevenueAuditEventUncheckedCreateInput>
+  }
+
+  /**
+   * RevenueAuditEvent createMany
+   */
+  export type RevenueAuditEventCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RevenueAuditEvents.
+     */
+    data: RevenueAuditEventCreateManyInput | RevenueAuditEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RevenueAuditEvent createManyAndReturn
+   */
+  export type RevenueAuditEventCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueAuditEvent
+     */
+    select?: RevenueAuditEventSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueAuditEvent
+     */
+    omit?: RevenueAuditEventOmit<ExtArgs> | null
+    /**
+     * The data used to create many RevenueAuditEvents.
+     */
+    data: RevenueAuditEventCreateManyInput | RevenueAuditEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RevenueAuditEvent update
+   */
+  export type RevenueAuditEventUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueAuditEvent
+     */
+    select?: RevenueAuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueAuditEvent
+     */
+    omit?: RevenueAuditEventOmit<ExtArgs> | null
+    /**
+     * The data needed to update a RevenueAuditEvent.
+     */
+    data: XOR<RevenueAuditEventUpdateInput, RevenueAuditEventUncheckedUpdateInput>
+    /**
+     * Choose, which RevenueAuditEvent to update.
+     */
+    where: RevenueAuditEventWhereUniqueInput
+  }
+
+  /**
+   * RevenueAuditEvent updateMany
+   */
+  export type RevenueAuditEventUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RevenueAuditEvents.
+     */
+    data: XOR<RevenueAuditEventUpdateManyMutationInput, RevenueAuditEventUncheckedUpdateManyInput>
+    /**
+     * Filter which RevenueAuditEvents to update
+     */
+    where?: RevenueAuditEventWhereInput
+    /**
+     * Limit how many RevenueAuditEvents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RevenueAuditEvent updateManyAndReturn
+   */
+  export type RevenueAuditEventUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueAuditEvent
+     */
+    select?: RevenueAuditEventSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueAuditEvent
+     */
+    omit?: RevenueAuditEventOmit<ExtArgs> | null
+    /**
+     * The data used to update RevenueAuditEvents.
+     */
+    data: XOR<RevenueAuditEventUpdateManyMutationInput, RevenueAuditEventUncheckedUpdateManyInput>
+    /**
+     * Filter which RevenueAuditEvents to update
+     */
+    where?: RevenueAuditEventWhereInput
+    /**
+     * Limit how many RevenueAuditEvents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RevenueAuditEvent upsert
+   */
+  export type RevenueAuditEventUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueAuditEvent
+     */
+    select?: RevenueAuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueAuditEvent
+     */
+    omit?: RevenueAuditEventOmit<ExtArgs> | null
+    /**
+     * The filter to search for the RevenueAuditEvent to update in case it exists.
+     */
+    where: RevenueAuditEventWhereUniqueInput
+    /**
+     * In case the RevenueAuditEvent found by the `where` argument doesn't exist, create a new RevenueAuditEvent with this data.
+     */
+    create: XOR<RevenueAuditEventCreateInput, RevenueAuditEventUncheckedCreateInput>
+    /**
+     * In case the RevenueAuditEvent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RevenueAuditEventUpdateInput, RevenueAuditEventUncheckedUpdateInput>
+  }
+
+  /**
+   * RevenueAuditEvent delete
+   */
+  export type RevenueAuditEventDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueAuditEvent
+     */
+    select?: RevenueAuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueAuditEvent
+     */
+    omit?: RevenueAuditEventOmit<ExtArgs> | null
+    /**
+     * Filter which RevenueAuditEvent to delete.
+     */
+    where: RevenueAuditEventWhereUniqueInput
+  }
+
+  /**
+   * RevenueAuditEvent deleteMany
+   */
+  export type RevenueAuditEventDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RevenueAuditEvents to delete
+     */
+    where?: RevenueAuditEventWhereInput
+    /**
+     * Limit how many RevenueAuditEvents to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RevenueAuditEvent without action
+   */
+  export type RevenueAuditEventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueAuditEvent
+     */
+    select?: RevenueAuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueAuditEvent
+     */
+    omit?: RevenueAuditEventOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RevenueLeadSource
+   */
+
+  export type AggregateRevenueLeadSource = {
+    _count: RevenueLeadSourceCountAggregateOutputType | null
+    _avg: RevenueLeadSourceAvgAggregateOutputType | null
+    _sum: RevenueLeadSourceSumAggregateOutputType | null
+    _min: RevenueLeadSourceMinAggregateOutputType | null
+    _max: RevenueLeadSourceMaxAggregateOutputType | null
+  }
+
+  export type RevenueLeadSourceAvgAggregateOutputType = {
+    costCents: number | null
+    confidence: number | null
+  }
+
+  export type RevenueLeadSourceSumAggregateOutputType = {
+    costCents: number | null
+    confidence: number | null
+  }
+
+  export type RevenueLeadSourceMinAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    leadId: string | null
+    source: string | null
+    sourceType: string | null
+    sourceDetail: string | null
+    sourceRecordId: string | null
+    campaignName: string | null
+    campaignMedium: string | null
+    costCents: number | null
+    confidence: number | null
+    verified: boolean | null
+    importedBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RevenueLeadSourceMaxAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    leadId: string | null
+    source: string | null
+    sourceType: string | null
+    sourceDetail: string | null
+    sourceRecordId: string | null
+    campaignName: string | null
+    campaignMedium: string | null
+    costCents: number | null
+    confidence: number | null
+    verified: boolean | null
+    importedBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RevenueLeadSourceCountAggregateOutputType = {
+    id: number
+    tenantId: number
+    leadId: number
+    source: number
+    sourceType: number
+    sourceDetail: number
+    sourceRecordId: number
+    campaignName: number
+    campaignMedium: number
+    costCents: number
+    confidence: number
+    verified: number
+    importedBy: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type RevenueLeadSourceAvgAggregateInputType = {
+    costCents?: true
+    confidence?: true
+  }
+
+  export type RevenueLeadSourceSumAggregateInputType = {
+    costCents?: true
+    confidence?: true
+  }
+
+  export type RevenueLeadSourceMinAggregateInputType = {
+    id?: true
+    tenantId?: true
+    leadId?: true
+    source?: true
+    sourceType?: true
+    sourceDetail?: true
+    sourceRecordId?: true
+    campaignName?: true
+    campaignMedium?: true
+    costCents?: true
+    confidence?: true
+    verified?: true
+    importedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RevenueLeadSourceMaxAggregateInputType = {
+    id?: true
+    tenantId?: true
+    leadId?: true
+    source?: true
+    sourceType?: true
+    sourceDetail?: true
+    sourceRecordId?: true
+    campaignName?: true
+    campaignMedium?: true
+    costCents?: true
+    confidence?: true
+    verified?: true
+    importedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RevenueLeadSourceCountAggregateInputType = {
+    id?: true
+    tenantId?: true
+    leadId?: true
+    source?: true
+    sourceType?: true
+    sourceDetail?: true
+    sourceRecordId?: true
+    campaignName?: true
+    campaignMedium?: true
+    costCents?: true
+    confidence?: true
+    verified?: true
+    importedBy?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type RevenueLeadSourceAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RevenueLeadSource to aggregate.
+     */
+    where?: RevenueLeadSourceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenueLeadSources to fetch.
+     */
+    orderBy?: RevenueLeadSourceOrderByWithRelationInput | RevenueLeadSourceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RevenueLeadSourceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenueLeadSources from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenueLeadSources.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RevenueLeadSources
+    **/
+    _count?: true | RevenueLeadSourceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RevenueLeadSourceAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RevenueLeadSourceSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RevenueLeadSourceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RevenueLeadSourceMaxAggregateInputType
+  }
+
+  export type GetRevenueLeadSourceAggregateType<T extends RevenueLeadSourceAggregateArgs> = {
+        [P in keyof T & keyof AggregateRevenueLeadSource]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRevenueLeadSource[P]>
+      : GetScalarType<T[P], AggregateRevenueLeadSource[P]>
+  }
+
+
+
+
+  export type RevenueLeadSourceGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RevenueLeadSourceWhereInput
+    orderBy?: RevenueLeadSourceOrderByWithAggregationInput | RevenueLeadSourceOrderByWithAggregationInput[]
+    by: RevenueLeadSourceScalarFieldEnum[] | RevenueLeadSourceScalarFieldEnum
+    having?: RevenueLeadSourceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RevenueLeadSourceCountAggregateInputType | true
+    _avg?: RevenueLeadSourceAvgAggregateInputType
+    _sum?: RevenueLeadSourceSumAggregateInputType
+    _min?: RevenueLeadSourceMinAggregateInputType
+    _max?: RevenueLeadSourceMaxAggregateInputType
+  }
+
+  export type RevenueLeadSourceGroupByOutputType = {
+    id: string
+    tenantId: string
+    leadId: string
+    source: string
+    sourceType: string
+    sourceDetail: string
+    sourceRecordId: string | null
+    campaignName: string | null
+    campaignMedium: string | null
+    costCents: number | null
+    confidence: number
+    verified: boolean
+    importedBy: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: RevenueLeadSourceCountAggregateOutputType | null
+    _avg: RevenueLeadSourceAvgAggregateOutputType | null
+    _sum: RevenueLeadSourceSumAggregateOutputType | null
+    _min: RevenueLeadSourceMinAggregateOutputType | null
+    _max: RevenueLeadSourceMaxAggregateOutputType | null
+  }
+
+  type GetRevenueLeadSourceGroupByPayload<T extends RevenueLeadSourceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RevenueLeadSourceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RevenueLeadSourceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RevenueLeadSourceGroupByOutputType[P]>
+            : GetScalarType<T[P], RevenueLeadSourceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RevenueLeadSourceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    leadId?: boolean
+    source?: boolean
+    sourceType?: boolean
+    sourceDetail?: boolean
+    sourceRecordId?: boolean
+    campaignName?: boolean
+    campaignMedium?: boolean
+    costCents?: boolean
+    confidence?: boolean
+    verified?: boolean
+    importedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["revenueLeadSource"]>
+
+  export type RevenueLeadSourceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    leadId?: boolean
+    source?: boolean
+    sourceType?: boolean
+    sourceDetail?: boolean
+    sourceRecordId?: boolean
+    campaignName?: boolean
+    campaignMedium?: boolean
+    costCents?: boolean
+    confidence?: boolean
+    verified?: boolean
+    importedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["revenueLeadSource"]>
+
+  export type RevenueLeadSourceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    leadId?: boolean
+    source?: boolean
+    sourceType?: boolean
+    sourceDetail?: boolean
+    sourceRecordId?: boolean
+    campaignName?: boolean
+    campaignMedium?: boolean
+    costCents?: boolean
+    confidence?: boolean
+    verified?: boolean
+    importedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["revenueLeadSource"]>
+
+  export type RevenueLeadSourceSelectScalar = {
+    id?: boolean
+    tenantId?: boolean
+    leadId?: boolean
+    source?: boolean
+    sourceType?: boolean
+    sourceDetail?: boolean
+    sourceRecordId?: boolean
+    campaignName?: boolean
+    campaignMedium?: boolean
+    costCents?: boolean
+    confidence?: boolean
+    verified?: boolean
+    importedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type RevenueLeadSourceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "leadId" | "source" | "sourceType" | "sourceDetail" | "sourceRecordId" | "campaignName" | "campaignMedium" | "costCents" | "confidence" | "verified" | "importedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["revenueLeadSource"]>
+  export type RevenueLeadSourceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+  }
+  export type RevenueLeadSourceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+  }
+  export type RevenueLeadSourceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+  }
+
+  export type $RevenueLeadSourcePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RevenueLeadSource"
+    objects: {
+      lead: Prisma.$LeadPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenantId: string
+      leadId: string
+      source: string
+      sourceType: string
+      sourceDetail: string
+      sourceRecordId: string | null
+      campaignName: string | null
+      campaignMedium: string | null
+      costCents: number | null
+      confidence: number
+      verified: boolean
+      importedBy: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["revenueLeadSource"]>
+    composites: {}
+  }
+
+  type RevenueLeadSourceGetPayload<S extends boolean | null | undefined | RevenueLeadSourceDefaultArgs> = $Result.GetResult<Prisma.$RevenueLeadSourcePayload, S>
+
+  type RevenueLeadSourceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RevenueLeadSourceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RevenueLeadSourceCountAggregateInputType | true
+    }
+
+  export interface RevenueLeadSourceDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RevenueLeadSource'], meta: { name: 'RevenueLeadSource' } }
+    /**
+     * Find zero or one RevenueLeadSource that matches the filter.
+     * @param {RevenueLeadSourceFindUniqueArgs} args - Arguments to find a RevenueLeadSource
+     * @example
+     * // Get one RevenueLeadSource
+     * const revenueLeadSource = await prisma.revenueLeadSource.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RevenueLeadSourceFindUniqueArgs>(args: SelectSubset<T, RevenueLeadSourceFindUniqueArgs<ExtArgs>>): Prisma__RevenueLeadSourceClient<$Result.GetResult<Prisma.$RevenueLeadSourcePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RevenueLeadSource that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RevenueLeadSourceFindUniqueOrThrowArgs} args - Arguments to find a RevenueLeadSource
+     * @example
+     * // Get one RevenueLeadSource
+     * const revenueLeadSource = await prisma.revenueLeadSource.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RevenueLeadSourceFindUniqueOrThrowArgs>(args: SelectSubset<T, RevenueLeadSourceFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RevenueLeadSourceClient<$Result.GetResult<Prisma.$RevenueLeadSourcePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RevenueLeadSource that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueLeadSourceFindFirstArgs} args - Arguments to find a RevenueLeadSource
+     * @example
+     * // Get one RevenueLeadSource
+     * const revenueLeadSource = await prisma.revenueLeadSource.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RevenueLeadSourceFindFirstArgs>(args?: SelectSubset<T, RevenueLeadSourceFindFirstArgs<ExtArgs>>): Prisma__RevenueLeadSourceClient<$Result.GetResult<Prisma.$RevenueLeadSourcePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RevenueLeadSource that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueLeadSourceFindFirstOrThrowArgs} args - Arguments to find a RevenueLeadSource
+     * @example
+     * // Get one RevenueLeadSource
+     * const revenueLeadSource = await prisma.revenueLeadSource.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RevenueLeadSourceFindFirstOrThrowArgs>(args?: SelectSubset<T, RevenueLeadSourceFindFirstOrThrowArgs<ExtArgs>>): Prisma__RevenueLeadSourceClient<$Result.GetResult<Prisma.$RevenueLeadSourcePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RevenueLeadSources that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueLeadSourceFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RevenueLeadSources
+     * const revenueLeadSources = await prisma.revenueLeadSource.findMany()
+     * 
+     * // Get first 10 RevenueLeadSources
+     * const revenueLeadSources = await prisma.revenueLeadSource.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const revenueLeadSourceWithIdOnly = await prisma.revenueLeadSource.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RevenueLeadSourceFindManyArgs>(args?: SelectSubset<T, RevenueLeadSourceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenueLeadSourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RevenueLeadSource.
+     * @param {RevenueLeadSourceCreateArgs} args - Arguments to create a RevenueLeadSource.
+     * @example
+     * // Create one RevenueLeadSource
+     * const RevenueLeadSource = await prisma.revenueLeadSource.create({
+     *   data: {
+     *     // ... data to create a RevenueLeadSource
+     *   }
+     * })
+     * 
+     */
+    create<T extends RevenueLeadSourceCreateArgs>(args: SelectSubset<T, RevenueLeadSourceCreateArgs<ExtArgs>>): Prisma__RevenueLeadSourceClient<$Result.GetResult<Prisma.$RevenueLeadSourcePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RevenueLeadSources.
+     * @param {RevenueLeadSourceCreateManyArgs} args - Arguments to create many RevenueLeadSources.
+     * @example
+     * // Create many RevenueLeadSources
+     * const revenueLeadSource = await prisma.revenueLeadSource.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RevenueLeadSourceCreateManyArgs>(args?: SelectSubset<T, RevenueLeadSourceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RevenueLeadSources and returns the data saved in the database.
+     * @param {RevenueLeadSourceCreateManyAndReturnArgs} args - Arguments to create many RevenueLeadSources.
+     * @example
+     * // Create many RevenueLeadSources
+     * const revenueLeadSource = await prisma.revenueLeadSource.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RevenueLeadSources and only return the `id`
+     * const revenueLeadSourceWithIdOnly = await prisma.revenueLeadSource.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RevenueLeadSourceCreateManyAndReturnArgs>(args?: SelectSubset<T, RevenueLeadSourceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenueLeadSourcePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RevenueLeadSource.
+     * @param {RevenueLeadSourceDeleteArgs} args - Arguments to delete one RevenueLeadSource.
+     * @example
+     * // Delete one RevenueLeadSource
+     * const RevenueLeadSource = await prisma.revenueLeadSource.delete({
+     *   where: {
+     *     // ... filter to delete one RevenueLeadSource
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RevenueLeadSourceDeleteArgs>(args: SelectSubset<T, RevenueLeadSourceDeleteArgs<ExtArgs>>): Prisma__RevenueLeadSourceClient<$Result.GetResult<Prisma.$RevenueLeadSourcePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RevenueLeadSource.
+     * @param {RevenueLeadSourceUpdateArgs} args - Arguments to update one RevenueLeadSource.
+     * @example
+     * // Update one RevenueLeadSource
+     * const revenueLeadSource = await prisma.revenueLeadSource.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RevenueLeadSourceUpdateArgs>(args: SelectSubset<T, RevenueLeadSourceUpdateArgs<ExtArgs>>): Prisma__RevenueLeadSourceClient<$Result.GetResult<Prisma.$RevenueLeadSourcePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RevenueLeadSources.
+     * @param {RevenueLeadSourceDeleteManyArgs} args - Arguments to filter RevenueLeadSources to delete.
+     * @example
+     * // Delete a few RevenueLeadSources
+     * const { count } = await prisma.revenueLeadSource.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RevenueLeadSourceDeleteManyArgs>(args?: SelectSubset<T, RevenueLeadSourceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RevenueLeadSources.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueLeadSourceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RevenueLeadSources
+     * const revenueLeadSource = await prisma.revenueLeadSource.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RevenueLeadSourceUpdateManyArgs>(args: SelectSubset<T, RevenueLeadSourceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RevenueLeadSources and returns the data updated in the database.
+     * @param {RevenueLeadSourceUpdateManyAndReturnArgs} args - Arguments to update many RevenueLeadSources.
+     * @example
+     * // Update many RevenueLeadSources
+     * const revenueLeadSource = await prisma.revenueLeadSource.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RevenueLeadSources and only return the `id`
+     * const revenueLeadSourceWithIdOnly = await prisma.revenueLeadSource.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RevenueLeadSourceUpdateManyAndReturnArgs>(args: SelectSubset<T, RevenueLeadSourceUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenueLeadSourcePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RevenueLeadSource.
+     * @param {RevenueLeadSourceUpsertArgs} args - Arguments to update or create a RevenueLeadSource.
+     * @example
+     * // Update or create a RevenueLeadSource
+     * const revenueLeadSource = await prisma.revenueLeadSource.upsert({
+     *   create: {
+     *     // ... data to create a RevenueLeadSource
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RevenueLeadSource we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RevenueLeadSourceUpsertArgs>(args: SelectSubset<T, RevenueLeadSourceUpsertArgs<ExtArgs>>): Prisma__RevenueLeadSourceClient<$Result.GetResult<Prisma.$RevenueLeadSourcePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RevenueLeadSources.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueLeadSourceCountArgs} args - Arguments to filter RevenueLeadSources to count.
+     * @example
+     * // Count the number of RevenueLeadSources
+     * const count = await prisma.revenueLeadSource.count({
+     *   where: {
+     *     // ... the filter for the RevenueLeadSources we want to count
+     *   }
+     * })
+    **/
+    count<T extends RevenueLeadSourceCountArgs>(
+      args?: Subset<T, RevenueLeadSourceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RevenueLeadSourceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RevenueLeadSource.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueLeadSourceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RevenueLeadSourceAggregateArgs>(args: Subset<T, RevenueLeadSourceAggregateArgs>): Prisma.PrismaPromise<GetRevenueLeadSourceAggregateType<T>>
+
+    /**
+     * Group by RevenueLeadSource.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueLeadSourceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RevenueLeadSourceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RevenueLeadSourceGroupByArgs['orderBy'] }
+        : { orderBy?: RevenueLeadSourceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RevenueLeadSourceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRevenueLeadSourceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RevenueLeadSource model
+   */
+  readonly fields: RevenueLeadSourceFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RevenueLeadSource.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RevenueLeadSourceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    lead<T extends LeadDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LeadDefaultArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RevenueLeadSource model
+   */
+  interface RevenueLeadSourceFieldRefs {
+    readonly id: FieldRef<"RevenueLeadSource", 'String'>
+    readonly tenantId: FieldRef<"RevenueLeadSource", 'String'>
+    readonly leadId: FieldRef<"RevenueLeadSource", 'String'>
+    readonly source: FieldRef<"RevenueLeadSource", 'String'>
+    readonly sourceType: FieldRef<"RevenueLeadSource", 'String'>
+    readonly sourceDetail: FieldRef<"RevenueLeadSource", 'String'>
+    readonly sourceRecordId: FieldRef<"RevenueLeadSource", 'String'>
+    readonly campaignName: FieldRef<"RevenueLeadSource", 'String'>
+    readonly campaignMedium: FieldRef<"RevenueLeadSource", 'String'>
+    readonly costCents: FieldRef<"RevenueLeadSource", 'Int'>
+    readonly confidence: FieldRef<"RevenueLeadSource", 'Int'>
+    readonly verified: FieldRef<"RevenueLeadSource", 'Boolean'>
+    readonly importedBy: FieldRef<"RevenueLeadSource", 'String'>
+    readonly createdAt: FieldRef<"RevenueLeadSource", 'DateTime'>
+    readonly updatedAt: FieldRef<"RevenueLeadSource", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RevenueLeadSource findUnique
+   */
+  export type RevenueLeadSourceFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadSource
+     */
+    select?: RevenueLeadSourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadSource
+     */
+    omit?: RevenueLeadSourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadSourceInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenueLeadSource to fetch.
+     */
+    where: RevenueLeadSourceWhereUniqueInput
+  }
+
+  /**
+   * RevenueLeadSource findUniqueOrThrow
+   */
+  export type RevenueLeadSourceFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadSource
+     */
+    select?: RevenueLeadSourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadSource
+     */
+    omit?: RevenueLeadSourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadSourceInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenueLeadSource to fetch.
+     */
+    where: RevenueLeadSourceWhereUniqueInput
+  }
+
+  /**
+   * RevenueLeadSource findFirst
+   */
+  export type RevenueLeadSourceFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadSource
+     */
+    select?: RevenueLeadSourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadSource
+     */
+    omit?: RevenueLeadSourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadSourceInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenueLeadSource to fetch.
+     */
+    where?: RevenueLeadSourceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenueLeadSources to fetch.
+     */
+    orderBy?: RevenueLeadSourceOrderByWithRelationInput | RevenueLeadSourceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RevenueLeadSources.
+     */
+    cursor?: RevenueLeadSourceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenueLeadSources from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenueLeadSources.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RevenueLeadSources.
+     */
+    distinct?: RevenueLeadSourceScalarFieldEnum | RevenueLeadSourceScalarFieldEnum[]
+  }
+
+  /**
+   * RevenueLeadSource findFirstOrThrow
+   */
+  export type RevenueLeadSourceFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadSource
+     */
+    select?: RevenueLeadSourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadSource
+     */
+    omit?: RevenueLeadSourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadSourceInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenueLeadSource to fetch.
+     */
+    where?: RevenueLeadSourceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenueLeadSources to fetch.
+     */
+    orderBy?: RevenueLeadSourceOrderByWithRelationInput | RevenueLeadSourceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RevenueLeadSources.
+     */
+    cursor?: RevenueLeadSourceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenueLeadSources from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenueLeadSources.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RevenueLeadSources.
+     */
+    distinct?: RevenueLeadSourceScalarFieldEnum | RevenueLeadSourceScalarFieldEnum[]
+  }
+
+  /**
+   * RevenueLeadSource findMany
+   */
+  export type RevenueLeadSourceFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadSource
+     */
+    select?: RevenueLeadSourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadSource
+     */
+    omit?: RevenueLeadSourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadSourceInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenueLeadSources to fetch.
+     */
+    where?: RevenueLeadSourceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenueLeadSources to fetch.
+     */
+    orderBy?: RevenueLeadSourceOrderByWithRelationInput | RevenueLeadSourceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RevenueLeadSources.
+     */
+    cursor?: RevenueLeadSourceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenueLeadSources from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenueLeadSources.
+     */
+    skip?: number
+    distinct?: RevenueLeadSourceScalarFieldEnum | RevenueLeadSourceScalarFieldEnum[]
+  }
+
+  /**
+   * RevenueLeadSource create
+   */
+  export type RevenueLeadSourceCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadSource
+     */
+    select?: RevenueLeadSourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadSource
+     */
+    omit?: RevenueLeadSourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadSourceInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RevenueLeadSource.
+     */
+    data: XOR<RevenueLeadSourceCreateInput, RevenueLeadSourceUncheckedCreateInput>
+  }
+
+  /**
+   * RevenueLeadSource createMany
+   */
+  export type RevenueLeadSourceCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RevenueLeadSources.
+     */
+    data: RevenueLeadSourceCreateManyInput | RevenueLeadSourceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RevenueLeadSource createManyAndReturn
+   */
+  export type RevenueLeadSourceCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadSource
+     */
+    select?: RevenueLeadSourceSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadSource
+     */
+    omit?: RevenueLeadSourceOmit<ExtArgs> | null
+    /**
+     * The data used to create many RevenueLeadSources.
+     */
+    data: RevenueLeadSourceCreateManyInput | RevenueLeadSourceCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadSourceIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RevenueLeadSource update
+   */
+  export type RevenueLeadSourceUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadSource
+     */
+    select?: RevenueLeadSourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadSource
+     */
+    omit?: RevenueLeadSourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadSourceInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RevenueLeadSource.
+     */
+    data: XOR<RevenueLeadSourceUpdateInput, RevenueLeadSourceUncheckedUpdateInput>
+    /**
+     * Choose, which RevenueLeadSource to update.
+     */
+    where: RevenueLeadSourceWhereUniqueInput
+  }
+
+  /**
+   * RevenueLeadSource updateMany
+   */
+  export type RevenueLeadSourceUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RevenueLeadSources.
+     */
+    data: XOR<RevenueLeadSourceUpdateManyMutationInput, RevenueLeadSourceUncheckedUpdateManyInput>
+    /**
+     * Filter which RevenueLeadSources to update
+     */
+    where?: RevenueLeadSourceWhereInput
+    /**
+     * Limit how many RevenueLeadSources to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RevenueLeadSource updateManyAndReturn
+   */
+  export type RevenueLeadSourceUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadSource
+     */
+    select?: RevenueLeadSourceSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadSource
+     */
+    omit?: RevenueLeadSourceOmit<ExtArgs> | null
+    /**
+     * The data used to update RevenueLeadSources.
+     */
+    data: XOR<RevenueLeadSourceUpdateManyMutationInput, RevenueLeadSourceUncheckedUpdateManyInput>
+    /**
+     * Filter which RevenueLeadSources to update
+     */
+    where?: RevenueLeadSourceWhereInput
+    /**
+     * Limit how many RevenueLeadSources to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadSourceIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RevenueLeadSource upsert
+   */
+  export type RevenueLeadSourceUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadSource
+     */
+    select?: RevenueLeadSourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadSource
+     */
+    omit?: RevenueLeadSourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadSourceInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RevenueLeadSource to update in case it exists.
+     */
+    where: RevenueLeadSourceWhereUniqueInput
+    /**
+     * In case the RevenueLeadSource found by the `where` argument doesn't exist, create a new RevenueLeadSource with this data.
+     */
+    create: XOR<RevenueLeadSourceCreateInput, RevenueLeadSourceUncheckedCreateInput>
+    /**
+     * In case the RevenueLeadSource was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RevenueLeadSourceUpdateInput, RevenueLeadSourceUncheckedUpdateInput>
+  }
+
+  /**
+   * RevenueLeadSource delete
+   */
+  export type RevenueLeadSourceDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadSource
+     */
+    select?: RevenueLeadSourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadSource
+     */
+    omit?: RevenueLeadSourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadSourceInclude<ExtArgs> | null
+    /**
+     * Filter which RevenueLeadSource to delete.
+     */
+    where: RevenueLeadSourceWhereUniqueInput
+  }
+
+  /**
+   * RevenueLeadSource deleteMany
+   */
+  export type RevenueLeadSourceDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RevenueLeadSources to delete
+     */
+    where?: RevenueLeadSourceWhereInput
+    /**
+     * Limit how many RevenueLeadSources to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RevenueLeadSource without action
+   */
+  export type RevenueLeadSourceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadSource
+     */
+    select?: RevenueLeadSourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadSource
+     */
+    omit?: RevenueLeadSourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadSourceInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RevenueLeadScore
+   */
+
+  export type AggregateRevenueLeadScore = {
+    _count: RevenueLeadScoreCountAggregateOutputType | null
+    _avg: RevenueLeadScoreAvgAggregateOutputType | null
+    _sum: RevenueLeadScoreSumAggregateOutputType | null
+    _min: RevenueLeadScoreMinAggregateOutputType | null
+    _max: RevenueLeadScoreMaxAggregateOutputType | null
+  }
+
+  export type RevenueLeadScoreAvgAggregateOutputType = {
+    score: number | null
+    confidence: number | null
+  }
+
+  export type RevenueLeadScoreSumAggregateOutputType = {
+    score: number | null
+    confidence: number | null
+  }
+
+  export type RevenueLeadScoreMinAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    leadId: string | null
+    score: number | null
+    confidence: number | null
+    priority: string | null
+    explanation: string | null
+    recommendedNextAction: string | null
+    advisoryOnly: boolean | null
+    createdAt: Date | null
+  }
+
+  export type RevenueLeadScoreMaxAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    leadId: string | null
+    score: number | null
+    confidence: number | null
+    priority: string | null
+    explanation: string | null
+    recommendedNextAction: string | null
+    advisoryOnly: boolean | null
+    createdAt: Date | null
+  }
+
+  export type RevenueLeadScoreCountAggregateOutputType = {
+    id: number
+    tenantId: number
+    leadId: number
+    score: number
+    confidence: number
+    priority: number
+    explanation: number
+    recommendedNextAction: number
+    missingData: number
+    scoreBreakdown: number
+    assumptions: number
+    dataUsed: number
+    advisoryOnly: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type RevenueLeadScoreAvgAggregateInputType = {
+    score?: true
+    confidence?: true
+  }
+
+  export type RevenueLeadScoreSumAggregateInputType = {
+    score?: true
+    confidence?: true
+  }
+
+  export type RevenueLeadScoreMinAggregateInputType = {
+    id?: true
+    tenantId?: true
+    leadId?: true
+    score?: true
+    confidence?: true
+    priority?: true
+    explanation?: true
+    recommendedNextAction?: true
+    advisoryOnly?: true
+    createdAt?: true
+  }
+
+  export type RevenueLeadScoreMaxAggregateInputType = {
+    id?: true
+    tenantId?: true
+    leadId?: true
+    score?: true
+    confidence?: true
+    priority?: true
+    explanation?: true
+    recommendedNextAction?: true
+    advisoryOnly?: true
+    createdAt?: true
+  }
+
+  export type RevenueLeadScoreCountAggregateInputType = {
+    id?: true
+    tenantId?: true
+    leadId?: true
+    score?: true
+    confidence?: true
+    priority?: true
+    explanation?: true
+    recommendedNextAction?: true
+    missingData?: true
+    scoreBreakdown?: true
+    assumptions?: true
+    dataUsed?: true
+    advisoryOnly?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type RevenueLeadScoreAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RevenueLeadScore to aggregate.
+     */
+    where?: RevenueLeadScoreWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenueLeadScores to fetch.
+     */
+    orderBy?: RevenueLeadScoreOrderByWithRelationInput | RevenueLeadScoreOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RevenueLeadScoreWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenueLeadScores from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenueLeadScores.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RevenueLeadScores
+    **/
+    _count?: true | RevenueLeadScoreCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RevenueLeadScoreAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RevenueLeadScoreSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RevenueLeadScoreMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RevenueLeadScoreMaxAggregateInputType
+  }
+
+  export type GetRevenueLeadScoreAggregateType<T extends RevenueLeadScoreAggregateArgs> = {
+        [P in keyof T & keyof AggregateRevenueLeadScore]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRevenueLeadScore[P]>
+      : GetScalarType<T[P], AggregateRevenueLeadScore[P]>
+  }
+
+
+
+
+  export type RevenueLeadScoreGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RevenueLeadScoreWhereInput
+    orderBy?: RevenueLeadScoreOrderByWithAggregationInput | RevenueLeadScoreOrderByWithAggregationInput[]
+    by: RevenueLeadScoreScalarFieldEnum[] | RevenueLeadScoreScalarFieldEnum
+    having?: RevenueLeadScoreScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RevenueLeadScoreCountAggregateInputType | true
+    _avg?: RevenueLeadScoreAvgAggregateInputType
+    _sum?: RevenueLeadScoreSumAggregateInputType
+    _min?: RevenueLeadScoreMinAggregateInputType
+    _max?: RevenueLeadScoreMaxAggregateInputType
+  }
+
+  export type RevenueLeadScoreGroupByOutputType = {
+    id: string
+    tenantId: string
+    leadId: string
+    score: number
+    confidence: number
+    priority: string
+    explanation: string
+    recommendedNextAction: string
+    missingData: JsonValue
+    scoreBreakdown: JsonValue
+    assumptions: JsonValue
+    dataUsed: JsonValue
+    advisoryOnly: boolean
+    createdAt: Date
+    _count: RevenueLeadScoreCountAggregateOutputType | null
+    _avg: RevenueLeadScoreAvgAggregateOutputType | null
+    _sum: RevenueLeadScoreSumAggregateOutputType | null
+    _min: RevenueLeadScoreMinAggregateOutputType | null
+    _max: RevenueLeadScoreMaxAggregateOutputType | null
+  }
+
+  type GetRevenueLeadScoreGroupByPayload<T extends RevenueLeadScoreGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RevenueLeadScoreGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RevenueLeadScoreGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RevenueLeadScoreGroupByOutputType[P]>
+            : GetScalarType<T[P], RevenueLeadScoreGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RevenueLeadScoreSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    leadId?: boolean
+    score?: boolean
+    confidence?: boolean
+    priority?: boolean
+    explanation?: boolean
+    recommendedNextAction?: boolean
+    missingData?: boolean
+    scoreBreakdown?: boolean
+    assumptions?: boolean
+    dataUsed?: boolean
+    advisoryOnly?: boolean
+    createdAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["revenueLeadScore"]>
+
+  export type RevenueLeadScoreSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    leadId?: boolean
+    score?: boolean
+    confidence?: boolean
+    priority?: boolean
+    explanation?: boolean
+    recommendedNextAction?: boolean
+    missingData?: boolean
+    scoreBreakdown?: boolean
+    assumptions?: boolean
+    dataUsed?: boolean
+    advisoryOnly?: boolean
+    createdAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["revenueLeadScore"]>
+
+  export type RevenueLeadScoreSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    leadId?: boolean
+    score?: boolean
+    confidence?: boolean
+    priority?: boolean
+    explanation?: boolean
+    recommendedNextAction?: boolean
+    missingData?: boolean
+    scoreBreakdown?: boolean
+    assumptions?: boolean
+    dataUsed?: boolean
+    advisoryOnly?: boolean
+    createdAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["revenueLeadScore"]>
+
+  export type RevenueLeadScoreSelectScalar = {
+    id?: boolean
+    tenantId?: boolean
+    leadId?: boolean
+    score?: boolean
+    confidence?: boolean
+    priority?: boolean
+    explanation?: boolean
+    recommendedNextAction?: boolean
+    missingData?: boolean
+    scoreBreakdown?: boolean
+    assumptions?: boolean
+    dataUsed?: boolean
+    advisoryOnly?: boolean
+    createdAt?: boolean
+  }
+
+  export type RevenueLeadScoreOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "leadId" | "score" | "confidence" | "priority" | "explanation" | "recommendedNextAction" | "missingData" | "scoreBreakdown" | "assumptions" | "dataUsed" | "advisoryOnly" | "createdAt", ExtArgs["result"]["revenueLeadScore"]>
+  export type RevenueLeadScoreInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+  }
+  export type RevenueLeadScoreIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+  }
+  export type RevenueLeadScoreIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+  }
+
+  export type $RevenueLeadScorePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RevenueLeadScore"
+    objects: {
+      lead: Prisma.$LeadPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenantId: string
+      leadId: string
+      score: number
+      confidence: number
+      priority: string
+      explanation: string
+      recommendedNextAction: string
+      missingData: Prisma.JsonValue
+      scoreBreakdown: Prisma.JsonValue
+      assumptions: Prisma.JsonValue
+      dataUsed: Prisma.JsonValue
+      advisoryOnly: boolean
+      createdAt: Date
+    }, ExtArgs["result"]["revenueLeadScore"]>
+    composites: {}
+  }
+
+  type RevenueLeadScoreGetPayload<S extends boolean | null | undefined | RevenueLeadScoreDefaultArgs> = $Result.GetResult<Prisma.$RevenueLeadScorePayload, S>
+
+  type RevenueLeadScoreCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RevenueLeadScoreFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RevenueLeadScoreCountAggregateInputType | true
+    }
+
+  export interface RevenueLeadScoreDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RevenueLeadScore'], meta: { name: 'RevenueLeadScore' } }
+    /**
+     * Find zero or one RevenueLeadScore that matches the filter.
+     * @param {RevenueLeadScoreFindUniqueArgs} args - Arguments to find a RevenueLeadScore
+     * @example
+     * // Get one RevenueLeadScore
+     * const revenueLeadScore = await prisma.revenueLeadScore.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RevenueLeadScoreFindUniqueArgs>(args: SelectSubset<T, RevenueLeadScoreFindUniqueArgs<ExtArgs>>): Prisma__RevenueLeadScoreClient<$Result.GetResult<Prisma.$RevenueLeadScorePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RevenueLeadScore that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RevenueLeadScoreFindUniqueOrThrowArgs} args - Arguments to find a RevenueLeadScore
+     * @example
+     * // Get one RevenueLeadScore
+     * const revenueLeadScore = await prisma.revenueLeadScore.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RevenueLeadScoreFindUniqueOrThrowArgs>(args: SelectSubset<T, RevenueLeadScoreFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RevenueLeadScoreClient<$Result.GetResult<Prisma.$RevenueLeadScorePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RevenueLeadScore that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueLeadScoreFindFirstArgs} args - Arguments to find a RevenueLeadScore
+     * @example
+     * // Get one RevenueLeadScore
+     * const revenueLeadScore = await prisma.revenueLeadScore.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RevenueLeadScoreFindFirstArgs>(args?: SelectSubset<T, RevenueLeadScoreFindFirstArgs<ExtArgs>>): Prisma__RevenueLeadScoreClient<$Result.GetResult<Prisma.$RevenueLeadScorePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RevenueLeadScore that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueLeadScoreFindFirstOrThrowArgs} args - Arguments to find a RevenueLeadScore
+     * @example
+     * // Get one RevenueLeadScore
+     * const revenueLeadScore = await prisma.revenueLeadScore.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RevenueLeadScoreFindFirstOrThrowArgs>(args?: SelectSubset<T, RevenueLeadScoreFindFirstOrThrowArgs<ExtArgs>>): Prisma__RevenueLeadScoreClient<$Result.GetResult<Prisma.$RevenueLeadScorePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RevenueLeadScores that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueLeadScoreFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RevenueLeadScores
+     * const revenueLeadScores = await prisma.revenueLeadScore.findMany()
+     * 
+     * // Get first 10 RevenueLeadScores
+     * const revenueLeadScores = await prisma.revenueLeadScore.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const revenueLeadScoreWithIdOnly = await prisma.revenueLeadScore.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RevenueLeadScoreFindManyArgs>(args?: SelectSubset<T, RevenueLeadScoreFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenueLeadScorePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RevenueLeadScore.
+     * @param {RevenueLeadScoreCreateArgs} args - Arguments to create a RevenueLeadScore.
+     * @example
+     * // Create one RevenueLeadScore
+     * const RevenueLeadScore = await prisma.revenueLeadScore.create({
+     *   data: {
+     *     // ... data to create a RevenueLeadScore
+     *   }
+     * })
+     * 
+     */
+    create<T extends RevenueLeadScoreCreateArgs>(args: SelectSubset<T, RevenueLeadScoreCreateArgs<ExtArgs>>): Prisma__RevenueLeadScoreClient<$Result.GetResult<Prisma.$RevenueLeadScorePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RevenueLeadScores.
+     * @param {RevenueLeadScoreCreateManyArgs} args - Arguments to create many RevenueLeadScores.
+     * @example
+     * // Create many RevenueLeadScores
+     * const revenueLeadScore = await prisma.revenueLeadScore.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RevenueLeadScoreCreateManyArgs>(args?: SelectSubset<T, RevenueLeadScoreCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RevenueLeadScores and returns the data saved in the database.
+     * @param {RevenueLeadScoreCreateManyAndReturnArgs} args - Arguments to create many RevenueLeadScores.
+     * @example
+     * // Create many RevenueLeadScores
+     * const revenueLeadScore = await prisma.revenueLeadScore.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RevenueLeadScores and only return the `id`
+     * const revenueLeadScoreWithIdOnly = await prisma.revenueLeadScore.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RevenueLeadScoreCreateManyAndReturnArgs>(args?: SelectSubset<T, RevenueLeadScoreCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenueLeadScorePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RevenueLeadScore.
+     * @param {RevenueLeadScoreDeleteArgs} args - Arguments to delete one RevenueLeadScore.
+     * @example
+     * // Delete one RevenueLeadScore
+     * const RevenueLeadScore = await prisma.revenueLeadScore.delete({
+     *   where: {
+     *     // ... filter to delete one RevenueLeadScore
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RevenueLeadScoreDeleteArgs>(args: SelectSubset<T, RevenueLeadScoreDeleteArgs<ExtArgs>>): Prisma__RevenueLeadScoreClient<$Result.GetResult<Prisma.$RevenueLeadScorePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RevenueLeadScore.
+     * @param {RevenueLeadScoreUpdateArgs} args - Arguments to update one RevenueLeadScore.
+     * @example
+     * // Update one RevenueLeadScore
+     * const revenueLeadScore = await prisma.revenueLeadScore.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RevenueLeadScoreUpdateArgs>(args: SelectSubset<T, RevenueLeadScoreUpdateArgs<ExtArgs>>): Prisma__RevenueLeadScoreClient<$Result.GetResult<Prisma.$RevenueLeadScorePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RevenueLeadScores.
+     * @param {RevenueLeadScoreDeleteManyArgs} args - Arguments to filter RevenueLeadScores to delete.
+     * @example
+     * // Delete a few RevenueLeadScores
+     * const { count } = await prisma.revenueLeadScore.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RevenueLeadScoreDeleteManyArgs>(args?: SelectSubset<T, RevenueLeadScoreDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RevenueLeadScores.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueLeadScoreUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RevenueLeadScores
+     * const revenueLeadScore = await prisma.revenueLeadScore.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RevenueLeadScoreUpdateManyArgs>(args: SelectSubset<T, RevenueLeadScoreUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RevenueLeadScores and returns the data updated in the database.
+     * @param {RevenueLeadScoreUpdateManyAndReturnArgs} args - Arguments to update many RevenueLeadScores.
+     * @example
+     * // Update many RevenueLeadScores
+     * const revenueLeadScore = await prisma.revenueLeadScore.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RevenueLeadScores and only return the `id`
+     * const revenueLeadScoreWithIdOnly = await prisma.revenueLeadScore.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RevenueLeadScoreUpdateManyAndReturnArgs>(args: SelectSubset<T, RevenueLeadScoreUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenueLeadScorePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RevenueLeadScore.
+     * @param {RevenueLeadScoreUpsertArgs} args - Arguments to update or create a RevenueLeadScore.
+     * @example
+     * // Update or create a RevenueLeadScore
+     * const revenueLeadScore = await prisma.revenueLeadScore.upsert({
+     *   create: {
+     *     // ... data to create a RevenueLeadScore
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RevenueLeadScore we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RevenueLeadScoreUpsertArgs>(args: SelectSubset<T, RevenueLeadScoreUpsertArgs<ExtArgs>>): Prisma__RevenueLeadScoreClient<$Result.GetResult<Prisma.$RevenueLeadScorePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RevenueLeadScores.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueLeadScoreCountArgs} args - Arguments to filter RevenueLeadScores to count.
+     * @example
+     * // Count the number of RevenueLeadScores
+     * const count = await prisma.revenueLeadScore.count({
+     *   where: {
+     *     // ... the filter for the RevenueLeadScores we want to count
+     *   }
+     * })
+    **/
+    count<T extends RevenueLeadScoreCountArgs>(
+      args?: Subset<T, RevenueLeadScoreCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RevenueLeadScoreCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RevenueLeadScore.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueLeadScoreAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RevenueLeadScoreAggregateArgs>(args: Subset<T, RevenueLeadScoreAggregateArgs>): Prisma.PrismaPromise<GetRevenueLeadScoreAggregateType<T>>
+
+    /**
+     * Group by RevenueLeadScore.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueLeadScoreGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RevenueLeadScoreGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RevenueLeadScoreGroupByArgs['orderBy'] }
+        : { orderBy?: RevenueLeadScoreGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RevenueLeadScoreGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRevenueLeadScoreGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RevenueLeadScore model
+   */
+  readonly fields: RevenueLeadScoreFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RevenueLeadScore.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RevenueLeadScoreClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    lead<T extends LeadDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LeadDefaultArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RevenueLeadScore model
+   */
+  interface RevenueLeadScoreFieldRefs {
+    readonly id: FieldRef<"RevenueLeadScore", 'String'>
+    readonly tenantId: FieldRef<"RevenueLeadScore", 'String'>
+    readonly leadId: FieldRef<"RevenueLeadScore", 'String'>
+    readonly score: FieldRef<"RevenueLeadScore", 'Int'>
+    readonly confidence: FieldRef<"RevenueLeadScore", 'Int'>
+    readonly priority: FieldRef<"RevenueLeadScore", 'String'>
+    readonly explanation: FieldRef<"RevenueLeadScore", 'String'>
+    readonly recommendedNextAction: FieldRef<"RevenueLeadScore", 'String'>
+    readonly missingData: FieldRef<"RevenueLeadScore", 'Json'>
+    readonly scoreBreakdown: FieldRef<"RevenueLeadScore", 'Json'>
+    readonly assumptions: FieldRef<"RevenueLeadScore", 'Json'>
+    readonly dataUsed: FieldRef<"RevenueLeadScore", 'Json'>
+    readonly advisoryOnly: FieldRef<"RevenueLeadScore", 'Boolean'>
+    readonly createdAt: FieldRef<"RevenueLeadScore", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RevenueLeadScore findUnique
+   */
+  export type RevenueLeadScoreFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadScore
+     */
+    select?: RevenueLeadScoreSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadScore
+     */
+    omit?: RevenueLeadScoreOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadScoreInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenueLeadScore to fetch.
+     */
+    where: RevenueLeadScoreWhereUniqueInput
+  }
+
+  /**
+   * RevenueLeadScore findUniqueOrThrow
+   */
+  export type RevenueLeadScoreFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadScore
+     */
+    select?: RevenueLeadScoreSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadScore
+     */
+    omit?: RevenueLeadScoreOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadScoreInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenueLeadScore to fetch.
+     */
+    where: RevenueLeadScoreWhereUniqueInput
+  }
+
+  /**
+   * RevenueLeadScore findFirst
+   */
+  export type RevenueLeadScoreFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadScore
+     */
+    select?: RevenueLeadScoreSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadScore
+     */
+    omit?: RevenueLeadScoreOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadScoreInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenueLeadScore to fetch.
+     */
+    where?: RevenueLeadScoreWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenueLeadScores to fetch.
+     */
+    orderBy?: RevenueLeadScoreOrderByWithRelationInput | RevenueLeadScoreOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RevenueLeadScores.
+     */
+    cursor?: RevenueLeadScoreWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenueLeadScores from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenueLeadScores.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RevenueLeadScores.
+     */
+    distinct?: RevenueLeadScoreScalarFieldEnum | RevenueLeadScoreScalarFieldEnum[]
+  }
+
+  /**
+   * RevenueLeadScore findFirstOrThrow
+   */
+  export type RevenueLeadScoreFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadScore
+     */
+    select?: RevenueLeadScoreSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadScore
+     */
+    omit?: RevenueLeadScoreOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadScoreInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenueLeadScore to fetch.
+     */
+    where?: RevenueLeadScoreWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenueLeadScores to fetch.
+     */
+    orderBy?: RevenueLeadScoreOrderByWithRelationInput | RevenueLeadScoreOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RevenueLeadScores.
+     */
+    cursor?: RevenueLeadScoreWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenueLeadScores from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenueLeadScores.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RevenueLeadScores.
+     */
+    distinct?: RevenueLeadScoreScalarFieldEnum | RevenueLeadScoreScalarFieldEnum[]
+  }
+
+  /**
+   * RevenueLeadScore findMany
+   */
+  export type RevenueLeadScoreFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadScore
+     */
+    select?: RevenueLeadScoreSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadScore
+     */
+    omit?: RevenueLeadScoreOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadScoreInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenueLeadScores to fetch.
+     */
+    where?: RevenueLeadScoreWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenueLeadScores to fetch.
+     */
+    orderBy?: RevenueLeadScoreOrderByWithRelationInput | RevenueLeadScoreOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RevenueLeadScores.
+     */
+    cursor?: RevenueLeadScoreWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenueLeadScores from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenueLeadScores.
+     */
+    skip?: number
+    distinct?: RevenueLeadScoreScalarFieldEnum | RevenueLeadScoreScalarFieldEnum[]
+  }
+
+  /**
+   * RevenueLeadScore create
+   */
+  export type RevenueLeadScoreCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadScore
+     */
+    select?: RevenueLeadScoreSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadScore
+     */
+    omit?: RevenueLeadScoreOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadScoreInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RevenueLeadScore.
+     */
+    data: XOR<RevenueLeadScoreCreateInput, RevenueLeadScoreUncheckedCreateInput>
+  }
+
+  /**
+   * RevenueLeadScore createMany
+   */
+  export type RevenueLeadScoreCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RevenueLeadScores.
+     */
+    data: RevenueLeadScoreCreateManyInput | RevenueLeadScoreCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RevenueLeadScore createManyAndReturn
+   */
+  export type RevenueLeadScoreCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadScore
+     */
+    select?: RevenueLeadScoreSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadScore
+     */
+    omit?: RevenueLeadScoreOmit<ExtArgs> | null
+    /**
+     * The data used to create many RevenueLeadScores.
+     */
+    data: RevenueLeadScoreCreateManyInput | RevenueLeadScoreCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadScoreIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RevenueLeadScore update
+   */
+  export type RevenueLeadScoreUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadScore
+     */
+    select?: RevenueLeadScoreSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadScore
+     */
+    omit?: RevenueLeadScoreOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadScoreInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RevenueLeadScore.
+     */
+    data: XOR<RevenueLeadScoreUpdateInput, RevenueLeadScoreUncheckedUpdateInput>
+    /**
+     * Choose, which RevenueLeadScore to update.
+     */
+    where: RevenueLeadScoreWhereUniqueInput
+  }
+
+  /**
+   * RevenueLeadScore updateMany
+   */
+  export type RevenueLeadScoreUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RevenueLeadScores.
+     */
+    data: XOR<RevenueLeadScoreUpdateManyMutationInput, RevenueLeadScoreUncheckedUpdateManyInput>
+    /**
+     * Filter which RevenueLeadScores to update
+     */
+    where?: RevenueLeadScoreWhereInput
+    /**
+     * Limit how many RevenueLeadScores to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RevenueLeadScore updateManyAndReturn
+   */
+  export type RevenueLeadScoreUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadScore
+     */
+    select?: RevenueLeadScoreSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadScore
+     */
+    omit?: RevenueLeadScoreOmit<ExtArgs> | null
+    /**
+     * The data used to update RevenueLeadScores.
+     */
+    data: XOR<RevenueLeadScoreUpdateManyMutationInput, RevenueLeadScoreUncheckedUpdateManyInput>
+    /**
+     * Filter which RevenueLeadScores to update
+     */
+    where?: RevenueLeadScoreWhereInput
+    /**
+     * Limit how many RevenueLeadScores to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadScoreIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RevenueLeadScore upsert
+   */
+  export type RevenueLeadScoreUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadScore
+     */
+    select?: RevenueLeadScoreSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadScore
+     */
+    omit?: RevenueLeadScoreOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadScoreInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RevenueLeadScore to update in case it exists.
+     */
+    where: RevenueLeadScoreWhereUniqueInput
+    /**
+     * In case the RevenueLeadScore found by the `where` argument doesn't exist, create a new RevenueLeadScore with this data.
+     */
+    create: XOR<RevenueLeadScoreCreateInput, RevenueLeadScoreUncheckedCreateInput>
+    /**
+     * In case the RevenueLeadScore was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RevenueLeadScoreUpdateInput, RevenueLeadScoreUncheckedUpdateInput>
+  }
+
+  /**
+   * RevenueLeadScore delete
+   */
+  export type RevenueLeadScoreDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadScore
+     */
+    select?: RevenueLeadScoreSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadScore
+     */
+    omit?: RevenueLeadScoreOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadScoreInclude<ExtArgs> | null
+    /**
+     * Filter which RevenueLeadScore to delete.
+     */
+    where: RevenueLeadScoreWhereUniqueInput
+  }
+
+  /**
+   * RevenueLeadScore deleteMany
+   */
+  export type RevenueLeadScoreDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RevenueLeadScores to delete
+     */
+    where?: RevenueLeadScoreWhereInput
+    /**
+     * Limit how many RevenueLeadScores to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RevenueLeadScore without action
+   */
+  export type RevenueLeadScoreDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueLeadScore
+     */
+    select?: RevenueLeadScoreSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueLeadScore
+     */
+    omit?: RevenueLeadScoreOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueLeadScoreInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RevenueTask
+   */
+
+  export type AggregateRevenueTask = {
+    _count: RevenueTaskCountAggregateOutputType | null
+    _min: RevenueTaskMinAggregateOutputType | null
+    _max: RevenueTaskMaxAggregateOutputType | null
+  }
+
+  export type RevenueTaskMinAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    leadId: string | null
+    title: string | null
+    taskType: string | null
+    priority: string | null
+    status: string | null
+    recommendedAction: string | null
+    reason: string | null
+    dueAt: Date | null
+    assignedTo: string | null
+    requiresApproval: boolean | null
+    source: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    completedAt: Date | null
+  }
+
+  export type RevenueTaskMaxAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    leadId: string | null
+    title: string | null
+    taskType: string | null
+    priority: string | null
+    status: string | null
+    recommendedAction: string | null
+    reason: string | null
+    dueAt: Date | null
+    assignedTo: string | null
+    requiresApproval: boolean | null
+    source: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    completedAt: Date | null
+  }
+
+  export type RevenueTaskCountAggregateOutputType = {
+    id: number
+    tenantId: number
+    leadId: number
+    title: number
+    taskType: number
+    priority: number
+    status: number
+    recommendedAction: number
+    reason: number
+    dueAt: number
+    assignedTo: number
+    requiresApproval: number
+    source: number
+    createdAt: number
+    updatedAt: number
+    completedAt: number
+    _all: number
+  }
+
+
+  export type RevenueTaskMinAggregateInputType = {
+    id?: true
+    tenantId?: true
+    leadId?: true
+    title?: true
+    taskType?: true
+    priority?: true
+    status?: true
+    recommendedAction?: true
+    reason?: true
+    dueAt?: true
+    assignedTo?: true
+    requiresApproval?: true
+    source?: true
+    createdAt?: true
+    updatedAt?: true
+    completedAt?: true
+  }
+
+  export type RevenueTaskMaxAggregateInputType = {
+    id?: true
+    tenantId?: true
+    leadId?: true
+    title?: true
+    taskType?: true
+    priority?: true
+    status?: true
+    recommendedAction?: true
+    reason?: true
+    dueAt?: true
+    assignedTo?: true
+    requiresApproval?: true
+    source?: true
+    createdAt?: true
+    updatedAt?: true
+    completedAt?: true
+  }
+
+  export type RevenueTaskCountAggregateInputType = {
+    id?: true
+    tenantId?: true
+    leadId?: true
+    title?: true
+    taskType?: true
+    priority?: true
+    status?: true
+    recommendedAction?: true
+    reason?: true
+    dueAt?: true
+    assignedTo?: true
+    requiresApproval?: true
+    source?: true
+    createdAt?: true
+    updatedAt?: true
+    completedAt?: true
+    _all?: true
+  }
+
+  export type RevenueTaskAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RevenueTask to aggregate.
+     */
+    where?: RevenueTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenueTasks to fetch.
+     */
+    orderBy?: RevenueTaskOrderByWithRelationInput | RevenueTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RevenueTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenueTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenueTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RevenueTasks
+    **/
+    _count?: true | RevenueTaskCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RevenueTaskMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RevenueTaskMaxAggregateInputType
+  }
+
+  export type GetRevenueTaskAggregateType<T extends RevenueTaskAggregateArgs> = {
+        [P in keyof T & keyof AggregateRevenueTask]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRevenueTask[P]>
+      : GetScalarType<T[P], AggregateRevenueTask[P]>
+  }
+
+
+
+
+  export type RevenueTaskGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RevenueTaskWhereInput
+    orderBy?: RevenueTaskOrderByWithAggregationInput | RevenueTaskOrderByWithAggregationInput[]
+    by: RevenueTaskScalarFieldEnum[] | RevenueTaskScalarFieldEnum
+    having?: RevenueTaskScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RevenueTaskCountAggregateInputType | true
+    _min?: RevenueTaskMinAggregateInputType
+    _max?: RevenueTaskMaxAggregateInputType
+  }
+
+  export type RevenueTaskGroupByOutputType = {
+    id: string
+    tenantId: string
+    leadId: string | null
+    title: string
+    taskType: string
+    priority: string
+    status: string
+    recommendedAction: string
+    reason: string
+    dueAt: Date | null
+    assignedTo: string | null
+    requiresApproval: boolean
+    source: string
+    createdAt: Date
+    updatedAt: Date
+    completedAt: Date | null
+    _count: RevenueTaskCountAggregateOutputType | null
+    _min: RevenueTaskMinAggregateOutputType | null
+    _max: RevenueTaskMaxAggregateOutputType | null
+  }
+
+  type GetRevenueTaskGroupByPayload<T extends RevenueTaskGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RevenueTaskGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RevenueTaskGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RevenueTaskGroupByOutputType[P]>
+            : GetScalarType<T[P], RevenueTaskGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RevenueTaskSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    leadId?: boolean
+    title?: boolean
+    taskType?: boolean
+    priority?: boolean
+    status?: boolean
+    recommendedAction?: boolean
+    reason?: boolean
+    dueAt?: boolean
+    assignedTo?: boolean
+    requiresApproval?: boolean
+    source?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    completedAt?: boolean
+    lead?: boolean | RevenueTask$leadArgs<ExtArgs>
+  }, ExtArgs["result"]["revenueTask"]>
+
+  export type RevenueTaskSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    leadId?: boolean
+    title?: boolean
+    taskType?: boolean
+    priority?: boolean
+    status?: boolean
+    recommendedAction?: boolean
+    reason?: boolean
+    dueAt?: boolean
+    assignedTo?: boolean
+    requiresApproval?: boolean
+    source?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    completedAt?: boolean
+    lead?: boolean | RevenueTask$leadArgs<ExtArgs>
+  }, ExtArgs["result"]["revenueTask"]>
+
+  export type RevenueTaskSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    leadId?: boolean
+    title?: boolean
+    taskType?: boolean
+    priority?: boolean
+    status?: boolean
+    recommendedAction?: boolean
+    reason?: boolean
+    dueAt?: boolean
+    assignedTo?: boolean
+    requiresApproval?: boolean
+    source?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    completedAt?: boolean
+    lead?: boolean | RevenueTask$leadArgs<ExtArgs>
+  }, ExtArgs["result"]["revenueTask"]>
+
+  export type RevenueTaskSelectScalar = {
+    id?: boolean
+    tenantId?: boolean
+    leadId?: boolean
+    title?: boolean
+    taskType?: boolean
+    priority?: boolean
+    status?: boolean
+    recommendedAction?: boolean
+    reason?: boolean
+    dueAt?: boolean
+    assignedTo?: boolean
+    requiresApproval?: boolean
+    source?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    completedAt?: boolean
+  }
+
+  export type RevenueTaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "leadId" | "title" | "taskType" | "priority" | "status" | "recommendedAction" | "reason" | "dueAt" | "assignedTo" | "requiresApproval" | "source" | "createdAt" | "updatedAt" | "completedAt", ExtArgs["result"]["revenueTask"]>
+  export type RevenueTaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | RevenueTask$leadArgs<ExtArgs>
+  }
+  export type RevenueTaskIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | RevenueTask$leadArgs<ExtArgs>
+  }
+  export type RevenueTaskIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | RevenueTask$leadArgs<ExtArgs>
+  }
+
+  export type $RevenueTaskPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RevenueTask"
+    objects: {
+      lead: Prisma.$LeadPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenantId: string
+      leadId: string | null
+      title: string
+      taskType: string
+      priority: string
+      status: string
+      recommendedAction: string
+      reason: string
+      dueAt: Date | null
+      assignedTo: string | null
+      requiresApproval: boolean
+      source: string
+      createdAt: Date
+      updatedAt: Date
+      completedAt: Date | null
+    }, ExtArgs["result"]["revenueTask"]>
+    composites: {}
+  }
+
+  type RevenueTaskGetPayload<S extends boolean | null | undefined | RevenueTaskDefaultArgs> = $Result.GetResult<Prisma.$RevenueTaskPayload, S>
+
+  type RevenueTaskCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RevenueTaskFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RevenueTaskCountAggregateInputType | true
+    }
+
+  export interface RevenueTaskDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RevenueTask'], meta: { name: 'RevenueTask' } }
+    /**
+     * Find zero or one RevenueTask that matches the filter.
+     * @param {RevenueTaskFindUniqueArgs} args - Arguments to find a RevenueTask
+     * @example
+     * // Get one RevenueTask
+     * const revenueTask = await prisma.revenueTask.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RevenueTaskFindUniqueArgs>(args: SelectSubset<T, RevenueTaskFindUniqueArgs<ExtArgs>>): Prisma__RevenueTaskClient<$Result.GetResult<Prisma.$RevenueTaskPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RevenueTask that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RevenueTaskFindUniqueOrThrowArgs} args - Arguments to find a RevenueTask
+     * @example
+     * // Get one RevenueTask
+     * const revenueTask = await prisma.revenueTask.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RevenueTaskFindUniqueOrThrowArgs>(args: SelectSubset<T, RevenueTaskFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RevenueTaskClient<$Result.GetResult<Prisma.$RevenueTaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RevenueTask that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueTaskFindFirstArgs} args - Arguments to find a RevenueTask
+     * @example
+     * // Get one RevenueTask
+     * const revenueTask = await prisma.revenueTask.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RevenueTaskFindFirstArgs>(args?: SelectSubset<T, RevenueTaskFindFirstArgs<ExtArgs>>): Prisma__RevenueTaskClient<$Result.GetResult<Prisma.$RevenueTaskPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RevenueTask that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueTaskFindFirstOrThrowArgs} args - Arguments to find a RevenueTask
+     * @example
+     * // Get one RevenueTask
+     * const revenueTask = await prisma.revenueTask.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RevenueTaskFindFirstOrThrowArgs>(args?: SelectSubset<T, RevenueTaskFindFirstOrThrowArgs<ExtArgs>>): Prisma__RevenueTaskClient<$Result.GetResult<Prisma.$RevenueTaskPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RevenueTasks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueTaskFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RevenueTasks
+     * const revenueTasks = await prisma.revenueTask.findMany()
+     * 
+     * // Get first 10 RevenueTasks
+     * const revenueTasks = await prisma.revenueTask.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const revenueTaskWithIdOnly = await prisma.revenueTask.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RevenueTaskFindManyArgs>(args?: SelectSubset<T, RevenueTaskFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenueTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RevenueTask.
+     * @param {RevenueTaskCreateArgs} args - Arguments to create a RevenueTask.
+     * @example
+     * // Create one RevenueTask
+     * const RevenueTask = await prisma.revenueTask.create({
+     *   data: {
+     *     // ... data to create a RevenueTask
+     *   }
+     * })
+     * 
+     */
+    create<T extends RevenueTaskCreateArgs>(args: SelectSubset<T, RevenueTaskCreateArgs<ExtArgs>>): Prisma__RevenueTaskClient<$Result.GetResult<Prisma.$RevenueTaskPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RevenueTasks.
+     * @param {RevenueTaskCreateManyArgs} args - Arguments to create many RevenueTasks.
+     * @example
+     * // Create many RevenueTasks
+     * const revenueTask = await prisma.revenueTask.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RevenueTaskCreateManyArgs>(args?: SelectSubset<T, RevenueTaskCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RevenueTasks and returns the data saved in the database.
+     * @param {RevenueTaskCreateManyAndReturnArgs} args - Arguments to create many RevenueTasks.
+     * @example
+     * // Create many RevenueTasks
+     * const revenueTask = await prisma.revenueTask.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RevenueTasks and only return the `id`
+     * const revenueTaskWithIdOnly = await prisma.revenueTask.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RevenueTaskCreateManyAndReturnArgs>(args?: SelectSubset<T, RevenueTaskCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenueTaskPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RevenueTask.
+     * @param {RevenueTaskDeleteArgs} args - Arguments to delete one RevenueTask.
+     * @example
+     * // Delete one RevenueTask
+     * const RevenueTask = await prisma.revenueTask.delete({
+     *   where: {
+     *     // ... filter to delete one RevenueTask
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RevenueTaskDeleteArgs>(args: SelectSubset<T, RevenueTaskDeleteArgs<ExtArgs>>): Prisma__RevenueTaskClient<$Result.GetResult<Prisma.$RevenueTaskPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RevenueTask.
+     * @param {RevenueTaskUpdateArgs} args - Arguments to update one RevenueTask.
+     * @example
+     * // Update one RevenueTask
+     * const revenueTask = await prisma.revenueTask.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RevenueTaskUpdateArgs>(args: SelectSubset<T, RevenueTaskUpdateArgs<ExtArgs>>): Prisma__RevenueTaskClient<$Result.GetResult<Prisma.$RevenueTaskPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RevenueTasks.
+     * @param {RevenueTaskDeleteManyArgs} args - Arguments to filter RevenueTasks to delete.
+     * @example
+     * // Delete a few RevenueTasks
+     * const { count } = await prisma.revenueTask.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RevenueTaskDeleteManyArgs>(args?: SelectSubset<T, RevenueTaskDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RevenueTasks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueTaskUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RevenueTasks
+     * const revenueTask = await prisma.revenueTask.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RevenueTaskUpdateManyArgs>(args: SelectSubset<T, RevenueTaskUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RevenueTasks and returns the data updated in the database.
+     * @param {RevenueTaskUpdateManyAndReturnArgs} args - Arguments to update many RevenueTasks.
+     * @example
+     * // Update many RevenueTasks
+     * const revenueTask = await prisma.revenueTask.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RevenueTasks and only return the `id`
+     * const revenueTaskWithIdOnly = await prisma.revenueTask.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RevenueTaskUpdateManyAndReturnArgs>(args: SelectSubset<T, RevenueTaskUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenueTaskPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RevenueTask.
+     * @param {RevenueTaskUpsertArgs} args - Arguments to update or create a RevenueTask.
+     * @example
+     * // Update or create a RevenueTask
+     * const revenueTask = await prisma.revenueTask.upsert({
+     *   create: {
+     *     // ... data to create a RevenueTask
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RevenueTask we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RevenueTaskUpsertArgs>(args: SelectSubset<T, RevenueTaskUpsertArgs<ExtArgs>>): Prisma__RevenueTaskClient<$Result.GetResult<Prisma.$RevenueTaskPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RevenueTasks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueTaskCountArgs} args - Arguments to filter RevenueTasks to count.
+     * @example
+     * // Count the number of RevenueTasks
+     * const count = await prisma.revenueTask.count({
+     *   where: {
+     *     // ... the filter for the RevenueTasks we want to count
+     *   }
+     * })
+    **/
+    count<T extends RevenueTaskCountArgs>(
+      args?: Subset<T, RevenueTaskCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RevenueTaskCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RevenueTask.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueTaskAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RevenueTaskAggregateArgs>(args: Subset<T, RevenueTaskAggregateArgs>): Prisma.PrismaPromise<GetRevenueTaskAggregateType<T>>
+
+    /**
+     * Group by RevenueTask.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueTaskGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RevenueTaskGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RevenueTaskGroupByArgs['orderBy'] }
+        : { orderBy?: RevenueTaskGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RevenueTaskGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRevenueTaskGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RevenueTask model
+   */
+  readonly fields: RevenueTaskFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RevenueTask.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RevenueTaskClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    lead<T extends RevenueTask$leadArgs<ExtArgs> = {}>(args?: Subset<T, RevenueTask$leadArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RevenueTask model
+   */
+  interface RevenueTaskFieldRefs {
+    readonly id: FieldRef<"RevenueTask", 'String'>
+    readonly tenantId: FieldRef<"RevenueTask", 'String'>
+    readonly leadId: FieldRef<"RevenueTask", 'String'>
+    readonly title: FieldRef<"RevenueTask", 'String'>
+    readonly taskType: FieldRef<"RevenueTask", 'String'>
+    readonly priority: FieldRef<"RevenueTask", 'String'>
+    readonly status: FieldRef<"RevenueTask", 'String'>
+    readonly recommendedAction: FieldRef<"RevenueTask", 'String'>
+    readonly reason: FieldRef<"RevenueTask", 'String'>
+    readonly dueAt: FieldRef<"RevenueTask", 'DateTime'>
+    readonly assignedTo: FieldRef<"RevenueTask", 'String'>
+    readonly requiresApproval: FieldRef<"RevenueTask", 'Boolean'>
+    readonly source: FieldRef<"RevenueTask", 'String'>
+    readonly createdAt: FieldRef<"RevenueTask", 'DateTime'>
+    readonly updatedAt: FieldRef<"RevenueTask", 'DateTime'>
+    readonly completedAt: FieldRef<"RevenueTask", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RevenueTask findUnique
+   */
+  export type RevenueTaskFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueTask
+     */
+    select?: RevenueTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueTask
+     */
+    omit?: RevenueTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenueTask to fetch.
+     */
+    where: RevenueTaskWhereUniqueInput
+  }
+
+  /**
+   * RevenueTask findUniqueOrThrow
+   */
+  export type RevenueTaskFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueTask
+     */
+    select?: RevenueTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueTask
+     */
+    omit?: RevenueTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenueTask to fetch.
+     */
+    where: RevenueTaskWhereUniqueInput
+  }
+
+  /**
+   * RevenueTask findFirst
+   */
+  export type RevenueTaskFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueTask
+     */
+    select?: RevenueTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueTask
+     */
+    omit?: RevenueTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenueTask to fetch.
+     */
+    where?: RevenueTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenueTasks to fetch.
+     */
+    orderBy?: RevenueTaskOrderByWithRelationInput | RevenueTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RevenueTasks.
+     */
+    cursor?: RevenueTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenueTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenueTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RevenueTasks.
+     */
+    distinct?: RevenueTaskScalarFieldEnum | RevenueTaskScalarFieldEnum[]
+  }
+
+  /**
+   * RevenueTask findFirstOrThrow
+   */
+  export type RevenueTaskFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueTask
+     */
+    select?: RevenueTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueTask
+     */
+    omit?: RevenueTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenueTask to fetch.
+     */
+    where?: RevenueTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenueTasks to fetch.
+     */
+    orderBy?: RevenueTaskOrderByWithRelationInput | RevenueTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RevenueTasks.
+     */
+    cursor?: RevenueTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenueTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenueTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RevenueTasks.
+     */
+    distinct?: RevenueTaskScalarFieldEnum | RevenueTaskScalarFieldEnum[]
+  }
+
+  /**
+   * RevenueTask findMany
+   */
+  export type RevenueTaskFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueTask
+     */
+    select?: RevenueTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueTask
+     */
+    omit?: RevenueTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenueTasks to fetch.
+     */
+    where?: RevenueTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenueTasks to fetch.
+     */
+    orderBy?: RevenueTaskOrderByWithRelationInput | RevenueTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RevenueTasks.
+     */
+    cursor?: RevenueTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenueTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenueTasks.
+     */
+    skip?: number
+    distinct?: RevenueTaskScalarFieldEnum | RevenueTaskScalarFieldEnum[]
+  }
+
+  /**
+   * RevenueTask create
+   */
+  export type RevenueTaskCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueTask
+     */
+    select?: RevenueTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueTask
+     */
+    omit?: RevenueTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueTaskInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RevenueTask.
+     */
+    data: XOR<RevenueTaskCreateInput, RevenueTaskUncheckedCreateInput>
+  }
+
+  /**
+   * RevenueTask createMany
+   */
+  export type RevenueTaskCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RevenueTasks.
+     */
+    data: RevenueTaskCreateManyInput | RevenueTaskCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RevenueTask createManyAndReturn
+   */
+  export type RevenueTaskCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueTask
+     */
+    select?: RevenueTaskSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueTask
+     */
+    omit?: RevenueTaskOmit<ExtArgs> | null
+    /**
+     * The data used to create many RevenueTasks.
+     */
+    data: RevenueTaskCreateManyInput | RevenueTaskCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueTaskIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RevenueTask update
+   */
+  export type RevenueTaskUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueTask
+     */
+    select?: RevenueTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueTask
+     */
+    omit?: RevenueTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueTaskInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RevenueTask.
+     */
+    data: XOR<RevenueTaskUpdateInput, RevenueTaskUncheckedUpdateInput>
+    /**
+     * Choose, which RevenueTask to update.
+     */
+    where: RevenueTaskWhereUniqueInput
+  }
+
+  /**
+   * RevenueTask updateMany
+   */
+  export type RevenueTaskUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RevenueTasks.
+     */
+    data: XOR<RevenueTaskUpdateManyMutationInput, RevenueTaskUncheckedUpdateManyInput>
+    /**
+     * Filter which RevenueTasks to update
+     */
+    where?: RevenueTaskWhereInput
+    /**
+     * Limit how many RevenueTasks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RevenueTask updateManyAndReturn
+   */
+  export type RevenueTaskUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueTask
+     */
+    select?: RevenueTaskSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueTask
+     */
+    omit?: RevenueTaskOmit<ExtArgs> | null
+    /**
+     * The data used to update RevenueTasks.
+     */
+    data: XOR<RevenueTaskUpdateManyMutationInput, RevenueTaskUncheckedUpdateManyInput>
+    /**
+     * Filter which RevenueTasks to update
+     */
+    where?: RevenueTaskWhereInput
+    /**
+     * Limit how many RevenueTasks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueTaskIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RevenueTask upsert
+   */
+  export type RevenueTaskUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueTask
+     */
+    select?: RevenueTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueTask
+     */
+    omit?: RevenueTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueTaskInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RevenueTask to update in case it exists.
+     */
+    where: RevenueTaskWhereUniqueInput
+    /**
+     * In case the RevenueTask found by the `where` argument doesn't exist, create a new RevenueTask with this data.
+     */
+    create: XOR<RevenueTaskCreateInput, RevenueTaskUncheckedCreateInput>
+    /**
+     * In case the RevenueTask was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RevenueTaskUpdateInput, RevenueTaskUncheckedUpdateInput>
+  }
+
+  /**
+   * RevenueTask delete
+   */
+  export type RevenueTaskDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueTask
+     */
+    select?: RevenueTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueTask
+     */
+    omit?: RevenueTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueTaskInclude<ExtArgs> | null
+    /**
+     * Filter which RevenueTask to delete.
+     */
+    where: RevenueTaskWhereUniqueInput
+  }
+
+  /**
+   * RevenueTask deleteMany
+   */
+  export type RevenueTaskDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RevenueTasks to delete
+     */
+    where?: RevenueTaskWhereInput
+    /**
+     * Limit how many RevenueTasks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RevenueTask.lead
+   */
+  export type RevenueTask$leadArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Lead
+     */
+    select?: LeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Lead
+     */
+    omit?: LeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+    where?: LeadWhereInput
+  }
+
+  /**
+   * RevenueTask without action
+   */
+  export type RevenueTaskDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueTask
+     */
+    select?: RevenueTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueTask
+     */
+    omit?: RevenueTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueTaskInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RevenuePipelineEvent
+   */
+
+  export type AggregateRevenuePipelineEvent = {
+    _count: RevenuePipelineEventCountAggregateOutputType | null
+    _min: RevenuePipelineEventMinAggregateOutputType | null
+    _max: RevenuePipelineEventMaxAggregateOutputType | null
+  }
+
+  export type RevenuePipelineEventMinAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    leadId: string | null
+    fromStage: string | null
+    toStage: string | null
+    reason: string | null
+    source: string | null
+    revenueOutcome: string | null
+    createdBy: string | null
+    createdAt: Date | null
+  }
+
+  export type RevenuePipelineEventMaxAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    leadId: string | null
+    fromStage: string | null
+    toStage: string | null
+    reason: string | null
+    source: string | null
+    revenueOutcome: string | null
+    createdBy: string | null
+    createdAt: Date | null
+  }
+
+  export type RevenuePipelineEventCountAggregateOutputType = {
+    id: number
+    tenantId: number
+    leadId: number
+    fromStage: number
+    toStage: number
+    reason: number
+    source: number
+    revenueOutcome: number
+    createdBy: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type RevenuePipelineEventMinAggregateInputType = {
+    id?: true
+    tenantId?: true
+    leadId?: true
+    fromStage?: true
+    toStage?: true
+    reason?: true
+    source?: true
+    revenueOutcome?: true
+    createdBy?: true
+    createdAt?: true
+  }
+
+  export type RevenuePipelineEventMaxAggregateInputType = {
+    id?: true
+    tenantId?: true
+    leadId?: true
+    fromStage?: true
+    toStage?: true
+    reason?: true
+    source?: true
+    revenueOutcome?: true
+    createdBy?: true
+    createdAt?: true
+  }
+
+  export type RevenuePipelineEventCountAggregateInputType = {
+    id?: true
+    tenantId?: true
+    leadId?: true
+    fromStage?: true
+    toStage?: true
+    reason?: true
+    source?: true
+    revenueOutcome?: true
+    createdBy?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type RevenuePipelineEventAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RevenuePipelineEvent to aggregate.
+     */
+    where?: RevenuePipelineEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenuePipelineEvents to fetch.
+     */
+    orderBy?: RevenuePipelineEventOrderByWithRelationInput | RevenuePipelineEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RevenuePipelineEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenuePipelineEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenuePipelineEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RevenuePipelineEvents
+    **/
+    _count?: true | RevenuePipelineEventCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RevenuePipelineEventMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RevenuePipelineEventMaxAggregateInputType
+  }
+
+  export type GetRevenuePipelineEventAggregateType<T extends RevenuePipelineEventAggregateArgs> = {
+        [P in keyof T & keyof AggregateRevenuePipelineEvent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRevenuePipelineEvent[P]>
+      : GetScalarType<T[P], AggregateRevenuePipelineEvent[P]>
+  }
+
+
+
+
+  export type RevenuePipelineEventGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RevenuePipelineEventWhereInput
+    orderBy?: RevenuePipelineEventOrderByWithAggregationInput | RevenuePipelineEventOrderByWithAggregationInput[]
+    by: RevenuePipelineEventScalarFieldEnum[] | RevenuePipelineEventScalarFieldEnum
+    having?: RevenuePipelineEventScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RevenuePipelineEventCountAggregateInputType | true
+    _min?: RevenuePipelineEventMinAggregateInputType
+    _max?: RevenuePipelineEventMaxAggregateInputType
+  }
+
+  export type RevenuePipelineEventGroupByOutputType = {
+    id: string
+    tenantId: string
+    leadId: string
+    fromStage: string | null
+    toStage: string
+    reason: string
+    source: string
+    revenueOutcome: string | null
+    createdBy: string | null
+    createdAt: Date
+    _count: RevenuePipelineEventCountAggregateOutputType | null
+    _min: RevenuePipelineEventMinAggregateOutputType | null
+    _max: RevenuePipelineEventMaxAggregateOutputType | null
+  }
+
+  type GetRevenuePipelineEventGroupByPayload<T extends RevenuePipelineEventGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RevenuePipelineEventGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RevenuePipelineEventGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RevenuePipelineEventGroupByOutputType[P]>
+            : GetScalarType<T[P], RevenuePipelineEventGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RevenuePipelineEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    leadId?: boolean
+    fromStage?: boolean
+    toStage?: boolean
+    reason?: boolean
+    source?: boolean
+    revenueOutcome?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["revenuePipelineEvent"]>
+
+  export type RevenuePipelineEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    leadId?: boolean
+    fromStage?: boolean
+    toStage?: boolean
+    reason?: boolean
+    source?: boolean
+    revenueOutcome?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["revenuePipelineEvent"]>
+
+  export type RevenuePipelineEventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    leadId?: boolean
+    fromStage?: boolean
+    toStage?: boolean
+    reason?: boolean
+    source?: boolean
+    revenueOutcome?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["revenuePipelineEvent"]>
+
+  export type RevenuePipelineEventSelectScalar = {
+    id?: boolean
+    tenantId?: boolean
+    leadId?: boolean
+    fromStage?: boolean
+    toStage?: boolean
+    reason?: boolean
+    source?: boolean
+    revenueOutcome?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+  }
+
+  export type RevenuePipelineEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "leadId" | "fromStage" | "toStage" | "reason" | "source" | "revenueOutcome" | "createdBy" | "createdAt", ExtArgs["result"]["revenuePipelineEvent"]>
+  export type RevenuePipelineEventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+  }
+  export type RevenuePipelineEventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+  }
+  export type RevenuePipelineEventIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | LeadDefaultArgs<ExtArgs>
+  }
+
+  export type $RevenuePipelineEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RevenuePipelineEvent"
+    objects: {
+      lead: Prisma.$LeadPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenantId: string
+      leadId: string
+      fromStage: string | null
+      toStage: string
+      reason: string
+      source: string
+      revenueOutcome: string | null
+      createdBy: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["revenuePipelineEvent"]>
+    composites: {}
+  }
+
+  type RevenuePipelineEventGetPayload<S extends boolean | null | undefined | RevenuePipelineEventDefaultArgs> = $Result.GetResult<Prisma.$RevenuePipelineEventPayload, S>
+
+  type RevenuePipelineEventCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RevenuePipelineEventFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RevenuePipelineEventCountAggregateInputType | true
+    }
+
+  export interface RevenuePipelineEventDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RevenuePipelineEvent'], meta: { name: 'RevenuePipelineEvent' } }
+    /**
+     * Find zero or one RevenuePipelineEvent that matches the filter.
+     * @param {RevenuePipelineEventFindUniqueArgs} args - Arguments to find a RevenuePipelineEvent
+     * @example
+     * // Get one RevenuePipelineEvent
+     * const revenuePipelineEvent = await prisma.revenuePipelineEvent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RevenuePipelineEventFindUniqueArgs>(args: SelectSubset<T, RevenuePipelineEventFindUniqueArgs<ExtArgs>>): Prisma__RevenuePipelineEventClient<$Result.GetResult<Prisma.$RevenuePipelineEventPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RevenuePipelineEvent that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RevenuePipelineEventFindUniqueOrThrowArgs} args - Arguments to find a RevenuePipelineEvent
+     * @example
+     * // Get one RevenuePipelineEvent
+     * const revenuePipelineEvent = await prisma.revenuePipelineEvent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RevenuePipelineEventFindUniqueOrThrowArgs>(args: SelectSubset<T, RevenuePipelineEventFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RevenuePipelineEventClient<$Result.GetResult<Prisma.$RevenuePipelineEventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RevenuePipelineEvent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenuePipelineEventFindFirstArgs} args - Arguments to find a RevenuePipelineEvent
+     * @example
+     * // Get one RevenuePipelineEvent
+     * const revenuePipelineEvent = await prisma.revenuePipelineEvent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RevenuePipelineEventFindFirstArgs>(args?: SelectSubset<T, RevenuePipelineEventFindFirstArgs<ExtArgs>>): Prisma__RevenuePipelineEventClient<$Result.GetResult<Prisma.$RevenuePipelineEventPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RevenuePipelineEvent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenuePipelineEventFindFirstOrThrowArgs} args - Arguments to find a RevenuePipelineEvent
+     * @example
+     * // Get one RevenuePipelineEvent
+     * const revenuePipelineEvent = await prisma.revenuePipelineEvent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RevenuePipelineEventFindFirstOrThrowArgs>(args?: SelectSubset<T, RevenuePipelineEventFindFirstOrThrowArgs<ExtArgs>>): Prisma__RevenuePipelineEventClient<$Result.GetResult<Prisma.$RevenuePipelineEventPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RevenuePipelineEvents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenuePipelineEventFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RevenuePipelineEvents
+     * const revenuePipelineEvents = await prisma.revenuePipelineEvent.findMany()
+     * 
+     * // Get first 10 RevenuePipelineEvents
+     * const revenuePipelineEvents = await prisma.revenuePipelineEvent.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const revenuePipelineEventWithIdOnly = await prisma.revenuePipelineEvent.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RevenuePipelineEventFindManyArgs>(args?: SelectSubset<T, RevenuePipelineEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenuePipelineEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RevenuePipelineEvent.
+     * @param {RevenuePipelineEventCreateArgs} args - Arguments to create a RevenuePipelineEvent.
+     * @example
+     * // Create one RevenuePipelineEvent
+     * const RevenuePipelineEvent = await prisma.revenuePipelineEvent.create({
+     *   data: {
+     *     // ... data to create a RevenuePipelineEvent
+     *   }
+     * })
+     * 
+     */
+    create<T extends RevenuePipelineEventCreateArgs>(args: SelectSubset<T, RevenuePipelineEventCreateArgs<ExtArgs>>): Prisma__RevenuePipelineEventClient<$Result.GetResult<Prisma.$RevenuePipelineEventPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RevenuePipelineEvents.
+     * @param {RevenuePipelineEventCreateManyArgs} args - Arguments to create many RevenuePipelineEvents.
+     * @example
+     * // Create many RevenuePipelineEvents
+     * const revenuePipelineEvent = await prisma.revenuePipelineEvent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RevenuePipelineEventCreateManyArgs>(args?: SelectSubset<T, RevenuePipelineEventCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RevenuePipelineEvents and returns the data saved in the database.
+     * @param {RevenuePipelineEventCreateManyAndReturnArgs} args - Arguments to create many RevenuePipelineEvents.
+     * @example
+     * // Create many RevenuePipelineEvents
+     * const revenuePipelineEvent = await prisma.revenuePipelineEvent.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RevenuePipelineEvents and only return the `id`
+     * const revenuePipelineEventWithIdOnly = await prisma.revenuePipelineEvent.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RevenuePipelineEventCreateManyAndReturnArgs>(args?: SelectSubset<T, RevenuePipelineEventCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenuePipelineEventPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RevenuePipelineEvent.
+     * @param {RevenuePipelineEventDeleteArgs} args - Arguments to delete one RevenuePipelineEvent.
+     * @example
+     * // Delete one RevenuePipelineEvent
+     * const RevenuePipelineEvent = await prisma.revenuePipelineEvent.delete({
+     *   where: {
+     *     // ... filter to delete one RevenuePipelineEvent
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RevenuePipelineEventDeleteArgs>(args: SelectSubset<T, RevenuePipelineEventDeleteArgs<ExtArgs>>): Prisma__RevenuePipelineEventClient<$Result.GetResult<Prisma.$RevenuePipelineEventPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RevenuePipelineEvent.
+     * @param {RevenuePipelineEventUpdateArgs} args - Arguments to update one RevenuePipelineEvent.
+     * @example
+     * // Update one RevenuePipelineEvent
+     * const revenuePipelineEvent = await prisma.revenuePipelineEvent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RevenuePipelineEventUpdateArgs>(args: SelectSubset<T, RevenuePipelineEventUpdateArgs<ExtArgs>>): Prisma__RevenuePipelineEventClient<$Result.GetResult<Prisma.$RevenuePipelineEventPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RevenuePipelineEvents.
+     * @param {RevenuePipelineEventDeleteManyArgs} args - Arguments to filter RevenuePipelineEvents to delete.
+     * @example
+     * // Delete a few RevenuePipelineEvents
+     * const { count } = await prisma.revenuePipelineEvent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RevenuePipelineEventDeleteManyArgs>(args?: SelectSubset<T, RevenuePipelineEventDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RevenuePipelineEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenuePipelineEventUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RevenuePipelineEvents
+     * const revenuePipelineEvent = await prisma.revenuePipelineEvent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RevenuePipelineEventUpdateManyArgs>(args: SelectSubset<T, RevenuePipelineEventUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RevenuePipelineEvents and returns the data updated in the database.
+     * @param {RevenuePipelineEventUpdateManyAndReturnArgs} args - Arguments to update many RevenuePipelineEvents.
+     * @example
+     * // Update many RevenuePipelineEvents
+     * const revenuePipelineEvent = await prisma.revenuePipelineEvent.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RevenuePipelineEvents and only return the `id`
+     * const revenuePipelineEventWithIdOnly = await prisma.revenuePipelineEvent.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RevenuePipelineEventUpdateManyAndReturnArgs>(args: SelectSubset<T, RevenuePipelineEventUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenuePipelineEventPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RevenuePipelineEvent.
+     * @param {RevenuePipelineEventUpsertArgs} args - Arguments to update or create a RevenuePipelineEvent.
+     * @example
+     * // Update or create a RevenuePipelineEvent
+     * const revenuePipelineEvent = await prisma.revenuePipelineEvent.upsert({
+     *   create: {
+     *     // ... data to create a RevenuePipelineEvent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RevenuePipelineEvent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RevenuePipelineEventUpsertArgs>(args: SelectSubset<T, RevenuePipelineEventUpsertArgs<ExtArgs>>): Prisma__RevenuePipelineEventClient<$Result.GetResult<Prisma.$RevenuePipelineEventPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RevenuePipelineEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenuePipelineEventCountArgs} args - Arguments to filter RevenuePipelineEvents to count.
+     * @example
+     * // Count the number of RevenuePipelineEvents
+     * const count = await prisma.revenuePipelineEvent.count({
+     *   where: {
+     *     // ... the filter for the RevenuePipelineEvents we want to count
+     *   }
+     * })
+    **/
+    count<T extends RevenuePipelineEventCountArgs>(
+      args?: Subset<T, RevenuePipelineEventCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RevenuePipelineEventCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RevenuePipelineEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenuePipelineEventAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RevenuePipelineEventAggregateArgs>(args: Subset<T, RevenuePipelineEventAggregateArgs>): Prisma.PrismaPromise<GetRevenuePipelineEventAggregateType<T>>
+
+    /**
+     * Group by RevenuePipelineEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenuePipelineEventGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RevenuePipelineEventGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RevenuePipelineEventGroupByArgs['orderBy'] }
+        : { orderBy?: RevenuePipelineEventGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RevenuePipelineEventGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRevenuePipelineEventGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RevenuePipelineEvent model
+   */
+  readonly fields: RevenuePipelineEventFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RevenuePipelineEvent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RevenuePipelineEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    lead<T extends LeadDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LeadDefaultArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RevenuePipelineEvent model
+   */
+  interface RevenuePipelineEventFieldRefs {
+    readonly id: FieldRef<"RevenuePipelineEvent", 'String'>
+    readonly tenantId: FieldRef<"RevenuePipelineEvent", 'String'>
+    readonly leadId: FieldRef<"RevenuePipelineEvent", 'String'>
+    readonly fromStage: FieldRef<"RevenuePipelineEvent", 'String'>
+    readonly toStage: FieldRef<"RevenuePipelineEvent", 'String'>
+    readonly reason: FieldRef<"RevenuePipelineEvent", 'String'>
+    readonly source: FieldRef<"RevenuePipelineEvent", 'String'>
+    readonly revenueOutcome: FieldRef<"RevenuePipelineEvent", 'String'>
+    readonly createdBy: FieldRef<"RevenuePipelineEvent", 'String'>
+    readonly createdAt: FieldRef<"RevenuePipelineEvent", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RevenuePipelineEvent findUnique
+   */
+  export type RevenuePipelineEventFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenuePipelineEvent
+     */
+    select?: RevenuePipelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenuePipelineEvent
+     */
+    omit?: RevenuePipelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenuePipelineEventInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenuePipelineEvent to fetch.
+     */
+    where: RevenuePipelineEventWhereUniqueInput
+  }
+
+  /**
+   * RevenuePipelineEvent findUniqueOrThrow
+   */
+  export type RevenuePipelineEventFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenuePipelineEvent
+     */
+    select?: RevenuePipelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenuePipelineEvent
+     */
+    omit?: RevenuePipelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenuePipelineEventInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenuePipelineEvent to fetch.
+     */
+    where: RevenuePipelineEventWhereUniqueInput
+  }
+
+  /**
+   * RevenuePipelineEvent findFirst
+   */
+  export type RevenuePipelineEventFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenuePipelineEvent
+     */
+    select?: RevenuePipelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenuePipelineEvent
+     */
+    omit?: RevenuePipelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenuePipelineEventInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenuePipelineEvent to fetch.
+     */
+    where?: RevenuePipelineEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenuePipelineEvents to fetch.
+     */
+    orderBy?: RevenuePipelineEventOrderByWithRelationInput | RevenuePipelineEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RevenuePipelineEvents.
+     */
+    cursor?: RevenuePipelineEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenuePipelineEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenuePipelineEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RevenuePipelineEvents.
+     */
+    distinct?: RevenuePipelineEventScalarFieldEnum | RevenuePipelineEventScalarFieldEnum[]
+  }
+
+  /**
+   * RevenuePipelineEvent findFirstOrThrow
+   */
+  export type RevenuePipelineEventFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenuePipelineEvent
+     */
+    select?: RevenuePipelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenuePipelineEvent
+     */
+    omit?: RevenuePipelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenuePipelineEventInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenuePipelineEvent to fetch.
+     */
+    where?: RevenuePipelineEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenuePipelineEvents to fetch.
+     */
+    orderBy?: RevenuePipelineEventOrderByWithRelationInput | RevenuePipelineEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RevenuePipelineEvents.
+     */
+    cursor?: RevenuePipelineEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenuePipelineEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenuePipelineEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RevenuePipelineEvents.
+     */
+    distinct?: RevenuePipelineEventScalarFieldEnum | RevenuePipelineEventScalarFieldEnum[]
+  }
+
+  /**
+   * RevenuePipelineEvent findMany
+   */
+  export type RevenuePipelineEventFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenuePipelineEvent
+     */
+    select?: RevenuePipelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenuePipelineEvent
+     */
+    omit?: RevenuePipelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenuePipelineEventInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenuePipelineEvents to fetch.
+     */
+    where?: RevenuePipelineEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenuePipelineEvents to fetch.
+     */
+    orderBy?: RevenuePipelineEventOrderByWithRelationInput | RevenuePipelineEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RevenuePipelineEvents.
+     */
+    cursor?: RevenuePipelineEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenuePipelineEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenuePipelineEvents.
+     */
+    skip?: number
+    distinct?: RevenuePipelineEventScalarFieldEnum | RevenuePipelineEventScalarFieldEnum[]
+  }
+
+  /**
+   * RevenuePipelineEvent create
+   */
+  export type RevenuePipelineEventCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenuePipelineEvent
+     */
+    select?: RevenuePipelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenuePipelineEvent
+     */
+    omit?: RevenuePipelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenuePipelineEventInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RevenuePipelineEvent.
+     */
+    data: XOR<RevenuePipelineEventCreateInput, RevenuePipelineEventUncheckedCreateInput>
+  }
+
+  /**
+   * RevenuePipelineEvent createMany
+   */
+  export type RevenuePipelineEventCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RevenuePipelineEvents.
+     */
+    data: RevenuePipelineEventCreateManyInput | RevenuePipelineEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RevenuePipelineEvent createManyAndReturn
+   */
+  export type RevenuePipelineEventCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenuePipelineEvent
+     */
+    select?: RevenuePipelineEventSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenuePipelineEvent
+     */
+    omit?: RevenuePipelineEventOmit<ExtArgs> | null
+    /**
+     * The data used to create many RevenuePipelineEvents.
+     */
+    data: RevenuePipelineEventCreateManyInput | RevenuePipelineEventCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenuePipelineEventIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RevenuePipelineEvent update
+   */
+  export type RevenuePipelineEventUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenuePipelineEvent
+     */
+    select?: RevenuePipelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenuePipelineEvent
+     */
+    omit?: RevenuePipelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenuePipelineEventInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RevenuePipelineEvent.
+     */
+    data: XOR<RevenuePipelineEventUpdateInput, RevenuePipelineEventUncheckedUpdateInput>
+    /**
+     * Choose, which RevenuePipelineEvent to update.
+     */
+    where: RevenuePipelineEventWhereUniqueInput
+  }
+
+  /**
+   * RevenuePipelineEvent updateMany
+   */
+  export type RevenuePipelineEventUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RevenuePipelineEvents.
+     */
+    data: XOR<RevenuePipelineEventUpdateManyMutationInput, RevenuePipelineEventUncheckedUpdateManyInput>
+    /**
+     * Filter which RevenuePipelineEvents to update
+     */
+    where?: RevenuePipelineEventWhereInput
+    /**
+     * Limit how many RevenuePipelineEvents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RevenuePipelineEvent updateManyAndReturn
+   */
+  export type RevenuePipelineEventUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenuePipelineEvent
+     */
+    select?: RevenuePipelineEventSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenuePipelineEvent
+     */
+    omit?: RevenuePipelineEventOmit<ExtArgs> | null
+    /**
+     * The data used to update RevenuePipelineEvents.
+     */
+    data: XOR<RevenuePipelineEventUpdateManyMutationInput, RevenuePipelineEventUncheckedUpdateManyInput>
+    /**
+     * Filter which RevenuePipelineEvents to update
+     */
+    where?: RevenuePipelineEventWhereInput
+    /**
+     * Limit how many RevenuePipelineEvents to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenuePipelineEventIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RevenuePipelineEvent upsert
+   */
+  export type RevenuePipelineEventUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenuePipelineEvent
+     */
+    select?: RevenuePipelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenuePipelineEvent
+     */
+    omit?: RevenuePipelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenuePipelineEventInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RevenuePipelineEvent to update in case it exists.
+     */
+    where: RevenuePipelineEventWhereUniqueInput
+    /**
+     * In case the RevenuePipelineEvent found by the `where` argument doesn't exist, create a new RevenuePipelineEvent with this data.
+     */
+    create: XOR<RevenuePipelineEventCreateInput, RevenuePipelineEventUncheckedCreateInput>
+    /**
+     * In case the RevenuePipelineEvent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RevenuePipelineEventUpdateInput, RevenuePipelineEventUncheckedUpdateInput>
+  }
+
+  /**
+   * RevenuePipelineEvent delete
+   */
+  export type RevenuePipelineEventDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenuePipelineEvent
+     */
+    select?: RevenuePipelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenuePipelineEvent
+     */
+    omit?: RevenuePipelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenuePipelineEventInclude<ExtArgs> | null
+    /**
+     * Filter which RevenuePipelineEvent to delete.
+     */
+    where: RevenuePipelineEventWhereUniqueInput
+  }
+
+  /**
+   * RevenuePipelineEvent deleteMany
+   */
+  export type RevenuePipelineEventDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RevenuePipelineEvents to delete
+     */
+    where?: RevenuePipelineEventWhereInput
+    /**
+     * Limit how many RevenuePipelineEvents to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RevenuePipelineEvent without action
+   */
+  export type RevenuePipelineEventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenuePipelineEvent
+     */
+    select?: RevenuePipelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenuePipelineEvent
+     */
+    omit?: RevenuePipelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenuePipelineEventInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RevenueCommunicationEvent
+   */
+
+  export type AggregateRevenueCommunicationEvent = {
+    _count: RevenueCommunicationEventCountAggregateOutputType | null
+    _min: RevenueCommunicationEventMinAggregateOutputType | null
+    _max: RevenueCommunicationEventMaxAggregateOutputType | null
+  }
+
+  export type RevenueCommunicationEventMinAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    leadId: string | null
+    channel: string | null
+    direction: string | null
+    status: string | null
+    approvalStatus: string | null
+    provider: string | null
+    providerCalled: boolean | null
+    messageSummary: string | null
+    requiresApproval: boolean | null
+    createdBy: string | null
+    createdAt: Date | null
+  }
+
+  export type RevenueCommunicationEventMaxAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    leadId: string | null
+    channel: string | null
+    direction: string | null
+    status: string | null
+    approvalStatus: string | null
+    provider: string | null
+    providerCalled: boolean | null
+    messageSummary: string | null
+    requiresApproval: boolean | null
+    createdBy: string | null
+    createdAt: Date | null
+  }
+
+  export type RevenueCommunicationEventCountAggregateOutputType = {
+    id: number
+    tenantId: number
+    leadId: number
+    channel: number
+    direction: number
+    status: number
+    approvalStatus: number
+    provider: number
+    providerCalled: number
+    messageSummary: number
+    requiresApproval: number
+    createdBy: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type RevenueCommunicationEventMinAggregateInputType = {
+    id?: true
+    tenantId?: true
+    leadId?: true
+    channel?: true
+    direction?: true
+    status?: true
+    approvalStatus?: true
+    provider?: true
+    providerCalled?: true
+    messageSummary?: true
+    requiresApproval?: true
+    createdBy?: true
+    createdAt?: true
+  }
+
+  export type RevenueCommunicationEventMaxAggregateInputType = {
+    id?: true
+    tenantId?: true
+    leadId?: true
+    channel?: true
+    direction?: true
+    status?: true
+    approvalStatus?: true
+    provider?: true
+    providerCalled?: true
+    messageSummary?: true
+    requiresApproval?: true
+    createdBy?: true
+    createdAt?: true
+  }
+
+  export type RevenueCommunicationEventCountAggregateInputType = {
+    id?: true
+    tenantId?: true
+    leadId?: true
+    channel?: true
+    direction?: true
+    status?: true
+    approvalStatus?: true
+    provider?: true
+    providerCalled?: true
+    messageSummary?: true
+    requiresApproval?: true
+    createdBy?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type RevenueCommunicationEventAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RevenueCommunicationEvent to aggregate.
+     */
+    where?: RevenueCommunicationEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenueCommunicationEvents to fetch.
+     */
+    orderBy?: RevenueCommunicationEventOrderByWithRelationInput | RevenueCommunicationEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RevenueCommunicationEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenueCommunicationEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenueCommunicationEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RevenueCommunicationEvents
+    **/
+    _count?: true | RevenueCommunicationEventCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RevenueCommunicationEventMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RevenueCommunicationEventMaxAggregateInputType
+  }
+
+  export type GetRevenueCommunicationEventAggregateType<T extends RevenueCommunicationEventAggregateArgs> = {
+        [P in keyof T & keyof AggregateRevenueCommunicationEvent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRevenueCommunicationEvent[P]>
+      : GetScalarType<T[P], AggregateRevenueCommunicationEvent[P]>
+  }
+
+
+
+
+  export type RevenueCommunicationEventGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RevenueCommunicationEventWhereInput
+    orderBy?: RevenueCommunicationEventOrderByWithAggregationInput | RevenueCommunicationEventOrderByWithAggregationInput[]
+    by: RevenueCommunicationEventScalarFieldEnum[] | RevenueCommunicationEventScalarFieldEnum
+    having?: RevenueCommunicationEventScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RevenueCommunicationEventCountAggregateInputType | true
+    _min?: RevenueCommunicationEventMinAggregateInputType
+    _max?: RevenueCommunicationEventMaxAggregateInputType
+  }
+
+  export type RevenueCommunicationEventGroupByOutputType = {
+    id: string
+    tenantId: string
+    leadId: string | null
+    channel: string
+    direction: string
+    status: string
+    approvalStatus: string
+    provider: string
+    providerCalled: boolean
+    messageSummary: string | null
+    requiresApproval: boolean
+    createdBy: string | null
+    createdAt: Date
+    _count: RevenueCommunicationEventCountAggregateOutputType | null
+    _min: RevenueCommunicationEventMinAggregateOutputType | null
+    _max: RevenueCommunicationEventMaxAggregateOutputType | null
+  }
+
+  type GetRevenueCommunicationEventGroupByPayload<T extends RevenueCommunicationEventGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RevenueCommunicationEventGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RevenueCommunicationEventGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RevenueCommunicationEventGroupByOutputType[P]>
+            : GetScalarType<T[P], RevenueCommunicationEventGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RevenueCommunicationEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    leadId?: boolean
+    channel?: boolean
+    direction?: boolean
+    status?: boolean
+    approvalStatus?: boolean
+    provider?: boolean
+    providerCalled?: boolean
+    messageSummary?: boolean
+    requiresApproval?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    lead?: boolean | RevenueCommunicationEvent$leadArgs<ExtArgs>
+  }, ExtArgs["result"]["revenueCommunicationEvent"]>
+
+  export type RevenueCommunicationEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    leadId?: boolean
+    channel?: boolean
+    direction?: boolean
+    status?: boolean
+    approvalStatus?: boolean
+    provider?: boolean
+    providerCalled?: boolean
+    messageSummary?: boolean
+    requiresApproval?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    lead?: boolean | RevenueCommunicationEvent$leadArgs<ExtArgs>
+  }, ExtArgs["result"]["revenueCommunicationEvent"]>
+
+  export type RevenueCommunicationEventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    leadId?: boolean
+    channel?: boolean
+    direction?: boolean
+    status?: boolean
+    approvalStatus?: boolean
+    provider?: boolean
+    providerCalled?: boolean
+    messageSummary?: boolean
+    requiresApproval?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    lead?: boolean | RevenueCommunicationEvent$leadArgs<ExtArgs>
+  }, ExtArgs["result"]["revenueCommunicationEvent"]>
+
+  export type RevenueCommunicationEventSelectScalar = {
+    id?: boolean
+    tenantId?: boolean
+    leadId?: boolean
+    channel?: boolean
+    direction?: boolean
+    status?: boolean
+    approvalStatus?: boolean
+    provider?: boolean
+    providerCalled?: boolean
+    messageSummary?: boolean
+    requiresApproval?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+  }
+
+  export type RevenueCommunicationEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "leadId" | "channel" | "direction" | "status" | "approvalStatus" | "provider" | "providerCalled" | "messageSummary" | "requiresApproval" | "createdBy" | "createdAt", ExtArgs["result"]["revenueCommunicationEvent"]>
+  export type RevenueCommunicationEventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | RevenueCommunicationEvent$leadArgs<ExtArgs>
+  }
+  export type RevenueCommunicationEventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | RevenueCommunicationEvent$leadArgs<ExtArgs>
+  }
+  export type RevenueCommunicationEventIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | RevenueCommunicationEvent$leadArgs<ExtArgs>
+  }
+
+  export type $RevenueCommunicationEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RevenueCommunicationEvent"
+    objects: {
+      lead: Prisma.$LeadPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenantId: string
+      leadId: string | null
+      channel: string
+      direction: string
+      status: string
+      approvalStatus: string
+      provider: string
+      providerCalled: boolean
+      messageSummary: string | null
+      requiresApproval: boolean
+      createdBy: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["revenueCommunicationEvent"]>
+    composites: {}
+  }
+
+  type RevenueCommunicationEventGetPayload<S extends boolean | null | undefined | RevenueCommunicationEventDefaultArgs> = $Result.GetResult<Prisma.$RevenueCommunicationEventPayload, S>
+
+  type RevenueCommunicationEventCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RevenueCommunicationEventFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RevenueCommunicationEventCountAggregateInputType | true
+    }
+
+  export interface RevenueCommunicationEventDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RevenueCommunicationEvent'], meta: { name: 'RevenueCommunicationEvent' } }
+    /**
+     * Find zero or one RevenueCommunicationEvent that matches the filter.
+     * @param {RevenueCommunicationEventFindUniqueArgs} args - Arguments to find a RevenueCommunicationEvent
+     * @example
+     * // Get one RevenueCommunicationEvent
+     * const revenueCommunicationEvent = await prisma.revenueCommunicationEvent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RevenueCommunicationEventFindUniqueArgs>(args: SelectSubset<T, RevenueCommunicationEventFindUniqueArgs<ExtArgs>>): Prisma__RevenueCommunicationEventClient<$Result.GetResult<Prisma.$RevenueCommunicationEventPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RevenueCommunicationEvent that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RevenueCommunicationEventFindUniqueOrThrowArgs} args - Arguments to find a RevenueCommunicationEvent
+     * @example
+     * // Get one RevenueCommunicationEvent
+     * const revenueCommunicationEvent = await prisma.revenueCommunicationEvent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RevenueCommunicationEventFindUniqueOrThrowArgs>(args: SelectSubset<T, RevenueCommunicationEventFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RevenueCommunicationEventClient<$Result.GetResult<Prisma.$RevenueCommunicationEventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RevenueCommunicationEvent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueCommunicationEventFindFirstArgs} args - Arguments to find a RevenueCommunicationEvent
+     * @example
+     * // Get one RevenueCommunicationEvent
+     * const revenueCommunicationEvent = await prisma.revenueCommunicationEvent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RevenueCommunicationEventFindFirstArgs>(args?: SelectSubset<T, RevenueCommunicationEventFindFirstArgs<ExtArgs>>): Prisma__RevenueCommunicationEventClient<$Result.GetResult<Prisma.$RevenueCommunicationEventPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RevenueCommunicationEvent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueCommunicationEventFindFirstOrThrowArgs} args - Arguments to find a RevenueCommunicationEvent
+     * @example
+     * // Get one RevenueCommunicationEvent
+     * const revenueCommunicationEvent = await prisma.revenueCommunicationEvent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RevenueCommunicationEventFindFirstOrThrowArgs>(args?: SelectSubset<T, RevenueCommunicationEventFindFirstOrThrowArgs<ExtArgs>>): Prisma__RevenueCommunicationEventClient<$Result.GetResult<Prisma.$RevenueCommunicationEventPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RevenueCommunicationEvents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueCommunicationEventFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RevenueCommunicationEvents
+     * const revenueCommunicationEvents = await prisma.revenueCommunicationEvent.findMany()
+     * 
+     * // Get first 10 RevenueCommunicationEvents
+     * const revenueCommunicationEvents = await prisma.revenueCommunicationEvent.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const revenueCommunicationEventWithIdOnly = await prisma.revenueCommunicationEvent.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RevenueCommunicationEventFindManyArgs>(args?: SelectSubset<T, RevenueCommunicationEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenueCommunicationEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RevenueCommunicationEvent.
+     * @param {RevenueCommunicationEventCreateArgs} args - Arguments to create a RevenueCommunicationEvent.
+     * @example
+     * // Create one RevenueCommunicationEvent
+     * const RevenueCommunicationEvent = await prisma.revenueCommunicationEvent.create({
+     *   data: {
+     *     // ... data to create a RevenueCommunicationEvent
+     *   }
+     * })
+     * 
+     */
+    create<T extends RevenueCommunicationEventCreateArgs>(args: SelectSubset<T, RevenueCommunicationEventCreateArgs<ExtArgs>>): Prisma__RevenueCommunicationEventClient<$Result.GetResult<Prisma.$RevenueCommunicationEventPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RevenueCommunicationEvents.
+     * @param {RevenueCommunicationEventCreateManyArgs} args - Arguments to create many RevenueCommunicationEvents.
+     * @example
+     * // Create many RevenueCommunicationEvents
+     * const revenueCommunicationEvent = await prisma.revenueCommunicationEvent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RevenueCommunicationEventCreateManyArgs>(args?: SelectSubset<T, RevenueCommunicationEventCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RevenueCommunicationEvents and returns the data saved in the database.
+     * @param {RevenueCommunicationEventCreateManyAndReturnArgs} args - Arguments to create many RevenueCommunicationEvents.
+     * @example
+     * // Create many RevenueCommunicationEvents
+     * const revenueCommunicationEvent = await prisma.revenueCommunicationEvent.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RevenueCommunicationEvents and only return the `id`
+     * const revenueCommunicationEventWithIdOnly = await prisma.revenueCommunicationEvent.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RevenueCommunicationEventCreateManyAndReturnArgs>(args?: SelectSubset<T, RevenueCommunicationEventCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenueCommunicationEventPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RevenueCommunicationEvent.
+     * @param {RevenueCommunicationEventDeleteArgs} args - Arguments to delete one RevenueCommunicationEvent.
+     * @example
+     * // Delete one RevenueCommunicationEvent
+     * const RevenueCommunicationEvent = await prisma.revenueCommunicationEvent.delete({
+     *   where: {
+     *     // ... filter to delete one RevenueCommunicationEvent
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RevenueCommunicationEventDeleteArgs>(args: SelectSubset<T, RevenueCommunicationEventDeleteArgs<ExtArgs>>): Prisma__RevenueCommunicationEventClient<$Result.GetResult<Prisma.$RevenueCommunicationEventPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RevenueCommunicationEvent.
+     * @param {RevenueCommunicationEventUpdateArgs} args - Arguments to update one RevenueCommunicationEvent.
+     * @example
+     * // Update one RevenueCommunicationEvent
+     * const revenueCommunicationEvent = await prisma.revenueCommunicationEvent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RevenueCommunicationEventUpdateArgs>(args: SelectSubset<T, RevenueCommunicationEventUpdateArgs<ExtArgs>>): Prisma__RevenueCommunicationEventClient<$Result.GetResult<Prisma.$RevenueCommunicationEventPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RevenueCommunicationEvents.
+     * @param {RevenueCommunicationEventDeleteManyArgs} args - Arguments to filter RevenueCommunicationEvents to delete.
+     * @example
+     * // Delete a few RevenueCommunicationEvents
+     * const { count } = await prisma.revenueCommunicationEvent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RevenueCommunicationEventDeleteManyArgs>(args?: SelectSubset<T, RevenueCommunicationEventDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RevenueCommunicationEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueCommunicationEventUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RevenueCommunicationEvents
+     * const revenueCommunicationEvent = await prisma.revenueCommunicationEvent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RevenueCommunicationEventUpdateManyArgs>(args: SelectSubset<T, RevenueCommunicationEventUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RevenueCommunicationEvents and returns the data updated in the database.
+     * @param {RevenueCommunicationEventUpdateManyAndReturnArgs} args - Arguments to update many RevenueCommunicationEvents.
+     * @example
+     * // Update many RevenueCommunicationEvents
+     * const revenueCommunicationEvent = await prisma.revenueCommunicationEvent.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RevenueCommunicationEvents and only return the `id`
+     * const revenueCommunicationEventWithIdOnly = await prisma.revenueCommunicationEvent.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RevenueCommunicationEventUpdateManyAndReturnArgs>(args: SelectSubset<T, RevenueCommunicationEventUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenueCommunicationEventPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RevenueCommunicationEvent.
+     * @param {RevenueCommunicationEventUpsertArgs} args - Arguments to update or create a RevenueCommunicationEvent.
+     * @example
+     * // Update or create a RevenueCommunicationEvent
+     * const revenueCommunicationEvent = await prisma.revenueCommunicationEvent.upsert({
+     *   create: {
+     *     // ... data to create a RevenueCommunicationEvent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RevenueCommunicationEvent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RevenueCommunicationEventUpsertArgs>(args: SelectSubset<T, RevenueCommunicationEventUpsertArgs<ExtArgs>>): Prisma__RevenueCommunicationEventClient<$Result.GetResult<Prisma.$RevenueCommunicationEventPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RevenueCommunicationEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueCommunicationEventCountArgs} args - Arguments to filter RevenueCommunicationEvents to count.
+     * @example
+     * // Count the number of RevenueCommunicationEvents
+     * const count = await prisma.revenueCommunicationEvent.count({
+     *   where: {
+     *     // ... the filter for the RevenueCommunicationEvents we want to count
+     *   }
+     * })
+    **/
+    count<T extends RevenueCommunicationEventCountArgs>(
+      args?: Subset<T, RevenueCommunicationEventCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RevenueCommunicationEventCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RevenueCommunicationEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueCommunicationEventAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RevenueCommunicationEventAggregateArgs>(args: Subset<T, RevenueCommunicationEventAggregateArgs>): Prisma.PrismaPromise<GetRevenueCommunicationEventAggregateType<T>>
+
+    /**
+     * Group by RevenueCommunicationEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueCommunicationEventGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RevenueCommunicationEventGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RevenueCommunicationEventGroupByArgs['orderBy'] }
+        : { orderBy?: RevenueCommunicationEventGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RevenueCommunicationEventGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRevenueCommunicationEventGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RevenueCommunicationEvent model
+   */
+  readonly fields: RevenueCommunicationEventFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RevenueCommunicationEvent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RevenueCommunicationEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    lead<T extends RevenueCommunicationEvent$leadArgs<ExtArgs> = {}>(args?: Subset<T, RevenueCommunicationEvent$leadArgs<ExtArgs>>): Prisma__LeadClient<$Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RevenueCommunicationEvent model
+   */
+  interface RevenueCommunicationEventFieldRefs {
+    readonly id: FieldRef<"RevenueCommunicationEvent", 'String'>
+    readonly tenantId: FieldRef<"RevenueCommunicationEvent", 'String'>
+    readonly leadId: FieldRef<"RevenueCommunicationEvent", 'String'>
+    readonly channel: FieldRef<"RevenueCommunicationEvent", 'String'>
+    readonly direction: FieldRef<"RevenueCommunicationEvent", 'String'>
+    readonly status: FieldRef<"RevenueCommunicationEvent", 'String'>
+    readonly approvalStatus: FieldRef<"RevenueCommunicationEvent", 'String'>
+    readonly provider: FieldRef<"RevenueCommunicationEvent", 'String'>
+    readonly providerCalled: FieldRef<"RevenueCommunicationEvent", 'Boolean'>
+    readonly messageSummary: FieldRef<"RevenueCommunicationEvent", 'String'>
+    readonly requiresApproval: FieldRef<"RevenueCommunicationEvent", 'Boolean'>
+    readonly createdBy: FieldRef<"RevenueCommunicationEvent", 'String'>
+    readonly createdAt: FieldRef<"RevenueCommunicationEvent", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RevenueCommunicationEvent findUnique
+   */
+  export type RevenueCommunicationEventFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueCommunicationEvent
+     */
+    select?: RevenueCommunicationEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueCommunicationEvent
+     */
+    omit?: RevenueCommunicationEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueCommunicationEventInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenueCommunicationEvent to fetch.
+     */
+    where: RevenueCommunicationEventWhereUniqueInput
+  }
+
+  /**
+   * RevenueCommunicationEvent findUniqueOrThrow
+   */
+  export type RevenueCommunicationEventFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueCommunicationEvent
+     */
+    select?: RevenueCommunicationEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueCommunicationEvent
+     */
+    omit?: RevenueCommunicationEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueCommunicationEventInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenueCommunicationEvent to fetch.
+     */
+    where: RevenueCommunicationEventWhereUniqueInput
+  }
+
+  /**
+   * RevenueCommunicationEvent findFirst
+   */
+  export type RevenueCommunicationEventFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueCommunicationEvent
+     */
+    select?: RevenueCommunicationEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueCommunicationEvent
+     */
+    omit?: RevenueCommunicationEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueCommunicationEventInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenueCommunicationEvent to fetch.
+     */
+    where?: RevenueCommunicationEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenueCommunicationEvents to fetch.
+     */
+    orderBy?: RevenueCommunicationEventOrderByWithRelationInput | RevenueCommunicationEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RevenueCommunicationEvents.
+     */
+    cursor?: RevenueCommunicationEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenueCommunicationEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenueCommunicationEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RevenueCommunicationEvents.
+     */
+    distinct?: RevenueCommunicationEventScalarFieldEnum | RevenueCommunicationEventScalarFieldEnum[]
+  }
+
+  /**
+   * RevenueCommunicationEvent findFirstOrThrow
+   */
+  export type RevenueCommunicationEventFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueCommunicationEvent
+     */
+    select?: RevenueCommunicationEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueCommunicationEvent
+     */
+    omit?: RevenueCommunicationEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueCommunicationEventInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenueCommunicationEvent to fetch.
+     */
+    where?: RevenueCommunicationEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenueCommunicationEvents to fetch.
+     */
+    orderBy?: RevenueCommunicationEventOrderByWithRelationInput | RevenueCommunicationEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RevenueCommunicationEvents.
+     */
+    cursor?: RevenueCommunicationEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenueCommunicationEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenueCommunicationEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RevenueCommunicationEvents.
+     */
+    distinct?: RevenueCommunicationEventScalarFieldEnum | RevenueCommunicationEventScalarFieldEnum[]
+  }
+
+  /**
+   * RevenueCommunicationEvent findMany
+   */
+  export type RevenueCommunicationEventFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueCommunicationEvent
+     */
+    select?: RevenueCommunicationEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueCommunicationEvent
+     */
+    omit?: RevenueCommunicationEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueCommunicationEventInclude<ExtArgs> | null
+    /**
+     * Filter, which RevenueCommunicationEvents to fetch.
+     */
+    where?: RevenueCommunicationEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenueCommunicationEvents to fetch.
+     */
+    orderBy?: RevenueCommunicationEventOrderByWithRelationInput | RevenueCommunicationEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RevenueCommunicationEvents.
+     */
+    cursor?: RevenueCommunicationEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenueCommunicationEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenueCommunicationEvents.
+     */
+    skip?: number
+    distinct?: RevenueCommunicationEventScalarFieldEnum | RevenueCommunicationEventScalarFieldEnum[]
+  }
+
+  /**
+   * RevenueCommunicationEvent create
+   */
+  export type RevenueCommunicationEventCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueCommunicationEvent
+     */
+    select?: RevenueCommunicationEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueCommunicationEvent
+     */
+    omit?: RevenueCommunicationEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueCommunicationEventInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RevenueCommunicationEvent.
+     */
+    data: XOR<RevenueCommunicationEventCreateInput, RevenueCommunicationEventUncheckedCreateInput>
+  }
+
+  /**
+   * RevenueCommunicationEvent createMany
+   */
+  export type RevenueCommunicationEventCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RevenueCommunicationEvents.
+     */
+    data: RevenueCommunicationEventCreateManyInput | RevenueCommunicationEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RevenueCommunicationEvent createManyAndReturn
+   */
+  export type RevenueCommunicationEventCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueCommunicationEvent
+     */
+    select?: RevenueCommunicationEventSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueCommunicationEvent
+     */
+    omit?: RevenueCommunicationEventOmit<ExtArgs> | null
+    /**
+     * The data used to create many RevenueCommunicationEvents.
+     */
+    data: RevenueCommunicationEventCreateManyInput | RevenueCommunicationEventCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueCommunicationEventIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RevenueCommunicationEvent update
+   */
+  export type RevenueCommunicationEventUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueCommunicationEvent
+     */
+    select?: RevenueCommunicationEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueCommunicationEvent
+     */
+    omit?: RevenueCommunicationEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueCommunicationEventInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RevenueCommunicationEvent.
+     */
+    data: XOR<RevenueCommunicationEventUpdateInput, RevenueCommunicationEventUncheckedUpdateInput>
+    /**
+     * Choose, which RevenueCommunicationEvent to update.
+     */
+    where: RevenueCommunicationEventWhereUniqueInput
+  }
+
+  /**
+   * RevenueCommunicationEvent updateMany
+   */
+  export type RevenueCommunicationEventUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RevenueCommunicationEvents.
+     */
+    data: XOR<RevenueCommunicationEventUpdateManyMutationInput, RevenueCommunicationEventUncheckedUpdateManyInput>
+    /**
+     * Filter which RevenueCommunicationEvents to update
+     */
+    where?: RevenueCommunicationEventWhereInput
+    /**
+     * Limit how many RevenueCommunicationEvents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RevenueCommunicationEvent updateManyAndReturn
+   */
+  export type RevenueCommunicationEventUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueCommunicationEvent
+     */
+    select?: RevenueCommunicationEventSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueCommunicationEvent
+     */
+    omit?: RevenueCommunicationEventOmit<ExtArgs> | null
+    /**
+     * The data used to update RevenueCommunicationEvents.
+     */
+    data: XOR<RevenueCommunicationEventUpdateManyMutationInput, RevenueCommunicationEventUncheckedUpdateManyInput>
+    /**
+     * Filter which RevenueCommunicationEvents to update
+     */
+    where?: RevenueCommunicationEventWhereInput
+    /**
+     * Limit how many RevenueCommunicationEvents to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueCommunicationEventIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RevenueCommunicationEvent upsert
+   */
+  export type RevenueCommunicationEventUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueCommunicationEvent
+     */
+    select?: RevenueCommunicationEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueCommunicationEvent
+     */
+    omit?: RevenueCommunicationEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueCommunicationEventInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RevenueCommunicationEvent to update in case it exists.
+     */
+    where: RevenueCommunicationEventWhereUniqueInput
+    /**
+     * In case the RevenueCommunicationEvent found by the `where` argument doesn't exist, create a new RevenueCommunicationEvent with this data.
+     */
+    create: XOR<RevenueCommunicationEventCreateInput, RevenueCommunicationEventUncheckedCreateInput>
+    /**
+     * In case the RevenueCommunicationEvent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RevenueCommunicationEventUpdateInput, RevenueCommunicationEventUncheckedUpdateInput>
+  }
+
+  /**
+   * RevenueCommunicationEvent delete
+   */
+  export type RevenueCommunicationEventDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueCommunicationEvent
+     */
+    select?: RevenueCommunicationEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueCommunicationEvent
+     */
+    omit?: RevenueCommunicationEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueCommunicationEventInclude<ExtArgs> | null
+    /**
+     * Filter which RevenueCommunicationEvent to delete.
+     */
+    where: RevenueCommunicationEventWhereUniqueInput
+  }
+
+  /**
+   * RevenueCommunicationEvent deleteMany
+   */
+  export type RevenueCommunicationEventDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RevenueCommunicationEvents to delete
+     */
+    where?: RevenueCommunicationEventWhereInput
+    /**
+     * Limit how many RevenueCommunicationEvents to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RevenueCommunicationEvent.lead
+   */
+  export type RevenueCommunicationEvent$leadArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Lead
+     */
+    select?: LeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Lead
+     */
+    omit?: LeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LeadInclude<ExtArgs> | null
+    where?: LeadWhereInput
+  }
+
+  /**
+   * RevenueCommunicationEvent without action
+   */
+  export type RevenueCommunicationEventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueCommunicationEvent
+     */
+    select?: RevenueCommunicationEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueCommunicationEvent
+     */
+    omit?: RevenueCommunicationEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RevenueCommunicationEventInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RevenueDecisionLog
+   */
+
+  export type AggregateRevenueDecisionLog = {
+    _count: RevenueDecisionLogCountAggregateOutputType | null
+    _avg: RevenueDecisionLogAvgAggregateOutputType | null
+    _sum: RevenueDecisionLogSumAggregateOutputType | null
+    _min: RevenueDecisionLogMinAggregateOutputType | null
+    _max: RevenueDecisionLogMaxAggregateOutputType | null
+  }
+
+  export type RevenueDecisionLogAvgAggregateOutputType = {
+    confidence: number | null
+  }
+
+  export type RevenueDecisionLogSumAggregateOutputType = {
+    confidence: number | null
+  }
+
+  export type RevenueDecisionLogMinAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    leadId: string | null
+    taskId: string | null
+    auditEventId: string | null
+    aiMemoryEventId: string | null
+    connectorKey: string | null
+    pipelineEventId: string | null
+    recommendationType: string | null
+    recommendation: string | null
+    confidence: number | null
+    userDecision: string | null
+    modifiedAction: string | null
+    outcome: string | null
+    advisoryOnly: boolean | null
+    providerCalled: boolean | null
+    outreachSent: boolean | null
+    requiresApproval: boolean | null
+    createdBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RevenueDecisionLogMaxAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    leadId: string | null
+    taskId: string | null
+    auditEventId: string | null
+    aiMemoryEventId: string | null
+    connectorKey: string | null
+    pipelineEventId: string | null
+    recommendationType: string | null
+    recommendation: string | null
+    confidence: number | null
+    userDecision: string | null
+    modifiedAction: string | null
+    outcome: string | null
+    advisoryOnly: boolean | null
+    providerCalled: boolean | null
+    outreachSent: boolean | null
+    requiresApproval: boolean | null
+    createdBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RevenueDecisionLogCountAggregateOutputType = {
+    id: number
+    tenantId: number
+    leadId: number
+    taskId: number
+    auditEventId: number
+    aiMemoryEventId: number
+    connectorKey: number
+    pipelineEventId: number
+    recommendationType: number
+    recommendation: number
+    confidence: number
+    supportingEvidence: number
+    assumptions: number
+    missingData: number
+    userDecision: number
+    modifiedAction: number
+    outcome: number
+    advisoryOnly: number
+    providerCalled: number
+    outreachSent: number
+    requiresApproval: number
+    safeMetadata: number
+    createdBy: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type RevenueDecisionLogAvgAggregateInputType = {
+    confidence?: true
+  }
+
+  export type RevenueDecisionLogSumAggregateInputType = {
+    confidence?: true
+  }
+
+  export type RevenueDecisionLogMinAggregateInputType = {
+    id?: true
+    tenantId?: true
+    leadId?: true
+    taskId?: true
+    auditEventId?: true
+    aiMemoryEventId?: true
+    connectorKey?: true
+    pipelineEventId?: true
+    recommendationType?: true
+    recommendation?: true
+    confidence?: true
+    userDecision?: true
+    modifiedAction?: true
+    outcome?: true
+    advisoryOnly?: true
+    providerCalled?: true
+    outreachSent?: true
+    requiresApproval?: true
+    createdBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RevenueDecisionLogMaxAggregateInputType = {
+    id?: true
+    tenantId?: true
+    leadId?: true
+    taskId?: true
+    auditEventId?: true
+    aiMemoryEventId?: true
+    connectorKey?: true
+    pipelineEventId?: true
+    recommendationType?: true
+    recommendation?: true
+    confidence?: true
+    userDecision?: true
+    modifiedAction?: true
+    outcome?: true
+    advisoryOnly?: true
+    providerCalled?: true
+    outreachSent?: true
+    requiresApproval?: true
+    createdBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RevenueDecisionLogCountAggregateInputType = {
+    id?: true
+    tenantId?: true
+    leadId?: true
+    taskId?: true
+    auditEventId?: true
+    aiMemoryEventId?: true
+    connectorKey?: true
+    pipelineEventId?: true
+    recommendationType?: true
+    recommendation?: true
+    confidence?: true
+    supportingEvidence?: true
+    assumptions?: true
+    missingData?: true
+    userDecision?: true
+    modifiedAction?: true
+    outcome?: true
+    advisoryOnly?: true
+    providerCalled?: true
+    outreachSent?: true
+    requiresApproval?: true
+    safeMetadata?: true
+    createdBy?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type RevenueDecisionLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RevenueDecisionLog to aggregate.
+     */
+    where?: RevenueDecisionLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenueDecisionLogs to fetch.
+     */
+    orderBy?: RevenueDecisionLogOrderByWithRelationInput | RevenueDecisionLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RevenueDecisionLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenueDecisionLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenueDecisionLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RevenueDecisionLogs
+    **/
+    _count?: true | RevenueDecisionLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RevenueDecisionLogAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RevenueDecisionLogSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RevenueDecisionLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RevenueDecisionLogMaxAggregateInputType
+  }
+
+  export type GetRevenueDecisionLogAggregateType<T extends RevenueDecisionLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateRevenueDecisionLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRevenueDecisionLog[P]>
+      : GetScalarType<T[P], AggregateRevenueDecisionLog[P]>
+  }
+
+
+
+
+  export type RevenueDecisionLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RevenueDecisionLogWhereInput
+    orderBy?: RevenueDecisionLogOrderByWithAggregationInput | RevenueDecisionLogOrderByWithAggregationInput[]
+    by: RevenueDecisionLogScalarFieldEnum[] | RevenueDecisionLogScalarFieldEnum
+    having?: RevenueDecisionLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RevenueDecisionLogCountAggregateInputType | true
+    _avg?: RevenueDecisionLogAvgAggregateInputType
+    _sum?: RevenueDecisionLogSumAggregateInputType
+    _min?: RevenueDecisionLogMinAggregateInputType
+    _max?: RevenueDecisionLogMaxAggregateInputType
+  }
+
+  export type RevenueDecisionLogGroupByOutputType = {
+    id: string
+    tenantId: string
+    leadId: string | null
+    taskId: string | null
+    auditEventId: string | null
+    aiMemoryEventId: string | null
+    connectorKey: string | null
+    pipelineEventId: string | null
+    recommendationType: string
+    recommendation: string
+    confidence: number
+    supportingEvidence: JsonValue
+    assumptions: JsonValue
+    missingData: JsonValue
+    userDecision: string
+    modifiedAction: string | null
+    outcome: string
+    advisoryOnly: boolean
+    providerCalled: boolean
+    outreachSent: boolean
+    requiresApproval: boolean
+    safeMetadata: JsonValue | null
+    createdBy: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: RevenueDecisionLogCountAggregateOutputType | null
+    _avg: RevenueDecisionLogAvgAggregateOutputType | null
+    _sum: RevenueDecisionLogSumAggregateOutputType | null
+    _min: RevenueDecisionLogMinAggregateOutputType | null
+    _max: RevenueDecisionLogMaxAggregateOutputType | null
+  }
+
+  type GetRevenueDecisionLogGroupByPayload<T extends RevenueDecisionLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RevenueDecisionLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RevenueDecisionLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RevenueDecisionLogGroupByOutputType[P]>
+            : GetScalarType<T[P], RevenueDecisionLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RevenueDecisionLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    leadId?: boolean
+    taskId?: boolean
+    auditEventId?: boolean
+    aiMemoryEventId?: boolean
+    connectorKey?: boolean
+    pipelineEventId?: boolean
+    recommendationType?: boolean
+    recommendation?: boolean
+    confidence?: boolean
+    supportingEvidence?: boolean
+    assumptions?: boolean
+    missingData?: boolean
+    userDecision?: boolean
+    modifiedAction?: boolean
+    outcome?: boolean
+    advisoryOnly?: boolean
+    providerCalled?: boolean
+    outreachSent?: boolean
+    requiresApproval?: boolean
+    safeMetadata?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["revenueDecisionLog"]>
+
+  export type RevenueDecisionLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    leadId?: boolean
+    taskId?: boolean
+    auditEventId?: boolean
+    aiMemoryEventId?: boolean
+    connectorKey?: boolean
+    pipelineEventId?: boolean
+    recommendationType?: boolean
+    recommendation?: boolean
+    confidence?: boolean
+    supportingEvidence?: boolean
+    assumptions?: boolean
+    missingData?: boolean
+    userDecision?: boolean
+    modifiedAction?: boolean
+    outcome?: boolean
+    advisoryOnly?: boolean
+    providerCalled?: boolean
+    outreachSent?: boolean
+    requiresApproval?: boolean
+    safeMetadata?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["revenueDecisionLog"]>
+
+  export type RevenueDecisionLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    leadId?: boolean
+    taskId?: boolean
+    auditEventId?: boolean
+    aiMemoryEventId?: boolean
+    connectorKey?: boolean
+    pipelineEventId?: boolean
+    recommendationType?: boolean
+    recommendation?: boolean
+    confidence?: boolean
+    supportingEvidence?: boolean
+    assumptions?: boolean
+    missingData?: boolean
+    userDecision?: boolean
+    modifiedAction?: boolean
+    outcome?: boolean
+    advisoryOnly?: boolean
+    providerCalled?: boolean
+    outreachSent?: boolean
+    requiresApproval?: boolean
+    safeMetadata?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["revenueDecisionLog"]>
+
+  export type RevenueDecisionLogSelectScalar = {
+    id?: boolean
+    tenantId?: boolean
+    leadId?: boolean
+    taskId?: boolean
+    auditEventId?: boolean
+    aiMemoryEventId?: boolean
+    connectorKey?: boolean
+    pipelineEventId?: boolean
+    recommendationType?: boolean
+    recommendation?: boolean
+    confidence?: boolean
+    supportingEvidence?: boolean
+    assumptions?: boolean
+    missingData?: boolean
+    userDecision?: boolean
+    modifiedAction?: boolean
+    outcome?: boolean
+    advisoryOnly?: boolean
+    providerCalled?: boolean
+    outreachSent?: boolean
+    requiresApproval?: boolean
+    safeMetadata?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type RevenueDecisionLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "leadId" | "taskId" | "auditEventId" | "aiMemoryEventId" | "connectorKey" | "pipelineEventId" | "recommendationType" | "recommendation" | "confidence" | "supportingEvidence" | "assumptions" | "missingData" | "userDecision" | "modifiedAction" | "outcome" | "advisoryOnly" | "providerCalled" | "outreachSent" | "requiresApproval" | "safeMetadata" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["revenueDecisionLog"]>
+
+  export type $RevenueDecisionLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RevenueDecisionLog"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenantId: string
+      leadId: string | null
+      taskId: string | null
+      auditEventId: string | null
+      aiMemoryEventId: string | null
+      connectorKey: string | null
+      pipelineEventId: string | null
+      recommendationType: string
+      recommendation: string
+      confidence: number
+      supportingEvidence: Prisma.JsonValue
+      assumptions: Prisma.JsonValue
+      missingData: Prisma.JsonValue
+      userDecision: string
+      modifiedAction: string | null
+      outcome: string
+      advisoryOnly: boolean
+      providerCalled: boolean
+      outreachSent: boolean
+      requiresApproval: boolean
+      safeMetadata: Prisma.JsonValue | null
+      createdBy: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["revenueDecisionLog"]>
+    composites: {}
+  }
+
+  type RevenueDecisionLogGetPayload<S extends boolean | null | undefined | RevenueDecisionLogDefaultArgs> = $Result.GetResult<Prisma.$RevenueDecisionLogPayload, S>
+
+  type RevenueDecisionLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RevenueDecisionLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RevenueDecisionLogCountAggregateInputType | true
+    }
+
+  export interface RevenueDecisionLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RevenueDecisionLog'], meta: { name: 'RevenueDecisionLog' } }
+    /**
+     * Find zero or one RevenueDecisionLog that matches the filter.
+     * @param {RevenueDecisionLogFindUniqueArgs} args - Arguments to find a RevenueDecisionLog
+     * @example
+     * // Get one RevenueDecisionLog
+     * const revenueDecisionLog = await prisma.revenueDecisionLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RevenueDecisionLogFindUniqueArgs>(args: SelectSubset<T, RevenueDecisionLogFindUniqueArgs<ExtArgs>>): Prisma__RevenueDecisionLogClient<$Result.GetResult<Prisma.$RevenueDecisionLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RevenueDecisionLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RevenueDecisionLogFindUniqueOrThrowArgs} args - Arguments to find a RevenueDecisionLog
+     * @example
+     * // Get one RevenueDecisionLog
+     * const revenueDecisionLog = await prisma.revenueDecisionLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RevenueDecisionLogFindUniqueOrThrowArgs>(args: SelectSubset<T, RevenueDecisionLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RevenueDecisionLogClient<$Result.GetResult<Prisma.$RevenueDecisionLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RevenueDecisionLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueDecisionLogFindFirstArgs} args - Arguments to find a RevenueDecisionLog
+     * @example
+     * // Get one RevenueDecisionLog
+     * const revenueDecisionLog = await prisma.revenueDecisionLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RevenueDecisionLogFindFirstArgs>(args?: SelectSubset<T, RevenueDecisionLogFindFirstArgs<ExtArgs>>): Prisma__RevenueDecisionLogClient<$Result.GetResult<Prisma.$RevenueDecisionLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RevenueDecisionLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueDecisionLogFindFirstOrThrowArgs} args - Arguments to find a RevenueDecisionLog
+     * @example
+     * // Get one RevenueDecisionLog
+     * const revenueDecisionLog = await prisma.revenueDecisionLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RevenueDecisionLogFindFirstOrThrowArgs>(args?: SelectSubset<T, RevenueDecisionLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__RevenueDecisionLogClient<$Result.GetResult<Prisma.$RevenueDecisionLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RevenueDecisionLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueDecisionLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RevenueDecisionLogs
+     * const revenueDecisionLogs = await prisma.revenueDecisionLog.findMany()
+     * 
+     * // Get first 10 RevenueDecisionLogs
+     * const revenueDecisionLogs = await prisma.revenueDecisionLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const revenueDecisionLogWithIdOnly = await prisma.revenueDecisionLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RevenueDecisionLogFindManyArgs>(args?: SelectSubset<T, RevenueDecisionLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenueDecisionLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RevenueDecisionLog.
+     * @param {RevenueDecisionLogCreateArgs} args - Arguments to create a RevenueDecisionLog.
+     * @example
+     * // Create one RevenueDecisionLog
+     * const RevenueDecisionLog = await prisma.revenueDecisionLog.create({
+     *   data: {
+     *     // ... data to create a RevenueDecisionLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends RevenueDecisionLogCreateArgs>(args: SelectSubset<T, RevenueDecisionLogCreateArgs<ExtArgs>>): Prisma__RevenueDecisionLogClient<$Result.GetResult<Prisma.$RevenueDecisionLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RevenueDecisionLogs.
+     * @param {RevenueDecisionLogCreateManyArgs} args - Arguments to create many RevenueDecisionLogs.
+     * @example
+     * // Create many RevenueDecisionLogs
+     * const revenueDecisionLog = await prisma.revenueDecisionLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RevenueDecisionLogCreateManyArgs>(args?: SelectSubset<T, RevenueDecisionLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RevenueDecisionLogs and returns the data saved in the database.
+     * @param {RevenueDecisionLogCreateManyAndReturnArgs} args - Arguments to create many RevenueDecisionLogs.
+     * @example
+     * // Create many RevenueDecisionLogs
+     * const revenueDecisionLog = await prisma.revenueDecisionLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RevenueDecisionLogs and only return the `id`
+     * const revenueDecisionLogWithIdOnly = await prisma.revenueDecisionLog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RevenueDecisionLogCreateManyAndReturnArgs>(args?: SelectSubset<T, RevenueDecisionLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenueDecisionLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RevenueDecisionLog.
+     * @param {RevenueDecisionLogDeleteArgs} args - Arguments to delete one RevenueDecisionLog.
+     * @example
+     * // Delete one RevenueDecisionLog
+     * const RevenueDecisionLog = await prisma.revenueDecisionLog.delete({
+     *   where: {
+     *     // ... filter to delete one RevenueDecisionLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RevenueDecisionLogDeleteArgs>(args: SelectSubset<T, RevenueDecisionLogDeleteArgs<ExtArgs>>): Prisma__RevenueDecisionLogClient<$Result.GetResult<Prisma.$RevenueDecisionLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RevenueDecisionLog.
+     * @param {RevenueDecisionLogUpdateArgs} args - Arguments to update one RevenueDecisionLog.
+     * @example
+     * // Update one RevenueDecisionLog
+     * const revenueDecisionLog = await prisma.revenueDecisionLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RevenueDecisionLogUpdateArgs>(args: SelectSubset<T, RevenueDecisionLogUpdateArgs<ExtArgs>>): Prisma__RevenueDecisionLogClient<$Result.GetResult<Prisma.$RevenueDecisionLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RevenueDecisionLogs.
+     * @param {RevenueDecisionLogDeleteManyArgs} args - Arguments to filter RevenueDecisionLogs to delete.
+     * @example
+     * // Delete a few RevenueDecisionLogs
+     * const { count } = await prisma.revenueDecisionLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RevenueDecisionLogDeleteManyArgs>(args?: SelectSubset<T, RevenueDecisionLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RevenueDecisionLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueDecisionLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RevenueDecisionLogs
+     * const revenueDecisionLog = await prisma.revenueDecisionLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RevenueDecisionLogUpdateManyArgs>(args: SelectSubset<T, RevenueDecisionLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RevenueDecisionLogs and returns the data updated in the database.
+     * @param {RevenueDecisionLogUpdateManyAndReturnArgs} args - Arguments to update many RevenueDecisionLogs.
+     * @example
+     * // Update many RevenueDecisionLogs
+     * const revenueDecisionLog = await prisma.revenueDecisionLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RevenueDecisionLogs and only return the `id`
+     * const revenueDecisionLogWithIdOnly = await prisma.revenueDecisionLog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RevenueDecisionLogUpdateManyAndReturnArgs>(args: SelectSubset<T, RevenueDecisionLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RevenueDecisionLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RevenueDecisionLog.
+     * @param {RevenueDecisionLogUpsertArgs} args - Arguments to update or create a RevenueDecisionLog.
+     * @example
+     * // Update or create a RevenueDecisionLog
+     * const revenueDecisionLog = await prisma.revenueDecisionLog.upsert({
+     *   create: {
+     *     // ... data to create a RevenueDecisionLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RevenueDecisionLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RevenueDecisionLogUpsertArgs>(args: SelectSubset<T, RevenueDecisionLogUpsertArgs<ExtArgs>>): Prisma__RevenueDecisionLogClient<$Result.GetResult<Prisma.$RevenueDecisionLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RevenueDecisionLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueDecisionLogCountArgs} args - Arguments to filter RevenueDecisionLogs to count.
+     * @example
+     * // Count the number of RevenueDecisionLogs
+     * const count = await prisma.revenueDecisionLog.count({
+     *   where: {
+     *     // ... the filter for the RevenueDecisionLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends RevenueDecisionLogCountArgs>(
+      args?: Subset<T, RevenueDecisionLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RevenueDecisionLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RevenueDecisionLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueDecisionLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RevenueDecisionLogAggregateArgs>(args: Subset<T, RevenueDecisionLogAggregateArgs>): Prisma.PrismaPromise<GetRevenueDecisionLogAggregateType<T>>
+
+    /**
+     * Group by RevenueDecisionLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RevenueDecisionLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RevenueDecisionLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RevenueDecisionLogGroupByArgs['orderBy'] }
+        : { orderBy?: RevenueDecisionLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RevenueDecisionLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRevenueDecisionLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RevenueDecisionLog model
+   */
+  readonly fields: RevenueDecisionLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RevenueDecisionLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RevenueDecisionLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RevenueDecisionLog model
+   */
+  interface RevenueDecisionLogFieldRefs {
+    readonly id: FieldRef<"RevenueDecisionLog", 'String'>
+    readonly tenantId: FieldRef<"RevenueDecisionLog", 'String'>
+    readonly leadId: FieldRef<"RevenueDecisionLog", 'String'>
+    readonly taskId: FieldRef<"RevenueDecisionLog", 'String'>
+    readonly auditEventId: FieldRef<"RevenueDecisionLog", 'String'>
+    readonly aiMemoryEventId: FieldRef<"RevenueDecisionLog", 'String'>
+    readonly connectorKey: FieldRef<"RevenueDecisionLog", 'String'>
+    readonly pipelineEventId: FieldRef<"RevenueDecisionLog", 'String'>
+    readonly recommendationType: FieldRef<"RevenueDecisionLog", 'String'>
+    readonly recommendation: FieldRef<"RevenueDecisionLog", 'String'>
+    readonly confidence: FieldRef<"RevenueDecisionLog", 'Int'>
+    readonly supportingEvidence: FieldRef<"RevenueDecisionLog", 'Json'>
+    readonly assumptions: FieldRef<"RevenueDecisionLog", 'Json'>
+    readonly missingData: FieldRef<"RevenueDecisionLog", 'Json'>
+    readonly userDecision: FieldRef<"RevenueDecisionLog", 'String'>
+    readonly modifiedAction: FieldRef<"RevenueDecisionLog", 'String'>
+    readonly outcome: FieldRef<"RevenueDecisionLog", 'String'>
+    readonly advisoryOnly: FieldRef<"RevenueDecisionLog", 'Boolean'>
+    readonly providerCalled: FieldRef<"RevenueDecisionLog", 'Boolean'>
+    readonly outreachSent: FieldRef<"RevenueDecisionLog", 'Boolean'>
+    readonly requiresApproval: FieldRef<"RevenueDecisionLog", 'Boolean'>
+    readonly safeMetadata: FieldRef<"RevenueDecisionLog", 'Json'>
+    readonly createdBy: FieldRef<"RevenueDecisionLog", 'String'>
+    readonly createdAt: FieldRef<"RevenueDecisionLog", 'DateTime'>
+    readonly updatedAt: FieldRef<"RevenueDecisionLog", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RevenueDecisionLog findUnique
+   */
+  export type RevenueDecisionLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueDecisionLog
+     */
+    select?: RevenueDecisionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueDecisionLog
+     */
+    omit?: RevenueDecisionLogOmit<ExtArgs> | null
+    /**
+     * Filter, which RevenueDecisionLog to fetch.
+     */
+    where: RevenueDecisionLogWhereUniqueInput
+  }
+
+  /**
+   * RevenueDecisionLog findUniqueOrThrow
+   */
+  export type RevenueDecisionLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueDecisionLog
+     */
+    select?: RevenueDecisionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueDecisionLog
+     */
+    omit?: RevenueDecisionLogOmit<ExtArgs> | null
+    /**
+     * Filter, which RevenueDecisionLog to fetch.
+     */
+    where: RevenueDecisionLogWhereUniqueInput
+  }
+
+  /**
+   * RevenueDecisionLog findFirst
+   */
+  export type RevenueDecisionLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueDecisionLog
+     */
+    select?: RevenueDecisionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueDecisionLog
+     */
+    omit?: RevenueDecisionLogOmit<ExtArgs> | null
+    /**
+     * Filter, which RevenueDecisionLog to fetch.
+     */
+    where?: RevenueDecisionLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenueDecisionLogs to fetch.
+     */
+    orderBy?: RevenueDecisionLogOrderByWithRelationInput | RevenueDecisionLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RevenueDecisionLogs.
+     */
+    cursor?: RevenueDecisionLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenueDecisionLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenueDecisionLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RevenueDecisionLogs.
+     */
+    distinct?: RevenueDecisionLogScalarFieldEnum | RevenueDecisionLogScalarFieldEnum[]
+  }
+
+  /**
+   * RevenueDecisionLog findFirstOrThrow
+   */
+  export type RevenueDecisionLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueDecisionLog
+     */
+    select?: RevenueDecisionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueDecisionLog
+     */
+    omit?: RevenueDecisionLogOmit<ExtArgs> | null
+    /**
+     * Filter, which RevenueDecisionLog to fetch.
+     */
+    where?: RevenueDecisionLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenueDecisionLogs to fetch.
+     */
+    orderBy?: RevenueDecisionLogOrderByWithRelationInput | RevenueDecisionLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RevenueDecisionLogs.
+     */
+    cursor?: RevenueDecisionLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenueDecisionLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenueDecisionLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RevenueDecisionLogs.
+     */
+    distinct?: RevenueDecisionLogScalarFieldEnum | RevenueDecisionLogScalarFieldEnum[]
+  }
+
+  /**
+   * RevenueDecisionLog findMany
+   */
+  export type RevenueDecisionLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueDecisionLog
+     */
+    select?: RevenueDecisionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueDecisionLog
+     */
+    omit?: RevenueDecisionLogOmit<ExtArgs> | null
+    /**
+     * Filter, which RevenueDecisionLogs to fetch.
+     */
+    where?: RevenueDecisionLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RevenueDecisionLogs to fetch.
+     */
+    orderBy?: RevenueDecisionLogOrderByWithRelationInput | RevenueDecisionLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RevenueDecisionLogs.
+     */
+    cursor?: RevenueDecisionLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RevenueDecisionLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RevenueDecisionLogs.
+     */
+    skip?: number
+    distinct?: RevenueDecisionLogScalarFieldEnum | RevenueDecisionLogScalarFieldEnum[]
+  }
+
+  /**
+   * RevenueDecisionLog create
+   */
+  export type RevenueDecisionLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueDecisionLog
+     */
+    select?: RevenueDecisionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueDecisionLog
+     */
+    omit?: RevenueDecisionLogOmit<ExtArgs> | null
+    /**
+     * The data needed to create a RevenueDecisionLog.
+     */
+    data: XOR<RevenueDecisionLogCreateInput, RevenueDecisionLogUncheckedCreateInput>
+  }
+
+  /**
+   * RevenueDecisionLog createMany
+   */
+  export type RevenueDecisionLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RevenueDecisionLogs.
+     */
+    data: RevenueDecisionLogCreateManyInput | RevenueDecisionLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RevenueDecisionLog createManyAndReturn
+   */
+  export type RevenueDecisionLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueDecisionLog
+     */
+    select?: RevenueDecisionLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueDecisionLog
+     */
+    omit?: RevenueDecisionLogOmit<ExtArgs> | null
+    /**
+     * The data used to create many RevenueDecisionLogs.
+     */
+    data: RevenueDecisionLogCreateManyInput | RevenueDecisionLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RevenueDecisionLog update
+   */
+  export type RevenueDecisionLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueDecisionLog
+     */
+    select?: RevenueDecisionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueDecisionLog
+     */
+    omit?: RevenueDecisionLogOmit<ExtArgs> | null
+    /**
+     * The data needed to update a RevenueDecisionLog.
+     */
+    data: XOR<RevenueDecisionLogUpdateInput, RevenueDecisionLogUncheckedUpdateInput>
+    /**
+     * Choose, which RevenueDecisionLog to update.
+     */
+    where: RevenueDecisionLogWhereUniqueInput
+  }
+
+  /**
+   * RevenueDecisionLog updateMany
+   */
+  export type RevenueDecisionLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RevenueDecisionLogs.
+     */
+    data: XOR<RevenueDecisionLogUpdateManyMutationInput, RevenueDecisionLogUncheckedUpdateManyInput>
+    /**
+     * Filter which RevenueDecisionLogs to update
+     */
+    where?: RevenueDecisionLogWhereInput
+    /**
+     * Limit how many RevenueDecisionLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RevenueDecisionLog updateManyAndReturn
+   */
+  export type RevenueDecisionLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueDecisionLog
+     */
+    select?: RevenueDecisionLogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueDecisionLog
+     */
+    omit?: RevenueDecisionLogOmit<ExtArgs> | null
+    /**
+     * The data used to update RevenueDecisionLogs.
+     */
+    data: XOR<RevenueDecisionLogUpdateManyMutationInput, RevenueDecisionLogUncheckedUpdateManyInput>
+    /**
+     * Filter which RevenueDecisionLogs to update
+     */
+    where?: RevenueDecisionLogWhereInput
+    /**
+     * Limit how many RevenueDecisionLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RevenueDecisionLog upsert
+   */
+  export type RevenueDecisionLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueDecisionLog
+     */
+    select?: RevenueDecisionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueDecisionLog
+     */
+    omit?: RevenueDecisionLogOmit<ExtArgs> | null
+    /**
+     * The filter to search for the RevenueDecisionLog to update in case it exists.
+     */
+    where: RevenueDecisionLogWhereUniqueInput
+    /**
+     * In case the RevenueDecisionLog found by the `where` argument doesn't exist, create a new RevenueDecisionLog with this data.
+     */
+    create: XOR<RevenueDecisionLogCreateInput, RevenueDecisionLogUncheckedCreateInput>
+    /**
+     * In case the RevenueDecisionLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RevenueDecisionLogUpdateInput, RevenueDecisionLogUncheckedUpdateInput>
+  }
+
+  /**
+   * RevenueDecisionLog delete
+   */
+  export type RevenueDecisionLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueDecisionLog
+     */
+    select?: RevenueDecisionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueDecisionLog
+     */
+    omit?: RevenueDecisionLogOmit<ExtArgs> | null
+    /**
+     * Filter which RevenueDecisionLog to delete.
+     */
+    where: RevenueDecisionLogWhereUniqueInput
+  }
+
+  /**
+   * RevenueDecisionLog deleteMany
+   */
+  export type RevenueDecisionLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RevenueDecisionLogs to delete
+     */
+    where?: RevenueDecisionLogWhereInput
+    /**
+     * Limit how many RevenueDecisionLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RevenueDecisionLog without action
+   */
+  export type RevenueDecisionLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RevenueDecisionLog
+     */
+    select?: RevenueDecisionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RevenueDecisionLog
+     */
+    omit?: RevenueDecisionLogOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ConnectorDefinition
+   */
+
+  export type AggregateConnectorDefinition = {
+    _count: ConnectorDefinitionCountAggregateOutputType | null
+    _min: ConnectorDefinitionMinAggregateOutputType | null
+    _max: ConnectorDefinitionMaxAggregateOutputType | null
+  }
+
+  export type ConnectorDefinitionMinAggregateOutputType = {
+    id: string | null
+    connectorKey: string | null
+    label: string | null
+    category: string | null
+    status: string | null
+    version: string | null
+    supportsDryRun: boolean | null
+    providerCallsAllowed: boolean | null
+    safetyNotes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ConnectorDefinitionMaxAggregateOutputType = {
+    id: string | null
+    connectorKey: string | null
+    label: string | null
+    category: string | null
+    status: string | null
+    version: string | null
+    supportsDryRun: boolean | null
+    providerCallsAllowed: boolean | null
+    safetyNotes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ConnectorDefinitionCountAggregateOutputType = {
+    id: number
+    connectorKey: number
+    label: number
+    category: number
+    status: number
+    version: number
+    supportsDryRun: number
+    providerCallsAllowed: number
+    requiredApprovals: number
+    safetyNotes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ConnectorDefinitionMinAggregateInputType = {
+    id?: true
+    connectorKey?: true
+    label?: true
+    category?: true
+    status?: true
+    version?: true
+    supportsDryRun?: true
+    providerCallsAllowed?: true
+    safetyNotes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ConnectorDefinitionMaxAggregateInputType = {
+    id?: true
+    connectorKey?: true
+    label?: true
+    category?: true
+    status?: true
+    version?: true
+    supportsDryRun?: true
+    providerCallsAllowed?: true
+    safetyNotes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ConnectorDefinitionCountAggregateInputType = {
+    id?: true
+    connectorKey?: true
+    label?: true
+    category?: true
+    status?: true
+    version?: true
+    supportsDryRun?: true
+    providerCallsAllowed?: true
+    requiredApprovals?: true
+    safetyNotes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ConnectorDefinitionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ConnectorDefinition to aggregate.
+     */
+    where?: ConnectorDefinitionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConnectorDefinitions to fetch.
+     */
+    orderBy?: ConnectorDefinitionOrderByWithRelationInput | ConnectorDefinitionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ConnectorDefinitionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConnectorDefinitions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConnectorDefinitions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ConnectorDefinitions
+    **/
+    _count?: true | ConnectorDefinitionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ConnectorDefinitionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ConnectorDefinitionMaxAggregateInputType
+  }
+
+  export type GetConnectorDefinitionAggregateType<T extends ConnectorDefinitionAggregateArgs> = {
+        [P in keyof T & keyof AggregateConnectorDefinition]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateConnectorDefinition[P]>
+      : GetScalarType<T[P], AggregateConnectorDefinition[P]>
+  }
+
+
+
+
+  export type ConnectorDefinitionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ConnectorDefinitionWhereInput
+    orderBy?: ConnectorDefinitionOrderByWithAggregationInput | ConnectorDefinitionOrderByWithAggregationInput[]
+    by: ConnectorDefinitionScalarFieldEnum[] | ConnectorDefinitionScalarFieldEnum
+    having?: ConnectorDefinitionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ConnectorDefinitionCountAggregateInputType | true
+    _min?: ConnectorDefinitionMinAggregateInputType
+    _max?: ConnectorDefinitionMaxAggregateInputType
+  }
+
+  export type ConnectorDefinitionGroupByOutputType = {
+    id: string
+    connectorKey: string
+    label: string
+    category: string
+    status: string
+    version: string
+    supportsDryRun: boolean
+    providerCallsAllowed: boolean
+    requiredApprovals: JsonValue
+    safetyNotes: string
+    createdAt: Date
+    updatedAt: Date
+    _count: ConnectorDefinitionCountAggregateOutputType | null
+    _min: ConnectorDefinitionMinAggregateOutputType | null
+    _max: ConnectorDefinitionMaxAggregateOutputType | null
+  }
+
+  type GetConnectorDefinitionGroupByPayload<T extends ConnectorDefinitionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ConnectorDefinitionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ConnectorDefinitionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ConnectorDefinitionGroupByOutputType[P]>
+            : GetScalarType<T[P], ConnectorDefinitionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ConnectorDefinitionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    connectorKey?: boolean
+    label?: boolean
+    category?: boolean
+    status?: boolean
+    version?: boolean
+    supportsDryRun?: boolean
+    providerCallsAllowed?: boolean
+    requiredApprovals?: boolean
+    safetyNotes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["connectorDefinition"]>
+
+  export type ConnectorDefinitionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    connectorKey?: boolean
+    label?: boolean
+    category?: boolean
+    status?: boolean
+    version?: boolean
+    supportsDryRun?: boolean
+    providerCallsAllowed?: boolean
+    requiredApprovals?: boolean
+    safetyNotes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["connectorDefinition"]>
+
+  export type ConnectorDefinitionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    connectorKey?: boolean
+    label?: boolean
+    category?: boolean
+    status?: boolean
+    version?: boolean
+    supportsDryRun?: boolean
+    providerCallsAllowed?: boolean
+    requiredApprovals?: boolean
+    safetyNotes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["connectorDefinition"]>
+
+  export type ConnectorDefinitionSelectScalar = {
+    id?: boolean
+    connectorKey?: boolean
+    label?: boolean
+    category?: boolean
+    status?: boolean
+    version?: boolean
+    supportsDryRun?: boolean
+    providerCallsAllowed?: boolean
+    requiredApprovals?: boolean
+    safetyNotes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ConnectorDefinitionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "connectorKey" | "label" | "category" | "status" | "version" | "supportsDryRun" | "providerCallsAllowed" | "requiredApprovals" | "safetyNotes" | "createdAt" | "updatedAt", ExtArgs["result"]["connectorDefinition"]>
+
+  export type $ConnectorDefinitionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ConnectorDefinition"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      connectorKey: string
+      label: string
+      category: string
+      status: string
+      version: string
+      supportsDryRun: boolean
+      providerCallsAllowed: boolean
+      requiredApprovals: Prisma.JsonValue
+      safetyNotes: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["connectorDefinition"]>
+    composites: {}
+  }
+
+  type ConnectorDefinitionGetPayload<S extends boolean | null | undefined | ConnectorDefinitionDefaultArgs> = $Result.GetResult<Prisma.$ConnectorDefinitionPayload, S>
+
+  type ConnectorDefinitionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ConnectorDefinitionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ConnectorDefinitionCountAggregateInputType | true
+    }
+
+  export interface ConnectorDefinitionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ConnectorDefinition'], meta: { name: 'ConnectorDefinition' } }
+    /**
+     * Find zero or one ConnectorDefinition that matches the filter.
+     * @param {ConnectorDefinitionFindUniqueArgs} args - Arguments to find a ConnectorDefinition
+     * @example
+     * // Get one ConnectorDefinition
+     * const connectorDefinition = await prisma.connectorDefinition.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ConnectorDefinitionFindUniqueArgs>(args: SelectSubset<T, ConnectorDefinitionFindUniqueArgs<ExtArgs>>): Prisma__ConnectorDefinitionClient<$Result.GetResult<Prisma.$ConnectorDefinitionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ConnectorDefinition that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ConnectorDefinitionFindUniqueOrThrowArgs} args - Arguments to find a ConnectorDefinition
+     * @example
+     * // Get one ConnectorDefinition
+     * const connectorDefinition = await prisma.connectorDefinition.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ConnectorDefinitionFindUniqueOrThrowArgs>(args: SelectSubset<T, ConnectorDefinitionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ConnectorDefinitionClient<$Result.GetResult<Prisma.$ConnectorDefinitionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ConnectorDefinition that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectorDefinitionFindFirstArgs} args - Arguments to find a ConnectorDefinition
+     * @example
+     * // Get one ConnectorDefinition
+     * const connectorDefinition = await prisma.connectorDefinition.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ConnectorDefinitionFindFirstArgs>(args?: SelectSubset<T, ConnectorDefinitionFindFirstArgs<ExtArgs>>): Prisma__ConnectorDefinitionClient<$Result.GetResult<Prisma.$ConnectorDefinitionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ConnectorDefinition that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectorDefinitionFindFirstOrThrowArgs} args - Arguments to find a ConnectorDefinition
+     * @example
+     * // Get one ConnectorDefinition
+     * const connectorDefinition = await prisma.connectorDefinition.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ConnectorDefinitionFindFirstOrThrowArgs>(args?: SelectSubset<T, ConnectorDefinitionFindFirstOrThrowArgs<ExtArgs>>): Prisma__ConnectorDefinitionClient<$Result.GetResult<Prisma.$ConnectorDefinitionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ConnectorDefinitions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectorDefinitionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ConnectorDefinitions
+     * const connectorDefinitions = await prisma.connectorDefinition.findMany()
+     * 
+     * // Get first 10 ConnectorDefinitions
+     * const connectorDefinitions = await prisma.connectorDefinition.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const connectorDefinitionWithIdOnly = await prisma.connectorDefinition.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ConnectorDefinitionFindManyArgs>(args?: SelectSubset<T, ConnectorDefinitionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConnectorDefinitionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ConnectorDefinition.
+     * @param {ConnectorDefinitionCreateArgs} args - Arguments to create a ConnectorDefinition.
+     * @example
+     * // Create one ConnectorDefinition
+     * const ConnectorDefinition = await prisma.connectorDefinition.create({
+     *   data: {
+     *     // ... data to create a ConnectorDefinition
+     *   }
+     * })
+     * 
+     */
+    create<T extends ConnectorDefinitionCreateArgs>(args: SelectSubset<T, ConnectorDefinitionCreateArgs<ExtArgs>>): Prisma__ConnectorDefinitionClient<$Result.GetResult<Prisma.$ConnectorDefinitionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ConnectorDefinitions.
+     * @param {ConnectorDefinitionCreateManyArgs} args - Arguments to create many ConnectorDefinitions.
+     * @example
+     * // Create many ConnectorDefinitions
+     * const connectorDefinition = await prisma.connectorDefinition.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ConnectorDefinitionCreateManyArgs>(args?: SelectSubset<T, ConnectorDefinitionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ConnectorDefinitions and returns the data saved in the database.
+     * @param {ConnectorDefinitionCreateManyAndReturnArgs} args - Arguments to create many ConnectorDefinitions.
+     * @example
+     * // Create many ConnectorDefinitions
+     * const connectorDefinition = await prisma.connectorDefinition.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ConnectorDefinitions and only return the `id`
+     * const connectorDefinitionWithIdOnly = await prisma.connectorDefinition.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ConnectorDefinitionCreateManyAndReturnArgs>(args?: SelectSubset<T, ConnectorDefinitionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConnectorDefinitionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ConnectorDefinition.
+     * @param {ConnectorDefinitionDeleteArgs} args - Arguments to delete one ConnectorDefinition.
+     * @example
+     * // Delete one ConnectorDefinition
+     * const ConnectorDefinition = await prisma.connectorDefinition.delete({
+     *   where: {
+     *     // ... filter to delete one ConnectorDefinition
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ConnectorDefinitionDeleteArgs>(args: SelectSubset<T, ConnectorDefinitionDeleteArgs<ExtArgs>>): Prisma__ConnectorDefinitionClient<$Result.GetResult<Prisma.$ConnectorDefinitionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ConnectorDefinition.
+     * @param {ConnectorDefinitionUpdateArgs} args - Arguments to update one ConnectorDefinition.
+     * @example
+     * // Update one ConnectorDefinition
+     * const connectorDefinition = await prisma.connectorDefinition.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ConnectorDefinitionUpdateArgs>(args: SelectSubset<T, ConnectorDefinitionUpdateArgs<ExtArgs>>): Prisma__ConnectorDefinitionClient<$Result.GetResult<Prisma.$ConnectorDefinitionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ConnectorDefinitions.
+     * @param {ConnectorDefinitionDeleteManyArgs} args - Arguments to filter ConnectorDefinitions to delete.
+     * @example
+     * // Delete a few ConnectorDefinitions
+     * const { count } = await prisma.connectorDefinition.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ConnectorDefinitionDeleteManyArgs>(args?: SelectSubset<T, ConnectorDefinitionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ConnectorDefinitions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectorDefinitionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ConnectorDefinitions
+     * const connectorDefinition = await prisma.connectorDefinition.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ConnectorDefinitionUpdateManyArgs>(args: SelectSubset<T, ConnectorDefinitionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ConnectorDefinitions and returns the data updated in the database.
+     * @param {ConnectorDefinitionUpdateManyAndReturnArgs} args - Arguments to update many ConnectorDefinitions.
+     * @example
+     * // Update many ConnectorDefinitions
+     * const connectorDefinition = await prisma.connectorDefinition.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ConnectorDefinitions and only return the `id`
+     * const connectorDefinitionWithIdOnly = await prisma.connectorDefinition.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ConnectorDefinitionUpdateManyAndReturnArgs>(args: SelectSubset<T, ConnectorDefinitionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConnectorDefinitionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ConnectorDefinition.
+     * @param {ConnectorDefinitionUpsertArgs} args - Arguments to update or create a ConnectorDefinition.
+     * @example
+     * // Update or create a ConnectorDefinition
+     * const connectorDefinition = await prisma.connectorDefinition.upsert({
+     *   create: {
+     *     // ... data to create a ConnectorDefinition
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ConnectorDefinition we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ConnectorDefinitionUpsertArgs>(args: SelectSubset<T, ConnectorDefinitionUpsertArgs<ExtArgs>>): Prisma__ConnectorDefinitionClient<$Result.GetResult<Prisma.$ConnectorDefinitionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ConnectorDefinitions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectorDefinitionCountArgs} args - Arguments to filter ConnectorDefinitions to count.
+     * @example
+     * // Count the number of ConnectorDefinitions
+     * const count = await prisma.connectorDefinition.count({
+     *   where: {
+     *     // ... the filter for the ConnectorDefinitions we want to count
+     *   }
+     * })
+    **/
+    count<T extends ConnectorDefinitionCountArgs>(
+      args?: Subset<T, ConnectorDefinitionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ConnectorDefinitionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ConnectorDefinition.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectorDefinitionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ConnectorDefinitionAggregateArgs>(args: Subset<T, ConnectorDefinitionAggregateArgs>): Prisma.PrismaPromise<GetConnectorDefinitionAggregateType<T>>
+
+    /**
+     * Group by ConnectorDefinition.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectorDefinitionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ConnectorDefinitionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ConnectorDefinitionGroupByArgs['orderBy'] }
+        : { orderBy?: ConnectorDefinitionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ConnectorDefinitionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetConnectorDefinitionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ConnectorDefinition model
+   */
+  readonly fields: ConnectorDefinitionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ConnectorDefinition.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ConnectorDefinitionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ConnectorDefinition model
+   */
+  interface ConnectorDefinitionFieldRefs {
+    readonly id: FieldRef<"ConnectorDefinition", 'String'>
+    readonly connectorKey: FieldRef<"ConnectorDefinition", 'String'>
+    readonly label: FieldRef<"ConnectorDefinition", 'String'>
+    readonly category: FieldRef<"ConnectorDefinition", 'String'>
+    readonly status: FieldRef<"ConnectorDefinition", 'String'>
+    readonly version: FieldRef<"ConnectorDefinition", 'String'>
+    readonly supportsDryRun: FieldRef<"ConnectorDefinition", 'Boolean'>
+    readonly providerCallsAllowed: FieldRef<"ConnectorDefinition", 'Boolean'>
+    readonly requiredApprovals: FieldRef<"ConnectorDefinition", 'Json'>
+    readonly safetyNotes: FieldRef<"ConnectorDefinition", 'String'>
+    readonly createdAt: FieldRef<"ConnectorDefinition", 'DateTime'>
+    readonly updatedAt: FieldRef<"ConnectorDefinition", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ConnectorDefinition findUnique
+   */
+  export type ConnectorDefinitionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectorDefinition
+     */
+    select?: ConnectorDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConnectorDefinition
+     */
+    omit?: ConnectorDefinitionOmit<ExtArgs> | null
+    /**
+     * Filter, which ConnectorDefinition to fetch.
+     */
+    where: ConnectorDefinitionWhereUniqueInput
+  }
+
+  /**
+   * ConnectorDefinition findUniqueOrThrow
+   */
+  export type ConnectorDefinitionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectorDefinition
+     */
+    select?: ConnectorDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConnectorDefinition
+     */
+    omit?: ConnectorDefinitionOmit<ExtArgs> | null
+    /**
+     * Filter, which ConnectorDefinition to fetch.
+     */
+    where: ConnectorDefinitionWhereUniqueInput
+  }
+
+  /**
+   * ConnectorDefinition findFirst
+   */
+  export type ConnectorDefinitionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectorDefinition
+     */
+    select?: ConnectorDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConnectorDefinition
+     */
+    omit?: ConnectorDefinitionOmit<ExtArgs> | null
+    /**
+     * Filter, which ConnectorDefinition to fetch.
+     */
+    where?: ConnectorDefinitionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConnectorDefinitions to fetch.
+     */
+    orderBy?: ConnectorDefinitionOrderByWithRelationInput | ConnectorDefinitionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ConnectorDefinitions.
+     */
+    cursor?: ConnectorDefinitionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConnectorDefinitions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConnectorDefinitions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ConnectorDefinitions.
+     */
+    distinct?: ConnectorDefinitionScalarFieldEnum | ConnectorDefinitionScalarFieldEnum[]
+  }
+
+  /**
+   * ConnectorDefinition findFirstOrThrow
+   */
+  export type ConnectorDefinitionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectorDefinition
+     */
+    select?: ConnectorDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConnectorDefinition
+     */
+    omit?: ConnectorDefinitionOmit<ExtArgs> | null
+    /**
+     * Filter, which ConnectorDefinition to fetch.
+     */
+    where?: ConnectorDefinitionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConnectorDefinitions to fetch.
+     */
+    orderBy?: ConnectorDefinitionOrderByWithRelationInput | ConnectorDefinitionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ConnectorDefinitions.
+     */
+    cursor?: ConnectorDefinitionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConnectorDefinitions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConnectorDefinitions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ConnectorDefinitions.
+     */
+    distinct?: ConnectorDefinitionScalarFieldEnum | ConnectorDefinitionScalarFieldEnum[]
+  }
+
+  /**
+   * ConnectorDefinition findMany
+   */
+  export type ConnectorDefinitionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectorDefinition
+     */
+    select?: ConnectorDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConnectorDefinition
+     */
+    omit?: ConnectorDefinitionOmit<ExtArgs> | null
+    /**
+     * Filter, which ConnectorDefinitions to fetch.
+     */
+    where?: ConnectorDefinitionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConnectorDefinitions to fetch.
+     */
+    orderBy?: ConnectorDefinitionOrderByWithRelationInput | ConnectorDefinitionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ConnectorDefinitions.
+     */
+    cursor?: ConnectorDefinitionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConnectorDefinitions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConnectorDefinitions.
+     */
+    skip?: number
+    distinct?: ConnectorDefinitionScalarFieldEnum | ConnectorDefinitionScalarFieldEnum[]
+  }
+
+  /**
+   * ConnectorDefinition create
+   */
+  export type ConnectorDefinitionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectorDefinition
+     */
+    select?: ConnectorDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConnectorDefinition
+     */
+    omit?: ConnectorDefinitionOmit<ExtArgs> | null
+    /**
+     * The data needed to create a ConnectorDefinition.
+     */
+    data: XOR<ConnectorDefinitionCreateInput, ConnectorDefinitionUncheckedCreateInput>
+  }
+
+  /**
+   * ConnectorDefinition createMany
+   */
+  export type ConnectorDefinitionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ConnectorDefinitions.
+     */
+    data: ConnectorDefinitionCreateManyInput | ConnectorDefinitionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ConnectorDefinition createManyAndReturn
+   */
+  export type ConnectorDefinitionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectorDefinition
+     */
+    select?: ConnectorDefinitionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConnectorDefinition
+     */
+    omit?: ConnectorDefinitionOmit<ExtArgs> | null
+    /**
+     * The data used to create many ConnectorDefinitions.
+     */
+    data: ConnectorDefinitionCreateManyInput | ConnectorDefinitionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ConnectorDefinition update
+   */
+  export type ConnectorDefinitionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectorDefinition
+     */
+    select?: ConnectorDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConnectorDefinition
+     */
+    omit?: ConnectorDefinitionOmit<ExtArgs> | null
+    /**
+     * The data needed to update a ConnectorDefinition.
+     */
+    data: XOR<ConnectorDefinitionUpdateInput, ConnectorDefinitionUncheckedUpdateInput>
+    /**
+     * Choose, which ConnectorDefinition to update.
+     */
+    where: ConnectorDefinitionWhereUniqueInput
+  }
+
+  /**
+   * ConnectorDefinition updateMany
+   */
+  export type ConnectorDefinitionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ConnectorDefinitions.
+     */
+    data: XOR<ConnectorDefinitionUpdateManyMutationInput, ConnectorDefinitionUncheckedUpdateManyInput>
+    /**
+     * Filter which ConnectorDefinitions to update
+     */
+    where?: ConnectorDefinitionWhereInput
+    /**
+     * Limit how many ConnectorDefinitions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ConnectorDefinition updateManyAndReturn
+   */
+  export type ConnectorDefinitionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectorDefinition
+     */
+    select?: ConnectorDefinitionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConnectorDefinition
+     */
+    omit?: ConnectorDefinitionOmit<ExtArgs> | null
+    /**
+     * The data used to update ConnectorDefinitions.
+     */
+    data: XOR<ConnectorDefinitionUpdateManyMutationInput, ConnectorDefinitionUncheckedUpdateManyInput>
+    /**
+     * Filter which ConnectorDefinitions to update
+     */
+    where?: ConnectorDefinitionWhereInput
+    /**
+     * Limit how many ConnectorDefinitions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ConnectorDefinition upsert
+   */
+  export type ConnectorDefinitionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectorDefinition
+     */
+    select?: ConnectorDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConnectorDefinition
+     */
+    omit?: ConnectorDefinitionOmit<ExtArgs> | null
+    /**
+     * The filter to search for the ConnectorDefinition to update in case it exists.
+     */
+    where: ConnectorDefinitionWhereUniqueInput
+    /**
+     * In case the ConnectorDefinition found by the `where` argument doesn't exist, create a new ConnectorDefinition with this data.
+     */
+    create: XOR<ConnectorDefinitionCreateInput, ConnectorDefinitionUncheckedCreateInput>
+    /**
+     * In case the ConnectorDefinition was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ConnectorDefinitionUpdateInput, ConnectorDefinitionUncheckedUpdateInput>
+  }
+
+  /**
+   * ConnectorDefinition delete
+   */
+  export type ConnectorDefinitionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectorDefinition
+     */
+    select?: ConnectorDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConnectorDefinition
+     */
+    omit?: ConnectorDefinitionOmit<ExtArgs> | null
+    /**
+     * Filter which ConnectorDefinition to delete.
+     */
+    where: ConnectorDefinitionWhereUniqueInput
+  }
+
+  /**
+   * ConnectorDefinition deleteMany
+   */
+  export type ConnectorDefinitionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ConnectorDefinitions to delete
+     */
+    where?: ConnectorDefinitionWhereInput
+    /**
+     * Limit how many ConnectorDefinitions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ConnectorDefinition without action
+   */
+  export type ConnectorDefinitionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectorDefinition
+     */
+    select?: ConnectorDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConnectorDefinition
+     */
+    omit?: ConnectorDefinitionOmit<ExtArgs> | null
   }
 
 
@@ -4590,43 +14874,43 @@ export namespace Prisma {
     where?: ManualLeadIntakeWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of ManualLeadIntakes to fetch.
      */
     orderBy?: ManualLeadIntakeOrderByWithRelationInput | ManualLeadIntakeOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: ManualLeadIntakeWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` ManualLeadIntakes from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` ManualLeadIntakes.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned ManualLeadIntakes
     **/
     _count?: true | ManualLeadIntakeCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: ManualLeadIntakeMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: ManualLeadIntakeMaxAggregateInputType
@@ -4900,13 +15184,13 @@ export namespace Prisma {
      * @example
      * // Get all ManualLeadIntakes
      * const manualLeadIntakes = await prisma.manualLeadIntake.findMany()
-     *
+     * 
      * // Get first 10 ManualLeadIntakes
      * const manualLeadIntakes = await prisma.manualLeadIntake.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const manualLeadIntakeWithIdOnly = await prisma.manualLeadIntake.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends ManualLeadIntakeFindManyArgs>(args?: SelectSubset<T, ManualLeadIntakeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ManualLeadIntakePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -4920,7 +15204,7 @@ export namespace Prisma {
      *     // ... data to create a ManualLeadIntake
      *   }
      * })
-     *
+     * 
      */
     create<T extends ManualLeadIntakeCreateArgs>(args: SelectSubset<T, ManualLeadIntakeCreateArgs<ExtArgs>>): Prisma__ManualLeadIntakeClient<$Result.GetResult<Prisma.$ManualLeadIntakePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -4934,7 +15218,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends ManualLeadIntakeCreateManyArgs>(args?: SelectSubset<T, ManualLeadIntakeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -4948,7 +15232,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many ManualLeadIntakes and only return the `id`
      * const manualLeadIntakeWithIdOnly = await prisma.manualLeadIntake.createManyAndReturn({
      *   select: { id: true },
@@ -4958,7 +15242,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends ManualLeadIntakeCreateManyAndReturnArgs>(args?: SelectSubset<T, ManualLeadIntakeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ManualLeadIntakePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -4972,7 +15256,7 @@ export namespace Prisma {
      *     // ... filter to delete one ManualLeadIntake
      *   }
      * })
-     *
+     * 
      */
     delete<T extends ManualLeadIntakeDeleteArgs>(args: SelectSubset<T, ManualLeadIntakeDeleteArgs<ExtArgs>>): Prisma__ManualLeadIntakeClient<$Result.GetResult<Prisma.$ManualLeadIntakePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -4989,7 +15273,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends ManualLeadIntakeUpdateArgs>(args: SelectSubset<T, ManualLeadIntakeUpdateArgs<ExtArgs>>): Prisma__ManualLeadIntakeClient<$Result.GetResult<Prisma.$ManualLeadIntakePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -5003,7 +15287,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends ManualLeadIntakeDeleteManyArgs>(args?: SelectSubset<T, ManualLeadIntakeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -5022,7 +15306,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends ManualLeadIntakeUpdateManyArgs>(args: SelectSubset<T, ManualLeadIntakeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -5039,7 +15323,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more ManualLeadIntakes and only return the `id`
      * const manualLeadIntakeWithIdOnly = await prisma.manualLeadIntake.updateManyAndReturn({
      *   select: { id: true },
@@ -5052,7 +15336,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends ManualLeadIntakeUpdateManyAndReturnArgs>(args: SelectSubset<T, ManualLeadIntakeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ManualLeadIntakePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -5141,7 +15425,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends ManualLeadIntakeGroupByArgs,
@@ -5265,7 +15549,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"ManualLeadIntake", 'DateTime'>
     readonly updatedAt: FieldRef<"ManualLeadIntake", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -5334,31 +15618,31 @@ export namespace Prisma {
     where?: ManualLeadIntakeWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of ManualLeadIntakes to fetch.
      */
     orderBy?: ManualLeadIntakeOrderByWithRelationInput | ManualLeadIntakeOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for ManualLeadIntakes.
      */
     cursor?: ManualLeadIntakeWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` ManualLeadIntakes from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` ManualLeadIntakes.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of ManualLeadIntakes.
      */
     distinct?: ManualLeadIntakeScalarFieldEnum | ManualLeadIntakeScalarFieldEnum[]
@@ -5386,31 +15670,31 @@ export namespace Prisma {
     where?: ManualLeadIntakeWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of ManualLeadIntakes to fetch.
      */
     orderBy?: ManualLeadIntakeOrderByWithRelationInput | ManualLeadIntakeOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for ManualLeadIntakes.
      */
     cursor?: ManualLeadIntakeWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` ManualLeadIntakes from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` ManualLeadIntakes.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of ManualLeadIntakes.
      */
     distinct?: ManualLeadIntakeScalarFieldEnum | ManualLeadIntakeScalarFieldEnum[]
@@ -5438,25 +15722,25 @@ export namespace Prisma {
     where?: ManualLeadIntakeWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of ManualLeadIntakes to fetch.
      */
     orderBy?: ManualLeadIntakeOrderByWithRelationInput | ManualLeadIntakeOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing ManualLeadIntakes.
      */
     cursor?: ManualLeadIntakeWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` ManualLeadIntakes from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` ManualLeadIntakes.
      */
     skip?: number
@@ -5803,43 +16087,43 @@ export namespace Prisma {
     where?: SellerCallOutcomeWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of SellerCallOutcomes to fetch.
      */
     orderBy?: SellerCallOutcomeOrderByWithRelationInput | SellerCallOutcomeOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: SellerCallOutcomeWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` SellerCallOutcomes from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` SellerCallOutcomes.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned SellerCallOutcomes
     **/
     _count?: true | SellerCallOutcomeCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: SellerCallOutcomeMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: SellerCallOutcomeMaxAggregateInputType
@@ -6057,13 +16341,13 @@ export namespace Prisma {
      * @example
      * // Get all SellerCallOutcomes
      * const sellerCallOutcomes = await prisma.sellerCallOutcome.findMany()
-     *
+     * 
      * // Get first 10 SellerCallOutcomes
      * const sellerCallOutcomes = await prisma.sellerCallOutcome.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const sellerCallOutcomeWithIdOnly = await prisma.sellerCallOutcome.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends SellerCallOutcomeFindManyArgs>(args?: SelectSubset<T, SellerCallOutcomeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SellerCallOutcomePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -6077,7 +16361,7 @@ export namespace Prisma {
      *     // ... data to create a SellerCallOutcome
      *   }
      * })
-     *
+     * 
      */
     create<T extends SellerCallOutcomeCreateArgs>(args: SelectSubset<T, SellerCallOutcomeCreateArgs<ExtArgs>>): Prisma__SellerCallOutcomeClient<$Result.GetResult<Prisma.$SellerCallOutcomePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -6091,7 +16375,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends SellerCallOutcomeCreateManyArgs>(args?: SelectSubset<T, SellerCallOutcomeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -6105,7 +16389,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many SellerCallOutcomes and only return the `id`
      * const sellerCallOutcomeWithIdOnly = await prisma.sellerCallOutcome.createManyAndReturn({
      *   select: { id: true },
@@ -6115,7 +16399,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends SellerCallOutcomeCreateManyAndReturnArgs>(args?: SelectSubset<T, SellerCallOutcomeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SellerCallOutcomePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -6129,7 +16413,7 @@ export namespace Prisma {
      *     // ... filter to delete one SellerCallOutcome
      *   }
      * })
-     *
+     * 
      */
     delete<T extends SellerCallOutcomeDeleteArgs>(args: SelectSubset<T, SellerCallOutcomeDeleteArgs<ExtArgs>>): Prisma__SellerCallOutcomeClient<$Result.GetResult<Prisma.$SellerCallOutcomePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -6146,7 +16430,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends SellerCallOutcomeUpdateArgs>(args: SelectSubset<T, SellerCallOutcomeUpdateArgs<ExtArgs>>): Prisma__SellerCallOutcomeClient<$Result.GetResult<Prisma.$SellerCallOutcomePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -6160,7 +16444,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends SellerCallOutcomeDeleteManyArgs>(args?: SelectSubset<T, SellerCallOutcomeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -6179,7 +16463,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends SellerCallOutcomeUpdateManyArgs>(args: SelectSubset<T, SellerCallOutcomeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -6196,7 +16480,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more SellerCallOutcomes and only return the `id`
      * const sellerCallOutcomeWithIdOnly = await prisma.sellerCallOutcome.updateManyAndReturn({
      *   select: { id: true },
@@ -6209,7 +16493,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends SellerCallOutcomeUpdateManyAndReturnArgs>(args: SelectSubset<T, SellerCallOutcomeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SellerCallOutcomePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -6298,7 +16582,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends SellerCallOutcomeGroupByArgs,
@@ -6414,7 +16698,7 @@ export namespace Prisma {
     readonly safetyFlags: FieldRef<"SellerCallOutcome", 'Json'>
     readonly createdAt: FieldRef<"SellerCallOutcome", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -6471,31 +16755,31 @@ export namespace Prisma {
     where?: SellerCallOutcomeWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of SellerCallOutcomes to fetch.
      */
     orderBy?: SellerCallOutcomeOrderByWithRelationInput | SellerCallOutcomeOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for SellerCallOutcomes.
      */
     cursor?: SellerCallOutcomeWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` SellerCallOutcomes from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` SellerCallOutcomes.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of SellerCallOutcomes.
      */
     distinct?: SellerCallOutcomeScalarFieldEnum | SellerCallOutcomeScalarFieldEnum[]
@@ -6519,31 +16803,31 @@ export namespace Prisma {
     where?: SellerCallOutcomeWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of SellerCallOutcomes to fetch.
      */
     orderBy?: SellerCallOutcomeOrderByWithRelationInput | SellerCallOutcomeOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for SellerCallOutcomes.
      */
     cursor?: SellerCallOutcomeWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` SellerCallOutcomes from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` SellerCallOutcomes.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of SellerCallOutcomes.
      */
     distinct?: SellerCallOutcomeScalarFieldEnum | SellerCallOutcomeScalarFieldEnum[]
@@ -6567,25 +16851,25 @@ export namespace Prisma {
     where?: SellerCallOutcomeWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of SellerCallOutcomes to fetch.
      */
     orderBy?: SellerCallOutcomeOrderByWithRelationInput | SellerCallOutcomeOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing SellerCallOutcomes.
      */
     cursor?: SellerCallOutcomeWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` SellerCallOutcomes from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` SellerCallOutcomes.
      */
     skip?: number
@@ -7027,55 +17311,55 @@ export namespace Prisma {
     where?: AiPerformanceMetricWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiPerformanceMetrics to fetch.
      */
     orderBy?: AiPerformanceMetricOrderByWithRelationInput | AiPerformanceMetricOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: AiPerformanceMetricWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiPerformanceMetrics from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiPerformanceMetrics.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned AiPerformanceMetrics
     **/
     _count?: true | AiPerformanceMetricCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: AiPerformanceMetricAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: AiPerformanceMetricSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: AiPerformanceMetricMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: AiPerformanceMetricMaxAggregateInputType
@@ -7357,13 +17641,13 @@ export namespace Prisma {
      * @example
      * // Get all AiPerformanceMetrics
      * const aiPerformanceMetrics = await prisma.aiPerformanceMetric.findMany()
-     *
+     * 
      * // Get first 10 AiPerformanceMetrics
      * const aiPerformanceMetrics = await prisma.aiPerformanceMetric.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const aiPerformanceMetricWithIdOnly = await prisma.aiPerformanceMetric.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends AiPerformanceMetricFindManyArgs>(args?: SelectSubset<T, AiPerformanceMetricFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiPerformanceMetricPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -7377,7 +17661,7 @@ export namespace Prisma {
      *     // ... data to create a AiPerformanceMetric
      *   }
      * })
-     *
+     * 
      */
     create<T extends AiPerformanceMetricCreateArgs>(args: SelectSubset<T, AiPerformanceMetricCreateArgs<ExtArgs>>): Prisma__AiPerformanceMetricClient<$Result.GetResult<Prisma.$AiPerformanceMetricPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -7391,7 +17675,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends AiPerformanceMetricCreateManyArgs>(args?: SelectSubset<T, AiPerformanceMetricCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -7405,7 +17689,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many AiPerformanceMetrics and only return the `id`
      * const aiPerformanceMetricWithIdOnly = await prisma.aiPerformanceMetric.createManyAndReturn({
      *   select: { id: true },
@@ -7415,7 +17699,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends AiPerformanceMetricCreateManyAndReturnArgs>(args?: SelectSubset<T, AiPerformanceMetricCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiPerformanceMetricPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -7429,7 +17713,7 @@ export namespace Prisma {
      *     // ... filter to delete one AiPerformanceMetric
      *   }
      * })
-     *
+     * 
      */
     delete<T extends AiPerformanceMetricDeleteArgs>(args: SelectSubset<T, AiPerformanceMetricDeleteArgs<ExtArgs>>): Prisma__AiPerformanceMetricClient<$Result.GetResult<Prisma.$AiPerformanceMetricPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -7446,7 +17730,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends AiPerformanceMetricUpdateArgs>(args: SelectSubset<T, AiPerformanceMetricUpdateArgs<ExtArgs>>): Prisma__AiPerformanceMetricClient<$Result.GetResult<Prisma.$AiPerformanceMetricPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -7460,7 +17744,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends AiPerformanceMetricDeleteManyArgs>(args?: SelectSubset<T, AiPerformanceMetricDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -7479,7 +17763,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends AiPerformanceMetricUpdateManyArgs>(args: SelectSubset<T, AiPerformanceMetricUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -7496,7 +17780,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more AiPerformanceMetrics and only return the `id`
      * const aiPerformanceMetricWithIdOnly = await prisma.aiPerformanceMetric.updateManyAndReturn({
      *   select: { id: true },
@@ -7509,7 +17793,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends AiPerformanceMetricUpdateManyAndReturnArgs>(args: SelectSubset<T, AiPerformanceMetricUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiPerformanceMetricPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -7598,7 +17882,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends AiPerformanceMetricGroupByArgs,
@@ -7724,7 +18008,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"AiPerformanceMetric", 'DateTime'>
     readonly updatedAt: FieldRef<"AiPerformanceMetric", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -7781,31 +18065,31 @@ export namespace Prisma {
     where?: AiPerformanceMetricWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiPerformanceMetrics to fetch.
      */
     orderBy?: AiPerformanceMetricOrderByWithRelationInput | AiPerformanceMetricOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for AiPerformanceMetrics.
      */
     cursor?: AiPerformanceMetricWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiPerformanceMetrics from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiPerformanceMetrics.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of AiPerformanceMetrics.
      */
     distinct?: AiPerformanceMetricScalarFieldEnum | AiPerformanceMetricScalarFieldEnum[]
@@ -7829,31 +18113,31 @@ export namespace Prisma {
     where?: AiPerformanceMetricWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiPerformanceMetrics to fetch.
      */
     orderBy?: AiPerformanceMetricOrderByWithRelationInput | AiPerformanceMetricOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for AiPerformanceMetrics.
      */
     cursor?: AiPerformanceMetricWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiPerformanceMetrics from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiPerformanceMetrics.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of AiPerformanceMetrics.
      */
     distinct?: AiPerformanceMetricScalarFieldEnum | AiPerformanceMetricScalarFieldEnum[]
@@ -7877,25 +18161,25 @@ export namespace Prisma {
     where?: AiPerformanceMetricWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiPerformanceMetrics to fetch.
      */
     orderBy?: AiPerformanceMetricOrderByWithRelationInput | AiPerformanceMetricOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing AiPerformanceMetrics.
      */
     cursor?: AiPerformanceMetricWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiPerformanceMetrics from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiPerformanceMetrics.
      */
     skip?: number
@@ -8169,43 +18453,43 @@ export namespace Prisma {
     where?: AiJobWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiJobs to fetch.
      */
     orderBy?: AiJobOrderByWithRelationInput | AiJobOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: AiJobWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiJobs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiJobs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned AiJobs
     **/
     _count?: true | AiJobCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: AiJobMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: AiJobMaxAggregateInputType
@@ -8406,13 +18690,13 @@ export namespace Prisma {
      * @example
      * // Get all AiJobs
      * const aiJobs = await prisma.aiJob.findMany()
-     *
+     * 
      * // Get first 10 AiJobs
      * const aiJobs = await prisma.aiJob.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const aiJobWithIdOnly = await prisma.aiJob.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends AiJobFindManyArgs>(args?: SelectSubset<T, AiJobFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -8426,7 +18710,7 @@ export namespace Prisma {
      *     // ... data to create a AiJob
      *   }
      * })
-     *
+     * 
      */
     create<T extends AiJobCreateArgs>(args: SelectSubset<T, AiJobCreateArgs<ExtArgs>>): Prisma__AiJobClient<$Result.GetResult<Prisma.$AiJobPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -8440,7 +18724,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends AiJobCreateManyArgs>(args?: SelectSubset<T, AiJobCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -8454,7 +18738,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many AiJobs and only return the `id`
      * const aiJobWithIdOnly = await prisma.aiJob.createManyAndReturn({
      *   select: { id: true },
@@ -8464,7 +18748,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends AiJobCreateManyAndReturnArgs>(args?: SelectSubset<T, AiJobCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiJobPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -8478,7 +18762,7 @@ export namespace Prisma {
      *     // ... filter to delete one AiJob
      *   }
      * })
-     *
+     * 
      */
     delete<T extends AiJobDeleteArgs>(args: SelectSubset<T, AiJobDeleteArgs<ExtArgs>>): Prisma__AiJobClient<$Result.GetResult<Prisma.$AiJobPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -8495,7 +18779,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends AiJobUpdateArgs>(args: SelectSubset<T, AiJobUpdateArgs<ExtArgs>>): Prisma__AiJobClient<$Result.GetResult<Prisma.$AiJobPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -8509,7 +18793,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends AiJobDeleteManyArgs>(args?: SelectSubset<T, AiJobDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -8528,7 +18812,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends AiJobUpdateManyArgs>(args: SelectSubset<T, AiJobUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -8545,7 +18829,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more AiJobs and only return the `id`
      * const aiJobWithIdOnly = await prisma.aiJob.updateManyAndReturn({
      *   select: { id: true },
@@ -8558,7 +18842,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends AiJobUpdateManyAndReturnArgs>(args: SelectSubset<T, AiJobUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiJobPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -8647,7 +18931,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends AiJobGroupByArgs,
@@ -8760,7 +19044,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"AiJob", 'DateTime'>
     readonly updatedAt: FieldRef<"AiJob", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -8829,31 +19113,31 @@ export namespace Prisma {
     where?: AiJobWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiJobs to fetch.
      */
     orderBy?: AiJobOrderByWithRelationInput | AiJobOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for AiJobs.
      */
     cursor?: AiJobWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiJobs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiJobs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of AiJobs.
      */
     distinct?: AiJobScalarFieldEnum | AiJobScalarFieldEnum[]
@@ -8881,31 +19165,31 @@ export namespace Prisma {
     where?: AiJobWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiJobs to fetch.
      */
     orderBy?: AiJobOrderByWithRelationInput | AiJobOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for AiJobs.
      */
     cursor?: AiJobWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiJobs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiJobs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of AiJobs.
      */
     distinct?: AiJobScalarFieldEnum | AiJobScalarFieldEnum[]
@@ -8933,25 +19217,25 @@ export namespace Prisma {
     where?: AiJobWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiJobs to fetch.
      */
     orderBy?: AiJobOrderByWithRelationInput | AiJobOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing AiJobs.
      */
     cursor?: AiJobWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiJobs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiJobs.
      */
     skip?: number
@@ -9299,55 +19583,55 @@ export namespace Prisma {
     where?: AiJobActionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiJobActions to fetch.
      */
     orderBy?: AiJobActionOrderByWithRelationInput | AiJobActionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: AiJobActionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiJobActions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiJobActions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned AiJobActions
     **/
     _count?: true | AiJobActionCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: AiJobActionAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: AiJobActionSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: AiJobActionMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: AiJobActionMaxAggregateInputType
@@ -9541,13 +19825,13 @@ export namespace Prisma {
      * @example
      * // Get all AiJobActions
      * const aiJobActions = await prisma.aiJobAction.findMany()
-     *
+     * 
      * // Get first 10 AiJobActions
      * const aiJobActions = await prisma.aiJobAction.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const aiJobActionWithIdOnly = await prisma.aiJobAction.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends AiJobActionFindManyArgs>(args?: SelectSubset<T, AiJobActionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiJobActionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -9561,7 +19845,7 @@ export namespace Prisma {
      *     // ... data to create a AiJobAction
      *   }
      * })
-     *
+     * 
      */
     create<T extends AiJobActionCreateArgs>(args: SelectSubset<T, AiJobActionCreateArgs<ExtArgs>>): Prisma__AiJobActionClient<$Result.GetResult<Prisma.$AiJobActionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -9575,7 +19859,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends AiJobActionCreateManyArgs>(args?: SelectSubset<T, AiJobActionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -9589,7 +19873,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many AiJobActions and only return the `id`
      * const aiJobActionWithIdOnly = await prisma.aiJobAction.createManyAndReturn({
      *   select: { id: true },
@@ -9599,7 +19883,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends AiJobActionCreateManyAndReturnArgs>(args?: SelectSubset<T, AiJobActionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiJobActionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -9613,7 +19897,7 @@ export namespace Prisma {
      *     // ... filter to delete one AiJobAction
      *   }
      * })
-     *
+     * 
      */
     delete<T extends AiJobActionDeleteArgs>(args: SelectSubset<T, AiJobActionDeleteArgs<ExtArgs>>): Prisma__AiJobActionClient<$Result.GetResult<Prisma.$AiJobActionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -9630,7 +19914,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends AiJobActionUpdateArgs>(args: SelectSubset<T, AiJobActionUpdateArgs<ExtArgs>>): Prisma__AiJobActionClient<$Result.GetResult<Prisma.$AiJobActionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -9644,7 +19928,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends AiJobActionDeleteManyArgs>(args?: SelectSubset<T, AiJobActionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -9663,7 +19947,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends AiJobActionUpdateManyArgs>(args: SelectSubset<T, AiJobActionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -9680,7 +19964,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more AiJobActions and only return the `id`
      * const aiJobActionWithIdOnly = await prisma.aiJobAction.updateManyAndReturn({
      *   select: { id: true },
@@ -9693,7 +19977,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends AiJobActionUpdateManyAndReturnArgs>(args: SelectSubset<T, AiJobActionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiJobActionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -9782,7 +20066,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends AiJobActionGroupByArgs,
@@ -9892,7 +20176,7 @@ export namespace Prisma {
     readonly count: FieldRef<"AiJobAction", 'Int'>
     readonly createdAt: FieldRef<"AiJobAction", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -9961,31 +20245,31 @@ export namespace Prisma {
     where?: AiJobActionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiJobActions to fetch.
      */
     orderBy?: AiJobActionOrderByWithRelationInput | AiJobActionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for AiJobActions.
      */
     cursor?: AiJobActionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiJobActions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiJobActions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of AiJobActions.
      */
     distinct?: AiJobActionScalarFieldEnum | AiJobActionScalarFieldEnum[]
@@ -10013,31 +20297,31 @@ export namespace Prisma {
     where?: AiJobActionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiJobActions to fetch.
      */
     orderBy?: AiJobActionOrderByWithRelationInput | AiJobActionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for AiJobActions.
      */
     cursor?: AiJobActionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiJobActions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiJobActions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of AiJobActions.
      */
     distinct?: AiJobActionScalarFieldEnum | AiJobActionScalarFieldEnum[]
@@ -10065,25 +20349,25 @@ export namespace Prisma {
     where?: AiJobActionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiJobActions to fetch.
      */
     orderBy?: AiJobActionOrderByWithRelationInput | AiJobActionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing AiJobActions.
      */
     cursor?: AiJobActionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiJobActions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiJobActions.
      */
     skip?: number
@@ -10373,43 +20657,43 @@ export namespace Prisma {
     where?: AiJobLogWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiJobLogs to fetch.
      */
     orderBy?: AiJobLogOrderByWithRelationInput | AiJobLogOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: AiJobLogWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiJobLogs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiJobLogs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned AiJobLogs
     **/
     _count?: true | AiJobLogCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: AiJobLogMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: AiJobLogMaxAggregateInputType
@@ -10599,13 +20883,13 @@ export namespace Prisma {
      * @example
      * // Get all AiJobLogs
      * const aiJobLogs = await prisma.aiJobLog.findMany()
-     *
+     * 
      * // Get first 10 AiJobLogs
      * const aiJobLogs = await prisma.aiJobLog.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const aiJobLogWithIdOnly = await prisma.aiJobLog.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends AiJobLogFindManyArgs>(args?: SelectSubset<T, AiJobLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiJobLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -10619,7 +20903,7 @@ export namespace Prisma {
      *     // ... data to create a AiJobLog
      *   }
      * })
-     *
+     * 
      */
     create<T extends AiJobLogCreateArgs>(args: SelectSubset<T, AiJobLogCreateArgs<ExtArgs>>): Prisma__AiJobLogClient<$Result.GetResult<Prisma.$AiJobLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -10633,7 +20917,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends AiJobLogCreateManyArgs>(args?: SelectSubset<T, AiJobLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -10647,7 +20931,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many AiJobLogs and only return the `id`
      * const aiJobLogWithIdOnly = await prisma.aiJobLog.createManyAndReturn({
      *   select: { id: true },
@@ -10657,7 +20941,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends AiJobLogCreateManyAndReturnArgs>(args?: SelectSubset<T, AiJobLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiJobLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -10671,7 +20955,7 @@ export namespace Prisma {
      *     // ... filter to delete one AiJobLog
      *   }
      * })
-     *
+     * 
      */
     delete<T extends AiJobLogDeleteArgs>(args: SelectSubset<T, AiJobLogDeleteArgs<ExtArgs>>): Prisma__AiJobLogClient<$Result.GetResult<Prisma.$AiJobLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -10688,7 +20972,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends AiJobLogUpdateArgs>(args: SelectSubset<T, AiJobLogUpdateArgs<ExtArgs>>): Prisma__AiJobLogClient<$Result.GetResult<Prisma.$AiJobLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -10702,7 +20986,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends AiJobLogDeleteManyArgs>(args?: SelectSubset<T, AiJobLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -10721,7 +21005,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends AiJobLogUpdateManyArgs>(args: SelectSubset<T, AiJobLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -10738,7 +21022,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more AiJobLogs and only return the `id`
      * const aiJobLogWithIdOnly = await prisma.aiJobLog.updateManyAndReturn({
      *   select: { id: true },
@@ -10751,7 +21035,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends AiJobLogUpdateManyAndReturnArgs>(args: SelectSubset<T, AiJobLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiJobLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -10840,7 +21124,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends AiJobLogGroupByArgs,
@@ -10950,7 +21234,7 @@ export namespace Prisma {
     readonly message: FieldRef<"AiJobLog", 'String'>
     readonly createdAt: FieldRef<"AiJobLog", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -11019,31 +21303,31 @@ export namespace Prisma {
     where?: AiJobLogWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiJobLogs to fetch.
      */
     orderBy?: AiJobLogOrderByWithRelationInput | AiJobLogOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for AiJobLogs.
      */
     cursor?: AiJobLogWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiJobLogs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiJobLogs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of AiJobLogs.
      */
     distinct?: AiJobLogScalarFieldEnum | AiJobLogScalarFieldEnum[]
@@ -11071,31 +21355,31 @@ export namespace Prisma {
     where?: AiJobLogWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiJobLogs to fetch.
      */
     orderBy?: AiJobLogOrderByWithRelationInput | AiJobLogOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for AiJobLogs.
      */
     cursor?: AiJobLogWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiJobLogs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiJobLogs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of AiJobLogs.
      */
     distinct?: AiJobLogScalarFieldEnum | AiJobLogScalarFieldEnum[]
@@ -11123,25 +21407,25 @@ export namespace Prisma {
     where?: AiJobLogWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiJobLogs to fetch.
      */
     orderBy?: AiJobLogOrderByWithRelationInput | AiJobLogOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing AiJobLogs.
      */
     cursor?: AiJobLogWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiJobLogs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiJobLogs.
      */
     skip?: number
@@ -11523,55 +21807,55 @@ export namespace Prisma {
     where?: AiMemoryEventWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiMemoryEvents to fetch.
      */
     orderBy?: AiMemoryEventOrderByWithRelationInput | AiMemoryEventOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: AiMemoryEventWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiMemoryEvents from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiMemoryEvents.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned AiMemoryEvents
     **/
     _count?: true | AiMemoryEventCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: AiMemoryEventAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: AiMemoryEventSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: AiMemoryEventMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: AiMemoryEventMaxAggregateInputType
@@ -11829,13 +22113,13 @@ export namespace Prisma {
      * @example
      * // Get all AiMemoryEvents
      * const aiMemoryEvents = await prisma.aiMemoryEvent.findMany()
-     *
+     * 
      * // Get first 10 AiMemoryEvents
      * const aiMemoryEvents = await prisma.aiMemoryEvent.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const aiMemoryEventWithIdOnly = await prisma.aiMemoryEvent.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends AiMemoryEventFindManyArgs>(args?: SelectSubset<T, AiMemoryEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiMemoryEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -11849,7 +22133,7 @@ export namespace Prisma {
      *     // ... data to create a AiMemoryEvent
      *   }
      * })
-     *
+     * 
      */
     create<T extends AiMemoryEventCreateArgs>(args: SelectSubset<T, AiMemoryEventCreateArgs<ExtArgs>>): Prisma__AiMemoryEventClient<$Result.GetResult<Prisma.$AiMemoryEventPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -11863,7 +22147,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends AiMemoryEventCreateManyArgs>(args?: SelectSubset<T, AiMemoryEventCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -11877,7 +22161,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many AiMemoryEvents and only return the `id`
      * const aiMemoryEventWithIdOnly = await prisma.aiMemoryEvent.createManyAndReturn({
      *   select: { id: true },
@@ -11887,7 +22171,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends AiMemoryEventCreateManyAndReturnArgs>(args?: SelectSubset<T, AiMemoryEventCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiMemoryEventPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -11901,7 +22185,7 @@ export namespace Prisma {
      *     // ... filter to delete one AiMemoryEvent
      *   }
      * })
-     *
+     * 
      */
     delete<T extends AiMemoryEventDeleteArgs>(args: SelectSubset<T, AiMemoryEventDeleteArgs<ExtArgs>>): Prisma__AiMemoryEventClient<$Result.GetResult<Prisma.$AiMemoryEventPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -11918,7 +22202,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends AiMemoryEventUpdateArgs>(args: SelectSubset<T, AiMemoryEventUpdateArgs<ExtArgs>>): Prisma__AiMemoryEventClient<$Result.GetResult<Prisma.$AiMemoryEventPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -11932,7 +22216,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends AiMemoryEventDeleteManyArgs>(args?: SelectSubset<T, AiMemoryEventDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -11951,7 +22235,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends AiMemoryEventUpdateManyArgs>(args: SelectSubset<T, AiMemoryEventUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -11968,7 +22252,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more AiMemoryEvents and only return the `id`
      * const aiMemoryEventWithIdOnly = await prisma.aiMemoryEvent.updateManyAndReturn({
      *   select: { id: true },
@@ -11981,7 +22265,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends AiMemoryEventUpdateManyAndReturnArgs>(args: SelectSubset<T, AiMemoryEventUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiMemoryEventPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -12070,7 +22354,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends AiMemoryEventGroupByArgs,
@@ -12192,7 +22476,7 @@ export namespace Prisma {
     readonly metadata: FieldRef<"AiMemoryEvent", 'Json'>
     readonly createdAt: FieldRef<"AiMemoryEvent", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -12249,31 +22533,31 @@ export namespace Prisma {
     where?: AiMemoryEventWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiMemoryEvents to fetch.
      */
     orderBy?: AiMemoryEventOrderByWithRelationInput | AiMemoryEventOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for AiMemoryEvents.
      */
     cursor?: AiMemoryEventWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiMemoryEvents from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiMemoryEvents.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of AiMemoryEvents.
      */
     distinct?: AiMemoryEventScalarFieldEnum | AiMemoryEventScalarFieldEnum[]
@@ -12297,31 +22581,31 @@ export namespace Prisma {
     where?: AiMemoryEventWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiMemoryEvents to fetch.
      */
     orderBy?: AiMemoryEventOrderByWithRelationInput | AiMemoryEventOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for AiMemoryEvents.
      */
     cursor?: AiMemoryEventWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiMemoryEvents from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiMemoryEvents.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of AiMemoryEvents.
      */
     distinct?: AiMemoryEventScalarFieldEnum | AiMemoryEventScalarFieldEnum[]
@@ -12345,25 +22629,25 @@ export namespace Prisma {
     where?: AiMemoryEventWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiMemoryEvents to fetch.
      */
     orderBy?: AiMemoryEventOrderByWithRelationInput | AiMemoryEventOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing AiMemoryEvents.
      */
     cursor?: AiMemoryEventWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiMemoryEvents from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiMemoryEvents.
      */
     skip?: number
@@ -12683,55 +22967,55 @@ export namespace Prisma {
     where?: AiLearningRecommendationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiLearningRecommendations to fetch.
      */
     orderBy?: AiLearningRecommendationOrderByWithRelationInput | AiLearningRecommendationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: AiLearningRecommendationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiLearningRecommendations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiLearningRecommendations.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned AiLearningRecommendations
     **/
     _count?: true | AiLearningRecommendationCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: AiLearningRecommendationAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: AiLearningRecommendationSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: AiLearningRecommendationMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: AiLearningRecommendationMaxAggregateInputType
@@ -12959,13 +23243,13 @@ export namespace Prisma {
      * @example
      * // Get all AiLearningRecommendations
      * const aiLearningRecommendations = await prisma.aiLearningRecommendation.findMany()
-     *
+     * 
      * // Get first 10 AiLearningRecommendations
      * const aiLearningRecommendations = await prisma.aiLearningRecommendation.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const aiLearningRecommendationWithIdOnly = await prisma.aiLearningRecommendation.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends AiLearningRecommendationFindManyArgs>(args?: SelectSubset<T, AiLearningRecommendationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiLearningRecommendationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -12979,7 +23263,7 @@ export namespace Prisma {
      *     // ... data to create a AiLearningRecommendation
      *   }
      * })
-     *
+     * 
      */
     create<T extends AiLearningRecommendationCreateArgs>(args: SelectSubset<T, AiLearningRecommendationCreateArgs<ExtArgs>>): Prisma__AiLearningRecommendationClient<$Result.GetResult<Prisma.$AiLearningRecommendationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -12993,7 +23277,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends AiLearningRecommendationCreateManyArgs>(args?: SelectSubset<T, AiLearningRecommendationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -13007,7 +23291,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many AiLearningRecommendations and only return the `id`
      * const aiLearningRecommendationWithIdOnly = await prisma.aiLearningRecommendation.createManyAndReturn({
      *   select: { id: true },
@@ -13017,7 +23301,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends AiLearningRecommendationCreateManyAndReturnArgs>(args?: SelectSubset<T, AiLearningRecommendationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiLearningRecommendationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -13031,7 +23315,7 @@ export namespace Prisma {
      *     // ... filter to delete one AiLearningRecommendation
      *   }
      * })
-     *
+     * 
      */
     delete<T extends AiLearningRecommendationDeleteArgs>(args: SelectSubset<T, AiLearningRecommendationDeleteArgs<ExtArgs>>): Prisma__AiLearningRecommendationClient<$Result.GetResult<Prisma.$AiLearningRecommendationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -13048,7 +23332,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends AiLearningRecommendationUpdateArgs>(args: SelectSubset<T, AiLearningRecommendationUpdateArgs<ExtArgs>>): Prisma__AiLearningRecommendationClient<$Result.GetResult<Prisma.$AiLearningRecommendationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -13062,7 +23346,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends AiLearningRecommendationDeleteManyArgs>(args?: SelectSubset<T, AiLearningRecommendationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -13081,7 +23365,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends AiLearningRecommendationUpdateManyArgs>(args: SelectSubset<T, AiLearningRecommendationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -13098,7 +23382,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more AiLearningRecommendations and only return the `id`
      * const aiLearningRecommendationWithIdOnly = await prisma.aiLearningRecommendation.updateManyAndReturn({
      *   select: { id: true },
@@ -13111,7 +23395,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends AiLearningRecommendationUpdateManyAndReturnArgs>(args: SelectSubset<T, AiLearningRecommendationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiLearningRecommendationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -13200,7 +23484,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends AiLearningRecommendationGroupByArgs,
@@ -13317,7 +23601,7 @@ export namespace Prisma {
     readonly autoPromotable: FieldRef<"AiLearningRecommendation", 'Boolean'>
     readonly promotedAt: FieldRef<"AiLearningRecommendation", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -13374,31 +23658,31 @@ export namespace Prisma {
     where?: AiLearningRecommendationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiLearningRecommendations to fetch.
      */
     orderBy?: AiLearningRecommendationOrderByWithRelationInput | AiLearningRecommendationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for AiLearningRecommendations.
      */
     cursor?: AiLearningRecommendationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiLearningRecommendations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiLearningRecommendations.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of AiLearningRecommendations.
      */
     distinct?: AiLearningRecommendationScalarFieldEnum | AiLearningRecommendationScalarFieldEnum[]
@@ -13422,31 +23706,31 @@ export namespace Prisma {
     where?: AiLearningRecommendationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiLearningRecommendations to fetch.
      */
     orderBy?: AiLearningRecommendationOrderByWithRelationInput | AiLearningRecommendationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for AiLearningRecommendations.
      */
     cursor?: AiLearningRecommendationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiLearningRecommendations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiLearningRecommendations.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of AiLearningRecommendations.
      */
     distinct?: AiLearningRecommendationScalarFieldEnum | AiLearningRecommendationScalarFieldEnum[]
@@ -13470,25 +23754,25 @@ export namespace Prisma {
     where?: AiLearningRecommendationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of AiLearningRecommendations to fetch.
      */
     orderBy?: AiLearningRecommendationOrderByWithRelationInput | AiLearningRecommendationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing AiLearningRecommendations.
      */
     cursor?: AiLearningRecommendationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` AiLearningRecommendations from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` AiLearningRecommendations.
      */
     skip?: number
@@ -13880,55 +24164,55 @@ export namespace Prisma {
     where?: BuyerWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Buyers to fetch.
      */
     orderBy?: BuyerOrderByWithRelationInput | BuyerOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: BuyerWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Buyers from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Buyers.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned Buyers
     **/
     _count?: true | BuyerCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: BuyerAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: BuyerSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: BuyerMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: BuyerMaxAggregateInputType
@@ -14226,13 +24510,13 @@ export namespace Prisma {
      * @example
      * // Get all Buyers
      * const buyers = await prisma.buyer.findMany()
-     *
+     * 
      * // Get first 10 Buyers
      * const buyers = await prisma.buyer.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const buyerWithIdOnly = await prisma.buyer.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends BuyerFindManyArgs>(args?: SelectSubset<T, BuyerFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BuyerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -14246,7 +24530,7 @@ export namespace Prisma {
      *     // ... data to create a Buyer
      *   }
      * })
-     *
+     * 
      */
     create<T extends BuyerCreateArgs>(args: SelectSubset<T, BuyerCreateArgs<ExtArgs>>): Prisma__BuyerClient<$Result.GetResult<Prisma.$BuyerPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -14260,7 +24544,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends BuyerCreateManyArgs>(args?: SelectSubset<T, BuyerCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -14274,7 +24558,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Buyers and only return the `id`
      * const buyerWithIdOnly = await prisma.buyer.createManyAndReturn({
      *   select: { id: true },
@@ -14284,7 +24568,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends BuyerCreateManyAndReturnArgs>(args?: SelectSubset<T, BuyerCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BuyerPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -14298,7 +24582,7 @@ export namespace Prisma {
      *     // ... filter to delete one Buyer
      *   }
      * })
-     *
+     * 
      */
     delete<T extends BuyerDeleteArgs>(args: SelectSubset<T, BuyerDeleteArgs<ExtArgs>>): Prisma__BuyerClient<$Result.GetResult<Prisma.$BuyerPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -14315,7 +24599,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends BuyerUpdateArgs>(args: SelectSubset<T, BuyerUpdateArgs<ExtArgs>>): Prisma__BuyerClient<$Result.GetResult<Prisma.$BuyerPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -14329,7 +24613,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends BuyerDeleteManyArgs>(args?: SelectSubset<T, BuyerDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -14348,7 +24632,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends BuyerUpdateManyArgs>(args: SelectSubset<T, BuyerUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -14365,7 +24649,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more Buyers and only return the `id`
      * const buyerWithIdOnly = await prisma.buyer.updateManyAndReturn({
      *   select: { id: true },
@@ -14378,7 +24662,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends BuyerUpdateManyAndReturnArgs>(args: SelectSubset<T, BuyerUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BuyerPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -14467,7 +24751,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends BuyerGroupByArgs,
@@ -14595,7 +24879,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Buyer", 'DateTime'>
     readonly updatedAt: FieldRef<"Buyer", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -14664,31 +24948,31 @@ export namespace Prisma {
     where?: BuyerWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Buyers to fetch.
      */
     orderBy?: BuyerOrderByWithRelationInput | BuyerOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Buyers.
      */
     cursor?: BuyerWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Buyers from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Buyers.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Buyers.
      */
     distinct?: BuyerScalarFieldEnum | BuyerScalarFieldEnum[]
@@ -14716,31 +25000,31 @@ export namespace Prisma {
     where?: BuyerWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Buyers to fetch.
      */
     orderBy?: BuyerOrderByWithRelationInput | BuyerOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Buyers.
      */
     cursor?: BuyerWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Buyers from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Buyers.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Buyers.
      */
     distinct?: BuyerScalarFieldEnum | BuyerScalarFieldEnum[]
@@ -14768,25 +25052,25 @@ export namespace Prisma {
     where?: BuyerWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Buyers to fetch.
      */
     orderBy?: BuyerOrderByWithRelationInput | BuyerOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing Buyers.
      */
     cursor?: BuyerWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Buyers from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Buyers.
      */
     skip?: number
@@ -15094,43 +25378,43 @@ export namespace Prisma {
     where?: BuyerActivityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of BuyerActivities to fetch.
      */
     orderBy?: BuyerActivityOrderByWithRelationInput | BuyerActivityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: BuyerActivityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` BuyerActivities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` BuyerActivities.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned BuyerActivities
     **/
     _count?: true | BuyerActivityCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: BuyerActivityMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: BuyerActivityMaxAggregateInputType
@@ -15326,13 +25610,13 @@ export namespace Prisma {
      * @example
      * // Get all BuyerActivities
      * const buyerActivities = await prisma.buyerActivity.findMany()
-     *
+     * 
      * // Get first 10 BuyerActivities
      * const buyerActivities = await prisma.buyerActivity.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const buyerActivityWithIdOnly = await prisma.buyerActivity.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends BuyerActivityFindManyArgs>(args?: SelectSubset<T, BuyerActivityFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BuyerActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -15346,7 +25630,7 @@ export namespace Prisma {
      *     // ... data to create a BuyerActivity
      *   }
      * })
-     *
+     * 
      */
     create<T extends BuyerActivityCreateArgs>(args: SelectSubset<T, BuyerActivityCreateArgs<ExtArgs>>): Prisma__BuyerActivityClient<$Result.GetResult<Prisma.$BuyerActivityPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -15360,7 +25644,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends BuyerActivityCreateManyArgs>(args?: SelectSubset<T, BuyerActivityCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -15374,7 +25658,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many BuyerActivities and only return the `id`
      * const buyerActivityWithIdOnly = await prisma.buyerActivity.createManyAndReturn({
      *   select: { id: true },
@@ -15384,7 +25668,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends BuyerActivityCreateManyAndReturnArgs>(args?: SelectSubset<T, BuyerActivityCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BuyerActivityPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -15398,7 +25682,7 @@ export namespace Prisma {
      *     // ... filter to delete one BuyerActivity
      *   }
      * })
-     *
+     * 
      */
     delete<T extends BuyerActivityDeleteArgs>(args: SelectSubset<T, BuyerActivityDeleteArgs<ExtArgs>>): Prisma__BuyerActivityClient<$Result.GetResult<Prisma.$BuyerActivityPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -15415,7 +25699,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends BuyerActivityUpdateArgs>(args: SelectSubset<T, BuyerActivityUpdateArgs<ExtArgs>>): Prisma__BuyerActivityClient<$Result.GetResult<Prisma.$BuyerActivityPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -15429,7 +25713,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends BuyerActivityDeleteManyArgs>(args?: SelectSubset<T, BuyerActivityDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -15448,7 +25732,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends BuyerActivityUpdateManyArgs>(args: SelectSubset<T, BuyerActivityUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -15465,7 +25749,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more BuyerActivities and only return the `id`
      * const buyerActivityWithIdOnly = await prisma.buyerActivity.updateManyAndReturn({
      *   select: { id: true },
@@ -15478,7 +25762,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends BuyerActivityUpdateManyAndReturnArgs>(args: SelectSubset<T, BuyerActivityUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BuyerActivityPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -15567,7 +25851,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends BuyerActivityGroupByArgs,
@@ -15678,7 +25962,7 @@ export namespace Prisma {
     readonly metadata: FieldRef<"BuyerActivity", 'Json'>
     readonly createdAt: FieldRef<"BuyerActivity", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -15747,31 +26031,31 @@ export namespace Prisma {
     where?: BuyerActivityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of BuyerActivities to fetch.
      */
     orderBy?: BuyerActivityOrderByWithRelationInput | BuyerActivityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for BuyerActivities.
      */
     cursor?: BuyerActivityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` BuyerActivities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` BuyerActivities.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of BuyerActivities.
      */
     distinct?: BuyerActivityScalarFieldEnum | BuyerActivityScalarFieldEnum[]
@@ -15799,31 +26083,31 @@ export namespace Prisma {
     where?: BuyerActivityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of BuyerActivities to fetch.
      */
     orderBy?: BuyerActivityOrderByWithRelationInput | BuyerActivityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for BuyerActivities.
      */
     cursor?: BuyerActivityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` BuyerActivities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` BuyerActivities.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of BuyerActivities.
      */
     distinct?: BuyerActivityScalarFieldEnum | BuyerActivityScalarFieldEnum[]
@@ -15851,25 +26135,25 @@ export namespace Prisma {
     where?: BuyerActivityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of BuyerActivities to fetch.
      */
     orderBy?: BuyerActivityOrderByWithRelationInput | BuyerActivityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing BuyerActivities.
      */
     cursor?: BuyerActivityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` BuyerActivities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` BuyerActivities.
      */
     skip?: number
@@ -16199,43 +26483,43 @@ export namespace Prisma {
     where?: MarketingDraftWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of MarketingDrafts to fetch.
      */
     orderBy?: MarketingDraftOrderByWithRelationInput | MarketingDraftOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: MarketingDraftWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` MarketingDrafts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` MarketingDrafts.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned MarketingDrafts
     **/
     _count?: true | MarketingDraftCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: MarketingDraftMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: MarketingDraftMaxAggregateInputType
@@ -16478,13 +26762,13 @@ export namespace Prisma {
      * @example
      * // Get all MarketingDrafts
      * const marketingDrafts = await prisma.marketingDraft.findMany()
-     *
+     * 
      * // Get first 10 MarketingDrafts
      * const marketingDrafts = await prisma.marketingDraft.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const marketingDraftWithIdOnly = await prisma.marketingDraft.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends MarketingDraftFindManyArgs>(args?: SelectSubset<T, MarketingDraftFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingDraftPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -16498,7 +26782,7 @@ export namespace Prisma {
      *     // ... data to create a MarketingDraft
      *   }
      * })
-     *
+     * 
      */
     create<T extends MarketingDraftCreateArgs>(args: SelectSubset<T, MarketingDraftCreateArgs<ExtArgs>>): Prisma__MarketingDraftClient<$Result.GetResult<Prisma.$MarketingDraftPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -16512,7 +26796,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends MarketingDraftCreateManyArgs>(args?: SelectSubset<T, MarketingDraftCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -16526,7 +26810,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many MarketingDrafts and only return the `id`
      * const marketingDraftWithIdOnly = await prisma.marketingDraft.createManyAndReturn({
      *   select: { id: true },
@@ -16536,7 +26820,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends MarketingDraftCreateManyAndReturnArgs>(args?: SelectSubset<T, MarketingDraftCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingDraftPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -16550,7 +26834,7 @@ export namespace Prisma {
      *     // ... filter to delete one MarketingDraft
      *   }
      * })
-     *
+     * 
      */
     delete<T extends MarketingDraftDeleteArgs>(args: SelectSubset<T, MarketingDraftDeleteArgs<ExtArgs>>): Prisma__MarketingDraftClient<$Result.GetResult<Prisma.$MarketingDraftPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -16567,7 +26851,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends MarketingDraftUpdateArgs>(args: SelectSubset<T, MarketingDraftUpdateArgs<ExtArgs>>): Prisma__MarketingDraftClient<$Result.GetResult<Prisma.$MarketingDraftPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -16581,7 +26865,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends MarketingDraftDeleteManyArgs>(args?: SelectSubset<T, MarketingDraftDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -16600,7 +26884,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends MarketingDraftUpdateManyArgs>(args: SelectSubset<T, MarketingDraftUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -16617,7 +26901,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more MarketingDrafts and only return the `id`
      * const marketingDraftWithIdOnly = await prisma.marketingDraft.updateManyAndReturn({
      *   select: { id: true },
@@ -16630,7 +26914,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends MarketingDraftUpdateManyAndReturnArgs>(args: SelectSubset<T, MarketingDraftUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingDraftPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -16719,7 +27003,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends MarketingDraftGroupByArgs,
@@ -16840,7 +27124,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"MarketingDraft", 'DateTime'>
     readonly updatedAt: FieldRef<"MarketingDraft", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -16909,31 +27193,31 @@ export namespace Prisma {
     where?: MarketingDraftWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of MarketingDrafts to fetch.
      */
     orderBy?: MarketingDraftOrderByWithRelationInput | MarketingDraftOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for MarketingDrafts.
      */
     cursor?: MarketingDraftWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` MarketingDrafts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` MarketingDrafts.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of MarketingDrafts.
      */
     distinct?: MarketingDraftScalarFieldEnum | MarketingDraftScalarFieldEnum[]
@@ -16961,31 +27245,31 @@ export namespace Prisma {
     where?: MarketingDraftWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of MarketingDrafts to fetch.
      */
     orderBy?: MarketingDraftOrderByWithRelationInput | MarketingDraftOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for MarketingDrafts.
      */
     cursor?: MarketingDraftWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` MarketingDrafts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` MarketingDrafts.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of MarketingDrafts.
      */
     distinct?: MarketingDraftScalarFieldEnum | MarketingDraftScalarFieldEnum[]
@@ -17013,25 +27297,25 @@ export namespace Prisma {
     where?: MarketingDraftWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of MarketingDrafts to fetch.
      */
     orderBy?: MarketingDraftOrderByWithRelationInput | MarketingDraftOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing MarketingDrafts.
      */
     cursor?: MarketingDraftWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` MarketingDrafts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` MarketingDrafts.
      */
     skip?: number
@@ -17421,43 +27705,43 @@ export namespace Prisma {
     where?: MarketingApprovalWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of MarketingApprovals to fetch.
      */
     orderBy?: MarketingApprovalOrderByWithRelationInput | MarketingApprovalOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: MarketingApprovalWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` MarketingApprovals from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` MarketingApprovals.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned MarketingApprovals
     **/
     _count?: true | MarketingApprovalCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: MarketingApprovalMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: MarketingApprovalMaxAggregateInputType
@@ -17659,13 +27943,13 @@ export namespace Prisma {
      * @example
      * // Get all MarketingApprovals
      * const marketingApprovals = await prisma.marketingApproval.findMany()
-     *
+     * 
      * // Get first 10 MarketingApprovals
      * const marketingApprovals = await prisma.marketingApproval.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const marketingApprovalWithIdOnly = await prisma.marketingApproval.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends MarketingApprovalFindManyArgs>(args?: SelectSubset<T, MarketingApprovalFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingApprovalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -17679,7 +27963,7 @@ export namespace Prisma {
      *     // ... data to create a MarketingApproval
      *   }
      * })
-     *
+     * 
      */
     create<T extends MarketingApprovalCreateArgs>(args: SelectSubset<T, MarketingApprovalCreateArgs<ExtArgs>>): Prisma__MarketingApprovalClient<$Result.GetResult<Prisma.$MarketingApprovalPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -17693,7 +27977,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends MarketingApprovalCreateManyArgs>(args?: SelectSubset<T, MarketingApprovalCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -17707,7 +27991,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many MarketingApprovals and only return the `id`
      * const marketingApprovalWithIdOnly = await prisma.marketingApproval.createManyAndReturn({
      *   select: { id: true },
@@ -17717,7 +28001,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends MarketingApprovalCreateManyAndReturnArgs>(args?: SelectSubset<T, MarketingApprovalCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingApprovalPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -17731,7 +28015,7 @@ export namespace Prisma {
      *     // ... filter to delete one MarketingApproval
      *   }
      * })
-     *
+     * 
      */
     delete<T extends MarketingApprovalDeleteArgs>(args: SelectSubset<T, MarketingApprovalDeleteArgs<ExtArgs>>): Prisma__MarketingApprovalClient<$Result.GetResult<Prisma.$MarketingApprovalPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -17748,7 +28032,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends MarketingApprovalUpdateArgs>(args: SelectSubset<T, MarketingApprovalUpdateArgs<ExtArgs>>): Prisma__MarketingApprovalClient<$Result.GetResult<Prisma.$MarketingApprovalPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -17762,7 +28046,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends MarketingApprovalDeleteManyArgs>(args?: SelectSubset<T, MarketingApprovalDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -17781,7 +28065,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends MarketingApprovalUpdateManyArgs>(args: SelectSubset<T, MarketingApprovalUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -17798,7 +28082,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more MarketingApprovals and only return the `id`
      * const marketingApprovalWithIdOnly = await prisma.marketingApproval.updateManyAndReturn({
      *   select: { id: true },
@@ -17811,7 +28095,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends MarketingApprovalUpdateManyAndReturnArgs>(args: SelectSubset<T, MarketingApprovalUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingApprovalPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -17900,7 +28184,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends MarketingApprovalGroupByArgs,
@@ -18012,7 +28296,7 @@ export namespace Prisma {
     readonly reviewer: FieldRef<"MarketingApproval", 'String'>
     readonly createdAt: FieldRef<"MarketingApproval", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -18081,31 +28365,31 @@ export namespace Prisma {
     where?: MarketingApprovalWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of MarketingApprovals to fetch.
      */
     orderBy?: MarketingApprovalOrderByWithRelationInput | MarketingApprovalOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for MarketingApprovals.
      */
     cursor?: MarketingApprovalWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` MarketingApprovals from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` MarketingApprovals.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of MarketingApprovals.
      */
     distinct?: MarketingApprovalScalarFieldEnum | MarketingApprovalScalarFieldEnum[]
@@ -18133,31 +28417,31 @@ export namespace Prisma {
     where?: MarketingApprovalWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of MarketingApprovals to fetch.
      */
     orderBy?: MarketingApprovalOrderByWithRelationInput | MarketingApprovalOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for MarketingApprovals.
      */
     cursor?: MarketingApprovalWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` MarketingApprovals from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` MarketingApprovals.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of MarketingApprovals.
      */
     distinct?: MarketingApprovalScalarFieldEnum | MarketingApprovalScalarFieldEnum[]
@@ -18185,25 +28469,25 @@ export namespace Prisma {
     where?: MarketingApprovalWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of MarketingApprovals to fetch.
      */
     orderBy?: MarketingApprovalOrderByWithRelationInput | MarketingApprovalOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing MarketingApprovals.
      */
     cursor?: MarketingApprovalWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` MarketingApprovals from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` MarketingApprovals.
      */
     skip?: number
@@ -18523,43 +28807,43 @@ export namespace Prisma {
     where?: MarketingAccountConnectionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of MarketingAccountConnections to fetch.
      */
     orderBy?: MarketingAccountConnectionOrderByWithRelationInput | MarketingAccountConnectionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: MarketingAccountConnectionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` MarketingAccountConnections from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` MarketingAccountConnections.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned MarketingAccountConnections
     **/
     _count?: true | MarketingAccountConnectionCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: MarketingAccountConnectionMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: MarketingAccountConnectionMaxAggregateInputType
@@ -18765,13 +29049,13 @@ export namespace Prisma {
      * @example
      * // Get all MarketingAccountConnections
      * const marketingAccountConnections = await prisma.marketingAccountConnection.findMany()
-     *
+     * 
      * // Get first 10 MarketingAccountConnections
      * const marketingAccountConnections = await prisma.marketingAccountConnection.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const marketingAccountConnectionWithIdOnly = await prisma.marketingAccountConnection.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends MarketingAccountConnectionFindManyArgs>(args?: SelectSubset<T, MarketingAccountConnectionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingAccountConnectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -18785,7 +29069,7 @@ export namespace Prisma {
      *     // ... data to create a MarketingAccountConnection
      *   }
      * })
-     *
+     * 
      */
     create<T extends MarketingAccountConnectionCreateArgs>(args: SelectSubset<T, MarketingAccountConnectionCreateArgs<ExtArgs>>): Prisma__MarketingAccountConnectionClient<$Result.GetResult<Prisma.$MarketingAccountConnectionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -18799,7 +29083,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends MarketingAccountConnectionCreateManyArgs>(args?: SelectSubset<T, MarketingAccountConnectionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -18813,7 +29097,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many MarketingAccountConnections and only return the `id`
      * const marketingAccountConnectionWithIdOnly = await prisma.marketingAccountConnection.createManyAndReturn({
      *   select: { id: true },
@@ -18823,7 +29107,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends MarketingAccountConnectionCreateManyAndReturnArgs>(args?: SelectSubset<T, MarketingAccountConnectionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingAccountConnectionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -18837,7 +29121,7 @@ export namespace Prisma {
      *     // ... filter to delete one MarketingAccountConnection
      *   }
      * })
-     *
+     * 
      */
     delete<T extends MarketingAccountConnectionDeleteArgs>(args: SelectSubset<T, MarketingAccountConnectionDeleteArgs<ExtArgs>>): Prisma__MarketingAccountConnectionClient<$Result.GetResult<Prisma.$MarketingAccountConnectionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -18854,7 +29138,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends MarketingAccountConnectionUpdateArgs>(args: SelectSubset<T, MarketingAccountConnectionUpdateArgs<ExtArgs>>): Prisma__MarketingAccountConnectionClient<$Result.GetResult<Prisma.$MarketingAccountConnectionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -18868,7 +29152,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends MarketingAccountConnectionDeleteManyArgs>(args?: SelectSubset<T, MarketingAccountConnectionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -18887,7 +29171,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends MarketingAccountConnectionUpdateManyArgs>(args: SelectSubset<T, MarketingAccountConnectionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -18904,7 +29188,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more MarketingAccountConnections and only return the `id`
      * const marketingAccountConnectionWithIdOnly = await prisma.marketingAccountConnection.updateManyAndReturn({
      *   select: { id: true },
@@ -18917,7 +29201,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends MarketingAccountConnectionUpdateManyAndReturnArgs>(args: SelectSubset<T, MarketingAccountConnectionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingAccountConnectionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -19006,7 +29290,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends MarketingAccountConnectionGroupByArgs,
@@ -19120,7 +29404,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"MarketingAccountConnection", 'DateTime'>
     readonly updatedAt: FieldRef<"MarketingAccountConnection", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -19177,31 +29461,31 @@ export namespace Prisma {
     where?: MarketingAccountConnectionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of MarketingAccountConnections to fetch.
      */
     orderBy?: MarketingAccountConnectionOrderByWithRelationInput | MarketingAccountConnectionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for MarketingAccountConnections.
      */
     cursor?: MarketingAccountConnectionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` MarketingAccountConnections from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` MarketingAccountConnections.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of MarketingAccountConnections.
      */
     distinct?: MarketingAccountConnectionScalarFieldEnum | MarketingAccountConnectionScalarFieldEnum[]
@@ -19225,31 +29509,31 @@ export namespace Prisma {
     where?: MarketingAccountConnectionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of MarketingAccountConnections to fetch.
      */
     orderBy?: MarketingAccountConnectionOrderByWithRelationInput | MarketingAccountConnectionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for MarketingAccountConnections.
      */
     cursor?: MarketingAccountConnectionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` MarketingAccountConnections from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` MarketingAccountConnections.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of MarketingAccountConnections.
      */
     distinct?: MarketingAccountConnectionScalarFieldEnum | MarketingAccountConnectionScalarFieldEnum[]
@@ -19273,25 +29557,25 @@ export namespace Prisma {
     where?: MarketingAccountConnectionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of MarketingAccountConnections to fetch.
      */
     orderBy?: MarketingAccountConnectionOrderByWithRelationInput | MarketingAccountConnectionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing MarketingAccountConnections.
      */
     cursor?: MarketingAccountConnectionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` MarketingAccountConnections from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` MarketingAccountConnections.
      */
     skip?: number
@@ -19581,43 +29865,43 @@ export namespace Prisma {
     where?: MarketingPublishAssistWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of MarketingPublishAssists to fetch.
      */
     orderBy?: MarketingPublishAssistOrderByWithRelationInput | MarketingPublishAssistOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: MarketingPublishAssistWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` MarketingPublishAssists from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` MarketingPublishAssists.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned MarketingPublishAssists
     **/
     _count?: true | MarketingPublishAssistCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: MarketingPublishAssistMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: MarketingPublishAssistMaxAggregateInputType
@@ -19848,13 +30132,13 @@ export namespace Prisma {
      * @example
      * // Get all MarketingPublishAssists
      * const marketingPublishAssists = await prisma.marketingPublishAssist.findMany()
-     *
+     * 
      * // Get first 10 MarketingPublishAssists
      * const marketingPublishAssists = await prisma.marketingPublishAssist.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const marketingPublishAssistWithIdOnly = await prisma.marketingPublishAssist.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends MarketingPublishAssistFindManyArgs>(args?: SelectSubset<T, MarketingPublishAssistFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingPublishAssistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -19868,7 +30152,7 @@ export namespace Prisma {
      *     // ... data to create a MarketingPublishAssist
      *   }
      * })
-     *
+     * 
      */
     create<T extends MarketingPublishAssistCreateArgs>(args: SelectSubset<T, MarketingPublishAssistCreateArgs<ExtArgs>>): Prisma__MarketingPublishAssistClient<$Result.GetResult<Prisma.$MarketingPublishAssistPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -19882,7 +30166,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends MarketingPublishAssistCreateManyArgs>(args?: SelectSubset<T, MarketingPublishAssistCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -19896,7 +30180,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many MarketingPublishAssists and only return the `id`
      * const marketingPublishAssistWithIdOnly = await prisma.marketingPublishAssist.createManyAndReturn({
      *   select: { id: true },
@@ -19906,7 +30190,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends MarketingPublishAssistCreateManyAndReturnArgs>(args?: SelectSubset<T, MarketingPublishAssistCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingPublishAssistPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -19920,7 +30204,7 @@ export namespace Prisma {
      *     // ... filter to delete one MarketingPublishAssist
      *   }
      * })
-     *
+     * 
      */
     delete<T extends MarketingPublishAssistDeleteArgs>(args: SelectSubset<T, MarketingPublishAssistDeleteArgs<ExtArgs>>): Prisma__MarketingPublishAssistClient<$Result.GetResult<Prisma.$MarketingPublishAssistPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -19937,7 +30221,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends MarketingPublishAssistUpdateArgs>(args: SelectSubset<T, MarketingPublishAssistUpdateArgs<ExtArgs>>): Prisma__MarketingPublishAssistClient<$Result.GetResult<Prisma.$MarketingPublishAssistPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -19951,7 +30235,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends MarketingPublishAssistDeleteManyArgs>(args?: SelectSubset<T, MarketingPublishAssistDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -19970,7 +30254,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends MarketingPublishAssistUpdateManyArgs>(args: SelectSubset<T, MarketingPublishAssistUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -19987,7 +30271,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more MarketingPublishAssists and only return the `id`
      * const marketingPublishAssistWithIdOnly = await prisma.marketingPublishAssist.updateManyAndReturn({
      *   select: { id: true },
@@ -20000,7 +30284,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends MarketingPublishAssistUpdateManyAndReturnArgs>(args: SelectSubset<T, MarketingPublishAssistUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingPublishAssistPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -20089,7 +30373,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends MarketingPublishAssistGroupByArgs,
@@ -20206,7 +30490,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"MarketingPublishAssist", 'DateTime'>
     readonly updatedAt: FieldRef<"MarketingPublishAssist", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -20275,31 +30559,31 @@ export namespace Prisma {
     where?: MarketingPublishAssistWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of MarketingPublishAssists to fetch.
      */
     orderBy?: MarketingPublishAssistOrderByWithRelationInput | MarketingPublishAssistOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for MarketingPublishAssists.
      */
     cursor?: MarketingPublishAssistWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` MarketingPublishAssists from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` MarketingPublishAssists.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of MarketingPublishAssists.
      */
     distinct?: MarketingPublishAssistScalarFieldEnum | MarketingPublishAssistScalarFieldEnum[]
@@ -20327,31 +30611,31 @@ export namespace Prisma {
     where?: MarketingPublishAssistWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of MarketingPublishAssists to fetch.
      */
     orderBy?: MarketingPublishAssistOrderByWithRelationInput | MarketingPublishAssistOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for MarketingPublishAssists.
      */
     cursor?: MarketingPublishAssistWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` MarketingPublishAssists from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` MarketingPublishAssists.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of MarketingPublishAssists.
      */
     distinct?: MarketingPublishAssistScalarFieldEnum | MarketingPublishAssistScalarFieldEnum[]
@@ -20379,25 +30663,25 @@ export namespace Prisma {
     where?: MarketingPublishAssistWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of MarketingPublishAssists to fetch.
      */
     orderBy?: MarketingPublishAssistOrderByWithRelationInput | MarketingPublishAssistOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing MarketingPublishAssists.
      */
     cursor?: MarketingPublishAssistWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` MarketingPublishAssists from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` MarketingPublishAssists.
      */
     skip?: number
@@ -20733,43 +31017,43 @@ export namespace Prisma {
     where?: MarketingCanvaAssetAssistWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of MarketingCanvaAssetAssists to fetch.
      */
     orderBy?: MarketingCanvaAssetAssistOrderByWithRelationInput | MarketingCanvaAssetAssistOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: MarketingCanvaAssetAssistWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` MarketingCanvaAssetAssists from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` MarketingCanvaAssetAssists.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned MarketingCanvaAssetAssists
     **/
     _count?: true | MarketingCanvaAssetAssistCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: MarketingCanvaAssetAssistMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: MarketingCanvaAssetAssistMaxAggregateInputType
@@ -20994,13 +31278,13 @@ export namespace Prisma {
      * @example
      * // Get all MarketingCanvaAssetAssists
      * const marketingCanvaAssetAssists = await prisma.marketingCanvaAssetAssist.findMany()
-     *
+     * 
      * // Get first 10 MarketingCanvaAssetAssists
      * const marketingCanvaAssetAssists = await prisma.marketingCanvaAssetAssist.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const marketingCanvaAssetAssistWithIdOnly = await prisma.marketingCanvaAssetAssist.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends MarketingCanvaAssetAssistFindManyArgs>(args?: SelectSubset<T, MarketingCanvaAssetAssistFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingCanvaAssetAssistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -21014,7 +31298,7 @@ export namespace Prisma {
      *     // ... data to create a MarketingCanvaAssetAssist
      *   }
      * })
-     *
+     * 
      */
     create<T extends MarketingCanvaAssetAssistCreateArgs>(args: SelectSubset<T, MarketingCanvaAssetAssistCreateArgs<ExtArgs>>): Prisma__MarketingCanvaAssetAssistClient<$Result.GetResult<Prisma.$MarketingCanvaAssetAssistPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -21028,7 +31312,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends MarketingCanvaAssetAssistCreateManyArgs>(args?: SelectSubset<T, MarketingCanvaAssetAssistCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -21042,7 +31326,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many MarketingCanvaAssetAssists and only return the `id`
      * const marketingCanvaAssetAssistWithIdOnly = await prisma.marketingCanvaAssetAssist.createManyAndReturn({
      *   select: { id: true },
@@ -21052,7 +31336,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends MarketingCanvaAssetAssistCreateManyAndReturnArgs>(args?: SelectSubset<T, MarketingCanvaAssetAssistCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingCanvaAssetAssistPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -21066,7 +31350,7 @@ export namespace Prisma {
      *     // ... filter to delete one MarketingCanvaAssetAssist
      *   }
      * })
-     *
+     * 
      */
     delete<T extends MarketingCanvaAssetAssistDeleteArgs>(args: SelectSubset<T, MarketingCanvaAssetAssistDeleteArgs<ExtArgs>>): Prisma__MarketingCanvaAssetAssistClient<$Result.GetResult<Prisma.$MarketingCanvaAssetAssistPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -21083,7 +31367,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends MarketingCanvaAssetAssistUpdateArgs>(args: SelectSubset<T, MarketingCanvaAssetAssistUpdateArgs<ExtArgs>>): Prisma__MarketingCanvaAssetAssistClient<$Result.GetResult<Prisma.$MarketingCanvaAssetAssistPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -21097,7 +31381,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends MarketingCanvaAssetAssistDeleteManyArgs>(args?: SelectSubset<T, MarketingCanvaAssetAssistDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -21116,7 +31400,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends MarketingCanvaAssetAssistUpdateManyArgs>(args: SelectSubset<T, MarketingCanvaAssetAssistUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -21133,7 +31417,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more MarketingCanvaAssetAssists and only return the `id`
      * const marketingCanvaAssetAssistWithIdOnly = await prisma.marketingCanvaAssetAssist.updateManyAndReturn({
      *   select: { id: true },
@@ -21146,7 +31430,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends MarketingCanvaAssetAssistUpdateManyAndReturnArgs>(args: SelectSubset<T, MarketingCanvaAssetAssistUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingCanvaAssetAssistPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -21235,7 +31519,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends MarketingCanvaAssetAssistGroupByArgs,
@@ -21351,7 +31635,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"MarketingCanvaAssetAssist", 'DateTime'>
     readonly updatedAt: FieldRef<"MarketingCanvaAssetAssist", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -21420,31 +31704,31 @@ export namespace Prisma {
     where?: MarketingCanvaAssetAssistWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of MarketingCanvaAssetAssists to fetch.
      */
     orderBy?: MarketingCanvaAssetAssistOrderByWithRelationInput | MarketingCanvaAssetAssistOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for MarketingCanvaAssetAssists.
      */
     cursor?: MarketingCanvaAssetAssistWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` MarketingCanvaAssetAssists from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` MarketingCanvaAssetAssists.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of MarketingCanvaAssetAssists.
      */
     distinct?: MarketingCanvaAssetAssistScalarFieldEnum | MarketingCanvaAssetAssistScalarFieldEnum[]
@@ -21472,31 +31756,31 @@ export namespace Prisma {
     where?: MarketingCanvaAssetAssistWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of MarketingCanvaAssetAssists to fetch.
      */
     orderBy?: MarketingCanvaAssetAssistOrderByWithRelationInput | MarketingCanvaAssetAssistOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for MarketingCanvaAssetAssists.
      */
     cursor?: MarketingCanvaAssetAssistWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` MarketingCanvaAssetAssists from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` MarketingCanvaAssetAssists.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of MarketingCanvaAssetAssists.
      */
     distinct?: MarketingCanvaAssetAssistScalarFieldEnum | MarketingCanvaAssetAssistScalarFieldEnum[]
@@ -21524,25 +31808,25 @@ export namespace Prisma {
     where?: MarketingCanvaAssetAssistWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of MarketingCanvaAssetAssists to fetch.
      */
     orderBy?: MarketingCanvaAssetAssistOrderByWithRelationInput | MarketingCanvaAssetAssistOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing MarketingCanvaAssetAssists.
      */
     cursor?: MarketingCanvaAssetAssistWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` MarketingCanvaAssetAssists from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` MarketingCanvaAssetAssists.
      */
     skip?: number
@@ -21904,43 +32188,43 @@ export namespace Prisma {
     where?: MarketingSalesAttributionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of MarketingSalesAttributions to fetch.
      */
     orderBy?: MarketingSalesAttributionOrderByWithRelationInput | MarketingSalesAttributionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: MarketingSalesAttributionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` MarketingSalesAttributions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` MarketingSalesAttributions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned MarketingSalesAttributions
     **/
     _count?: true | MarketingSalesAttributionCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: MarketingSalesAttributionMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: MarketingSalesAttributionMaxAggregateInputType
@@ -22199,13 +32483,13 @@ export namespace Prisma {
      * @example
      * // Get all MarketingSalesAttributions
      * const marketingSalesAttributions = await prisma.marketingSalesAttribution.findMany()
-     *
+     * 
      * // Get first 10 MarketingSalesAttributions
      * const marketingSalesAttributions = await prisma.marketingSalesAttribution.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const marketingSalesAttributionWithIdOnly = await prisma.marketingSalesAttribution.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends MarketingSalesAttributionFindManyArgs>(args?: SelectSubset<T, MarketingSalesAttributionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingSalesAttributionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -22219,7 +32503,7 @@ export namespace Prisma {
      *     // ... data to create a MarketingSalesAttribution
      *   }
      * })
-     *
+     * 
      */
     create<T extends MarketingSalesAttributionCreateArgs>(args: SelectSubset<T, MarketingSalesAttributionCreateArgs<ExtArgs>>): Prisma__MarketingSalesAttributionClient<$Result.GetResult<Prisma.$MarketingSalesAttributionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -22233,7 +32517,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends MarketingSalesAttributionCreateManyArgs>(args?: SelectSubset<T, MarketingSalesAttributionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -22247,7 +32531,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many MarketingSalesAttributions and only return the `id`
      * const marketingSalesAttributionWithIdOnly = await prisma.marketingSalesAttribution.createManyAndReturn({
      *   select: { id: true },
@@ -22257,7 +32541,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends MarketingSalesAttributionCreateManyAndReturnArgs>(args?: SelectSubset<T, MarketingSalesAttributionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingSalesAttributionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -22271,7 +32555,7 @@ export namespace Prisma {
      *     // ... filter to delete one MarketingSalesAttribution
      *   }
      * })
-     *
+     * 
      */
     delete<T extends MarketingSalesAttributionDeleteArgs>(args: SelectSubset<T, MarketingSalesAttributionDeleteArgs<ExtArgs>>): Prisma__MarketingSalesAttributionClient<$Result.GetResult<Prisma.$MarketingSalesAttributionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -22288,7 +32572,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends MarketingSalesAttributionUpdateArgs>(args: SelectSubset<T, MarketingSalesAttributionUpdateArgs<ExtArgs>>): Prisma__MarketingSalesAttributionClient<$Result.GetResult<Prisma.$MarketingSalesAttributionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -22302,7 +32586,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends MarketingSalesAttributionDeleteManyArgs>(args?: SelectSubset<T, MarketingSalesAttributionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -22321,7 +32605,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends MarketingSalesAttributionUpdateManyArgs>(args: SelectSubset<T, MarketingSalesAttributionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -22338,7 +32622,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more MarketingSalesAttributions and only return the `id`
      * const marketingSalesAttributionWithIdOnly = await prisma.marketingSalesAttribution.updateManyAndReturn({
      *   select: { id: true },
@@ -22351,7 +32635,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends MarketingSalesAttributionUpdateManyAndReturnArgs>(args: SelectSubset<T, MarketingSalesAttributionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MarketingSalesAttributionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -22440,7 +32724,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends MarketingSalesAttributionGroupByArgs,
@@ -22561,7 +32845,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"MarketingSalesAttribution", 'DateTime'>
     readonly updatedAt: FieldRef<"MarketingSalesAttribution", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -22630,31 +32914,31 @@ export namespace Prisma {
     where?: MarketingSalesAttributionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of MarketingSalesAttributions to fetch.
      */
     orderBy?: MarketingSalesAttributionOrderByWithRelationInput | MarketingSalesAttributionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for MarketingSalesAttributions.
      */
     cursor?: MarketingSalesAttributionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` MarketingSalesAttributions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` MarketingSalesAttributions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of MarketingSalesAttributions.
      */
     distinct?: MarketingSalesAttributionScalarFieldEnum | MarketingSalesAttributionScalarFieldEnum[]
@@ -22682,31 +32966,31 @@ export namespace Prisma {
     where?: MarketingSalesAttributionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of MarketingSalesAttributions to fetch.
      */
     orderBy?: MarketingSalesAttributionOrderByWithRelationInput | MarketingSalesAttributionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for MarketingSalesAttributions.
      */
     cursor?: MarketingSalesAttributionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` MarketingSalesAttributions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` MarketingSalesAttributions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of MarketingSalesAttributions.
      */
     distinct?: MarketingSalesAttributionScalarFieldEnum | MarketingSalesAttributionScalarFieldEnum[]
@@ -22734,25 +33018,25 @@ export namespace Prisma {
     where?: MarketingSalesAttributionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of MarketingSalesAttributions to fetch.
      */
     orderBy?: MarketingSalesAttributionOrderByWithRelationInput | MarketingSalesAttributionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing MarketingSalesAttributions.
      */
     cursor?: MarketingSalesAttributionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` MarketingSalesAttributions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` MarketingSalesAttributions.
      */
     skip?: number
@@ -23129,43 +33413,43 @@ export namespace Prisma {
     where?: SalesConversionAssistWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of SalesConversionAssists to fetch.
      */
     orderBy?: SalesConversionAssistOrderByWithRelationInput | SalesConversionAssistOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: SalesConversionAssistWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` SalesConversionAssists from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` SalesConversionAssists.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned SalesConversionAssists
     **/
     _count?: true | SalesConversionAssistCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: SalesConversionAssistMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: SalesConversionAssistMaxAggregateInputType
@@ -23409,13 +33693,13 @@ export namespace Prisma {
      * @example
      * // Get all SalesConversionAssists
      * const salesConversionAssists = await prisma.salesConversionAssist.findMany()
-     *
+     * 
      * // Get first 10 SalesConversionAssists
      * const salesConversionAssists = await prisma.salesConversionAssist.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const salesConversionAssistWithIdOnly = await prisma.salesConversionAssist.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends SalesConversionAssistFindManyArgs>(args?: SelectSubset<T, SalesConversionAssistFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesConversionAssistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -23429,7 +33713,7 @@ export namespace Prisma {
      *     // ... data to create a SalesConversionAssist
      *   }
      * })
-     *
+     * 
      */
     create<T extends SalesConversionAssistCreateArgs>(args: SelectSubset<T, SalesConversionAssistCreateArgs<ExtArgs>>): Prisma__SalesConversionAssistClient<$Result.GetResult<Prisma.$SalesConversionAssistPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -23443,7 +33727,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends SalesConversionAssistCreateManyArgs>(args?: SelectSubset<T, SalesConversionAssistCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -23457,7 +33741,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many SalesConversionAssists and only return the `id`
      * const salesConversionAssistWithIdOnly = await prisma.salesConversionAssist.createManyAndReturn({
      *   select: { id: true },
@@ -23467,7 +33751,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends SalesConversionAssistCreateManyAndReturnArgs>(args?: SelectSubset<T, SalesConversionAssistCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesConversionAssistPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -23481,7 +33765,7 @@ export namespace Prisma {
      *     // ... filter to delete one SalesConversionAssist
      *   }
      * })
-     *
+     * 
      */
     delete<T extends SalesConversionAssistDeleteArgs>(args: SelectSubset<T, SalesConversionAssistDeleteArgs<ExtArgs>>): Prisma__SalesConversionAssistClient<$Result.GetResult<Prisma.$SalesConversionAssistPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -23498,7 +33782,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends SalesConversionAssistUpdateArgs>(args: SelectSubset<T, SalesConversionAssistUpdateArgs<ExtArgs>>): Prisma__SalesConversionAssistClient<$Result.GetResult<Prisma.$SalesConversionAssistPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -23512,7 +33796,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends SalesConversionAssistDeleteManyArgs>(args?: SelectSubset<T, SalesConversionAssistDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -23531,7 +33815,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends SalesConversionAssistUpdateManyArgs>(args: SelectSubset<T, SalesConversionAssistUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -23548,7 +33832,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more SalesConversionAssists and only return the `id`
      * const salesConversionAssistWithIdOnly = await prisma.salesConversionAssist.updateManyAndReturn({
      *   select: { id: true },
@@ -23561,7 +33845,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends SalesConversionAssistUpdateManyAndReturnArgs>(args: SelectSubset<T, SalesConversionAssistUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalesConversionAssistPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -23650,7 +33934,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends SalesConversionAssistGroupByArgs,
@@ -23769,7 +34053,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"SalesConversionAssist", 'DateTime'>
     readonly updatedAt: FieldRef<"SalesConversionAssist", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -23838,31 +34122,31 @@ export namespace Prisma {
     where?: SalesConversionAssistWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of SalesConversionAssists to fetch.
      */
     orderBy?: SalesConversionAssistOrderByWithRelationInput | SalesConversionAssistOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for SalesConversionAssists.
      */
     cursor?: SalesConversionAssistWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` SalesConversionAssists from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` SalesConversionAssists.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of SalesConversionAssists.
      */
     distinct?: SalesConversionAssistScalarFieldEnum | SalesConversionAssistScalarFieldEnum[]
@@ -23890,31 +34174,31 @@ export namespace Prisma {
     where?: SalesConversionAssistWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of SalesConversionAssists to fetch.
      */
     orderBy?: SalesConversionAssistOrderByWithRelationInput | SalesConversionAssistOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for SalesConversionAssists.
      */
     cursor?: SalesConversionAssistWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` SalesConversionAssists from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` SalesConversionAssists.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of SalesConversionAssists.
      */
     distinct?: SalesConversionAssistScalarFieldEnum | SalesConversionAssistScalarFieldEnum[]
@@ -23942,25 +34226,25 @@ export namespace Prisma {
     where?: SalesConversionAssistWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of SalesConversionAssists to fetch.
      */
     orderBy?: SalesConversionAssistOrderByWithRelationInput | SalesConversionAssistOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing SalesConversionAssists.
      */
     cursor?: SalesConversionAssistWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` SalesConversionAssists from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` SalesConversionAssists.
      */
     skip?: number
@@ -24310,55 +34594,55 @@ export namespace Prisma {
     where?: FinanceEntryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of FinanceEntries to fetch.
      */
     orderBy?: FinanceEntryOrderByWithRelationInput | FinanceEntryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: FinanceEntryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` FinanceEntries from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` FinanceEntries.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned FinanceEntries
     **/
     _count?: true | FinanceEntryCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: FinanceEntryAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: FinanceEntrySumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: FinanceEntryMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: FinanceEntryMaxAggregateInputType
@@ -24580,13 +34864,13 @@ export namespace Prisma {
      * @example
      * // Get all FinanceEntries
      * const financeEntries = await prisma.financeEntry.findMany()
-     *
+     * 
      * // Get first 10 FinanceEntries
      * const financeEntries = await prisma.financeEntry.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const financeEntryWithIdOnly = await prisma.financeEntry.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends FinanceEntryFindManyArgs>(args?: SelectSubset<T, FinanceEntryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FinanceEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -24600,7 +34884,7 @@ export namespace Prisma {
      *     // ... data to create a FinanceEntry
      *   }
      * })
-     *
+     * 
      */
     create<T extends FinanceEntryCreateArgs>(args: SelectSubset<T, FinanceEntryCreateArgs<ExtArgs>>): Prisma__FinanceEntryClient<$Result.GetResult<Prisma.$FinanceEntryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -24614,7 +34898,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends FinanceEntryCreateManyArgs>(args?: SelectSubset<T, FinanceEntryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -24628,7 +34912,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many FinanceEntries and only return the `id`
      * const financeEntryWithIdOnly = await prisma.financeEntry.createManyAndReturn({
      *   select: { id: true },
@@ -24638,7 +34922,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends FinanceEntryCreateManyAndReturnArgs>(args?: SelectSubset<T, FinanceEntryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FinanceEntryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -24652,7 +34936,7 @@ export namespace Prisma {
      *     // ... filter to delete one FinanceEntry
      *   }
      * })
-     *
+     * 
      */
     delete<T extends FinanceEntryDeleteArgs>(args: SelectSubset<T, FinanceEntryDeleteArgs<ExtArgs>>): Prisma__FinanceEntryClient<$Result.GetResult<Prisma.$FinanceEntryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -24669,7 +34953,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends FinanceEntryUpdateArgs>(args: SelectSubset<T, FinanceEntryUpdateArgs<ExtArgs>>): Prisma__FinanceEntryClient<$Result.GetResult<Prisma.$FinanceEntryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -24683,7 +34967,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends FinanceEntryDeleteManyArgs>(args?: SelectSubset<T, FinanceEntryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -24702,7 +34986,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends FinanceEntryUpdateManyArgs>(args: SelectSubset<T, FinanceEntryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -24719,7 +35003,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more FinanceEntries and only return the `id`
      * const financeEntryWithIdOnly = await prisma.financeEntry.updateManyAndReturn({
      *   select: { id: true },
@@ -24732,7 +35016,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends FinanceEntryUpdateManyAndReturnArgs>(args: SelectSubset<T, FinanceEntryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FinanceEntryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -24821,7 +35105,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends FinanceEntryGroupByArgs,
@@ -24937,7 +35221,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"FinanceEntry", 'DateTime'>
     readonly updatedAt: FieldRef<"FinanceEntry", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -24994,31 +35278,31 @@ export namespace Prisma {
     where?: FinanceEntryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of FinanceEntries to fetch.
      */
     orderBy?: FinanceEntryOrderByWithRelationInput | FinanceEntryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for FinanceEntries.
      */
     cursor?: FinanceEntryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` FinanceEntries from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` FinanceEntries.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of FinanceEntries.
      */
     distinct?: FinanceEntryScalarFieldEnum | FinanceEntryScalarFieldEnum[]
@@ -25042,31 +35326,31 @@ export namespace Prisma {
     where?: FinanceEntryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of FinanceEntries to fetch.
      */
     orderBy?: FinanceEntryOrderByWithRelationInput | FinanceEntryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for FinanceEntries.
      */
     cursor?: FinanceEntryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` FinanceEntries from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` FinanceEntries.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of FinanceEntries.
      */
     distinct?: FinanceEntryScalarFieldEnum | FinanceEntryScalarFieldEnum[]
@@ -25090,25 +35374,25 @@ export namespace Prisma {
     where?: FinanceEntryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of FinanceEntries to fetch.
      */
     orderBy?: FinanceEntryOrderByWithRelationInput | FinanceEntryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing FinanceEntries.
      */
     cursor?: FinanceEntryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` FinanceEntries from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` FinanceEntries.
      */
     skip?: number
@@ -25390,43 +35674,43 @@ export namespace Prisma {
     where?: KnowledgeItemWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of KnowledgeItems to fetch.
      */
     orderBy?: KnowledgeItemOrderByWithRelationInput | KnowledgeItemOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: KnowledgeItemWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` KnowledgeItems from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` KnowledgeItems.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned KnowledgeItems
     **/
     _count?: true | KnowledgeItemCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: KnowledgeItemMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: KnowledgeItemMaxAggregateInputType
@@ -25626,13 +35910,13 @@ export namespace Prisma {
      * @example
      * // Get all KnowledgeItems
      * const knowledgeItems = await prisma.knowledgeItem.findMany()
-     *
+     * 
      * // Get first 10 KnowledgeItems
      * const knowledgeItems = await prisma.knowledgeItem.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const knowledgeItemWithIdOnly = await prisma.knowledgeItem.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends KnowledgeItemFindManyArgs>(args?: SelectSubset<T, KnowledgeItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KnowledgeItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -25646,7 +35930,7 @@ export namespace Prisma {
      *     // ... data to create a KnowledgeItem
      *   }
      * })
-     *
+     * 
      */
     create<T extends KnowledgeItemCreateArgs>(args: SelectSubset<T, KnowledgeItemCreateArgs<ExtArgs>>): Prisma__KnowledgeItemClient<$Result.GetResult<Prisma.$KnowledgeItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -25660,7 +35944,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends KnowledgeItemCreateManyArgs>(args?: SelectSubset<T, KnowledgeItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -25674,7 +35958,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many KnowledgeItems and only return the `id`
      * const knowledgeItemWithIdOnly = await prisma.knowledgeItem.createManyAndReturn({
      *   select: { id: true },
@@ -25684,7 +35968,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends KnowledgeItemCreateManyAndReturnArgs>(args?: SelectSubset<T, KnowledgeItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KnowledgeItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -25698,7 +35982,7 @@ export namespace Prisma {
      *     // ... filter to delete one KnowledgeItem
      *   }
      * })
-     *
+     * 
      */
     delete<T extends KnowledgeItemDeleteArgs>(args: SelectSubset<T, KnowledgeItemDeleteArgs<ExtArgs>>): Prisma__KnowledgeItemClient<$Result.GetResult<Prisma.$KnowledgeItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -25715,7 +35999,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends KnowledgeItemUpdateArgs>(args: SelectSubset<T, KnowledgeItemUpdateArgs<ExtArgs>>): Prisma__KnowledgeItemClient<$Result.GetResult<Prisma.$KnowledgeItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -25729,7 +36013,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends KnowledgeItemDeleteManyArgs>(args?: SelectSubset<T, KnowledgeItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -25748,7 +36032,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends KnowledgeItemUpdateManyArgs>(args: SelectSubset<T, KnowledgeItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -25765,7 +36049,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more KnowledgeItems and only return the `id`
      * const knowledgeItemWithIdOnly = await prisma.knowledgeItem.updateManyAndReturn({
      *   select: { id: true },
@@ -25778,7 +36062,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends KnowledgeItemUpdateManyAndReturnArgs>(args: SelectSubset<T, KnowledgeItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KnowledgeItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -25867,7 +36151,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends KnowledgeItemGroupByArgs,
@@ -25980,7 +36264,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"KnowledgeItem", 'DateTime'>
     readonly updatedAt: FieldRef<"KnowledgeItem", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -26037,31 +36321,31 @@ export namespace Prisma {
     where?: KnowledgeItemWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of KnowledgeItems to fetch.
      */
     orderBy?: KnowledgeItemOrderByWithRelationInput | KnowledgeItemOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for KnowledgeItems.
      */
     cursor?: KnowledgeItemWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` KnowledgeItems from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` KnowledgeItems.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of KnowledgeItems.
      */
     distinct?: KnowledgeItemScalarFieldEnum | KnowledgeItemScalarFieldEnum[]
@@ -26085,31 +36369,31 @@ export namespace Prisma {
     where?: KnowledgeItemWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of KnowledgeItems to fetch.
      */
     orderBy?: KnowledgeItemOrderByWithRelationInput | KnowledgeItemOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for KnowledgeItems.
      */
     cursor?: KnowledgeItemWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` KnowledgeItems from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` KnowledgeItems.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of KnowledgeItems.
      */
     distinct?: KnowledgeItemScalarFieldEnum | KnowledgeItemScalarFieldEnum[]
@@ -26133,25 +36417,25 @@ export namespace Prisma {
     where?: KnowledgeItemWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of KnowledgeItems to fetch.
      */
     orderBy?: KnowledgeItemOrderByWithRelationInput | KnowledgeItemOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing KnowledgeItems.
      */
     cursor?: KnowledgeItemWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` KnowledgeItems from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` KnowledgeItems.
      */
     skip?: number
@@ -26451,55 +36735,55 @@ export namespace Prisma {
     where?: KnowledgeSearchEmbeddingWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of KnowledgeSearchEmbeddings to fetch.
      */
     orderBy?: KnowledgeSearchEmbeddingOrderByWithRelationInput | KnowledgeSearchEmbeddingOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: KnowledgeSearchEmbeddingWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` KnowledgeSearchEmbeddings from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` KnowledgeSearchEmbeddings.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned KnowledgeSearchEmbeddings
     **/
     _count?: true | KnowledgeSearchEmbeddingCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: KnowledgeSearchEmbeddingAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: KnowledgeSearchEmbeddingSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: KnowledgeSearchEmbeddingMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: KnowledgeSearchEmbeddingMaxAggregateInputType
@@ -26703,13 +36987,13 @@ export namespace Prisma {
      * @example
      * // Get all KnowledgeSearchEmbeddings
      * const knowledgeSearchEmbeddings = await prisma.knowledgeSearchEmbedding.findMany()
-     *
+     * 
      * // Get first 10 KnowledgeSearchEmbeddings
      * const knowledgeSearchEmbeddings = await prisma.knowledgeSearchEmbedding.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const knowledgeSearchEmbeddingWithIdOnly = await prisma.knowledgeSearchEmbedding.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends KnowledgeSearchEmbeddingFindManyArgs>(args?: SelectSubset<T, KnowledgeSearchEmbeddingFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KnowledgeSearchEmbeddingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -26723,7 +37007,7 @@ export namespace Prisma {
      *     // ... data to create a KnowledgeSearchEmbedding
      *   }
      * })
-     *
+     * 
      */
     create<T extends KnowledgeSearchEmbeddingCreateArgs>(args: SelectSubset<T, KnowledgeSearchEmbeddingCreateArgs<ExtArgs>>): Prisma__KnowledgeSearchEmbeddingClient<$Result.GetResult<Prisma.$KnowledgeSearchEmbeddingPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -26737,7 +37021,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends KnowledgeSearchEmbeddingCreateManyArgs>(args?: SelectSubset<T, KnowledgeSearchEmbeddingCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -26751,7 +37035,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many KnowledgeSearchEmbeddings and only return the `id`
      * const knowledgeSearchEmbeddingWithIdOnly = await prisma.knowledgeSearchEmbedding.createManyAndReturn({
      *   select: { id: true },
@@ -26761,7 +37045,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends KnowledgeSearchEmbeddingCreateManyAndReturnArgs>(args?: SelectSubset<T, KnowledgeSearchEmbeddingCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KnowledgeSearchEmbeddingPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -26775,7 +37059,7 @@ export namespace Prisma {
      *     // ... filter to delete one KnowledgeSearchEmbedding
      *   }
      * })
-     *
+     * 
      */
     delete<T extends KnowledgeSearchEmbeddingDeleteArgs>(args: SelectSubset<T, KnowledgeSearchEmbeddingDeleteArgs<ExtArgs>>): Prisma__KnowledgeSearchEmbeddingClient<$Result.GetResult<Prisma.$KnowledgeSearchEmbeddingPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -26792,7 +37076,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends KnowledgeSearchEmbeddingUpdateArgs>(args: SelectSubset<T, KnowledgeSearchEmbeddingUpdateArgs<ExtArgs>>): Prisma__KnowledgeSearchEmbeddingClient<$Result.GetResult<Prisma.$KnowledgeSearchEmbeddingPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -26806,7 +37090,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends KnowledgeSearchEmbeddingDeleteManyArgs>(args?: SelectSubset<T, KnowledgeSearchEmbeddingDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -26825,7 +37109,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends KnowledgeSearchEmbeddingUpdateManyArgs>(args: SelectSubset<T, KnowledgeSearchEmbeddingUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -26842,7 +37126,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more KnowledgeSearchEmbeddings and only return the `id`
      * const knowledgeSearchEmbeddingWithIdOnly = await prisma.knowledgeSearchEmbedding.updateManyAndReturn({
      *   select: { id: true },
@@ -26855,7 +37139,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends KnowledgeSearchEmbeddingUpdateManyAndReturnArgs>(args: SelectSubset<T, KnowledgeSearchEmbeddingUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KnowledgeSearchEmbeddingPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -26944,7 +37228,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends KnowledgeSearchEmbeddingGroupByArgs,
@@ -27057,7 +37341,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"KnowledgeSearchEmbedding", 'DateTime'>
     readonly updatedAt: FieldRef<"KnowledgeSearchEmbedding", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -27114,31 +37398,31 @@ export namespace Prisma {
     where?: KnowledgeSearchEmbeddingWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of KnowledgeSearchEmbeddings to fetch.
      */
     orderBy?: KnowledgeSearchEmbeddingOrderByWithRelationInput | KnowledgeSearchEmbeddingOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for KnowledgeSearchEmbeddings.
      */
     cursor?: KnowledgeSearchEmbeddingWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` KnowledgeSearchEmbeddings from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` KnowledgeSearchEmbeddings.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of KnowledgeSearchEmbeddings.
      */
     distinct?: KnowledgeSearchEmbeddingScalarFieldEnum | KnowledgeSearchEmbeddingScalarFieldEnum[]
@@ -27162,31 +37446,31 @@ export namespace Prisma {
     where?: KnowledgeSearchEmbeddingWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of KnowledgeSearchEmbeddings to fetch.
      */
     orderBy?: KnowledgeSearchEmbeddingOrderByWithRelationInput | KnowledgeSearchEmbeddingOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for KnowledgeSearchEmbeddings.
      */
     cursor?: KnowledgeSearchEmbeddingWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` KnowledgeSearchEmbeddings from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` KnowledgeSearchEmbeddings.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of KnowledgeSearchEmbeddings.
      */
     distinct?: KnowledgeSearchEmbeddingScalarFieldEnum | KnowledgeSearchEmbeddingScalarFieldEnum[]
@@ -27210,25 +37494,25 @@ export namespace Prisma {
     where?: KnowledgeSearchEmbeddingWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of KnowledgeSearchEmbeddings to fetch.
      */
     orderBy?: KnowledgeSearchEmbeddingOrderByWithRelationInput | KnowledgeSearchEmbeddingOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing KnowledgeSearchEmbeddings.
      */
     cursor?: KnowledgeSearchEmbeddingWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` KnowledgeSearchEmbeddings from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` KnowledgeSearchEmbeddings.
      */
     skip?: number
@@ -27468,6 +37752,170 @@ export namespace Prisma {
   };
 
   export type LeadScalarFieldEnum = (typeof LeadScalarFieldEnum)[keyof typeof LeadScalarFieldEnum]
+
+
+  export const RevenueAuditEventScalarFieldEnum: {
+    id: 'id',
+    tenantId: 'tenantId',
+    actorId: 'actorId',
+    action: 'action',
+    targetType: 'targetType',
+    targetId: 'targetId',
+    requestId: 'requestId',
+    source: 'source',
+    result: 'result',
+    safeMetadata: 'safeMetadata',
+    createdAt: 'createdAt'
+  };
+
+  export type RevenueAuditEventScalarFieldEnum = (typeof RevenueAuditEventScalarFieldEnum)[keyof typeof RevenueAuditEventScalarFieldEnum]
+
+
+  export const RevenueLeadSourceScalarFieldEnum: {
+    id: 'id',
+    tenantId: 'tenantId',
+    leadId: 'leadId',
+    source: 'source',
+    sourceType: 'sourceType',
+    sourceDetail: 'sourceDetail',
+    sourceRecordId: 'sourceRecordId',
+    campaignName: 'campaignName',
+    campaignMedium: 'campaignMedium',
+    costCents: 'costCents',
+    confidence: 'confidence',
+    verified: 'verified',
+    importedBy: 'importedBy',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type RevenueLeadSourceScalarFieldEnum = (typeof RevenueLeadSourceScalarFieldEnum)[keyof typeof RevenueLeadSourceScalarFieldEnum]
+
+
+  export const RevenueLeadScoreScalarFieldEnum: {
+    id: 'id',
+    tenantId: 'tenantId',
+    leadId: 'leadId',
+    score: 'score',
+    confidence: 'confidence',
+    priority: 'priority',
+    explanation: 'explanation',
+    recommendedNextAction: 'recommendedNextAction',
+    missingData: 'missingData',
+    scoreBreakdown: 'scoreBreakdown',
+    assumptions: 'assumptions',
+    dataUsed: 'dataUsed',
+    advisoryOnly: 'advisoryOnly',
+    createdAt: 'createdAt'
+  };
+
+  export type RevenueLeadScoreScalarFieldEnum = (typeof RevenueLeadScoreScalarFieldEnum)[keyof typeof RevenueLeadScoreScalarFieldEnum]
+
+
+  export const RevenueTaskScalarFieldEnum: {
+    id: 'id',
+    tenantId: 'tenantId',
+    leadId: 'leadId',
+    title: 'title',
+    taskType: 'taskType',
+    priority: 'priority',
+    status: 'status',
+    recommendedAction: 'recommendedAction',
+    reason: 'reason',
+    dueAt: 'dueAt',
+    assignedTo: 'assignedTo',
+    requiresApproval: 'requiresApproval',
+    source: 'source',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    completedAt: 'completedAt'
+  };
+
+  export type RevenueTaskScalarFieldEnum = (typeof RevenueTaskScalarFieldEnum)[keyof typeof RevenueTaskScalarFieldEnum]
+
+
+  export const RevenuePipelineEventScalarFieldEnum: {
+    id: 'id',
+    tenantId: 'tenantId',
+    leadId: 'leadId',
+    fromStage: 'fromStage',
+    toStage: 'toStage',
+    reason: 'reason',
+    source: 'source',
+    revenueOutcome: 'revenueOutcome',
+    createdBy: 'createdBy',
+    createdAt: 'createdAt'
+  };
+
+  export type RevenuePipelineEventScalarFieldEnum = (typeof RevenuePipelineEventScalarFieldEnum)[keyof typeof RevenuePipelineEventScalarFieldEnum]
+
+
+  export const RevenueCommunicationEventScalarFieldEnum: {
+    id: 'id',
+    tenantId: 'tenantId',
+    leadId: 'leadId',
+    channel: 'channel',
+    direction: 'direction',
+    status: 'status',
+    approvalStatus: 'approvalStatus',
+    provider: 'provider',
+    providerCalled: 'providerCalled',
+    messageSummary: 'messageSummary',
+    requiresApproval: 'requiresApproval',
+    createdBy: 'createdBy',
+    createdAt: 'createdAt'
+  };
+
+  export type RevenueCommunicationEventScalarFieldEnum = (typeof RevenueCommunicationEventScalarFieldEnum)[keyof typeof RevenueCommunicationEventScalarFieldEnum]
+
+
+  export const RevenueDecisionLogScalarFieldEnum: {
+    id: 'id',
+    tenantId: 'tenantId',
+    leadId: 'leadId',
+    taskId: 'taskId',
+    auditEventId: 'auditEventId',
+    aiMemoryEventId: 'aiMemoryEventId',
+    connectorKey: 'connectorKey',
+    pipelineEventId: 'pipelineEventId',
+    recommendationType: 'recommendationType',
+    recommendation: 'recommendation',
+    confidence: 'confidence',
+    supportingEvidence: 'supportingEvidence',
+    assumptions: 'assumptions',
+    missingData: 'missingData',
+    userDecision: 'userDecision',
+    modifiedAction: 'modifiedAction',
+    outcome: 'outcome',
+    advisoryOnly: 'advisoryOnly',
+    providerCalled: 'providerCalled',
+    outreachSent: 'outreachSent',
+    requiresApproval: 'requiresApproval',
+    safeMetadata: 'safeMetadata',
+    createdBy: 'createdBy',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type RevenueDecisionLogScalarFieldEnum = (typeof RevenueDecisionLogScalarFieldEnum)[keyof typeof RevenueDecisionLogScalarFieldEnum]
+
+
+  export const ConnectorDefinitionScalarFieldEnum: {
+    id: 'id',
+    connectorKey: 'connectorKey',
+    label: 'label',
+    category: 'category',
+    status: 'status',
+    version: 'version',
+    supportsDryRun: 'supportsDryRun',
+    providerCallsAllowed: 'providerCallsAllowed',
+    requiredApprovals: 'requiredApprovals',
+    safetyNotes: 'safetyNotes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ConnectorDefinitionScalarFieldEnum = (typeof ConnectorDefinitionScalarFieldEnum)[keyof typeof ConnectorDefinitionScalarFieldEnum]
 
 
   export const ManualLeadIntakeScalarFieldEnum: {
@@ -27836,19 +38284,19 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-  export const JsonNullValueInput: {
-    JsonNull: typeof JsonNull
-  };
-
-  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
-
-
   export const NullableJsonNullValueInput: {
     DbNull: typeof DbNull,
     JsonNull: typeof JsonNull
   };
 
   export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+  export const JsonNullValueInput: {
+    JsonNull: typeof JsonNull
+  };
+
+  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
   export const QueryMode: {
@@ -27885,119 +38333,119 @@ export namespace Prisma {
    * Reference to a field of type 'String'
    */
   export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>
-
+    
 
 
   /**
    * Reference to a field of type 'String[]'
    */
   export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'LeadStatus'
    */
   export type EnumLeadStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LeadStatus'>
-
+    
 
 
   /**
    * Reference to a field of type 'LeadStatus[]'
    */
   export type ListEnumLeadStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LeadStatus[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-
+    
 
 
   /**
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-
+    
 
 
   /**
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-
+    
 
 
   /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-
+    
 
 
   /**
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'Json'
    */
   export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-
+    
 
 
   /**
    * Reference to a field of type 'QueryMode'
    */
   export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
-
+    
 
 
   /**
    * Reference to a field of type 'BuyerTier'
    */
   export type EnumBuyerTierFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BuyerTier'>
-
+    
 
 
   /**
    * Reference to a field of type 'BuyerTier[]'
    */
   export type ListEnumBuyerTierFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BuyerTier[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'BuyerActivityEventType'
    */
   export type EnumBuyerActivityEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BuyerActivityEventType'>
-
+    
 
 
   /**
    * Reference to a field of type 'BuyerActivityEventType[]'
    */
   export type ListEnumBuyerActivityEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BuyerActivityEventType[]'>
-
+    
   /**
    * Deep Input Types
    */
@@ -28038,6 +38486,11 @@ export namespace Prisma {
     marketingSalesAttributions?: MarketingSalesAttributionListRelationFilter
     salesConversionAssists?: SalesConversionAssistListRelationFilter
     manualLeadIntakes?: ManualLeadIntakeListRelationFilter
+    revenueLeadSources?: RevenueLeadSourceListRelationFilter
+    revenueLeadScores?: RevenueLeadScoreListRelationFilter
+    revenueTasks?: RevenueTaskListRelationFilter
+    revenuePipelineEvents?: RevenuePipelineEventListRelationFilter
+    revenueCommunicationEvents?: RevenueCommunicationEventListRelationFilter
   }
 
   export type LeadOrderByWithRelationInput = {
@@ -28072,6 +38525,11 @@ export namespace Prisma {
     marketingSalesAttributions?: MarketingSalesAttributionOrderByRelationAggregateInput
     salesConversionAssists?: SalesConversionAssistOrderByRelationAggregateInput
     manualLeadIntakes?: ManualLeadIntakeOrderByRelationAggregateInput
+    revenueLeadSources?: RevenueLeadSourceOrderByRelationAggregateInput
+    revenueLeadScores?: RevenueLeadScoreOrderByRelationAggregateInput
+    revenueTasks?: RevenueTaskOrderByRelationAggregateInput
+    revenuePipelineEvents?: RevenuePipelineEventOrderByRelationAggregateInput
+    revenueCommunicationEvents?: RevenueCommunicationEventOrderByRelationAggregateInput
   }
 
   export type LeadWhereUniqueInput = Prisma.AtLeast<{
@@ -28110,6 +38568,11 @@ export namespace Prisma {
     marketingSalesAttributions?: MarketingSalesAttributionListRelationFilter
     salesConversionAssists?: SalesConversionAssistListRelationFilter
     manualLeadIntakes?: ManualLeadIntakeListRelationFilter
+    revenueLeadSources?: RevenueLeadSourceListRelationFilter
+    revenueLeadScores?: RevenueLeadScoreListRelationFilter
+    revenueTasks?: RevenueTaskListRelationFilter
+    revenuePipelineEvents?: RevenuePipelineEventListRelationFilter
+    revenueCommunicationEvents?: RevenueCommunicationEventListRelationFilter
   }, "id" | "propertyAddress_phone">
 
   export type LeadOrderByWithAggregationInput = {
@@ -28180,6 +38643,824 @@ export namespace Prisma {
     optOutAt?: DateTimeNullableWithAggregatesFilter<"Lead"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Lead"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Lead"> | Date | string
+  }
+
+  export type RevenueAuditEventWhereInput = {
+    AND?: RevenueAuditEventWhereInput | RevenueAuditEventWhereInput[]
+    OR?: RevenueAuditEventWhereInput[]
+    NOT?: RevenueAuditEventWhereInput | RevenueAuditEventWhereInput[]
+    id?: StringFilter<"RevenueAuditEvent"> | string
+    tenantId?: StringFilter<"RevenueAuditEvent"> | string
+    actorId?: StringNullableFilter<"RevenueAuditEvent"> | string | null
+    action?: StringFilter<"RevenueAuditEvent"> | string
+    targetType?: StringFilter<"RevenueAuditEvent"> | string
+    targetId?: StringNullableFilter<"RevenueAuditEvent"> | string | null
+    requestId?: StringNullableFilter<"RevenueAuditEvent"> | string | null
+    source?: StringFilter<"RevenueAuditEvent"> | string
+    result?: StringFilter<"RevenueAuditEvent"> | string
+    safeMetadata?: JsonNullableFilter<"RevenueAuditEvent">
+    createdAt?: DateTimeFilter<"RevenueAuditEvent"> | Date | string
+  }
+
+  export type RevenueAuditEventOrderByWithRelationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    actorId?: SortOrderInput | SortOrder
+    action?: SortOrder
+    targetType?: SortOrder
+    targetId?: SortOrderInput | SortOrder
+    requestId?: SortOrderInput | SortOrder
+    source?: SortOrder
+    result?: SortOrder
+    safeMetadata?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RevenueAuditEventWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: RevenueAuditEventWhereInput | RevenueAuditEventWhereInput[]
+    OR?: RevenueAuditEventWhereInput[]
+    NOT?: RevenueAuditEventWhereInput | RevenueAuditEventWhereInput[]
+    tenantId?: StringFilter<"RevenueAuditEvent"> | string
+    actorId?: StringNullableFilter<"RevenueAuditEvent"> | string | null
+    action?: StringFilter<"RevenueAuditEvent"> | string
+    targetType?: StringFilter<"RevenueAuditEvent"> | string
+    targetId?: StringNullableFilter<"RevenueAuditEvent"> | string | null
+    requestId?: StringNullableFilter<"RevenueAuditEvent"> | string | null
+    source?: StringFilter<"RevenueAuditEvent"> | string
+    result?: StringFilter<"RevenueAuditEvent"> | string
+    safeMetadata?: JsonNullableFilter<"RevenueAuditEvent">
+    createdAt?: DateTimeFilter<"RevenueAuditEvent"> | Date | string
+  }, "id">
+
+  export type RevenueAuditEventOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    actorId?: SortOrderInput | SortOrder
+    action?: SortOrder
+    targetType?: SortOrder
+    targetId?: SortOrderInput | SortOrder
+    requestId?: SortOrderInput | SortOrder
+    source?: SortOrder
+    result?: SortOrder
+    safeMetadata?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: RevenueAuditEventCountOrderByAggregateInput
+    _max?: RevenueAuditEventMaxOrderByAggregateInput
+    _min?: RevenueAuditEventMinOrderByAggregateInput
+  }
+
+  export type RevenueAuditEventScalarWhereWithAggregatesInput = {
+    AND?: RevenueAuditEventScalarWhereWithAggregatesInput | RevenueAuditEventScalarWhereWithAggregatesInput[]
+    OR?: RevenueAuditEventScalarWhereWithAggregatesInput[]
+    NOT?: RevenueAuditEventScalarWhereWithAggregatesInput | RevenueAuditEventScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RevenueAuditEvent"> | string
+    tenantId?: StringWithAggregatesFilter<"RevenueAuditEvent"> | string
+    actorId?: StringNullableWithAggregatesFilter<"RevenueAuditEvent"> | string | null
+    action?: StringWithAggregatesFilter<"RevenueAuditEvent"> | string
+    targetType?: StringWithAggregatesFilter<"RevenueAuditEvent"> | string
+    targetId?: StringNullableWithAggregatesFilter<"RevenueAuditEvent"> | string | null
+    requestId?: StringNullableWithAggregatesFilter<"RevenueAuditEvent"> | string | null
+    source?: StringWithAggregatesFilter<"RevenueAuditEvent"> | string
+    result?: StringWithAggregatesFilter<"RevenueAuditEvent"> | string
+    safeMetadata?: JsonNullableWithAggregatesFilter<"RevenueAuditEvent">
+    createdAt?: DateTimeWithAggregatesFilter<"RevenueAuditEvent"> | Date | string
+  }
+
+  export type RevenueLeadSourceWhereInput = {
+    AND?: RevenueLeadSourceWhereInput | RevenueLeadSourceWhereInput[]
+    OR?: RevenueLeadSourceWhereInput[]
+    NOT?: RevenueLeadSourceWhereInput | RevenueLeadSourceWhereInput[]
+    id?: StringFilter<"RevenueLeadSource"> | string
+    tenantId?: StringFilter<"RevenueLeadSource"> | string
+    leadId?: StringFilter<"RevenueLeadSource"> | string
+    source?: StringFilter<"RevenueLeadSource"> | string
+    sourceType?: StringFilter<"RevenueLeadSource"> | string
+    sourceDetail?: StringFilter<"RevenueLeadSource"> | string
+    sourceRecordId?: StringNullableFilter<"RevenueLeadSource"> | string | null
+    campaignName?: StringNullableFilter<"RevenueLeadSource"> | string | null
+    campaignMedium?: StringNullableFilter<"RevenueLeadSource"> | string | null
+    costCents?: IntNullableFilter<"RevenueLeadSource"> | number | null
+    confidence?: IntFilter<"RevenueLeadSource"> | number
+    verified?: BoolFilter<"RevenueLeadSource"> | boolean
+    importedBy?: StringNullableFilter<"RevenueLeadSource"> | string | null
+    createdAt?: DateTimeFilter<"RevenueLeadSource"> | Date | string
+    updatedAt?: DateTimeFilter<"RevenueLeadSource"> | Date | string
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+  }
+
+  export type RevenueLeadSourceOrderByWithRelationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrder
+    source?: SortOrder
+    sourceType?: SortOrder
+    sourceDetail?: SortOrder
+    sourceRecordId?: SortOrderInput | SortOrder
+    campaignName?: SortOrderInput | SortOrder
+    campaignMedium?: SortOrderInput | SortOrder
+    costCents?: SortOrderInput | SortOrder
+    confidence?: SortOrder
+    verified?: SortOrder
+    importedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    lead?: LeadOrderByWithRelationInput
+  }
+
+  export type RevenueLeadSourceWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    leadId_source_sourceDetail?: RevenueLeadSourceLeadIdSourceSourceDetailCompoundUniqueInput
+    AND?: RevenueLeadSourceWhereInput | RevenueLeadSourceWhereInput[]
+    OR?: RevenueLeadSourceWhereInput[]
+    NOT?: RevenueLeadSourceWhereInput | RevenueLeadSourceWhereInput[]
+    tenantId?: StringFilter<"RevenueLeadSource"> | string
+    leadId?: StringFilter<"RevenueLeadSource"> | string
+    source?: StringFilter<"RevenueLeadSource"> | string
+    sourceType?: StringFilter<"RevenueLeadSource"> | string
+    sourceDetail?: StringFilter<"RevenueLeadSource"> | string
+    sourceRecordId?: StringNullableFilter<"RevenueLeadSource"> | string | null
+    campaignName?: StringNullableFilter<"RevenueLeadSource"> | string | null
+    campaignMedium?: StringNullableFilter<"RevenueLeadSource"> | string | null
+    costCents?: IntNullableFilter<"RevenueLeadSource"> | number | null
+    confidence?: IntFilter<"RevenueLeadSource"> | number
+    verified?: BoolFilter<"RevenueLeadSource"> | boolean
+    importedBy?: StringNullableFilter<"RevenueLeadSource"> | string | null
+    createdAt?: DateTimeFilter<"RevenueLeadSource"> | Date | string
+    updatedAt?: DateTimeFilter<"RevenueLeadSource"> | Date | string
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+  }, "id" | "leadId_source_sourceDetail">
+
+  export type RevenueLeadSourceOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrder
+    source?: SortOrder
+    sourceType?: SortOrder
+    sourceDetail?: SortOrder
+    sourceRecordId?: SortOrderInput | SortOrder
+    campaignName?: SortOrderInput | SortOrder
+    campaignMedium?: SortOrderInput | SortOrder
+    costCents?: SortOrderInput | SortOrder
+    confidence?: SortOrder
+    verified?: SortOrder
+    importedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: RevenueLeadSourceCountOrderByAggregateInput
+    _avg?: RevenueLeadSourceAvgOrderByAggregateInput
+    _max?: RevenueLeadSourceMaxOrderByAggregateInput
+    _min?: RevenueLeadSourceMinOrderByAggregateInput
+    _sum?: RevenueLeadSourceSumOrderByAggregateInput
+  }
+
+  export type RevenueLeadSourceScalarWhereWithAggregatesInput = {
+    AND?: RevenueLeadSourceScalarWhereWithAggregatesInput | RevenueLeadSourceScalarWhereWithAggregatesInput[]
+    OR?: RevenueLeadSourceScalarWhereWithAggregatesInput[]
+    NOT?: RevenueLeadSourceScalarWhereWithAggregatesInput | RevenueLeadSourceScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RevenueLeadSource"> | string
+    tenantId?: StringWithAggregatesFilter<"RevenueLeadSource"> | string
+    leadId?: StringWithAggregatesFilter<"RevenueLeadSource"> | string
+    source?: StringWithAggregatesFilter<"RevenueLeadSource"> | string
+    sourceType?: StringWithAggregatesFilter<"RevenueLeadSource"> | string
+    sourceDetail?: StringWithAggregatesFilter<"RevenueLeadSource"> | string
+    sourceRecordId?: StringNullableWithAggregatesFilter<"RevenueLeadSource"> | string | null
+    campaignName?: StringNullableWithAggregatesFilter<"RevenueLeadSource"> | string | null
+    campaignMedium?: StringNullableWithAggregatesFilter<"RevenueLeadSource"> | string | null
+    costCents?: IntNullableWithAggregatesFilter<"RevenueLeadSource"> | number | null
+    confidence?: IntWithAggregatesFilter<"RevenueLeadSource"> | number
+    verified?: BoolWithAggregatesFilter<"RevenueLeadSource"> | boolean
+    importedBy?: StringNullableWithAggregatesFilter<"RevenueLeadSource"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"RevenueLeadSource"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"RevenueLeadSource"> | Date | string
+  }
+
+  export type RevenueLeadScoreWhereInput = {
+    AND?: RevenueLeadScoreWhereInput | RevenueLeadScoreWhereInput[]
+    OR?: RevenueLeadScoreWhereInput[]
+    NOT?: RevenueLeadScoreWhereInput | RevenueLeadScoreWhereInput[]
+    id?: StringFilter<"RevenueLeadScore"> | string
+    tenantId?: StringFilter<"RevenueLeadScore"> | string
+    leadId?: StringFilter<"RevenueLeadScore"> | string
+    score?: IntFilter<"RevenueLeadScore"> | number
+    confidence?: IntFilter<"RevenueLeadScore"> | number
+    priority?: StringFilter<"RevenueLeadScore"> | string
+    explanation?: StringFilter<"RevenueLeadScore"> | string
+    recommendedNextAction?: StringFilter<"RevenueLeadScore"> | string
+    missingData?: JsonFilter<"RevenueLeadScore">
+    scoreBreakdown?: JsonFilter<"RevenueLeadScore">
+    assumptions?: JsonFilter<"RevenueLeadScore">
+    dataUsed?: JsonFilter<"RevenueLeadScore">
+    advisoryOnly?: BoolFilter<"RevenueLeadScore"> | boolean
+    createdAt?: DateTimeFilter<"RevenueLeadScore"> | Date | string
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+  }
+
+  export type RevenueLeadScoreOrderByWithRelationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrder
+    score?: SortOrder
+    confidence?: SortOrder
+    priority?: SortOrder
+    explanation?: SortOrder
+    recommendedNextAction?: SortOrder
+    missingData?: SortOrder
+    scoreBreakdown?: SortOrder
+    assumptions?: SortOrder
+    dataUsed?: SortOrder
+    advisoryOnly?: SortOrder
+    createdAt?: SortOrder
+    lead?: LeadOrderByWithRelationInput
+  }
+
+  export type RevenueLeadScoreWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: RevenueLeadScoreWhereInput | RevenueLeadScoreWhereInput[]
+    OR?: RevenueLeadScoreWhereInput[]
+    NOT?: RevenueLeadScoreWhereInput | RevenueLeadScoreWhereInput[]
+    tenantId?: StringFilter<"RevenueLeadScore"> | string
+    leadId?: StringFilter<"RevenueLeadScore"> | string
+    score?: IntFilter<"RevenueLeadScore"> | number
+    confidence?: IntFilter<"RevenueLeadScore"> | number
+    priority?: StringFilter<"RevenueLeadScore"> | string
+    explanation?: StringFilter<"RevenueLeadScore"> | string
+    recommendedNextAction?: StringFilter<"RevenueLeadScore"> | string
+    missingData?: JsonFilter<"RevenueLeadScore">
+    scoreBreakdown?: JsonFilter<"RevenueLeadScore">
+    assumptions?: JsonFilter<"RevenueLeadScore">
+    dataUsed?: JsonFilter<"RevenueLeadScore">
+    advisoryOnly?: BoolFilter<"RevenueLeadScore"> | boolean
+    createdAt?: DateTimeFilter<"RevenueLeadScore"> | Date | string
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+  }, "id">
+
+  export type RevenueLeadScoreOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrder
+    score?: SortOrder
+    confidence?: SortOrder
+    priority?: SortOrder
+    explanation?: SortOrder
+    recommendedNextAction?: SortOrder
+    missingData?: SortOrder
+    scoreBreakdown?: SortOrder
+    assumptions?: SortOrder
+    dataUsed?: SortOrder
+    advisoryOnly?: SortOrder
+    createdAt?: SortOrder
+    _count?: RevenueLeadScoreCountOrderByAggregateInput
+    _avg?: RevenueLeadScoreAvgOrderByAggregateInput
+    _max?: RevenueLeadScoreMaxOrderByAggregateInput
+    _min?: RevenueLeadScoreMinOrderByAggregateInput
+    _sum?: RevenueLeadScoreSumOrderByAggregateInput
+  }
+
+  export type RevenueLeadScoreScalarWhereWithAggregatesInput = {
+    AND?: RevenueLeadScoreScalarWhereWithAggregatesInput | RevenueLeadScoreScalarWhereWithAggregatesInput[]
+    OR?: RevenueLeadScoreScalarWhereWithAggregatesInput[]
+    NOT?: RevenueLeadScoreScalarWhereWithAggregatesInput | RevenueLeadScoreScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RevenueLeadScore"> | string
+    tenantId?: StringWithAggregatesFilter<"RevenueLeadScore"> | string
+    leadId?: StringWithAggregatesFilter<"RevenueLeadScore"> | string
+    score?: IntWithAggregatesFilter<"RevenueLeadScore"> | number
+    confidence?: IntWithAggregatesFilter<"RevenueLeadScore"> | number
+    priority?: StringWithAggregatesFilter<"RevenueLeadScore"> | string
+    explanation?: StringWithAggregatesFilter<"RevenueLeadScore"> | string
+    recommendedNextAction?: StringWithAggregatesFilter<"RevenueLeadScore"> | string
+    missingData?: JsonWithAggregatesFilter<"RevenueLeadScore">
+    scoreBreakdown?: JsonWithAggregatesFilter<"RevenueLeadScore">
+    assumptions?: JsonWithAggregatesFilter<"RevenueLeadScore">
+    dataUsed?: JsonWithAggregatesFilter<"RevenueLeadScore">
+    advisoryOnly?: BoolWithAggregatesFilter<"RevenueLeadScore"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"RevenueLeadScore"> | Date | string
+  }
+
+  export type RevenueTaskWhereInput = {
+    AND?: RevenueTaskWhereInput | RevenueTaskWhereInput[]
+    OR?: RevenueTaskWhereInput[]
+    NOT?: RevenueTaskWhereInput | RevenueTaskWhereInput[]
+    id?: StringFilter<"RevenueTask"> | string
+    tenantId?: StringFilter<"RevenueTask"> | string
+    leadId?: StringNullableFilter<"RevenueTask"> | string | null
+    title?: StringFilter<"RevenueTask"> | string
+    taskType?: StringFilter<"RevenueTask"> | string
+    priority?: StringFilter<"RevenueTask"> | string
+    status?: StringFilter<"RevenueTask"> | string
+    recommendedAction?: StringFilter<"RevenueTask"> | string
+    reason?: StringFilter<"RevenueTask"> | string
+    dueAt?: DateTimeNullableFilter<"RevenueTask"> | Date | string | null
+    assignedTo?: StringNullableFilter<"RevenueTask"> | string | null
+    requiresApproval?: BoolFilter<"RevenueTask"> | boolean
+    source?: StringFilter<"RevenueTask"> | string
+    createdAt?: DateTimeFilter<"RevenueTask"> | Date | string
+    updatedAt?: DateTimeFilter<"RevenueTask"> | Date | string
+    completedAt?: DateTimeNullableFilter<"RevenueTask"> | Date | string | null
+    lead?: XOR<LeadNullableScalarRelationFilter, LeadWhereInput> | null
+  }
+
+  export type RevenueTaskOrderByWithRelationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrderInput | SortOrder
+    title?: SortOrder
+    taskType?: SortOrder
+    priority?: SortOrder
+    status?: SortOrder
+    recommendedAction?: SortOrder
+    reason?: SortOrder
+    dueAt?: SortOrderInput | SortOrder
+    assignedTo?: SortOrderInput | SortOrder
+    requiresApproval?: SortOrder
+    source?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    lead?: LeadOrderByWithRelationInput
+  }
+
+  export type RevenueTaskWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: RevenueTaskWhereInput | RevenueTaskWhereInput[]
+    OR?: RevenueTaskWhereInput[]
+    NOT?: RevenueTaskWhereInput | RevenueTaskWhereInput[]
+    tenantId?: StringFilter<"RevenueTask"> | string
+    leadId?: StringNullableFilter<"RevenueTask"> | string | null
+    title?: StringFilter<"RevenueTask"> | string
+    taskType?: StringFilter<"RevenueTask"> | string
+    priority?: StringFilter<"RevenueTask"> | string
+    status?: StringFilter<"RevenueTask"> | string
+    recommendedAction?: StringFilter<"RevenueTask"> | string
+    reason?: StringFilter<"RevenueTask"> | string
+    dueAt?: DateTimeNullableFilter<"RevenueTask"> | Date | string | null
+    assignedTo?: StringNullableFilter<"RevenueTask"> | string | null
+    requiresApproval?: BoolFilter<"RevenueTask"> | boolean
+    source?: StringFilter<"RevenueTask"> | string
+    createdAt?: DateTimeFilter<"RevenueTask"> | Date | string
+    updatedAt?: DateTimeFilter<"RevenueTask"> | Date | string
+    completedAt?: DateTimeNullableFilter<"RevenueTask"> | Date | string | null
+    lead?: XOR<LeadNullableScalarRelationFilter, LeadWhereInput> | null
+  }, "id">
+
+  export type RevenueTaskOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrderInput | SortOrder
+    title?: SortOrder
+    taskType?: SortOrder
+    priority?: SortOrder
+    status?: SortOrder
+    recommendedAction?: SortOrder
+    reason?: SortOrder
+    dueAt?: SortOrderInput | SortOrder
+    assignedTo?: SortOrderInput | SortOrder
+    requiresApproval?: SortOrder
+    source?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    _count?: RevenueTaskCountOrderByAggregateInput
+    _max?: RevenueTaskMaxOrderByAggregateInput
+    _min?: RevenueTaskMinOrderByAggregateInput
+  }
+
+  export type RevenueTaskScalarWhereWithAggregatesInput = {
+    AND?: RevenueTaskScalarWhereWithAggregatesInput | RevenueTaskScalarWhereWithAggregatesInput[]
+    OR?: RevenueTaskScalarWhereWithAggregatesInput[]
+    NOT?: RevenueTaskScalarWhereWithAggregatesInput | RevenueTaskScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RevenueTask"> | string
+    tenantId?: StringWithAggregatesFilter<"RevenueTask"> | string
+    leadId?: StringNullableWithAggregatesFilter<"RevenueTask"> | string | null
+    title?: StringWithAggregatesFilter<"RevenueTask"> | string
+    taskType?: StringWithAggregatesFilter<"RevenueTask"> | string
+    priority?: StringWithAggregatesFilter<"RevenueTask"> | string
+    status?: StringWithAggregatesFilter<"RevenueTask"> | string
+    recommendedAction?: StringWithAggregatesFilter<"RevenueTask"> | string
+    reason?: StringWithAggregatesFilter<"RevenueTask"> | string
+    dueAt?: DateTimeNullableWithAggregatesFilter<"RevenueTask"> | Date | string | null
+    assignedTo?: StringNullableWithAggregatesFilter<"RevenueTask"> | string | null
+    requiresApproval?: BoolWithAggregatesFilter<"RevenueTask"> | boolean
+    source?: StringWithAggregatesFilter<"RevenueTask"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"RevenueTask"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"RevenueTask"> | Date | string
+    completedAt?: DateTimeNullableWithAggregatesFilter<"RevenueTask"> | Date | string | null
+  }
+
+  export type RevenuePipelineEventWhereInput = {
+    AND?: RevenuePipelineEventWhereInput | RevenuePipelineEventWhereInput[]
+    OR?: RevenuePipelineEventWhereInput[]
+    NOT?: RevenuePipelineEventWhereInput | RevenuePipelineEventWhereInput[]
+    id?: StringFilter<"RevenuePipelineEvent"> | string
+    tenantId?: StringFilter<"RevenuePipelineEvent"> | string
+    leadId?: StringFilter<"RevenuePipelineEvent"> | string
+    fromStage?: StringNullableFilter<"RevenuePipelineEvent"> | string | null
+    toStage?: StringFilter<"RevenuePipelineEvent"> | string
+    reason?: StringFilter<"RevenuePipelineEvent"> | string
+    source?: StringFilter<"RevenuePipelineEvent"> | string
+    revenueOutcome?: StringNullableFilter<"RevenuePipelineEvent"> | string | null
+    createdBy?: StringNullableFilter<"RevenuePipelineEvent"> | string | null
+    createdAt?: DateTimeFilter<"RevenuePipelineEvent"> | Date | string
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+  }
+
+  export type RevenuePipelineEventOrderByWithRelationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrder
+    fromStage?: SortOrderInput | SortOrder
+    toStage?: SortOrder
+    reason?: SortOrder
+    source?: SortOrder
+    revenueOutcome?: SortOrderInput | SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    lead?: LeadOrderByWithRelationInput
+  }
+
+  export type RevenuePipelineEventWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: RevenuePipelineEventWhereInput | RevenuePipelineEventWhereInput[]
+    OR?: RevenuePipelineEventWhereInput[]
+    NOT?: RevenuePipelineEventWhereInput | RevenuePipelineEventWhereInput[]
+    tenantId?: StringFilter<"RevenuePipelineEvent"> | string
+    leadId?: StringFilter<"RevenuePipelineEvent"> | string
+    fromStage?: StringNullableFilter<"RevenuePipelineEvent"> | string | null
+    toStage?: StringFilter<"RevenuePipelineEvent"> | string
+    reason?: StringFilter<"RevenuePipelineEvent"> | string
+    source?: StringFilter<"RevenuePipelineEvent"> | string
+    revenueOutcome?: StringNullableFilter<"RevenuePipelineEvent"> | string | null
+    createdBy?: StringNullableFilter<"RevenuePipelineEvent"> | string | null
+    createdAt?: DateTimeFilter<"RevenuePipelineEvent"> | Date | string
+    lead?: XOR<LeadScalarRelationFilter, LeadWhereInput>
+  }, "id">
+
+  export type RevenuePipelineEventOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrder
+    fromStage?: SortOrderInput | SortOrder
+    toStage?: SortOrder
+    reason?: SortOrder
+    source?: SortOrder
+    revenueOutcome?: SortOrderInput | SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: RevenuePipelineEventCountOrderByAggregateInput
+    _max?: RevenuePipelineEventMaxOrderByAggregateInput
+    _min?: RevenuePipelineEventMinOrderByAggregateInput
+  }
+
+  export type RevenuePipelineEventScalarWhereWithAggregatesInput = {
+    AND?: RevenuePipelineEventScalarWhereWithAggregatesInput | RevenuePipelineEventScalarWhereWithAggregatesInput[]
+    OR?: RevenuePipelineEventScalarWhereWithAggregatesInput[]
+    NOT?: RevenuePipelineEventScalarWhereWithAggregatesInput | RevenuePipelineEventScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RevenuePipelineEvent"> | string
+    tenantId?: StringWithAggregatesFilter<"RevenuePipelineEvent"> | string
+    leadId?: StringWithAggregatesFilter<"RevenuePipelineEvent"> | string
+    fromStage?: StringNullableWithAggregatesFilter<"RevenuePipelineEvent"> | string | null
+    toStage?: StringWithAggregatesFilter<"RevenuePipelineEvent"> | string
+    reason?: StringWithAggregatesFilter<"RevenuePipelineEvent"> | string
+    source?: StringWithAggregatesFilter<"RevenuePipelineEvent"> | string
+    revenueOutcome?: StringNullableWithAggregatesFilter<"RevenuePipelineEvent"> | string | null
+    createdBy?: StringNullableWithAggregatesFilter<"RevenuePipelineEvent"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"RevenuePipelineEvent"> | Date | string
+  }
+
+  export type RevenueCommunicationEventWhereInput = {
+    AND?: RevenueCommunicationEventWhereInput | RevenueCommunicationEventWhereInput[]
+    OR?: RevenueCommunicationEventWhereInput[]
+    NOT?: RevenueCommunicationEventWhereInput | RevenueCommunicationEventWhereInput[]
+    id?: StringFilter<"RevenueCommunicationEvent"> | string
+    tenantId?: StringFilter<"RevenueCommunicationEvent"> | string
+    leadId?: StringNullableFilter<"RevenueCommunicationEvent"> | string | null
+    channel?: StringFilter<"RevenueCommunicationEvent"> | string
+    direction?: StringFilter<"RevenueCommunicationEvent"> | string
+    status?: StringFilter<"RevenueCommunicationEvent"> | string
+    approvalStatus?: StringFilter<"RevenueCommunicationEvent"> | string
+    provider?: StringFilter<"RevenueCommunicationEvent"> | string
+    providerCalled?: BoolFilter<"RevenueCommunicationEvent"> | boolean
+    messageSummary?: StringNullableFilter<"RevenueCommunicationEvent"> | string | null
+    requiresApproval?: BoolFilter<"RevenueCommunicationEvent"> | boolean
+    createdBy?: StringNullableFilter<"RevenueCommunicationEvent"> | string | null
+    createdAt?: DateTimeFilter<"RevenueCommunicationEvent"> | Date | string
+    lead?: XOR<LeadNullableScalarRelationFilter, LeadWhereInput> | null
+  }
+
+  export type RevenueCommunicationEventOrderByWithRelationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrderInput | SortOrder
+    channel?: SortOrder
+    direction?: SortOrder
+    status?: SortOrder
+    approvalStatus?: SortOrder
+    provider?: SortOrder
+    providerCalled?: SortOrder
+    messageSummary?: SortOrderInput | SortOrder
+    requiresApproval?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    lead?: LeadOrderByWithRelationInput
+  }
+
+  export type RevenueCommunicationEventWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: RevenueCommunicationEventWhereInput | RevenueCommunicationEventWhereInput[]
+    OR?: RevenueCommunicationEventWhereInput[]
+    NOT?: RevenueCommunicationEventWhereInput | RevenueCommunicationEventWhereInput[]
+    tenantId?: StringFilter<"RevenueCommunicationEvent"> | string
+    leadId?: StringNullableFilter<"RevenueCommunicationEvent"> | string | null
+    channel?: StringFilter<"RevenueCommunicationEvent"> | string
+    direction?: StringFilter<"RevenueCommunicationEvent"> | string
+    status?: StringFilter<"RevenueCommunicationEvent"> | string
+    approvalStatus?: StringFilter<"RevenueCommunicationEvent"> | string
+    provider?: StringFilter<"RevenueCommunicationEvent"> | string
+    providerCalled?: BoolFilter<"RevenueCommunicationEvent"> | boolean
+    messageSummary?: StringNullableFilter<"RevenueCommunicationEvent"> | string | null
+    requiresApproval?: BoolFilter<"RevenueCommunicationEvent"> | boolean
+    createdBy?: StringNullableFilter<"RevenueCommunicationEvent"> | string | null
+    createdAt?: DateTimeFilter<"RevenueCommunicationEvent"> | Date | string
+    lead?: XOR<LeadNullableScalarRelationFilter, LeadWhereInput> | null
+  }, "id">
+
+  export type RevenueCommunicationEventOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrderInput | SortOrder
+    channel?: SortOrder
+    direction?: SortOrder
+    status?: SortOrder
+    approvalStatus?: SortOrder
+    provider?: SortOrder
+    providerCalled?: SortOrder
+    messageSummary?: SortOrderInput | SortOrder
+    requiresApproval?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: RevenueCommunicationEventCountOrderByAggregateInput
+    _max?: RevenueCommunicationEventMaxOrderByAggregateInput
+    _min?: RevenueCommunicationEventMinOrderByAggregateInput
+  }
+
+  export type RevenueCommunicationEventScalarWhereWithAggregatesInput = {
+    AND?: RevenueCommunicationEventScalarWhereWithAggregatesInput | RevenueCommunicationEventScalarWhereWithAggregatesInput[]
+    OR?: RevenueCommunicationEventScalarWhereWithAggregatesInput[]
+    NOT?: RevenueCommunicationEventScalarWhereWithAggregatesInput | RevenueCommunicationEventScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RevenueCommunicationEvent"> | string
+    tenantId?: StringWithAggregatesFilter<"RevenueCommunicationEvent"> | string
+    leadId?: StringNullableWithAggregatesFilter<"RevenueCommunicationEvent"> | string | null
+    channel?: StringWithAggregatesFilter<"RevenueCommunicationEvent"> | string
+    direction?: StringWithAggregatesFilter<"RevenueCommunicationEvent"> | string
+    status?: StringWithAggregatesFilter<"RevenueCommunicationEvent"> | string
+    approvalStatus?: StringWithAggregatesFilter<"RevenueCommunicationEvent"> | string
+    provider?: StringWithAggregatesFilter<"RevenueCommunicationEvent"> | string
+    providerCalled?: BoolWithAggregatesFilter<"RevenueCommunicationEvent"> | boolean
+    messageSummary?: StringNullableWithAggregatesFilter<"RevenueCommunicationEvent"> | string | null
+    requiresApproval?: BoolWithAggregatesFilter<"RevenueCommunicationEvent"> | boolean
+    createdBy?: StringNullableWithAggregatesFilter<"RevenueCommunicationEvent"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"RevenueCommunicationEvent"> | Date | string
+  }
+
+  export type RevenueDecisionLogWhereInput = {
+    AND?: RevenueDecisionLogWhereInput | RevenueDecisionLogWhereInput[]
+    OR?: RevenueDecisionLogWhereInput[]
+    NOT?: RevenueDecisionLogWhereInput | RevenueDecisionLogWhereInput[]
+    id?: StringFilter<"RevenueDecisionLog"> | string
+    tenantId?: StringFilter<"RevenueDecisionLog"> | string
+    leadId?: StringNullableFilter<"RevenueDecisionLog"> | string | null
+    taskId?: StringNullableFilter<"RevenueDecisionLog"> | string | null
+    auditEventId?: StringNullableFilter<"RevenueDecisionLog"> | string | null
+    aiMemoryEventId?: StringNullableFilter<"RevenueDecisionLog"> | string | null
+    connectorKey?: StringNullableFilter<"RevenueDecisionLog"> | string | null
+    pipelineEventId?: StringNullableFilter<"RevenueDecisionLog"> | string | null
+    recommendationType?: StringFilter<"RevenueDecisionLog"> | string
+    recommendation?: StringFilter<"RevenueDecisionLog"> | string
+    confidence?: IntFilter<"RevenueDecisionLog"> | number
+    supportingEvidence?: JsonFilter<"RevenueDecisionLog">
+    assumptions?: JsonFilter<"RevenueDecisionLog">
+    missingData?: JsonFilter<"RevenueDecisionLog">
+    userDecision?: StringFilter<"RevenueDecisionLog"> | string
+    modifiedAction?: StringNullableFilter<"RevenueDecisionLog"> | string | null
+    outcome?: StringFilter<"RevenueDecisionLog"> | string
+    advisoryOnly?: BoolFilter<"RevenueDecisionLog"> | boolean
+    providerCalled?: BoolFilter<"RevenueDecisionLog"> | boolean
+    outreachSent?: BoolFilter<"RevenueDecisionLog"> | boolean
+    requiresApproval?: BoolFilter<"RevenueDecisionLog"> | boolean
+    safeMetadata?: JsonNullableFilter<"RevenueDecisionLog">
+    createdBy?: StringNullableFilter<"RevenueDecisionLog"> | string | null
+    createdAt?: DateTimeFilter<"RevenueDecisionLog"> | Date | string
+    updatedAt?: DateTimeFilter<"RevenueDecisionLog"> | Date | string
+  }
+
+  export type RevenueDecisionLogOrderByWithRelationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrderInput | SortOrder
+    taskId?: SortOrderInput | SortOrder
+    auditEventId?: SortOrderInput | SortOrder
+    aiMemoryEventId?: SortOrderInput | SortOrder
+    connectorKey?: SortOrderInput | SortOrder
+    pipelineEventId?: SortOrderInput | SortOrder
+    recommendationType?: SortOrder
+    recommendation?: SortOrder
+    confidence?: SortOrder
+    supportingEvidence?: SortOrder
+    assumptions?: SortOrder
+    missingData?: SortOrder
+    userDecision?: SortOrder
+    modifiedAction?: SortOrderInput | SortOrder
+    outcome?: SortOrder
+    advisoryOnly?: SortOrder
+    providerCalled?: SortOrder
+    outreachSent?: SortOrder
+    requiresApproval?: SortOrder
+    safeMetadata?: SortOrderInput | SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RevenueDecisionLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: RevenueDecisionLogWhereInput | RevenueDecisionLogWhereInput[]
+    OR?: RevenueDecisionLogWhereInput[]
+    NOT?: RevenueDecisionLogWhereInput | RevenueDecisionLogWhereInput[]
+    tenantId?: StringFilter<"RevenueDecisionLog"> | string
+    leadId?: StringNullableFilter<"RevenueDecisionLog"> | string | null
+    taskId?: StringNullableFilter<"RevenueDecisionLog"> | string | null
+    auditEventId?: StringNullableFilter<"RevenueDecisionLog"> | string | null
+    aiMemoryEventId?: StringNullableFilter<"RevenueDecisionLog"> | string | null
+    connectorKey?: StringNullableFilter<"RevenueDecisionLog"> | string | null
+    pipelineEventId?: StringNullableFilter<"RevenueDecisionLog"> | string | null
+    recommendationType?: StringFilter<"RevenueDecisionLog"> | string
+    recommendation?: StringFilter<"RevenueDecisionLog"> | string
+    confidence?: IntFilter<"RevenueDecisionLog"> | number
+    supportingEvidence?: JsonFilter<"RevenueDecisionLog">
+    assumptions?: JsonFilter<"RevenueDecisionLog">
+    missingData?: JsonFilter<"RevenueDecisionLog">
+    userDecision?: StringFilter<"RevenueDecisionLog"> | string
+    modifiedAction?: StringNullableFilter<"RevenueDecisionLog"> | string | null
+    outcome?: StringFilter<"RevenueDecisionLog"> | string
+    advisoryOnly?: BoolFilter<"RevenueDecisionLog"> | boolean
+    providerCalled?: BoolFilter<"RevenueDecisionLog"> | boolean
+    outreachSent?: BoolFilter<"RevenueDecisionLog"> | boolean
+    requiresApproval?: BoolFilter<"RevenueDecisionLog"> | boolean
+    safeMetadata?: JsonNullableFilter<"RevenueDecisionLog">
+    createdBy?: StringNullableFilter<"RevenueDecisionLog"> | string | null
+    createdAt?: DateTimeFilter<"RevenueDecisionLog"> | Date | string
+    updatedAt?: DateTimeFilter<"RevenueDecisionLog"> | Date | string
+  }, "id">
+
+  export type RevenueDecisionLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrderInput | SortOrder
+    taskId?: SortOrderInput | SortOrder
+    auditEventId?: SortOrderInput | SortOrder
+    aiMemoryEventId?: SortOrderInput | SortOrder
+    connectorKey?: SortOrderInput | SortOrder
+    pipelineEventId?: SortOrderInput | SortOrder
+    recommendationType?: SortOrder
+    recommendation?: SortOrder
+    confidence?: SortOrder
+    supportingEvidence?: SortOrder
+    assumptions?: SortOrder
+    missingData?: SortOrder
+    userDecision?: SortOrder
+    modifiedAction?: SortOrderInput | SortOrder
+    outcome?: SortOrder
+    advisoryOnly?: SortOrder
+    providerCalled?: SortOrder
+    outreachSent?: SortOrder
+    requiresApproval?: SortOrder
+    safeMetadata?: SortOrderInput | SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: RevenueDecisionLogCountOrderByAggregateInput
+    _avg?: RevenueDecisionLogAvgOrderByAggregateInput
+    _max?: RevenueDecisionLogMaxOrderByAggregateInput
+    _min?: RevenueDecisionLogMinOrderByAggregateInput
+    _sum?: RevenueDecisionLogSumOrderByAggregateInput
+  }
+
+  export type RevenueDecisionLogScalarWhereWithAggregatesInput = {
+    AND?: RevenueDecisionLogScalarWhereWithAggregatesInput | RevenueDecisionLogScalarWhereWithAggregatesInput[]
+    OR?: RevenueDecisionLogScalarWhereWithAggregatesInput[]
+    NOT?: RevenueDecisionLogScalarWhereWithAggregatesInput | RevenueDecisionLogScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RevenueDecisionLog"> | string
+    tenantId?: StringWithAggregatesFilter<"RevenueDecisionLog"> | string
+    leadId?: StringNullableWithAggregatesFilter<"RevenueDecisionLog"> | string | null
+    taskId?: StringNullableWithAggregatesFilter<"RevenueDecisionLog"> | string | null
+    auditEventId?: StringNullableWithAggregatesFilter<"RevenueDecisionLog"> | string | null
+    aiMemoryEventId?: StringNullableWithAggregatesFilter<"RevenueDecisionLog"> | string | null
+    connectorKey?: StringNullableWithAggregatesFilter<"RevenueDecisionLog"> | string | null
+    pipelineEventId?: StringNullableWithAggregatesFilter<"RevenueDecisionLog"> | string | null
+    recommendationType?: StringWithAggregatesFilter<"RevenueDecisionLog"> | string
+    recommendation?: StringWithAggregatesFilter<"RevenueDecisionLog"> | string
+    confidence?: IntWithAggregatesFilter<"RevenueDecisionLog"> | number
+    supportingEvidence?: JsonWithAggregatesFilter<"RevenueDecisionLog">
+    assumptions?: JsonWithAggregatesFilter<"RevenueDecisionLog">
+    missingData?: JsonWithAggregatesFilter<"RevenueDecisionLog">
+    userDecision?: StringWithAggregatesFilter<"RevenueDecisionLog"> | string
+    modifiedAction?: StringNullableWithAggregatesFilter<"RevenueDecisionLog"> | string | null
+    outcome?: StringWithAggregatesFilter<"RevenueDecisionLog"> | string
+    advisoryOnly?: BoolWithAggregatesFilter<"RevenueDecisionLog"> | boolean
+    providerCalled?: BoolWithAggregatesFilter<"RevenueDecisionLog"> | boolean
+    outreachSent?: BoolWithAggregatesFilter<"RevenueDecisionLog"> | boolean
+    requiresApproval?: BoolWithAggregatesFilter<"RevenueDecisionLog"> | boolean
+    safeMetadata?: JsonNullableWithAggregatesFilter<"RevenueDecisionLog">
+    createdBy?: StringNullableWithAggregatesFilter<"RevenueDecisionLog"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"RevenueDecisionLog"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"RevenueDecisionLog"> | Date | string
+  }
+
+  export type ConnectorDefinitionWhereInput = {
+    AND?: ConnectorDefinitionWhereInput | ConnectorDefinitionWhereInput[]
+    OR?: ConnectorDefinitionWhereInput[]
+    NOT?: ConnectorDefinitionWhereInput | ConnectorDefinitionWhereInput[]
+    id?: StringFilter<"ConnectorDefinition"> | string
+    connectorKey?: StringFilter<"ConnectorDefinition"> | string
+    label?: StringFilter<"ConnectorDefinition"> | string
+    category?: StringFilter<"ConnectorDefinition"> | string
+    status?: StringFilter<"ConnectorDefinition"> | string
+    version?: StringFilter<"ConnectorDefinition"> | string
+    supportsDryRun?: BoolFilter<"ConnectorDefinition"> | boolean
+    providerCallsAllowed?: BoolFilter<"ConnectorDefinition"> | boolean
+    requiredApprovals?: JsonFilter<"ConnectorDefinition">
+    safetyNotes?: StringFilter<"ConnectorDefinition"> | string
+    createdAt?: DateTimeFilter<"ConnectorDefinition"> | Date | string
+    updatedAt?: DateTimeFilter<"ConnectorDefinition"> | Date | string
+  }
+
+  export type ConnectorDefinitionOrderByWithRelationInput = {
+    id?: SortOrder
+    connectorKey?: SortOrder
+    label?: SortOrder
+    category?: SortOrder
+    status?: SortOrder
+    version?: SortOrder
+    supportsDryRun?: SortOrder
+    providerCallsAllowed?: SortOrder
+    requiredApprovals?: SortOrder
+    safetyNotes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ConnectorDefinitionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    connectorKey?: string
+    AND?: ConnectorDefinitionWhereInput | ConnectorDefinitionWhereInput[]
+    OR?: ConnectorDefinitionWhereInput[]
+    NOT?: ConnectorDefinitionWhereInput | ConnectorDefinitionWhereInput[]
+    label?: StringFilter<"ConnectorDefinition"> | string
+    category?: StringFilter<"ConnectorDefinition"> | string
+    status?: StringFilter<"ConnectorDefinition"> | string
+    version?: StringFilter<"ConnectorDefinition"> | string
+    supportsDryRun?: BoolFilter<"ConnectorDefinition"> | boolean
+    providerCallsAllowed?: BoolFilter<"ConnectorDefinition"> | boolean
+    requiredApprovals?: JsonFilter<"ConnectorDefinition">
+    safetyNotes?: StringFilter<"ConnectorDefinition"> | string
+    createdAt?: DateTimeFilter<"ConnectorDefinition"> | Date | string
+    updatedAt?: DateTimeFilter<"ConnectorDefinition"> | Date | string
+  }, "id" | "connectorKey">
+
+  export type ConnectorDefinitionOrderByWithAggregationInput = {
+    id?: SortOrder
+    connectorKey?: SortOrder
+    label?: SortOrder
+    category?: SortOrder
+    status?: SortOrder
+    version?: SortOrder
+    supportsDryRun?: SortOrder
+    providerCallsAllowed?: SortOrder
+    requiredApprovals?: SortOrder
+    safetyNotes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ConnectorDefinitionCountOrderByAggregateInput
+    _max?: ConnectorDefinitionMaxOrderByAggregateInput
+    _min?: ConnectorDefinitionMinOrderByAggregateInput
+  }
+
+  export type ConnectorDefinitionScalarWhereWithAggregatesInput = {
+    AND?: ConnectorDefinitionScalarWhereWithAggregatesInput | ConnectorDefinitionScalarWhereWithAggregatesInput[]
+    OR?: ConnectorDefinitionScalarWhereWithAggregatesInput[]
+    NOT?: ConnectorDefinitionScalarWhereWithAggregatesInput | ConnectorDefinitionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ConnectorDefinition"> | string
+    connectorKey?: StringWithAggregatesFilter<"ConnectorDefinition"> | string
+    label?: StringWithAggregatesFilter<"ConnectorDefinition"> | string
+    category?: StringWithAggregatesFilter<"ConnectorDefinition"> | string
+    status?: StringWithAggregatesFilter<"ConnectorDefinition"> | string
+    version?: StringWithAggregatesFilter<"ConnectorDefinition"> | string
+    supportsDryRun?: BoolWithAggregatesFilter<"ConnectorDefinition"> | boolean
+    providerCallsAllowed?: BoolWithAggregatesFilter<"ConnectorDefinition"> | boolean
+    requiredApprovals?: JsonWithAggregatesFilter<"ConnectorDefinition">
+    safetyNotes?: StringWithAggregatesFilter<"ConnectorDefinition"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ConnectorDefinition"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ConnectorDefinition"> | Date | string
   }
 
   export type ManualLeadIntakeWhereInput = {
@@ -30022,6 +41303,11 @@ export namespace Prisma {
     marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutLeadInput
     salesConversionAssists?: SalesConversionAssistCreateNestedManyWithoutLeadInput
     manualLeadIntakes?: ManualLeadIntakeCreateNestedManyWithoutLeadInput
+    revenueLeadSources?: RevenueLeadSourceCreateNestedManyWithoutLeadInput
+    revenueLeadScores?: RevenueLeadScoreCreateNestedManyWithoutLeadInput
+    revenueTasks?: RevenueTaskCreateNestedManyWithoutLeadInput
+    revenuePipelineEvents?: RevenuePipelineEventCreateNestedManyWithoutLeadInput
+    revenueCommunicationEvents?: RevenueCommunicationEventCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateInput = {
@@ -30056,6 +41342,11 @@ export namespace Prisma {
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput
     salesConversionAssists?: SalesConversionAssistUncheckedCreateNestedManyWithoutLeadInput
     manualLeadIntakes?: ManualLeadIntakeUncheckedCreateNestedManyWithoutLeadInput
+    revenueLeadSources?: RevenueLeadSourceUncheckedCreateNestedManyWithoutLeadInput
+    revenueLeadScores?: RevenueLeadScoreUncheckedCreateNestedManyWithoutLeadInput
+    revenueTasks?: RevenueTaskUncheckedCreateNestedManyWithoutLeadInput
+    revenuePipelineEvents?: RevenuePipelineEventUncheckedCreateNestedManyWithoutLeadInput
+    revenueCommunicationEvents?: RevenueCommunicationEventUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUpdateInput = {
@@ -30090,6 +41381,11 @@ export namespace Prisma {
     marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutLeadNestedInput
     salesConversionAssists?: SalesConversionAssistUpdateManyWithoutLeadNestedInput
     manualLeadIntakes?: ManualLeadIntakeUpdateManyWithoutLeadNestedInput
+    revenueLeadSources?: RevenueLeadSourceUpdateManyWithoutLeadNestedInput
+    revenueLeadScores?: RevenueLeadScoreUpdateManyWithoutLeadNestedInput
+    revenueTasks?: RevenueTaskUpdateManyWithoutLeadNestedInput
+    revenuePipelineEvents?: RevenuePipelineEventUpdateManyWithoutLeadNestedInput
+    revenueCommunicationEvents?: RevenueCommunicationEventUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateInput = {
@@ -30124,6 +41420,11 @@ export namespace Prisma {
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput
     salesConversionAssists?: SalesConversionAssistUncheckedUpdateManyWithoutLeadNestedInput
     manualLeadIntakes?: ManualLeadIntakeUncheckedUpdateManyWithoutLeadNestedInput
+    revenueLeadSources?: RevenueLeadSourceUncheckedUpdateManyWithoutLeadNestedInput
+    revenueLeadScores?: RevenueLeadScoreUncheckedUpdateManyWithoutLeadNestedInput
+    revenueTasks?: RevenueTaskUncheckedUpdateManyWithoutLeadNestedInput
+    revenuePipelineEvents?: RevenuePipelineEventUncheckedUpdateManyWithoutLeadNestedInput
+    revenueCommunicationEvents?: RevenueCommunicationEventUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadCreateManyInput = {
@@ -30215,6 +41516,981 @@ export namespace Prisma {
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueAuditEventCreateInput = {
+    id?: string
+    tenantId?: string
+    actorId?: string | null
+    action: string
+    targetType: string
+    targetId?: string | null
+    requestId?: string | null
+    source: string
+    result?: string
+    safeMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type RevenueAuditEventUncheckedCreateInput = {
+    id?: string
+    tenantId?: string
+    actorId?: string | null
+    action: string
+    targetType: string
+    targetId?: string | null
+    requestId?: string | null
+    source: string
+    result?: string
+    safeMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type RevenueAuditEventUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    actorId?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    targetType?: StringFieldUpdateOperationsInput | string
+    targetId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestId?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    result?: StringFieldUpdateOperationsInput | string
+    safeMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueAuditEventUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    actorId?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    targetType?: StringFieldUpdateOperationsInput | string
+    targetId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestId?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    result?: StringFieldUpdateOperationsInput | string
+    safeMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueAuditEventCreateManyInput = {
+    id?: string
+    tenantId?: string
+    actorId?: string | null
+    action: string
+    targetType: string
+    targetId?: string | null
+    requestId?: string | null
+    source: string
+    result?: string
+    safeMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type RevenueAuditEventUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    actorId?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    targetType?: StringFieldUpdateOperationsInput | string
+    targetId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestId?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    result?: StringFieldUpdateOperationsInput | string
+    safeMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueAuditEventUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    actorId?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    targetType?: StringFieldUpdateOperationsInput | string
+    targetId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestId?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    result?: StringFieldUpdateOperationsInput | string
+    safeMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueLeadSourceCreateInput = {
+    id?: string
+    tenantId?: string
+    source: string
+    sourceType: string
+    sourceDetail: string
+    sourceRecordId?: string | null
+    campaignName?: string | null
+    campaignMedium?: string | null
+    costCents?: number | null
+    confidence?: number
+    verified?: boolean
+    importedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lead: LeadCreateNestedOneWithoutRevenueLeadSourcesInput
+  }
+
+  export type RevenueLeadSourceUncheckedCreateInput = {
+    id?: string
+    tenantId?: string
+    leadId: string
+    source: string
+    sourceType: string
+    sourceDetail: string
+    sourceRecordId?: string | null
+    campaignName?: string | null
+    campaignMedium?: string | null
+    costCents?: number | null
+    confidence?: number
+    verified?: boolean
+    importedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RevenueLeadSourceUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceDetail?: StringFieldUpdateOperationsInput | string
+    sourceRecordId?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignName?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignMedium?: NullableStringFieldUpdateOperationsInput | string | null
+    costCents?: NullableIntFieldUpdateOperationsInput | number | null
+    confidence?: IntFieldUpdateOperationsInput | number
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    importedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutRevenueLeadSourcesNestedInput
+  }
+
+  export type RevenueLeadSourceUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceDetail?: StringFieldUpdateOperationsInput | string
+    sourceRecordId?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignName?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignMedium?: NullableStringFieldUpdateOperationsInput | string | null
+    costCents?: NullableIntFieldUpdateOperationsInput | number | null
+    confidence?: IntFieldUpdateOperationsInput | number
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    importedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueLeadSourceCreateManyInput = {
+    id?: string
+    tenantId?: string
+    leadId: string
+    source: string
+    sourceType: string
+    sourceDetail: string
+    sourceRecordId?: string | null
+    campaignName?: string | null
+    campaignMedium?: string | null
+    costCents?: number | null
+    confidence?: number
+    verified?: boolean
+    importedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RevenueLeadSourceUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceDetail?: StringFieldUpdateOperationsInput | string
+    sourceRecordId?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignName?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignMedium?: NullableStringFieldUpdateOperationsInput | string | null
+    costCents?: NullableIntFieldUpdateOperationsInput | number | null
+    confidence?: IntFieldUpdateOperationsInput | number
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    importedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueLeadSourceUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceDetail?: StringFieldUpdateOperationsInput | string
+    sourceRecordId?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignName?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignMedium?: NullableStringFieldUpdateOperationsInput | string | null
+    costCents?: NullableIntFieldUpdateOperationsInput | number | null
+    confidence?: IntFieldUpdateOperationsInput | number
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    importedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueLeadScoreCreateInput = {
+    id?: string
+    tenantId?: string
+    score: number
+    confidence: number
+    priority: string
+    explanation: string
+    recommendedNextAction: string
+    missingData: JsonNullValueInput | InputJsonValue
+    scoreBreakdown: JsonNullValueInput | InputJsonValue
+    assumptions: JsonNullValueInput | InputJsonValue
+    dataUsed: JsonNullValueInput | InputJsonValue
+    advisoryOnly?: boolean
+    createdAt?: Date | string
+    lead: LeadCreateNestedOneWithoutRevenueLeadScoresInput
+  }
+
+  export type RevenueLeadScoreUncheckedCreateInput = {
+    id?: string
+    tenantId?: string
+    leadId: string
+    score: number
+    confidence: number
+    priority: string
+    explanation: string
+    recommendedNextAction: string
+    missingData: JsonNullValueInput | InputJsonValue
+    scoreBreakdown: JsonNullValueInput | InputJsonValue
+    assumptions: JsonNullValueInput | InputJsonValue
+    dataUsed: JsonNullValueInput | InputJsonValue
+    advisoryOnly?: boolean
+    createdAt?: Date | string
+  }
+
+  export type RevenueLeadScoreUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    confidence?: IntFieldUpdateOperationsInput | number
+    priority?: StringFieldUpdateOperationsInput | string
+    explanation?: StringFieldUpdateOperationsInput | string
+    recommendedNextAction?: StringFieldUpdateOperationsInput | string
+    missingData?: JsonNullValueInput | InputJsonValue
+    scoreBreakdown?: JsonNullValueInput | InputJsonValue
+    assumptions?: JsonNullValueInput | InputJsonValue
+    dataUsed?: JsonNullValueInput | InputJsonValue
+    advisoryOnly?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutRevenueLeadScoresNestedInput
+  }
+
+  export type RevenueLeadScoreUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    confidence?: IntFieldUpdateOperationsInput | number
+    priority?: StringFieldUpdateOperationsInput | string
+    explanation?: StringFieldUpdateOperationsInput | string
+    recommendedNextAction?: StringFieldUpdateOperationsInput | string
+    missingData?: JsonNullValueInput | InputJsonValue
+    scoreBreakdown?: JsonNullValueInput | InputJsonValue
+    assumptions?: JsonNullValueInput | InputJsonValue
+    dataUsed?: JsonNullValueInput | InputJsonValue
+    advisoryOnly?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueLeadScoreCreateManyInput = {
+    id?: string
+    tenantId?: string
+    leadId: string
+    score: number
+    confidence: number
+    priority: string
+    explanation: string
+    recommendedNextAction: string
+    missingData: JsonNullValueInput | InputJsonValue
+    scoreBreakdown: JsonNullValueInput | InputJsonValue
+    assumptions: JsonNullValueInput | InputJsonValue
+    dataUsed: JsonNullValueInput | InputJsonValue
+    advisoryOnly?: boolean
+    createdAt?: Date | string
+  }
+
+  export type RevenueLeadScoreUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    confidence?: IntFieldUpdateOperationsInput | number
+    priority?: StringFieldUpdateOperationsInput | string
+    explanation?: StringFieldUpdateOperationsInput | string
+    recommendedNextAction?: StringFieldUpdateOperationsInput | string
+    missingData?: JsonNullValueInput | InputJsonValue
+    scoreBreakdown?: JsonNullValueInput | InputJsonValue
+    assumptions?: JsonNullValueInput | InputJsonValue
+    dataUsed?: JsonNullValueInput | InputJsonValue
+    advisoryOnly?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueLeadScoreUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    confidence?: IntFieldUpdateOperationsInput | number
+    priority?: StringFieldUpdateOperationsInput | string
+    explanation?: StringFieldUpdateOperationsInput | string
+    recommendedNextAction?: StringFieldUpdateOperationsInput | string
+    missingData?: JsonNullValueInput | InputJsonValue
+    scoreBreakdown?: JsonNullValueInput | InputJsonValue
+    assumptions?: JsonNullValueInput | InputJsonValue
+    dataUsed?: JsonNullValueInput | InputJsonValue
+    advisoryOnly?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueTaskCreateInput = {
+    id?: string
+    tenantId?: string
+    title: string
+    taskType: string
+    priority: string
+    status?: string
+    recommendedAction: string
+    reason: string
+    dueAt?: Date | string | null
+    assignedTo?: string | null
+    requiresApproval?: boolean
+    source: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+    lead?: LeadCreateNestedOneWithoutRevenueTasksInput
+  }
+
+  export type RevenueTaskUncheckedCreateInput = {
+    id?: string
+    tenantId?: string
+    leadId?: string | null
+    title: string
+    taskType: string
+    priority: string
+    status?: string
+    recommendedAction: string
+    reason: string
+    dueAt?: Date | string | null
+    assignedTo?: string | null
+    requiresApproval?: boolean
+    source: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+  }
+
+  export type RevenueTaskUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    taskType?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    recommendedAction?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lead?: LeadUpdateOneWithoutRevenueTasksNestedInput
+  }
+
+  export type RevenueTaskUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    leadId?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
+    taskType?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    recommendedAction?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type RevenueTaskCreateManyInput = {
+    id?: string
+    tenantId?: string
+    leadId?: string | null
+    title: string
+    taskType: string
+    priority: string
+    status?: string
+    recommendedAction: string
+    reason: string
+    dueAt?: Date | string | null
+    assignedTo?: string | null
+    requiresApproval?: boolean
+    source: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+  }
+
+  export type RevenueTaskUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    taskType?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    recommendedAction?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type RevenueTaskUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    leadId?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
+    taskType?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    recommendedAction?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type RevenuePipelineEventCreateInput = {
+    id?: string
+    tenantId?: string
+    fromStage?: string | null
+    toStage: string
+    reason: string
+    source: string
+    revenueOutcome?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    lead: LeadCreateNestedOneWithoutRevenuePipelineEventsInput
+  }
+
+  export type RevenuePipelineEventUncheckedCreateInput = {
+    id?: string
+    tenantId?: string
+    leadId: string
+    fromStage?: string | null
+    toStage: string
+    reason: string
+    source: string
+    revenueOutcome?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+  }
+
+  export type RevenuePipelineEventUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    fromStage?: NullableStringFieldUpdateOperationsInput | string | null
+    toStage?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    revenueOutcome?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneRequiredWithoutRevenuePipelineEventsNestedInput
+  }
+
+  export type RevenuePipelineEventUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    fromStage?: NullableStringFieldUpdateOperationsInput | string | null
+    toStage?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    revenueOutcome?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenuePipelineEventCreateManyInput = {
+    id?: string
+    tenantId?: string
+    leadId: string
+    fromStage?: string | null
+    toStage: string
+    reason: string
+    source: string
+    revenueOutcome?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+  }
+
+  export type RevenuePipelineEventUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    fromStage?: NullableStringFieldUpdateOperationsInput | string | null
+    toStage?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    revenueOutcome?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenuePipelineEventUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    fromStage?: NullableStringFieldUpdateOperationsInput | string | null
+    toStage?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    revenueOutcome?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueCommunicationEventCreateInput = {
+    id?: string
+    tenantId?: string
+    channel: string
+    direction: string
+    status: string
+    approvalStatus?: string
+    provider?: string
+    providerCalled?: boolean
+    messageSummary?: string | null
+    requiresApproval?: boolean
+    createdBy?: string | null
+    createdAt?: Date | string
+    lead?: LeadCreateNestedOneWithoutRevenueCommunicationEventsInput
+  }
+
+  export type RevenueCommunicationEventUncheckedCreateInput = {
+    id?: string
+    tenantId?: string
+    leadId?: string | null
+    channel: string
+    direction: string
+    status: string
+    approvalStatus?: string
+    provider?: string
+    providerCalled?: boolean
+    messageSummary?: string | null
+    requiresApproval?: boolean
+    createdBy?: string | null
+    createdAt?: Date | string
+  }
+
+  export type RevenueCommunicationEventUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    direction?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    approvalStatus?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    messageSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: LeadUpdateOneWithoutRevenueCommunicationEventsNestedInput
+  }
+
+  export type RevenueCommunicationEventUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    leadId?: NullableStringFieldUpdateOperationsInput | string | null
+    channel?: StringFieldUpdateOperationsInput | string
+    direction?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    approvalStatus?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    messageSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueCommunicationEventCreateManyInput = {
+    id?: string
+    tenantId?: string
+    leadId?: string | null
+    channel: string
+    direction: string
+    status: string
+    approvalStatus?: string
+    provider?: string
+    providerCalled?: boolean
+    messageSummary?: string | null
+    requiresApproval?: boolean
+    createdBy?: string | null
+    createdAt?: Date | string
+  }
+
+  export type RevenueCommunicationEventUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    direction?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    approvalStatus?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    messageSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueCommunicationEventUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    leadId?: NullableStringFieldUpdateOperationsInput | string | null
+    channel?: StringFieldUpdateOperationsInput | string
+    direction?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    approvalStatus?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    messageSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueDecisionLogCreateInput = {
+    id?: string
+    tenantId?: string
+    leadId?: string | null
+    taskId?: string | null
+    auditEventId?: string | null
+    aiMemoryEventId?: string | null
+    connectorKey?: string | null
+    pipelineEventId?: string | null
+    recommendationType: string
+    recommendation: string
+    confidence: number
+    supportingEvidence: JsonNullValueInput | InputJsonValue
+    assumptions: JsonNullValueInput | InputJsonValue
+    missingData: JsonNullValueInput | InputJsonValue
+    userDecision?: string
+    modifiedAction?: string | null
+    outcome?: string
+    advisoryOnly?: boolean
+    providerCalled?: boolean
+    outreachSent?: boolean
+    requiresApproval?: boolean
+    safeMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RevenueDecisionLogUncheckedCreateInput = {
+    id?: string
+    tenantId?: string
+    leadId?: string | null
+    taskId?: string | null
+    auditEventId?: string | null
+    aiMemoryEventId?: string | null
+    connectorKey?: string | null
+    pipelineEventId?: string | null
+    recommendationType: string
+    recommendation: string
+    confidence: number
+    supportingEvidence: JsonNullValueInput | InputJsonValue
+    assumptions: JsonNullValueInput | InputJsonValue
+    missingData: JsonNullValueInput | InputJsonValue
+    userDecision?: string
+    modifiedAction?: string | null
+    outcome?: string
+    advisoryOnly?: boolean
+    providerCalled?: boolean
+    outreachSent?: boolean
+    requiresApproval?: boolean
+    safeMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RevenueDecisionLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    leadId?: NullableStringFieldUpdateOperationsInput | string | null
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    aiMemoryEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    connectorKey?: NullableStringFieldUpdateOperationsInput | string | null
+    pipelineEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    recommendationType?: StringFieldUpdateOperationsInput | string
+    recommendation?: StringFieldUpdateOperationsInput | string
+    confidence?: IntFieldUpdateOperationsInput | number
+    supportingEvidence?: JsonNullValueInput | InputJsonValue
+    assumptions?: JsonNullValueInput | InputJsonValue
+    missingData?: JsonNullValueInput | InputJsonValue
+    userDecision?: StringFieldUpdateOperationsInput | string
+    modifiedAction?: NullableStringFieldUpdateOperationsInput | string | null
+    outcome?: StringFieldUpdateOperationsInput | string
+    advisoryOnly?: BoolFieldUpdateOperationsInput | boolean
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    outreachSent?: BoolFieldUpdateOperationsInput | boolean
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    safeMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueDecisionLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    leadId?: NullableStringFieldUpdateOperationsInput | string | null
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    aiMemoryEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    connectorKey?: NullableStringFieldUpdateOperationsInput | string | null
+    pipelineEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    recommendationType?: StringFieldUpdateOperationsInput | string
+    recommendation?: StringFieldUpdateOperationsInput | string
+    confidence?: IntFieldUpdateOperationsInput | number
+    supportingEvidence?: JsonNullValueInput | InputJsonValue
+    assumptions?: JsonNullValueInput | InputJsonValue
+    missingData?: JsonNullValueInput | InputJsonValue
+    userDecision?: StringFieldUpdateOperationsInput | string
+    modifiedAction?: NullableStringFieldUpdateOperationsInput | string | null
+    outcome?: StringFieldUpdateOperationsInput | string
+    advisoryOnly?: BoolFieldUpdateOperationsInput | boolean
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    outreachSent?: BoolFieldUpdateOperationsInput | boolean
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    safeMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueDecisionLogCreateManyInput = {
+    id?: string
+    tenantId?: string
+    leadId?: string | null
+    taskId?: string | null
+    auditEventId?: string | null
+    aiMemoryEventId?: string | null
+    connectorKey?: string | null
+    pipelineEventId?: string | null
+    recommendationType: string
+    recommendation: string
+    confidence: number
+    supportingEvidence: JsonNullValueInput | InputJsonValue
+    assumptions: JsonNullValueInput | InputJsonValue
+    missingData: JsonNullValueInput | InputJsonValue
+    userDecision?: string
+    modifiedAction?: string | null
+    outcome?: string
+    advisoryOnly?: boolean
+    providerCalled?: boolean
+    outreachSent?: boolean
+    requiresApproval?: boolean
+    safeMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RevenueDecisionLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    leadId?: NullableStringFieldUpdateOperationsInput | string | null
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    aiMemoryEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    connectorKey?: NullableStringFieldUpdateOperationsInput | string | null
+    pipelineEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    recommendationType?: StringFieldUpdateOperationsInput | string
+    recommendation?: StringFieldUpdateOperationsInput | string
+    confidence?: IntFieldUpdateOperationsInput | number
+    supportingEvidence?: JsonNullValueInput | InputJsonValue
+    assumptions?: JsonNullValueInput | InputJsonValue
+    missingData?: JsonNullValueInput | InputJsonValue
+    userDecision?: StringFieldUpdateOperationsInput | string
+    modifiedAction?: NullableStringFieldUpdateOperationsInput | string | null
+    outcome?: StringFieldUpdateOperationsInput | string
+    advisoryOnly?: BoolFieldUpdateOperationsInput | boolean
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    outreachSent?: BoolFieldUpdateOperationsInput | boolean
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    safeMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueDecisionLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    leadId?: NullableStringFieldUpdateOperationsInput | string | null
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    aiMemoryEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    connectorKey?: NullableStringFieldUpdateOperationsInput | string | null
+    pipelineEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    recommendationType?: StringFieldUpdateOperationsInput | string
+    recommendation?: StringFieldUpdateOperationsInput | string
+    confidence?: IntFieldUpdateOperationsInput | number
+    supportingEvidence?: JsonNullValueInput | InputJsonValue
+    assumptions?: JsonNullValueInput | InputJsonValue
+    missingData?: JsonNullValueInput | InputJsonValue
+    userDecision?: StringFieldUpdateOperationsInput | string
+    modifiedAction?: NullableStringFieldUpdateOperationsInput | string | null
+    outcome?: StringFieldUpdateOperationsInput | string
+    advisoryOnly?: BoolFieldUpdateOperationsInput | boolean
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    outreachSent?: BoolFieldUpdateOperationsInput | boolean
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    safeMetadata?: NullableJsonNullValueInput | InputJsonValue
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConnectorDefinitionCreateInput = {
+    id?: string
+    connectorKey: string
+    label: string
+    category: string
+    status?: string
+    version?: string
+    supportsDryRun?: boolean
+    providerCallsAllowed?: boolean
+    requiredApprovals: JsonNullValueInput | InputJsonValue
+    safetyNotes: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ConnectorDefinitionUncheckedCreateInput = {
+    id?: string
+    connectorKey: string
+    label: string
+    category: string
+    status?: string
+    version?: string
+    supportsDryRun?: boolean
+    providerCallsAllowed?: boolean
+    requiredApprovals: JsonNullValueInput | InputJsonValue
+    safetyNotes: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ConnectorDefinitionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    connectorKey?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    supportsDryRun?: BoolFieldUpdateOperationsInput | boolean
+    providerCallsAllowed?: BoolFieldUpdateOperationsInput | boolean
+    requiredApprovals?: JsonNullValueInput | InputJsonValue
+    safetyNotes?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConnectorDefinitionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    connectorKey?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    supportsDryRun?: BoolFieldUpdateOperationsInput | boolean
+    providerCallsAllowed?: BoolFieldUpdateOperationsInput | boolean
+    requiredApprovals?: JsonNullValueInput | InputJsonValue
+    safetyNotes?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConnectorDefinitionCreateManyInput = {
+    id?: string
+    connectorKey: string
+    label: string
+    category: string
+    status?: string
+    version?: string
+    supportsDryRun?: boolean
+    providerCallsAllowed?: boolean
+    requiredApprovals: JsonNullValueInput | InputJsonValue
+    safetyNotes: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ConnectorDefinitionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    connectorKey?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    supportsDryRun?: BoolFieldUpdateOperationsInput | boolean
+    providerCallsAllowed?: BoolFieldUpdateOperationsInput | boolean
+    requiredApprovals?: JsonNullValueInput | InputJsonValue
+    safetyNotes?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConnectorDefinitionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    connectorKey?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    supportsDryRun?: BoolFieldUpdateOperationsInput | boolean
+    providerCallsAllowed?: BoolFieldUpdateOperationsInput | boolean
+    requiredApprovals?: JsonNullValueInput | InputJsonValue
+    safetyNotes?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -32433,6 +44709,36 @@ export namespace Prisma {
     none?: ManualLeadIntakeWhereInput
   }
 
+  export type RevenueLeadSourceListRelationFilter = {
+    every?: RevenueLeadSourceWhereInput
+    some?: RevenueLeadSourceWhereInput
+    none?: RevenueLeadSourceWhereInput
+  }
+
+  export type RevenueLeadScoreListRelationFilter = {
+    every?: RevenueLeadScoreWhereInput
+    some?: RevenueLeadScoreWhereInput
+    none?: RevenueLeadScoreWhereInput
+  }
+
+  export type RevenueTaskListRelationFilter = {
+    every?: RevenueTaskWhereInput
+    some?: RevenueTaskWhereInput
+    none?: RevenueTaskWhereInput
+  }
+
+  export type RevenuePipelineEventListRelationFilter = {
+    every?: RevenuePipelineEventWhereInput
+    some?: RevenuePipelineEventWhereInput
+    none?: RevenuePipelineEventWhereInput
+  }
+
+  export type RevenueCommunicationEventListRelationFilter = {
+    every?: RevenueCommunicationEventWhereInput
+    some?: RevenueCommunicationEventWhereInput
+    none?: RevenueCommunicationEventWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -32447,6 +44753,26 @@ export namespace Prisma {
   }
 
   export type ManualLeadIntakeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RevenueLeadSourceOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RevenueLeadScoreOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RevenueTaskOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RevenuePipelineEventOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RevenueCommunicationEventOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -32673,6 +44999,197 @@ export namespace Prisma {
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type RevenueAuditEventCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    actorId?: SortOrder
+    action?: SortOrder
+    targetType?: SortOrder
+    targetId?: SortOrder
+    requestId?: SortOrder
+    source?: SortOrder
+    result?: SortOrder
+    safeMetadata?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RevenueAuditEventMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    actorId?: SortOrder
+    action?: SortOrder
+    targetType?: SortOrder
+    targetId?: SortOrder
+    requestId?: SortOrder
+    source?: SortOrder
+    result?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RevenueAuditEventMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    actorId?: SortOrder
+    action?: SortOrder
+    targetType?: SortOrder
+    targetId?: SortOrder
+    requestId?: SortOrder
+    source?: SortOrder
+    result?: SortOrder
+    createdAt?: SortOrder
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
+  }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type LeadScalarRelationFilter = {
+    is?: LeadWhereInput
+    isNot?: LeadWhereInput
+  }
+
+  export type RevenueLeadSourceLeadIdSourceSourceDetailCompoundUniqueInput = {
+    leadId: string
+    source: string
+    sourceDetail: string
+  }
+
+  export type RevenueLeadSourceCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrder
+    source?: SortOrder
+    sourceType?: SortOrder
+    sourceDetail?: SortOrder
+    sourceRecordId?: SortOrder
+    campaignName?: SortOrder
+    campaignMedium?: SortOrder
+    costCents?: SortOrder
+    confidence?: SortOrder
+    verified?: SortOrder
+    importedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RevenueLeadSourceAvgOrderByAggregateInput = {
+    costCents?: SortOrder
+    confidence?: SortOrder
+  }
+
+  export type RevenueLeadSourceMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrder
+    source?: SortOrder
+    sourceType?: SortOrder
+    sourceDetail?: SortOrder
+    sourceRecordId?: SortOrder
+    campaignName?: SortOrder
+    campaignMedium?: SortOrder
+    costCents?: SortOrder
+    confidence?: SortOrder
+    verified?: SortOrder
+    importedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RevenueLeadSourceMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrder
+    source?: SortOrder
+    sourceType?: SortOrder
+    sourceDetail?: SortOrder
+    sourceRecordId?: SortOrder
+    campaignName?: SortOrder
+    campaignMedium?: SortOrder
+    costCents?: SortOrder
+    confidence?: SortOrder
+    verified?: SortOrder
+    importedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RevenueLeadSourceSumOrderByAggregateInput = {
+    costCents?: SortOrder
+    confidence?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
   export type JsonFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
@@ -32697,9 +45214,359 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type RevenueLeadScoreCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrder
+    score?: SortOrder
+    confidence?: SortOrder
+    priority?: SortOrder
+    explanation?: SortOrder
+    recommendedNextAction?: SortOrder
+    missingData?: SortOrder
+    scoreBreakdown?: SortOrder
+    assumptions?: SortOrder
+    dataUsed?: SortOrder
+    advisoryOnly?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RevenueLeadScoreAvgOrderByAggregateInput = {
+    score?: SortOrder
+    confidence?: SortOrder
+  }
+
+  export type RevenueLeadScoreMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrder
+    score?: SortOrder
+    confidence?: SortOrder
+    priority?: SortOrder
+    explanation?: SortOrder
+    recommendedNextAction?: SortOrder
+    advisoryOnly?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RevenueLeadScoreMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrder
+    score?: SortOrder
+    confidence?: SortOrder
+    priority?: SortOrder
+    explanation?: SortOrder
+    recommendedNextAction?: SortOrder
+    advisoryOnly?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RevenueLeadScoreSumOrderByAggregateInput = {
+    score?: SortOrder
+    confidence?: SortOrder
+  }
+  export type JsonWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedJsonFilter<$PrismaModel>
+    _max?: NestedJsonFilter<$PrismaModel>
+  }
+
   export type LeadNullableScalarRelationFilter = {
     is?: LeadWhereInput | null
     isNot?: LeadWhereInput | null
+  }
+
+  export type RevenueTaskCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrder
+    title?: SortOrder
+    taskType?: SortOrder
+    priority?: SortOrder
+    status?: SortOrder
+    recommendedAction?: SortOrder
+    reason?: SortOrder
+    dueAt?: SortOrder
+    assignedTo?: SortOrder
+    requiresApproval?: SortOrder
+    source?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    completedAt?: SortOrder
+  }
+
+  export type RevenueTaskMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrder
+    title?: SortOrder
+    taskType?: SortOrder
+    priority?: SortOrder
+    status?: SortOrder
+    recommendedAction?: SortOrder
+    reason?: SortOrder
+    dueAt?: SortOrder
+    assignedTo?: SortOrder
+    requiresApproval?: SortOrder
+    source?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    completedAt?: SortOrder
+  }
+
+  export type RevenueTaskMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrder
+    title?: SortOrder
+    taskType?: SortOrder
+    priority?: SortOrder
+    status?: SortOrder
+    recommendedAction?: SortOrder
+    reason?: SortOrder
+    dueAt?: SortOrder
+    assignedTo?: SortOrder
+    requiresApproval?: SortOrder
+    source?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    completedAt?: SortOrder
+  }
+
+  export type RevenuePipelineEventCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrder
+    fromStage?: SortOrder
+    toStage?: SortOrder
+    reason?: SortOrder
+    source?: SortOrder
+    revenueOutcome?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RevenuePipelineEventMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrder
+    fromStage?: SortOrder
+    toStage?: SortOrder
+    reason?: SortOrder
+    source?: SortOrder
+    revenueOutcome?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RevenuePipelineEventMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrder
+    fromStage?: SortOrder
+    toStage?: SortOrder
+    reason?: SortOrder
+    source?: SortOrder
+    revenueOutcome?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RevenueCommunicationEventCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrder
+    channel?: SortOrder
+    direction?: SortOrder
+    status?: SortOrder
+    approvalStatus?: SortOrder
+    provider?: SortOrder
+    providerCalled?: SortOrder
+    messageSummary?: SortOrder
+    requiresApproval?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RevenueCommunicationEventMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrder
+    channel?: SortOrder
+    direction?: SortOrder
+    status?: SortOrder
+    approvalStatus?: SortOrder
+    provider?: SortOrder
+    providerCalled?: SortOrder
+    messageSummary?: SortOrder
+    requiresApproval?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RevenueCommunicationEventMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrder
+    channel?: SortOrder
+    direction?: SortOrder
+    status?: SortOrder
+    approvalStatus?: SortOrder
+    provider?: SortOrder
+    providerCalled?: SortOrder
+    messageSummary?: SortOrder
+    requiresApproval?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RevenueDecisionLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrder
+    taskId?: SortOrder
+    auditEventId?: SortOrder
+    aiMemoryEventId?: SortOrder
+    connectorKey?: SortOrder
+    pipelineEventId?: SortOrder
+    recommendationType?: SortOrder
+    recommendation?: SortOrder
+    confidence?: SortOrder
+    supportingEvidence?: SortOrder
+    assumptions?: SortOrder
+    missingData?: SortOrder
+    userDecision?: SortOrder
+    modifiedAction?: SortOrder
+    outcome?: SortOrder
+    advisoryOnly?: SortOrder
+    providerCalled?: SortOrder
+    outreachSent?: SortOrder
+    requiresApproval?: SortOrder
+    safeMetadata?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RevenueDecisionLogAvgOrderByAggregateInput = {
+    confidence?: SortOrder
+  }
+
+  export type RevenueDecisionLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrder
+    taskId?: SortOrder
+    auditEventId?: SortOrder
+    aiMemoryEventId?: SortOrder
+    connectorKey?: SortOrder
+    pipelineEventId?: SortOrder
+    recommendationType?: SortOrder
+    recommendation?: SortOrder
+    confidence?: SortOrder
+    userDecision?: SortOrder
+    modifiedAction?: SortOrder
+    outcome?: SortOrder
+    advisoryOnly?: SortOrder
+    providerCalled?: SortOrder
+    outreachSent?: SortOrder
+    requiresApproval?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RevenueDecisionLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    leadId?: SortOrder
+    taskId?: SortOrder
+    auditEventId?: SortOrder
+    aiMemoryEventId?: SortOrder
+    connectorKey?: SortOrder
+    pipelineEventId?: SortOrder
+    recommendationType?: SortOrder
+    recommendation?: SortOrder
+    confidence?: SortOrder
+    userDecision?: SortOrder
+    modifiedAction?: SortOrder
+    outcome?: SortOrder
+    advisoryOnly?: SortOrder
+    providerCalled?: SortOrder
+    outreachSent?: SortOrder
+    requiresApproval?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RevenueDecisionLogSumOrderByAggregateInput = {
+    confidence?: SortOrder
+  }
+
+  export type ConnectorDefinitionCountOrderByAggregateInput = {
+    id?: SortOrder
+    connectorKey?: SortOrder
+    label?: SortOrder
+    category?: SortOrder
+    status?: SortOrder
+    version?: SortOrder
+    supportsDryRun?: SortOrder
+    providerCallsAllowed?: SortOrder
+    requiredApprovals?: SortOrder
+    safetyNotes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ConnectorDefinitionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    connectorKey?: SortOrder
+    label?: SortOrder
+    category?: SortOrder
+    status?: SortOrder
+    version?: SortOrder
+    supportsDryRun?: SortOrder
+    providerCallsAllowed?: SortOrder
+    safetyNotes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ConnectorDefinitionMinOrderByAggregateInput = {
+    id?: SortOrder
+    connectorKey?: SortOrder
+    label?: SortOrder
+    category?: SortOrder
+    status?: SortOrder
+    version?: SortOrder
+    supportsDryRun?: SortOrder
+    providerCallsAllowed?: SortOrder
+    safetyNotes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type ManualLeadIntakeCountOrderByAggregateInput = {
@@ -32765,32 +45632,6 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
-  export type JsonWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedJsonFilter<$PrismaModel>
-    _max?: NestedJsonFilter<$PrismaModel>
-  }
 
   export type SellerCallOutcomeCountOrderByAggregateInput = {
     id?: SortOrder
@@ -32844,29 +45685,6 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
-  }
-  export type JsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type AiPerformanceMetricCountOrderByAggregateInput = {
@@ -32996,32 +45814,6 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
-  }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedJsonNullableFilter<$PrismaModel>
-    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type AiJobActionListRelationFilter = {
@@ -33256,17 +46048,6 @@ export namespace Prisma {
     confidence?: SortOrder
   }
 
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
   export type EnumBuyerTierFilter<$PrismaModel = never> = {
     equals?: $Enums.BuyerTier | EnumBuyerTierFieldRefInput<$PrismaModel>
     in?: $Enums.BuyerTier[] | ListEnumBuyerTierFieldRefInput<$PrismaModel>
@@ -33370,22 +46151,6 @@ export namespace Prisma {
     buyerQualityScore?: SortOrder
     activityCount?: SortOrder
     meaningfulActivityCount?: SortOrder
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type EnumBuyerTierWithAggregatesFilter<$PrismaModel = never> = {
@@ -33666,11 +46431,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type LeadScalarRelationFilter = {
-    is?: LeadWhereInput
-    isNot?: LeadWhereInput
-  }
-
   export type MarketingDraftNullableScalarRelationFilter = {
     is?: MarketingDraftWhereInput | null
     isNot?: MarketingDraftWhereInput | null
@@ -33928,6 +46688,41 @@ export namespace Prisma {
     connect?: ManualLeadIntakeWhereUniqueInput | ManualLeadIntakeWhereUniqueInput[]
   }
 
+  export type RevenueLeadSourceCreateNestedManyWithoutLeadInput = {
+    create?: XOR<RevenueLeadSourceCreateWithoutLeadInput, RevenueLeadSourceUncheckedCreateWithoutLeadInput> | RevenueLeadSourceCreateWithoutLeadInput[] | RevenueLeadSourceUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: RevenueLeadSourceCreateOrConnectWithoutLeadInput | RevenueLeadSourceCreateOrConnectWithoutLeadInput[]
+    createMany?: RevenueLeadSourceCreateManyLeadInputEnvelope
+    connect?: RevenueLeadSourceWhereUniqueInput | RevenueLeadSourceWhereUniqueInput[]
+  }
+
+  export type RevenueLeadScoreCreateNestedManyWithoutLeadInput = {
+    create?: XOR<RevenueLeadScoreCreateWithoutLeadInput, RevenueLeadScoreUncheckedCreateWithoutLeadInput> | RevenueLeadScoreCreateWithoutLeadInput[] | RevenueLeadScoreUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: RevenueLeadScoreCreateOrConnectWithoutLeadInput | RevenueLeadScoreCreateOrConnectWithoutLeadInput[]
+    createMany?: RevenueLeadScoreCreateManyLeadInputEnvelope
+    connect?: RevenueLeadScoreWhereUniqueInput | RevenueLeadScoreWhereUniqueInput[]
+  }
+
+  export type RevenueTaskCreateNestedManyWithoutLeadInput = {
+    create?: XOR<RevenueTaskCreateWithoutLeadInput, RevenueTaskUncheckedCreateWithoutLeadInput> | RevenueTaskCreateWithoutLeadInput[] | RevenueTaskUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: RevenueTaskCreateOrConnectWithoutLeadInput | RevenueTaskCreateOrConnectWithoutLeadInput[]
+    createMany?: RevenueTaskCreateManyLeadInputEnvelope
+    connect?: RevenueTaskWhereUniqueInput | RevenueTaskWhereUniqueInput[]
+  }
+
+  export type RevenuePipelineEventCreateNestedManyWithoutLeadInput = {
+    create?: XOR<RevenuePipelineEventCreateWithoutLeadInput, RevenuePipelineEventUncheckedCreateWithoutLeadInput> | RevenuePipelineEventCreateWithoutLeadInput[] | RevenuePipelineEventUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: RevenuePipelineEventCreateOrConnectWithoutLeadInput | RevenuePipelineEventCreateOrConnectWithoutLeadInput[]
+    createMany?: RevenuePipelineEventCreateManyLeadInputEnvelope
+    connect?: RevenuePipelineEventWhereUniqueInput | RevenuePipelineEventWhereUniqueInput[]
+  }
+
+  export type RevenueCommunicationEventCreateNestedManyWithoutLeadInput = {
+    create?: XOR<RevenueCommunicationEventCreateWithoutLeadInput, RevenueCommunicationEventUncheckedCreateWithoutLeadInput> | RevenueCommunicationEventCreateWithoutLeadInput[] | RevenueCommunicationEventUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: RevenueCommunicationEventCreateOrConnectWithoutLeadInput | RevenueCommunicationEventCreateOrConnectWithoutLeadInput[]
+    createMany?: RevenueCommunicationEventCreateManyLeadInputEnvelope
+    connect?: RevenueCommunicationEventWhereUniqueInput | RevenueCommunicationEventWhereUniqueInput[]
+  }
+
   export type MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput = {
     create?: XOR<MarketingSalesAttributionCreateWithoutLeadInput, MarketingSalesAttributionUncheckedCreateWithoutLeadInput> | MarketingSalesAttributionCreateWithoutLeadInput[] | MarketingSalesAttributionUncheckedCreateWithoutLeadInput[]
     connectOrCreate?: MarketingSalesAttributionCreateOrConnectWithoutLeadInput | MarketingSalesAttributionCreateOrConnectWithoutLeadInput[]
@@ -33947,6 +46742,41 @@ export namespace Prisma {
     connectOrCreate?: ManualLeadIntakeCreateOrConnectWithoutLeadInput | ManualLeadIntakeCreateOrConnectWithoutLeadInput[]
     createMany?: ManualLeadIntakeCreateManyLeadInputEnvelope
     connect?: ManualLeadIntakeWhereUniqueInput | ManualLeadIntakeWhereUniqueInput[]
+  }
+
+  export type RevenueLeadSourceUncheckedCreateNestedManyWithoutLeadInput = {
+    create?: XOR<RevenueLeadSourceCreateWithoutLeadInput, RevenueLeadSourceUncheckedCreateWithoutLeadInput> | RevenueLeadSourceCreateWithoutLeadInput[] | RevenueLeadSourceUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: RevenueLeadSourceCreateOrConnectWithoutLeadInput | RevenueLeadSourceCreateOrConnectWithoutLeadInput[]
+    createMany?: RevenueLeadSourceCreateManyLeadInputEnvelope
+    connect?: RevenueLeadSourceWhereUniqueInput | RevenueLeadSourceWhereUniqueInput[]
+  }
+
+  export type RevenueLeadScoreUncheckedCreateNestedManyWithoutLeadInput = {
+    create?: XOR<RevenueLeadScoreCreateWithoutLeadInput, RevenueLeadScoreUncheckedCreateWithoutLeadInput> | RevenueLeadScoreCreateWithoutLeadInput[] | RevenueLeadScoreUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: RevenueLeadScoreCreateOrConnectWithoutLeadInput | RevenueLeadScoreCreateOrConnectWithoutLeadInput[]
+    createMany?: RevenueLeadScoreCreateManyLeadInputEnvelope
+    connect?: RevenueLeadScoreWhereUniqueInput | RevenueLeadScoreWhereUniqueInput[]
+  }
+
+  export type RevenueTaskUncheckedCreateNestedManyWithoutLeadInput = {
+    create?: XOR<RevenueTaskCreateWithoutLeadInput, RevenueTaskUncheckedCreateWithoutLeadInput> | RevenueTaskCreateWithoutLeadInput[] | RevenueTaskUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: RevenueTaskCreateOrConnectWithoutLeadInput | RevenueTaskCreateOrConnectWithoutLeadInput[]
+    createMany?: RevenueTaskCreateManyLeadInputEnvelope
+    connect?: RevenueTaskWhereUniqueInput | RevenueTaskWhereUniqueInput[]
+  }
+
+  export type RevenuePipelineEventUncheckedCreateNestedManyWithoutLeadInput = {
+    create?: XOR<RevenuePipelineEventCreateWithoutLeadInput, RevenuePipelineEventUncheckedCreateWithoutLeadInput> | RevenuePipelineEventCreateWithoutLeadInput[] | RevenuePipelineEventUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: RevenuePipelineEventCreateOrConnectWithoutLeadInput | RevenuePipelineEventCreateOrConnectWithoutLeadInput[]
+    createMany?: RevenuePipelineEventCreateManyLeadInputEnvelope
+    connect?: RevenuePipelineEventWhereUniqueInput | RevenuePipelineEventWhereUniqueInput[]
+  }
+
+  export type RevenueCommunicationEventUncheckedCreateNestedManyWithoutLeadInput = {
+    create?: XOR<RevenueCommunicationEventCreateWithoutLeadInput, RevenueCommunicationEventUncheckedCreateWithoutLeadInput> | RevenueCommunicationEventCreateWithoutLeadInput[] | RevenueCommunicationEventUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: RevenueCommunicationEventCreateOrConnectWithoutLeadInput | RevenueCommunicationEventCreateOrConnectWithoutLeadInput[]
+    createMany?: RevenueCommunicationEventCreateManyLeadInputEnvelope
+    connect?: RevenueCommunicationEventWhereUniqueInput | RevenueCommunicationEventWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -34031,6 +46861,76 @@ export namespace Prisma {
     deleteMany?: ManualLeadIntakeScalarWhereInput | ManualLeadIntakeScalarWhereInput[]
   }
 
+  export type RevenueLeadSourceUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<RevenueLeadSourceCreateWithoutLeadInput, RevenueLeadSourceUncheckedCreateWithoutLeadInput> | RevenueLeadSourceCreateWithoutLeadInput[] | RevenueLeadSourceUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: RevenueLeadSourceCreateOrConnectWithoutLeadInput | RevenueLeadSourceCreateOrConnectWithoutLeadInput[]
+    upsert?: RevenueLeadSourceUpsertWithWhereUniqueWithoutLeadInput | RevenueLeadSourceUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: RevenueLeadSourceCreateManyLeadInputEnvelope
+    set?: RevenueLeadSourceWhereUniqueInput | RevenueLeadSourceWhereUniqueInput[]
+    disconnect?: RevenueLeadSourceWhereUniqueInput | RevenueLeadSourceWhereUniqueInput[]
+    delete?: RevenueLeadSourceWhereUniqueInput | RevenueLeadSourceWhereUniqueInput[]
+    connect?: RevenueLeadSourceWhereUniqueInput | RevenueLeadSourceWhereUniqueInput[]
+    update?: RevenueLeadSourceUpdateWithWhereUniqueWithoutLeadInput | RevenueLeadSourceUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: RevenueLeadSourceUpdateManyWithWhereWithoutLeadInput | RevenueLeadSourceUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: RevenueLeadSourceScalarWhereInput | RevenueLeadSourceScalarWhereInput[]
+  }
+
+  export type RevenueLeadScoreUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<RevenueLeadScoreCreateWithoutLeadInput, RevenueLeadScoreUncheckedCreateWithoutLeadInput> | RevenueLeadScoreCreateWithoutLeadInput[] | RevenueLeadScoreUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: RevenueLeadScoreCreateOrConnectWithoutLeadInput | RevenueLeadScoreCreateOrConnectWithoutLeadInput[]
+    upsert?: RevenueLeadScoreUpsertWithWhereUniqueWithoutLeadInput | RevenueLeadScoreUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: RevenueLeadScoreCreateManyLeadInputEnvelope
+    set?: RevenueLeadScoreWhereUniqueInput | RevenueLeadScoreWhereUniqueInput[]
+    disconnect?: RevenueLeadScoreWhereUniqueInput | RevenueLeadScoreWhereUniqueInput[]
+    delete?: RevenueLeadScoreWhereUniqueInput | RevenueLeadScoreWhereUniqueInput[]
+    connect?: RevenueLeadScoreWhereUniqueInput | RevenueLeadScoreWhereUniqueInput[]
+    update?: RevenueLeadScoreUpdateWithWhereUniqueWithoutLeadInput | RevenueLeadScoreUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: RevenueLeadScoreUpdateManyWithWhereWithoutLeadInput | RevenueLeadScoreUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: RevenueLeadScoreScalarWhereInput | RevenueLeadScoreScalarWhereInput[]
+  }
+
+  export type RevenueTaskUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<RevenueTaskCreateWithoutLeadInput, RevenueTaskUncheckedCreateWithoutLeadInput> | RevenueTaskCreateWithoutLeadInput[] | RevenueTaskUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: RevenueTaskCreateOrConnectWithoutLeadInput | RevenueTaskCreateOrConnectWithoutLeadInput[]
+    upsert?: RevenueTaskUpsertWithWhereUniqueWithoutLeadInput | RevenueTaskUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: RevenueTaskCreateManyLeadInputEnvelope
+    set?: RevenueTaskWhereUniqueInput | RevenueTaskWhereUniqueInput[]
+    disconnect?: RevenueTaskWhereUniqueInput | RevenueTaskWhereUniqueInput[]
+    delete?: RevenueTaskWhereUniqueInput | RevenueTaskWhereUniqueInput[]
+    connect?: RevenueTaskWhereUniqueInput | RevenueTaskWhereUniqueInput[]
+    update?: RevenueTaskUpdateWithWhereUniqueWithoutLeadInput | RevenueTaskUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: RevenueTaskUpdateManyWithWhereWithoutLeadInput | RevenueTaskUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: RevenueTaskScalarWhereInput | RevenueTaskScalarWhereInput[]
+  }
+
+  export type RevenuePipelineEventUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<RevenuePipelineEventCreateWithoutLeadInput, RevenuePipelineEventUncheckedCreateWithoutLeadInput> | RevenuePipelineEventCreateWithoutLeadInput[] | RevenuePipelineEventUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: RevenuePipelineEventCreateOrConnectWithoutLeadInput | RevenuePipelineEventCreateOrConnectWithoutLeadInput[]
+    upsert?: RevenuePipelineEventUpsertWithWhereUniqueWithoutLeadInput | RevenuePipelineEventUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: RevenuePipelineEventCreateManyLeadInputEnvelope
+    set?: RevenuePipelineEventWhereUniqueInput | RevenuePipelineEventWhereUniqueInput[]
+    disconnect?: RevenuePipelineEventWhereUniqueInput | RevenuePipelineEventWhereUniqueInput[]
+    delete?: RevenuePipelineEventWhereUniqueInput | RevenuePipelineEventWhereUniqueInput[]
+    connect?: RevenuePipelineEventWhereUniqueInput | RevenuePipelineEventWhereUniqueInput[]
+    update?: RevenuePipelineEventUpdateWithWhereUniqueWithoutLeadInput | RevenuePipelineEventUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: RevenuePipelineEventUpdateManyWithWhereWithoutLeadInput | RevenuePipelineEventUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: RevenuePipelineEventScalarWhereInput | RevenuePipelineEventScalarWhereInput[]
+  }
+
+  export type RevenueCommunicationEventUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<RevenueCommunicationEventCreateWithoutLeadInput, RevenueCommunicationEventUncheckedCreateWithoutLeadInput> | RevenueCommunicationEventCreateWithoutLeadInput[] | RevenueCommunicationEventUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: RevenueCommunicationEventCreateOrConnectWithoutLeadInput | RevenueCommunicationEventCreateOrConnectWithoutLeadInput[]
+    upsert?: RevenueCommunicationEventUpsertWithWhereUniqueWithoutLeadInput | RevenueCommunicationEventUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: RevenueCommunicationEventCreateManyLeadInputEnvelope
+    set?: RevenueCommunicationEventWhereUniqueInput | RevenueCommunicationEventWhereUniqueInput[]
+    disconnect?: RevenueCommunicationEventWhereUniqueInput | RevenueCommunicationEventWhereUniqueInput[]
+    delete?: RevenueCommunicationEventWhereUniqueInput | RevenueCommunicationEventWhereUniqueInput[]
+    connect?: RevenueCommunicationEventWhereUniqueInput | RevenueCommunicationEventWhereUniqueInput[]
+    update?: RevenueCommunicationEventUpdateWithWhereUniqueWithoutLeadInput | RevenueCommunicationEventUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: RevenueCommunicationEventUpdateManyWithWhereWithoutLeadInput | RevenueCommunicationEventUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: RevenueCommunicationEventScalarWhereInput | RevenueCommunicationEventScalarWhereInput[]
+  }
+
   export type MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput = {
     create?: XOR<MarketingSalesAttributionCreateWithoutLeadInput, MarketingSalesAttributionUncheckedCreateWithoutLeadInput> | MarketingSalesAttributionCreateWithoutLeadInput[] | MarketingSalesAttributionUncheckedCreateWithoutLeadInput[]
     connectOrCreate?: MarketingSalesAttributionCreateOrConnectWithoutLeadInput | MarketingSalesAttributionCreateOrConnectWithoutLeadInput[]
@@ -34071,6 +46971,158 @@ export namespace Prisma {
     update?: ManualLeadIntakeUpdateWithWhereUniqueWithoutLeadInput | ManualLeadIntakeUpdateWithWhereUniqueWithoutLeadInput[]
     updateMany?: ManualLeadIntakeUpdateManyWithWhereWithoutLeadInput | ManualLeadIntakeUpdateManyWithWhereWithoutLeadInput[]
     deleteMany?: ManualLeadIntakeScalarWhereInput | ManualLeadIntakeScalarWhereInput[]
+  }
+
+  export type RevenueLeadSourceUncheckedUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<RevenueLeadSourceCreateWithoutLeadInput, RevenueLeadSourceUncheckedCreateWithoutLeadInput> | RevenueLeadSourceCreateWithoutLeadInput[] | RevenueLeadSourceUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: RevenueLeadSourceCreateOrConnectWithoutLeadInput | RevenueLeadSourceCreateOrConnectWithoutLeadInput[]
+    upsert?: RevenueLeadSourceUpsertWithWhereUniqueWithoutLeadInput | RevenueLeadSourceUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: RevenueLeadSourceCreateManyLeadInputEnvelope
+    set?: RevenueLeadSourceWhereUniqueInput | RevenueLeadSourceWhereUniqueInput[]
+    disconnect?: RevenueLeadSourceWhereUniqueInput | RevenueLeadSourceWhereUniqueInput[]
+    delete?: RevenueLeadSourceWhereUniqueInput | RevenueLeadSourceWhereUniqueInput[]
+    connect?: RevenueLeadSourceWhereUniqueInput | RevenueLeadSourceWhereUniqueInput[]
+    update?: RevenueLeadSourceUpdateWithWhereUniqueWithoutLeadInput | RevenueLeadSourceUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: RevenueLeadSourceUpdateManyWithWhereWithoutLeadInput | RevenueLeadSourceUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: RevenueLeadSourceScalarWhereInput | RevenueLeadSourceScalarWhereInput[]
+  }
+
+  export type RevenueLeadScoreUncheckedUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<RevenueLeadScoreCreateWithoutLeadInput, RevenueLeadScoreUncheckedCreateWithoutLeadInput> | RevenueLeadScoreCreateWithoutLeadInput[] | RevenueLeadScoreUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: RevenueLeadScoreCreateOrConnectWithoutLeadInput | RevenueLeadScoreCreateOrConnectWithoutLeadInput[]
+    upsert?: RevenueLeadScoreUpsertWithWhereUniqueWithoutLeadInput | RevenueLeadScoreUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: RevenueLeadScoreCreateManyLeadInputEnvelope
+    set?: RevenueLeadScoreWhereUniqueInput | RevenueLeadScoreWhereUniqueInput[]
+    disconnect?: RevenueLeadScoreWhereUniqueInput | RevenueLeadScoreWhereUniqueInput[]
+    delete?: RevenueLeadScoreWhereUniqueInput | RevenueLeadScoreWhereUniqueInput[]
+    connect?: RevenueLeadScoreWhereUniqueInput | RevenueLeadScoreWhereUniqueInput[]
+    update?: RevenueLeadScoreUpdateWithWhereUniqueWithoutLeadInput | RevenueLeadScoreUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: RevenueLeadScoreUpdateManyWithWhereWithoutLeadInput | RevenueLeadScoreUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: RevenueLeadScoreScalarWhereInput | RevenueLeadScoreScalarWhereInput[]
+  }
+
+  export type RevenueTaskUncheckedUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<RevenueTaskCreateWithoutLeadInput, RevenueTaskUncheckedCreateWithoutLeadInput> | RevenueTaskCreateWithoutLeadInput[] | RevenueTaskUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: RevenueTaskCreateOrConnectWithoutLeadInput | RevenueTaskCreateOrConnectWithoutLeadInput[]
+    upsert?: RevenueTaskUpsertWithWhereUniqueWithoutLeadInput | RevenueTaskUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: RevenueTaskCreateManyLeadInputEnvelope
+    set?: RevenueTaskWhereUniqueInput | RevenueTaskWhereUniqueInput[]
+    disconnect?: RevenueTaskWhereUniqueInput | RevenueTaskWhereUniqueInput[]
+    delete?: RevenueTaskWhereUniqueInput | RevenueTaskWhereUniqueInput[]
+    connect?: RevenueTaskWhereUniqueInput | RevenueTaskWhereUniqueInput[]
+    update?: RevenueTaskUpdateWithWhereUniqueWithoutLeadInput | RevenueTaskUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: RevenueTaskUpdateManyWithWhereWithoutLeadInput | RevenueTaskUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: RevenueTaskScalarWhereInput | RevenueTaskScalarWhereInput[]
+  }
+
+  export type RevenuePipelineEventUncheckedUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<RevenuePipelineEventCreateWithoutLeadInput, RevenuePipelineEventUncheckedCreateWithoutLeadInput> | RevenuePipelineEventCreateWithoutLeadInput[] | RevenuePipelineEventUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: RevenuePipelineEventCreateOrConnectWithoutLeadInput | RevenuePipelineEventCreateOrConnectWithoutLeadInput[]
+    upsert?: RevenuePipelineEventUpsertWithWhereUniqueWithoutLeadInput | RevenuePipelineEventUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: RevenuePipelineEventCreateManyLeadInputEnvelope
+    set?: RevenuePipelineEventWhereUniqueInput | RevenuePipelineEventWhereUniqueInput[]
+    disconnect?: RevenuePipelineEventWhereUniqueInput | RevenuePipelineEventWhereUniqueInput[]
+    delete?: RevenuePipelineEventWhereUniqueInput | RevenuePipelineEventWhereUniqueInput[]
+    connect?: RevenuePipelineEventWhereUniqueInput | RevenuePipelineEventWhereUniqueInput[]
+    update?: RevenuePipelineEventUpdateWithWhereUniqueWithoutLeadInput | RevenuePipelineEventUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: RevenuePipelineEventUpdateManyWithWhereWithoutLeadInput | RevenuePipelineEventUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: RevenuePipelineEventScalarWhereInput | RevenuePipelineEventScalarWhereInput[]
+  }
+
+  export type RevenueCommunicationEventUncheckedUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<RevenueCommunicationEventCreateWithoutLeadInput, RevenueCommunicationEventUncheckedCreateWithoutLeadInput> | RevenueCommunicationEventCreateWithoutLeadInput[] | RevenueCommunicationEventUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: RevenueCommunicationEventCreateOrConnectWithoutLeadInput | RevenueCommunicationEventCreateOrConnectWithoutLeadInput[]
+    upsert?: RevenueCommunicationEventUpsertWithWhereUniqueWithoutLeadInput | RevenueCommunicationEventUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: RevenueCommunicationEventCreateManyLeadInputEnvelope
+    set?: RevenueCommunicationEventWhereUniqueInput | RevenueCommunicationEventWhereUniqueInput[]
+    disconnect?: RevenueCommunicationEventWhereUniqueInput | RevenueCommunicationEventWhereUniqueInput[]
+    delete?: RevenueCommunicationEventWhereUniqueInput | RevenueCommunicationEventWhereUniqueInput[]
+    connect?: RevenueCommunicationEventWhereUniqueInput | RevenueCommunicationEventWhereUniqueInput[]
+    update?: RevenueCommunicationEventUpdateWithWhereUniqueWithoutLeadInput | RevenueCommunicationEventUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: RevenueCommunicationEventUpdateManyWithWhereWithoutLeadInput | RevenueCommunicationEventUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: RevenueCommunicationEventScalarWhereInput | RevenueCommunicationEventScalarWhereInput[]
+  }
+
+  export type LeadCreateNestedOneWithoutRevenueLeadSourcesInput = {
+    create?: XOR<LeadCreateWithoutRevenueLeadSourcesInput, LeadUncheckedCreateWithoutRevenueLeadSourcesInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutRevenueLeadSourcesInput
+    connect?: LeadWhereUniqueInput
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type LeadUpdateOneRequiredWithoutRevenueLeadSourcesNestedInput = {
+    create?: XOR<LeadCreateWithoutRevenueLeadSourcesInput, LeadUncheckedCreateWithoutRevenueLeadSourcesInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutRevenueLeadSourcesInput
+    upsert?: LeadUpsertWithoutRevenueLeadSourcesInput
+    connect?: LeadWhereUniqueInput
+    update?: XOR<XOR<LeadUpdateToOneWithWhereWithoutRevenueLeadSourcesInput, LeadUpdateWithoutRevenueLeadSourcesInput>, LeadUncheckedUpdateWithoutRevenueLeadSourcesInput>
+  }
+
+  export type LeadCreateNestedOneWithoutRevenueLeadScoresInput = {
+    create?: XOR<LeadCreateWithoutRevenueLeadScoresInput, LeadUncheckedCreateWithoutRevenueLeadScoresInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutRevenueLeadScoresInput
+    connect?: LeadWhereUniqueInput
+  }
+
+  export type LeadUpdateOneRequiredWithoutRevenueLeadScoresNestedInput = {
+    create?: XOR<LeadCreateWithoutRevenueLeadScoresInput, LeadUncheckedCreateWithoutRevenueLeadScoresInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutRevenueLeadScoresInput
+    upsert?: LeadUpsertWithoutRevenueLeadScoresInput
+    connect?: LeadWhereUniqueInput
+    update?: XOR<XOR<LeadUpdateToOneWithWhereWithoutRevenueLeadScoresInput, LeadUpdateWithoutRevenueLeadScoresInput>, LeadUncheckedUpdateWithoutRevenueLeadScoresInput>
+  }
+
+  export type LeadCreateNestedOneWithoutRevenueTasksInput = {
+    create?: XOR<LeadCreateWithoutRevenueTasksInput, LeadUncheckedCreateWithoutRevenueTasksInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutRevenueTasksInput
+    connect?: LeadWhereUniqueInput
+  }
+
+  export type LeadUpdateOneWithoutRevenueTasksNestedInput = {
+    create?: XOR<LeadCreateWithoutRevenueTasksInput, LeadUncheckedCreateWithoutRevenueTasksInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutRevenueTasksInput
+    upsert?: LeadUpsertWithoutRevenueTasksInput
+    disconnect?: LeadWhereInput | boolean
+    delete?: LeadWhereInput | boolean
+    connect?: LeadWhereUniqueInput
+    update?: XOR<XOR<LeadUpdateToOneWithWhereWithoutRevenueTasksInput, LeadUpdateWithoutRevenueTasksInput>, LeadUncheckedUpdateWithoutRevenueTasksInput>
+  }
+
+  export type LeadCreateNestedOneWithoutRevenuePipelineEventsInput = {
+    create?: XOR<LeadCreateWithoutRevenuePipelineEventsInput, LeadUncheckedCreateWithoutRevenuePipelineEventsInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutRevenuePipelineEventsInput
+    connect?: LeadWhereUniqueInput
+  }
+
+  export type LeadUpdateOneRequiredWithoutRevenuePipelineEventsNestedInput = {
+    create?: XOR<LeadCreateWithoutRevenuePipelineEventsInput, LeadUncheckedCreateWithoutRevenuePipelineEventsInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutRevenuePipelineEventsInput
+    upsert?: LeadUpsertWithoutRevenuePipelineEventsInput
+    connect?: LeadWhereUniqueInput
+    update?: XOR<XOR<LeadUpdateToOneWithWhereWithoutRevenuePipelineEventsInput, LeadUpdateWithoutRevenuePipelineEventsInput>, LeadUncheckedUpdateWithoutRevenuePipelineEventsInput>
+  }
+
+  export type LeadCreateNestedOneWithoutRevenueCommunicationEventsInput = {
+    create?: XOR<LeadCreateWithoutRevenueCommunicationEventsInput, LeadUncheckedCreateWithoutRevenueCommunicationEventsInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutRevenueCommunicationEventsInput
+    connect?: LeadWhereUniqueInput
+  }
+
+  export type LeadUpdateOneWithoutRevenueCommunicationEventsNestedInput = {
+    create?: XOR<LeadCreateWithoutRevenueCommunicationEventsInput, LeadUncheckedCreateWithoutRevenueCommunicationEventsInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutRevenueCommunicationEventsInput
+    upsert?: LeadUpsertWithoutRevenueCommunicationEventsInput
+    disconnect?: LeadWhereInput | boolean
+    delete?: LeadWhereInput | boolean
+    connect?: LeadWhereUniqueInput
+    update?: XOR<XOR<LeadUpdateToOneWithWhereWithoutRevenueCommunicationEventsInput, LeadUpdateWithoutRevenueCommunicationEventsInput>, LeadUncheckedUpdateWithoutRevenueCommunicationEventsInput>
   }
 
   export type LeadCreateNestedOneWithoutManualLeadIntakesInput = {
@@ -34221,14 +47273,6 @@ export namespace Prisma {
     connectOrCreate?: BuyerActivityCreateOrConnectWithoutBuyerInput | BuyerActivityCreateOrConnectWithoutBuyerInput[]
     createMany?: BuyerActivityCreateManyBuyerInputEnvelope
     connect?: BuyerActivityWhereUniqueInput | BuyerActivityWhereUniqueInput[]
-  }
-
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type EnumBuyerTierFieldUpdateOperationsInput = {
@@ -34868,6 +47912,45 @@ export namespace Prisma {
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
   export type NestedJsonFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
@@ -34907,51 +47990,12 @@ export namespace Prisma {
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
   }
-  export type NestedJsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
 
   export type NestedEnumBuyerTierFilter<$PrismaModel = never> = {
     equals?: $Enums.BuyerTier | EnumBuyerTierFieldRefInput<$PrismaModel>
     in?: $Enums.BuyerTier[] | ListEnumBuyerTierFieldRefInput<$PrismaModel>
     notIn?: $Enums.BuyerTier[] | ListEnumBuyerTierFieldRefInput<$PrismaModel>
     not?: NestedEnumBuyerTierFilter<$PrismaModel> | $Enums.BuyerTier
-  }
-
-  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumBuyerTierWithAggregatesFilter<$PrismaModel = never> = {
@@ -35115,6 +48159,212 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type RevenueLeadSourceCreateWithoutLeadInput = {
+    id?: string
+    tenantId?: string
+    source: string
+    sourceType: string
+    sourceDetail: string
+    sourceRecordId?: string | null
+    campaignName?: string | null
+    campaignMedium?: string | null
+    costCents?: number | null
+    confidence?: number
+    verified?: boolean
+    importedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RevenueLeadSourceUncheckedCreateWithoutLeadInput = {
+    id?: string
+    tenantId?: string
+    source: string
+    sourceType: string
+    sourceDetail: string
+    sourceRecordId?: string | null
+    campaignName?: string | null
+    campaignMedium?: string | null
+    costCents?: number | null
+    confidence?: number
+    verified?: boolean
+    importedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RevenueLeadSourceCreateOrConnectWithoutLeadInput = {
+    where: RevenueLeadSourceWhereUniqueInput
+    create: XOR<RevenueLeadSourceCreateWithoutLeadInput, RevenueLeadSourceUncheckedCreateWithoutLeadInput>
+  }
+
+  export type RevenueLeadSourceCreateManyLeadInputEnvelope = {
+    data: RevenueLeadSourceCreateManyLeadInput | RevenueLeadSourceCreateManyLeadInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RevenueLeadScoreCreateWithoutLeadInput = {
+    id?: string
+    tenantId?: string
+    score: number
+    confidence: number
+    priority: string
+    explanation: string
+    recommendedNextAction: string
+    missingData: JsonNullValueInput | InputJsonValue
+    scoreBreakdown: JsonNullValueInput | InputJsonValue
+    assumptions: JsonNullValueInput | InputJsonValue
+    dataUsed: JsonNullValueInput | InputJsonValue
+    advisoryOnly?: boolean
+    createdAt?: Date | string
+  }
+
+  export type RevenueLeadScoreUncheckedCreateWithoutLeadInput = {
+    id?: string
+    tenantId?: string
+    score: number
+    confidence: number
+    priority: string
+    explanation: string
+    recommendedNextAction: string
+    missingData: JsonNullValueInput | InputJsonValue
+    scoreBreakdown: JsonNullValueInput | InputJsonValue
+    assumptions: JsonNullValueInput | InputJsonValue
+    dataUsed: JsonNullValueInput | InputJsonValue
+    advisoryOnly?: boolean
+    createdAt?: Date | string
+  }
+
+  export type RevenueLeadScoreCreateOrConnectWithoutLeadInput = {
+    where: RevenueLeadScoreWhereUniqueInput
+    create: XOR<RevenueLeadScoreCreateWithoutLeadInput, RevenueLeadScoreUncheckedCreateWithoutLeadInput>
+  }
+
+  export type RevenueLeadScoreCreateManyLeadInputEnvelope = {
+    data: RevenueLeadScoreCreateManyLeadInput | RevenueLeadScoreCreateManyLeadInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RevenueTaskCreateWithoutLeadInput = {
+    id?: string
+    tenantId?: string
+    title: string
+    taskType: string
+    priority: string
+    status?: string
+    recommendedAction: string
+    reason: string
+    dueAt?: Date | string | null
+    assignedTo?: string | null
+    requiresApproval?: boolean
+    source: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+  }
+
+  export type RevenueTaskUncheckedCreateWithoutLeadInput = {
+    id?: string
+    tenantId?: string
+    title: string
+    taskType: string
+    priority: string
+    status?: string
+    recommendedAction: string
+    reason: string
+    dueAt?: Date | string | null
+    assignedTo?: string | null
+    requiresApproval?: boolean
+    source: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+  }
+
+  export type RevenueTaskCreateOrConnectWithoutLeadInput = {
+    where: RevenueTaskWhereUniqueInput
+    create: XOR<RevenueTaskCreateWithoutLeadInput, RevenueTaskUncheckedCreateWithoutLeadInput>
+  }
+
+  export type RevenueTaskCreateManyLeadInputEnvelope = {
+    data: RevenueTaskCreateManyLeadInput | RevenueTaskCreateManyLeadInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RevenuePipelineEventCreateWithoutLeadInput = {
+    id?: string
+    tenantId?: string
+    fromStage?: string | null
+    toStage: string
+    reason: string
+    source: string
+    revenueOutcome?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+  }
+
+  export type RevenuePipelineEventUncheckedCreateWithoutLeadInput = {
+    id?: string
+    tenantId?: string
+    fromStage?: string | null
+    toStage: string
+    reason: string
+    source: string
+    revenueOutcome?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+  }
+
+  export type RevenuePipelineEventCreateOrConnectWithoutLeadInput = {
+    where: RevenuePipelineEventWhereUniqueInput
+    create: XOR<RevenuePipelineEventCreateWithoutLeadInput, RevenuePipelineEventUncheckedCreateWithoutLeadInput>
+  }
+
+  export type RevenuePipelineEventCreateManyLeadInputEnvelope = {
+    data: RevenuePipelineEventCreateManyLeadInput | RevenuePipelineEventCreateManyLeadInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RevenueCommunicationEventCreateWithoutLeadInput = {
+    id?: string
+    tenantId?: string
+    channel: string
+    direction: string
+    status: string
+    approvalStatus?: string
+    provider?: string
+    providerCalled?: boolean
+    messageSummary?: string | null
+    requiresApproval?: boolean
+    createdBy?: string | null
+    createdAt?: Date | string
+  }
+
+  export type RevenueCommunicationEventUncheckedCreateWithoutLeadInput = {
+    id?: string
+    tenantId?: string
+    channel: string
+    direction: string
+    status: string
+    approvalStatus?: string
+    provider?: string
+    providerCalled?: boolean
+    messageSummary?: string | null
+    requiresApproval?: boolean
+    createdBy?: string | null
+    createdAt?: Date | string
+  }
+
+  export type RevenueCommunicationEventCreateOrConnectWithoutLeadInput = {
+    where: RevenueCommunicationEventWhereUniqueInput
+    create: XOR<RevenueCommunicationEventCreateWithoutLeadInput, RevenueCommunicationEventUncheckedCreateWithoutLeadInput>
+  }
+
+  export type RevenueCommunicationEventCreateManyLeadInputEnvelope = {
+    data: RevenueCommunicationEventCreateManyLeadInput | RevenueCommunicationEventCreateManyLeadInput[]
+    skipDuplicates?: boolean
+  }
+
   export type MarketingSalesAttributionUpsertWithWhereUniqueWithoutLeadInput = {
     where: MarketingSalesAttributionWhereUniqueInput
     update: XOR<MarketingSalesAttributionUpdateWithoutLeadInput, MarketingSalesAttributionUncheckedUpdateWithoutLeadInput>
@@ -35227,6 +48477,1024 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ManualLeadIntake"> | Date | string
   }
 
+  export type RevenueLeadSourceUpsertWithWhereUniqueWithoutLeadInput = {
+    where: RevenueLeadSourceWhereUniqueInput
+    update: XOR<RevenueLeadSourceUpdateWithoutLeadInput, RevenueLeadSourceUncheckedUpdateWithoutLeadInput>
+    create: XOR<RevenueLeadSourceCreateWithoutLeadInput, RevenueLeadSourceUncheckedCreateWithoutLeadInput>
+  }
+
+  export type RevenueLeadSourceUpdateWithWhereUniqueWithoutLeadInput = {
+    where: RevenueLeadSourceWhereUniqueInput
+    data: XOR<RevenueLeadSourceUpdateWithoutLeadInput, RevenueLeadSourceUncheckedUpdateWithoutLeadInput>
+  }
+
+  export type RevenueLeadSourceUpdateManyWithWhereWithoutLeadInput = {
+    where: RevenueLeadSourceScalarWhereInput
+    data: XOR<RevenueLeadSourceUpdateManyMutationInput, RevenueLeadSourceUncheckedUpdateManyWithoutLeadInput>
+  }
+
+  export type RevenueLeadSourceScalarWhereInput = {
+    AND?: RevenueLeadSourceScalarWhereInput | RevenueLeadSourceScalarWhereInput[]
+    OR?: RevenueLeadSourceScalarWhereInput[]
+    NOT?: RevenueLeadSourceScalarWhereInput | RevenueLeadSourceScalarWhereInput[]
+    id?: StringFilter<"RevenueLeadSource"> | string
+    tenantId?: StringFilter<"RevenueLeadSource"> | string
+    leadId?: StringFilter<"RevenueLeadSource"> | string
+    source?: StringFilter<"RevenueLeadSource"> | string
+    sourceType?: StringFilter<"RevenueLeadSource"> | string
+    sourceDetail?: StringFilter<"RevenueLeadSource"> | string
+    sourceRecordId?: StringNullableFilter<"RevenueLeadSource"> | string | null
+    campaignName?: StringNullableFilter<"RevenueLeadSource"> | string | null
+    campaignMedium?: StringNullableFilter<"RevenueLeadSource"> | string | null
+    costCents?: IntNullableFilter<"RevenueLeadSource"> | number | null
+    confidence?: IntFilter<"RevenueLeadSource"> | number
+    verified?: BoolFilter<"RevenueLeadSource"> | boolean
+    importedBy?: StringNullableFilter<"RevenueLeadSource"> | string | null
+    createdAt?: DateTimeFilter<"RevenueLeadSource"> | Date | string
+    updatedAt?: DateTimeFilter<"RevenueLeadSource"> | Date | string
+  }
+
+  export type RevenueLeadScoreUpsertWithWhereUniqueWithoutLeadInput = {
+    where: RevenueLeadScoreWhereUniqueInput
+    update: XOR<RevenueLeadScoreUpdateWithoutLeadInput, RevenueLeadScoreUncheckedUpdateWithoutLeadInput>
+    create: XOR<RevenueLeadScoreCreateWithoutLeadInput, RevenueLeadScoreUncheckedCreateWithoutLeadInput>
+  }
+
+  export type RevenueLeadScoreUpdateWithWhereUniqueWithoutLeadInput = {
+    where: RevenueLeadScoreWhereUniqueInput
+    data: XOR<RevenueLeadScoreUpdateWithoutLeadInput, RevenueLeadScoreUncheckedUpdateWithoutLeadInput>
+  }
+
+  export type RevenueLeadScoreUpdateManyWithWhereWithoutLeadInput = {
+    where: RevenueLeadScoreScalarWhereInput
+    data: XOR<RevenueLeadScoreUpdateManyMutationInput, RevenueLeadScoreUncheckedUpdateManyWithoutLeadInput>
+  }
+
+  export type RevenueLeadScoreScalarWhereInput = {
+    AND?: RevenueLeadScoreScalarWhereInput | RevenueLeadScoreScalarWhereInput[]
+    OR?: RevenueLeadScoreScalarWhereInput[]
+    NOT?: RevenueLeadScoreScalarWhereInput | RevenueLeadScoreScalarWhereInput[]
+    id?: StringFilter<"RevenueLeadScore"> | string
+    tenantId?: StringFilter<"RevenueLeadScore"> | string
+    leadId?: StringFilter<"RevenueLeadScore"> | string
+    score?: IntFilter<"RevenueLeadScore"> | number
+    confidence?: IntFilter<"RevenueLeadScore"> | number
+    priority?: StringFilter<"RevenueLeadScore"> | string
+    explanation?: StringFilter<"RevenueLeadScore"> | string
+    recommendedNextAction?: StringFilter<"RevenueLeadScore"> | string
+    missingData?: JsonFilter<"RevenueLeadScore">
+    scoreBreakdown?: JsonFilter<"RevenueLeadScore">
+    assumptions?: JsonFilter<"RevenueLeadScore">
+    dataUsed?: JsonFilter<"RevenueLeadScore">
+    advisoryOnly?: BoolFilter<"RevenueLeadScore"> | boolean
+    createdAt?: DateTimeFilter<"RevenueLeadScore"> | Date | string
+  }
+
+  export type RevenueTaskUpsertWithWhereUniqueWithoutLeadInput = {
+    where: RevenueTaskWhereUniqueInput
+    update: XOR<RevenueTaskUpdateWithoutLeadInput, RevenueTaskUncheckedUpdateWithoutLeadInput>
+    create: XOR<RevenueTaskCreateWithoutLeadInput, RevenueTaskUncheckedCreateWithoutLeadInput>
+  }
+
+  export type RevenueTaskUpdateWithWhereUniqueWithoutLeadInput = {
+    where: RevenueTaskWhereUniqueInput
+    data: XOR<RevenueTaskUpdateWithoutLeadInput, RevenueTaskUncheckedUpdateWithoutLeadInput>
+  }
+
+  export type RevenueTaskUpdateManyWithWhereWithoutLeadInput = {
+    where: RevenueTaskScalarWhereInput
+    data: XOR<RevenueTaskUpdateManyMutationInput, RevenueTaskUncheckedUpdateManyWithoutLeadInput>
+  }
+
+  export type RevenueTaskScalarWhereInput = {
+    AND?: RevenueTaskScalarWhereInput | RevenueTaskScalarWhereInput[]
+    OR?: RevenueTaskScalarWhereInput[]
+    NOT?: RevenueTaskScalarWhereInput | RevenueTaskScalarWhereInput[]
+    id?: StringFilter<"RevenueTask"> | string
+    tenantId?: StringFilter<"RevenueTask"> | string
+    leadId?: StringNullableFilter<"RevenueTask"> | string | null
+    title?: StringFilter<"RevenueTask"> | string
+    taskType?: StringFilter<"RevenueTask"> | string
+    priority?: StringFilter<"RevenueTask"> | string
+    status?: StringFilter<"RevenueTask"> | string
+    recommendedAction?: StringFilter<"RevenueTask"> | string
+    reason?: StringFilter<"RevenueTask"> | string
+    dueAt?: DateTimeNullableFilter<"RevenueTask"> | Date | string | null
+    assignedTo?: StringNullableFilter<"RevenueTask"> | string | null
+    requiresApproval?: BoolFilter<"RevenueTask"> | boolean
+    source?: StringFilter<"RevenueTask"> | string
+    createdAt?: DateTimeFilter<"RevenueTask"> | Date | string
+    updatedAt?: DateTimeFilter<"RevenueTask"> | Date | string
+    completedAt?: DateTimeNullableFilter<"RevenueTask"> | Date | string | null
+  }
+
+  export type RevenuePipelineEventUpsertWithWhereUniqueWithoutLeadInput = {
+    where: RevenuePipelineEventWhereUniqueInput
+    update: XOR<RevenuePipelineEventUpdateWithoutLeadInput, RevenuePipelineEventUncheckedUpdateWithoutLeadInput>
+    create: XOR<RevenuePipelineEventCreateWithoutLeadInput, RevenuePipelineEventUncheckedCreateWithoutLeadInput>
+  }
+
+  export type RevenuePipelineEventUpdateWithWhereUniqueWithoutLeadInput = {
+    where: RevenuePipelineEventWhereUniqueInput
+    data: XOR<RevenuePipelineEventUpdateWithoutLeadInput, RevenuePipelineEventUncheckedUpdateWithoutLeadInput>
+  }
+
+  export type RevenuePipelineEventUpdateManyWithWhereWithoutLeadInput = {
+    where: RevenuePipelineEventScalarWhereInput
+    data: XOR<RevenuePipelineEventUpdateManyMutationInput, RevenuePipelineEventUncheckedUpdateManyWithoutLeadInput>
+  }
+
+  export type RevenuePipelineEventScalarWhereInput = {
+    AND?: RevenuePipelineEventScalarWhereInput | RevenuePipelineEventScalarWhereInput[]
+    OR?: RevenuePipelineEventScalarWhereInput[]
+    NOT?: RevenuePipelineEventScalarWhereInput | RevenuePipelineEventScalarWhereInput[]
+    id?: StringFilter<"RevenuePipelineEvent"> | string
+    tenantId?: StringFilter<"RevenuePipelineEvent"> | string
+    leadId?: StringFilter<"RevenuePipelineEvent"> | string
+    fromStage?: StringNullableFilter<"RevenuePipelineEvent"> | string | null
+    toStage?: StringFilter<"RevenuePipelineEvent"> | string
+    reason?: StringFilter<"RevenuePipelineEvent"> | string
+    source?: StringFilter<"RevenuePipelineEvent"> | string
+    revenueOutcome?: StringNullableFilter<"RevenuePipelineEvent"> | string | null
+    createdBy?: StringNullableFilter<"RevenuePipelineEvent"> | string | null
+    createdAt?: DateTimeFilter<"RevenuePipelineEvent"> | Date | string
+  }
+
+  export type RevenueCommunicationEventUpsertWithWhereUniqueWithoutLeadInput = {
+    where: RevenueCommunicationEventWhereUniqueInput
+    update: XOR<RevenueCommunicationEventUpdateWithoutLeadInput, RevenueCommunicationEventUncheckedUpdateWithoutLeadInput>
+    create: XOR<RevenueCommunicationEventCreateWithoutLeadInput, RevenueCommunicationEventUncheckedCreateWithoutLeadInput>
+  }
+
+  export type RevenueCommunicationEventUpdateWithWhereUniqueWithoutLeadInput = {
+    where: RevenueCommunicationEventWhereUniqueInput
+    data: XOR<RevenueCommunicationEventUpdateWithoutLeadInput, RevenueCommunicationEventUncheckedUpdateWithoutLeadInput>
+  }
+
+  export type RevenueCommunicationEventUpdateManyWithWhereWithoutLeadInput = {
+    where: RevenueCommunicationEventScalarWhereInput
+    data: XOR<RevenueCommunicationEventUpdateManyMutationInput, RevenueCommunicationEventUncheckedUpdateManyWithoutLeadInput>
+  }
+
+  export type RevenueCommunicationEventScalarWhereInput = {
+    AND?: RevenueCommunicationEventScalarWhereInput | RevenueCommunicationEventScalarWhereInput[]
+    OR?: RevenueCommunicationEventScalarWhereInput[]
+    NOT?: RevenueCommunicationEventScalarWhereInput | RevenueCommunicationEventScalarWhereInput[]
+    id?: StringFilter<"RevenueCommunicationEvent"> | string
+    tenantId?: StringFilter<"RevenueCommunicationEvent"> | string
+    leadId?: StringNullableFilter<"RevenueCommunicationEvent"> | string | null
+    channel?: StringFilter<"RevenueCommunicationEvent"> | string
+    direction?: StringFilter<"RevenueCommunicationEvent"> | string
+    status?: StringFilter<"RevenueCommunicationEvent"> | string
+    approvalStatus?: StringFilter<"RevenueCommunicationEvent"> | string
+    provider?: StringFilter<"RevenueCommunicationEvent"> | string
+    providerCalled?: BoolFilter<"RevenueCommunicationEvent"> | boolean
+    messageSummary?: StringNullableFilter<"RevenueCommunicationEvent"> | string | null
+    requiresApproval?: BoolFilter<"RevenueCommunicationEvent"> | boolean
+    createdBy?: StringNullableFilter<"RevenueCommunicationEvent"> | string | null
+    createdAt?: DateTimeFilter<"RevenueCommunicationEvent"> | Date | string
+  }
+
+  export type LeadCreateWithoutRevenueLeadSourcesInput = {
+    id?: string
+    name: string
+    phone: string
+    propertyAddress: string
+    source: string
+    status?: $Enums.LeadStatus
+    score?: number
+    priority?: string
+    notes?: string | null
+    payload?: string | null
+    lastContactedAt?: Date | string | null
+    nextFollowUpAt?: Date | string | null
+    followUpCount?: number
+    lastFollowUpMessage?: string | null
+    automationStatus?: string
+    approvalStatus?: string
+    isHot?: boolean
+    lastSellerReply?: string | null
+    lastSellerReplyAt?: Date | string | null
+    lastSellerReplyIntent?: string | null
+    lastSellerReplyConfidence?: number | null
+    suggestedReply?: string | null
+    requiresHumanApproval?: boolean
+    doNotContact?: boolean
+    optOutReason?: string | null
+    optOutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutLeadInput
+    salesConversionAssists?: SalesConversionAssistCreateNestedManyWithoutLeadInput
+    manualLeadIntakes?: ManualLeadIntakeCreateNestedManyWithoutLeadInput
+    revenueLeadScores?: RevenueLeadScoreCreateNestedManyWithoutLeadInput
+    revenueTasks?: RevenueTaskCreateNestedManyWithoutLeadInput
+    revenuePipelineEvents?: RevenuePipelineEventCreateNestedManyWithoutLeadInput
+    revenueCommunicationEvents?: RevenueCommunicationEventCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadUncheckedCreateWithoutRevenueLeadSourcesInput = {
+    id?: string
+    name: string
+    phone: string
+    propertyAddress: string
+    source: string
+    status?: $Enums.LeadStatus
+    score?: number
+    priority?: string
+    notes?: string | null
+    payload?: string | null
+    lastContactedAt?: Date | string | null
+    nextFollowUpAt?: Date | string | null
+    followUpCount?: number
+    lastFollowUpMessage?: string | null
+    automationStatus?: string
+    approvalStatus?: string
+    isHot?: boolean
+    lastSellerReply?: string | null
+    lastSellerReplyAt?: Date | string | null
+    lastSellerReplyIntent?: string | null
+    lastSellerReplyConfidence?: number | null
+    suggestedReply?: string | null
+    requiresHumanApproval?: boolean
+    doNotContact?: boolean
+    optOutReason?: string | null
+    optOutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput
+    salesConversionAssists?: SalesConversionAssistUncheckedCreateNestedManyWithoutLeadInput
+    manualLeadIntakes?: ManualLeadIntakeUncheckedCreateNestedManyWithoutLeadInput
+    revenueLeadScores?: RevenueLeadScoreUncheckedCreateNestedManyWithoutLeadInput
+    revenueTasks?: RevenueTaskUncheckedCreateNestedManyWithoutLeadInput
+    revenuePipelineEvents?: RevenuePipelineEventUncheckedCreateNestedManyWithoutLeadInput
+    revenueCommunicationEvents?: RevenueCommunicationEventUncheckedCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadCreateOrConnectWithoutRevenueLeadSourcesInput = {
+    where: LeadWhereUniqueInput
+    create: XOR<LeadCreateWithoutRevenueLeadSourcesInput, LeadUncheckedCreateWithoutRevenueLeadSourcesInput>
+  }
+
+  export type LeadUpsertWithoutRevenueLeadSourcesInput = {
+    update: XOR<LeadUpdateWithoutRevenueLeadSourcesInput, LeadUncheckedUpdateWithoutRevenueLeadSourcesInput>
+    create: XOR<LeadCreateWithoutRevenueLeadSourcesInput, LeadUncheckedCreateWithoutRevenueLeadSourcesInput>
+    where?: LeadWhereInput
+  }
+
+  export type LeadUpdateToOneWithWhereWithoutRevenueLeadSourcesInput = {
+    where?: LeadWhereInput
+    data: XOR<LeadUpdateWithoutRevenueLeadSourcesInput, LeadUncheckedUpdateWithoutRevenueLeadSourcesInput>
+  }
+
+  export type LeadUpdateWithoutRevenueLeadSourcesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    propertyAddress?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    score?: IntFieldUpdateOperationsInput | number
+    priority?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableStringFieldUpdateOperationsInput | string | null
+    lastContactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
+    lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    automationStatus?: StringFieldUpdateOperationsInput | string
+    approvalStatus?: StringFieldUpdateOperationsInput | string
+    isHot?: BoolFieldUpdateOperationsInput | boolean
+    lastSellerReply?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSellerReplyIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    suggestedReply?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresHumanApproval?: BoolFieldUpdateOperationsInput | boolean
+    doNotContact?: BoolFieldUpdateOperationsInput | boolean
+    optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutLeadNestedInput
+    salesConversionAssists?: SalesConversionAssistUpdateManyWithoutLeadNestedInput
+    manualLeadIntakes?: ManualLeadIntakeUpdateManyWithoutLeadNestedInput
+    revenueLeadScores?: RevenueLeadScoreUpdateManyWithoutLeadNestedInput
+    revenueTasks?: RevenueTaskUpdateManyWithoutLeadNestedInput
+    revenuePipelineEvents?: RevenuePipelineEventUpdateManyWithoutLeadNestedInput
+    revenueCommunicationEvents?: RevenueCommunicationEventUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateWithoutRevenueLeadSourcesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    propertyAddress?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    score?: IntFieldUpdateOperationsInput | number
+    priority?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableStringFieldUpdateOperationsInput | string | null
+    lastContactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
+    lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    automationStatus?: StringFieldUpdateOperationsInput | string
+    approvalStatus?: StringFieldUpdateOperationsInput | string
+    isHot?: BoolFieldUpdateOperationsInput | boolean
+    lastSellerReply?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSellerReplyIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    suggestedReply?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresHumanApproval?: BoolFieldUpdateOperationsInput | boolean
+    doNotContact?: BoolFieldUpdateOperationsInput | boolean
+    optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput
+    salesConversionAssists?: SalesConversionAssistUncheckedUpdateManyWithoutLeadNestedInput
+    manualLeadIntakes?: ManualLeadIntakeUncheckedUpdateManyWithoutLeadNestedInput
+    revenueLeadScores?: RevenueLeadScoreUncheckedUpdateManyWithoutLeadNestedInput
+    revenueTasks?: RevenueTaskUncheckedUpdateManyWithoutLeadNestedInput
+    revenuePipelineEvents?: RevenuePipelineEventUncheckedUpdateManyWithoutLeadNestedInput
+    revenueCommunicationEvents?: RevenueCommunicationEventUncheckedUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadCreateWithoutRevenueLeadScoresInput = {
+    id?: string
+    name: string
+    phone: string
+    propertyAddress: string
+    source: string
+    status?: $Enums.LeadStatus
+    score?: number
+    priority?: string
+    notes?: string | null
+    payload?: string | null
+    lastContactedAt?: Date | string | null
+    nextFollowUpAt?: Date | string | null
+    followUpCount?: number
+    lastFollowUpMessage?: string | null
+    automationStatus?: string
+    approvalStatus?: string
+    isHot?: boolean
+    lastSellerReply?: string | null
+    lastSellerReplyAt?: Date | string | null
+    lastSellerReplyIntent?: string | null
+    lastSellerReplyConfidence?: number | null
+    suggestedReply?: string | null
+    requiresHumanApproval?: boolean
+    doNotContact?: boolean
+    optOutReason?: string | null
+    optOutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutLeadInput
+    salesConversionAssists?: SalesConversionAssistCreateNestedManyWithoutLeadInput
+    manualLeadIntakes?: ManualLeadIntakeCreateNestedManyWithoutLeadInput
+    revenueLeadSources?: RevenueLeadSourceCreateNestedManyWithoutLeadInput
+    revenueTasks?: RevenueTaskCreateNestedManyWithoutLeadInput
+    revenuePipelineEvents?: RevenuePipelineEventCreateNestedManyWithoutLeadInput
+    revenueCommunicationEvents?: RevenueCommunicationEventCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadUncheckedCreateWithoutRevenueLeadScoresInput = {
+    id?: string
+    name: string
+    phone: string
+    propertyAddress: string
+    source: string
+    status?: $Enums.LeadStatus
+    score?: number
+    priority?: string
+    notes?: string | null
+    payload?: string | null
+    lastContactedAt?: Date | string | null
+    nextFollowUpAt?: Date | string | null
+    followUpCount?: number
+    lastFollowUpMessage?: string | null
+    automationStatus?: string
+    approvalStatus?: string
+    isHot?: boolean
+    lastSellerReply?: string | null
+    lastSellerReplyAt?: Date | string | null
+    lastSellerReplyIntent?: string | null
+    lastSellerReplyConfidence?: number | null
+    suggestedReply?: string | null
+    requiresHumanApproval?: boolean
+    doNotContact?: boolean
+    optOutReason?: string | null
+    optOutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput
+    salesConversionAssists?: SalesConversionAssistUncheckedCreateNestedManyWithoutLeadInput
+    manualLeadIntakes?: ManualLeadIntakeUncheckedCreateNestedManyWithoutLeadInput
+    revenueLeadSources?: RevenueLeadSourceUncheckedCreateNestedManyWithoutLeadInput
+    revenueTasks?: RevenueTaskUncheckedCreateNestedManyWithoutLeadInput
+    revenuePipelineEvents?: RevenuePipelineEventUncheckedCreateNestedManyWithoutLeadInput
+    revenueCommunicationEvents?: RevenueCommunicationEventUncheckedCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadCreateOrConnectWithoutRevenueLeadScoresInput = {
+    where: LeadWhereUniqueInput
+    create: XOR<LeadCreateWithoutRevenueLeadScoresInput, LeadUncheckedCreateWithoutRevenueLeadScoresInput>
+  }
+
+  export type LeadUpsertWithoutRevenueLeadScoresInput = {
+    update: XOR<LeadUpdateWithoutRevenueLeadScoresInput, LeadUncheckedUpdateWithoutRevenueLeadScoresInput>
+    create: XOR<LeadCreateWithoutRevenueLeadScoresInput, LeadUncheckedCreateWithoutRevenueLeadScoresInput>
+    where?: LeadWhereInput
+  }
+
+  export type LeadUpdateToOneWithWhereWithoutRevenueLeadScoresInput = {
+    where?: LeadWhereInput
+    data: XOR<LeadUpdateWithoutRevenueLeadScoresInput, LeadUncheckedUpdateWithoutRevenueLeadScoresInput>
+  }
+
+  export type LeadUpdateWithoutRevenueLeadScoresInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    propertyAddress?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    score?: IntFieldUpdateOperationsInput | number
+    priority?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableStringFieldUpdateOperationsInput | string | null
+    lastContactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
+    lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    automationStatus?: StringFieldUpdateOperationsInput | string
+    approvalStatus?: StringFieldUpdateOperationsInput | string
+    isHot?: BoolFieldUpdateOperationsInput | boolean
+    lastSellerReply?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSellerReplyIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    suggestedReply?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresHumanApproval?: BoolFieldUpdateOperationsInput | boolean
+    doNotContact?: BoolFieldUpdateOperationsInput | boolean
+    optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutLeadNestedInput
+    salesConversionAssists?: SalesConversionAssistUpdateManyWithoutLeadNestedInput
+    manualLeadIntakes?: ManualLeadIntakeUpdateManyWithoutLeadNestedInput
+    revenueLeadSources?: RevenueLeadSourceUpdateManyWithoutLeadNestedInput
+    revenueTasks?: RevenueTaskUpdateManyWithoutLeadNestedInput
+    revenuePipelineEvents?: RevenuePipelineEventUpdateManyWithoutLeadNestedInput
+    revenueCommunicationEvents?: RevenueCommunicationEventUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateWithoutRevenueLeadScoresInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    propertyAddress?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    score?: IntFieldUpdateOperationsInput | number
+    priority?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableStringFieldUpdateOperationsInput | string | null
+    lastContactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
+    lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    automationStatus?: StringFieldUpdateOperationsInput | string
+    approvalStatus?: StringFieldUpdateOperationsInput | string
+    isHot?: BoolFieldUpdateOperationsInput | boolean
+    lastSellerReply?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSellerReplyIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    suggestedReply?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresHumanApproval?: BoolFieldUpdateOperationsInput | boolean
+    doNotContact?: BoolFieldUpdateOperationsInput | boolean
+    optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput
+    salesConversionAssists?: SalesConversionAssistUncheckedUpdateManyWithoutLeadNestedInput
+    manualLeadIntakes?: ManualLeadIntakeUncheckedUpdateManyWithoutLeadNestedInput
+    revenueLeadSources?: RevenueLeadSourceUncheckedUpdateManyWithoutLeadNestedInput
+    revenueTasks?: RevenueTaskUncheckedUpdateManyWithoutLeadNestedInput
+    revenuePipelineEvents?: RevenuePipelineEventUncheckedUpdateManyWithoutLeadNestedInput
+    revenueCommunicationEvents?: RevenueCommunicationEventUncheckedUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadCreateWithoutRevenueTasksInput = {
+    id?: string
+    name: string
+    phone: string
+    propertyAddress: string
+    source: string
+    status?: $Enums.LeadStatus
+    score?: number
+    priority?: string
+    notes?: string | null
+    payload?: string | null
+    lastContactedAt?: Date | string | null
+    nextFollowUpAt?: Date | string | null
+    followUpCount?: number
+    lastFollowUpMessage?: string | null
+    automationStatus?: string
+    approvalStatus?: string
+    isHot?: boolean
+    lastSellerReply?: string | null
+    lastSellerReplyAt?: Date | string | null
+    lastSellerReplyIntent?: string | null
+    lastSellerReplyConfidence?: number | null
+    suggestedReply?: string | null
+    requiresHumanApproval?: boolean
+    doNotContact?: boolean
+    optOutReason?: string | null
+    optOutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutLeadInput
+    salesConversionAssists?: SalesConversionAssistCreateNestedManyWithoutLeadInput
+    manualLeadIntakes?: ManualLeadIntakeCreateNestedManyWithoutLeadInput
+    revenueLeadSources?: RevenueLeadSourceCreateNestedManyWithoutLeadInput
+    revenueLeadScores?: RevenueLeadScoreCreateNestedManyWithoutLeadInput
+    revenuePipelineEvents?: RevenuePipelineEventCreateNestedManyWithoutLeadInput
+    revenueCommunicationEvents?: RevenueCommunicationEventCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadUncheckedCreateWithoutRevenueTasksInput = {
+    id?: string
+    name: string
+    phone: string
+    propertyAddress: string
+    source: string
+    status?: $Enums.LeadStatus
+    score?: number
+    priority?: string
+    notes?: string | null
+    payload?: string | null
+    lastContactedAt?: Date | string | null
+    nextFollowUpAt?: Date | string | null
+    followUpCount?: number
+    lastFollowUpMessage?: string | null
+    automationStatus?: string
+    approvalStatus?: string
+    isHot?: boolean
+    lastSellerReply?: string | null
+    lastSellerReplyAt?: Date | string | null
+    lastSellerReplyIntent?: string | null
+    lastSellerReplyConfidence?: number | null
+    suggestedReply?: string | null
+    requiresHumanApproval?: boolean
+    doNotContact?: boolean
+    optOutReason?: string | null
+    optOutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput
+    salesConversionAssists?: SalesConversionAssistUncheckedCreateNestedManyWithoutLeadInput
+    manualLeadIntakes?: ManualLeadIntakeUncheckedCreateNestedManyWithoutLeadInput
+    revenueLeadSources?: RevenueLeadSourceUncheckedCreateNestedManyWithoutLeadInput
+    revenueLeadScores?: RevenueLeadScoreUncheckedCreateNestedManyWithoutLeadInput
+    revenuePipelineEvents?: RevenuePipelineEventUncheckedCreateNestedManyWithoutLeadInput
+    revenueCommunicationEvents?: RevenueCommunicationEventUncheckedCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadCreateOrConnectWithoutRevenueTasksInput = {
+    where: LeadWhereUniqueInput
+    create: XOR<LeadCreateWithoutRevenueTasksInput, LeadUncheckedCreateWithoutRevenueTasksInput>
+  }
+
+  export type LeadUpsertWithoutRevenueTasksInput = {
+    update: XOR<LeadUpdateWithoutRevenueTasksInput, LeadUncheckedUpdateWithoutRevenueTasksInput>
+    create: XOR<LeadCreateWithoutRevenueTasksInput, LeadUncheckedCreateWithoutRevenueTasksInput>
+    where?: LeadWhereInput
+  }
+
+  export type LeadUpdateToOneWithWhereWithoutRevenueTasksInput = {
+    where?: LeadWhereInput
+    data: XOR<LeadUpdateWithoutRevenueTasksInput, LeadUncheckedUpdateWithoutRevenueTasksInput>
+  }
+
+  export type LeadUpdateWithoutRevenueTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    propertyAddress?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    score?: IntFieldUpdateOperationsInput | number
+    priority?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableStringFieldUpdateOperationsInput | string | null
+    lastContactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
+    lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    automationStatus?: StringFieldUpdateOperationsInput | string
+    approvalStatus?: StringFieldUpdateOperationsInput | string
+    isHot?: BoolFieldUpdateOperationsInput | boolean
+    lastSellerReply?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSellerReplyIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    suggestedReply?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresHumanApproval?: BoolFieldUpdateOperationsInput | boolean
+    doNotContact?: BoolFieldUpdateOperationsInput | boolean
+    optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutLeadNestedInput
+    salesConversionAssists?: SalesConversionAssistUpdateManyWithoutLeadNestedInput
+    manualLeadIntakes?: ManualLeadIntakeUpdateManyWithoutLeadNestedInput
+    revenueLeadSources?: RevenueLeadSourceUpdateManyWithoutLeadNestedInput
+    revenueLeadScores?: RevenueLeadScoreUpdateManyWithoutLeadNestedInput
+    revenuePipelineEvents?: RevenuePipelineEventUpdateManyWithoutLeadNestedInput
+    revenueCommunicationEvents?: RevenueCommunicationEventUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateWithoutRevenueTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    propertyAddress?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    score?: IntFieldUpdateOperationsInput | number
+    priority?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableStringFieldUpdateOperationsInput | string | null
+    lastContactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
+    lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    automationStatus?: StringFieldUpdateOperationsInput | string
+    approvalStatus?: StringFieldUpdateOperationsInput | string
+    isHot?: BoolFieldUpdateOperationsInput | boolean
+    lastSellerReply?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSellerReplyIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    suggestedReply?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresHumanApproval?: BoolFieldUpdateOperationsInput | boolean
+    doNotContact?: BoolFieldUpdateOperationsInput | boolean
+    optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput
+    salesConversionAssists?: SalesConversionAssistUncheckedUpdateManyWithoutLeadNestedInput
+    manualLeadIntakes?: ManualLeadIntakeUncheckedUpdateManyWithoutLeadNestedInput
+    revenueLeadSources?: RevenueLeadSourceUncheckedUpdateManyWithoutLeadNestedInput
+    revenueLeadScores?: RevenueLeadScoreUncheckedUpdateManyWithoutLeadNestedInput
+    revenuePipelineEvents?: RevenuePipelineEventUncheckedUpdateManyWithoutLeadNestedInput
+    revenueCommunicationEvents?: RevenueCommunicationEventUncheckedUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadCreateWithoutRevenuePipelineEventsInput = {
+    id?: string
+    name: string
+    phone: string
+    propertyAddress: string
+    source: string
+    status?: $Enums.LeadStatus
+    score?: number
+    priority?: string
+    notes?: string | null
+    payload?: string | null
+    lastContactedAt?: Date | string | null
+    nextFollowUpAt?: Date | string | null
+    followUpCount?: number
+    lastFollowUpMessage?: string | null
+    automationStatus?: string
+    approvalStatus?: string
+    isHot?: boolean
+    lastSellerReply?: string | null
+    lastSellerReplyAt?: Date | string | null
+    lastSellerReplyIntent?: string | null
+    lastSellerReplyConfidence?: number | null
+    suggestedReply?: string | null
+    requiresHumanApproval?: boolean
+    doNotContact?: boolean
+    optOutReason?: string | null
+    optOutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutLeadInput
+    salesConversionAssists?: SalesConversionAssistCreateNestedManyWithoutLeadInput
+    manualLeadIntakes?: ManualLeadIntakeCreateNestedManyWithoutLeadInput
+    revenueLeadSources?: RevenueLeadSourceCreateNestedManyWithoutLeadInput
+    revenueLeadScores?: RevenueLeadScoreCreateNestedManyWithoutLeadInput
+    revenueTasks?: RevenueTaskCreateNestedManyWithoutLeadInput
+    revenueCommunicationEvents?: RevenueCommunicationEventCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadUncheckedCreateWithoutRevenuePipelineEventsInput = {
+    id?: string
+    name: string
+    phone: string
+    propertyAddress: string
+    source: string
+    status?: $Enums.LeadStatus
+    score?: number
+    priority?: string
+    notes?: string | null
+    payload?: string | null
+    lastContactedAt?: Date | string | null
+    nextFollowUpAt?: Date | string | null
+    followUpCount?: number
+    lastFollowUpMessage?: string | null
+    automationStatus?: string
+    approvalStatus?: string
+    isHot?: boolean
+    lastSellerReply?: string | null
+    lastSellerReplyAt?: Date | string | null
+    lastSellerReplyIntent?: string | null
+    lastSellerReplyConfidence?: number | null
+    suggestedReply?: string | null
+    requiresHumanApproval?: boolean
+    doNotContact?: boolean
+    optOutReason?: string | null
+    optOutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput
+    salesConversionAssists?: SalesConversionAssistUncheckedCreateNestedManyWithoutLeadInput
+    manualLeadIntakes?: ManualLeadIntakeUncheckedCreateNestedManyWithoutLeadInput
+    revenueLeadSources?: RevenueLeadSourceUncheckedCreateNestedManyWithoutLeadInput
+    revenueLeadScores?: RevenueLeadScoreUncheckedCreateNestedManyWithoutLeadInput
+    revenueTasks?: RevenueTaskUncheckedCreateNestedManyWithoutLeadInput
+    revenueCommunicationEvents?: RevenueCommunicationEventUncheckedCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadCreateOrConnectWithoutRevenuePipelineEventsInput = {
+    where: LeadWhereUniqueInput
+    create: XOR<LeadCreateWithoutRevenuePipelineEventsInput, LeadUncheckedCreateWithoutRevenuePipelineEventsInput>
+  }
+
+  export type LeadUpsertWithoutRevenuePipelineEventsInput = {
+    update: XOR<LeadUpdateWithoutRevenuePipelineEventsInput, LeadUncheckedUpdateWithoutRevenuePipelineEventsInput>
+    create: XOR<LeadCreateWithoutRevenuePipelineEventsInput, LeadUncheckedCreateWithoutRevenuePipelineEventsInput>
+    where?: LeadWhereInput
+  }
+
+  export type LeadUpdateToOneWithWhereWithoutRevenuePipelineEventsInput = {
+    where?: LeadWhereInput
+    data: XOR<LeadUpdateWithoutRevenuePipelineEventsInput, LeadUncheckedUpdateWithoutRevenuePipelineEventsInput>
+  }
+
+  export type LeadUpdateWithoutRevenuePipelineEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    propertyAddress?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    score?: IntFieldUpdateOperationsInput | number
+    priority?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableStringFieldUpdateOperationsInput | string | null
+    lastContactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
+    lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    automationStatus?: StringFieldUpdateOperationsInput | string
+    approvalStatus?: StringFieldUpdateOperationsInput | string
+    isHot?: BoolFieldUpdateOperationsInput | boolean
+    lastSellerReply?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSellerReplyIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    suggestedReply?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresHumanApproval?: BoolFieldUpdateOperationsInput | boolean
+    doNotContact?: BoolFieldUpdateOperationsInput | boolean
+    optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutLeadNestedInput
+    salesConversionAssists?: SalesConversionAssistUpdateManyWithoutLeadNestedInput
+    manualLeadIntakes?: ManualLeadIntakeUpdateManyWithoutLeadNestedInput
+    revenueLeadSources?: RevenueLeadSourceUpdateManyWithoutLeadNestedInput
+    revenueLeadScores?: RevenueLeadScoreUpdateManyWithoutLeadNestedInput
+    revenueTasks?: RevenueTaskUpdateManyWithoutLeadNestedInput
+    revenueCommunicationEvents?: RevenueCommunicationEventUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateWithoutRevenuePipelineEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    propertyAddress?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    score?: IntFieldUpdateOperationsInput | number
+    priority?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableStringFieldUpdateOperationsInput | string | null
+    lastContactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
+    lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    automationStatus?: StringFieldUpdateOperationsInput | string
+    approvalStatus?: StringFieldUpdateOperationsInput | string
+    isHot?: BoolFieldUpdateOperationsInput | boolean
+    lastSellerReply?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSellerReplyIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    suggestedReply?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresHumanApproval?: BoolFieldUpdateOperationsInput | boolean
+    doNotContact?: BoolFieldUpdateOperationsInput | boolean
+    optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput
+    salesConversionAssists?: SalesConversionAssistUncheckedUpdateManyWithoutLeadNestedInput
+    manualLeadIntakes?: ManualLeadIntakeUncheckedUpdateManyWithoutLeadNestedInput
+    revenueLeadSources?: RevenueLeadSourceUncheckedUpdateManyWithoutLeadNestedInput
+    revenueLeadScores?: RevenueLeadScoreUncheckedUpdateManyWithoutLeadNestedInput
+    revenueTasks?: RevenueTaskUncheckedUpdateManyWithoutLeadNestedInput
+    revenueCommunicationEvents?: RevenueCommunicationEventUncheckedUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadCreateWithoutRevenueCommunicationEventsInput = {
+    id?: string
+    name: string
+    phone: string
+    propertyAddress: string
+    source: string
+    status?: $Enums.LeadStatus
+    score?: number
+    priority?: string
+    notes?: string | null
+    payload?: string | null
+    lastContactedAt?: Date | string | null
+    nextFollowUpAt?: Date | string | null
+    followUpCount?: number
+    lastFollowUpMessage?: string | null
+    automationStatus?: string
+    approvalStatus?: string
+    isHot?: boolean
+    lastSellerReply?: string | null
+    lastSellerReplyAt?: Date | string | null
+    lastSellerReplyIntent?: string | null
+    lastSellerReplyConfidence?: number | null
+    suggestedReply?: string | null
+    requiresHumanApproval?: boolean
+    doNotContact?: boolean
+    optOutReason?: string | null
+    optOutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutLeadInput
+    salesConversionAssists?: SalesConversionAssistCreateNestedManyWithoutLeadInput
+    manualLeadIntakes?: ManualLeadIntakeCreateNestedManyWithoutLeadInput
+    revenueLeadSources?: RevenueLeadSourceCreateNestedManyWithoutLeadInput
+    revenueLeadScores?: RevenueLeadScoreCreateNestedManyWithoutLeadInput
+    revenueTasks?: RevenueTaskCreateNestedManyWithoutLeadInput
+    revenuePipelineEvents?: RevenuePipelineEventCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadUncheckedCreateWithoutRevenueCommunicationEventsInput = {
+    id?: string
+    name: string
+    phone: string
+    propertyAddress: string
+    source: string
+    status?: $Enums.LeadStatus
+    score?: number
+    priority?: string
+    notes?: string | null
+    payload?: string | null
+    lastContactedAt?: Date | string | null
+    nextFollowUpAt?: Date | string | null
+    followUpCount?: number
+    lastFollowUpMessage?: string | null
+    automationStatus?: string
+    approvalStatus?: string
+    isHot?: boolean
+    lastSellerReply?: string | null
+    lastSellerReplyAt?: Date | string | null
+    lastSellerReplyIntent?: string | null
+    lastSellerReplyConfidence?: number | null
+    suggestedReply?: string | null
+    requiresHumanApproval?: boolean
+    doNotContact?: boolean
+    optOutReason?: string | null
+    optOutAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput
+    salesConversionAssists?: SalesConversionAssistUncheckedCreateNestedManyWithoutLeadInput
+    manualLeadIntakes?: ManualLeadIntakeUncheckedCreateNestedManyWithoutLeadInput
+    revenueLeadSources?: RevenueLeadSourceUncheckedCreateNestedManyWithoutLeadInput
+    revenueLeadScores?: RevenueLeadScoreUncheckedCreateNestedManyWithoutLeadInput
+    revenueTasks?: RevenueTaskUncheckedCreateNestedManyWithoutLeadInput
+    revenuePipelineEvents?: RevenuePipelineEventUncheckedCreateNestedManyWithoutLeadInput
+  }
+
+  export type LeadCreateOrConnectWithoutRevenueCommunicationEventsInput = {
+    where: LeadWhereUniqueInput
+    create: XOR<LeadCreateWithoutRevenueCommunicationEventsInput, LeadUncheckedCreateWithoutRevenueCommunicationEventsInput>
+  }
+
+  export type LeadUpsertWithoutRevenueCommunicationEventsInput = {
+    update: XOR<LeadUpdateWithoutRevenueCommunicationEventsInput, LeadUncheckedUpdateWithoutRevenueCommunicationEventsInput>
+    create: XOR<LeadCreateWithoutRevenueCommunicationEventsInput, LeadUncheckedCreateWithoutRevenueCommunicationEventsInput>
+    where?: LeadWhereInput
+  }
+
+  export type LeadUpdateToOneWithWhereWithoutRevenueCommunicationEventsInput = {
+    where?: LeadWhereInput
+    data: XOR<LeadUpdateWithoutRevenueCommunicationEventsInput, LeadUncheckedUpdateWithoutRevenueCommunicationEventsInput>
+  }
+
+  export type LeadUpdateWithoutRevenueCommunicationEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    propertyAddress?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    score?: IntFieldUpdateOperationsInput | number
+    priority?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableStringFieldUpdateOperationsInput | string | null
+    lastContactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
+    lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    automationStatus?: StringFieldUpdateOperationsInput | string
+    approvalStatus?: StringFieldUpdateOperationsInput | string
+    isHot?: BoolFieldUpdateOperationsInput | boolean
+    lastSellerReply?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSellerReplyIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    suggestedReply?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresHumanApproval?: BoolFieldUpdateOperationsInput | boolean
+    doNotContact?: BoolFieldUpdateOperationsInput | boolean
+    optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutLeadNestedInput
+    salesConversionAssists?: SalesConversionAssistUpdateManyWithoutLeadNestedInput
+    manualLeadIntakes?: ManualLeadIntakeUpdateManyWithoutLeadNestedInput
+    revenueLeadSources?: RevenueLeadSourceUpdateManyWithoutLeadNestedInput
+    revenueLeadScores?: RevenueLeadScoreUpdateManyWithoutLeadNestedInput
+    revenueTasks?: RevenueTaskUpdateManyWithoutLeadNestedInput
+    revenuePipelineEvents?: RevenuePipelineEventUpdateManyWithoutLeadNestedInput
+  }
+
+  export type LeadUncheckedUpdateWithoutRevenueCommunicationEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    propertyAddress?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    status?: EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+    score?: IntFieldUpdateOperationsInput | number
+    priority?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    payload?: NullableStringFieldUpdateOperationsInput | string | null
+    lastContactedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextFollowUpAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
+    lastFollowUpMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    automationStatus?: StringFieldUpdateOperationsInput | string
+    approvalStatus?: StringFieldUpdateOperationsInput | string
+    isHot?: BoolFieldUpdateOperationsInput | boolean
+    lastSellerReply?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSellerReplyIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    lastSellerReplyConfidence?: NullableFloatFieldUpdateOperationsInput | number | null
+    suggestedReply?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresHumanApproval?: BoolFieldUpdateOperationsInput | boolean
+    doNotContact?: BoolFieldUpdateOperationsInput | boolean
+    optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput
+    salesConversionAssists?: SalesConversionAssistUncheckedUpdateManyWithoutLeadNestedInput
+    manualLeadIntakes?: ManualLeadIntakeUncheckedUpdateManyWithoutLeadNestedInput
+    revenueLeadSources?: RevenueLeadSourceUncheckedUpdateManyWithoutLeadNestedInput
+    revenueLeadScores?: RevenueLeadScoreUncheckedUpdateManyWithoutLeadNestedInput
+    revenueTasks?: RevenueTaskUncheckedUpdateManyWithoutLeadNestedInput
+    revenuePipelineEvents?: RevenuePipelineEventUncheckedUpdateManyWithoutLeadNestedInput
+  }
+
   export type LeadCreateWithoutManualLeadIntakesInput = {
     id?: string
     name: string
@@ -35258,6 +49526,11 @@ export namespace Prisma {
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutLeadInput
     salesConversionAssists?: SalesConversionAssistCreateNestedManyWithoutLeadInput
+    revenueLeadSources?: RevenueLeadSourceCreateNestedManyWithoutLeadInput
+    revenueLeadScores?: RevenueLeadScoreCreateNestedManyWithoutLeadInput
+    revenueTasks?: RevenueTaskCreateNestedManyWithoutLeadInput
+    revenuePipelineEvents?: RevenuePipelineEventCreateNestedManyWithoutLeadInput
+    revenueCommunicationEvents?: RevenueCommunicationEventCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutManualLeadIntakesInput = {
@@ -35291,6 +49564,11 @@ export namespace Prisma {
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput
     salesConversionAssists?: SalesConversionAssistUncheckedCreateNestedManyWithoutLeadInput
+    revenueLeadSources?: RevenueLeadSourceUncheckedCreateNestedManyWithoutLeadInput
+    revenueLeadScores?: RevenueLeadScoreUncheckedCreateNestedManyWithoutLeadInput
+    revenueTasks?: RevenueTaskUncheckedCreateNestedManyWithoutLeadInput
+    revenuePipelineEvents?: RevenuePipelineEventUncheckedCreateNestedManyWithoutLeadInput
+    revenueCommunicationEvents?: RevenueCommunicationEventUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutManualLeadIntakesInput = {
@@ -35340,6 +49618,11 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutLeadNestedInput
     salesConversionAssists?: SalesConversionAssistUpdateManyWithoutLeadNestedInput
+    revenueLeadSources?: RevenueLeadSourceUpdateManyWithoutLeadNestedInput
+    revenueLeadScores?: RevenueLeadScoreUpdateManyWithoutLeadNestedInput
+    revenueTasks?: RevenueTaskUpdateManyWithoutLeadNestedInput
+    revenuePipelineEvents?: RevenuePipelineEventUpdateManyWithoutLeadNestedInput
+    revenueCommunicationEvents?: RevenueCommunicationEventUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutManualLeadIntakesInput = {
@@ -35373,6 +49656,11 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput
     salesConversionAssists?: SalesConversionAssistUncheckedUpdateManyWithoutLeadNestedInput
+    revenueLeadSources?: RevenueLeadSourceUncheckedUpdateManyWithoutLeadNestedInput
+    revenueLeadScores?: RevenueLeadScoreUncheckedUpdateManyWithoutLeadNestedInput
+    revenueTasks?: RevenueTaskUncheckedUpdateManyWithoutLeadNestedInput
+    revenuePipelineEvents?: RevenuePipelineEventUncheckedUpdateManyWithoutLeadNestedInput
+    revenueCommunicationEvents?: RevenueCommunicationEventUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type AiJobActionCreateWithoutJobInput = {
@@ -36442,6 +50730,11 @@ export namespace Prisma {
     updatedAt?: Date | string
     salesConversionAssists?: SalesConversionAssistCreateNestedManyWithoutLeadInput
     manualLeadIntakes?: ManualLeadIntakeCreateNestedManyWithoutLeadInput
+    revenueLeadSources?: RevenueLeadSourceCreateNestedManyWithoutLeadInput
+    revenueLeadScores?: RevenueLeadScoreCreateNestedManyWithoutLeadInput
+    revenueTasks?: RevenueTaskCreateNestedManyWithoutLeadInput
+    revenuePipelineEvents?: RevenuePipelineEventCreateNestedManyWithoutLeadInput
+    revenueCommunicationEvents?: RevenueCommunicationEventCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutMarketingSalesAttributionsInput = {
@@ -36475,6 +50768,11 @@ export namespace Prisma {
     updatedAt?: Date | string
     salesConversionAssists?: SalesConversionAssistUncheckedCreateNestedManyWithoutLeadInput
     manualLeadIntakes?: ManualLeadIntakeUncheckedCreateNestedManyWithoutLeadInput
+    revenueLeadSources?: RevenueLeadSourceUncheckedCreateNestedManyWithoutLeadInput
+    revenueLeadScores?: RevenueLeadScoreUncheckedCreateNestedManyWithoutLeadInput
+    revenueTasks?: RevenueTaskUncheckedCreateNestedManyWithoutLeadInput
+    revenuePipelineEvents?: RevenuePipelineEventUncheckedCreateNestedManyWithoutLeadInput
+    revenueCommunicationEvents?: RevenueCommunicationEventUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutMarketingSalesAttributionsInput = {
@@ -36631,6 +50929,11 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     salesConversionAssists?: SalesConversionAssistUpdateManyWithoutLeadNestedInput
     manualLeadIntakes?: ManualLeadIntakeUpdateManyWithoutLeadNestedInput
+    revenueLeadSources?: RevenueLeadSourceUpdateManyWithoutLeadNestedInput
+    revenueLeadScores?: RevenueLeadScoreUpdateManyWithoutLeadNestedInput
+    revenueTasks?: RevenueTaskUpdateManyWithoutLeadNestedInput
+    revenuePipelineEvents?: RevenuePipelineEventUpdateManyWithoutLeadNestedInput
+    revenueCommunicationEvents?: RevenueCommunicationEventUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutMarketingSalesAttributionsInput = {
@@ -36664,6 +50967,11 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     salesConversionAssists?: SalesConversionAssistUncheckedUpdateManyWithoutLeadNestedInput
     manualLeadIntakes?: ManualLeadIntakeUncheckedUpdateManyWithoutLeadNestedInput
+    revenueLeadSources?: RevenueLeadSourceUncheckedUpdateManyWithoutLeadNestedInput
+    revenueLeadScores?: RevenueLeadScoreUncheckedUpdateManyWithoutLeadNestedInput
+    revenueTasks?: RevenueTaskUncheckedUpdateManyWithoutLeadNestedInput
+    revenuePipelineEvents?: RevenuePipelineEventUncheckedUpdateManyWithoutLeadNestedInput
+    revenueCommunicationEvents?: RevenueCommunicationEventUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type MarketingDraftUpsertWithoutMarketingSalesAttributionsInput = {
@@ -36822,6 +51130,11 @@ export namespace Prisma {
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutLeadInput
     manualLeadIntakes?: ManualLeadIntakeCreateNestedManyWithoutLeadInput
+    revenueLeadSources?: RevenueLeadSourceCreateNestedManyWithoutLeadInput
+    revenueLeadScores?: RevenueLeadScoreCreateNestedManyWithoutLeadInput
+    revenueTasks?: RevenueTaskCreateNestedManyWithoutLeadInput
+    revenuePipelineEvents?: RevenuePipelineEventCreateNestedManyWithoutLeadInput
+    revenueCommunicationEvents?: RevenueCommunicationEventCreateNestedManyWithoutLeadInput
   }
 
   export type LeadUncheckedCreateWithoutSalesConversionAssistsInput = {
@@ -36855,6 +51168,11 @@ export namespace Prisma {
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput
     manualLeadIntakes?: ManualLeadIntakeUncheckedCreateNestedManyWithoutLeadInput
+    revenueLeadSources?: RevenueLeadSourceUncheckedCreateNestedManyWithoutLeadInput
+    revenueLeadScores?: RevenueLeadScoreUncheckedCreateNestedManyWithoutLeadInput
+    revenueTasks?: RevenueTaskUncheckedCreateNestedManyWithoutLeadInput
+    revenuePipelineEvents?: RevenuePipelineEventUncheckedCreateNestedManyWithoutLeadInput
+    revenueCommunicationEvents?: RevenueCommunicationEventUncheckedCreateNestedManyWithoutLeadInput
   }
 
   export type LeadCreateOrConnectWithoutSalesConversionAssistsInput = {
@@ -36904,6 +51222,11 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutLeadNestedInput
     manualLeadIntakes?: ManualLeadIntakeUpdateManyWithoutLeadNestedInput
+    revenueLeadSources?: RevenueLeadSourceUpdateManyWithoutLeadNestedInput
+    revenueLeadScores?: RevenueLeadScoreUpdateManyWithoutLeadNestedInput
+    revenueTasks?: RevenueTaskUpdateManyWithoutLeadNestedInput
+    revenuePipelineEvents?: RevenuePipelineEventUpdateManyWithoutLeadNestedInput
+    revenueCommunicationEvents?: RevenueCommunicationEventUpdateManyWithoutLeadNestedInput
   }
 
   export type LeadUncheckedUpdateWithoutSalesConversionAssistsInput = {
@@ -36937,6 +51260,11 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput
     manualLeadIntakes?: ManualLeadIntakeUncheckedUpdateManyWithoutLeadNestedInput
+    revenueLeadSources?: RevenueLeadSourceUncheckedUpdateManyWithoutLeadNestedInput
+    revenueLeadScores?: RevenueLeadScoreUncheckedUpdateManyWithoutLeadNestedInput
+    revenueTasks?: RevenueTaskUncheckedUpdateManyWithoutLeadNestedInput
+    revenuePipelineEvents?: RevenuePipelineEventUncheckedUpdateManyWithoutLeadNestedInput
+    revenueCommunicationEvents?: RevenueCommunicationEventUncheckedUpdateManyWithoutLeadNestedInput
   }
 
   export type MarketingSalesAttributionCreateManyLeadInput = {
@@ -36989,6 +51317,84 @@ export namespace Prisma {
     safetyFlags: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type RevenueLeadSourceCreateManyLeadInput = {
+    id?: string
+    tenantId?: string
+    source: string
+    sourceType: string
+    sourceDetail: string
+    sourceRecordId?: string | null
+    campaignName?: string | null
+    campaignMedium?: string | null
+    costCents?: number | null
+    confidence?: number
+    verified?: boolean
+    importedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RevenueLeadScoreCreateManyLeadInput = {
+    id?: string
+    tenantId?: string
+    score: number
+    confidence: number
+    priority: string
+    explanation: string
+    recommendedNextAction: string
+    missingData: JsonNullValueInput | InputJsonValue
+    scoreBreakdown: JsonNullValueInput | InputJsonValue
+    assumptions: JsonNullValueInput | InputJsonValue
+    dataUsed: JsonNullValueInput | InputJsonValue
+    advisoryOnly?: boolean
+    createdAt?: Date | string
+  }
+
+  export type RevenueTaskCreateManyLeadInput = {
+    id?: string
+    tenantId?: string
+    title: string
+    taskType: string
+    priority: string
+    status?: string
+    recommendedAction: string
+    reason: string
+    dueAt?: Date | string | null
+    assignedTo?: string | null
+    requiresApproval?: boolean
+    source: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+  }
+
+  export type RevenuePipelineEventCreateManyLeadInput = {
+    id?: string
+    tenantId?: string
+    fromStage?: string | null
+    toStage: string
+    reason: string
+    source: string
+    revenueOutcome?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+  }
+
+  export type RevenueCommunicationEventCreateManyLeadInput = {
+    id?: string
+    tenantId?: string
+    channel: string
+    direction: string
+    status: string
+    approvalStatus?: string
+    provider?: string
+    providerCalled?: boolean
+    messageSummary?: string | null
+    requiresApproval?: boolean
+    createdBy?: string | null
+    createdAt?: Date | string
   }
 
   export type MarketingSalesAttributionUpdateWithoutLeadInput = {
@@ -37145,6 +51551,240 @@ export namespace Prisma {
     safetyFlags?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueLeadSourceUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceDetail?: StringFieldUpdateOperationsInput | string
+    sourceRecordId?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignName?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignMedium?: NullableStringFieldUpdateOperationsInput | string | null
+    costCents?: NullableIntFieldUpdateOperationsInput | number | null
+    confidence?: IntFieldUpdateOperationsInput | number
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    importedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueLeadSourceUncheckedUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceDetail?: StringFieldUpdateOperationsInput | string
+    sourceRecordId?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignName?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignMedium?: NullableStringFieldUpdateOperationsInput | string | null
+    costCents?: NullableIntFieldUpdateOperationsInput | number | null
+    confidence?: IntFieldUpdateOperationsInput | number
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    importedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueLeadSourceUncheckedUpdateManyWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceDetail?: StringFieldUpdateOperationsInput | string
+    sourceRecordId?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignName?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignMedium?: NullableStringFieldUpdateOperationsInput | string | null
+    costCents?: NullableIntFieldUpdateOperationsInput | number | null
+    confidence?: IntFieldUpdateOperationsInput | number
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    importedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueLeadScoreUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    confidence?: IntFieldUpdateOperationsInput | number
+    priority?: StringFieldUpdateOperationsInput | string
+    explanation?: StringFieldUpdateOperationsInput | string
+    recommendedNextAction?: StringFieldUpdateOperationsInput | string
+    missingData?: JsonNullValueInput | InputJsonValue
+    scoreBreakdown?: JsonNullValueInput | InputJsonValue
+    assumptions?: JsonNullValueInput | InputJsonValue
+    dataUsed?: JsonNullValueInput | InputJsonValue
+    advisoryOnly?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueLeadScoreUncheckedUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    confidence?: IntFieldUpdateOperationsInput | number
+    priority?: StringFieldUpdateOperationsInput | string
+    explanation?: StringFieldUpdateOperationsInput | string
+    recommendedNextAction?: StringFieldUpdateOperationsInput | string
+    missingData?: JsonNullValueInput | InputJsonValue
+    scoreBreakdown?: JsonNullValueInput | InputJsonValue
+    assumptions?: JsonNullValueInput | InputJsonValue
+    dataUsed?: JsonNullValueInput | InputJsonValue
+    advisoryOnly?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueLeadScoreUncheckedUpdateManyWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    confidence?: IntFieldUpdateOperationsInput | number
+    priority?: StringFieldUpdateOperationsInput | string
+    explanation?: StringFieldUpdateOperationsInput | string
+    recommendedNextAction?: StringFieldUpdateOperationsInput | string
+    missingData?: JsonNullValueInput | InputJsonValue
+    scoreBreakdown?: JsonNullValueInput | InputJsonValue
+    assumptions?: JsonNullValueInput | InputJsonValue
+    dataUsed?: JsonNullValueInput | InputJsonValue
+    advisoryOnly?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueTaskUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    taskType?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    recommendedAction?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type RevenueTaskUncheckedUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    taskType?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    recommendedAction?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type RevenueTaskUncheckedUpdateManyWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    taskType?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    recommendedAction?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    dueAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type RevenuePipelineEventUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    fromStage?: NullableStringFieldUpdateOperationsInput | string | null
+    toStage?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    revenueOutcome?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenuePipelineEventUncheckedUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    fromStage?: NullableStringFieldUpdateOperationsInput | string | null
+    toStage?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    revenueOutcome?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenuePipelineEventUncheckedUpdateManyWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    fromStage?: NullableStringFieldUpdateOperationsInput | string | null
+    toStage?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    revenueOutcome?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueCommunicationEventUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    direction?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    approvalStatus?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    messageSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueCommunicationEventUncheckedUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    direction?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    approvalStatus?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    messageSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RevenueCommunicationEventUncheckedUpdateManyWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    channel?: StringFieldUpdateOperationsInput | string
+    direction?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    approvalStatus?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    messageSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AiJobActionCreateManyJobInput = {

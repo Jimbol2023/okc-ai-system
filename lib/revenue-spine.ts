@@ -61,12 +61,40 @@ export type RevenueInboxItem = {
 export type RevenueCommandCenterTask = Prisma.RevenueTaskGetPayload<Record<string, never>>;
 export type RevenueCommandCenterAuditEvent = Prisma.RevenueAuditEventGetPayload<Record<string, never>>;
 export type RevenueCommandCenterConnector = Prisma.ConnectorDefinitionGetPayload<Record<string, never>>;
+export type RevenueCommandCenterDecisionLog = Prisma.RevenueDecisionLogGetPayload<Record<string, never>>;
 export type RevenueSourcePerformance = {
   source: string;
   leads: number;
   qualified: number;
   avgScore: number;
   conversionSignal: number;
+};
+export type RevenueConnectorHealthSummary = {
+  total: number;
+  active: number;
+  readinessOnly: number;
+  inactive: number;
+  providerCallsAllowed: number;
+  approvalRequired: number;
+};
+export type RevenueDecisionFeedbackSummary = {
+  total: number;
+  pending: number;
+  accepted: number;
+  modified: number;
+  ignored: number;
+  unknownOutcome: number;
+};
+export type RevenueAgentGovernanceReport = {
+  providerCalled: false;
+  outreachSent: false;
+  scrapingEnabled: false;
+  browserAutomationEnabled: false;
+  executionRequiresApproval: true;
+  advisoryOnly: true;
+  supportedDataSources: string[];
+  disabledByDefaultSources: string[];
+  aiAgentRoles: string[];
 };
 export type RevenueCommandCenterReport = {
   ok: true;
@@ -86,9 +114,14 @@ export type RevenueCommandCenterReport = {
   tasks: RevenueCommandCenterTask[];
   auditEvents: RevenueCommandCenterAuditEvent[];
   connectors: RevenueCommandCenterConnector[];
+  decisionLogs: RevenueCommandCenterDecisionLog[];
+  connectorHealth: RevenueConnectorHealthSummary;
+  decisionFeedback: RevenueDecisionFeedbackSummary;
+  agentGovernance: RevenueAgentGovernanceReport;
   executiveBriefing: {
     title: string;
     summary: string;
+    risks: string[];
     recommendedActions: string[];
   };
 };
@@ -105,19 +138,94 @@ type AuditInput = {
   tenantId?: string;
 };
 
+type DecisionLogInput = {
+  recommendationType: string;
+  recommendation: string;
+  confidence: number;
+  supportingEvidence: string[];
+  assumptions: string[];
+  missingData: string[];
+  leadId?: string | null;
+  taskId?: string | null;
+  auditEventId?: string | null;
+  aiMemoryEventId?: string | null;
+  connectorKey?: string | null;
+  pipelineEventId?: string | null;
+  userDecision?: "pending" | "accepted" | "modified" | "ignored";
+  modifiedAction?: string | null;
+  outcome?: "unknown" | "successful" | "unsuccessful" | "needs_follow_up";
+  createdBy?: string | null;
+  tenantId?: string;
+  metadata?: Record<string, unknown>;
+};
+
 export const inactiveConnectorDefinitions = [
   ["website_forms", "Website Forms", "owned_intake", "active"],
   ["landing_pages", "Landing Pages", "owned_intake", "active"],
   ["user_imports", "User Imports", "manual_import", "active"],
+  ["manual_entry", "Manual Lead Entry", "manual_intake", "active"],
+  ["csv_imports", "CSV Imports", "manual_import", "active"],
+  ["chat_intake", "Chat Intake", "owned_intake", "readiness_only"],
+  ["referrals", "Referral Intake", "relationship_source", "active"],
   ["resend", "Resend Email", "communication", "readiness_only"],
   ["twilio", "Twilio SMS/Voice", "communication", "readiness_only"],
   ["google_maps", "Google Maps", "market_reference", "readiness_only"],
   ["attom", "ATTOM", "property_data", "inactive"],
   ["rentcast", "RentCast", "property_data", "inactive"],
+  ["estated", "Estated", "property_data", "inactive"],
   ["county_public_records", "County/Public Record Importer", "government_data", "readiness_only"],
+  ["county_gis", "County GIS", "government_data", "readiness_only"],
   ["social_ads", "Social Advertising", "marketing_data", "inactive"],
   ["mls_idx", "MLS/IDX Authorized Feeds", "authorized_real_estate_data", "inactive"],
+  ["browser_automation", "Browser Automation Allowlist", "automation", "inactive"],
 ] as const;
+
+export function createRevenueAgentGovernanceReport(): RevenueAgentGovernanceReport {
+  return {
+    providerCalled: false,
+    outreachSent: false,
+    scrapingEnabled: false,
+    browserAutomationEnabled: false,
+    executionRequiresApproval: true,
+    advisoryOnly: true,
+    supportedDataSources: [
+      "manual entry",
+      "CSV imports",
+      "website forms",
+      "chat intake",
+      "referrals",
+      "owned landing pages",
+      "licensed API connectors after approval",
+      "authorized MLS/IDX feeds after approval",
+    ],
+    disabledByDefaultSources: [
+      "unauthorized scraping",
+      "browser automation without allowlist",
+      "provider calls without credentials and terms review",
+      "Zillow as primary source of truth",
+      "MLS/IDX without authorized feed",
+    ],
+    aiAgentRoles: [
+      "Executive AI Advisor",
+      "Revenue Performance AI",
+      "Lead Scoring AI",
+      "Marketing AI",
+      "Sales AI",
+      "Research AI",
+      "Knowledge AI",
+    ],
+  };
+}
+
+export function assertRevenueAgentGovernance(report: RevenueAgentGovernanceReport): void {
+  if (report.providerCalled || report.outreachSent || report.scrapingEnabled || report.browserAutomationEnabled) {
+    throw new Error("Revenue agent governance must remain advisory-only without provider calls, outreach, scraping, or browser automation.");
+  }
+
+  if (!report.executionRequiresApproval || !report.advisoryOnly) {
+    throw new Error("Revenue agent governance must require human approval and remain advisory-only.");
+  }
+}
 
 function hasText(value: string | null | undefined) {
   return Boolean(value?.trim());
@@ -345,6 +453,80 @@ export function sanitizeAuditMetadata(metadata: Record<string, unknown> = {}): S
   );
 }
 
+export function createRevenueDecisionLogData(input: DecisionLogInput): Prisma.RevenueDecisionLogUncheckedCreateInput {
+  return {
+    tenantId: input.tenantId ?? DEFAULT_TENANT_ID,
+    leadId: input.leadId ?? null,
+    taskId: input.taskId ?? null,
+    auditEventId: input.auditEventId ?? null,
+    aiMemoryEventId: input.aiMemoryEventId ?? null,
+    connectorKey: input.connectorKey ?? null,
+    pipelineEventId: input.pipelineEventId ?? null,
+    recommendationType: input.recommendationType,
+    recommendation: input.recommendation,
+    confidence: clampScore(input.confidence),
+    supportingEvidence: input.supportingEvidence as Prisma.InputJsonArray,
+    assumptions: input.assumptions as Prisma.InputJsonArray,
+    missingData: input.missingData as Prisma.InputJsonArray,
+    userDecision: input.userDecision ?? "pending",
+    modifiedAction: input.modifiedAction ?? null,
+    outcome: input.outcome ?? "unknown",
+    advisoryOnly: true,
+    providerCalled: false,
+    outreachSent: false,
+    requiresApproval: true,
+    safeMetadata: sanitizeAuditMetadata(input.metadata ?? {}) as Prisma.InputJsonObject,
+    createdBy: input.createdBy ?? null,
+  };
+}
+
+export function summarizeDecisionFeedback(decisionLogs: Array<Pick<RevenueCommandCenterDecisionLog, "userDecision" | "outcome">>): RevenueDecisionFeedbackSummary {
+  return {
+    total: decisionLogs.length,
+    pending: decisionLogs.filter((decision) => decision.userDecision === "pending").length,
+    accepted: decisionLogs.filter((decision) => decision.userDecision === "accepted").length,
+    modified: decisionLogs.filter((decision) => decision.userDecision === "modified").length,
+    ignored: decisionLogs.filter((decision) => decision.userDecision === "ignored").length,
+    unknownOutcome: decisionLogs.filter((decision) => decision.outcome === "unknown").length,
+  };
+}
+
+export function summarizeConnectorHealth(connectors: Array<Pick<RevenueCommandCenterConnector, "status" | "providerCallsAllowed">>): RevenueConnectorHealthSummary {
+  return {
+    total: connectors.length,
+    active: connectors.filter((connector) => connector.status === "active").length,
+    readinessOnly: connectors.filter((connector) => connector.status === "readiness_only").length,
+    inactive: connectors.filter((connector) => connector.status === "inactive").length,
+    providerCallsAllowed: connectors.filter((connector) => connector.providerCallsAllowed).length,
+    approvalRequired: connectors.filter((connector) => !connector.providerCallsAllowed || connector.status !== "active").length,
+  };
+}
+
+export function isRevenueDecisionLogUnavailableError(error: unknown): boolean {
+  if (error instanceof Prisma.PrismaClientKnownRequestError && (error.code === "P2021" || error.code === "P2022")) return true;
+
+  const message = error instanceof Error ? error.message : String(error);
+
+  return /RevenueDecisionLog|revenue decision log|table .*does not exist|column .*does not exist/i.test(message);
+}
+
+async function listRevenueDecisionLogsSafe(): Promise<RevenueCommandCenterDecisionLog[]> {
+  try {
+    return await prisma.revenueDecisionLog.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 20,
+    });
+  } catch (error) {
+    if (!isRevenueDecisionLogUnavailableError(error)) throw error;
+
+    console.warn("RevenueDecisionLog unavailable; decision feedback is degraded until the revenue decision log migration is applied.");
+
+    return [];
+  }
+}
+
 export async function logRevenueAuditEvent(input: AuditInput) {
   return prisma.revenueAuditEvent.create({
     data: {
@@ -359,6 +541,20 @@ export async function logRevenueAuditEvent(input: AuditInput) {
       safeMetadata: sanitizeAuditMetadata(input.metadata ?? {}) as Prisma.InputJsonObject,
     },
   });
+}
+
+export async function logRevenueDecision(input: DecisionLogInput) {
+  try {
+    return await prisma.revenueDecisionLog.create({
+      data: createRevenueDecisionLogData(input),
+    });
+  } catch (error) {
+    if (!isRevenueDecisionLogUnavailableError(error)) throw error;
+
+    console.warn("RevenueDecisionLog unavailable; advisory recommendation was not persisted until the revenue decision log migration is applied.");
+
+    return null;
+  }
 }
 
 export async function ensureConnectorDefinitions() {
@@ -430,7 +626,7 @@ export async function syncLeadRevenueSpine({
     },
   });
 
-  await prisma.revenueLeadScore.create({
+  const scoreRecord = await prisma.revenueLeadScore.create({
     data: {
       tenantId: DEFAULT_TENANT_ID,
       leadId: lead.id,
@@ -444,6 +640,30 @@ export async function syncLeadRevenueSpine({
       assumptions: score.assumptions as Prisma.InputJsonArray,
       dataUsed: score.dataUsed as Prisma.InputJsonArray,
       advisoryOnly: true,
+    },
+  });
+
+  await logRevenueDecision({
+    recommendationType: "lead_scoring",
+    recommendation: score.recommendedNextAction,
+    confidence: score.confidence,
+    supportingEvidence: score.dataUsed,
+    assumptions: score.assumptions,
+    missingData: score.missingData,
+    leadId: lead.id,
+    userDecision: "pending",
+    outcome: "unknown",
+    createdBy: source,
+    metadata: {
+      source: lead.source,
+      sourceType,
+      revenueScoreId: scoreRecord.id,
+      score: score.score,
+      priority: score.priority,
+      advisoryOnly: true,
+      providerCalled: false,
+      outreachSent: false,
+      requiresApproval: true,
     },
   });
 
@@ -592,10 +812,21 @@ export async function createRevenueCommandCenter(leads: StoredLead[]): Promise<R
   const connectors = await prisma.connectorDefinition.findMany({
     orderBy: [{ status: "asc" }, { label: "asc" }],
   });
+  const decisionLogs = await listRevenueDecisionLogsSafe();
   const qualified = inbox.filter((item) => (item.latestScore?.score ?? 0) >= 55 || item.lead.priority !== "Low");
   const followUpDue = inbox.filter((item) => item.followUpFlags.some((flag) => /follow-up/i.test(flag)));
   const duplicateWarnings = inbox.reduce((total, item) => total + item.duplicateWarnings.length, 0);
   const missingData = inbox.filter((item) => (item.latestScore?.missingData.length ?? 0) > 0);
+  const connectorHealth = summarizeConnectorHealth(connectors);
+  const decisionFeedback = summarizeDecisionFeedback(decisionLogs);
+  const agentGovernance = createRevenueAgentGovernanceReport();
+  const risks = [
+    ...(followUpDue.length > 0 ? [`${followUpDue.length} follow-up gap${followUpDue.length === 1 ? "" : "s"} need manual review.`] : []),
+    ...(duplicateWarnings > 0 ? [`${duplicateWarnings} duplicate warning${duplicateWarnings === 1 ? "" : "s"} need human verification.`] : []),
+    ...(missingData.length > 0 ? [`${missingData.length} lead record${missingData.length === 1 ? "" : "s"} have missing data that limits confidence.`] : []),
+    ...(connectorHealth.approvalRequired > 0 ? `${connectorHealth.approvalRequired} connector${connectorHealth.approvalRequired === 1 ? "" : "s"} still require approval before provider calls.` : []),
+    ...(decisionFeedback.pending > 0 ? `${decisionFeedback.pending} AI recommendation${decisionFeedback.pending === 1 ? "" : "s"} await operator feedback.` : []),
+  ];
   const bySource = new Map<string, { source: string; leads: number; qualified: number; avgScore: number }>();
 
   inbox.forEach((item) => {
@@ -634,12 +865,17 @@ export async function createRevenueCommandCenter(leads: StoredLead[]): Promise<R
     tasks,
     auditEvents,
     connectors,
+    decisionLogs,
+    connectorHealth,
+    decisionFeedback,
+    agentGovernance,
     executiveBriefing: {
       title: "Revenue growth briefing",
       summary:
         qualified.length > 0
           ? `${qualified.length} qualified opportunities are visible. Work the highest-score leads first, clear ${followUpDue.length} follow-up gaps, and review ${duplicateWarnings} duplicate warnings before expanding connector volume.`
           : "No qualified opportunities are visible yet. Improve source quality, data completeness, and manual follow-up capture before adding more automation.",
+      risks: risks.length > 0 ? risks : ["No critical revenue governance risks are visible in the current command-center snapshot."],
       recommendedActions: [
         "Work the highest ranked unified inbox items first.",
         "Clear overdue follow-up tasks before importing more low-confidence records.",

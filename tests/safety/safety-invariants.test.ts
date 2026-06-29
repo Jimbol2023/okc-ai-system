@@ -5,7 +5,16 @@ import { createApiErrorBody, createApiSuccessBody } from "../../lib/api-response
 import { searchGlobalRecords } from "../../lib/global-search";
 import { getOpenAiEmbeddingConfig } from "../../lib/openai-embeddings";
 import { assertOperationalSafetyCenter, createOperationalSafetyCenterReport } from "../../lib/operational-safety-center";
-import { calculateRevenueLeadScore, findDuplicateCandidates, sanitizeAuditMetadata } from "../../lib/revenue-spine";
+import {
+  assertRevenueAgentGovernance,
+  calculateRevenueLeadScore,
+  createRevenueAgentGovernanceReport,
+  createRevenueDecisionLogData,
+  findDuplicateCandidates,
+  isRevenueDecisionLogUnavailableError,
+  sanitizeAuditMetadata,
+  summarizeConnectorHealth,
+} from "../../lib/revenue-spine";
 import {
   assertWorkflowOrchestrationSafety,
   createWorkflowOrchestrationReadinessReport,
@@ -205,4 +214,73 @@ test("Revenue audit metadata redacts secrets and communication bodies", () => {
   assert.equal(sanitized.providerResponse, "[redacted]");
   assert.equal(sanitized.smsBody, "[redacted]");
   assert.equal(sanitized.safeCount, 2);
+});
+
+test("Revenue agent governance remains advisory-only without scraping or provider calls", () => {
+  const report = createRevenueAgentGovernanceReport();
+
+  assert.doesNotThrow(() => assertRevenueAgentGovernance(report));
+  assert.equal(report.providerCalled, false);
+  assert.equal(report.outreachSent, false);
+  assert.equal(report.scrapingEnabled, false);
+  assert.equal(report.browserAutomationEnabled, false);
+  assert.equal(report.executionRequiresApproval, true);
+  assert.equal(report.supportedDataSources.includes("CSV imports"), true);
+  assert.equal(report.disabledByDefaultSources.includes("unauthorized scraping"), true);
+  assert.equal(report.aiAgentRoles.includes("Executive AI Advisor"), true);
+});
+
+test("Revenue decision log data is advisory-only and redacts sensitive metadata", () => {
+  const decision = createRevenueDecisionLogData({
+    recommendationType: "lead_scoring",
+    recommendation: "Review high-priority lead before any outreach.",
+    confidence: 88,
+    supportingEvidence: ["stored lead source", "stored follow-up due date"],
+    assumptions: ["Owner identity is not verified in the current record."],
+    missingData: ["owner name"],
+    leadId: safetyLead.id,
+    metadata: {
+      source: "website",
+      apiToken: "secret-token",
+      messageBody: "do not store full message",
+      nested: {
+        providerResponse: "raw provider body",
+      },
+    },
+  });
+
+  assert.equal(decision.advisoryOnly, true);
+  assert.equal(decision.providerCalled, false);
+  assert.equal(decision.outreachSent, false);
+  assert.equal(decision.requiresApproval, true);
+  assert.equal(decision.userDecision, "pending");
+  assert.equal(decision.outcome, "unknown");
+  assert.deepEqual(decision.supportingEvidence, ["stored lead source", "stored follow-up due date"]);
+  assert.deepEqual(decision.assumptions, ["Owner identity is not verified in the current record."]);
+  assert.deepEqual(decision.missingData, ["owner name"]);
+  const safeMetadata = decision.safeMetadata as Record<string, unknown>;
+  assert.equal(safeMetadata.apiToken, "[redacted]");
+  assert.equal(safeMetadata.messageBody, "[redacted]");
+  assert.deepEqual(safeMetadata.nested, { providerResponse: "[redacted]" });
+});
+
+test("Revenue connector health fails closed when providers are inactive or unapproved", () => {
+  const summary = summarizeConnectorHealth([
+    { status: "active", providerCallsAllowed: false },
+    { status: "readiness_only", providerCallsAllowed: false },
+    { status: "inactive", providerCallsAllowed: false },
+  ]);
+
+  assert.equal(summary.total, 3);
+  assert.equal(summary.active, 1);
+  assert.equal(summary.readinessOnly, 1);
+  assert.equal(summary.inactive, 1);
+  assert.equal(summary.providerCallsAllowed, 0);
+  assert.equal(summary.approvalRequired, 3);
+});
+
+test("Revenue decision log unavailable errors degrade safely", () => {
+  assert.equal(isRevenueDecisionLogUnavailableError(new Error('The table "RevenueDecisionLog" does not exist in the current database.')), true);
+  assert.equal(isRevenueDecisionLogUnavailableError(new Error("column RevenueDecisionLog.safeMetadata does not exist")), true);
+  assert.equal(isRevenueDecisionLogUnavailableError(new Error("network timeout while loading leads")), false);
 });

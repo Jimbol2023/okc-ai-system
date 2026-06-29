@@ -60,6 +60,11 @@ model Lead {
   marketingSalesAttributions MarketingSalesAttribution[]
   salesConversionAssists     SalesConversionAssist[]
   manualLeadIntakes          ManualLeadIntake[]
+  revenueLeadSources         RevenueLeadSource[]
+  revenueLeadScores          RevenueLeadScore[]
+  revenueTasks               RevenueTask[]
+  revenuePipelineEvents      RevenuePipelineEvent[]
+  revenueCommunicationEvents RevenueCommunicationEvent[]
 
   // INDEXES
   @@unique([propertyAddress, phone])
@@ -71,6 +76,220 @@ model Lead {
   @@index([isHot])
   @@index([doNotContact])
   @@index([lastSellerReplyIntent])
+}
+
+model RevenueAuditEvent {
+  id           String   @id @default(uuid())
+  tenantId     String   @default("default")
+  actorId      String?
+  action       String
+  targetType   String
+  targetId     String?
+  requestId    String?
+  source       String
+  result       String   @default("success")
+  safeMetadata Json?
+  createdAt    DateTime @default(now())
+
+  @@index([tenantId])
+  @@index([action])
+  @@index([targetType, targetId])
+  @@index([source])
+  @@index([result])
+  @@index([createdAt])
+}
+
+model RevenueLeadSource {
+  id             String   @id @default(uuid())
+  tenantId       String   @default("default")
+  leadId         String
+  source         String
+  sourceType     String
+  sourceDetail   String
+  sourceRecordId String?
+  campaignName   String?
+  campaignMedium String?
+  costCents      Int?
+  confidence     Int      @default(60)
+  verified       Boolean  @default(false)
+  importedBy     String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@unique([leadId, source, sourceDetail])
+  @@index([tenantId])
+  @@index([leadId])
+  @@index([source])
+  @@index([sourceType])
+  @@index([campaignName])
+  @@index([createdAt])
+}
+
+model RevenueLeadScore {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  leadId                String
+  score                 Int
+  confidence            Int
+  priority              String
+  explanation           String
+  recommendedNextAction String
+  missingData           Json
+  scoreBreakdown        Json
+  assumptions           Json
+  dataUsed              Json
+  advisoryOnly          Boolean  @default(true)
+  createdAt             DateTime @default(now())
+
+  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([leadId])
+  @@index([score])
+  @@index([confidence])
+  @@index([priority])
+  @@index([createdAt])
+}
+
+model RevenueTask {
+  id                String    @id @default(uuid())
+  tenantId          String    @default("default")
+  leadId            String?
+  title             String
+  taskType          String
+  priority          String
+  status            String    @default("open")
+  recommendedAction String
+  reason            String
+  dueAt             DateTime?
+  assignedTo        String?
+  requiresApproval  Boolean   @default(true)
+  source            String
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  completedAt       DateTime?
+
+  lead Lead? @relation(fields: [leadId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId])
+  @@index([leadId])
+  @@index([taskType])
+  @@index([priority])
+  @@index([status])
+  @@index([dueAt])
+  @@index([createdAt])
+}
+
+model RevenuePipelineEvent {
+  id             String   @id @default(uuid())
+  tenantId       String   @default("default")
+  leadId         String
+  fromStage      String?
+  toStage        String
+  reason         String
+  source         String
+  revenueOutcome String?
+  createdBy      String?
+  createdAt      DateTime @default(now())
+
+  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([leadId])
+  @@index([fromStage])
+  @@index([toStage])
+  @@index([source])
+  @@index([createdAt])
+}
+
+model RevenueCommunicationEvent {
+  id               String   @id @default(uuid())
+  tenantId         String   @default("default")
+  leadId           String?
+  channel          String
+  direction        String
+  status           String
+  approvalStatus   String   @default("pending_manual_approval")
+  provider         String   @default("not_called")
+  providerCalled   Boolean  @default(false)
+  messageSummary   String?
+  requiresApproval Boolean  @default(true)
+  createdBy        String?
+  createdAt        DateTime @default(now())
+
+  lead Lead? @relation(fields: [leadId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId])
+  @@index([leadId])
+  @@index([channel])
+  @@index([status])
+  @@index([approvalStatus])
+  @@index([providerCalled])
+  @@index([createdAt])
+}
+
+model RevenueDecisionLog {
+  id                 String   @id @default(uuid())
+  tenantId           String   @default("default")
+  leadId             String?
+  taskId             String?
+  auditEventId       String?
+  aiMemoryEventId    String?
+  connectorKey       String?
+  pipelineEventId    String?
+  recommendationType String
+  recommendation     String
+  confidence         Int
+  supportingEvidence Json
+  assumptions        Json
+  missingData        Json
+  userDecision       String   @default("pending")
+  modifiedAction     String?
+  outcome            String   @default("unknown")
+  advisoryOnly       Boolean  @default(true)
+  providerCalled     Boolean  @default(false)
+  outreachSent       Boolean  @default(false)
+  requiresApproval   Boolean  @default(true)
+  safeMetadata       Json?
+  createdBy          String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([leadId])
+  @@index([taskId])
+  @@index([auditEventId])
+  @@index([aiMemoryEventId])
+  @@index([connectorKey])
+  @@index([pipelineEventId])
+  @@index([recommendationType])
+  @@index([userDecision])
+  @@index([outcome])
+  @@index([advisoryOnly])
+  @@index([providerCalled])
+  @@index([outreachSent])
+  @@index([createdAt])
+}
+
+model ConnectorDefinition {
+  id                   String   @id @default(uuid())
+  connectorKey         String   @unique
+  label                String
+  category             String
+  status               String   @default("inactive")
+  version              String   @default("1.0.0")
+  supportsDryRun       Boolean  @default(true)
+  providerCallsAllowed Boolean  @default(false)
+  requiredApprovals    Json
+  safetyNotes          String
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@index([category])
+  @@index([status])
+  @@index([providerCallsAllowed])
 }
 
 model ManualLeadIntake {

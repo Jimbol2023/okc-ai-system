@@ -83,6 +83,29 @@ export default async function RevenueCommandCenterPage() {
         </DashboardCard>
       </section>
 
+      <section className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <DashboardCard>
+          <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Connector Health</p>
+          <p className="mt-2 text-2xl font-bold text-primary">{report.connectorHealth.approvalRequired}</p>
+          <p className="mt-1 text-xs text-muted">Need approval before provider calls.</p>
+        </DashboardCard>
+        <DashboardCard>
+          <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">AI Feedback</p>
+          <p className="mt-2 text-2xl font-bold text-primary">{report.decisionFeedback.pending}</p>
+          <p className="mt-1 text-xs text-muted">Pending recommendation decisions.</p>
+        </DashboardCard>
+        <DashboardCard>
+          <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Execution Boundary</p>
+          <p className="mt-2 text-2xl font-bold text-primary">{report.agentGovernance.advisoryOnly ? "On" : "Review"}</p>
+          <p className="mt-1 text-xs text-muted">AI remains advisory-only.</p>
+        </DashboardCard>
+        <DashboardCard>
+          <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Automation</p>
+          <p className="mt-2 text-2xl font-bold text-primary">{report.agentGovernance.browserAutomationEnabled ? "On" : "Off"}</p>
+          <p className="mt-1 text-xs text-muted">Browser automation disabled by default.</p>
+        </DashboardCard>
+      </section>
+
       <section className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
         <DashboardCard>
           <div className="flex items-start justify-between gap-3">
@@ -96,6 +119,13 @@ export default async function RevenueCommandCenterPage() {
             {report.executiveBriefing.recommendedActions.map((action) => (
               <div key={action} className="rounded border border-border bg-white p-3 text-sm font-semibold leading-6 text-primary">
                 {action}
+              </div>
+            ))}
+          </div>
+          <div className="mt-4 space-y-2">
+            {report.executiveBriefing.risks.map((risk) => (
+              <div key={risk} className="rounded border border-border bg-white p-3 text-sm leading-6 text-muted">
+                {risk}
               </div>
             ))}
           </div>
@@ -201,6 +231,63 @@ export default async function RevenueCommandCenterPage() {
               </div>
             ))}
             {report.auditEvents.length === 0 ? <p className="text-sm text-muted">No revenue audit events yet.</p> : null}
+          </div>
+        </DashboardCard>
+      </section>
+
+      <section className="grid gap-4 xl:grid-cols-2">
+        <DashboardCard>
+          <h2 className="text-lg font-bold text-primary">AI Decision Feedback</h2>
+          <div className="mt-4 grid gap-3 md:grid-cols-2">
+            <div className="rounded border border-border bg-white p-3">
+              <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Total</p>
+              <p className="mt-2 text-xl font-bold text-primary">{report.decisionFeedback.total}</p>
+            </div>
+            <div className="rounded border border-border bg-white p-3">
+              <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Accepted / Modified</p>
+              <p className="mt-2 text-xl font-bold text-primary">
+                {report.decisionFeedback.accepted} / {report.decisionFeedback.modified}
+              </p>
+            </div>
+            <div className="rounded border border-border bg-white p-3">
+              <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Ignored</p>
+              <p className="mt-2 text-xl font-bold text-primary">{report.decisionFeedback.ignored}</p>
+            </div>
+            <div className="rounded border border-border bg-white p-3">
+              <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Unknown Outcome</p>
+              <p className="mt-2 text-xl font-bold text-primary">{report.decisionFeedback.unknownOutcome}</p>
+            </div>
+          </div>
+          <div className="mt-4 space-y-3">
+            {report.decisionLogs.slice(0, 5).map((decision) => (
+              <div key={decision.id} className="rounded border border-border bg-white p-3">
+                <div className="flex items-start justify-between gap-3">
+                  <p className="text-sm font-bold text-primary">{decision.recommendationType}</p>
+                  <SafetyBadge tone={decision.providerCalled || decision.outreachSent ? "watch" : "good"}>{decision.userDecision}</SafetyBadge>
+                </div>
+                <p className="mt-2 text-sm leading-6 text-muted">{decision.recommendation}</p>
+                <p className="mt-2 text-xs font-semibold text-muted">Confidence: {decision.confidence}/100</p>
+              </div>
+            ))}
+            {report.decisionLogs.length === 0 ? <p className="text-sm text-muted">No AI decision feedback yet.</p> : null}
+          </div>
+        </DashboardCard>
+
+        <DashboardCard>
+          <h2 className="text-lg font-bold text-primary">Layered Agent Governance</h2>
+          <div className="mt-4 space-y-3">
+            <div className="rounded border border-border bg-white p-3">
+              <p className="text-sm font-bold text-primary">Approved acquisition paths</p>
+              <p className="mt-2 text-sm leading-6 text-muted">{report.agentGovernance.supportedDataSources.join(", ")}</p>
+            </div>
+            <div className="rounded border border-border bg-white p-3">
+              <p className="text-sm font-bold text-primary">Disabled by default</p>
+              <p className="mt-2 text-sm leading-6 text-muted">{report.agentGovernance.disabledByDefaultSources.join(", ")}</p>
+            </div>
+            <div className="rounded border border-border bg-white p-3">
+              <p className="text-sm font-bold text-primary">AI agent roles</p>
+              <p className="mt-2 text-sm leading-6 text-muted">{report.agentGovernance.aiAgentRoles.join(", ")}</p>
+            </div>
           </div>
         </DashboardCard>
       </section>
