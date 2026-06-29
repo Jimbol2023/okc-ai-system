@@ -8,6 +8,7 @@ import {
   storedLeadToDbData
 } from "@/lib/lead-record";
 import { prisma } from "@/lib/prisma";
+import { logRevenueAuditEvent, syncLeadRevenueSpine } from "@/lib/revenue-spine";
 import type { GeneratedLeadInput } from "@/lib/lead-generator";
 import type { ImportedLeadDraft } from "@/lib/list-importer";
 import type { LeadStatus, StoredLead } from "@/lib/leads-storage";
@@ -82,8 +83,23 @@ export async function createDbLead(storedLead: StoredLead) {
   const existingLead = await findExistingLead(storedLead);
 
   if (existingLead) {
+    const duplicateStoredLead = dbLeadToStoredLead(existingLead);
+
+    await logRevenueAuditEvent({
+      action: "dedupe_warning",
+      targetType: "lead",
+      targetId: existingLead.id,
+      source: "lead_create",
+      metadata: {
+        incomingSource: storedLead.source,
+        duplicateRule: "propertyAddress_phone",
+        providerCalled: false,
+        outreachSent: false
+      }
+    });
+
     return {
-      lead: dbLeadToStoredLead(existingLead),
+      lead: duplicateStoredLead,
       created: false
     };
   }
@@ -108,8 +124,16 @@ export async function createDbLead(storedLead: StoredLead) {
       }
     });
 
+    const storedCreatedLead = dbLeadToStoredLead(createdLead);
+
+    await syncLeadRevenueSpine({
+      lead: storedCreatedLead,
+      action: "lead_created",
+      source: "lead_create"
+    });
+
     return {
-      lead: dbLeadToStoredLead(createdLead),
+      lead: storedCreatedLead,
       created: true
     };
   } catch (error) {
@@ -118,6 +142,19 @@ export async function createDbLead(storedLead: StoredLead) {
     }
 
     const duplicateLead = await findExistingLead(storedLead);
+
+    await logRevenueAuditEvent({
+      action: "dedupe_warning",
+      targetType: "lead",
+      targetId: duplicateLead?.id ?? storedLead.id,
+      source: "lead_create_unique_constraint",
+      metadata: {
+        incomingSource: storedLead.source,
+        duplicateRule: "unique_constraint",
+        providerCalled: false,
+        outreachSent: false
+      }
+    });
 
     return {
       lead: duplicateLead ? dbLeadToStoredLead(duplicateLead) : storedLead,
@@ -169,7 +206,15 @@ export async function updateDbLead(storedLead: StoredLead) {
     }
   });
 
-  return dbLeadToStoredLead(updatedLead);
+  const storedUpdatedLead = dbLeadToStoredLead(updatedLead);
+
+  await syncLeadRevenueSpine({
+    lead: storedUpdatedLead,
+    action: "lead_updated",
+    source: "lead_update"
+  });
+
+  return storedUpdatedLead;
 }
 
 export async function updateDbLeadStatus(leadId: string, status: LeadStatus) {
@@ -196,6 +241,11 @@ export async function updateDbLeadStatus(leadId: string, status: LeadStatus) {
     automationStatus = "idle";
   }
 
+  const currentLead = await prisma.lead.findUnique({
+    where: {
+      id: leadId
+    }
+  });
   const updatedLead = await prisma.lead.update({
     where: {
       id: leadId
@@ -211,7 +261,16 @@ export async function updateDbLeadStatus(leadId: string, status: LeadStatus) {
     }
   });
 
-  return dbLeadToStoredLead(updatedLead);
+  const storedUpdatedLead = dbLeadToStoredLead(updatedLead);
+
+  await syncLeadRevenueSpine({
+    lead: storedUpdatedLead,
+    action: "status_changed",
+    previousStatus: currentLead?.status as LeadStatus | undefined,
+    source: "lead_status_update"
+  });
+
+  return storedUpdatedLead;
 }
 
 export async function deleteDbLead(leadId: string) {

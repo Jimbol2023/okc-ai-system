@@ -6,6 +6,7 @@ export type DashboardNavigationItem = {
 
 export const dashboardNavigationItems: DashboardNavigationItem[] = [
   { href: "/dashboard", label: "Overview", keywords: ["executive", "morning brief", "command center", "dashboard"] },
+  { href: "/dashboard/revenue", label: "Revenue", keywords: ["revenue", "unified inbox", "lead scoring", "audit", "source attribution", "follow up"] },
   { href: "/dashboard/acquisitions", label: "Acquisitions", keywords: ["offers", "pipeline", "seller", "deal"] },
   { href: "/dashboard/operations", label: "Operations", keywords: ["workflow", "process", "manual review"] },
   { href: "/dashboard/finance", label: "Finance", keywords: ["cash", "roi", "cost per lead", "cost per acquisition"] },
