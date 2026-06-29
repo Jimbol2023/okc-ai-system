@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { DashboardCard, SafetyBadge, StatusBadge } from "@/components/dashboard/dashboard-ui";
 import { listDbLeads } from "@/lib/leads-db";
-import { createRevenueCommandCenter, ensureConnectorDefinitions } from "@/lib/revenue-spine";
+import { createRevenueCommandCenter, ensureConnectorDefinitions, type RevenueCommandCenterReport } from "@/lib/revenue-spine";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -29,7 +29,7 @@ function getStatus(score: number) {
 
 export default async function RevenueCommandCenterPage() {
   await ensureConnectorDefinitions();
-  const report = await createRevenueCommandCenter(await listDbLeads());
+  const report: RevenueCommandCenterReport = await createRevenueCommandCenter(await listDbLeads());
 
   return (
     <main className="space-y-6">

@@ -58,6 +58,41 @@ export type RevenueInboxItem = {
   recommendedAction: string;
 };
 
+export type RevenueCommandCenterTask = Prisma.RevenueTaskGetPayload<Record<string, never>>;
+export type RevenueCommandCenterAuditEvent = Prisma.RevenueAuditEventGetPayload<Record<string, never>>;
+export type RevenueCommandCenterConnector = Prisma.ConnectorDefinitionGetPayload<Record<string, never>>;
+export type RevenueSourcePerformance = {
+  source: string;
+  leads: number;
+  qualified: number;
+  avgScore: number;
+  conversionSignal: number;
+};
+export type RevenueCommandCenterReport = {
+  ok: true;
+  providerCalled: false;
+  outreachSent: false;
+  summary: {
+    totalLeads: number;
+    qualifiedLeads: number;
+    openTasks: number;
+    followUpDue: number;
+    duplicateWarnings: number;
+    missingDataRecords: number;
+    inactiveConnectors: number;
+  };
+  inbox: RevenueInboxItem[];
+  sourcePerformance: RevenueSourcePerformance[];
+  tasks: RevenueCommandCenterTask[];
+  auditEvents: RevenueCommandCenterAuditEvent[];
+  connectors: RevenueCommandCenterConnector[];
+  executiveBriefing: {
+    title: string;
+    summary: string;
+    recommendedActions: string[];
+  };
+};
+
 type AuditInput = {
   action: string;
   targetType: string;
@@ -539,7 +574,7 @@ export async function buildUnifiedLeadInbox(leads: StoredLead[]): Promise<Revenu
     .sort((a, b) => (b.latestScore?.score ?? 0) - (a.latestScore?.score ?? 0) || (b.latestScore?.confidence ?? 0) - (a.latestScore?.confidence ?? 0));
 }
 
-export async function createRevenueCommandCenter(leads: StoredLead[]) {
+export async function createRevenueCommandCenter(leads: StoredLead[]): Promise<RevenueCommandCenterReport> {
   const inbox = await buildUnifiedLeadInbox(leads);
   const tasks = await prisma.revenueTask.findMany({
     where: {
