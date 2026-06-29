@@ -5,6 +5,7 @@ import { createApiErrorBody, createApiSuccessBody } from "../../lib/api-response
 import { searchGlobalRecords } from "../../lib/global-search";
 import { getOpenAiEmbeddingConfig } from "../../lib/openai-embeddings";
 import { assertOperationalSafetyCenter, createOperationalSafetyCenterReport } from "../../lib/operational-safety-center";
+import { calculateRevenueLeadScore, findDuplicateCandidates, sanitizeAuditMetadata } from "../../lib/revenue-spine";
 import {
   assertWorkflowOrchestrationSafety,
   createWorkflowOrchestrationReadinessReport,
@@ -138,4 +139,70 @@ test("OpenAI semantic search defaults to disabled without provider calls", () =>
   assert.equal(config.enabled, false);
   assert.equal(config.model, "text-embedding-3-small");
   assert.equal(config.reason, "openai_embeddings_disabled");
+});
+
+test("Revenue lead scoring labels missing data without inventing property facts", () => {
+  const score = calculateRevenueLeadScore({
+    ...safetyLead,
+    ownerName: "",
+    parcelId: "",
+    county: "",
+    situationDetails: "",
+    lastSellerReply: null,
+    lastContactedAt: null,
+    nextFollowUpAt: null,
+    doNotContact: false,
+    approvalStatus: "pending_review",
+    isHot: false,
+  });
+
+  assert.equal(score.dataUsed.includes("stored lead source"), true);
+  assert.equal(score.assumptions.includes("Owner identity is not verified in the current record."), true);
+  assert.equal(score.missingData.includes("owner name"), true);
+  assert.equal(score.missingData.includes("parcel or county reference"), true);
+  assert.match(score.explanation, /Advisory acquisition score/i);
+  assert.doesNotMatch(score.explanation, /verified ARV|guaranteed return/i);
+});
+
+test("Revenue dedupe warns instead of silently merging risky records", () => {
+  const duplicateLead = {
+    ...safetyLead,
+    id: "lead-ci-safety-duplicate",
+    phone: safetyLead.phone,
+    email: "other@example.test",
+  };
+
+  const candidates = findDuplicateCandidates(safetyLead, [duplicateLead]);
+
+  assert.equal(candidates.length, 1);
+  assert.equal(candidates[0].reason, "matching parcel ID");
+  assert.equal(candidates[0].confidence, 96);
+  assert.deepEqual(candidates[0].matchedReasons, [
+    "matching parcel ID",
+    "matching phone",
+    "matching owner and address",
+    "matching property address",
+  ]);
+  assert.deepEqual(candidates[0].matchedFields, [
+    "parcelId",
+    "phone",
+    "ownerName+propertyAddress",
+    "propertyAddress",
+  ]);
+});
+
+test("Revenue audit metadata redacts secrets and communication bodies", () => {
+  const sanitized = sanitizeAuditMetadata({
+    source: "website",
+    apiToken: "secret-token",
+    providerResponse: { raw: "should not be stored" },
+    smsBody: "message body",
+    safeCount: 2,
+  });
+
+  assert.equal(sanitized.source, "website");
+  assert.equal(sanitized.apiToken, "[redacted]");
+  assert.equal(sanitized.providerResponse, "[redacted]");
+  assert.equal(sanitized.smsBody, "[redacted]");
+  assert.equal(sanitized.safeCount, 2);
 });
