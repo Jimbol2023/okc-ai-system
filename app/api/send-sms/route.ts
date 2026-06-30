@@ -4,9 +4,12 @@ import { createAuditPersistencePlanning } from "@/lib/audit-persistence-planning
 import { createLiveTestReadinessSummary } from "@/lib/live-test-readiness-summary-contract";
 import { createLiveTestRuntimeContractPreview } from "@/lib/live-test-runtime-contract-adapter";
 import { createOperatorConfirmationRuntimeDesign } from "@/lib/operator-confirmation-runtime-design";
+import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
 import type { ExecutionMode } from "@/lib/execution-policy";
 import type { LiveTestAllowlistMode } from "@/lib/live-test-allowlist-policy";
+import { executeControlledLiveSms } from "@/lib/phase4-production";
 import type { ProviderMode } from "@/lib/provider-boundary";
+import { prisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
 
@@ -26,6 +29,10 @@ type SendSmsPayload = {
   executionMode?: ExecutionMode;
   providerMode?: ProviderMode;
   operatorId?: string;
+  operatorConfirmationIntent?: string;
+  confirmationActionFingerprint?: string;
+  confirmationContextId?: string;
+  confirmationCreatedAtMs?: number;
 };
 
 const boundaryMessage = "No SMS was sent. Provider execution is disabled.";
@@ -103,6 +110,78 @@ export async function POST(request: Request) {
       return invalidPayload("Message is required.");
     }
 
+    const actionFingerprint = createSendRouteActionFingerprint({
+      dealId: payload.dealId,
+      recipient: phoneNumbers[0],
+      message,
+    });
+
+    if (payload.executionMode === "controlled_live_test") {
+      if (!(await isAuthenticatedRequest(request))) {
+        return getUnauthorizedApiResponse();
+      }
+
+      if (!payload.dealId) {
+        return invalidPayload("Lead/deal ID is required for controlled live SMS.");
+      }
+
+      const lead = await prisma.lead.findUnique({
+        where: {
+          id: payload.dealId,
+        },
+        select: {
+          id: true,
+          approvalStatus: true,
+          doNotContact: true,
+          optOutReason: true,
+        },
+      });
+
+      if (!lead) {
+        return invalidPayload("Lead was not found for controlled live SMS.");
+      }
+
+      const liveResult = await executeControlledLiveSms({
+        leadId: lead.id,
+        recipient: phoneNumbers[0],
+        message,
+        approvalStatus: lead.approvalStatus,
+        doNotContact: lead.doNotContact,
+        optOutReason: lead.optOutReason,
+        operatorConfirmed: payload.operatorConfirmed,
+        operatorId: payload.operatorId,
+        operatorConfirmationIntent: payload.operatorConfirmationIntent,
+        expectedActionFingerprint: actionFingerprint,
+        confirmationActionFingerprint: payload.confirmationActionFingerprint,
+        expectedConfirmationContextId: lead.id,
+        confirmationContextId: payload.confirmationContextId,
+        confirmationCreatedAtMs: payload.confirmationCreatedAtMs,
+      });
+
+      return NextResponse.json({
+        ...liveResult,
+        success: liveResult.ok,
+        liveTestReady: liveResult.ok,
+        dryRun: false,
+        simulated: false,
+        mocked: false,
+        wouldSend: false,
+        liveOutreachDisabled: false,
+        requestedRecipientCount: phoneNumbers.length,
+        sentCount: liveResult.sent ? 1 : 0,
+        failedCount: liveResult.ok ? 0 : 1,
+        dealId: lead.id,
+        dealAddress: payload.dealAddress ?? null,
+        safetyEnvelope: {
+          mode: "controlled_live_test",
+          executionBlocked: !liveResult.sent,
+          providerDisabled: !liveResult.providerCalled,
+          liveExecutionEnabled: liveResult.sent,
+          reasonCodes: liveResult.reasonCodes,
+        },
+      });
+    }
+
     const runtimeContract = createLiveTestRuntimeContractPreview({
       leadId: payload.dealId,
       channel: "sms",
@@ -119,11 +198,6 @@ export async function POST(request: Request) {
       executionMode: payload.executionMode,
       providerMode: payload.providerMode,
       operatorId: payload.operatorId,
-    });
-    const actionFingerprint = createSendRouteActionFingerprint({
-      dealId: payload.dealId,
-      recipient: phoneNumbers[0],
-      message,
     });
     const operatorConfirmation = createOperatorConfirmationRuntimeDesign({
       runtimeContract,

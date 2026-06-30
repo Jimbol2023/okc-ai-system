@@ -5,7 +5,8 @@ export type ExecutionMode =
   | "approval_required"
   | "approved_pending"
   | "live_disabled"
-  | "future_live_test";
+  | "future_live_test"
+  | "controlled_live_test";
 
 export type ExecutionActionCategory =
   | "sms"
@@ -29,7 +30,8 @@ export type ExecutionPolicyReasonCode =
   | "future_live_test_not_enabled"
   | "future_live_test_requires_approval"
   | "future_live_test_requires_dnc_clear"
-  | "future_live_test_allowed";
+  | "future_live_test_allowed"
+  | "controlled_live_test_allowed";
 
 export type ExecutionPolicyInput = {
   action: ExecutionActionCategory;
@@ -177,7 +179,7 @@ export function evaluateExecutionPolicy(input: ExecutionPolicyInput): ExecutionP
     });
   }
 
-  if (mode === "future_live_test") {
+  if (mode === "future_live_test" || mode === "controlled_live_test") {
     if (!input.futureLiveTestExplicitlyEnabled) addReason(reasonCodes, "future_live_test_not_enabled");
     if (!input.hasHumanApproval) addReason(reasonCodes, "future_live_test_requires_approval");
     if (dncBlocked) addReason(reasonCodes, "future_live_test_requires_dnc_clear");
@@ -188,7 +190,7 @@ export function evaluateExecutionPolicy(input: ExecutionPolicyInput): ExecutionP
       !dncBlocked &&
       isOutboundAction(input.action);
 
-    if (allowed) addReason(reasonCodes, "future_live_test_allowed");
+    if (allowed) addReason(reasonCodes, mode === "controlled_live_test" ? "controlled_live_test_allowed" : "future_live_test_allowed");
 
     return buildDecision({
       allowed,
