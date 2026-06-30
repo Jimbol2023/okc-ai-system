@@ -20,12 +20,14 @@ export const createMarketingDraftSchema = z.object({
   channel: marketingChannelSchema,
   topic: shortText("Topic").max(120, "Topic must stay under 120 characters."),
   sourceLabel: shortText("Source label").max(80, "Source label must stay under 80 characters."),
+  referralLink: z.string().trim().url("Enter a valid referral link.").max(300, "Referral link must stay under 300 characters.").optional().or(z.literal("")),
   assetNotes: z.string().trim().max(1000, "Asset notes must stay under 1,000 characters.").optional().or(z.literal("")),
 });
 
 export const updateMarketingDraftSchema = z.object({
   topic: shortText("Topic").max(120, "Topic must stay under 120 characters.").optional(),
   sourceLabel: shortText("Source label").max(80, "Source label must stay under 80 characters.").optional(),
+  referralLink: z.string().trim().url("Enter a valid referral link.").max(300, "Referral link must stay under 300 characters.").optional().or(z.literal("")),
   draftCopy: z.string().trim().min(20, "Draft copy must be at least 20 characters.").max(4000, "Draft copy must stay under 4,000 characters.").optional(),
   assetNotes: z.string().trim().max(1000, "Asset notes must stay under 1,000 characters.").optional().or(z.literal("")),
   status: marketingDraftStatusSchema.optional(),

@@ -9,15 +9,15 @@ export async function proxy(request: NextRequest) {
 
   const isPublicLeadIntakeRoute =
     pathname === "/api/leads" && method === "POST";
+  const isPublicReferralTrackRoute = pathname === "/api/referrals/track" && method === "POST";
+  const isPublicAuthRoute = pathname === "/api/auth/login" || pathname === "/api/auth/logout";
+  const isPublicTwilioInboundRoute = pathname === "/api/twilio/inbound-sms" && method === "POST";
 
-  if (isAuthenticated || isPublicLeadIntakeRoute) {
+  if (isAuthenticated || isPublicLeadIntakeRoute || isPublicReferralTrackRoute || isPublicAuthRoute || isPublicTwilioInboundRoute) {
     return NextResponse.next();
   }
 
-  if (
-    pathname.startsWith("/api/leads") ||
-    pathname === "/api/security-review"
-  ) {
+  if (pathname.startsWith("/api/")) {
     return NextResponse.json(
       {
         ok: false,
@@ -37,8 +37,6 @@ export async function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     "/dashboard/:path*",
-    "/api/leads",
-    "/api/leads/:path*",
-    "/api/security-review",
+    "/api/:path*",
   ],
 };

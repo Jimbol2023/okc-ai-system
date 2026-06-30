@@ -37,17 +37,54 @@ export function LeadCaptureForm({ source }: LeadCaptureFormProps) {
   const [isPending, setIsPending] = useState(false);
 
   useEffect(() => {
-    const querySource = new URLSearchParams(window.location.search).get("source");
+    const params = new URLSearchParams(window.location.search);
+    const querySource = params.get("source");
+    const referralCode = params.get("ref")?.trim();
+    const referralCampaign = params.get("campaign")?.trim();
+    const referralSource = querySource?.trim();
     const safeQuerySource = querySource?.trim();
+    const safeReferralCode = referralCode && /^[a-z0-9_-]{2,48}$/i.test(referralCode) ? referralCode : "";
+    const safeReferralCampaign =
+      referralCampaign && /^[a-z0-9_-]{2,80}$/i.test(referralCampaign) ? referralCampaign : "";
+    const safeReferralSource = referralSource && /^[a-z0-9_-]{2,60}$/i.test(referralSource) ? referralSource : "";
+    const nextSource =
+      safeQuerySource && /^[a-z0-9_-]{2,80}$/i.test(safeQuerySource)
+        ? safeQuerySource
+        : safeReferralCode
+          ? `referral_${safeReferralCode.toLowerCase()}`
+          : source;
 
-    if (safeQuerySource && /^[a-z0-9_-]{2,80}$/i.test(safeQuerySource)) {
-      setEffectiveSource(safeQuerySource);
-      setValues((current) => ({
-        ...current,
-        source: safeQuerySource
-      }));
+    setEffectiveSource(nextSource);
+    setValues((current) => ({
+      ...current,
+      source: nextSource,
+      referralCode: safeReferralCode,
+      referralCampaign: safeReferralCampaign,
+      referralSource: safeReferralSource,
+      referralLandingPage: window.location.pathname
+    }));
+
+    if (safeReferralCode) {
+      const duplicateKey = `click:${safeReferralCode}:${window.location.pathname}:${safeReferralCampaign || "no_campaign"}:${safeReferralSource || "unknown_source"}`;
+
+      if (window.sessionStorage.getItem(duplicateKey) !== "tracked") {
+        window.sessionStorage.setItem(duplicateKey, "tracked");
+        void fetch("/api/referrals/track", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            ref: safeReferralCode,
+            campaign: safeReferralCampaign,
+            source: safeReferralSource,
+            landingPage: window.location.pathname,
+            duplicateKey
+          })
+        }).catch(() => null);
+      }
     }
-  }, []);
+  }, [source]);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -74,7 +111,11 @@ export function LeadCaptureForm({ source }: LeadCaptureFormProps) {
       setSubmitted(true);
       setValues({
         ...initialValues,
-        source: effectiveSource
+        source: effectiveSource,
+        referralCode: values.referralCode,
+        referralCampaign: values.referralCampaign,
+        referralSource: values.referralSource,
+        referralLandingPage: values.referralLandingPage
       });
       router.push(`/thank-you?source=${encodeURIComponent(effectiveSource)}`);
     } catch {

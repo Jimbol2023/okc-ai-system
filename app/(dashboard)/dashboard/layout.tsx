@@ -1,7 +1,7 @@
 import type { Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { BarChart3, BookOpen, Briefcase, Building2, ClipboardCheck, DollarSign, HousePlus, LayoutGrid, Lock, Megaphone, Search, Shield, ShieldCheck, Upload, Users, Wrench } from "lucide-react";
+import { BarChart3, BookOpen, Briefcase, Building2, ClipboardCheck, DollarSign, Handshake, HousePlus, LayoutGrid, Lock, Megaphone, MonitorSmartphone, Search, Shield, ShieldCheck, Upload, Users, Wrench } from "lucide-react";
 
 import { CommandPaletteClient } from "@/components/dashboard/command-palette-client";
 import { getAuthenticatedAdmin } from "@/lib/auth";
@@ -19,6 +19,10 @@ const navIconByHref = {
   "/dashboard/leads": Users,
   "/dashboard/approvals": ClipboardCheck,
   "/dashboard/marketing": Megaphone,
+  "/dashboard/referrals": Handshake,
+  "/dashboard/tools": Wrench,
+  "/dashboard/enterprise-ai": ShieldCheck,
+  "/dashboard/mobile-command": MonitorSmartphone,
   "/dashboard/research": Search,
   "/dashboard/security-review": Shield,
   "/dashboard/safety": ShieldCheck,
@@ -30,7 +34,7 @@ const navIconByHref = {
 };
 
 export default async function DashboardLayout({
-  children
+  children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
@@ -73,14 +77,14 @@ export default async function DashboardLayout({
                 const Icon = navIconByHref[href as keyof typeof navIconByHref] ?? LayoutGrid;
 
                 return (
-                <Link
-                  key={href}
-                  href={href as Route}
-                  className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-white/78 transition hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-                >
-                  <Icon className="h-4 w-4" />
-                  {label}
-                </Link>
+                  <Link
+                    key={href}
+                    href={href as Route}
+                    className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-white/78 transition hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                  >
+                    <Icon className="h-4 w-4" />
+                    {label}
+                  </Link>
                 );
               })}
             </div>

@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { buildReferralCopySuggestion } from "@/lib/referrals";
 import type {
   CreateMarketingDraftInput,
   CanvaAssetAssistInput,
@@ -62,6 +63,7 @@ function getCanvaCopyBlocks(draft: {
   topic: string;
   sourceLabel: string;
   draftCopy: string;
+  referralLink?: string | null;
 }) {
   return [
     {
@@ -76,6 +78,14 @@ function getCanvaCopyBlocks(draft: {
       label: "Source tracking note",
       copy: `Source label: ${draft.sourceLabel}`,
     },
+    ...(buildReferralCopySuggestion((draft as { referralLink?: string | null }).referralLink)
+      ? [
+          {
+            label: "Referral note",
+            copy: buildReferralCopySuggestion((draft as { referralLink?: string | null }).referralLink) ?? "",
+          },
+        ]
+      : []),
     {
       label: "Safety note",
       copy: "Educational marketing only. Do not include property-specific claims or owner-specific facts.",
@@ -89,6 +99,7 @@ function buildCanvaDesignBrief(draft: {
   sourceLabel: string;
   draftCopy: string;
   assetNotes: string | null;
+  referralLink?: string | null;
 }) {
   const channel = draft.channel as MarketingChannel;
   const format = getCanvaFormat(channel);
@@ -102,6 +113,7 @@ Use the approved copy blocks from this record. Keep the visual simple, mobile-fi
 Recommended visual direction: brand-safe real estate education graphic with calm typography, clear spacing, and no scraped or unapproved property imagery.
 
 Manual source tracking: ${draft.sourceLabel}.
+${buildReferralCopySuggestion(draft.referralLink) ? `\nManual referral tracking: ${buildReferralCopySuggestion(draft.referralLink)}.\n` : ""}
 
 Asset notes: ${draft.assetNotes || "No extra asset notes provided."}
 
@@ -110,6 +122,7 @@ Approval boundary: this brief is for manual Canva work only. The app must not cr
 
 function buildDraftCopy(input: CreateMarketingDraftInput) {
   const channelLabel = marketingChannelLabels[input.channel];
+  const referralSuggestion = buildReferralCopySuggestion(input.referralLink);
   const base = `Draft for ${channelLabel}: ${input.topic}
 
 Oklahoma City property owners sometimes need a simple way to understand their options before making a decision. J Capital Property Group can review the situation, explain possible next steps, and keep the conversation clear.
@@ -118,7 +131,7 @@ This draft is educational only. It does not claim facts about any specific prope
 
 Source label: ${input.sourceLabel}
 
-Suggested call to action: If you want to talk through your property situation, contact J Capital Property Group for a private review.`;
+Suggested call to action: If you want to talk through your property situation, contact J Capital Property Group for a private review.${referralSuggestion ? `\n\n${referralSuggestion}` : ""}`;
 
   if (input.channel === "instagram") {
     return `${base}
@@ -142,6 +155,7 @@ function getAssumptions(input: CreateMarketingDraftInput) {
     `Topic was provided by the operator: ${input.topic}.`,
     `Channel was selected by the operator: ${marketingChannelLabels[input.channel]}.`,
     `Source label was provided by the operator: ${input.sourceLabel}.`,
+    ...(input.referralLink ? [`Referral link was provided by the operator for manual attribution: ${input.referralLink}.`] : []),
     "No property-specific facts were generated or inferred.",
   ];
 }
@@ -196,6 +210,7 @@ export async function createMarketingDraft(input: CreateMarketingDraftInput) {
       status: "pending_approval",
       draftCopy: buildDraftCopy(input),
       assetNotes: input.assetNotes || null,
+      referralLink: input.referralLink || null,
       assumptions: getAssumptions(input),
       safetyFlags,
       createdSource: "template",
@@ -216,6 +231,7 @@ export async function updateMarketingDraft(id: string, input: UpdateMarketingDra
     data: {
       ...(input.topic ? { topic: input.topic } : {}),
       ...(input.sourceLabel ? { sourceLabel: input.sourceLabel } : {}),
+      ...(typeof input.referralLink === "string" ? { referralLink: input.referralLink || null } : {}),
       ...(input.draftCopy ? { draftCopy: input.draftCopy } : {}),
       ...(typeof input.assetNotes === "string" ? { assetNotes: input.assetNotes || null } : {}),
       ...(input.status ? { status: input.status } : {}),
@@ -422,6 +438,7 @@ export async function createMarketingCanvaAssetAssist(draftId: string, input: Ca
         sourceLabel: draft.sourceLabel,
         draftCopy: draft.draftCopy,
         assetNotes: input.assetNotes?.trim() || draft.assetNotes,
+        referralLink: draft.referralLink,
       }),
       brandSafeCopyBlocks: getCanvaCopyBlocks(draft),
       assetNotes: input.assetNotes?.trim() || draft.assetNotes,

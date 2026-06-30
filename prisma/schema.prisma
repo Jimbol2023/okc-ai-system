@@ -65,6 +65,7 @@ model Lead {
   revenueTasks               RevenueTask[]
   revenuePipelineEvents      RevenuePipelineEvent[]
   revenueCommunicationEvents RevenueCommunicationEvent[]
+  referralAttributionEvents  ReferralAttributionEvent[]
 
   // INDEXES
   @@unique([propertyAddress, phone])
@@ -124,6 +125,88 @@ model RevenueLeadSource {
   @@index([source])
   @@index([sourceType])
   @@index([campaignName])
+  @@index([createdAt])
+}
+
+model ReferralPartner {
+  id          String   @id @default(uuid())
+  tenantId    String   @default("default")
+  name        String
+  partnerType String
+  status      String   @default("active")
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  links  ReferralLink[]
+  events ReferralAttributionEvent[]
+
+  @@index([tenantId])
+  @@index([partnerType])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model ReferralLink {
+  id                String   @id @default(uuid())
+  tenantId          String   @default("default")
+  partnerId         String?
+  referralCode      String   @unique
+  landingPage       String
+  campaign          String?
+  status            String   @default("active")
+  clickCount        Int      @default(0)
+  leadCount         Int      @default(0)
+  qualifiedLeadCount Int     @default(0)
+  closedDealCount   Int      @default(0)
+  notes             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  partner ReferralPartner? @relation(fields: [partnerId], references: [id], onDelete: SetNull)
+  events  ReferralAttributionEvent[]
+
+  @@index([tenantId])
+  @@index([partnerId])
+  @@index([status])
+  @@index([campaign])
+  @@index([createdAt])
+}
+
+model ReferralAttributionEvent {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  partnerId             String?
+  referralLinkId        String?
+  leadId                String?
+  eventType             String
+  referralCode          String
+  landingPage           String?
+  campaign              String?
+  source                String?
+  status                String   @default("tracked")
+  duplicateKey          String?
+  safeMetadata          Json?
+  providerCalled        Boolean  @default(false)
+  outreachSent          Boolean  @default(false)
+  published             Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdAt             DateTime @default(now())
+
+  partner      ReferralPartner? @relation(fields: [partnerId], references: [id], onDelete: SetNull)
+  referralLink ReferralLink?    @relation(fields: [referralLinkId], references: [id], onDelete: SetNull)
+  lead         Lead?            @relation(fields: [leadId], references: [id], onDelete: SetNull)
+
+  @@unique([duplicateKey])
+  @@index([tenantId])
+  @@index([partnerId])
+  @@index([referralLinkId])
+  @@index([leadId])
+  @@index([eventType])
+  @@index([referralCode])
+  @@index([campaign])
+  @@index([source])
+  @@index([status])
   @@index([createdAt])
 }
 
@@ -230,6 +313,49 @@ model RevenueCommunicationEvent {
   @@index([createdAt])
 }
 
+model RevenueDecisionLog {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  leadId                String?
+  taskId                String?
+  auditEventId          String?
+  aiMemoryEventId       String?
+  connectorKey          String?
+  pipelineEventId       String?
+  recommendationType    String
+  recommendation        String
+  confidence            Int
+  supportingEvidence    Json
+  assumptions           Json
+  missingData           Json
+  userDecision          String   @default("pending")
+  modifiedAction        String?
+  outcome               String   @default("unknown")
+  advisoryOnly          Boolean  @default(true)
+  providerCalled        Boolean  @default(false)
+  outreachSent          Boolean  @default(false)
+  requiresApproval      Boolean  @default(true)
+  safeMetadata          Json?
+  createdBy             String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([leadId])
+  @@index([taskId])
+  @@index([auditEventId])
+  @@index([aiMemoryEventId])
+  @@index([connectorKey])
+  @@index([pipelineEventId])
+  @@index([recommendationType])
+  @@index([userDecision])
+  @@index([outcome])
+  @@index([advisoryOnly])
+  @@index([providerCalled])
+  @@index([outreachSent])
+  @@index([createdAt])
+}
+
 model ConnectorDefinition {
   id                  String   @id @default(uuid())
   connectorKey        String   @unique
@@ -247,6 +373,724 @@ model ConnectorDefinition {
   @@index([category])
   @@index([status])
   @@index([providerCallsAllowed])
+}
+
+model EnterpriseConnectorRegistry {
+  id                        String   @id @default(uuid())
+  tenantId                  String   @default("default")
+  connectorId               String   @unique
+  displayName               String
+  category                  String
+  provider                  String
+  version                   String   @default("1.0.0")
+  authenticationType         String
+  oauthSupported             Boolean  @default(false)
+  requiredPermissions        Json
+  supportedActions           Json
+  readCapabilities           Json
+  writeCapabilities          Json
+  humanApprovalRequirements  Json
+  safeAutoEligibility        String   @default("internal_only")
+  rateLimits                 Json
+  usageQuotas                Json
+  estimatedCost              String?
+  healthStatus               String   @default("readiness_only")
+  lastSuccessfulSync         DateTime?
+  lastFailedSync             DateTime?
+  retryPolicy                String
+  timeoutPolicy              String
+  circuitBreakerState        String   @default("not_applicable")
+  loggingConfiguration       String
+  auditConfiguration         String
+  riskLevel                  String   @default("medium")
+  environmentSupport         Json
+  featureFlags               Json
+  dependencies               Json
+  owner                      String
+  credentialReference        String?
+  lifecycleState             String   @default("available")
+  providerCallsAllowed       Boolean  @default(false)
+  liveExecutionAllowed       Boolean  @default(false)
+  createdAt                  DateTime @default(now())
+  updatedAt                  DateTime @updatedAt
+
+  healthEvents     EnterpriseConnectorHealthEvent[]
+  lifecycleEvents  EnterpriseConnectorLifecycleEvent[]
+  executionDecisions EnterpriseConnectorExecutionDecision[]
+
+  @@index([tenantId])
+  @@index([connectorId])
+  @@index([category])
+  @@index([provider])
+  @@index([healthStatus])
+  @@index([lifecycleState])
+  @@index([providerCallsAllowed])
+  @@index([liveExecutionAllowed])
+}
+
+model EnterpriseConnectorHealthEvent {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  connectorId           String
+  healthStatus          String
+  checkedAt             DateTime @default(now())
+  lastSuccessfulSync    DateTime?
+  lastFailedSync        DateTime?
+  failureReason         String?
+  latencyMs             Int?
+  rateLimitRemaining    Int?
+  costObservedCents     Int?
+  circuitBreakerState   String   @default("not_applicable")
+  providerCalled        Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  safeMetadata          Json?
+
+  connector EnterpriseConnectorRegistry @relation(fields: [connectorId], references: [connectorId], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([connectorId])
+  @@index([healthStatus])
+  @@index([checkedAt])
+  @@index([providerCalled])
+}
+
+model EnterpriseConnectorLifecycleEvent {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  connectorId           String
+  lifecycleAction       String
+  fromState             String?
+  toState               String
+  actorId               String?
+  approvalStatus        String   @default("pending_manual_approval")
+  result                String   @default("prepared")
+  reason                String
+  providerCalled        Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  safeMetadata          Json?
+  createdAt             DateTime @default(now())
+
+  connector EnterpriseConnectorRegistry @relation(fields: [connectorId], references: [connectorId], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([connectorId])
+  @@index([lifecycleAction])
+  @@index([approvalStatus])
+  @@index([result])
+  @@index([createdAt])
+}
+
+model EnterpriseConnectorExecutionDecision {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  connectorId           String?
+  requestingModule      String
+  requestedAction       String
+  decision              String
+  reason                String
+  confidence            Int
+  requiredApprovals     Json
+  fallbackConnectorId   String?
+  providerCalled        Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  auditRequired         Boolean  @default(true)
+  safeMetadata          Json?
+  createdAt             DateTime @default(now())
+
+  connector EnterpriseConnectorRegistry? @relation(fields: [connectorId], references: [connectorId], onDelete: SetNull)
+
+  @@index([tenantId])
+  @@index([connectorId])
+  @@index([requestingModule])
+  @@index([requestedAction])
+  @@index([decision])
+  @@index([providerCalled])
+  @@index([createdAt])
+}
+
+model FeatureFlagRecord {
+  id                     String   @id @default(uuid())
+  tenantId               String   @default("default")
+  flagKey                String
+  enabled                Boolean  @default(false)
+  category               String
+  description            String
+  requiresAdminApproval  Boolean  @default(true)
+  updatedBy              String?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  @@unique([tenantId, flagKey])
+  @@index([tenantId])
+  @@index([flagKey])
+  @@index([enabled])
+}
+
+model MarketIntelligenceSignal {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  category              String
+  title                 String
+  sourceLabel           String
+  provenance            String
+  geography             String
+  confidence            Int
+  marketImpact          String
+  businessImplication   String
+  missingData           Json
+  providerCalled        Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([category])
+  @@index([sourceLabel])
+  @@index([geography])
+  @@index([confidence])
+  @@index([marketImpact])
+  @@index([createdAt])
+}
+
+model DemandDiscoveryOpportunity {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  audience              String
+  geography             String
+  unmetNeed             String
+  opportunityScore      Int
+  confidence            Int
+  revenuePotential      String
+  sourceLabel           String
+  explanation           String
+  requiredReview        Json
+  providerCalled        Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([audience])
+  @@index([geography])
+  @@index([opportunityScore])
+  @@index([confidence])
+  @@index([revenuePotential])
+  @@index([createdAt])
+}
+
+model GrowthEngineDraft {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  engine                String
+  title                 String
+  sourceLabel           String
+  draftType             String
+  draftContent          String?
+  approvalStatus        String   @default("needs_review")
+  safetyBoundary        String
+  providerCalled        Boolean  @default(false)
+  sent                  Boolean  @default(false)
+  published             Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([engine])
+  @@index([sourceLabel])
+  @@index([approvalStatus])
+  @@index([providerCalled])
+  @@index([sent])
+  @@index([published])
+  @@index([createdAt])
+}
+
+model ExecutiveBriefingSnapshot {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  cadence               String
+  priorities            Json
+  connectorHealth       Json
+  marketSignals         Json
+  demandOpportunities   Json
+  growthDrafts          Json
+  featureFlags          Json
+  providerCalled        Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdAt             DateTime @default(now())
+
+  @@index([tenantId])
+  @@index([cadence])
+  @@index([providerCalled])
+  @@index([liveExecutionAllowed])
+  @@index([createdAt])
+}
+
+model ConnectorInstallationState {
+  id                     String   @id @default(uuid())
+  tenantId               String   @default("default")
+  connectorId            String
+  installationState      String   @default("available")
+  configurationState     String   @default("not_configured")
+  authenticationState    String   @default("not_authenticated")
+  sandboxMode            Boolean  @default(true)
+  enabled                Boolean  @default(false)
+  enableApprovalStatus   String   @default("pending_manual_approval")
+  credentialReferenceId  String?
+  requiredScopes         Json
+  grantedScopes          Json?
+  permissionValidation   Json?
+  lastTestResultId       String?
+  rollbackVersion        String?
+  providerCalled         Boolean  @default(false)
+  liveExecutionAllowed   Boolean  @default(false)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  @@unique([tenantId, connectorId])
+  @@index([tenantId])
+  @@index([connectorId])
+  @@index([installationState])
+  @@index([authenticationState])
+  @@index([enabled])
+  @@index([providerCalled])
+  @@index([liveExecutionAllowed])
+}
+
+model ConnectorCredentialReference {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  connectorId           String
+  referenceKey          String
+  secretStorageProvider String
+  secretPathReference   String
+  rotationStatus        String   @default("not_started")
+  lastRotatedAt         DateTime?
+  expiresAt             DateTime?
+  rawSecretStored       Boolean  @default(false)
+  rawSecretRendered     Boolean  @default(false)
+  createdBy             String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@unique([tenantId, referenceKey])
+  @@index([tenantId])
+  @@index([connectorId])
+  @@index([rotationStatus])
+  @@index([rawSecretStored])
+  @@index([rawSecretRendered])
+}
+
+model ConnectorTestResult {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  connectorId           String
+  testType              String
+  status                String   @default("prepared")
+  message               String
+  requiredApproval      Boolean  @default(true)
+  latencyMs             Int?
+  safeMetadata          Json?
+  providerCalled        Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdAt             DateTime @default(now())
+
+  @@index([tenantId])
+  @@index([connectorId])
+  @@index([testType])
+  @@index([status])
+  @@index([providerCalled])
+  @@index([createdAt])
+}
+
+model AiPermissionPolicy {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  subjectType           String
+  subjectKey            String
+  connectorId           String?
+  actionKey             String
+  effect                String   @default("deny")
+  scope                 String   @default("internal")
+  approvalRequired      Boolean  @default(true)
+  riskLevel             String   @default("medium")
+  environment           String   @default("production")
+  reason                String
+  providerCalled        Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([subjectType])
+  @@index([subjectKey])
+  @@index([connectorId])
+  @@index([actionKey])
+  @@index([effect])
+  @@index([approvalRequired])
+}
+
+model UnifiedApprovalItem {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  itemType              String
+  sourceType            String
+  sourceId              String?
+  title                 String
+  sourceLabel           String
+  status                String   @default("pending_review")
+  riskLevel             String   @default("medium")
+  requiredApprovals     Json
+  connectorId           String?
+  executionBlockedReason String
+  payload               Json
+  providerCalled        Boolean  @default(false)
+  sent                  Boolean  @default(false)
+  published             Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  decisions UnifiedApprovalDecision[]
+
+  @@index([tenantId])
+  @@index([itemType])
+  @@index([sourceType])
+  @@index([status])
+  @@index([riskLevel])
+  @@index([connectorId])
+  @@index([providerCalled])
+  @@index([liveExecutionAllowed])
+}
+
+model UnifiedApprovalDecision {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  approvalItemId        String
+  decision              String
+  note                  String?
+  decidedBy             String?
+  delegatedTo           String?
+  rescheduledFor        DateTime?
+  auditEventId          String?
+  providerCalled        Boolean  @default(false)
+  sent                  Boolean  @default(false)
+  published             Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdAt             DateTime @default(now())
+
+  approvalItem UnifiedApprovalItem @relation(fields: [approvalItemId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([approvalItemId])
+  @@index([decision])
+  @@index([providerCalled])
+  @@index([createdAt])
+}
+
+model SocialContentSource {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  sourceType            String
+  sourceLabel           String
+  sourceId              String?
+  approvalStatus        String   @default("approved_for_drafting")
+  containsPrivateFacts  Boolean  @default(false)
+  provenance            String
+  assumptions           Json
+  providerCalled        Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  drafts SocialContentDraft[]
+
+  @@index([tenantId])
+  @@index([sourceType])
+  @@index([sourceLabel])
+  @@index([approvalStatus])
+  @@index([containsPrivateFacts])
+}
+
+model SocialContentDraft {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  sourceId              String?
+  platform              String
+  contentType           String
+  title                 String
+  draftCopy             String
+  assumptions           Json
+  approvalStatus        String   @default("pending_review")
+  connectorId           String?
+  providerCalled        Boolean  @default(false)
+  published             Boolean  @default(false)
+  scheduled             Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  source SocialContentSource? @relation(fields: [sourceId], references: [id], onDelete: SetNull)
+  variants SocialContentVariant[]
+  schedules SocialSchedulePlan[]
+  executionPlans SocialExecutionPlan[]
+  performanceSnapshots SocialPerformanceSnapshot[]
+
+  @@index([tenantId])
+  @@index([sourceId])
+  @@index([platform])
+  @@index([contentType])
+  @@index([approvalStatus])
+  @@index([connectorId])
+  @@index([providerCalled])
+  @@index([published])
+}
+
+model SocialContentVariant {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  draftId               String
+  platform              String
+  format                String
+  copy                  String
+  sourceLabel           String
+  approvalStatus        String   @default("pending_review")
+  providerCalled        Boolean  @default(false)
+  published             Boolean  @default(false)
+  scheduled             Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  draft SocialContentDraft @relation(fields: [draftId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([draftId])
+  @@index([platform])
+  @@index([format])
+  @@index([approvalStatus])
+}
+
+model SocialSchedulePlan {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  draftId               String
+  intendedPublishAt     DateTime?
+  scheduleStatus        String   @default("plan_only")
+  approvalStatus        String   @default("pending_review")
+  connectorId           String?
+  providerCalled        Boolean  @default(false)
+  scheduled             Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  draft SocialContentDraft @relation(fields: [draftId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([draftId])
+  @@index([scheduleStatus])
+  @@index([approvalStatus])
+  @@index([connectorId])
+  @@index([scheduled])
+}
+
+model SocialExecutionPlan {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  draftId               String
+  connectorId           String?
+  actionKey             String
+  decision              String
+  reason                String
+  requiredApprovals     Json
+  fallbackConnectorId   String?
+  providerCalled        Boolean  @default(false)
+  published             Boolean  @default(false)
+  scheduled             Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  draft SocialContentDraft @relation(fields: [draftId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([draftId])
+  @@index([connectorId])
+  @@index([actionKey])
+  @@index([decision])
+  @@index([providerCalled])
+  @@index([liveExecutionAllowed])
+}
+
+model SocialPerformanceSnapshot {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  draftId               String
+  platform              String
+  metrics               Json
+  sourceLabel           String
+  snapshotStatus        String   @default("placeholder")
+  providerCalled        Boolean  @default(false)
+  createdAt             DateTime @default(now())
+
+  draft SocialContentDraft @relation(fields: [draftId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([draftId])
+  @@index([platform])
+  @@index([snapshotStatus])
+  @@index([providerCalled])
+}
+
+model AutomationPolicyRecord {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  policyKey             String
+  name                  String
+  workflow              String
+  featureFlag           String
+  approvalRequirement   String
+  rollbackPlan          String
+  environmentScope      String   @default("all")
+  safeAutoCompatible    Boolean  @default(true)
+  externalExecutionAllowed Boolean @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  runs AutomationRunRecord[]
+
+  @@unique([tenantId, policyKey])
+  @@index([tenantId])
+  @@index([featureFlag])
+  @@index([safeAutoCompatible])
+  @@index([externalExecutionAllowed])
+}
+
+model AutomationRunRecord {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  policyId              String
+  runStatus             String   @default("prepared")
+  triggerSource         String
+  approvalStatus        String   @default("pending_review")
+  rollbackAvailable     Boolean  @default(true)
+  providerCalled        Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  safeMetadata          Json?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  policy AutomationPolicyRecord @relation(fields: [policyId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([policyId])
+  @@index([runStatus])
+  @@index([approvalStatus])
+  @@index([providerCalled])
+}
+
+model NotificationRecord {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  channel               String   @default("in_app")
+  severity              String   @default("info")
+  title                 String
+  message               String
+  sourceType            String
+  sourceId              String?
+  acknowledgedAt        DateTime?
+  providerCalled        Boolean  @default(false)
+  sentExternally        Boolean  @default(false)
+  createdAt             DateTime @default(now())
+
+  @@index([tenantId])
+  @@index([channel])
+  @@index([severity])
+  @@index([sourceType])
+  @@index([acknowledgedAt])
+  @@index([providerCalled])
+  @@index([sentExternally])
+}
+
+model LearningOutcomeEvent {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  source                String
+  summary               String
+  recommendationImpact  String
+  confidence            Int
+  explainabilityNote    String
+  autonomousSelfModification Boolean @default(false)
+  providerCalled        Boolean  @default(false)
+  createdAt             DateTime @default(now())
+
+  @@index([tenantId])
+  @@index([source])
+  @@index([confidence])
+  @@index([autonomousSelfModification])
+  @@index([providerCalled])
+  @@index([createdAt])
+}
+
+model DailyBriefingSnapshot {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  briefingDate          DateTime @default(now())
+  panels                Json
+  verticalSlice         Json
+  approvalSummary       Json
+  connectorSummary      Json
+  providerCalled        Boolean  @default(false)
+  sent                  Boolean  @default(false)
+  published             Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdAt             DateTime @default(now())
+
+  @@index([tenantId])
+  @@index([briefingDate])
+  @@index([providerCalled])
+  @@index([liveExecutionAllowed])
+  @@index([createdAt])
+}
+
+model OperationsTimelineEvent {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  eventType             String
+  entityType            String
+  entityId              String?
+  leadId                String?
+  propertyAddress       String?
+  campaignId            String?
+  userId                String?
+  aiAgent               String?
+  connectorId           String?
+  status                String
+  sourceLabel           String
+  reasonCodes           Json
+  safeMetadata          Json
+  providerCalled        Boolean  @default(false)
+  sent                  Boolean  @default(false)
+  published             Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdAt             DateTime @default(now())
+
+  @@index([tenantId])
+  @@index([eventType])
+  @@index([entityType])
+  @@index([entityId])
+  @@index([leadId])
+  @@index([propertyAddress])
+  @@index([campaignId])
+  @@index([userId])
+  @@index([aiAgent])
+  @@index([connectorId])
+  @@index([status])
+  @@index([sourceLabel])
+  @@index([providerCalled])
+  @@index([sent])
+  @@index([published])
+  @@index([liveExecutionAllowed])
+  @@index([createdAt])
 }
 
 model ManualLeadIntake {
@@ -514,6 +1358,7 @@ model MarketingDraft {
   status        String   @default("draft")
   draftCopy     String
   assetNotes    String?
+  referralLink  String?
   assumptions   Json?
   safetyFlags   Json?
   createdSource String   @default("template")
@@ -529,6 +1374,7 @@ model MarketingDraft {
   @@index([channel])
   @@index([status])
   @@index([sourceLabel])
+  @@index([referralLink])
   @@index([createdAt])
 }
 

@@ -152,6 +152,674 @@ exports.Prisma.LeadScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.RevenueAuditEventScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  actorId: 'actorId',
+  action: 'action',
+  targetType: 'targetType',
+  targetId: 'targetId',
+  requestId: 'requestId',
+  source: 'source',
+  result: 'result',
+  safeMetadata: 'safeMetadata',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.RevenueLeadSourceScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  leadId: 'leadId',
+  source: 'source',
+  sourceType: 'sourceType',
+  sourceDetail: 'sourceDetail',
+  sourceRecordId: 'sourceRecordId',
+  campaignName: 'campaignName',
+  campaignMedium: 'campaignMedium',
+  costCents: 'costCents',
+  confidence: 'confidence',
+  verified: 'verified',
+  importedBy: 'importedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ReferralPartnerScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  partnerType: 'partnerType',
+  status: 'status',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ReferralLinkScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  partnerId: 'partnerId',
+  referralCode: 'referralCode',
+  landingPage: 'landingPage',
+  campaign: 'campaign',
+  status: 'status',
+  clickCount: 'clickCount',
+  leadCount: 'leadCount',
+  qualifiedLeadCount: 'qualifiedLeadCount',
+  closedDealCount: 'closedDealCount',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ReferralAttributionEventScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  partnerId: 'partnerId',
+  referralLinkId: 'referralLinkId',
+  leadId: 'leadId',
+  eventType: 'eventType',
+  referralCode: 'referralCode',
+  landingPage: 'landingPage',
+  campaign: 'campaign',
+  source: 'source',
+  status: 'status',
+  duplicateKey: 'duplicateKey',
+  safeMetadata: 'safeMetadata',
+  providerCalled: 'providerCalled',
+  outreachSent: 'outreachSent',
+  published: 'published',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.RevenueLeadScoreScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  leadId: 'leadId',
+  score: 'score',
+  confidence: 'confidence',
+  priority: 'priority',
+  explanation: 'explanation',
+  recommendedNextAction: 'recommendedNextAction',
+  missingData: 'missingData',
+  scoreBreakdown: 'scoreBreakdown',
+  assumptions: 'assumptions',
+  dataUsed: 'dataUsed',
+  advisoryOnly: 'advisoryOnly',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.RevenueTaskScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  leadId: 'leadId',
+  title: 'title',
+  taskType: 'taskType',
+  priority: 'priority',
+  status: 'status',
+  recommendedAction: 'recommendedAction',
+  reason: 'reason',
+  dueAt: 'dueAt',
+  assignedTo: 'assignedTo',
+  requiresApproval: 'requiresApproval',
+  source: 'source',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  completedAt: 'completedAt'
+};
+
+exports.Prisma.RevenuePipelineEventScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  leadId: 'leadId',
+  fromStage: 'fromStage',
+  toStage: 'toStage',
+  reason: 'reason',
+  source: 'source',
+  revenueOutcome: 'revenueOutcome',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.RevenueCommunicationEventScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  leadId: 'leadId',
+  channel: 'channel',
+  direction: 'direction',
+  status: 'status',
+  approvalStatus: 'approvalStatus',
+  provider: 'provider',
+  providerCalled: 'providerCalled',
+  messageSummary: 'messageSummary',
+  requiresApproval: 'requiresApproval',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.RevenueDecisionLogScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  leadId: 'leadId',
+  taskId: 'taskId',
+  auditEventId: 'auditEventId',
+  aiMemoryEventId: 'aiMemoryEventId',
+  connectorKey: 'connectorKey',
+  pipelineEventId: 'pipelineEventId',
+  recommendationType: 'recommendationType',
+  recommendation: 'recommendation',
+  confidence: 'confidence',
+  supportingEvidence: 'supportingEvidence',
+  assumptions: 'assumptions',
+  missingData: 'missingData',
+  userDecision: 'userDecision',
+  modifiedAction: 'modifiedAction',
+  outcome: 'outcome',
+  advisoryOnly: 'advisoryOnly',
+  providerCalled: 'providerCalled',
+  outreachSent: 'outreachSent',
+  requiresApproval: 'requiresApproval',
+  safeMetadata: 'safeMetadata',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ConnectorDefinitionScalarFieldEnum = {
+  id: 'id',
+  connectorKey: 'connectorKey',
+  label: 'label',
+  category: 'category',
+  status: 'status',
+  version: 'version',
+  supportsDryRun: 'supportsDryRun',
+  providerCallsAllowed: 'providerCallsAllowed',
+  requiredApprovals: 'requiredApprovals',
+  safetyNotes: 'safetyNotes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.EnterpriseConnectorRegistryScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  connectorId: 'connectorId',
+  displayName: 'displayName',
+  category: 'category',
+  provider: 'provider',
+  version: 'version',
+  authenticationType: 'authenticationType',
+  oauthSupported: 'oauthSupported',
+  requiredPermissions: 'requiredPermissions',
+  supportedActions: 'supportedActions',
+  readCapabilities: 'readCapabilities',
+  writeCapabilities: 'writeCapabilities',
+  humanApprovalRequirements: 'humanApprovalRequirements',
+  safeAutoEligibility: 'safeAutoEligibility',
+  rateLimits: 'rateLimits',
+  usageQuotas: 'usageQuotas',
+  estimatedCost: 'estimatedCost',
+  healthStatus: 'healthStatus',
+  lastSuccessfulSync: 'lastSuccessfulSync',
+  lastFailedSync: 'lastFailedSync',
+  retryPolicy: 'retryPolicy',
+  timeoutPolicy: 'timeoutPolicy',
+  circuitBreakerState: 'circuitBreakerState',
+  loggingConfiguration: 'loggingConfiguration',
+  auditConfiguration: 'auditConfiguration',
+  riskLevel: 'riskLevel',
+  environmentSupport: 'environmentSupport',
+  featureFlags: 'featureFlags',
+  dependencies: 'dependencies',
+  owner: 'owner',
+  credentialReference: 'credentialReference',
+  lifecycleState: 'lifecycleState',
+  providerCallsAllowed: 'providerCallsAllowed',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.EnterpriseConnectorHealthEventScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  connectorId: 'connectorId',
+  healthStatus: 'healthStatus',
+  checkedAt: 'checkedAt',
+  lastSuccessfulSync: 'lastSuccessfulSync',
+  lastFailedSync: 'lastFailedSync',
+  failureReason: 'failureReason',
+  latencyMs: 'latencyMs',
+  rateLimitRemaining: 'rateLimitRemaining',
+  costObservedCents: 'costObservedCents',
+  circuitBreakerState: 'circuitBreakerState',
+  providerCalled: 'providerCalled',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  safeMetadata: 'safeMetadata'
+};
+
+exports.Prisma.EnterpriseConnectorLifecycleEventScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  connectorId: 'connectorId',
+  lifecycleAction: 'lifecycleAction',
+  fromState: 'fromState',
+  toState: 'toState',
+  actorId: 'actorId',
+  approvalStatus: 'approvalStatus',
+  result: 'result',
+  reason: 'reason',
+  providerCalled: 'providerCalled',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  safeMetadata: 'safeMetadata',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.EnterpriseConnectorExecutionDecisionScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  connectorId: 'connectorId',
+  requestingModule: 'requestingModule',
+  requestedAction: 'requestedAction',
+  decision: 'decision',
+  reason: 'reason',
+  confidence: 'confidence',
+  requiredApprovals: 'requiredApprovals',
+  fallbackConnectorId: 'fallbackConnectorId',
+  providerCalled: 'providerCalled',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  auditRequired: 'auditRequired',
+  safeMetadata: 'safeMetadata',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.FeatureFlagRecordScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  flagKey: 'flagKey',
+  enabled: 'enabled',
+  category: 'category',
+  description: 'description',
+  requiresAdminApproval: 'requiresAdminApproval',
+  updatedBy: 'updatedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MarketIntelligenceSignalScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  category: 'category',
+  title: 'title',
+  sourceLabel: 'sourceLabel',
+  provenance: 'provenance',
+  geography: 'geography',
+  confidence: 'confidence',
+  marketImpact: 'marketImpact',
+  businessImplication: 'businessImplication',
+  missingData: 'missingData',
+  providerCalled: 'providerCalled',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.DemandDiscoveryOpportunityScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  audience: 'audience',
+  geography: 'geography',
+  unmetNeed: 'unmetNeed',
+  opportunityScore: 'opportunityScore',
+  confidence: 'confidence',
+  revenuePotential: 'revenuePotential',
+  sourceLabel: 'sourceLabel',
+  explanation: 'explanation',
+  requiredReview: 'requiredReview',
+  providerCalled: 'providerCalled',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.GrowthEngineDraftScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  engine: 'engine',
+  title: 'title',
+  sourceLabel: 'sourceLabel',
+  draftType: 'draftType',
+  draftContent: 'draftContent',
+  approvalStatus: 'approvalStatus',
+  safetyBoundary: 'safetyBoundary',
+  providerCalled: 'providerCalled',
+  sent: 'sent',
+  published: 'published',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ExecutiveBriefingSnapshotScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  cadence: 'cadence',
+  priorities: 'priorities',
+  connectorHealth: 'connectorHealth',
+  marketSignals: 'marketSignals',
+  demandOpportunities: 'demandOpportunities',
+  growthDrafts: 'growthDrafts',
+  featureFlags: 'featureFlags',
+  providerCalled: 'providerCalled',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ConnectorInstallationStateScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  connectorId: 'connectorId',
+  installationState: 'installationState',
+  configurationState: 'configurationState',
+  authenticationState: 'authenticationState',
+  sandboxMode: 'sandboxMode',
+  enabled: 'enabled',
+  enableApprovalStatus: 'enableApprovalStatus',
+  credentialReferenceId: 'credentialReferenceId',
+  requiredScopes: 'requiredScopes',
+  grantedScopes: 'grantedScopes',
+  permissionValidation: 'permissionValidation',
+  lastTestResultId: 'lastTestResultId',
+  rollbackVersion: 'rollbackVersion',
+  providerCalled: 'providerCalled',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ConnectorCredentialReferenceScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  connectorId: 'connectorId',
+  referenceKey: 'referenceKey',
+  secretStorageProvider: 'secretStorageProvider',
+  secretPathReference: 'secretPathReference',
+  rotationStatus: 'rotationStatus',
+  lastRotatedAt: 'lastRotatedAt',
+  expiresAt: 'expiresAt',
+  rawSecretStored: 'rawSecretStored',
+  rawSecretRendered: 'rawSecretRendered',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ConnectorTestResultScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  connectorId: 'connectorId',
+  testType: 'testType',
+  status: 'status',
+  message: 'message',
+  requiredApproval: 'requiredApproval',
+  latencyMs: 'latencyMs',
+  safeMetadata: 'safeMetadata',
+  providerCalled: 'providerCalled',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AiPermissionPolicyScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  subjectType: 'subjectType',
+  subjectKey: 'subjectKey',
+  connectorId: 'connectorId',
+  actionKey: 'actionKey',
+  effect: 'effect',
+  scope: 'scope',
+  approvalRequired: 'approvalRequired',
+  riskLevel: 'riskLevel',
+  environment: 'environment',
+  reason: 'reason',
+  providerCalled: 'providerCalled',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UnifiedApprovalItemScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  itemType: 'itemType',
+  sourceType: 'sourceType',
+  sourceId: 'sourceId',
+  title: 'title',
+  sourceLabel: 'sourceLabel',
+  status: 'status',
+  riskLevel: 'riskLevel',
+  requiredApprovals: 'requiredApprovals',
+  connectorId: 'connectorId',
+  executionBlockedReason: 'executionBlockedReason',
+  payload: 'payload',
+  providerCalled: 'providerCalled',
+  sent: 'sent',
+  published: 'published',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UnifiedApprovalDecisionScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  approvalItemId: 'approvalItemId',
+  decision: 'decision',
+  note: 'note',
+  decidedBy: 'decidedBy',
+  delegatedTo: 'delegatedTo',
+  rescheduledFor: 'rescheduledFor',
+  auditEventId: 'auditEventId',
+  providerCalled: 'providerCalled',
+  sent: 'sent',
+  published: 'published',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.SocialContentSourceScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  sourceType: 'sourceType',
+  sourceLabel: 'sourceLabel',
+  sourceId: 'sourceId',
+  approvalStatus: 'approvalStatus',
+  containsPrivateFacts: 'containsPrivateFacts',
+  provenance: 'provenance',
+  assumptions: 'assumptions',
+  providerCalled: 'providerCalled',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SocialContentDraftScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  sourceId: 'sourceId',
+  platform: 'platform',
+  contentType: 'contentType',
+  title: 'title',
+  draftCopy: 'draftCopy',
+  assumptions: 'assumptions',
+  approvalStatus: 'approvalStatus',
+  connectorId: 'connectorId',
+  providerCalled: 'providerCalled',
+  published: 'published',
+  scheduled: 'scheduled',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SocialContentVariantScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  draftId: 'draftId',
+  platform: 'platform',
+  format: 'format',
+  copy: 'copy',
+  sourceLabel: 'sourceLabel',
+  approvalStatus: 'approvalStatus',
+  providerCalled: 'providerCalled',
+  published: 'published',
+  scheduled: 'scheduled',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SocialSchedulePlanScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  draftId: 'draftId',
+  intendedPublishAt: 'intendedPublishAt',
+  scheduleStatus: 'scheduleStatus',
+  approvalStatus: 'approvalStatus',
+  connectorId: 'connectorId',
+  providerCalled: 'providerCalled',
+  scheduled: 'scheduled',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SocialExecutionPlanScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  draftId: 'draftId',
+  connectorId: 'connectorId',
+  actionKey: 'actionKey',
+  decision: 'decision',
+  reason: 'reason',
+  requiredApprovals: 'requiredApprovals',
+  fallbackConnectorId: 'fallbackConnectorId',
+  providerCalled: 'providerCalled',
+  published: 'published',
+  scheduled: 'scheduled',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SocialPerformanceSnapshotScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  draftId: 'draftId',
+  platform: 'platform',
+  metrics: 'metrics',
+  sourceLabel: 'sourceLabel',
+  snapshotStatus: 'snapshotStatus',
+  providerCalled: 'providerCalled',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AutomationPolicyRecordScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  policyKey: 'policyKey',
+  name: 'name',
+  workflow: 'workflow',
+  featureFlag: 'featureFlag',
+  approvalRequirement: 'approvalRequirement',
+  rollbackPlan: 'rollbackPlan',
+  environmentScope: 'environmentScope',
+  safeAutoCompatible: 'safeAutoCompatible',
+  externalExecutionAllowed: 'externalExecutionAllowed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AutomationRunRecordScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  policyId: 'policyId',
+  runStatus: 'runStatus',
+  triggerSource: 'triggerSource',
+  approvalStatus: 'approvalStatus',
+  rollbackAvailable: 'rollbackAvailable',
+  providerCalled: 'providerCalled',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  safeMetadata: 'safeMetadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.NotificationRecordScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  channel: 'channel',
+  severity: 'severity',
+  title: 'title',
+  message: 'message',
+  sourceType: 'sourceType',
+  sourceId: 'sourceId',
+  acknowledgedAt: 'acknowledgedAt',
+  providerCalled: 'providerCalled',
+  sentExternally: 'sentExternally',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.LearningOutcomeEventScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  source: 'source',
+  summary: 'summary',
+  recommendationImpact: 'recommendationImpact',
+  confidence: 'confidence',
+  explainabilityNote: 'explainabilityNote',
+  autonomousSelfModification: 'autonomousSelfModification',
+  providerCalled: 'providerCalled',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.DailyBriefingSnapshotScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  briefingDate: 'briefingDate',
+  panels: 'panels',
+  verticalSlice: 'verticalSlice',
+  approvalSummary: 'approvalSummary',
+  connectorSummary: 'connectorSummary',
+  providerCalled: 'providerCalled',
+  sent: 'sent',
+  published: 'published',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.OperationsTimelineEventScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  eventType: 'eventType',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  leadId: 'leadId',
+  propertyAddress: 'propertyAddress',
+  campaignId: 'campaignId',
+  userId: 'userId',
+  aiAgent: 'aiAgent',
+  connectorId: 'connectorId',
+  status: 'status',
+  sourceLabel: 'sourceLabel',
+  reasonCodes: 'reasonCodes',
+  safeMetadata: 'safeMetadata',
+  providerCalled: 'providerCalled',
+  sent: 'sent',
+  published: 'published',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.ManualLeadIntakeScalarFieldEnum = {
   id: 'id',
   leadId: 'leadId',
@@ -320,6 +988,7 @@ exports.Prisma.MarketingDraftScalarFieldEnum = {
   status: 'status',
   draftCopy: 'draftCopy',
   assetNotes: 'assetNotes',
+  referralLink: 'referralLink',
   assumptions: 'assumptions',
   safetyFlags: 'safetyFlags',
   createdSource: 'createdSource',
@@ -455,12 +1124,12 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.JsonNullValueInput = {
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull
 };
 
-exports.Prisma.NullableJsonNullValueInput = {
-  DbNull: Prisma.DbNull,
+exports.Prisma.JsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
@@ -510,6 +1179,44 @@ exports.BuyerActivityEventType = exports.$Enums.BuyerActivityEventType = {
 
 exports.Prisma.ModelName = {
   Lead: 'Lead',
+  RevenueAuditEvent: 'RevenueAuditEvent',
+  RevenueLeadSource: 'RevenueLeadSource',
+  ReferralPartner: 'ReferralPartner',
+  ReferralLink: 'ReferralLink',
+  ReferralAttributionEvent: 'ReferralAttributionEvent',
+  RevenueLeadScore: 'RevenueLeadScore',
+  RevenueTask: 'RevenueTask',
+  RevenuePipelineEvent: 'RevenuePipelineEvent',
+  RevenueCommunicationEvent: 'RevenueCommunicationEvent',
+  RevenueDecisionLog: 'RevenueDecisionLog',
+  ConnectorDefinition: 'ConnectorDefinition',
+  EnterpriseConnectorRegistry: 'EnterpriseConnectorRegistry',
+  EnterpriseConnectorHealthEvent: 'EnterpriseConnectorHealthEvent',
+  EnterpriseConnectorLifecycleEvent: 'EnterpriseConnectorLifecycleEvent',
+  EnterpriseConnectorExecutionDecision: 'EnterpriseConnectorExecutionDecision',
+  FeatureFlagRecord: 'FeatureFlagRecord',
+  MarketIntelligenceSignal: 'MarketIntelligenceSignal',
+  DemandDiscoveryOpportunity: 'DemandDiscoveryOpportunity',
+  GrowthEngineDraft: 'GrowthEngineDraft',
+  ExecutiveBriefingSnapshot: 'ExecutiveBriefingSnapshot',
+  ConnectorInstallationState: 'ConnectorInstallationState',
+  ConnectorCredentialReference: 'ConnectorCredentialReference',
+  ConnectorTestResult: 'ConnectorTestResult',
+  AiPermissionPolicy: 'AiPermissionPolicy',
+  UnifiedApprovalItem: 'UnifiedApprovalItem',
+  UnifiedApprovalDecision: 'UnifiedApprovalDecision',
+  SocialContentSource: 'SocialContentSource',
+  SocialContentDraft: 'SocialContentDraft',
+  SocialContentVariant: 'SocialContentVariant',
+  SocialSchedulePlan: 'SocialSchedulePlan',
+  SocialExecutionPlan: 'SocialExecutionPlan',
+  SocialPerformanceSnapshot: 'SocialPerformanceSnapshot',
+  AutomationPolicyRecord: 'AutomationPolicyRecord',
+  AutomationRunRecord: 'AutomationRunRecord',
+  NotificationRecord: 'NotificationRecord',
+  LearningOutcomeEvent: 'LearningOutcomeEvent',
+  DailyBriefingSnapshot: 'DailyBriefingSnapshot',
+  OperationsTimelineEvent: 'OperationsTimelineEvent',
   ManualLeadIntake: 'ManualLeadIntake',
   SellerCallOutcome: 'SellerCallOutcome',
   AiPerformanceMetric: 'AiPerformanceMetric',

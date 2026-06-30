@@ -116,4 +116,28 @@ test.describe("authenticated dashboard smoke", () => {
     await expect(page.getByText("workflowTriggered:false")).toBeVisible();
     await expect(page.getByText("generatedFacts:false")).toBeVisible();
   });
+
+  test("Mobile command center renders PWA help and safety badges", async ({ page }) => {
+    await signIn(page);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/dashboard/mobile-command");
+
+    await expect(page.getByRole("heading", { name: "Mobile Command Center" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Add this to your phone" })).toBeVisible();
+    await expect(page.getByText("providerCalled:false")).toBeVisible();
+    await expect(page.getByText("liveExecutionAllowed:false")).toBeVisible();
+    await expect(page.getByText("outreachSent:false")).toBeVisible();
+    await expect(page.getByText("approvalRequired:true")).toBeVisible();
+  });
+
+  test("Referral dashboard renders internal attribution review safely", async ({ page }) => {
+    await signIn(page);
+    await page.goto("/dashboard/referrals");
+
+    await expect(page.getByRole("heading", { name: "Referral & Partnership Growth" })).toBeVisible();
+    await expect(page.getByText("providerCalled:false")).toBeVisible();
+    await expect(page.getByText("outreachSent:false")).toBeVisible();
+    await expect(page.getByText("published:false")).toBeVisible();
+    await expect(page.getByText("liveExecutionAllowed:false")).toBeVisible();
+  });
 });
