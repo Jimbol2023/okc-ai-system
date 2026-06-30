@@ -182,7 +182,7 @@ export function getPhase4GovernanceStatus() {
     twilioReadiness: {
       connectorId: "twilio",
       featureEnabled: liveSmsFeatureEnabled,
-      healthStatus: twilioHealth?.status ?? "unknown",
+      healthStatus: twilioHealth?.healthStatus ?? "unknown",
       envReady: env.phase4LiveSmsReady,
       killSwitchActive: env.killSwitchActive,
       controlledLiveTestEligible: liveSmsFeatureEnabled && env.phase4LiveSmsReady && env.killSwitchActive === false,
