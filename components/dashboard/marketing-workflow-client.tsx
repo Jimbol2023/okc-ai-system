@@ -40,6 +40,7 @@ type MarketingDraft = {
   channel: MarketingChannel;
   topic: string;
   sourceLabel: string;
+  referralLink?: string | null;
   status: string;
   draftCopy: string;
   assetNotes?: string | null;
@@ -71,6 +72,7 @@ const emptyDraftForm = {
   channel: "facebook" as MarketingChannel,
   topic: "",
   sourceLabel: "",
+  referralLink: "",
   assetNotes: "",
 };
 
@@ -247,6 +249,14 @@ export function MarketingWorkflowClient() {
             value={draftForm.sourceLabel}
             onChange={(event) => setDraftForm((current) => ({ ...current, sourceLabel: event.target.value }))}
           />
+          <input
+            type="url"
+            maxLength={300}
+            className="rounded-xl border border-border bg-white px-3 py-3 text-sm lg:col-span-3"
+            placeholder="Optional referral link for manual attribution"
+            value={draftForm.referralLink}
+            onChange={(event) => setDraftForm((current) => ({ ...current, referralLink: event.target.value }))}
+          />
           <textarea
             className="min-h-24 rounded-xl border border-border bg-white px-3 py-3 text-sm lg:col-span-3"
             maxLength={1000}
@@ -270,6 +280,7 @@ export function MarketingWorkflowClient() {
                   {formatStatus(draft.status)}
                 </span>
               </div>
+              {draft.referralLink ? <p className="mt-2 break-words text-xs font-semibold text-blue-950">Referral Link: {draft.referralLink}</p> : null}
               <p className="mt-3 whitespace-pre-wrap text-sm leading-6 text-muted">{draft.draftCopy}</p>
             </article>
           ))}
@@ -350,6 +361,7 @@ export function MarketingWorkflowClient() {
           {approvedDrafts.map((draft) => (
             <article key={draft.id} className="rounded-2xl border border-border bg-white p-4">
               <h3 className="text-sm font-semibold text-primary">{draft.topic}</h3>
+              {draft.referralLink ? <p className="mt-2 break-words text-xs font-semibold text-blue-950">Referral Link: {draft.referralLink}</p> : null}
               <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-muted">{draft.draftCopy}</p>
               <input className="mt-3 w-full rounded-xl border border-border px-3 py-3 text-sm" type="url" placeholder="Optional manual published URL" value={publishedUrls[draft.id] ?? ""} onChange={(event) => setPublishedUrls((current) => ({ ...current, [draft.id]: event.target.value }))} />
               <div className="mt-3 flex flex-wrap gap-2">
@@ -375,6 +387,7 @@ export function MarketingWorkflowClient() {
                 <div>
                   <h3 className="text-sm font-semibold text-primary">{draft.topic}</h3>
                   <p className="mt-1 text-xs font-bold uppercase tracking-[0.08em] text-muted">{marketingChannelLabels[draft.channel]} | {draft.sourceLabel}</p>
+                  {draft.referralLink ? <p className="mt-2 break-words text-xs font-semibold text-blue-950">Referral Link: {draft.referralLink}</p> : null}
                 </div>
                 <span className="w-fit rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.08em] text-blue-950">
                   Manual Canva only

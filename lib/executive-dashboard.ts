@@ -8,6 +8,7 @@ import { listDbLeads } from "@/lib/leads-db";
 import type { StoredLead } from "@/lib/leads-storage";
 import { listMarketingWorkflow } from "@/lib/marketing-workflow";
 import { createProviderReadinessReport } from "@/lib/provider-readiness";
+import { getReferralDashboard } from "@/lib/referrals";
 import { getRevenuePipelineSummary } from "@/lib/revenue-pipeline";
 import { getSystemHealth } from "@/lib/system-health";
 import { publicSiteUrl } from "@/lib/public-seo";
@@ -276,12 +277,13 @@ function createMorningBrief({
 }
 
 export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboardReport> {
-  const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, memoryEventsResult, systemHealth, recentSystemActivity] = await Promise.all([
+  const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, memoryEventsResult, referralResult, systemHealth, recentSystemActivity] = await Promise.all([
     loadPartialData("Lead", listDbLeads, [] as StoredLead[]),
     loadPartialData("Marketing workflow", listMarketingWorkflow, null),
     loadPartialData("Finance", listFinanceEntries, []),
     loadPartialData("Knowledge", listKnowledgeItems, []),
     loadPartialData("AI memory", loadExecutiveLearningMemoryEvents, [] as ExecutiveLearningMemoryEvent[]),
+    loadPartialData("Referral dashboard", getReferralDashboard, null),
     getSystemHealth().catch(() => null),
     getRecentSystemActivity().catch(() => []),
   ]);
@@ -290,6 +292,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
   const financeEntries = financeEntriesResult.data;
   const knowledgeItems = knowledgeItemsResult.data;
   const memoryEvents = memoryEventsResult.data;
+  const referralSummary = referralResult.data?.summary ?? null;
   const today = startOfToday();
   const revenuePipeline = getRevenuePipelineSummary(leads);
   const providerReadiness = createProviderReadinessReport();
@@ -367,6 +370,16 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
         detail: "Design briefs are manual; no Canva API export or posting is triggered.",
         href: "/dashboard/marketing",
         status: getWidgetStatus(canvaAwaitingDesign),
+      },
+      {
+        id: "referral_growth",
+        label: "Referral growth",
+        value: referralSummary?.leadCount ?? 0,
+        detail: referralSummary
+          ? `${referralSummary.clickCount} safe referral click(s), ${referralSummary.referralToLeadConversion}% lead conversion.`
+          : "Referral dashboard data is not available yet.",
+        href: "/dashboard/referrals",
+        status: getWidgetStatus(referralSummary?.leadCount ?? 0, true),
       },
       {
         id: "revenue_pipeline",

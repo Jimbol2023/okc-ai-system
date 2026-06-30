@@ -110,7 +110,11 @@ export const storedLeadSchema = z.object({
   latestMockOutreachResult: z.string().nullable().optional(),
   latestMockOutreachMessage: z.string().nullable().optional(),
   latestMockOutreachBlockedReasons: z.array(z.string()).optional(),
-  mockOutreachHistory: z.array(mockOutreachHistoryItemSchema).optional()
+  mockOutreachHistory: z.array(mockOutreachHistoryItemSchema).optional(),
+  referralCode: z.string().nullable().optional(),
+  referralCampaign: z.string().nullable().optional(),
+  referralSource: z.string().nullable().optional(),
+  referralLandingPage: z.string().nullable().optional()
 });
 
 export const storedLeadArraySchema = z.array(storedLeadSchema);
