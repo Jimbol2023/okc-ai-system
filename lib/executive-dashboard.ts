@@ -44,9 +44,48 @@ export type ExecutiveMorningBrief = {
   safetyBadges: string[];
 };
 
+export type RevenueCommandCenterItem = {
+  id: string;
+  label: string;
+  value: string | number;
+  detail: string;
+  href: string;
+  status: ExecutiveWidget["status"];
+  sourceLabel: string;
+  assumption: string;
+};
+
+export type RevenueCommandCenterSection = {
+  id: "revenue" | "marketing" | "seo" | "lead_intelligence" | "business_health" | "approval_priorities";
+  title: string;
+  summary: string;
+  items: RevenueCommandCenterItem[];
+};
+
+export type RevenueCommandCenterReport = {
+  title: "Revenue Command Center";
+  summary: string;
+  executiveSummary: string;
+  sections: RevenueCommandCenterSection[];
+  highRoiDecisionFilter: string[];
+  nextBestActions: string[];
+  safetyFlags: {
+    advisoryOnly: true;
+    providerCalled: false;
+    liveExecutionAllowed: false;
+    externalActionsBlocked: true;
+    publishingBlocked: true;
+    outreachBlocked: true;
+    scrapingBlocked: true;
+    adsBlocked: true;
+    humanApprovalRequired: true;
+  };
+};
+
 export type ExecutiveDashboardReport = {
   ok: true;
   widgets: ExecutiveWidget[];
+  revenueCommandCenter: RevenueCommandCenterReport;
   morningBrief: ExecutiveMorningBrief;
   todayPriorities: ExecutiveWidget[];
   kpiInterpretations: Record<string, string>;
@@ -120,6 +159,31 @@ function getWidgetStatus(count: number, goodWhenPositive = false): ExecutiveWidg
   if (count === 0) return goodWhenPositive ? "missing" : "good";
   if (count >= 5) return "urgent";
   return "watch";
+}
+
+function statusForBlockedCount(count: number): ExecutiveWidget["status"] {
+  if (count === 0) return "good";
+  if (count >= 5) return "urgent";
+
+  return "watch";
+}
+
+function statusForOpportunityCount(count: number): ExecutiveWidget["status"] {
+  if (count === 0) return "missing";
+  if (count >= 3) return "good";
+
+  return "watch";
+}
+
+function createCommandItem(input: Omit<RevenueCommandCenterItem, "sourceLabel" | "assumption"> & {
+  sourceLabel?: string;
+  assumption?: string;
+}): RevenueCommandCenterItem {
+  return {
+    ...input,
+    sourceLabel: input.sourceLabel ?? "existing_ai_os_records",
+    assumption: input.assumption ?? "Advisory-only summary from existing stored records; verify before action.",
+  };
 }
 
 async function getRecentSystemActivity() {
@@ -260,7 +324,7 @@ function createMorningBrief({
 
   return {
     greeting: "Good morning Moses.",
-    summary: `${followUpsDue} follow-up(s), ${offerReadyCount} offer-ready opportunity/opportunities, ${financeGapCount} finance gap(s), and ${marketingAwaitingApproval} marketing approval(s) need manual review context.`,
+    summary: `${followUpsDue} follow-up(s), ${offerReadyCount} offer-ready lead(s), ${financeGapCount} finance gap(s), and ${marketingAwaitingApproval} marketing approval(s) need manual review context.`,
     keySignals,
     recommendedWorkOrder,
     memoryInsight: memory
@@ -273,6 +337,323 @@ function createMorningBrief({
         }
       : null,
     safetyBadges: ["providerCalled:false", "outreachSent:false", "manualReviewOnly:true"],
+  };
+}
+
+export function createRevenueCommandCenter({
+  newLeadsToday,
+  qualifiedLeads,
+  followUpsDue,
+  offerReadyCount,
+  missingInfoCount,
+  marketingAwaitingApproval,
+  canvaAwaitingDesign,
+  readyForManualPublish,
+  manuallyPublished,
+  providerMissingCount,
+  revenuePipeline,
+  financeKpis,
+  businessIntelligence,
+  referralSummary,
+  websiteSeoReady,
+  activeKnowledgeItems,
+}: {
+  newLeadsToday: number;
+  qualifiedLeads: number;
+  followUpsDue: number;
+  offerReadyCount: number;
+  missingInfoCount: number;
+  marketingAwaitingApproval: number;
+  canvaAwaitingDesign: number;
+  readyForManualPublish: number;
+  manuallyPublished: number;
+  providerMissingCount: number;
+  revenuePipeline: ReturnType<typeof getRevenuePipelineSummary>;
+  financeKpis: ReturnType<typeof calculateFinanceKpis>;
+  businessIntelligence: BusinessIntelligenceReport;
+  referralSummary: Awaited<ReturnType<typeof getReferralDashboard>>["summary"] | null;
+  websiteSeoReady: boolean;
+  activeKnowledgeItems: number;
+}): RevenueCommandCenterReport {
+  const topChannel = businessIntelligence.summary.topChannel;
+  const keywordOpportunityCount = websiteSeoReady ? Math.max(1, activeKnowledgeItems === 0 ? 2 : 1) : 3;
+  const contentGapCount = marketingAwaitingApproval === 0 && activeKnowledgeItems < 3 ? 2 : Math.max(0, 3 - marketingAwaitingApproval);
+  const sourceLabel = topChannel?.source ?? "manual_source_tracking";
+  const nextBestActions = [
+    followUpsDue > 0 ? "Review due follow-ups before lower-value dashboard work; no outreach is sent by the system." : "",
+    offerReadyCount > 0 ? "Verify offer-ready assumptions and decide whether a CEO-approved offer package is needed." : "",
+    marketingAwaitingApproval > 0 ? "Approve or revise seller-education drafts that can create authority and future lead flow." : "",
+    canvaAwaitingDesign > 0 ? "Review design briefs for manual Canva/Adobe work; no export or provider call is allowed." : "",
+    topChannel ? `Double down manually on ${topChannel.source} because it currently has ${topChannel.qualifiedLeads} qualified lead(s).` : "",
+    providerMissingCount > 0 ? "Clear provider readiness blockers only where they unlock qualified lead generation or attribution." : "",
+  ].filter(Boolean);
+
+  return {
+    title: "Revenue Command Center",
+    summary:
+      "Daily CEO command view focused on qualified seller leads, approval bottlenecks, offer readiness, source attribution, authority-building content, and governed execution readiness.",
+    executiveSummary:
+      `${newLeadsToday} new lead(s), ${qualifiedLeads} qualified lead(s), ${offerReadyCount} offer-ready lead(s), ` +
+      `${marketingAwaitingApproval + canvaAwaitingDesign} marketing/design approval item(s), and ${followUpsDue} follow-up(s) need CEO review context.`,
+    sections: [
+      {
+        id: "revenue",
+        title: "Revenue",
+        summary: "Seller-lead and pipeline signals that can move deals forward after human review.",
+        items: [
+          createCommandItem({
+            id: "new_leads",
+            label: "New leads",
+            value: newLeadsToday,
+            detail: "Leads created today from stored CRM records.",
+            href: "/dashboard/leads",
+            status: statusForOpportunityCount(newLeadsToday),
+            sourceLabel: "crm_lead_timestamp",
+          }),
+          createCommandItem({
+            id: "qualified_leads",
+            label: "Qualified leads",
+            value: qualifiedLeads,
+            detail: "Priority, score, negotiation, contract, or closed signals from existing lead records.",
+            href: "/dashboard/leads",
+            status: statusForOpportunityCount(qualifiedLeads),
+            sourceLabel: "lead_quality_signals",
+          }),
+          createCommandItem({
+            id: "offers_ready",
+            label: "Offers ready",
+            value: offerReadyCount,
+            detail: "Analyzer, negotiation, high-priority, or buyer-ready signals require manual verification.",
+            href: "/dashboard/acquisitions",
+            status: statusForOpportunityCount(offerReadyCount),
+            sourceLabel: "revenue_pipeline",
+          }),
+          createCommandItem({
+            id: "pipeline_value",
+            label: "Pipeline value",
+            value: revenuePipeline.estimatedPipelineValueLabel,
+            detail: `${revenuePipeline.actionableLeads} actionable lead(s), ${revenuePipeline.closingBlockedLeads} closing-blocked lead(s).`,
+            href: "/dashboard/finance",
+            status: revenuePipeline.actionableLeads > 0 ? "watch" : "missing",
+            sourceLabel: "revenue_pipeline_estimate",
+            assumption: "Pipeline value is assumption-based and depends on completed analyzer value fields.",
+          }),
+        ],
+      },
+      {
+        id: "marketing",
+        title: "Marketing",
+        summary: "Draft and design work that can build local authority after approval.",
+        items: [
+          createCommandItem({
+            id: "campaigns_waiting_approval",
+            label: "Campaigns waiting approval",
+            value: marketingAwaitingApproval,
+            detail: "Marketing drafts awaiting manual approval; publishing remains blocked.",
+            href: "/dashboard/marketing",
+            status: statusForBlockedCount(marketingAwaitingApproval),
+            sourceLabel: "marketing_drafts",
+          }),
+          createCommandItem({
+            id: "design_briefs_waiting_review",
+            label: "Design briefs waiting review",
+            value: canvaAwaitingDesign,
+            detail: "Manual Canva/Adobe-style review queue; no exports or provider calls.",
+            href: "/dashboard/marketing",
+            status: statusForBlockedCount(canvaAwaitingDesign),
+            sourceLabel: "canva_asset_assists",
+          }),
+          createCommandItem({
+            id: "publish_queue",
+            label: "Manual publish queue",
+            value: readyForManualPublish,
+            detail: "Approved draft assists ready for human-managed platform posting outside the app.",
+            href: "/dashboard/marketing",
+            status: statusForOpportunityCount(readyForManualPublish),
+            sourceLabel: "marketing_publish_assists",
+          }),
+          createCommandItem({
+            id: "weekly_publishing_progress",
+            label: "Published manually",
+            value: manuallyPublished,
+            detail: "Manual publication records only; the system did not publish.",
+            href: "/dashboard/marketing",
+            status: manuallyPublished > 0 ? "good" : "missing",
+            sourceLabel: "manual_publish_records",
+          }),
+        ],
+      },
+      {
+        id: "seo",
+        title: "SEO",
+        summary: "Manual/read-only authority opportunities for seller education content.",
+        items: [
+          createCommandItem({
+            id: "keyword_opportunities",
+            label: "Keyword opportunities",
+            value: keywordOpportunityCount,
+            detail: "Manual SEO opportunities should prioritize motivated seller education and service-area authority.",
+            href: "/dashboard/research",
+            status: "watch",
+            sourceLabel: "manual_seo_planning",
+            assumption: "No Search Console or competitor scraping was performed; this is a planning signal.",
+          }),
+          createCommandItem({
+            id: "content_gaps",
+            label: "Content gaps",
+            value: contentGapCount,
+            detail: "Content gaps should become draft campaign briefs before any public use.",
+            href: "/dashboard/knowledge",
+            status: contentGapCount > 0 ? "watch" : "good",
+            sourceLabel: "knowledge_and_marketing_gap_review",
+          }),
+          createCommandItem({
+            id: "search_console_alerts",
+            label: "Search Console alerts",
+            value: "Manual",
+            detail: "Search Console is not connected; review manually before adding read-only integrations.",
+            href: "/dashboard/production-readiness",
+            status: websiteSeoReady ? "watch" : "urgent",
+            sourceLabel: "provider_readiness",
+          }),
+        ],
+      },
+      {
+        id: "lead_intelligence",
+        title: "Lead Intelligence",
+        summary: "Attribution and follow-up signals that protect time and deal quality.",
+        items: [
+          createCommandItem({
+            id: "follow_ups_due",
+            label: "Follow-ups due",
+            value: followUpsDue,
+            detail: "Manual follow-up review only; no reminders, messages, calls, or emails are sent.",
+            href: "/dashboard/leads",
+            status: statusForBlockedCount(followUpsDue),
+            sourceLabel: "lead_next_follow_up_at",
+          }),
+          createCommandItem({
+            id: "missing_information",
+            label: "Missing information",
+            value: missingInfoCount,
+            detail: "Missing source, property, contact, seller context, or reply details.",
+            href: "/dashboard/properties",
+            status: statusForBlockedCount(missingInfoCount),
+            sourceLabel: "lead_record_completeness",
+          }),
+          createCommandItem({
+            id: "source_attribution",
+            label: "Top source",
+            value: sourceLabel,
+            detail: topChannel
+              ? `${topChannel.qualifiedLeads} qualified / ${topChannel.totalLeads} total lead(s), ${topChannel.qualifiedShare}% qualified share.`
+              : "No qualified source trend is available yet.",
+            href: "/dashboard/referrals",
+            status: topChannel ? "good" : "missing",
+            sourceLabel,
+          }),
+          createCommandItem({
+            id: "highest_value_opportunities",
+            label: "Highest-value opportunities",
+            value: revenuePipeline.workFirstLeads.length,
+            detail: "Work-first leads are ranked for manual review and never grant outreach execution.",
+            href: "/dashboard/revenue",
+            status: statusForOpportunityCount(revenuePipeline.workFirstLeads.length),
+            sourceLabel: "revenue_pipeline_work_first",
+          }),
+        ],
+      },
+      {
+        id: "business_health",
+        title: "Business Health",
+        summary: "Operating health signals that affect speed, confidence, and revenue reliability.",
+        items: [
+          createCommandItem({
+            id: "cash_flow",
+            label: "Cash flow",
+            value: formatFinanceDollars(financeKpis.cashFlowCents),
+            detail: financeKpis.missingData.length > 0 ? financeKpis.missingData[0] : "Manual finance records support this KPI.",
+            href: "/dashboard/finance",
+            status: financeKpis.missingData.length > 0 ? "missing" : "good",
+            sourceLabel: "manual_finance_entries",
+          }),
+          createCommandItem({
+            id: "provider_readiness",
+            label: "Provider blockers",
+            value: providerMissingCount,
+            detail: "Provider setup is readiness-only and does not activate connectors.",
+            href: "/dashboard/production-readiness",
+            status: statusForBlockedCount(providerMissingCount),
+            sourceLabel: "provider_readiness_report",
+          }),
+          createCommandItem({
+            id: "referral_traffic",
+            label: "Referral traffic",
+            value: referralSummary?.clickCount ?? 0,
+            detail: referralSummary
+              ? `${referralSummary.leadCount} referral lead(s), ${referralSummary.referralToLeadConversion}% referral-to-lead conversion.`
+              : "Referral dashboard data is unavailable.",
+            href: "/dashboard/referrals",
+            status: statusForOpportunityCount(referralSummary?.leadCount ?? 0),
+            sourceLabel: "referral_dashboard",
+          }),
+        ],
+      },
+      {
+        id: "approval_priorities",
+        title: "Approval Priorities",
+        summary: "CEO review queue for actions that can create revenue while preserving governance.",
+        items: [
+          createCommandItem({
+            id: "approve_revenue_work",
+            label: "Revenue work",
+            value: followUpsDue + offerReadyCount,
+            detail: "Review follow-ups and offer-ready leads before lower-ROI work.",
+            href: "/dashboard/approvals",
+            status: statusForBlockedCount(followUpsDue + offerReadyCount),
+            sourceLabel: "executive_revenue_priorities",
+          }),
+          createCommandItem({
+            id: "approve_campaigns",
+            label: "Campaign/design approvals",
+            value: marketingAwaitingApproval + canvaAwaitingDesign,
+            detail: "Approve, revise, or reject authority-building content and design briefs.",
+            href: "/dashboard/approvals",
+            status: statusForBlockedCount(marketingAwaitingApproval + canvaAwaitingDesign),
+            sourceLabel: "marketing_approval_queue",
+          }),
+          createCommandItem({
+            id: "approve_source_focus",
+            label: "Source focus",
+            value: topChannel?.source ?? "Needs data",
+            detail: "Use source attribution to decide where the next approved campaign should focus.",
+            href: "/dashboard/referrals",
+            status: topChannel ? "watch" : "missing",
+            sourceLabel,
+          }),
+        ],
+      },
+    ],
+    highRoiDecisionFilter: [
+      "Generates more qualified seller leads.",
+      "Increases local authority or trust.",
+      "Saves CEO/operator time.",
+      "Improves follow-up speed or quality.",
+      "Increases offer readiness or close probability.",
+      "Improves attribution so winning channels get more attention.",
+    ],
+    nextBestActions: nextBestActions.length > 0 ? nextBestActions : ["Monitor new leads, source attribution, and approval queues before adding lower-ROI infrastructure."],
+    safetyFlags: {
+      advisoryOnly: true,
+      providerCalled: false,
+      liveExecutionAllowed: false,
+      externalActionsBlocked: true,
+      publishingBlocked: true,
+      outreachBlocked: true,
+      scrapingBlocked: true,
+      adsBlocked: true,
+      humanApprovalRequired: true,
+    },
   };
 }
 
@@ -313,7 +694,10 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
   const followUpsDue = leads.filter(isFollowUpDue).length;
   const offerReadyCount = getOfferReadyCount(leads);
   const missingInfoCount = getMissingInfoCount(leads);
+  const qualifiedLeads = businessIntelligence.summary.qualifiedLeads;
   const marketingAwaitingApproval = marketingDrafts.filter((draft) => draft.status === "pending_approval").length;
+  const readyForManualPublish = marketingDrafts.filter((draft) => draft.status === "ready_for_manual_publish").length;
+  const manuallyPublished = marketingDrafts.filter((draft) => draft.status === "manually_published").length;
   const canvaAwaitingDesign = marketingDrafts.reduce(
     (count, draft) =>
       count + draft.canvaAssetAssists.filter((assist) => assist.manualApprovalStatus === "pending_manual_asset_approval").length,
@@ -426,10 +810,29 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
     financeGapCount: financeKpis.missingData.length,
     marketingAwaitingApproval,
   });
+  const revenueCommandCenter = createRevenueCommandCenter({
+    newLeadsToday,
+    qualifiedLeads,
+    followUpsDue,
+    offerReadyCount,
+    missingInfoCount,
+    marketingAwaitingApproval,
+    canvaAwaitingDesign,
+    readyForManualPublish,
+    manuallyPublished,
+    providerMissingCount,
+    revenuePipeline,
+    financeKpis,
+    businessIntelligence,
+    referralSummary,
+    websiteSeoReady,
+    activeKnowledgeItems,
+  });
 
   return {
     ok: true,
     widgets,
+    revenueCommandCenter,
     morningBrief,
     todayPriorities,
     kpiInterpretations,

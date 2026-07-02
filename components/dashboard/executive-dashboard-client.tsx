@@ -94,6 +94,44 @@ type MorningBrief = {
   safetyBadges: string[];
 };
 
+type RevenueCommandCenterItem = {
+  id: string;
+  label: string;
+  value: string | number;
+  detail: string;
+  href: string;
+  status: MetricStatus;
+  sourceLabel: string;
+  assumption: string;
+};
+
+type RevenueCommandCenterSection = {
+  id: "revenue" | "marketing" | "seo" | "lead_intelligence" | "business_health" | "approval_priorities";
+  title: string;
+  summary: string;
+  items: RevenueCommandCenterItem[];
+};
+
+type RevenueCommandCenter = {
+  title: "Revenue Command Center";
+  summary: string;
+  executiveSummary: string;
+  sections: RevenueCommandCenterSection[];
+  highRoiDecisionFilter: string[];
+  nextBestActions: string[];
+  safetyFlags: {
+    advisoryOnly: true;
+    providerCalled: false;
+    liveExecutionAllowed: false;
+    externalActionsBlocked: true;
+    publishingBlocked: true;
+    outreachBlocked: true;
+    scrapingBlocked: true;
+    adsBlocked: true;
+    humanApprovalRequired: true;
+  };
+};
+
 type BusinessIntelligenceReport = {
   kpis: BusinessKpiCard[];
   channelPerformance: MarketingChannelPerformance[];
@@ -104,6 +142,7 @@ type BusinessIntelligenceReport = {
 type ExecutiveDashboardResponse = {
   ok: boolean;
   widgets?: ExecutiveWidget[];
+  revenueCommandCenter?: RevenueCommandCenter;
   morningBrief?: MorningBrief;
   todayPriorities?: ExecutiveWidget[];
   kpiInterpretations?: Record<string, string>;
@@ -238,7 +277,99 @@ function TrendAreaChart({ chart }: { chart: TrendChart }) {
   );
 }
 
+function RevenueCommandCenterPanel({ commandCenter }: { commandCenter: RevenueCommandCenter }) {
+  return (
+    <section aria-labelledby="revenue-command-center-heading" className="rounded-lg border border-border bg-surface p-5 md:p-6">
+      <div className="flex min-w-0 flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+        <div className="min-w-0 space-y-2">
+          <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-muted">CEO Daily Command</p>
+          <h2 id="revenue-command-center-heading" className="break-words text-2xl font-semibold text-primary md:text-3xl">
+            {commandCenter.title}
+          </h2>
+          <p className="max-w-5xl break-words text-sm leading-6 text-muted">{commandCenter.summary}</p>
+          <p className="max-w-5xl break-words text-sm font-semibold leading-6 text-primary">{commandCenter.executiveSummary}</p>
+        </div>
+        <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+          <SafetyBadge>advisoryOnly:{String(commandCenter.safetyFlags.advisoryOnly)}</SafetyBadge>
+          <SafetyBadge>providerCalled:{String(commandCenter.safetyFlags.providerCalled)}</SafetyBadge>
+          <SafetyBadge tone="urgent">liveExecution:{String(commandCenter.safetyFlags.liveExecutionAllowed)}</SafetyBadge>
+          <SafetyBadge>humanApproval:{String(commandCenter.safetyFlags.humanApprovalRequired)}</SafetyBadge>
+        </div>
+      </div>
+
+      <div className="mt-5 grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
+        <div className="grid gap-4 md:grid-cols-2">
+          {commandCenter.sections.map((section) => (
+            <article key={section.id} className="rounded-lg border border-border bg-white p-4">
+              <div className="min-w-0">
+                <h3 className="break-words text-lg font-semibold text-primary">{section.title}</h3>
+                <p className="mt-1 break-words text-sm leading-6 text-muted">{section.summary}</p>
+              </div>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                {section.items.map((item) => (
+                  <Link
+                    key={item.id}
+                    href={item.href as Route}
+                    className="min-w-0 rounded-lg border border-slate-200 bg-slate-50 p-3 transition hover:border-primary/30"
+                  >
+                    <div className="flex min-w-0 items-start justify-between gap-2">
+                      <p className="break-words text-sm font-semibold text-primary">{item.label}</p>
+                      <StatusBadge status={item.status} />
+                    </div>
+                    <p className="mt-2 break-words text-2xl font-semibold text-primary">{item.value}</p>
+                    <p className="mt-2 break-words text-xs leading-5 text-muted">{item.detail}</p>
+                    <p className="mt-2 break-words text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                      Source: {item.sourceLabel}
+                    </p>
+                    <p className="mt-1 break-words text-[11px] leading-4 text-muted">
+                      Assumption: {item.assumption}
+                    </p>
+                  </Link>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className="space-y-4">
+          <div className="rounded-lg border border-blue-100 bg-blue-50 p-4">
+            <h3 className="break-words text-lg font-semibold text-blue-950">Next best actions</h3>
+            <ol className="mt-3 space-y-2 text-sm leading-6 text-blue-950">
+              {commandCenter.nextBestActions.slice(0, 6).map((action, index) => (
+                <li key={`${action}-${index}`} className="flex min-w-0 gap-3">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-950 text-xs font-bold text-white">
+                    {index + 1}
+                  </span>
+                  <span className="break-words">{action}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          <div className="rounded-lg border border-emerald-100 bg-emerald-50 p-4">
+            <h3 className="break-words text-lg font-semibold text-emerald-950">High-ROI decision filter</h3>
+            <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-6 text-emerald-950">
+              {commandCenter.highRoiDecisionFilter.map((filter) => (
+                <li key={filter} className="break-words">{filter}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="rounded-lg border border-amber-100 bg-amber-50 p-4 text-sm leading-6 text-amber-950">
+            <h3 className="break-words text-lg font-semibold text-amber-950">Approval boundary</h3>
+            <p className="mt-2 break-words">
+              AI prepares, Safety validates, Executive AI summarizes, and the CEO approves. This dashboard does not publish,
+              email, message, scrape, spend ads, activate providers, mutate CRM records, or execute workflows.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function ExecutiveDashboardClient() {
+  const [revenueCommandCenter, setRevenueCommandCenter] = useState<RevenueCommandCenter | null>(null);
   const [morningBrief, setMorningBrief] = useState<MorningBrief | null>(null);
   const [todayPriorities, setTodayPriorities] = useState<ExecutiveWidget[]>([]);
   const [kpiInterpretations, setKpiInterpretations] = useState<Record<string, string>>({});
@@ -267,6 +398,7 @@ export function ExecutiveDashboardClient() {
         throw new Error(data.error || "Failed to load executive dashboard.");
       }
 
+      setRevenueCommandCenter(data.revenueCommandCenter ?? null);
       setMorningBrief(data.morningBrief ?? null);
       setTodayPriorities(
         data.todayPriorities ??
@@ -296,6 +428,8 @@ export function ExecutiveDashboardClient() {
     <div className="space-y-6">
       {loading ? <LoadingState label="Loading executive dashboard..." /> : null}
       {error ? <ErrorState message={error} /> : null}
+
+      {revenueCommandCenter ? <RevenueCommandCenterPanel commandCenter={revenueCommandCenter} /> : null}
 
       <section aria-labelledby="morning-brief-heading" className="rounded-lg border border-border bg-surface p-5 md:p-6">
         <div className="flex min-w-0 flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
