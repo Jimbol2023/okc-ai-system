@@ -169,6 +169,16 @@ export type AiCompanyDraftQueueItem = $Result.DefaultSelection<Prisma.$AiCompany
  */
 export type AiCompanyDecisionLog = $Result.DefaultSelection<Prisma.$AiCompanyDecisionLogPayload>
 /**
+ * Model AiDepartmentMemoryEvent
+ * 
+ */
+export type AiDepartmentMemoryEvent = $Result.DefaultSelection<Prisma.$AiDepartmentMemoryEventPayload>
+/**
+ * Model AiDepartmentIntelligenceSnapshot
+ * 
+ */
+export type AiDepartmentIntelligenceSnapshot = $Result.DefaultSelection<Prisma.$AiDepartmentIntelligenceSnapshotPayload>
+/**
  * Model SocialContentSource
  * 
  */
@@ -811,6 +821,26 @@ export class PrismaClient<
     * ```
     */
   get aiCompanyDecisionLog(): Prisma.AiCompanyDecisionLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.aiDepartmentMemoryEvent`: Exposes CRUD operations for the **AiDepartmentMemoryEvent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AiDepartmentMemoryEvents
+    * const aiDepartmentMemoryEvents = await prisma.aiDepartmentMemoryEvent.findMany()
+    * ```
+    */
+  get aiDepartmentMemoryEvent(): Prisma.AiDepartmentMemoryEventDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.aiDepartmentIntelligenceSnapshot`: Exposes CRUD operations for the **AiDepartmentIntelligenceSnapshot** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AiDepartmentIntelligenceSnapshots
+    * const aiDepartmentIntelligenceSnapshots = await prisma.aiDepartmentIntelligenceSnapshot.findMany()
+    * ```
+    */
+  get aiDepartmentIntelligenceSnapshot(): Prisma.AiDepartmentIntelligenceSnapshotDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.socialContentSource`: Exposes CRUD operations for the **SocialContentSource** model.
@@ -1603,6 +1633,8 @@ export namespace Prisma {
     AiCompanyWorkAssignment: 'AiCompanyWorkAssignment',
     AiCompanyDraftQueueItem: 'AiCompanyDraftQueueItem',
     AiCompanyDecisionLog: 'AiCompanyDecisionLog',
+    AiDepartmentMemoryEvent: 'AiDepartmentMemoryEvent',
+    AiDepartmentIntelligenceSnapshot: 'AiDepartmentIntelligenceSnapshot',
     SocialContentSource: 'SocialContentSource',
     SocialContentDraft: 'SocialContentDraft',
     SocialContentVariant: 'SocialContentVariant',
@@ -1653,7 +1685,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "lead" | "revenueAuditEvent" | "revenueLeadSource" | "referralPartner" | "referralLink" | "referralAttributionEvent" | "revenueLeadScore" | "revenueTask" | "revenuePipelineEvent" | "revenueCommunicationEvent" | "revenueDecisionLog" | "connectorDefinition" | "enterpriseConnectorRegistry" | "enterpriseConnectorHealthEvent" | "enterpriseConnectorLifecycleEvent" | "enterpriseConnectorExecutionDecision" | "featureFlagRecord" | "marketIntelligenceSignal" | "demandDiscoveryOpportunity" | "growthEngineDraft" | "executiveBriefingSnapshot" | "connectorInstallationState" | "connectorCredentialReference" | "connectorTestResult" | "aiPermissionPolicy" | "unifiedApprovalItem" | "unifiedApprovalDecision" | "aiCompanyExecutiveDirective" | "aiCompanyWorkAssignment" | "aiCompanyDraftQueueItem" | "aiCompanyDecisionLog" | "socialContentSource" | "socialContentDraft" | "socialContentVariant" | "socialSchedulePlan" | "socialExecutionPlan" | "socialPerformanceSnapshot" | "automationPolicyRecord" | "automationRunRecord" | "notificationRecord" | "learningOutcomeEvent" | "dailyBriefingSnapshot" | "operationsTimelineEvent" | "manualLeadIntake" | "sellerCallOutcome" | "aiPerformanceMetric" | "aiJob" | "aiJobAction" | "aiJobLog" | "aiMemoryEvent" | "aiLearningRecommendation" | "buyer" | "buyerActivity" | "marketingDraft" | "marketingApproval" | "marketingAccountConnection" | "marketingPublishAssist" | "marketingCanvaAssetAssist" | "marketingSalesAttribution" | "salesConversionAssist" | "financeEntry" | "knowledgeItem" | "knowledgeSearchEmbedding"
+      modelProps: "lead" | "revenueAuditEvent" | "revenueLeadSource" | "referralPartner" | "referralLink" | "referralAttributionEvent" | "revenueLeadScore" | "revenueTask" | "revenuePipelineEvent" | "revenueCommunicationEvent" | "revenueDecisionLog" | "connectorDefinition" | "enterpriseConnectorRegistry" | "enterpriseConnectorHealthEvent" | "enterpriseConnectorLifecycleEvent" | "enterpriseConnectorExecutionDecision" | "featureFlagRecord" | "marketIntelligenceSignal" | "demandDiscoveryOpportunity" | "growthEngineDraft" | "executiveBriefingSnapshot" | "connectorInstallationState" | "connectorCredentialReference" | "connectorTestResult" | "aiPermissionPolicy" | "unifiedApprovalItem" | "unifiedApprovalDecision" | "aiCompanyExecutiveDirective" | "aiCompanyWorkAssignment" | "aiCompanyDraftQueueItem" | "aiCompanyDecisionLog" | "aiDepartmentMemoryEvent" | "aiDepartmentIntelligenceSnapshot" | "socialContentSource" | "socialContentDraft" | "socialContentVariant" | "socialSchedulePlan" | "socialExecutionPlan" | "socialPerformanceSnapshot" | "automationPolicyRecord" | "automationRunRecord" | "notificationRecord" | "learningOutcomeEvent" | "dailyBriefingSnapshot" | "operationsTimelineEvent" | "manualLeadIntake" | "sellerCallOutcome" | "aiPerformanceMetric" | "aiJob" | "aiJobAction" | "aiJobLog" | "aiMemoryEvent" | "aiLearningRecommendation" | "buyer" | "buyerActivity" | "marketingDraft" | "marketingApproval" | "marketingAccountConnection" | "marketingPublishAssist" | "marketingCanvaAssetAssist" | "marketingSalesAttribution" | "salesConversionAssist" | "financeEntry" | "knowledgeItem" | "knowledgeSearchEmbedding"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3948,6 +3980,154 @@ export namespace Prisma {
           count: {
             args: Prisma.AiCompanyDecisionLogCountArgs<ExtArgs>
             result: $Utils.Optional<AiCompanyDecisionLogCountAggregateOutputType> | number
+          }
+        }
+      }
+      AiDepartmentMemoryEvent: {
+        payload: Prisma.$AiDepartmentMemoryEventPayload<ExtArgs>
+        fields: Prisma.AiDepartmentMemoryEventFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AiDepartmentMemoryEventFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiDepartmentMemoryEventPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AiDepartmentMemoryEventFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiDepartmentMemoryEventPayload>
+          }
+          findFirst: {
+            args: Prisma.AiDepartmentMemoryEventFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiDepartmentMemoryEventPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AiDepartmentMemoryEventFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiDepartmentMemoryEventPayload>
+          }
+          findMany: {
+            args: Prisma.AiDepartmentMemoryEventFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiDepartmentMemoryEventPayload>[]
+          }
+          create: {
+            args: Prisma.AiDepartmentMemoryEventCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiDepartmentMemoryEventPayload>
+          }
+          createMany: {
+            args: Prisma.AiDepartmentMemoryEventCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AiDepartmentMemoryEventCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiDepartmentMemoryEventPayload>[]
+          }
+          delete: {
+            args: Prisma.AiDepartmentMemoryEventDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiDepartmentMemoryEventPayload>
+          }
+          update: {
+            args: Prisma.AiDepartmentMemoryEventUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiDepartmentMemoryEventPayload>
+          }
+          deleteMany: {
+            args: Prisma.AiDepartmentMemoryEventDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AiDepartmentMemoryEventUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AiDepartmentMemoryEventUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiDepartmentMemoryEventPayload>[]
+          }
+          upsert: {
+            args: Prisma.AiDepartmentMemoryEventUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiDepartmentMemoryEventPayload>
+          }
+          aggregate: {
+            args: Prisma.AiDepartmentMemoryEventAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAiDepartmentMemoryEvent>
+          }
+          groupBy: {
+            args: Prisma.AiDepartmentMemoryEventGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AiDepartmentMemoryEventGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AiDepartmentMemoryEventCountArgs<ExtArgs>
+            result: $Utils.Optional<AiDepartmentMemoryEventCountAggregateOutputType> | number
+          }
+        }
+      }
+      AiDepartmentIntelligenceSnapshot: {
+        payload: Prisma.$AiDepartmentIntelligenceSnapshotPayload<ExtArgs>
+        fields: Prisma.AiDepartmentIntelligenceSnapshotFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AiDepartmentIntelligenceSnapshotFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiDepartmentIntelligenceSnapshotPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AiDepartmentIntelligenceSnapshotFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiDepartmentIntelligenceSnapshotPayload>
+          }
+          findFirst: {
+            args: Prisma.AiDepartmentIntelligenceSnapshotFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiDepartmentIntelligenceSnapshotPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AiDepartmentIntelligenceSnapshotFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiDepartmentIntelligenceSnapshotPayload>
+          }
+          findMany: {
+            args: Prisma.AiDepartmentIntelligenceSnapshotFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiDepartmentIntelligenceSnapshotPayload>[]
+          }
+          create: {
+            args: Prisma.AiDepartmentIntelligenceSnapshotCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiDepartmentIntelligenceSnapshotPayload>
+          }
+          createMany: {
+            args: Prisma.AiDepartmentIntelligenceSnapshotCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AiDepartmentIntelligenceSnapshotCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiDepartmentIntelligenceSnapshotPayload>[]
+          }
+          delete: {
+            args: Prisma.AiDepartmentIntelligenceSnapshotDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiDepartmentIntelligenceSnapshotPayload>
+          }
+          update: {
+            args: Prisma.AiDepartmentIntelligenceSnapshotUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiDepartmentIntelligenceSnapshotPayload>
+          }
+          deleteMany: {
+            args: Prisma.AiDepartmentIntelligenceSnapshotDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AiDepartmentIntelligenceSnapshotUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AiDepartmentIntelligenceSnapshotUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiDepartmentIntelligenceSnapshotPayload>[]
+          }
+          upsert: {
+            args: Prisma.AiDepartmentIntelligenceSnapshotUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiDepartmentIntelligenceSnapshotPayload>
+          }
+          aggregate: {
+            args: Prisma.AiDepartmentIntelligenceSnapshotAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAiDepartmentIntelligenceSnapshot>
+          }
+          groupBy: {
+            args: Prisma.AiDepartmentIntelligenceSnapshotGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AiDepartmentIntelligenceSnapshotGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AiDepartmentIntelligenceSnapshotCountArgs<ExtArgs>
+            result: $Utils.Optional<AiDepartmentIntelligenceSnapshotCountAggregateOutputType> | number
           }
         }
       }
@@ -6446,6 +6626,8 @@ export namespace Prisma {
     aiCompanyWorkAssignment?: AiCompanyWorkAssignmentOmit
     aiCompanyDraftQueueItem?: AiCompanyDraftQueueItemOmit
     aiCompanyDecisionLog?: AiCompanyDecisionLogOmit
+    aiDepartmentMemoryEvent?: AiDepartmentMemoryEventOmit
+    aiDepartmentIntelligenceSnapshot?: AiDepartmentIntelligenceSnapshotOmit
     socialContentSource?: SocialContentSourceOmit
     socialContentDraft?: SocialContentDraftOmit
     socialContentVariant?: SocialContentVariantOmit
@@ -44398,6 +44580,2413 @@ export namespace Prisma {
 
 
   /**
+   * Model AiDepartmentMemoryEvent
+   */
+
+  export type AggregateAiDepartmentMemoryEvent = {
+    _count: AiDepartmentMemoryEventCountAggregateOutputType | null
+    _avg: AiDepartmentMemoryEventAvgAggregateOutputType | null
+    _sum: AiDepartmentMemoryEventSumAggregateOutputType | null
+    _min: AiDepartmentMemoryEventMinAggregateOutputType | null
+    _max: AiDepartmentMemoryEventMaxAggregateOutputType | null
+  }
+
+  export type AiDepartmentMemoryEventAvgAggregateOutputType = {
+    confidence: number | null
+  }
+
+  export type AiDepartmentMemoryEventSumAggregateOutputType = {
+    confidence: number | null
+  }
+
+  export type AiDepartmentMemoryEventMinAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    memoryKey: string | null
+    department: string | null
+    directiveId: string | null
+    assignmentId: string | null
+    draftQueueItemId: string | null
+    eventType: string | null
+    summary: string | null
+    lesson: string | null
+    recommendation: string | null
+    confidence: number | null
+    outcome: string | null
+    providerCalled: boolean | null
+    sent: boolean | null
+    published: boolean | null
+    liveExecutionAllowed: boolean | null
+    createdAt: Date | null
+  }
+
+  export type AiDepartmentMemoryEventMaxAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    memoryKey: string | null
+    department: string | null
+    directiveId: string | null
+    assignmentId: string | null
+    draftQueueItemId: string | null
+    eventType: string | null
+    summary: string | null
+    lesson: string | null
+    recommendation: string | null
+    confidence: number | null
+    outcome: string | null
+    providerCalled: boolean | null
+    sent: boolean | null
+    published: boolean | null
+    liveExecutionAllowed: boolean | null
+    createdAt: Date | null
+  }
+
+  export type AiDepartmentMemoryEventCountAggregateOutputType = {
+    id: number
+    tenantId: number
+    memoryKey: number
+    department: number
+    directiveId: number
+    assignmentId: number
+    draftQueueItemId: number
+    eventType: number
+    summary: number
+    lesson: number
+    recommendation: number
+    metrics: number
+    evidenceLabels: number
+    confidence: number
+    outcome: number
+    assumptions: number
+    providerCalled: number
+    sent: number
+    published: number
+    liveExecutionAllowed: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AiDepartmentMemoryEventAvgAggregateInputType = {
+    confidence?: true
+  }
+
+  export type AiDepartmentMemoryEventSumAggregateInputType = {
+    confidence?: true
+  }
+
+  export type AiDepartmentMemoryEventMinAggregateInputType = {
+    id?: true
+    tenantId?: true
+    memoryKey?: true
+    department?: true
+    directiveId?: true
+    assignmentId?: true
+    draftQueueItemId?: true
+    eventType?: true
+    summary?: true
+    lesson?: true
+    recommendation?: true
+    confidence?: true
+    outcome?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+  }
+
+  export type AiDepartmentMemoryEventMaxAggregateInputType = {
+    id?: true
+    tenantId?: true
+    memoryKey?: true
+    department?: true
+    directiveId?: true
+    assignmentId?: true
+    draftQueueItemId?: true
+    eventType?: true
+    summary?: true
+    lesson?: true
+    recommendation?: true
+    confidence?: true
+    outcome?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+  }
+
+  export type AiDepartmentMemoryEventCountAggregateInputType = {
+    id?: true
+    tenantId?: true
+    memoryKey?: true
+    department?: true
+    directiveId?: true
+    assignmentId?: true
+    draftQueueItemId?: true
+    eventType?: true
+    summary?: true
+    lesson?: true
+    recommendation?: true
+    metrics?: true
+    evidenceLabels?: true
+    confidence?: true
+    outcome?: true
+    assumptions?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AiDepartmentMemoryEventAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiDepartmentMemoryEvent to aggregate.
+     */
+    where?: AiDepartmentMemoryEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiDepartmentMemoryEvents to fetch.
+     */
+    orderBy?: AiDepartmentMemoryEventOrderByWithRelationInput | AiDepartmentMemoryEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AiDepartmentMemoryEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiDepartmentMemoryEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiDepartmentMemoryEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AiDepartmentMemoryEvents
+    **/
+    _count?: true | AiDepartmentMemoryEventCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AiDepartmentMemoryEventAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AiDepartmentMemoryEventSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AiDepartmentMemoryEventMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AiDepartmentMemoryEventMaxAggregateInputType
+  }
+
+  export type GetAiDepartmentMemoryEventAggregateType<T extends AiDepartmentMemoryEventAggregateArgs> = {
+        [P in keyof T & keyof AggregateAiDepartmentMemoryEvent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAiDepartmentMemoryEvent[P]>
+      : GetScalarType<T[P], AggregateAiDepartmentMemoryEvent[P]>
+  }
+
+
+
+
+  export type AiDepartmentMemoryEventGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiDepartmentMemoryEventWhereInput
+    orderBy?: AiDepartmentMemoryEventOrderByWithAggregationInput | AiDepartmentMemoryEventOrderByWithAggregationInput[]
+    by: AiDepartmentMemoryEventScalarFieldEnum[] | AiDepartmentMemoryEventScalarFieldEnum
+    having?: AiDepartmentMemoryEventScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AiDepartmentMemoryEventCountAggregateInputType | true
+    _avg?: AiDepartmentMemoryEventAvgAggregateInputType
+    _sum?: AiDepartmentMemoryEventSumAggregateInputType
+    _min?: AiDepartmentMemoryEventMinAggregateInputType
+    _max?: AiDepartmentMemoryEventMaxAggregateInputType
+  }
+
+  export type AiDepartmentMemoryEventGroupByOutputType = {
+    id: string
+    tenantId: string
+    memoryKey: string
+    department: string
+    directiveId: string | null
+    assignmentId: string | null
+    draftQueueItemId: string | null
+    eventType: string
+    summary: string
+    lesson: string
+    recommendation: string
+    metrics: JsonValue
+    evidenceLabels: JsonValue
+    confidence: number
+    outcome: string
+    assumptions: JsonValue
+    providerCalled: boolean
+    sent: boolean
+    published: boolean
+    liveExecutionAllowed: boolean
+    createdAt: Date
+    _count: AiDepartmentMemoryEventCountAggregateOutputType | null
+    _avg: AiDepartmentMemoryEventAvgAggregateOutputType | null
+    _sum: AiDepartmentMemoryEventSumAggregateOutputType | null
+    _min: AiDepartmentMemoryEventMinAggregateOutputType | null
+    _max: AiDepartmentMemoryEventMaxAggregateOutputType | null
+  }
+
+  type GetAiDepartmentMemoryEventGroupByPayload<T extends AiDepartmentMemoryEventGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AiDepartmentMemoryEventGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AiDepartmentMemoryEventGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AiDepartmentMemoryEventGroupByOutputType[P]>
+            : GetScalarType<T[P], AiDepartmentMemoryEventGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AiDepartmentMemoryEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    memoryKey?: boolean
+    department?: boolean
+    directiveId?: boolean
+    assignmentId?: boolean
+    draftQueueItemId?: boolean
+    eventType?: boolean
+    summary?: boolean
+    lesson?: boolean
+    recommendation?: boolean
+    metrics?: boolean
+    evidenceLabels?: boolean
+    confidence?: boolean
+    outcome?: boolean
+    assumptions?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["aiDepartmentMemoryEvent"]>
+
+  export type AiDepartmentMemoryEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    memoryKey?: boolean
+    department?: boolean
+    directiveId?: boolean
+    assignmentId?: boolean
+    draftQueueItemId?: boolean
+    eventType?: boolean
+    summary?: boolean
+    lesson?: boolean
+    recommendation?: boolean
+    metrics?: boolean
+    evidenceLabels?: boolean
+    confidence?: boolean
+    outcome?: boolean
+    assumptions?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["aiDepartmentMemoryEvent"]>
+
+  export type AiDepartmentMemoryEventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    memoryKey?: boolean
+    department?: boolean
+    directiveId?: boolean
+    assignmentId?: boolean
+    draftQueueItemId?: boolean
+    eventType?: boolean
+    summary?: boolean
+    lesson?: boolean
+    recommendation?: boolean
+    metrics?: boolean
+    evidenceLabels?: boolean
+    confidence?: boolean
+    outcome?: boolean
+    assumptions?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["aiDepartmentMemoryEvent"]>
+
+  export type AiDepartmentMemoryEventSelectScalar = {
+    id?: boolean
+    tenantId?: boolean
+    memoryKey?: boolean
+    department?: boolean
+    directiveId?: boolean
+    assignmentId?: boolean
+    draftQueueItemId?: boolean
+    eventType?: boolean
+    summary?: boolean
+    lesson?: boolean
+    recommendation?: boolean
+    metrics?: boolean
+    evidenceLabels?: boolean
+    confidence?: boolean
+    outcome?: boolean
+    assumptions?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+  }
+
+  export type AiDepartmentMemoryEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "memoryKey" | "department" | "directiveId" | "assignmentId" | "draftQueueItemId" | "eventType" | "summary" | "lesson" | "recommendation" | "metrics" | "evidenceLabels" | "confidence" | "outcome" | "assumptions" | "providerCalled" | "sent" | "published" | "liveExecutionAllowed" | "createdAt", ExtArgs["result"]["aiDepartmentMemoryEvent"]>
+
+  export type $AiDepartmentMemoryEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AiDepartmentMemoryEvent"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenantId: string
+      memoryKey: string
+      department: string
+      directiveId: string | null
+      assignmentId: string | null
+      draftQueueItemId: string | null
+      eventType: string
+      summary: string
+      lesson: string
+      recommendation: string
+      metrics: Prisma.JsonValue
+      evidenceLabels: Prisma.JsonValue
+      confidence: number
+      outcome: string
+      assumptions: Prisma.JsonValue
+      providerCalled: boolean
+      sent: boolean
+      published: boolean
+      liveExecutionAllowed: boolean
+      createdAt: Date
+    }, ExtArgs["result"]["aiDepartmentMemoryEvent"]>
+    composites: {}
+  }
+
+  type AiDepartmentMemoryEventGetPayload<S extends boolean | null | undefined | AiDepartmentMemoryEventDefaultArgs> = $Result.GetResult<Prisma.$AiDepartmentMemoryEventPayload, S>
+
+  type AiDepartmentMemoryEventCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AiDepartmentMemoryEventFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AiDepartmentMemoryEventCountAggregateInputType | true
+    }
+
+  export interface AiDepartmentMemoryEventDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AiDepartmentMemoryEvent'], meta: { name: 'AiDepartmentMemoryEvent' } }
+    /**
+     * Find zero or one AiDepartmentMemoryEvent that matches the filter.
+     * @param {AiDepartmentMemoryEventFindUniqueArgs} args - Arguments to find a AiDepartmentMemoryEvent
+     * @example
+     * // Get one AiDepartmentMemoryEvent
+     * const aiDepartmentMemoryEvent = await prisma.aiDepartmentMemoryEvent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AiDepartmentMemoryEventFindUniqueArgs>(args: SelectSubset<T, AiDepartmentMemoryEventFindUniqueArgs<ExtArgs>>): Prisma__AiDepartmentMemoryEventClient<$Result.GetResult<Prisma.$AiDepartmentMemoryEventPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AiDepartmentMemoryEvent that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AiDepartmentMemoryEventFindUniqueOrThrowArgs} args - Arguments to find a AiDepartmentMemoryEvent
+     * @example
+     * // Get one AiDepartmentMemoryEvent
+     * const aiDepartmentMemoryEvent = await prisma.aiDepartmentMemoryEvent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AiDepartmentMemoryEventFindUniqueOrThrowArgs>(args: SelectSubset<T, AiDepartmentMemoryEventFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AiDepartmentMemoryEventClient<$Result.GetResult<Prisma.$AiDepartmentMemoryEventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiDepartmentMemoryEvent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiDepartmentMemoryEventFindFirstArgs} args - Arguments to find a AiDepartmentMemoryEvent
+     * @example
+     * // Get one AiDepartmentMemoryEvent
+     * const aiDepartmentMemoryEvent = await prisma.aiDepartmentMemoryEvent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AiDepartmentMemoryEventFindFirstArgs>(args?: SelectSubset<T, AiDepartmentMemoryEventFindFirstArgs<ExtArgs>>): Prisma__AiDepartmentMemoryEventClient<$Result.GetResult<Prisma.$AiDepartmentMemoryEventPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiDepartmentMemoryEvent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiDepartmentMemoryEventFindFirstOrThrowArgs} args - Arguments to find a AiDepartmentMemoryEvent
+     * @example
+     * // Get one AiDepartmentMemoryEvent
+     * const aiDepartmentMemoryEvent = await prisma.aiDepartmentMemoryEvent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AiDepartmentMemoryEventFindFirstOrThrowArgs>(args?: SelectSubset<T, AiDepartmentMemoryEventFindFirstOrThrowArgs<ExtArgs>>): Prisma__AiDepartmentMemoryEventClient<$Result.GetResult<Prisma.$AiDepartmentMemoryEventPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AiDepartmentMemoryEvents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiDepartmentMemoryEventFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AiDepartmentMemoryEvents
+     * const aiDepartmentMemoryEvents = await prisma.aiDepartmentMemoryEvent.findMany()
+     * 
+     * // Get first 10 AiDepartmentMemoryEvents
+     * const aiDepartmentMemoryEvents = await prisma.aiDepartmentMemoryEvent.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const aiDepartmentMemoryEventWithIdOnly = await prisma.aiDepartmentMemoryEvent.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AiDepartmentMemoryEventFindManyArgs>(args?: SelectSubset<T, AiDepartmentMemoryEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiDepartmentMemoryEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AiDepartmentMemoryEvent.
+     * @param {AiDepartmentMemoryEventCreateArgs} args - Arguments to create a AiDepartmentMemoryEvent.
+     * @example
+     * // Create one AiDepartmentMemoryEvent
+     * const AiDepartmentMemoryEvent = await prisma.aiDepartmentMemoryEvent.create({
+     *   data: {
+     *     // ... data to create a AiDepartmentMemoryEvent
+     *   }
+     * })
+     * 
+     */
+    create<T extends AiDepartmentMemoryEventCreateArgs>(args: SelectSubset<T, AiDepartmentMemoryEventCreateArgs<ExtArgs>>): Prisma__AiDepartmentMemoryEventClient<$Result.GetResult<Prisma.$AiDepartmentMemoryEventPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AiDepartmentMemoryEvents.
+     * @param {AiDepartmentMemoryEventCreateManyArgs} args - Arguments to create many AiDepartmentMemoryEvents.
+     * @example
+     * // Create many AiDepartmentMemoryEvents
+     * const aiDepartmentMemoryEvent = await prisma.aiDepartmentMemoryEvent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AiDepartmentMemoryEventCreateManyArgs>(args?: SelectSubset<T, AiDepartmentMemoryEventCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AiDepartmentMemoryEvents and returns the data saved in the database.
+     * @param {AiDepartmentMemoryEventCreateManyAndReturnArgs} args - Arguments to create many AiDepartmentMemoryEvents.
+     * @example
+     * // Create many AiDepartmentMemoryEvents
+     * const aiDepartmentMemoryEvent = await prisma.aiDepartmentMemoryEvent.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AiDepartmentMemoryEvents and only return the `id`
+     * const aiDepartmentMemoryEventWithIdOnly = await prisma.aiDepartmentMemoryEvent.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AiDepartmentMemoryEventCreateManyAndReturnArgs>(args?: SelectSubset<T, AiDepartmentMemoryEventCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiDepartmentMemoryEventPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AiDepartmentMemoryEvent.
+     * @param {AiDepartmentMemoryEventDeleteArgs} args - Arguments to delete one AiDepartmentMemoryEvent.
+     * @example
+     * // Delete one AiDepartmentMemoryEvent
+     * const AiDepartmentMemoryEvent = await prisma.aiDepartmentMemoryEvent.delete({
+     *   where: {
+     *     // ... filter to delete one AiDepartmentMemoryEvent
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AiDepartmentMemoryEventDeleteArgs>(args: SelectSubset<T, AiDepartmentMemoryEventDeleteArgs<ExtArgs>>): Prisma__AiDepartmentMemoryEventClient<$Result.GetResult<Prisma.$AiDepartmentMemoryEventPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AiDepartmentMemoryEvent.
+     * @param {AiDepartmentMemoryEventUpdateArgs} args - Arguments to update one AiDepartmentMemoryEvent.
+     * @example
+     * // Update one AiDepartmentMemoryEvent
+     * const aiDepartmentMemoryEvent = await prisma.aiDepartmentMemoryEvent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AiDepartmentMemoryEventUpdateArgs>(args: SelectSubset<T, AiDepartmentMemoryEventUpdateArgs<ExtArgs>>): Prisma__AiDepartmentMemoryEventClient<$Result.GetResult<Prisma.$AiDepartmentMemoryEventPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AiDepartmentMemoryEvents.
+     * @param {AiDepartmentMemoryEventDeleteManyArgs} args - Arguments to filter AiDepartmentMemoryEvents to delete.
+     * @example
+     * // Delete a few AiDepartmentMemoryEvents
+     * const { count } = await prisma.aiDepartmentMemoryEvent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AiDepartmentMemoryEventDeleteManyArgs>(args?: SelectSubset<T, AiDepartmentMemoryEventDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiDepartmentMemoryEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiDepartmentMemoryEventUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AiDepartmentMemoryEvents
+     * const aiDepartmentMemoryEvent = await prisma.aiDepartmentMemoryEvent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AiDepartmentMemoryEventUpdateManyArgs>(args: SelectSubset<T, AiDepartmentMemoryEventUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiDepartmentMemoryEvents and returns the data updated in the database.
+     * @param {AiDepartmentMemoryEventUpdateManyAndReturnArgs} args - Arguments to update many AiDepartmentMemoryEvents.
+     * @example
+     * // Update many AiDepartmentMemoryEvents
+     * const aiDepartmentMemoryEvent = await prisma.aiDepartmentMemoryEvent.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AiDepartmentMemoryEvents and only return the `id`
+     * const aiDepartmentMemoryEventWithIdOnly = await prisma.aiDepartmentMemoryEvent.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AiDepartmentMemoryEventUpdateManyAndReturnArgs>(args: SelectSubset<T, AiDepartmentMemoryEventUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiDepartmentMemoryEventPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AiDepartmentMemoryEvent.
+     * @param {AiDepartmentMemoryEventUpsertArgs} args - Arguments to update or create a AiDepartmentMemoryEvent.
+     * @example
+     * // Update or create a AiDepartmentMemoryEvent
+     * const aiDepartmentMemoryEvent = await prisma.aiDepartmentMemoryEvent.upsert({
+     *   create: {
+     *     // ... data to create a AiDepartmentMemoryEvent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AiDepartmentMemoryEvent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AiDepartmentMemoryEventUpsertArgs>(args: SelectSubset<T, AiDepartmentMemoryEventUpsertArgs<ExtArgs>>): Prisma__AiDepartmentMemoryEventClient<$Result.GetResult<Prisma.$AiDepartmentMemoryEventPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AiDepartmentMemoryEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiDepartmentMemoryEventCountArgs} args - Arguments to filter AiDepartmentMemoryEvents to count.
+     * @example
+     * // Count the number of AiDepartmentMemoryEvents
+     * const count = await prisma.aiDepartmentMemoryEvent.count({
+     *   where: {
+     *     // ... the filter for the AiDepartmentMemoryEvents we want to count
+     *   }
+     * })
+    **/
+    count<T extends AiDepartmentMemoryEventCountArgs>(
+      args?: Subset<T, AiDepartmentMemoryEventCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AiDepartmentMemoryEventCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AiDepartmentMemoryEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiDepartmentMemoryEventAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AiDepartmentMemoryEventAggregateArgs>(args: Subset<T, AiDepartmentMemoryEventAggregateArgs>): Prisma.PrismaPromise<GetAiDepartmentMemoryEventAggregateType<T>>
+
+    /**
+     * Group by AiDepartmentMemoryEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiDepartmentMemoryEventGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AiDepartmentMemoryEventGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AiDepartmentMemoryEventGroupByArgs['orderBy'] }
+        : { orderBy?: AiDepartmentMemoryEventGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AiDepartmentMemoryEventGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAiDepartmentMemoryEventGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AiDepartmentMemoryEvent model
+   */
+  readonly fields: AiDepartmentMemoryEventFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AiDepartmentMemoryEvent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AiDepartmentMemoryEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AiDepartmentMemoryEvent model
+   */
+  interface AiDepartmentMemoryEventFieldRefs {
+    readonly id: FieldRef<"AiDepartmentMemoryEvent", 'String'>
+    readonly tenantId: FieldRef<"AiDepartmentMemoryEvent", 'String'>
+    readonly memoryKey: FieldRef<"AiDepartmentMemoryEvent", 'String'>
+    readonly department: FieldRef<"AiDepartmentMemoryEvent", 'String'>
+    readonly directiveId: FieldRef<"AiDepartmentMemoryEvent", 'String'>
+    readonly assignmentId: FieldRef<"AiDepartmentMemoryEvent", 'String'>
+    readonly draftQueueItemId: FieldRef<"AiDepartmentMemoryEvent", 'String'>
+    readonly eventType: FieldRef<"AiDepartmentMemoryEvent", 'String'>
+    readonly summary: FieldRef<"AiDepartmentMemoryEvent", 'String'>
+    readonly lesson: FieldRef<"AiDepartmentMemoryEvent", 'String'>
+    readonly recommendation: FieldRef<"AiDepartmentMemoryEvent", 'String'>
+    readonly metrics: FieldRef<"AiDepartmentMemoryEvent", 'Json'>
+    readonly evidenceLabels: FieldRef<"AiDepartmentMemoryEvent", 'Json'>
+    readonly confidence: FieldRef<"AiDepartmentMemoryEvent", 'Int'>
+    readonly outcome: FieldRef<"AiDepartmentMemoryEvent", 'String'>
+    readonly assumptions: FieldRef<"AiDepartmentMemoryEvent", 'Json'>
+    readonly providerCalled: FieldRef<"AiDepartmentMemoryEvent", 'Boolean'>
+    readonly sent: FieldRef<"AiDepartmentMemoryEvent", 'Boolean'>
+    readonly published: FieldRef<"AiDepartmentMemoryEvent", 'Boolean'>
+    readonly liveExecutionAllowed: FieldRef<"AiDepartmentMemoryEvent", 'Boolean'>
+    readonly createdAt: FieldRef<"AiDepartmentMemoryEvent", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AiDepartmentMemoryEvent findUnique
+   */
+  export type AiDepartmentMemoryEventFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiDepartmentMemoryEvent
+     */
+    select?: AiDepartmentMemoryEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiDepartmentMemoryEvent
+     */
+    omit?: AiDepartmentMemoryEventOmit<ExtArgs> | null
+    /**
+     * Filter, which AiDepartmentMemoryEvent to fetch.
+     */
+    where: AiDepartmentMemoryEventWhereUniqueInput
+  }
+
+  /**
+   * AiDepartmentMemoryEvent findUniqueOrThrow
+   */
+  export type AiDepartmentMemoryEventFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiDepartmentMemoryEvent
+     */
+    select?: AiDepartmentMemoryEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiDepartmentMemoryEvent
+     */
+    omit?: AiDepartmentMemoryEventOmit<ExtArgs> | null
+    /**
+     * Filter, which AiDepartmentMemoryEvent to fetch.
+     */
+    where: AiDepartmentMemoryEventWhereUniqueInput
+  }
+
+  /**
+   * AiDepartmentMemoryEvent findFirst
+   */
+  export type AiDepartmentMemoryEventFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiDepartmentMemoryEvent
+     */
+    select?: AiDepartmentMemoryEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiDepartmentMemoryEvent
+     */
+    omit?: AiDepartmentMemoryEventOmit<ExtArgs> | null
+    /**
+     * Filter, which AiDepartmentMemoryEvent to fetch.
+     */
+    where?: AiDepartmentMemoryEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiDepartmentMemoryEvents to fetch.
+     */
+    orderBy?: AiDepartmentMemoryEventOrderByWithRelationInput | AiDepartmentMemoryEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiDepartmentMemoryEvents.
+     */
+    cursor?: AiDepartmentMemoryEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiDepartmentMemoryEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiDepartmentMemoryEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiDepartmentMemoryEvents.
+     */
+    distinct?: AiDepartmentMemoryEventScalarFieldEnum | AiDepartmentMemoryEventScalarFieldEnum[]
+  }
+
+  /**
+   * AiDepartmentMemoryEvent findFirstOrThrow
+   */
+  export type AiDepartmentMemoryEventFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiDepartmentMemoryEvent
+     */
+    select?: AiDepartmentMemoryEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiDepartmentMemoryEvent
+     */
+    omit?: AiDepartmentMemoryEventOmit<ExtArgs> | null
+    /**
+     * Filter, which AiDepartmentMemoryEvent to fetch.
+     */
+    where?: AiDepartmentMemoryEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiDepartmentMemoryEvents to fetch.
+     */
+    orderBy?: AiDepartmentMemoryEventOrderByWithRelationInput | AiDepartmentMemoryEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiDepartmentMemoryEvents.
+     */
+    cursor?: AiDepartmentMemoryEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiDepartmentMemoryEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiDepartmentMemoryEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiDepartmentMemoryEvents.
+     */
+    distinct?: AiDepartmentMemoryEventScalarFieldEnum | AiDepartmentMemoryEventScalarFieldEnum[]
+  }
+
+  /**
+   * AiDepartmentMemoryEvent findMany
+   */
+  export type AiDepartmentMemoryEventFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiDepartmentMemoryEvent
+     */
+    select?: AiDepartmentMemoryEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiDepartmentMemoryEvent
+     */
+    omit?: AiDepartmentMemoryEventOmit<ExtArgs> | null
+    /**
+     * Filter, which AiDepartmentMemoryEvents to fetch.
+     */
+    where?: AiDepartmentMemoryEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiDepartmentMemoryEvents to fetch.
+     */
+    orderBy?: AiDepartmentMemoryEventOrderByWithRelationInput | AiDepartmentMemoryEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AiDepartmentMemoryEvents.
+     */
+    cursor?: AiDepartmentMemoryEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiDepartmentMemoryEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiDepartmentMemoryEvents.
+     */
+    skip?: number
+    distinct?: AiDepartmentMemoryEventScalarFieldEnum | AiDepartmentMemoryEventScalarFieldEnum[]
+  }
+
+  /**
+   * AiDepartmentMemoryEvent create
+   */
+  export type AiDepartmentMemoryEventCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiDepartmentMemoryEvent
+     */
+    select?: AiDepartmentMemoryEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiDepartmentMemoryEvent
+     */
+    omit?: AiDepartmentMemoryEventOmit<ExtArgs> | null
+    /**
+     * The data needed to create a AiDepartmentMemoryEvent.
+     */
+    data: XOR<AiDepartmentMemoryEventCreateInput, AiDepartmentMemoryEventUncheckedCreateInput>
+  }
+
+  /**
+   * AiDepartmentMemoryEvent createMany
+   */
+  export type AiDepartmentMemoryEventCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AiDepartmentMemoryEvents.
+     */
+    data: AiDepartmentMemoryEventCreateManyInput | AiDepartmentMemoryEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AiDepartmentMemoryEvent createManyAndReturn
+   */
+  export type AiDepartmentMemoryEventCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiDepartmentMemoryEvent
+     */
+    select?: AiDepartmentMemoryEventSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiDepartmentMemoryEvent
+     */
+    omit?: AiDepartmentMemoryEventOmit<ExtArgs> | null
+    /**
+     * The data used to create many AiDepartmentMemoryEvents.
+     */
+    data: AiDepartmentMemoryEventCreateManyInput | AiDepartmentMemoryEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AiDepartmentMemoryEvent update
+   */
+  export type AiDepartmentMemoryEventUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiDepartmentMemoryEvent
+     */
+    select?: AiDepartmentMemoryEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiDepartmentMemoryEvent
+     */
+    omit?: AiDepartmentMemoryEventOmit<ExtArgs> | null
+    /**
+     * The data needed to update a AiDepartmentMemoryEvent.
+     */
+    data: XOR<AiDepartmentMemoryEventUpdateInput, AiDepartmentMemoryEventUncheckedUpdateInput>
+    /**
+     * Choose, which AiDepartmentMemoryEvent to update.
+     */
+    where: AiDepartmentMemoryEventWhereUniqueInput
+  }
+
+  /**
+   * AiDepartmentMemoryEvent updateMany
+   */
+  export type AiDepartmentMemoryEventUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AiDepartmentMemoryEvents.
+     */
+    data: XOR<AiDepartmentMemoryEventUpdateManyMutationInput, AiDepartmentMemoryEventUncheckedUpdateManyInput>
+    /**
+     * Filter which AiDepartmentMemoryEvents to update
+     */
+    where?: AiDepartmentMemoryEventWhereInput
+    /**
+     * Limit how many AiDepartmentMemoryEvents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiDepartmentMemoryEvent updateManyAndReturn
+   */
+  export type AiDepartmentMemoryEventUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiDepartmentMemoryEvent
+     */
+    select?: AiDepartmentMemoryEventSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiDepartmentMemoryEvent
+     */
+    omit?: AiDepartmentMemoryEventOmit<ExtArgs> | null
+    /**
+     * The data used to update AiDepartmentMemoryEvents.
+     */
+    data: XOR<AiDepartmentMemoryEventUpdateManyMutationInput, AiDepartmentMemoryEventUncheckedUpdateManyInput>
+    /**
+     * Filter which AiDepartmentMemoryEvents to update
+     */
+    where?: AiDepartmentMemoryEventWhereInput
+    /**
+     * Limit how many AiDepartmentMemoryEvents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiDepartmentMemoryEvent upsert
+   */
+  export type AiDepartmentMemoryEventUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiDepartmentMemoryEvent
+     */
+    select?: AiDepartmentMemoryEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiDepartmentMemoryEvent
+     */
+    omit?: AiDepartmentMemoryEventOmit<ExtArgs> | null
+    /**
+     * The filter to search for the AiDepartmentMemoryEvent to update in case it exists.
+     */
+    where: AiDepartmentMemoryEventWhereUniqueInput
+    /**
+     * In case the AiDepartmentMemoryEvent found by the `where` argument doesn't exist, create a new AiDepartmentMemoryEvent with this data.
+     */
+    create: XOR<AiDepartmentMemoryEventCreateInput, AiDepartmentMemoryEventUncheckedCreateInput>
+    /**
+     * In case the AiDepartmentMemoryEvent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AiDepartmentMemoryEventUpdateInput, AiDepartmentMemoryEventUncheckedUpdateInput>
+  }
+
+  /**
+   * AiDepartmentMemoryEvent delete
+   */
+  export type AiDepartmentMemoryEventDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiDepartmentMemoryEvent
+     */
+    select?: AiDepartmentMemoryEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiDepartmentMemoryEvent
+     */
+    omit?: AiDepartmentMemoryEventOmit<ExtArgs> | null
+    /**
+     * Filter which AiDepartmentMemoryEvent to delete.
+     */
+    where: AiDepartmentMemoryEventWhereUniqueInput
+  }
+
+  /**
+   * AiDepartmentMemoryEvent deleteMany
+   */
+  export type AiDepartmentMemoryEventDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiDepartmentMemoryEvents to delete
+     */
+    where?: AiDepartmentMemoryEventWhereInput
+    /**
+     * Limit how many AiDepartmentMemoryEvents to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiDepartmentMemoryEvent without action
+   */
+  export type AiDepartmentMemoryEventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiDepartmentMemoryEvent
+     */
+    select?: AiDepartmentMemoryEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiDepartmentMemoryEvent
+     */
+    omit?: AiDepartmentMemoryEventOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AiDepartmentIntelligenceSnapshot
+   */
+
+  export type AggregateAiDepartmentIntelligenceSnapshot = {
+    _count: AiDepartmentIntelligenceSnapshotCountAggregateOutputType | null
+    _avg: AiDepartmentIntelligenceSnapshotAvgAggregateOutputType | null
+    _sum: AiDepartmentIntelligenceSnapshotSumAggregateOutputType | null
+    _min: AiDepartmentIntelligenceSnapshotMinAggregateOutputType | null
+    _max: AiDepartmentIntelligenceSnapshotMaxAggregateOutputType | null
+  }
+
+  export type AiDepartmentIntelligenceSnapshotAvgAggregateOutputType = {
+    confidence: number | null
+  }
+
+  export type AiDepartmentIntelligenceSnapshotSumAggregateOutputType = {
+    confidence: number | null
+  }
+
+  export type AiDepartmentIntelligenceSnapshotMinAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    snapshotKey: string | null
+    department: string | null
+    summary: string | null
+    highRoiFocus: string | null
+    memoryStatus: string | null
+    confidence: number | null
+    providerCalled: boolean | null
+    sent: boolean | null
+    published: boolean | null
+    liveExecutionAllowed: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AiDepartmentIntelligenceSnapshotMaxAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    snapshotKey: string | null
+    department: string | null
+    summary: string | null
+    highRoiFocus: string | null
+    memoryStatus: string | null
+    confidence: number | null
+    providerCalled: boolean | null
+    sent: boolean | null
+    published: boolean | null
+    liveExecutionAllowed: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AiDepartmentIntelligenceSnapshotCountAggregateOutputType = {
+    id: number
+    tenantId: number
+    snapshotKey: number
+    department: number
+    summary: number
+    highRoiFocus: number
+    lessonsLearned: number
+    recommendationQueue: number
+    memoryStatus: number
+    confidence: number
+    sourceLabels: number
+    assumptions: number
+    providerCalled: number
+    sent: number
+    published: number
+    liveExecutionAllowed: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AiDepartmentIntelligenceSnapshotAvgAggregateInputType = {
+    confidence?: true
+  }
+
+  export type AiDepartmentIntelligenceSnapshotSumAggregateInputType = {
+    confidence?: true
+  }
+
+  export type AiDepartmentIntelligenceSnapshotMinAggregateInputType = {
+    id?: true
+    tenantId?: true
+    snapshotKey?: true
+    department?: true
+    summary?: true
+    highRoiFocus?: true
+    memoryStatus?: true
+    confidence?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AiDepartmentIntelligenceSnapshotMaxAggregateInputType = {
+    id?: true
+    tenantId?: true
+    snapshotKey?: true
+    department?: true
+    summary?: true
+    highRoiFocus?: true
+    memoryStatus?: true
+    confidence?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AiDepartmentIntelligenceSnapshotCountAggregateInputType = {
+    id?: true
+    tenantId?: true
+    snapshotKey?: true
+    department?: true
+    summary?: true
+    highRoiFocus?: true
+    lessonsLearned?: true
+    recommendationQueue?: true
+    memoryStatus?: true
+    confidence?: true
+    sourceLabels?: true
+    assumptions?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AiDepartmentIntelligenceSnapshotAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiDepartmentIntelligenceSnapshot to aggregate.
+     */
+    where?: AiDepartmentIntelligenceSnapshotWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiDepartmentIntelligenceSnapshots to fetch.
+     */
+    orderBy?: AiDepartmentIntelligenceSnapshotOrderByWithRelationInput | AiDepartmentIntelligenceSnapshotOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AiDepartmentIntelligenceSnapshotWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiDepartmentIntelligenceSnapshots from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiDepartmentIntelligenceSnapshots.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AiDepartmentIntelligenceSnapshots
+    **/
+    _count?: true | AiDepartmentIntelligenceSnapshotCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AiDepartmentIntelligenceSnapshotAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AiDepartmentIntelligenceSnapshotSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AiDepartmentIntelligenceSnapshotMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AiDepartmentIntelligenceSnapshotMaxAggregateInputType
+  }
+
+  export type GetAiDepartmentIntelligenceSnapshotAggregateType<T extends AiDepartmentIntelligenceSnapshotAggregateArgs> = {
+        [P in keyof T & keyof AggregateAiDepartmentIntelligenceSnapshot]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAiDepartmentIntelligenceSnapshot[P]>
+      : GetScalarType<T[P], AggregateAiDepartmentIntelligenceSnapshot[P]>
+  }
+
+
+
+
+  export type AiDepartmentIntelligenceSnapshotGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiDepartmentIntelligenceSnapshotWhereInput
+    orderBy?: AiDepartmentIntelligenceSnapshotOrderByWithAggregationInput | AiDepartmentIntelligenceSnapshotOrderByWithAggregationInput[]
+    by: AiDepartmentIntelligenceSnapshotScalarFieldEnum[] | AiDepartmentIntelligenceSnapshotScalarFieldEnum
+    having?: AiDepartmentIntelligenceSnapshotScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AiDepartmentIntelligenceSnapshotCountAggregateInputType | true
+    _avg?: AiDepartmentIntelligenceSnapshotAvgAggregateInputType
+    _sum?: AiDepartmentIntelligenceSnapshotSumAggregateInputType
+    _min?: AiDepartmentIntelligenceSnapshotMinAggregateInputType
+    _max?: AiDepartmentIntelligenceSnapshotMaxAggregateInputType
+  }
+
+  export type AiDepartmentIntelligenceSnapshotGroupByOutputType = {
+    id: string
+    tenantId: string
+    snapshotKey: string
+    department: string
+    summary: string
+    highRoiFocus: string
+    lessonsLearned: JsonValue
+    recommendationQueue: JsonValue
+    memoryStatus: string
+    confidence: number
+    sourceLabels: JsonValue
+    assumptions: JsonValue
+    providerCalled: boolean
+    sent: boolean
+    published: boolean
+    liveExecutionAllowed: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: AiDepartmentIntelligenceSnapshotCountAggregateOutputType | null
+    _avg: AiDepartmentIntelligenceSnapshotAvgAggregateOutputType | null
+    _sum: AiDepartmentIntelligenceSnapshotSumAggregateOutputType | null
+    _min: AiDepartmentIntelligenceSnapshotMinAggregateOutputType | null
+    _max: AiDepartmentIntelligenceSnapshotMaxAggregateOutputType | null
+  }
+
+  type GetAiDepartmentIntelligenceSnapshotGroupByPayload<T extends AiDepartmentIntelligenceSnapshotGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AiDepartmentIntelligenceSnapshotGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AiDepartmentIntelligenceSnapshotGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AiDepartmentIntelligenceSnapshotGroupByOutputType[P]>
+            : GetScalarType<T[P], AiDepartmentIntelligenceSnapshotGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AiDepartmentIntelligenceSnapshotSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    snapshotKey?: boolean
+    department?: boolean
+    summary?: boolean
+    highRoiFocus?: boolean
+    lessonsLearned?: boolean
+    recommendationQueue?: boolean
+    memoryStatus?: boolean
+    confidence?: boolean
+    sourceLabels?: boolean
+    assumptions?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["aiDepartmentIntelligenceSnapshot"]>
+
+  export type AiDepartmentIntelligenceSnapshotSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    snapshotKey?: boolean
+    department?: boolean
+    summary?: boolean
+    highRoiFocus?: boolean
+    lessonsLearned?: boolean
+    recommendationQueue?: boolean
+    memoryStatus?: boolean
+    confidence?: boolean
+    sourceLabels?: boolean
+    assumptions?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["aiDepartmentIntelligenceSnapshot"]>
+
+  export type AiDepartmentIntelligenceSnapshotSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    snapshotKey?: boolean
+    department?: boolean
+    summary?: boolean
+    highRoiFocus?: boolean
+    lessonsLearned?: boolean
+    recommendationQueue?: boolean
+    memoryStatus?: boolean
+    confidence?: boolean
+    sourceLabels?: boolean
+    assumptions?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["aiDepartmentIntelligenceSnapshot"]>
+
+  export type AiDepartmentIntelligenceSnapshotSelectScalar = {
+    id?: boolean
+    tenantId?: boolean
+    snapshotKey?: boolean
+    department?: boolean
+    summary?: boolean
+    highRoiFocus?: boolean
+    lessonsLearned?: boolean
+    recommendationQueue?: boolean
+    memoryStatus?: boolean
+    confidence?: boolean
+    sourceLabels?: boolean
+    assumptions?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AiDepartmentIntelligenceSnapshotOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "snapshotKey" | "department" | "summary" | "highRoiFocus" | "lessonsLearned" | "recommendationQueue" | "memoryStatus" | "confidence" | "sourceLabels" | "assumptions" | "providerCalled" | "sent" | "published" | "liveExecutionAllowed" | "createdAt" | "updatedAt", ExtArgs["result"]["aiDepartmentIntelligenceSnapshot"]>
+
+  export type $AiDepartmentIntelligenceSnapshotPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AiDepartmentIntelligenceSnapshot"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenantId: string
+      snapshotKey: string
+      department: string
+      summary: string
+      highRoiFocus: string
+      lessonsLearned: Prisma.JsonValue
+      recommendationQueue: Prisma.JsonValue
+      memoryStatus: string
+      confidence: number
+      sourceLabels: Prisma.JsonValue
+      assumptions: Prisma.JsonValue
+      providerCalled: boolean
+      sent: boolean
+      published: boolean
+      liveExecutionAllowed: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["aiDepartmentIntelligenceSnapshot"]>
+    composites: {}
+  }
+
+  type AiDepartmentIntelligenceSnapshotGetPayload<S extends boolean | null | undefined | AiDepartmentIntelligenceSnapshotDefaultArgs> = $Result.GetResult<Prisma.$AiDepartmentIntelligenceSnapshotPayload, S>
+
+  type AiDepartmentIntelligenceSnapshotCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AiDepartmentIntelligenceSnapshotFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AiDepartmentIntelligenceSnapshotCountAggregateInputType | true
+    }
+
+  export interface AiDepartmentIntelligenceSnapshotDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AiDepartmentIntelligenceSnapshot'], meta: { name: 'AiDepartmentIntelligenceSnapshot' } }
+    /**
+     * Find zero or one AiDepartmentIntelligenceSnapshot that matches the filter.
+     * @param {AiDepartmentIntelligenceSnapshotFindUniqueArgs} args - Arguments to find a AiDepartmentIntelligenceSnapshot
+     * @example
+     * // Get one AiDepartmentIntelligenceSnapshot
+     * const aiDepartmentIntelligenceSnapshot = await prisma.aiDepartmentIntelligenceSnapshot.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AiDepartmentIntelligenceSnapshotFindUniqueArgs>(args: SelectSubset<T, AiDepartmentIntelligenceSnapshotFindUniqueArgs<ExtArgs>>): Prisma__AiDepartmentIntelligenceSnapshotClient<$Result.GetResult<Prisma.$AiDepartmentIntelligenceSnapshotPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AiDepartmentIntelligenceSnapshot that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AiDepartmentIntelligenceSnapshotFindUniqueOrThrowArgs} args - Arguments to find a AiDepartmentIntelligenceSnapshot
+     * @example
+     * // Get one AiDepartmentIntelligenceSnapshot
+     * const aiDepartmentIntelligenceSnapshot = await prisma.aiDepartmentIntelligenceSnapshot.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AiDepartmentIntelligenceSnapshotFindUniqueOrThrowArgs>(args: SelectSubset<T, AiDepartmentIntelligenceSnapshotFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AiDepartmentIntelligenceSnapshotClient<$Result.GetResult<Prisma.$AiDepartmentIntelligenceSnapshotPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiDepartmentIntelligenceSnapshot that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiDepartmentIntelligenceSnapshotFindFirstArgs} args - Arguments to find a AiDepartmentIntelligenceSnapshot
+     * @example
+     * // Get one AiDepartmentIntelligenceSnapshot
+     * const aiDepartmentIntelligenceSnapshot = await prisma.aiDepartmentIntelligenceSnapshot.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AiDepartmentIntelligenceSnapshotFindFirstArgs>(args?: SelectSubset<T, AiDepartmentIntelligenceSnapshotFindFirstArgs<ExtArgs>>): Prisma__AiDepartmentIntelligenceSnapshotClient<$Result.GetResult<Prisma.$AiDepartmentIntelligenceSnapshotPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiDepartmentIntelligenceSnapshot that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiDepartmentIntelligenceSnapshotFindFirstOrThrowArgs} args - Arguments to find a AiDepartmentIntelligenceSnapshot
+     * @example
+     * // Get one AiDepartmentIntelligenceSnapshot
+     * const aiDepartmentIntelligenceSnapshot = await prisma.aiDepartmentIntelligenceSnapshot.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AiDepartmentIntelligenceSnapshotFindFirstOrThrowArgs>(args?: SelectSubset<T, AiDepartmentIntelligenceSnapshotFindFirstOrThrowArgs<ExtArgs>>): Prisma__AiDepartmentIntelligenceSnapshotClient<$Result.GetResult<Prisma.$AiDepartmentIntelligenceSnapshotPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AiDepartmentIntelligenceSnapshots that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiDepartmentIntelligenceSnapshotFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AiDepartmentIntelligenceSnapshots
+     * const aiDepartmentIntelligenceSnapshots = await prisma.aiDepartmentIntelligenceSnapshot.findMany()
+     * 
+     * // Get first 10 AiDepartmentIntelligenceSnapshots
+     * const aiDepartmentIntelligenceSnapshots = await prisma.aiDepartmentIntelligenceSnapshot.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const aiDepartmentIntelligenceSnapshotWithIdOnly = await prisma.aiDepartmentIntelligenceSnapshot.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AiDepartmentIntelligenceSnapshotFindManyArgs>(args?: SelectSubset<T, AiDepartmentIntelligenceSnapshotFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiDepartmentIntelligenceSnapshotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AiDepartmentIntelligenceSnapshot.
+     * @param {AiDepartmentIntelligenceSnapshotCreateArgs} args - Arguments to create a AiDepartmentIntelligenceSnapshot.
+     * @example
+     * // Create one AiDepartmentIntelligenceSnapshot
+     * const AiDepartmentIntelligenceSnapshot = await prisma.aiDepartmentIntelligenceSnapshot.create({
+     *   data: {
+     *     // ... data to create a AiDepartmentIntelligenceSnapshot
+     *   }
+     * })
+     * 
+     */
+    create<T extends AiDepartmentIntelligenceSnapshotCreateArgs>(args: SelectSubset<T, AiDepartmentIntelligenceSnapshotCreateArgs<ExtArgs>>): Prisma__AiDepartmentIntelligenceSnapshotClient<$Result.GetResult<Prisma.$AiDepartmentIntelligenceSnapshotPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AiDepartmentIntelligenceSnapshots.
+     * @param {AiDepartmentIntelligenceSnapshotCreateManyArgs} args - Arguments to create many AiDepartmentIntelligenceSnapshots.
+     * @example
+     * // Create many AiDepartmentIntelligenceSnapshots
+     * const aiDepartmentIntelligenceSnapshot = await prisma.aiDepartmentIntelligenceSnapshot.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AiDepartmentIntelligenceSnapshotCreateManyArgs>(args?: SelectSubset<T, AiDepartmentIntelligenceSnapshotCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AiDepartmentIntelligenceSnapshots and returns the data saved in the database.
+     * @param {AiDepartmentIntelligenceSnapshotCreateManyAndReturnArgs} args - Arguments to create many AiDepartmentIntelligenceSnapshots.
+     * @example
+     * // Create many AiDepartmentIntelligenceSnapshots
+     * const aiDepartmentIntelligenceSnapshot = await prisma.aiDepartmentIntelligenceSnapshot.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AiDepartmentIntelligenceSnapshots and only return the `id`
+     * const aiDepartmentIntelligenceSnapshotWithIdOnly = await prisma.aiDepartmentIntelligenceSnapshot.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AiDepartmentIntelligenceSnapshotCreateManyAndReturnArgs>(args?: SelectSubset<T, AiDepartmentIntelligenceSnapshotCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiDepartmentIntelligenceSnapshotPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AiDepartmentIntelligenceSnapshot.
+     * @param {AiDepartmentIntelligenceSnapshotDeleteArgs} args - Arguments to delete one AiDepartmentIntelligenceSnapshot.
+     * @example
+     * // Delete one AiDepartmentIntelligenceSnapshot
+     * const AiDepartmentIntelligenceSnapshot = await prisma.aiDepartmentIntelligenceSnapshot.delete({
+     *   where: {
+     *     // ... filter to delete one AiDepartmentIntelligenceSnapshot
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AiDepartmentIntelligenceSnapshotDeleteArgs>(args: SelectSubset<T, AiDepartmentIntelligenceSnapshotDeleteArgs<ExtArgs>>): Prisma__AiDepartmentIntelligenceSnapshotClient<$Result.GetResult<Prisma.$AiDepartmentIntelligenceSnapshotPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AiDepartmentIntelligenceSnapshot.
+     * @param {AiDepartmentIntelligenceSnapshotUpdateArgs} args - Arguments to update one AiDepartmentIntelligenceSnapshot.
+     * @example
+     * // Update one AiDepartmentIntelligenceSnapshot
+     * const aiDepartmentIntelligenceSnapshot = await prisma.aiDepartmentIntelligenceSnapshot.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AiDepartmentIntelligenceSnapshotUpdateArgs>(args: SelectSubset<T, AiDepartmentIntelligenceSnapshotUpdateArgs<ExtArgs>>): Prisma__AiDepartmentIntelligenceSnapshotClient<$Result.GetResult<Prisma.$AiDepartmentIntelligenceSnapshotPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AiDepartmentIntelligenceSnapshots.
+     * @param {AiDepartmentIntelligenceSnapshotDeleteManyArgs} args - Arguments to filter AiDepartmentIntelligenceSnapshots to delete.
+     * @example
+     * // Delete a few AiDepartmentIntelligenceSnapshots
+     * const { count } = await prisma.aiDepartmentIntelligenceSnapshot.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AiDepartmentIntelligenceSnapshotDeleteManyArgs>(args?: SelectSubset<T, AiDepartmentIntelligenceSnapshotDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiDepartmentIntelligenceSnapshots.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiDepartmentIntelligenceSnapshotUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AiDepartmentIntelligenceSnapshots
+     * const aiDepartmentIntelligenceSnapshot = await prisma.aiDepartmentIntelligenceSnapshot.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AiDepartmentIntelligenceSnapshotUpdateManyArgs>(args: SelectSubset<T, AiDepartmentIntelligenceSnapshotUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiDepartmentIntelligenceSnapshots and returns the data updated in the database.
+     * @param {AiDepartmentIntelligenceSnapshotUpdateManyAndReturnArgs} args - Arguments to update many AiDepartmentIntelligenceSnapshots.
+     * @example
+     * // Update many AiDepartmentIntelligenceSnapshots
+     * const aiDepartmentIntelligenceSnapshot = await prisma.aiDepartmentIntelligenceSnapshot.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AiDepartmentIntelligenceSnapshots and only return the `id`
+     * const aiDepartmentIntelligenceSnapshotWithIdOnly = await prisma.aiDepartmentIntelligenceSnapshot.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AiDepartmentIntelligenceSnapshotUpdateManyAndReturnArgs>(args: SelectSubset<T, AiDepartmentIntelligenceSnapshotUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiDepartmentIntelligenceSnapshotPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AiDepartmentIntelligenceSnapshot.
+     * @param {AiDepartmentIntelligenceSnapshotUpsertArgs} args - Arguments to update or create a AiDepartmentIntelligenceSnapshot.
+     * @example
+     * // Update or create a AiDepartmentIntelligenceSnapshot
+     * const aiDepartmentIntelligenceSnapshot = await prisma.aiDepartmentIntelligenceSnapshot.upsert({
+     *   create: {
+     *     // ... data to create a AiDepartmentIntelligenceSnapshot
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AiDepartmentIntelligenceSnapshot we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AiDepartmentIntelligenceSnapshotUpsertArgs>(args: SelectSubset<T, AiDepartmentIntelligenceSnapshotUpsertArgs<ExtArgs>>): Prisma__AiDepartmentIntelligenceSnapshotClient<$Result.GetResult<Prisma.$AiDepartmentIntelligenceSnapshotPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AiDepartmentIntelligenceSnapshots.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiDepartmentIntelligenceSnapshotCountArgs} args - Arguments to filter AiDepartmentIntelligenceSnapshots to count.
+     * @example
+     * // Count the number of AiDepartmentIntelligenceSnapshots
+     * const count = await prisma.aiDepartmentIntelligenceSnapshot.count({
+     *   where: {
+     *     // ... the filter for the AiDepartmentIntelligenceSnapshots we want to count
+     *   }
+     * })
+    **/
+    count<T extends AiDepartmentIntelligenceSnapshotCountArgs>(
+      args?: Subset<T, AiDepartmentIntelligenceSnapshotCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AiDepartmentIntelligenceSnapshotCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AiDepartmentIntelligenceSnapshot.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiDepartmentIntelligenceSnapshotAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AiDepartmentIntelligenceSnapshotAggregateArgs>(args: Subset<T, AiDepartmentIntelligenceSnapshotAggregateArgs>): Prisma.PrismaPromise<GetAiDepartmentIntelligenceSnapshotAggregateType<T>>
+
+    /**
+     * Group by AiDepartmentIntelligenceSnapshot.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiDepartmentIntelligenceSnapshotGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AiDepartmentIntelligenceSnapshotGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AiDepartmentIntelligenceSnapshotGroupByArgs['orderBy'] }
+        : { orderBy?: AiDepartmentIntelligenceSnapshotGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AiDepartmentIntelligenceSnapshotGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAiDepartmentIntelligenceSnapshotGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AiDepartmentIntelligenceSnapshot model
+   */
+  readonly fields: AiDepartmentIntelligenceSnapshotFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AiDepartmentIntelligenceSnapshot.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AiDepartmentIntelligenceSnapshotClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AiDepartmentIntelligenceSnapshot model
+   */
+  interface AiDepartmentIntelligenceSnapshotFieldRefs {
+    readonly id: FieldRef<"AiDepartmentIntelligenceSnapshot", 'String'>
+    readonly tenantId: FieldRef<"AiDepartmentIntelligenceSnapshot", 'String'>
+    readonly snapshotKey: FieldRef<"AiDepartmentIntelligenceSnapshot", 'String'>
+    readonly department: FieldRef<"AiDepartmentIntelligenceSnapshot", 'String'>
+    readonly summary: FieldRef<"AiDepartmentIntelligenceSnapshot", 'String'>
+    readonly highRoiFocus: FieldRef<"AiDepartmentIntelligenceSnapshot", 'String'>
+    readonly lessonsLearned: FieldRef<"AiDepartmentIntelligenceSnapshot", 'Json'>
+    readonly recommendationQueue: FieldRef<"AiDepartmentIntelligenceSnapshot", 'Json'>
+    readonly memoryStatus: FieldRef<"AiDepartmentIntelligenceSnapshot", 'String'>
+    readonly confidence: FieldRef<"AiDepartmentIntelligenceSnapshot", 'Int'>
+    readonly sourceLabels: FieldRef<"AiDepartmentIntelligenceSnapshot", 'Json'>
+    readonly assumptions: FieldRef<"AiDepartmentIntelligenceSnapshot", 'Json'>
+    readonly providerCalled: FieldRef<"AiDepartmentIntelligenceSnapshot", 'Boolean'>
+    readonly sent: FieldRef<"AiDepartmentIntelligenceSnapshot", 'Boolean'>
+    readonly published: FieldRef<"AiDepartmentIntelligenceSnapshot", 'Boolean'>
+    readonly liveExecutionAllowed: FieldRef<"AiDepartmentIntelligenceSnapshot", 'Boolean'>
+    readonly createdAt: FieldRef<"AiDepartmentIntelligenceSnapshot", 'DateTime'>
+    readonly updatedAt: FieldRef<"AiDepartmentIntelligenceSnapshot", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AiDepartmentIntelligenceSnapshot findUnique
+   */
+  export type AiDepartmentIntelligenceSnapshotFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiDepartmentIntelligenceSnapshot
+     */
+    select?: AiDepartmentIntelligenceSnapshotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiDepartmentIntelligenceSnapshot
+     */
+    omit?: AiDepartmentIntelligenceSnapshotOmit<ExtArgs> | null
+    /**
+     * Filter, which AiDepartmentIntelligenceSnapshot to fetch.
+     */
+    where: AiDepartmentIntelligenceSnapshotWhereUniqueInput
+  }
+
+  /**
+   * AiDepartmentIntelligenceSnapshot findUniqueOrThrow
+   */
+  export type AiDepartmentIntelligenceSnapshotFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiDepartmentIntelligenceSnapshot
+     */
+    select?: AiDepartmentIntelligenceSnapshotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiDepartmentIntelligenceSnapshot
+     */
+    omit?: AiDepartmentIntelligenceSnapshotOmit<ExtArgs> | null
+    /**
+     * Filter, which AiDepartmentIntelligenceSnapshot to fetch.
+     */
+    where: AiDepartmentIntelligenceSnapshotWhereUniqueInput
+  }
+
+  /**
+   * AiDepartmentIntelligenceSnapshot findFirst
+   */
+  export type AiDepartmentIntelligenceSnapshotFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiDepartmentIntelligenceSnapshot
+     */
+    select?: AiDepartmentIntelligenceSnapshotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiDepartmentIntelligenceSnapshot
+     */
+    omit?: AiDepartmentIntelligenceSnapshotOmit<ExtArgs> | null
+    /**
+     * Filter, which AiDepartmentIntelligenceSnapshot to fetch.
+     */
+    where?: AiDepartmentIntelligenceSnapshotWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiDepartmentIntelligenceSnapshots to fetch.
+     */
+    orderBy?: AiDepartmentIntelligenceSnapshotOrderByWithRelationInput | AiDepartmentIntelligenceSnapshotOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiDepartmentIntelligenceSnapshots.
+     */
+    cursor?: AiDepartmentIntelligenceSnapshotWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiDepartmentIntelligenceSnapshots from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiDepartmentIntelligenceSnapshots.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiDepartmentIntelligenceSnapshots.
+     */
+    distinct?: AiDepartmentIntelligenceSnapshotScalarFieldEnum | AiDepartmentIntelligenceSnapshotScalarFieldEnum[]
+  }
+
+  /**
+   * AiDepartmentIntelligenceSnapshot findFirstOrThrow
+   */
+  export type AiDepartmentIntelligenceSnapshotFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiDepartmentIntelligenceSnapshot
+     */
+    select?: AiDepartmentIntelligenceSnapshotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiDepartmentIntelligenceSnapshot
+     */
+    omit?: AiDepartmentIntelligenceSnapshotOmit<ExtArgs> | null
+    /**
+     * Filter, which AiDepartmentIntelligenceSnapshot to fetch.
+     */
+    where?: AiDepartmentIntelligenceSnapshotWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiDepartmentIntelligenceSnapshots to fetch.
+     */
+    orderBy?: AiDepartmentIntelligenceSnapshotOrderByWithRelationInput | AiDepartmentIntelligenceSnapshotOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiDepartmentIntelligenceSnapshots.
+     */
+    cursor?: AiDepartmentIntelligenceSnapshotWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiDepartmentIntelligenceSnapshots from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiDepartmentIntelligenceSnapshots.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiDepartmentIntelligenceSnapshots.
+     */
+    distinct?: AiDepartmentIntelligenceSnapshotScalarFieldEnum | AiDepartmentIntelligenceSnapshotScalarFieldEnum[]
+  }
+
+  /**
+   * AiDepartmentIntelligenceSnapshot findMany
+   */
+  export type AiDepartmentIntelligenceSnapshotFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiDepartmentIntelligenceSnapshot
+     */
+    select?: AiDepartmentIntelligenceSnapshotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiDepartmentIntelligenceSnapshot
+     */
+    omit?: AiDepartmentIntelligenceSnapshotOmit<ExtArgs> | null
+    /**
+     * Filter, which AiDepartmentIntelligenceSnapshots to fetch.
+     */
+    where?: AiDepartmentIntelligenceSnapshotWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiDepartmentIntelligenceSnapshots to fetch.
+     */
+    orderBy?: AiDepartmentIntelligenceSnapshotOrderByWithRelationInput | AiDepartmentIntelligenceSnapshotOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AiDepartmentIntelligenceSnapshots.
+     */
+    cursor?: AiDepartmentIntelligenceSnapshotWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiDepartmentIntelligenceSnapshots from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiDepartmentIntelligenceSnapshots.
+     */
+    skip?: number
+    distinct?: AiDepartmentIntelligenceSnapshotScalarFieldEnum | AiDepartmentIntelligenceSnapshotScalarFieldEnum[]
+  }
+
+  /**
+   * AiDepartmentIntelligenceSnapshot create
+   */
+  export type AiDepartmentIntelligenceSnapshotCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiDepartmentIntelligenceSnapshot
+     */
+    select?: AiDepartmentIntelligenceSnapshotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiDepartmentIntelligenceSnapshot
+     */
+    omit?: AiDepartmentIntelligenceSnapshotOmit<ExtArgs> | null
+    /**
+     * The data needed to create a AiDepartmentIntelligenceSnapshot.
+     */
+    data: XOR<AiDepartmentIntelligenceSnapshotCreateInput, AiDepartmentIntelligenceSnapshotUncheckedCreateInput>
+  }
+
+  /**
+   * AiDepartmentIntelligenceSnapshot createMany
+   */
+  export type AiDepartmentIntelligenceSnapshotCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AiDepartmentIntelligenceSnapshots.
+     */
+    data: AiDepartmentIntelligenceSnapshotCreateManyInput | AiDepartmentIntelligenceSnapshotCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AiDepartmentIntelligenceSnapshot createManyAndReturn
+   */
+  export type AiDepartmentIntelligenceSnapshotCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiDepartmentIntelligenceSnapshot
+     */
+    select?: AiDepartmentIntelligenceSnapshotSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiDepartmentIntelligenceSnapshot
+     */
+    omit?: AiDepartmentIntelligenceSnapshotOmit<ExtArgs> | null
+    /**
+     * The data used to create many AiDepartmentIntelligenceSnapshots.
+     */
+    data: AiDepartmentIntelligenceSnapshotCreateManyInput | AiDepartmentIntelligenceSnapshotCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AiDepartmentIntelligenceSnapshot update
+   */
+  export type AiDepartmentIntelligenceSnapshotUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiDepartmentIntelligenceSnapshot
+     */
+    select?: AiDepartmentIntelligenceSnapshotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiDepartmentIntelligenceSnapshot
+     */
+    omit?: AiDepartmentIntelligenceSnapshotOmit<ExtArgs> | null
+    /**
+     * The data needed to update a AiDepartmentIntelligenceSnapshot.
+     */
+    data: XOR<AiDepartmentIntelligenceSnapshotUpdateInput, AiDepartmentIntelligenceSnapshotUncheckedUpdateInput>
+    /**
+     * Choose, which AiDepartmentIntelligenceSnapshot to update.
+     */
+    where: AiDepartmentIntelligenceSnapshotWhereUniqueInput
+  }
+
+  /**
+   * AiDepartmentIntelligenceSnapshot updateMany
+   */
+  export type AiDepartmentIntelligenceSnapshotUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AiDepartmentIntelligenceSnapshots.
+     */
+    data: XOR<AiDepartmentIntelligenceSnapshotUpdateManyMutationInput, AiDepartmentIntelligenceSnapshotUncheckedUpdateManyInput>
+    /**
+     * Filter which AiDepartmentIntelligenceSnapshots to update
+     */
+    where?: AiDepartmentIntelligenceSnapshotWhereInput
+    /**
+     * Limit how many AiDepartmentIntelligenceSnapshots to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiDepartmentIntelligenceSnapshot updateManyAndReturn
+   */
+  export type AiDepartmentIntelligenceSnapshotUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiDepartmentIntelligenceSnapshot
+     */
+    select?: AiDepartmentIntelligenceSnapshotSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiDepartmentIntelligenceSnapshot
+     */
+    omit?: AiDepartmentIntelligenceSnapshotOmit<ExtArgs> | null
+    /**
+     * The data used to update AiDepartmentIntelligenceSnapshots.
+     */
+    data: XOR<AiDepartmentIntelligenceSnapshotUpdateManyMutationInput, AiDepartmentIntelligenceSnapshotUncheckedUpdateManyInput>
+    /**
+     * Filter which AiDepartmentIntelligenceSnapshots to update
+     */
+    where?: AiDepartmentIntelligenceSnapshotWhereInput
+    /**
+     * Limit how many AiDepartmentIntelligenceSnapshots to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiDepartmentIntelligenceSnapshot upsert
+   */
+  export type AiDepartmentIntelligenceSnapshotUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiDepartmentIntelligenceSnapshot
+     */
+    select?: AiDepartmentIntelligenceSnapshotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiDepartmentIntelligenceSnapshot
+     */
+    omit?: AiDepartmentIntelligenceSnapshotOmit<ExtArgs> | null
+    /**
+     * The filter to search for the AiDepartmentIntelligenceSnapshot to update in case it exists.
+     */
+    where: AiDepartmentIntelligenceSnapshotWhereUniqueInput
+    /**
+     * In case the AiDepartmentIntelligenceSnapshot found by the `where` argument doesn't exist, create a new AiDepartmentIntelligenceSnapshot with this data.
+     */
+    create: XOR<AiDepartmentIntelligenceSnapshotCreateInput, AiDepartmentIntelligenceSnapshotUncheckedCreateInput>
+    /**
+     * In case the AiDepartmentIntelligenceSnapshot was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AiDepartmentIntelligenceSnapshotUpdateInput, AiDepartmentIntelligenceSnapshotUncheckedUpdateInput>
+  }
+
+  /**
+   * AiDepartmentIntelligenceSnapshot delete
+   */
+  export type AiDepartmentIntelligenceSnapshotDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiDepartmentIntelligenceSnapshot
+     */
+    select?: AiDepartmentIntelligenceSnapshotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiDepartmentIntelligenceSnapshot
+     */
+    omit?: AiDepartmentIntelligenceSnapshotOmit<ExtArgs> | null
+    /**
+     * Filter which AiDepartmentIntelligenceSnapshot to delete.
+     */
+    where: AiDepartmentIntelligenceSnapshotWhereUniqueInput
+  }
+
+  /**
+   * AiDepartmentIntelligenceSnapshot deleteMany
+   */
+  export type AiDepartmentIntelligenceSnapshotDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiDepartmentIntelligenceSnapshots to delete
+     */
+    where?: AiDepartmentIntelligenceSnapshotWhereInput
+    /**
+     * Limit how many AiDepartmentIntelligenceSnapshots to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiDepartmentIntelligenceSnapshot without action
+   */
+  export type AiDepartmentIntelligenceSnapshotDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiDepartmentIntelligenceSnapshot
+     */
+    select?: AiDepartmentIntelligenceSnapshotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiDepartmentIntelligenceSnapshot
+     */
+    omit?: AiDepartmentIntelligenceSnapshotOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model SocialContentSource
    */
 
@@ -81921,6 +84510,57 @@ export namespace Prisma {
   export type AiCompanyDecisionLogScalarFieldEnum = (typeof AiCompanyDecisionLogScalarFieldEnum)[keyof typeof AiCompanyDecisionLogScalarFieldEnum]
 
 
+  export const AiDepartmentMemoryEventScalarFieldEnum: {
+    id: 'id',
+    tenantId: 'tenantId',
+    memoryKey: 'memoryKey',
+    department: 'department',
+    directiveId: 'directiveId',
+    assignmentId: 'assignmentId',
+    draftQueueItemId: 'draftQueueItemId',
+    eventType: 'eventType',
+    summary: 'summary',
+    lesson: 'lesson',
+    recommendation: 'recommendation',
+    metrics: 'metrics',
+    evidenceLabels: 'evidenceLabels',
+    confidence: 'confidence',
+    outcome: 'outcome',
+    assumptions: 'assumptions',
+    providerCalled: 'providerCalled',
+    sent: 'sent',
+    published: 'published',
+    liveExecutionAllowed: 'liveExecutionAllowed',
+    createdAt: 'createdAt'
+  };
+
+  export type AiDepartmentMemoryEventScalarFieldEnum = (typeof AiDepartmentMemoryEventScalarFieldEnum)[keyof typeof AiDepartmentMemoryEventScalarFieldEnum]
+
+
+  export const AiDepartmentIntelligenceSnapshotScalarFieldEnum: {
+    id: 'id',
+    tenantId: 'tenantId',
+    snapshotKey: 'snapshotKey',
+    department: 'department',
+    summary: 'summary',
+    highRoiFocus: 'highRoiFocus',
+    lessonsLearned: 'lessonsLearned',
+    recommendationQueue: 'recommendationQueue',
+    memoryStatus: 'memoryStatus',
+    confidence: 'confidence',
+    sourceLabels: 'sourceLabels',
+    assumptions: 'assumptions',
+    providerCalled: 'providerCalled',
+    sent: 'sent',
+    published: 'published',
+    liveExecutionAllowed: 'liveExecutionAllowed',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AiDepartmentIntelligenceSnapshotScalarFieldEnum = (typeof AiDepartmentIntelligenceSnapshotScalarFieldEnum)[keyof typeof AiDepartmentIntelligenceSnapshotScalarFieldEnum]
+
+
   export const SocialContentSourceScalarFieldEnum: {
     id: 'id',
     tenantId: 'tenantId',
@@ -86110,6 +88750,259 @@ export namespace Prisma {
     published?: BoolWithAggregatesFilter<"AiCompanyDecisionLog"> | boolean
     liveExecutionAllowed?: BoolWithAggregatesFilter<"AiCompanyDecisionLog"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"AiCompanyDecisionLog"> | Date | string
+  }
+
+  export type AiDepartmentMemoryEventWhereInput = {
+    AND?: AiDepartmentMemoryEventWhereInput | AiDepartmentMemoryEventWhereInput[]
+    OR?: AiDepartmentMemoryEventWhereInput[]
+    NOT?: AiDepartmentMemoryEventWhereInput | AiDepartmentMemoryEventWhereInput[]
+    id?: StringFilter<"AiDepartmentMemoryEvent"> | string
+    tenantId?: StringFilter<"AiDepartmentMemoryEvent"> | string
+    memoryKey?: StringFilter<"AiDepartmentMemoryEvent"> | string
+    department?: StringFilter<"AiDepartmentMemoryEvent"> | string
+    directiveId?: StringNullableFilter<"AiDepartmentMemoryEvent"> | string | null
+    assignmentId?: StringNullableFilter<"AiDepartmentMemoryEvent"> | string | null
+    draftQueueItemId?: StringNullableFilter<"AiDepartmentMemoryEvent"> | string | null
+    eventType?: StringFilter<"AiDepartmentMemoryEvent"> | string
+    summary?: StringFilter<"AiDepartmentMemoryEvent"> | string
+    lesson?: StringFilter<"AiDepartmentMemoryEvent"> | string
+    recommendation?: StringFilter<"AiDepartmentMemoryEvent"> | string
+    metrics?: JsonFilter<"AiDepartmentMemoryEvent">
+    evidenceLabels?: JsonFilter<"AiDepartmentMemoryEvent">
+    confidence?: IntFilter<"AiDepartmentMemoryEvent"> | number
+    outcome?: StringFilter<"AiDepartmentMemoryEvent"> | string
+    assumptions?: JsonFilter<"AiDepartmentMemoryEvent">
+    providerCalled?: BoolFilter<"AiDepartmentMemoryEvent"> | boolean
+    sent?: BoolFilter<"AiDepartmentMemoryEvent"> | boolean
+    published?: BoolFilter<"AiDepartmentMemoryEvent"> | boolean
+    liveExecutionAllowed?: BoolFilter<"AiDepartmentMemoryEvent"> | boolean
+    createdAt?: DateTimeFilter<"AiDepartmentMemoryEvent"> | Date | string
+  }
+
+  export type AiDepartmentMemoryEventOrderByWithRelationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    memoryKey?: SortOrder
+    department?: SortOrder
+    directiveId?: SortOrderInput | SortOrder
+    assignmentId?: SortOrderInput | SortOrder
+    draftQueueItemId?: SortOrderInput | SortOrder
+    eventType?: SortOrder
+    summary?: SortOrder
+    lesson?: SortOrder
+    recommendation?: SortOrder
+    metrics?: SortOrder
+    evidenceLabels?: SortOrder
+    confidence?: SortOrder
+    outcome?: SortOrder
+    assumptions?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AiDepartmentMemoryEventWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    memoryKey?: string
+    AND?: AiDepartmentMemoryEventWhereInput | AiDepartmentMemoryEventWhereInput[]
+    OR?: AiDepartmentMemoryEventWhereInput[]
+    NOT?: AiDepartmentMemoryEventWhereInput | AiDepartmentMemoryEventWhereInput[]
+    tenantId?: StringFilter<"AiDepartmentMemoryEvent"> | string
+    department?: StringFilter<"AiDepartmentMemoryEvent"> | string
+    directiveId?: StringNullableFilter<"AiDepartmentMemoryEvent"> | string | null
+    assignmentId?: StringNullableFilter<"AiDepartmentMemoryEvent"> | string | null
+    draftQueueItemId?: StringNullableFilter<"AiDepartmentMemoryEvent"> | string | null
+    eventType?: StringFilter<"AiDepartmentMemoryEvent"> | string
+    summary?: StringFilter<"AiDepartmentMemoryEvent"> | string
+    lesson?: StringFilter<"AiDepartmentMemoryEvent"> | string
+    recommendation?: StringFilter<"AiDepartmentMemoryEvent"> | string
+    metrics?: JsonFilter<"AiDepartmentMemoryEvent">
+    evidenceLabels?: JsonFilter<"AiDepartmentMemoryEvent">
+    confidence?: IntFilter<"AiDepartmentMemoryEvent"> | number
+    outcome?: StringFilter<"AiDepartmentMemoryEvent"> | string
+    assumptions?: JsonFilter<"AiDepartmentMemoryEvent">
+    providerCalled?: BoolFilter<"AiDepartmentMemoryEvent"> | boolean
+    sent?: BoolFilter<"AiDepartmentMemoryEvent"> | boolean
+    published?: BoolFilter<"AiDepartmentMemoryEvent"> | boolean
+    liveExecutionAllowed?: BoolFilter<"AiDepartmentMemoryEvent"> | boolean
+    createdAt?: DateTimeFilter<"AiDepartmentMemoryEvent"> | Date | string
+  }, "id" | "memoryKey">
+
+  export type AiDepartmentMemoryEventOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    memoryKey?: SortOrder
+    department?: SortOrder
+    directiveId?: SortOrderInput | SortOrder
+    assignmentId?: SortOrderInput | SortOrder
+    draftQueueItemId?: SortOrderInput | SortOrder
+    eventType?: SortOrder
+    summary?: SortOrder
+    lesson?: SortOrder
+    recommendation?: SortOrder
+    metrics?: SortOrder
+    evidenceLabels?: SortOrder
+    confidence?: SortOrder
+    outcome?: SortOrder
+    assumptions?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    _count?: AiDepartmentMemoryEventCountOrderByAggregateInput
+    _avg?: AiDepartmentMemoryEventAvgOrderByAggregateInput
+    _max?: AiDepartmentMemoryEventMaxOrderByAggregateInput
+    _min?: AiDepartmentMemoryEventMinOrderByAggregateInput
+    _sum?: AiDepartmentMemoryEventSumOrderByAggregateInput
+  }
+
+  export type AiDepartmentMemoryEventScalarWhereWithAggregatesInput = {
+    AND?: AiDepartmentMemoryEventScalarWhereWithAggregatesInput | AiDepartmentMemoryEventScalarWhereWithAggregatesInput[]
+    OR?: AiDepartmentMemoryEventScalarWhereWithAggregatesInput[]
+    NOT?: AiDepartmentMemoryEventScalarWhereWithAggregatesInput | AiDepartmentMemoryEventScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AiDepartmentMemoryEvent"> | string
+    tenantId?: StringWithAggregatesFilter<"AiDepartmentMemoryEvent"> | string
+    memoryKey?: StringWithAggregatesFilter<"AiDepartmentMemoryEvent"> | string
+    department?: StringWithAggregatesFilter<"AiDepartmentMemoryEvent"> | string
+    directiveId?: StringNullableWithAggregatesFilter<"AiDepartmentMemoryEvent"> | string | null
+    assignmentId?: StringNullableWithAggregatesFilter<"AiDepartmentMemoryEvent"> | string | null
+    draftQueueItemId?: StringNullableWithAggregatesFilter<"AiDepartmentMemoryEvent"> | string | null
+    eventType?: StringWithAggregatesFilter<"AiDepartmentMemoryEvent"> | string
+    summary?: StringWithAggregatesFilter<"AiDepartmentMemoryEvent"> | string
+    lesson?: StringWithAggregatesFilter<"AiDepartmentMemoryEvent"> | string
+    recommendation?: StringWithAggregatesFilter<"AiDepartmentMemoryEvent"> | string
+    metrics?: JsonWithAggregatesFilter<"AiDepartmentMemoryEvent">
+    evidenceLabels?: JsonWithAggregatesFilter<"AiDepartmentMemoryEvent">
+    confidence?: IntWithAggregatesFilter<"AiDepartmentMemoryEvent"> | number
+    outcome?: StringWithAggregatesFilter<"AiDepartmentMemoryEvent"> | string
+    assumptions?: JsonWithAggregatesFilter<"AiDepartmentMemoryEvent">
+    providerCalled?: BoolWithAggregatesFilter<"AiDepartmentMemoryEvent"> | boolean
+    sent?: BoolWithAggregatesFilter<"AiDepartmentMemoryEvent"> | boolean
+    published?: BoolWithAggregatesFilter<"AiDepartmentMemoryEvent"> | boolean
+    liveExecutionAllowed?: BoolWithAggregatesFilter<"AiDepartmentMemoryEvent"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"AiDepartmentMemoryEvent"> | Date | string
+  }
+
+  export type AiDepartmentIntelligenceSnapshotWhereInput = {
+    AND?: AiDepartmentIntelligenceSnapshotWhereInput | AiDepartmentIntelligenceSnapshotWhereInput[]
+    OR?: AiDepartmentIntelligenceSnapshotWhereInput[]
+    NOT?: AiDepartmentIntelligenceSnapshotWhereInput | AiDepartmentIntelligenceSnapshotWhereInput[]
+    id?: StringFilter<"AiDepartmentIntelligenceSnapshot"> | string
+    tenantId?: StringFilter<"AiDepartmentIntelligenceSnapshot"> | string
+    snapshotKey?: StringFilter<"AiDepartmentIntelligenceSnapshot"> | string
+    department?: StringFilter<"AiDepartmentIntelligenceSnapshot"> | string
+    summary?: StringFilter<"AiDepartmentIntelligenceSnapshot"> | string
+    highRoiFocus?: StringFilter<"AiDepartmentIntelligenceSnapshot"> | string
+    lessonsLearned?: JsonFilter<"AiDepartmentIntelligenceSnapshot">
+    recommendationQueue?: JsonFilter<"AiDepartmentIntelligenceSnapshot">
+    memoryStatus?: StringFilter<"AiDepartmentIntelligenceSnapshot"> | string
+    confidence?: IntFilter<"AiDepartmentIntelligenceSnapshot"> | number
+    sourceLabels?: JsonFilter<"AiDepartmentIntelligenceSnapshot">
+    assumptions?: JsonFilter<"AiDepartmentIntelligenceSnapshot">
+    providerCalled?: BoolFilter<"AiDepartmentIntelligenceSnapshot"> | boolean
+    sent?: BoolFilter<"AiDepartmentIntelligenceSnapshot"> | boolean
+    published?: BoolFilter<"AiDepartmentIntelligenceSnapshot"> | boolean
+    liveExecutionAllowed?: BoolFilter<"AiDepartmentIntelligenceSnapshot"> | boolean
+    createdAt?: DateTimeFilter<"AiDepartmentIntelligenceSnapshot"> | Date | string
+    updatedAt?: DateTimeFilter<"AiDepartmentIntelligenceSnapshot"> | Date | string
+  }
+
+  export type AiDepartmentIntelligenceSnapshotOrderByWithRelationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    snapshotKey?: SortOrder
+    department?: SortOrder
+    summary?: SortOrder
+    highRoiFocus?: SortOrder
+    lessonsLearned?: SortOrder
+    recommendationQueue?: SortOrder
+    memoryStatus?: SortOrder
+    confidence?: SortOrder
+    sourceLabels?: SortOrder
+    assumptions?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AiDepartmentIntelligenceSnapshotWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    snapshotKey?: string
+    AND?: AiDepartmentIntelligenceSnapshotWhereInput | AiDepartmentIntelligenceSnapshotWhereInput[]
+    OR?: AiDepartmentIntelligenceSnapshotWhereInput[]
+    NOT?: AiDepartmentIntelligenceSnapshotWhereInput | AiDepartmentIntelligenceSnapshotWhereInput[]
+    tenantId?: StringFilter<"AiDepartmentIntelligenceSnapshot"> | string
+    department?: StringFilter<"AiDepartmentIntelligenceSnapshot"> | string
+    summary?: StringFilter<"AiDepartmentIntelligenceSnapshot"> | string
+    highRoiFocus?: StringFilter<"AiDepartmentIntelligenceSnapshot"> | string
+    lessonsLearned?: JsonFilter<"AiDepartmentIntelligenceSnapshot">
+    recommendationQueue?: JsonFilter<"AiDepartmentIntelligenceSnapshot">
+    memoryStatus?: StringFilter<"AiDepartmentIntelligenceSnapshot"> | string
+    confidence?: IntFilter<"AiDepartmentIntelligenceSnapshot"> | number
+    sourceLabels?: JsonFilter<"AiDepartmentIntelligenceSnapshot">
+    assumptions?: JsonFilter<"AiDepartmentIntelligenceSnapshot">
+    providerCalled?: BoolFilter<"AiDepartmentIntelligenceSnapshot"> | boolean
+    sent?: BoolFilter<"AiDepartmentIntelligenceSnapshot"> | boolean
+    published?: BoolFilter<"AiDepartmentIntelligenceSnapshot"> | boolean
+    liveExecutionAllowed?: BoolFilter<"AiDepartmentIntelligenceSnapshot"> | boolean
+    createdAt?: DateTimeFilter<"AiDepartmentIntelligenceSnapshot"> | Date | string
+    updatedAt?: DateTimeFilter<"AiDepartmentIntelligenceSnapshot"> | Date | string
+  }, "id" | "snapshotKey">
+
+  export type AiDepartmentIntelligenceSnapshotOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    snapshotKey?: SortOrder
+    department?: SortOrder
+    summary?: SortOrder
+    highRoiFocus?: SortOrder
+    lessonsLearned?: SortOrder
+    recommendationQueue?: SortOrder
+    memoryStatus?: SortOrder
+    confidence?: SortOrder
+    sourceLabels?: SortOrder
+    assumptions?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AiDepartmentIntelligenceSnapshotCountOrderByAggregateInput
+    _avg?: AiDepartmentIntelligenceSnapshotAvgOrderByAggregateInput
+    _max?: AiDepartmentIntelligenceSnapshotMaxOrderByAggregateInput
+    _min?: AiDepartmentIntelligenceSnapshotMinOrderByAggregateInput
+    _sum?: AiDepartmentIntelligenceSnapshotSumOrderByAggregateInput
+  }
+
+  export type AiDepartmentIntelligenceSnapshotScalarWhereWithAggregatesInput = {
+    AND?: AiDepartmentIntelligenceSnapshotScalarWhereWithAggregatesInput | AiDepartmentIntelligenceSnapshotScalarWhereWithAggregatesInput[]
+    OR?: AiDepartmentIntelligenceSnapshotScalarWhereWithAggregatesInput[]
+    NOT?: AiDepartmentIntelligenceSnapshotScalarWhereWithAggregatesInput | AiDepartmentIntelligenceSnapshotScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AiDepartmentIntelligenceSnapshot"> | string
+    tenantId?: StringWithAggregatesFilter<"AiDepartmentIntelligenceSnapshot"> | string
+    snapshotKey?: StringWithAggregatesFilter<"AiDepartmentIntelligenceSnapshot"> | string
+    department?: StringWithAggregatesFilter<"AiDepartmentIntelligenceSnapshot"> | string
+    summary?: StringWithAggregatesFilter<"AiDepartmentIntelligenceSnapshot"> | string
+    highRoiFocus?: StringWithAggregatesFilter<"AiDepartmentIntelligenceSnapshot"> | string
+    lessonsLearned?: JsonWithAggregatesFilter<"AiDepartmentIntelligenceSnapshot">
+    recommendationQueue?: JsonWithAggregatesFilter<"AiDepartmentIntelligenceSnapshot">
+    memoryStatus?: StringWithAggregatesFilter<"AiDepartmentIntelligenceSnapshot"> | string
+    confidence?: IntWithAggregatesFilter<"AiDepartmentIntelligenceSnapshot"> | number
+    sourceLabels?: JsonWithAggregatesFilter<"AiDepartmentIntelligenceSnapshot">
+    assumptions?: JsonWithAggregatesFilter<"AiDepartmentIntelligenceSnapshot">
+    providerCalled?: BoolWithAggregatesFilter<"AiDepartmentIntelligenceSnapshot"> | boolean
+    sent?: BoolWithAggregatesFilter<"AiDepartmentIntelligenceSnapshot"> | boolean
+    published?: BoolWithAggregatesFilter<"AiDepartmentIntelligenceSnapshot"> | boolean
+    liveExecutionAllowed?: BoolWithAggregatesFilter<"AiDepartmentIntelligenceSnapshot"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"AiDepartmentIntelligenceSnapshot"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AiDepartmentIntelligenceSnapshot"> | Date | string
   }
 
   export type SocialContentSourceWhereInput = {
@@ -93223,6 +96116,321 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AiDepartmentMemoryEventCreateInput = {
+    id?: string
+    tenantId?: string
+    memoryKey: string
+    department: string
+    directiveId?: string | null
+    assignmentId?: string | null
+    draftQueueItemId?: string | null
+    eventType: string
+    summary: string
+    lesson: string
+    recommendation: string
+    metrics: JsonNullValueInput | InputJsonValue
+    evidenceLabels: JsonNullValueInput | InputJsonValue
+    confidence: number
+    outcome?: string
+    assumptions: JsonNullValueInput | InputJsonValue
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AiDepartmentMemoryEventUncheckedCreateInput = {
+    id?: string
+    tenantId?: string
+    memoryKey: string
+    department: string
+    directiveId?: string | null
+    assignmentId?: string | null
+    draftQueueItemId?: string | null
+    eventType: string
+    summary: string
+    lesson: string
+    recommendation: string
+    metrics: JsonNullValueInput | InputJsonValue
+    evidenceLabels: JsonNullValueInput | InputJsonValue
+    confidence: number
+    outcome?: string
+    assumptions: JsonNullValueInput | InputJsonValue
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AiDepartmentMemoryEventUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    memoryKey?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    directiveId?: NullableStringFieldUpdateOperationsInput | string | null
+    assignmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    draftQueueItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    eventType?: StringFieldUpdateOperationsInput | string
+    summary?: StringFieldUpdateOperationsInput | string
+    lesson?: StringFieldUpdateOperationsInput | string
+    recommendation?: StringFieldUpdateOperationsInput | string
+    metrics?: JsonNullValueInput | InputJsonValue
+    evidenceLabels?: JsonNullValueInput | InputJsonValue
+    confidence?: IntFieldUpdateOperationsInput | number
+    outcome?: StringFieldUpdateOperationsInput | string
+    assumptions?: JsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiDepartmentMemoryEventUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    memoryKey?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    directiveId?: NullableStringFieldUpdateOperationsInput | string | null
+    assignmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    draftQueueItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    eventType?: StringFieldUpdateOperationsInput | string
+    summary?: StringFieldUpdateOperationsInput | string
+    lesson?: StringFieldUpdateOperationsInput | string
+    recommendation?: StringFieldUpdateOperationsInput | string
+    metrics?: JsonNullValueInput | InputJsonValue
+    evidenceLabels?: JsonNullValueInput | InputJsonValue
+    confidence?: IntFieldUpdateOperationsInput | number
+    outcome?: StringFieldUpdateOperationsInput | string
+    assumptions?: JsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiDepartmentMemoryEventCreateManyInput = {
+    id?: string
+    tenantId?: string
+    memoryKey: string
+    department: string
+    directiveId?: string | null
+    assignmentId?: string | null
+    draftQueueItemId?: string | null
+    eventType: string
+    summary: string
+    lesson: string
+    recommendation: string
+    metrics: JsonNullValueInput | InputJsonValue
+    evidenceLabels: JsonNullValueInput | InputJsonValue
+    confidence: number
+    outcome?: string
+    assumptions: JsonNullValueInput | InputJsonValue
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AiDepartmentMemoryEventUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    memoryKey?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    directiveId?: NullableStringFieldUpdateOperationsInput | string | null
+    assignmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    draftQueueItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    eventType?: StringFieldUpdateOperationsInput | string
+    summary?: StringFieldUpdateOperationsInput | string
+    lesson?: StringFieldUpdateOperationsInput | string
+    recommendation?: StringFieldUpdateOperationsInput | string
+    metrics?: JsonNullValueInput | InputJsonValue
+    evidenceLabels?: JsonNullValueInput | InputJsonValue
+    confidence?: IntFieldUpdateOperationsInput | number
+    outcome?: StringFieldUpdateOperationsInput | string
+    assumptions?: JsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiDepartmentMemoryEventUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    memoryKey?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    directiveId?: NullableStringFieldUpdateOperationsInput | string | null
+    assignmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    draftQueueItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    eventType?: StringFieldUpdateOperationsInput | string
+    summary?: StringFieldUpdateOperationsInput | string
+    lesson?: StringFieldUpdateOperationsInput | string
+    recommendation?: StringFieldUpdateOperationsInput | string
+    metrics?: JsonNullValueInput | InputJsonValue
+    evidenceLabels?: JsonNullValueInput | InputJsonValue
+    confidence?: IntFieldUpdateOperationsInput | number
+    outcome?: StringFieldUpdateOperationsInput | string
+    assumptions?: JsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiDepartmentIntelligenceSnapshotCreateInput = {
+    id?: string
+    tenantId?: string
+    snapshotKey: string
+    department: string
+    summary: string
+    highRoiFocus: string
+    lessonsLearned: JsonNullValueInput | InputJsonValue
+    recommendationQueue: JsonNullValueInput | InputJsonValue
+    memoryStatus: string
+    confidence: number
+    sourceLabels: JsonNullValueInput | InputJsonValue
+    assumptions: JsonNullValueInput | InputJsonValue
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AiDepartmentIntelligenceSnapshotUncheckedCreateInput = {
+    id?: string
+    tenantId?: string
+    snapshotKey: string
+    department: string
+    summary: string
+    highRoiFocus: string
+    lessonsLearned: JsonNullValueInput | InputJsonValue
+    recommendationQueue: JsonNullValueInput | InputJsonValue
+    memoryStatus: string
+    confidence: number
+    sourceLabels: JsonNullValueInput | InputJsonValue
+    assumptions: JsonNullValueInput | InputJsonValue
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AiDepartmentIntelligenceSnapshotUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    snapshotKey?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    summary?: StringFieldUpdateOperationsInput | string
+    highRoiFocus?: StringFieldUpdateOperationsInput | string
+    lessonsLearned?: JsonNullValueInput | InputJsonValue
+    recommendationQueue?: JsonNullValueInput | InputJsonValue
+    memoryStatus?: StringFieldUpdateOperationsInput | string
+    confidence?: IntFieldUpdateOperationsInput | number
+    sourceLabels?: JsonNullValueInput | InputJsonValue
+    assumptions?: JsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiDepartmentIntelligenceSnapshotUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    snapshotKey?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    summary?: StringFieldUpdateOperationsInput | string
+    highRoiFocus?: StringFieldUpdateOperationsInput | string
+    lessonsLearned?: JsonNullValueInput | InputJsonValue
+    recommendationQueue?: JsonNullValueInput | InputJsonValue
+    memoryStatus?: StringFieldUpdateOperationsInput | string
+    confidence?: IntFieldUpdateOperationsInput | number
+    sourceLabels?: JsonNullValueInput | InputJsonValue
+    assumptions?: JsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiDepartmentIntelligenceSnapshotCreateManyInput = {
+    id?: string
+    tenantId?: string
+    snapshotKey: string
+    department: string
+    summary: string
+    highRoiFocus: string
+    lessonsLearned: JsonNullValueInput | InputJsonValue
+    recommendationQueue: JsonNullValueInput | InputJsonValue
+    memoryStatus: string
+    confidence: number
+    sourceLabels: JsonNullValueInput | InputJsonValue
+    assumptions: JsonNullValueInput | InputJsonValue
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AiDepartmentIntelligenceSnapshotUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    snapshotKey?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    summary?: StringFieldUpdateOperationsInput | string
+    highRoiFocus?: StringFieldUpdateOperationsInput | string
+    lessonsLearned?: JsonNullValueInput | InputJsonValue
+    recommendationQueue?: JsonNullValueInput | InputJsonValue
+    memoryStatus?: StringFieldUpdateOperationsInput | string
+    confidence?: IntFieldUpdateOperationsInput | number
+    sourceLabels?: JsonNullValueInput | InputJsonValue
+    assumptions?: JsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiDepartmentIntelligenceSnapshotUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    snapshotKey?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    summary?: StringFieldUpdateOperationsInput | string
+    highRoiFocus?: StringFieldUpdateOperationsInput | string
+    lessonsLearned?: JsonNullValueInput | InputJsonValue
+    recommendationQueue?: JsonNullValueInput | InputJsonValue
+    memoryStatus?: StringFieldUpdateOperationsInput | string
+    confidence?: IntFieldUpdateOperationsInput | number
+    sourceLabels?: JsonNullValueInput | InputJsonValue
+    assumptions?: JsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type SocialContentSourceCreateInput = {
     id?: string
     tenantId?: string
@@ -99042,6 +102250,143 @@ export namespace Prisma {
     published?: SortOrder
     liveExecutionAllowed?: SortOrder
     createdAt?: SortOrder
+  }
+
+  export type AiDepartmentMemoryEventCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    memoryKey?: SortOrder
+    department?: SortOrder
+    directiveId?: SortOrder
+    assignmentId?: SortOrder
+    draftQueueItemId?: SortOrder
+    eventType?: SortOrder
+    summary?: SortOrder
+    lesson?: SortOrder
+    recommendation?: SortOrder
+    metrics?: SortOrder
+    evidenceLabels?: SortOrder
+    confidence?: SortOrder
+    outcome?: SortOrder
+    assumptions?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AiDepartmentMemoryEventAvgOrderByAggregateInput = {
+    confidence?: SortOrder
+  }
+
+  export type AiDepartmentMemoryEventMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    memoryKey?: SortOrder
+    department?: SortOrder
+    directiveId?: SortOrder
+    assignmentId?: SortOrder
+    draftQueueItemId?: SortOrder
+    eventType?: SortOrder
+    summary?: SortOrder
+    lesson?: SortOrder
+    recommendation?: SortOrder
+    confidence?: SortOrder
+    outcome?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AiDepartmentMemoryEventMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    memoryKey?: SortOrder
+    department?: SortOrder
+    directiveId?: SortOrder
+    assignmentId?: SortOrder
+    draftQueueItemId?: SortOrder
+    eventType?: SortOrder
+    summary?: SortOrder
+    lesson?: SortOrder
+    recommendation?: SortOrder
+    confidence?: SortOrder
+    outcome?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AiDepartmentMemoryEventSumOrderByAggregateInput = {
+    confidence?: SortOrder
+  }
+
+  export type AiDepartmentIntelligenceSnapshotCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    snapshotKey?: SortOrder
+    department?: SortOrder
+    summary?: SortOrder
+    highRoiFocus?: SortOrder
+    lessonsLearned?: SortOrder
+    recommendationQueue?: SortOrder
+    memoryStatus?: SortOrder
+    confidence?: SortOrder
+    sourceLabels?: SortOrder
+    assumptions?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AiDepartmentIntelligenceSnapshotAvgOrderByAggregateInput = {
+    confidence?: SortOrder
+  }
+
+  export type AiDepartmentIntelligenceSnapshotMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    snapshotKey?: SortOrder
+    department?: SortOrder
+    summary?: SortOrder
+    highRoiFocus?: SortOrder
+    memoryStatus?: SortOrder
+    confidence?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AiDepartmentIntelligenceSnapshotMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    snapshotKey?: SortOrder
+    department?: SortOrder
+    summary?: SortOrder
+    highRoiFocus?: SortOrder
+    memoryStatus?: SortOrder
+    confidence?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AiDepartmentIntelligenceSnapshotSumOrderByAggregateInput = {
+    confidence?: SortOrder
   }
 
   export type SocialContentDraftListRelationFilter = {

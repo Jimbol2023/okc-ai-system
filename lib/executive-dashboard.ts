@@ -3,6 +3,7 @@ import { loadPartialData } from "@/lib/api-response";
 import { getCompanyActivationSnapshot } from "@/lib/company-activation";
 import { createInheritedPropertyCampaignDirective, runCompanyOrchestrator, startDailyCompanyOperatingSession, type CompanyOrchestratorReport, type DailyCompanyOperatingSession } from "@/lib/company-orchestrator";
 import { createContentIntelligenceReport, type ContentIntelligenceReport } from "@/lib/content-intelligence";
+import { getDepartmentIntelligenceReport, type DepartmentIntelligenceReport } from "@/lib/department-intelligence";
 import { createExecutiveLearningRecommendations, type ExecutiveLearningMemoryEvent, type ExecutiveLearningRecommendation } from "@/lib/executive-learning";
 import { createExecutiveRecommendationsFromBi } from "@/lib/executive-recommendations";
 import { listFinanceEntries, calculateFinanceKpis, formatFinanceDollars } from "@/lib/finance";
@@ -118,6 +119,7 @@ export type ExecutiveDashboardReport = {
   dailyStartup: DailyCompanyOperatingSession;
   revenueCommandCenter: RevenueCommandCenterReport;
   executiveWorkforce: ExecutiveWorkforceReport;
+  departmentIntelligence: DepartmentIntelligenceReport | null;
   morningBrief: ExecutiveMorningBrief;
   todayPriorities: ExecutiveWidget[];
   kpiInterpretations: Record<string, string>;
@@ -829,7 +831,7 @@ export function createExecutiveWorkforceReport({
 }
 
 export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboardReport> {
-  const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, memoryEventsResult, referralResult, activationResult, systemHealth, recentSystemActivity] = await Promise.all([
+  const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, memoryEventsResult, referralResult, activationResult, departmentIntelligenceResult, systemHealth, recentSystemActivity] = await Promise.all([
     loadPartialData("Lead", listDbLeads, [] as StoredLead[]),
     loadPartialData("Marketing workflow", listMarketingWorkflow, null),
     loadPartialData("Finance", listFinanceEntries, []),
@@ -837,6 +839,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
     loadPartialData("AI memory", loadExecutiveLearningMemoryEvents, [] as ExecutiveLearningMemoryEvent[]),
     loadPartialData("Referral dashboard", getReferralDashboard, null),
     loadPartialData("Company activation", getCompanyActivationSnapshot, null),
+    loadPartialData("Department Intelligence", getDepartmentIntelligenceReport, null),
     getSystemHealth().catch(() => null),
     getRecentSystemActivity().catch(() => []),
   ]);
@@ -846,6 +849,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
   const knowledgeItems = knowledgeItemsResult.data;
   const memoryEvents = memoryEventsResult.data;
   const referralSummary = referralResult.data?.summary ?? null;
+  const departmentIntelligence = departmentIntelligenceResult.data;
   const today = startOfToday();
   const revenuePipeline = getRevenuePipelineSummary(leads);
   const providerReadiness = createProviderReadinessReport();
@@ -1061,6 +1065,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
     dailyStartup,
     revenueCommandCenter,
     executiveWorkforce,
+    departmentIntelligence,
     morningBrief,
     todayPriorities,
     kpiInterpretations,
@@ -1076,6 +1081,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
       knowledgeItemsResult.gap,
       memoryEventsResult.gap,
       ...businessIntelligence.dataGaps,
+      departmentIntelligenceResult.gap,
       ...financeKpis.missingData,
       providerMissingCount > 0 ? `${providerMissingCount} provider readiness credential set(s) are missing.` : "",
     ].filter(Boolean))],

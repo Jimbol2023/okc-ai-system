@@ -1,5 +1,11 @@
 import { prisma } from "@/lib/prisma";
 import {
+  createDepartmentMemoryPlan,
+  recordDepartmentMemoryEvents,
+  refreshDepartmentIntelligenceSnapshots,
+  type DepartmentMemoryWritableTx,
+} from "@/lib/department-intelligence";
+import {
   listExecutiveDirectives,
   ownerForOutput,
   type AiDepartmentName,
@@ -116,7 +122,7 @@ type ActivationDelegate<TRecord extends ActivationRecord> = {
   count(args: unknown): Promise<number>;
 };
 
-type ActivationTransaction = {
+type ActivationTransaction = DepartmentMemoryWritableTx & {
   aiCompanyExecutiveDirective: ActivationDelegate<ActivationRecord>;
   aiCompanyWorkAssignment: ActivationDelegate<ActivationRecord>;
   aiCompanyDraftQueueItem: ActivationDelegate<ActivationRecord>;
@@ -353,7 +359,7 @@ export async function decideExecutiveDirective(input: CompanyDirectiveDecisionIn
 
   await upsertInitialExecutiveDirectives();
 
-  return db.$transaction(async (tx) => {
+  const result: CompanyDirectiveDecisionResult = await db.$transaction(async (tx) => {
     const record = await tx.aiCompanyExecutiveDirective.findUnique({
       where: { id: input.directiveId },
     });
@@ -513,6 +519,14 @@ export async function decideExecutiveDirective(input: CompanyDirectiveDecisionIn
     });
 
     await upsertUnifiedApprovalItem(tx, directive, resultingStatus);
+    await recordDepartmentMemoryEvents(
+      tx,
+      createDepartmentMemoryPlan({
+        directive,
+        decision: input.decision,
+        note: input.note,
+      }),
+    );
 
     const [updated, assignmentsTotal, draftQueueItemsTotal] = await Promise.all([
       tx.aiCompanyExecutiveDirective.findUnique({ where: { id: input.directiveId } }),
@@ -539,4 +553,10 @@ export async function decideExecutiveDirective(input: CompanyDirectiveDecisionIn
       safetyFlags,
     };
   });
+
+  void refreshDepartmentIntelligenceSnapshots().catch((error) => {
+    console.error("Department Intelligence snapshot refresh failed closed:", error);
+  });
+
+  return result;
 }
