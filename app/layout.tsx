@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cinzel, Inter, Montserrat } from "next/font/google";
 
 import "@/app/globals.css";
@@ -29,6 +29,16 @@ export const metadata: Metadata = {
   description: brandConfig.appDescription,
   metadataBase: new URL(getAppUrl()),
   manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    title: "J Capital OS",
+    statusBarStyle: "black-translucent"
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-title": "J Capital OS"
+  },
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -39,6 +49,10 @@ export const metadata: Metadata = {
     ],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }]
   }
+};
+
+export const viewport: Viewport = {
+  themeColor: brandConfig.colors.deepNavy
 };
 
 export default function RootLayout({

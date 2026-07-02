@@ -173,7 +173,11 @@ export function leadIntakeToStoredLead(lead: LeadIntakeInput): StoredLead {
     opportunityScore: "Low",
     score: 0,
     priority: "Low",
-    scoreBreakdown: ""
+    scoreBreakdown: "",
+    referralCode: lead.referralCode || null,
+    referralCampaign: lead.referralCampaign || null,
+    referralSource: lead.referralSource || null,
+    referralLandingPage: lead.referralLandingPage || null
   };
 }
 

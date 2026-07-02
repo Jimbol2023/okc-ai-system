@@ -1,6 +1,7 @@
-import { Bell, CheckCircle2, ClipboardCheck, Gauge, Megaphone, PlugZap, ShieldCheck, Sparkles } from "lucide-react";
+import { Bell, CheckCircle2, ClipboardCheck, Download, Gauge, Megaphone, PlugZap, ShieldCheck, Sparkles } from "lucide-react";
 
 import { createMobileCommandCenter, createVerticalSliceSimulation, getConnectorMarketplace } from "@/lib/phase3-production-execution";
+import { getPhase4GovernanceStatus } from "@/lib/phase4-production";
 
 function formatLabel(value: string) {
   return value.replaceAll("_", " ");
@@ -14,16 +15,30 @@ function StatusPill({ children, tone = "slate" }: { children: React.ReactNode; t
     red: "border-red-200 bg-red-50 text-red-900",
   }[tone];
 
-  return <span className={`inline-flex w-fit rounded-full border px-3 py-1 text-xs font-bold uppercase ${toneClass}`}>{children}</span>;
+  return <span className={`inline-flex min-h-8 w-fit max-w-full items-center break-words rounded-full border px-3 py-1 text-xs font-bold uppercase leading-5 ${toneClass}`}>{children}</span>;
 }
 
 export function MobileCommandCenterDashboard() {
   const commandCenter = createMobileCommandCenter();
   const verticalSlice = createVerticalSliceSimulation();
   const marketplace = getConnectorMarketplace();
+  const phase4 = getPhase4GovernanceStatus();
 
   return (
-    <div className="space-y-5">
+    <div className="max-w-full space-y-5 overflow-hidden">
+      <section className="sticky top-2 z-10 rounded-2xl border border-blue-100 bg-white/95 p-3 shadow-[0_12px_28px_rgba(17,37,52,0.08)] backdrop-blur sm:p-4">
+        <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0">
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted">Morning Brief / Alerts</p>
+            <p className="mt-1 break-words text-sm font-semibold text-primary">Review priorities and approvals. External actions remain blocked.</p>
+          </div>
+          <div className="flex max-w-full flex-wrap gap-2">
+            <StatusPill tone="blue">providerCalled:false</StatusPill>
+            <StatusPill tone="red">liveExecutionAllowed:false</StatusPill>
+          </div>
+        </div>
+      </section>
+
       <section className="rounded-2xl border border-border bg-white p-4 shadow-[0_16px_34px_rgba(17,37,52,0.05)] sm:p-5">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0">
@@ -34,11 +49,33 @@ export function MobileCommandCenterDashboard() {
               review while keeping sends, publishes, provider calls, and live connector execution blocked by default.
             </p>
           </div>
-          <div className="grid gap-2 sm:grid-cols-2 lg:min-w-[360px]">
+          <div className="grid max-w-full gap-2 sm:grid-cols-2 lg:min-w-[360px]">
             <StatusPill tone="blue">providerCalled:false</StatusPill>
             <StatusPill tone="red">liveExecutionAllowed:false</StatusPill>
-            <StatusPill tone="green">PWA ready</StatusPill>
-            <StatusPill tone="slate">approval gated</StatusPill>
+            <StatusPill tone="blue">outreachSent:false</StatusPill>
+            <StatusPill tone="slate">approvalRequired:true</StatusPill>
+          </div>
+        </div>
+      </section>
+
+      <section className="rounded-2xl border border-border bg-surface p-4 sm:p-5">
+        <div className="flex items-start gap-3">
+          <Download className="mt-1 h-5 w-5 shrink-0 text-blue-800" aria-hidden="true" />
+          <div className="min-w-0">
+            <h2 className="break-words text-xl font-semibold text-primary">Add this to your phone</h2>
+            <p className="mt-1 break-words text-sm leading-6 text-muted">
+              Install the Mobile Command Center as a lightweight browser app for quick review access.
+            </p>
+          </div>
+        </div>
+        <div className="mt-4 grid gap-3 md:grid-cols-2">
+          <div className="rounded-xl border border-border bg-white p-4">
+            <p className="text-xs font-bold uppercase tracking-[0.12em] text-muted">iPhone Safari</p>
+            <p className="mt-2 text-sm leading-6 text-muted">Open this page in Safari, tap Share, then choose Add to Home Screen.</p>
+          </div>
+          <div className="rounded-xl border border-border bg-white p-4">
+            <p className="text-xs font-bold uppercase tracking-[0.12em] text-muted">Android Chrome</p>
+            <p className="mt-2 text-sm leading-6 text-muted">Open this page in Chrome, tap Menu, then choose Add to Home Screen.</p>
           </div>
         </div>
       </section>
@@ -50,7 +87,7 @@ export function MobileCommandCenterDashboard() {
           { label: "Connectors", value: marketplace.connectors.length, icon: PlugZap },
           { label: "Audit events", value: verticalSlice.auditTrail.length, icon: ShieldCheck },
         ].map(({ label, value, icon: Icon }) => (
-          <article key={label} className="rounded-2xl border border-border bg-surface p-4">
+          <article key={label} className="min-w-0 rounded-2xl border border-border bg-surface p-4">
             <div className="flex items-center justify-between gap-3">
               <p className="text-xs font-bold uppercase tracking-[0.12em] text-muted">{label}</p>
               <Icon className="h-4 w-4 text-blue-800" aria-hidden="true" />
@@ -58,6 +95,30 @@ export function MobileCommandCenterDashboard() {
             <p className="mt-3 text-3xl font-semibold text-primary">{value}</p>
           </article>
         ))}
+      </section>
+
+      <section className="min-w-0 rounded-2xl border border-border bg-surface p-4 sm:p-5">
+        <div className="flex items-start gap-3">
+          <ShieldCheck className="mt-1 h-5 w-5 text-blue-800" aria-hidden="true" />
+          <div>
+            <h2 className="text-xl font-semibold text-primary">Phase 4 Operations</h2>
+            <p className="mt-1 text-sm leading-6 text-muted">Controlled live execution is limited to allowlisted Twilio SMS tests.</p>
+          </div>
+        </div>
+        <div className="mt-4 grid gap-3 md:grid-cols-3">
+          <div className="min-w-0 rounded-xl border border-border bg-white p-4">
+            <p className="text-xs font-bold uppercase tracking-[0.12em] text-muted">Live SMS</p>
+            <p className="mt-2 break-words text-lg font-semibold text-primary">{phase4.twilioReadiness.controlledLiveTestEligible ? "Eligible" : "Blocked"}</p>
+          </div>
+          <div className="min-w-0 rounded-xl border border-border bg-white p-4">
+            <p className="text-xs font-bold uppercase tracking-[0.12em] text-muted">Kill Switch</p>
+            <p className="mt-2 break-words text-lg font-semibold text-primary">{phase4.environment.killSwitchActive ? "Active" : "Off"}</p>
+          </div>
+          <div className="min-w-0 rounded-xl border border-border bg-white p-4">
+            <p className="text-xs font-bold uppercase tracking-[0.12em] text-muted">Timeline</p>
+            <p className="mt-2 break-words text-lg font-semibold text-primary">/api/operations/timeline</p>
+          </div>
+        </div>
       </section>
 
       <section className="grid gap-5 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">

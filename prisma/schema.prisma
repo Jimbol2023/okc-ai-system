@@ -65,6 +65,7 @@ model Lead {
   revenueTasks               RevenueTask[]
   revenuePipelineEvents      RevenuePipelineEvent[]
   revenueCommunicationEvents RevenueCommunicationEvent[]
+  referralAttributionEvents  ReferralAttributionEvent[]
 
   // INDEXES
   @@unique([propertyAddress, phone])
@@ -124,6 +125,88 @@ model RevenueLeadSource {
   @@index([source])
   @@index([sourceType])
   @@index([campaignName])
+  @@index([createdAt])
+}
+
+model ReferralPartner {
+  id          String   @id @default(uuid())
+  tenantId    String   @default("default")
+  name        String
+  partnerType String
+  status      String   @default("active")
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  links  ReferralLink[]
+  events ReferralAttributionEvent[]
+
+  @@index([tenantId])
+  @@index([partnerType])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model ReferralLink {
+  id                String   @id @default(uuid())
+  tenantId          String   @default("default")
+  partnerId         String?
+  referralCode      String   @unique
+  landingPage       String
+  campaign          String?
+  status            String   @default("active")
+  clickCount        Int      @default(0)
+  leadCount         Int      @default(0)
+  qualifiedLeadCount Int     @default(0)
+  closedDealCount   Int      @default(0)
+  notes             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  partner ReferralPartner? @relation(fields: [partnerId], references: [id], onDelete: SetNull)
+  events  ReferralAttributionEvent[]
+
+  @@index([tenantId])
+  @@index([partnerId])
+  @@index([status])
+  @@index([campaign])
+  @@index([createdAt])
+}
+
+model ReferralAttributionEvent {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  partnerId             String?
+  referralLinkId        String?
+  leadId                String?
+  eventType             String
+  referralCode          String
+  landingPage           String?
+  campaign              String?
+  source                String?
+  status                String   @default("tracked")
+  duplicateKey          String?
+  safeMetadata          Json?
+  providerCalled        Boolean  @default(false)
+  outreachSent          Boolean  @default(false)
+  published             Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdAt             DateTime @default(now())
+
+  partner      ReferralPartner? @relation(fields: [partnerId], references: [id], onDelete: SetNull)
+  referralLink ReferralLink?    @relation(fields: [referralLinkId], references: [id], onDelete: SetNull)
+  lead         Lead?            @relation(fields: [leadId], references: [id], onDelete: SetNull)
+
+  @@unique([duplicateKey])
+  @@index([tenantId])
+  @@index([partnerId])
+  @@index([referralLinkId])
+  @@index([leadId])
+  @@index([eventType])
+  @@index([referralCode])
+  @@index([campaign])
+  @@index([source])
+  @@index([status])
   @@index([createdAt])
 }
 
@@ -1275,6 +1358,7 @@ model MarketingDraft {
   status        String   @default("draft")
   draftCopy     String
   assetNotes    String?
+  referralLink  String?
   assumptions   Json?
   safetyFlags   Json?
   createdSource String   @default("template")
@@ -1290,6 +1374,7 @@ model MarketingDraft {
   @@index([channel])
   @@index([status])
   @@index([sourceLabel])
+  @@index([referralLink])
   @@index([createdAt])
 }
 
