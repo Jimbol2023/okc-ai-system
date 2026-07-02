@@ -1,5 +1,6 @@
 import { createBusinessIntelligenceReport, type BusinessIntelligenceReport, type DepartmentHealthCard, type TrendChart } from "@/lib/business-intelligence";
 import { loadPartialData } from "@/lib/api-response";
+import { createInheritedPropertyCampaignDirective, runCompanyOrchestrator, type CompanyOrchestratorReport } from "@/lib/company-orchestrator";
 import { createContentIntelligenceReport, type ContentIntelligenceReport } from "@/lib/content-intelligence";
 import { createExecutiveLearningRecommendations, type ExecutiveLearningMemoryEvent, type ExecutiveLearningRecommendation } from "@/lib/executive-learning";
 import { createExecutiveRecommendationsFromBi } from "@/lib/executive-recommendations";
@@ -98,6 +99,7 @@ export type ExecutiveWorkforceReport = {
   healthCards: ExecutiveWorkforceHealthCard[];
   brandHealth: MarketingPlatformRegistryReport;
   contentIntelligence: ContentIntelligenceReport;
+  companyOrchestrator: CompanyOrchestratorReport;
   safetyFlags: {
     advisoryOnly: true;
     providerCalled: false;
@@ -717,6 +719,7 @@ export function createExecutiveWorkforceReport({
   businessIntelligence,
   brandHealth,
   contentIntelligence,
+  companyOrchestrator,
 }: {
   newLeadsToday: number;
   qualifiedLeads: number;
@@ -733,6 +736,7 @@ export function createExecutiveWorkforceReport({
   businessIntelligence: BusinessIntelligenceReport;
   brandHealth: MarketingPlatformRegistryReport;
   contentIntelligence: ContentIntelligenceReport;
+  companyOrchestrator: CompanyOrchestratorReport;
 }): ExecutiveWorkforceReport {
   const topChannel = businessIntelligence.summary.topChannel;
   const revenueScore = Math.min(100, qualifiedLeads * 12 + offerReadyCount * 15 + revenuePipeline.actionableLeads * 8 + newLeadsToday * 4);
@@ -809,6 +813,7 @@ export function createExecutiveWorkforceReport({
     ],
     brandHealth,
     contentIntelligence,
+    companyOrchestrator,
     safetyFlags: {
       advisoryOnly: true,
       providerCalled: false,
@@ -875,6 +880,10 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
     marketingDrafts,
     knowledgeItems,
     businessIntelligence,
+  });
+  const companyOrchestrator = runCompanyOrchestrator({
+    directive: createInheritedPropertyCampaignDirective(),
+    opportunities: [],
   });
   const widgets: ExecutiveWidget[] = [
     {
@@ -1014,6 +1023,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
     businessIntelligence,
     brandHealth,
     contentIntelligence,
+    companyOrchestrator,
   });
 
   return {

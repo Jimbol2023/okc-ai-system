@@ -1,4 +1,5 @@
 import { createCreativeStudioPlatformReport } from "@/lib/ai-creative-growth-studio";
+import { getCompanyDepartmentRegistry, type CompanyDepartment } from "@/lib/company-orchestrator";
 import { createDocumentIntelligencePlatformReport } from "@/lib/document-intelligence-platform";
 import { createEnterpriseSecurityPlatformReport } from "@/lib/enterprise-security-platform";
 import { getFeatureFlagSnapshot, type FeatureFlagKey } from "@/lib/feature-flags";
@@ -90,30 +91,7 @@ export type CoreProviderRegistryEntry = {
   permissionsRequired: string[];
 };
 
-export type AiDepartmentRegistryEntry = {
-  key: string;
-  name:
-    | "Executive AI"
-    | "Marketing AI"
-    | "SEO AI"
-    | "Design AI"
-    | "Brand Intelligence AI"
-    | "Content Intelligence AI"
-    | "Lead Intelligence AI"
-    | "Revenue AI";
-  purpose: string;
-  responsibilities: string[];
-  outputs: string[];
-  approvalRequired: true;
-  executionBoundary: {
-    advisoryOnly: true;
-    providerCalled: false;
-    liveExecutionAllowed: false;
-    publishingBlocked: true;
-    scrapingBlocked: true;
-    outreachBlocked: true;
-  };
-};
+export type AiDepartmentRegistryEntry = CompanyDepartment;
 
 export type CorePlatformRegistryReport = {
   ok: true;
@@ -409,80 +387,8 @@ function createCoreProviderRegistryEntries(): CoreProviderRegistryEntry[] {
   }));
 }
 
-function department(input: Omit<AiDepartmentRegistryEntry, "approvalRequired" | "executionBoundary">): AiDepartmentRegistryEntry {
-  return {
-    ...input,
-    approvalRequired: true,
-    executionBoundary: {
-      advisoryOnly: true,
-      providerCalled: false,
-      liveExecutionAllowed: false,
-      publishingBlocked: true,
-      scrapingBlocked: true,
-      outreachBlocked: true,
-    },
-  };
-}
-
 function createAiDepartmentRegistryEntries(): AiDepartmentRegistryEntry[] {
-  return [
-    department({
-      key: "executive_ai",
-      name: "Executive AI",
-      purpose: "Delegates priorities, summarizes business health, and keeps CEO attention on revenue-moving decisions.",
-      responsibilities: ["morning briefing", "approval dashboard", "executive recommendations", "weekly and monthly KPI review"],
-      outputs: ["daily command summary", "priority order", "approval summary", "business review notes"],
-    }),
-    department({
-      key: "marketing_ai",
-      name: "Marketing AI",
-      purpose: "Creates complete seller-education campaign packages for review.",
-      responsibilities: ["campaign drafting", "channel-specific copy", "email draft", "video script draft"],
-      outputs: ["website article drafts", "social drafts", "YouTube scripts", "email newsletter drafts"],
-    }),
-    department({
-      key: "seo_ai",
-      name: "SEO AI",
-      purpose: "Recommends local authority, keyword, service area, internal linking, and refresh opportunities.",
-      responsibilities: ["keyword review", "content gaps", "service area expansion", "schema and internal linking recommendations"],
-      outputs: ["SEO recommendations", "content gap briefs", "refresh candidates"],
-    }),
-    department({
-      key: "design_ai",
-      name: "Design AI",
-      purpose: "Prepares manual creative briefs for brand-safe assets.",
-      responsibilities: ["Canva briefs", "Adobe/Firefly prompts", "thumbnail concepts", "accessibility review"],
-      outputs: ["design briefs", "thumbnail concepts", "carousel concepts", "brand compliance notes"],
-    }),
-    department({
-      key: "brand_intelligence_ai",
-      name: "Brand Intelligence AI",
-      purpose: "Scores brand readiness and protects trust across owned and social platforms.",
-      responsibilities: ["platform readiness scoring", "brand consistency review", "manual profile completeness review"],
-      outputs: ["brand health summary", "platform readiness notes", "manual brand next actions"],
-    }),
-    department({
-      key: "content_intelligence_ai",
-      name: "Content Intelligence AI",
-      purpose: "Turns marketing, SEO, social, and lead-source performance into campaign recommendations.",
-      responsibilities: ["content performance review", "refresh recommendations", "repurposing recommendations", "topic/channel ROI analysis"],
-      outputs: ["campaign briefs", "refresh briefs", "repurpose briefs", "source/topic recommendations"],
-    }),
-    department({
-      key: "lead_intelligence_ai",
-      name: "Lead Intelligence AI",
-      purpose: "Ranks seller opportunities and identifies follow-up, motivation, attribution, and pipeline quality signals.",
-      responsibilities: ["lead attribution", "lead scoring", "seller motivation", "pipeline health"],
-      outputs: ["lead priority recommendations", "source quality notes", "follow-up recommendations"],
-    }),
-    department({
-      key: "revenue_ai",
-      name: "Revenue AI",
-      purpose: "Connects seller-lead activity, offer readiness, pipeline value, and source attribution to revenue priorities.",
-      responsibilities: ["pipeline review", "offer readiness", "revenue prioritization", "source ROI review"],
-      outputs: ["revenue health summary", "offer-ready recommendations", "pipeline risk notes"],
-    }),
-  ];
+  return getCompanyDepartmentRegistry();
 }
 
 function moduleDefinition(input: {

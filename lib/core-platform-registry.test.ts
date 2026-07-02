@@ -8,17 +8,20 @@ describe("core platform registry", () => {
     const report = createCorePlatformRegistryReport();
     const departmentNames = report.aiDepartments.map((department) => department.name);
 
-    assert.deepEqual(departmentNames, [
-      "Executive AI",
-      "Marketing AI",
-      "SEO AI",
-      "Design AI",
-      "Brand Intelligence AI",
-      "Content Intelligence AI",
-      "Lead Intelligence AI",
-      "Revenue AI",
-    ]);
-    assert.equal(report.totals.aiDepartments, 8);
+    assert.equal(report.totals.aiDepartments, 21);
+    assert.ok(departmentNames.includes("Executive AI"));
+    assert.ok(departmentNames.includes("Revenue AI"));
+    assert.ok(departmentNames.includes("Marketing AI"));
+    assert.ok(departmentNames.includes("Content Intelligence AI"));
+    assert.ok(departmentNames.includes("Sales AI"));
+    assert.ok(departmentNames.includes("County Records AI"));
+    assert.ok(departmentNames.includes("Driving for Dollars AI"));
+    assert.ok(departmentNames.includes("Google Maps AI"));
+    assert.ok(departmentNames.includes("Government & Policy AI"));
+    assert.ok(departmentNames.includes("News Intelligence AI"));
+    assert.ok(departmentNames.includes("Market Research AI"));
+    assert.ok(departmentNames.includes("Approval AI"));
+    assert.ok(departmentNames.includes("Security & Governance AI"));
 
     for (const department of report.aiDepartments) {
       assert.equal(department.approvalRequired, true);
@@ -28,6 +31,8 @@ describe("core platform registry", () => {
       assert.equal(department.executionBoundary.publishingBlocked, true);
       assert.equal(department.executionBoundary.scrapingBlocked, true);
       assert.equal(department.executionBoundary.outreachBlocked, true);
+      assert.equal(department.executionBoundary.communicatesThroughAiCoo, true);
+      assert.equal(department.executionBoundary.workflowExecutionBlocked, true);
       assert.ok(department.purpose.length > 0);
       assert.ok(department.responsibilities.length > 0);
       assert.ok(department.outputs.length > 0);

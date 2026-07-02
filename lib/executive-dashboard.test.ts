@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 
 import { createExecutiveRecommendations, createExecutiveWorkforceReport, createRevenueCommandCenter } from "./executive-dashboard";
 import type { BusinessIntelligenceReport } from "./business-intelligence";
+import { createInheritedPropertyCampaignDirective, runCompanyOrchestrator } from "./company-orchestrator";
 import { createContentIntelligenceReport } from "./content-intelligence";
 import { createMarketingPlatformRegistryReport } from "./marketing-platform-registry";
 
@@ -163,6 +164,9 @@ describe("executive workforce health", () => {
       knowledgeItems: [],
       businessIntelligence,
     });
+    const companyOrchestrator = runCompanyOrchestrator({
+      directive: createInheritedPropertyCampaignDirective(),
+    });
     const report = createExecutiveWorkforceReport({
       newLeadsToday: 2,
       qualifiedLeads: 3,
@@ -187,6 +191,7 @@ describe("executive workforce health", () => {
       businessIntelligence,
       brandHealth,
       contentIntelligence,
+      companyOrchestrator,
     });
 
     assert.deepEqual(report.healthCards.map((card) => card.id), [
@@ -202,6 +207,8 @@ describe("executive workforce health", () => {
     assert.equal(report.brandHealth.safety.providerCalled, false);
     assert.equal(report.contentIntelligence.safety.providerCalled, false);
     assert.equal(report.contentIntelligence.safety.analyticsApiCalled, false);
+    assert.equal(report.companyOrchestrator.internalName, "company-orchestrator");
+    assert.equal(report.companyOrchestrator.safety.noDepartmentDirectCommunication, true);
     assert.equal(report.safetyFlags.liveExecutionAllowed, false);
     assert.equal(report.safetyFlags.publishingBlocked, true);
     assert.ok(report.healthCards.every((card) => card.sourceLabel.length > 0));
