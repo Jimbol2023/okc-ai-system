@@ -52,6 +52,11 @@ export type CompanyDepartment = {
 export type ExecutiveDirectiveStatus =
   | "recommended"
   | "awaiting_ceo_approval"
+  | "executive_approved"
+  | "internal_work_assigned"
+  | "draft_queue_populated"
+  | "changes_requested"
+  | "deferred"
   | "approved"
   | "in_progress"
   | "department_review"
@@ -122,6 +127,7 @@ export type CeoDecisionType = "approve" | "reject" | "request_changes" | "defer"
 
 export type CeoDecisionAgendaItem = {
   id: string;
+  directive_id: string;
   title: string;
   business_goal: CompanyGoal;
   reason: string;
@@ -149,6 +155,33 @@ export type DailyStartupQueueSummary = {
   ready_for_review: number;
   blocked: number;
   summary: string;
+};
+
+export type DailyStartupActivationState = {
+  assignments: Array<{
+    id: string;
+    directiveId: string;
+    department: AiDepartmentName;
+    assignmentType: string;
+    requestedOutputs: string[];
+    status: string;
+    blocker: string | null;
+    approvalRequired: true;
+  }>;
+  draftQueueItems: Array<{
+    id: string;
+    directiveId: string;
+    output: string;
+    ownerDepartment: AiDepartmentName;
+    status: string;
+    approvalRequired: true;
+  }>;
+  latestDecision: {
+    decision: CeoDecisionType;
+    note: string | null;
+    resultingStatus: ExecutiveDirectiveStatus;
+    createdAt: string;
+  } | null;
 };
 
 export type CompanyOrchestratorWorkflowState =
@@ -243,6 +276,7 @@ export type DailyCompanyOperatingSession = {
   engineering_progress: string[];
   executive_brief: string;
   ceo_decision_agenda: CeoDecisionAgendaItem[];
+  activation_state?: DailyStartupActivationState;
   safety: {
     internalOnly: true;
     providerCalled: false;
@@ -304,14 +338,14 @@ export function getCompanyDepartmentRegistry(): CompanyDepartment[] {
 }
 
 function isDirectiveApproved(directive: ExecutiveDirective) {
-  return directive.approval_status !== "recommended" && directive.approval_status !== "awaiting_ceo_approval" && directive.approval_status !== "rejected";
+  return !["recommended", "awaiting_ceo_approval", "changes_requested", "deferred", "rejected"].includes(directive.approval_status);
 }
 
 function findDepartment(name: AiDepartmentName) {
   return getCompanyDepartmentRegistry().find((departmentItem) => departmentItem.name === name);
 }
 
-function ownerForOutput(output: string): AiDepartmentName {
+export function ownerForOutput(output: string): AiDepartmentName {
   const normalized = output.toLowerCase();
   if (normalized.includes("brand")) return "Brand Intelligence AI";
   if (normalized.includes("canva") || normalized.includes("adobe") || normalized.includes("firefly") || normalized.includes("thumbnail")) return "Design AI";
@@ -399,7 +433,7 @@ function createHealth(summary: string, status: DailyStartupHealth["status"], sco
 
 function summarizeDirectives(directives: ExecutiveDirective[]): DailyStartupQueueSummary {
   const awaiting = directives.filter((directive) => directive.approval_status === "awaiting_ceo_approval").length;
-  const ready = directives.filter((directive) => directive.approval_status === "approved" || directive.approval_status === "department_review" || directive.approval_status === "executive_review").length;
+  const ready = directives.filter((directive) => ["executive_approved", "internal_work_assigned", "draft_queue_populated", "approved", "department_review", "executive_review"].includes(directive.approval_status)).length;
 
   return {
     total: directives.length,
@@ -413,6 +447,7 @@ function summarizeDirectives(directives: ExecutiveDirective[]): DailyStartupQueu
 function createDecisionAgenda(directives: ExecutiveDirective[]): CeoDecisionAgendaItem[] {
   return directives.map((directive) => ({
     id: `decision-${directive.id}`,
+    directive_id: directive.id,
     title: directive.title,
     business_goal: directive.business_goal,
     reason:
@@ -437,6 +472,7 @@ export function startDailyCompanyOperatingSession({
   opportunities = [],
   providerReadiness = { missing: 0, ready: 0 },
   engineeringProgress = ["Executive Workforce and AI COO foundations are available for Daily Startup review."],
+  activationState,
 }: {
   date?: string;
   companyOperatingMode?: CompanyOperatingMode;
@@ -444,6 +480,7 @@ export function startDailyCompanyOperatingSession({
   opportunities?: OpportunityQueueItem[];
   providerReadiness?: { missing: number; ready: number };
   engineeringProgress?: string[];
+  activationState?: DailyStartupActivationState;
 } = {}): DailyCompanyOperatingSession {
   const directiveSummary = summarizeDirectives(directives);
   const decisionAgenda = createDecisionAgenda(directives);
@@ -483,11 +520,13 @@ export function startDailyCompanyOperatingSession({
     },
     campaign_queue_summary: directiveSummary,
     draft_queue_summary: {
-      total: 0,
+      total: activationState?.draftQueueItems.length ?? 0,
       awaiting_ceo_approval: directiveSummary.awaiting_ceo_approval,
-      ready_for_review: 0,
+      ready_for_review: activationState?.draftQueueItems.filter((item) => item.status !== "blocked").length ?? 0,
       blocked: directiveSummary.awaiting_ceo_approval,
-      summary: "Draft queue is blocked until the CEO approves an Executive Directive.",
+      summary: activationState && activationState.draftQueueItems.length > 0
+        ? `${activationState.draftQueueItems.length} internal draft queue item(s) prepared for review.`
+        : "Draft queue is blocked until the CEO approves an Executive Directive.",
     },
     approval_queue_summary: {
       total: decisionAgenda.length,
@@ -509,6 +548,7 @@ export function startDailyCompanyOperatingSession({
     engineering_progress: engineeringProgress,
     executive_brief: "Good morning Moses. The AI company is ready to prepare internal work, but Campaign 001 and supporting directives require CEO approval before departments begin.",
     ceo_decision_agenda: decisionAgenda,
+    activation_state: activationState,
     safety: {
       internalOnly: true,
       providerCalled: false,

@@ -280,6 +280,7 @@ type DailyStartup = {
   executive_brief: string;
   ceo_decision_agenda: Array<{
     id: string;
+    directive_id: string;
     title: string;
     business_goal: string;
     reason: string;
@@ -292,6 +293,32 @@ type DailyStartup = {
     sourceLabel: string;
     assumption: string;
   }>;
+  activation_state?: {
+    assignments: Array<{
+      id: string;
+      directiveId: string;
+      department: string;
+      assignmentType: string;
+      requestedOutputs: string[];
+      status: string;
+      blocker: string | null;
+      approvalRequired: true;
+    }>;
+    draftQueueItems: Array<{
+      id: string;
+      directiveId: string;
+      output: string;
+      ownerDepartment: string;
+      status: string;
+      approvalRequired: true;
+    }>;
+    latestDecision: {
+      decision: "approve" | "reject" | "request_changes" | "defer";
+      note: string | null;
+      resultingStatus: string;
+      createdAt: string;
+    } | null;
+  };
   safety: {
     internalOnly: true;
     providerCalled: false;
@@ -568,7 +595,79 @@ function QueueSummaryCard({ title, summary }: { title: string; summary: QueueSum
   );
 }
 
-function DailyStartupPanel({ startup }: { startup: DailyStartup }) {
+type DirectiveDecision = "approve" | "reject" | "request_changes" | "defer";
+
+type DirectiveDecisionResponse = {
+  ok: boolean;
+  error?: string;
+  resultingStatus?: string;
+  assignmentsTotal?: number;
+  draftQueueItemsTotal?: number;
+};
+
+function formatDecisionLabel(decision: DirectiveDecision) {
+  if (decision === "request_changes") return "Request Changes";
+
+  return decision.charAt(0).toUpperCase() + decision.slice(1);
+}
+
+function DailyStartupPanel({ startup, onDecisionComplete }: { startup: DailyStartup; onDecisionComplete: () => Promise<void> }) {
+  const [decisionNotes, setDecisionNotes] = useState<Record<string, string>>({});
+  const [decisionReminders, setDecisionReminders] = useState<Record<string, string>>({});
+  const [submittingDecision, setSubmittingDecision] = useState<string | null>(null);
+  const [decisionError, setDecisionError] = useState("");
+  const [decisionSuccess, setDecisionSuccess] = useState("");
+  const assignments = startup.activation_state?.assignments ?? [];
+  const draftQueueItems = startup.activation_state?.draftQueueItems ?? [];
+  const latestDecision = startup.activation_state?.latestDecision ?? null;
+
+  async function submitDecision(item: DailyStartup["ceo_decision_agenda"][number], decision: DirectiveDecision) {
+    const note = decisionNotes[item.directive_id]?.trim() ?? "";
+
+    if ((decision === "reject" || decision === "request_changes") && note.length < 3) {
+      setDecisionError("Add a short decision note before rejecting or requesting changes.");
+      setDecisionSuccess("");
+      return;
+    }
+
+    const reminderValue = decisionReminders[item.directive_id];
+    const reviewReminderAt = decision === "defer" && reminderValue ? new Date(reminderValue).toISOString() : undefined;
+    const submissionId = `${item.directive_id}:${decision}`;
+
+    try {
+      setSubmittingDecision(submissionId);
+      setDecisionError("");
+      setDecisionSuccess("");
+
+      const response = await fetch(`/api/company/directives/${encodeURIComponent(item.directive_id)}/decision`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          decision,
+          note,
+          reviewReminderAt,
+        }),
+      });
+      const data = await readJsonResponse<DirectiveDecisionResponse>(response);
+
+      if (!response.ok || !data.ok) {
+        throw new Error(data.error || "Unable to save CEO decision.");
+      }
+
+      setDecisionSuccess(
+        `${item.title} moved to ${data.resultingStatus ?? decision}. Assignments: ${data.assignmentsTotal ?? 0}. Drafts: ${data.draftQueueItemsTotal ?? 0}.`,
+      );
+      await onDecisionComplete();
+    } catch (err) {
+      setDecisionError(err instanceof Error ? err.message : "Unable to save CEO decision.");
+    } finally {
+      setSubmittingDecision(null);
+    }
+  }
+
   return (
     <section aria-labelledby="daily-startup-heading" className="rounded-lg border border-border bg-surface p-5 md:p-6">
       <div className="flex min-w-0 flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
@@ -622,11 +721,34 @@ function DailyStartupPanel({ startup }: { startup: DailyStartup }) {
               ))}
             </ul>
           </div>
+
+          <div className="rounded-lg border border-emerald-100 bg-emerald-50 p-4">
+            <h3 className="break-words text-lg font-semibold text-emerald-950">AI COO Workflow</h3>
+            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-md bg-white p-3">
+                <p className="text-xs font-bold uppercase tracking-[0.08em] text-emerald-900">Assignments</p>
+                <p className="mt-2 text-3xl font-semibold text-emerald-950">{assignments.length}</p>
+              </div>
+              <div className="rounded-md bg-white p-3">
+                <p className="text-xs font-bold uppercase tracking-[0.08em] text-emerald-900">Draft Queue</p>
+                <p className="mt-2 text-3xl font-semibold text-emerald-950">{draftQueueItems.length}</p>
+              </div>
+            </div>
+            {latestDecision ? (
+              <p className="mt-3 break-words text-xs leading-5 text-emerald-950">
+                Latest decision: {latestDecision.decision} moved workflow to {latestDecision.resultingStatus} at {formatTime(latestDecision.createdAt)}.
+              </p>
+            ) : (
+              <p className="mt-3 break-words text-xs leading-5 text-emerald-950">No CEO decision has been recorded yet.</p>
+            )}
+          </div>
         </div>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-border bg-white p-4">
             <h3 className="break-words text-lg font-semibold text-primary">CEO Decision Agenda</h3>
+            {decisionError ? <p className="mt-3 rounded-md border border-red-200 bg-red-50 p-3 text-xs font-semibold text-red-900">{decisionError}</p> : null}
+            {decisionSuccess ? <p className="mt-3 rounded-md border border-emerald-200 bg-emerald-50 p-3 text-xs font-semibold text-emerald-900">{decisionSuccess}</p> : null}
             <div className="mt-4 space-y-3">
               {startup.ceo_decision_agenda.map((item) => (
                 <article key={item.id} className="rounded-lg border border-slate-200 bg-slate-50 p-4">
@@ -641,19 +763,43 @@ function DailyStartupPanel({ startup }: { startup: DailyStartup }) {
                   <p className="mt-2 break-words text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
                     Status: {item.status} | Risk: {item.risk_level}
                   </p>
+                  <label className="mt-3 block text-[11px] font-semibold uppercase tracking-[0.08em] text-muted" htmlFor={`decision-note-${item.directive_id}`}>
+                    Decision note
+                  </label>
+                  <textarea
+                    id={`decision-note-${item.directive_id}`}
+                    value={decisionNotes[item.directive_id] ?? ""}
+                    onChange={(event) => setDecisionNotes((current) => ({ ...current, [item.directive_id]: event.target.value }))}
+                    className="mt-2 min-h-20 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-primary outline-none focus:border-primary/40"
+                    placeholder="Required for reject or request changes."
+                  />
+                  <label className="mt-3 block text-[11px] font-semibold uppercase tracking-[0.08em] text-muted" htmlFor={`decision-reminder-${item.directive_id}`}>
+                    Defer reminder
+                  </label>
+                  <input
+                    id={`decision-reminder-${item.directive_id}`}
+                    type="datetime-local"
+                    value={decisionReminders[item.directive_id] ?? ""}
+                    onChange={(event) => setDecisionReminders((current) => ({ ...current, [item.directive_id]: event.target.value }))}
+                    className="mt-2 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-primary outline-none focus:border-primary/40"
+                  />
                   <div className="mt-3 flex flex-wrap gap-2">
-                    {(["Approve", "Reject", "Request Changes", "Defer"] as const).map((label) => (
+                    {(["approve", "reject", "request_changes", "defer"] as const).map((decision) => (
                       <button
-                        key={label}
+                        key={decision}
                         type="button"
-                        disabled
-                        className="rounded-md border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-muted"
-                        title="Review-only placeholder. Decision persistence is not enabled in this sprint."
+                        disabled={Boolean(submittingDecision)}
+                        onClick={() => void submitDecision(item, decision)}
+                        className="rounded-md border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-primary transition hover:border-primary/40 disabled:cursor-not-allowed disabled:text-muted"
+                        title="Internal only. Does not publish, send, scrape, call providers, or execute external workflows."
                       >
-                        {label}
+                        {submittingDecision === `${item.directive_id}:${decision}` ? "Saving..." : formatDecisionLabel(decision)}
                       </button>
                     ))}
                   </div>
+                  <p className="mt-3 break-words text-[11px] leading-4 text-muted">
+                    Internal only. No publishing, sending, scraping, provider calls, ads, outreach, or external workflow execution.
+                  </p>
                   <p className="mt-3 break-words text-[11px] leading-4 text-muted">
                     Source: {item.sourceLabel}. Assumption: {item.assumption}
                   </p>
@@ -681,6 +827,31 @@ function DailyStartupPanel({ startup }: { startup: DailyStartup }) {
               ))}
             </div>
           </div>
+
+          {assignments.length > 0 || draftQueueItems.length > 0 ? (
+            <div className="grid gap-3 md:grid-cols-2">
+              <div className="rounded-lg border border-border bg-white p-4">
+                <h3 className="break-words text-sm font-semibold text-primary">Assigned Departments</h3>
+                <ul className="mt-3 space-y-2 text-xs leading-5 text-muted">
+                  {assignments.slice(0, 8).map((assignment) => (
+                    <li key={assignment.id} className="break-words">
+                      {assignment.department}: {assignment.status}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="rounded-lg border border-border bg-white p-4">
+                <h3 className="break-words text-sm font-semibold text-primary">Internal Draft Items</h3>
+                <ul className="mt-3 space-y-2 text-xs leading-5 text-muted">
+                  {draftQueueItems.slice(0, 8).map((draft) => (
+                    <li key={draft.id} className="break-words">
+                      {draft.output}: {draft.status}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ) : null}
         </div>
       </div>
     </section>
@@ -872,7 +1043,7 @@ export function ExecutiveDashboardClient() {
       {loading ? <LoadingState label="Loading executive dashboard..." /> : null}
       {error ? <ErrorState message={error} /> : null}
 
-      {dailyStartup ? <DailyStartupPanel startup={dailyStartup} /> : null}
+      {dailyStartup ? <DailyStartupPanel startup={dailyStartup} onDecisionComplete={loadDashboard} /> : null}
       {revenueCommandCenter ? <RevenueCommandCenterPanel commandCenter={revenueCommandCenter} /> : null}
       {executiveWorkforce ? <ExecutiveWorkforcePanel workforce={executiveWorkforce} /> : null}
 

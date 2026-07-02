@@ -788,6 +788,122 @@ model UnifiedApprovalDecision {
   @@index([createdAt])
 }
 
+model AiCompanyExecutiveDirective {
+  id                    String   @id
+  tenantId              String   @default("default")
+  title                 String
+  businessGoal          String
+  sourceDepartment      String
+  assignedDepartments   Json
+  requestedOutputs      Json
+  status                String   @default("awaiting_ceo_approval")
+  workflowState         String   @default("awaiting_ceo_approval")
+  riskLevel             String   @default("medium")
+  expectedBusinessValue String
+  governanceNotes       Json
+  revenuePriorityScore  Json
+  reviewReminderAt      DateTime?
+  approvedBy            String?
+  approvedAt            DateTime?
+  providerCalled        Boolean  @default(false)
+  sent                  Boolean  @default(false)
+  published             Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  assignments AiCompanyWorkAssignment[]
+  draftItems  AiCompanyDraftQueueItem[]
+  decisions   AiCompanyDecisionLog[]
+
+  @@index([tenantId])
+  @@index([status])
+  @@index([workflowState])
+  @@index([riskLevel])
+  @@index([providerCalled])
+  @@index([liveExecutionAllowed])
+}
+
+model AiCompanyWorkAssignment {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  directiveId           String
+  department            String
+  assignmentType        String   @default("department_work")
+  requestedOutputs      Json
+  status                String   @default("pending_internal_work")
+  blocker               String?
+  approvalRequired      Boolean  @default(true)
+  providerCalled        Boolean  @default(false)
+  sent                  Boolean  @default(false)
+  published             Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  directive AiCompanyExecutiveDirective @relation(fields: [directiveId], references: [id], onDelete: Cascade)
+
+  @@unique([directiveId, department, assignmentType])
+  @@index([tenantId])
+  @@index([directiveId])
+  @@index([department])
+  @@index([status])
+  @@index([approvalRequired])
+}
+
+model AiCompanyDraftQueueItem {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  directiveId           String
+  output                String
+  ownerDepartment       String
+  status                String   @default("draft_required")
+  sourceLabel           String
+  approvalRequired      Boolean  @default(true)
+  providerCalled        Boolean  @default(false)
+  sent                  Boolean  @default(false)
+  published             Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  directive AiCompanyExecutiveDirective @relation(fields: [directiveId], references: [id], onDelete: Cascade)
+
+  @@unique([directiveId, output])
+  @@index([tenantId])
+  @@index([directiveId])
+  @@index([ownerDepartment])
+  @@index([status])
+  @@index([approvalRequired])
+}
+
+model AiCompanyDecisionLog {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  directiveId           String
+  decision              String
+  note                  String?
+  decidedBy             String?
+  previousStatus        String
+  resultingStatus       String
+  reviewReminderAt      DateTime?
+  safetyFlags           Json
+  providerCalled        Boolean  @default(false)
+  sent                  Boolean  @default(false)
+  published             Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdAt             DateTime @default(now())
+
+  directive AiCompanyExecutiveDirective @relation(fields: [directiveId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([directiveId])
+  @@index([decision])
+  @@index([resultingStatus])
+  @@index([providerCalled])
+  @@index([createdAt])
+}
+
 model SocialContentSource {
   id                    String   @id @default(uuid())
   tenantId              String   @default("default")
