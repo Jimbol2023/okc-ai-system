@@ -1,6 +1,6 @@
 import { createBusinessIntelligenceReport, type BusinessIntelligenceReport, type DepartmentHealthCard, type TrendChart } from "@/lib/business-intelligence";
 import { loadPartialData } from "@/lib/api-response";
-import { createInheritedPropertyCampaignDirective, runCompanyOrchestrator, type CompanyOrchestratorReport } from "@/lib/company-orchestrator";
+import { createInheritedPropertyCampaignDirective, runCompanyOrchestrator, startDailyCompanyOperatingSession, type CompanyOrchestratorReport, type DailyCompanyOperatingSession } from "@/lib/company-orchestrator";
 import { createContentIntelligenceReport, type ContentIntelligenceReport } from "@/lib/content-intelligence";
 import { createExecutiveLearningRecommendations, type ExecutiveLearningMemoryEvent, type ExecutiveLearningRecommendation } from "@/lib/executive-learning";
 import { createExecutiveRecommendationsFromBi } from "@/lib/executive-recommendations";
@@ -114,6 +114,7 @@ export type ExecutiveWorkforceReport = {
 export type ExecutiveDashboardReport = {
   ok: true;
   widgets: ExecutiveWidget[];
+  dailyStartup: DailyCompanyOperatingSession;
   revenueCommandCenter: RevenueCommandCenterReport;
   executiveWorkforce: ExecutiveWorkforceReport;
   morningBrief: ExecutiveMorningBrief;
@@ -873,6 +874,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
     0,
   );
   const providerMissingCount = providerReadiness.providers.filter((provider) => provider.status === "missing").length;
+  const providerReadyCount = providerReadiness.providers.filter((provider) => provider.status !== "missing").length;
   const activeKnowledgeItems = knowledgeItems.filter((item) => item.status === "active").length;
   const websiteSeoReady = publicSiteUrl.startsWith("https://") && systemHealth?.database === "ok";
   const brandHealth = createMarketingPlatformRegistryReport();
@@ -884,6 +886,18 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
   const companyOrchestrator = runCompanyOrchestrator({
     directive: createInheritedPropertyCampaignDirective(),
     opportunities: [],
+  });
+  const dailyStartup = startDailyCompanyOperatingSession({
+    date: today.toISOString(),
+    providerReadiness: {
+      ready: providerReadyCount,
+      missing: providerMissingCount,
+    },
+    engineeringProgress: [
+      "Revenue Command Center is merged and production-ready.",
+      "Executive Workforce and AI COO foundations are merged.",
+      "Daily Startup is preparing the CEO review agenda without external execution.",
+    ],
   });
   const widgets: ExecutiveWidget[] = [
     {
@@ -1029,6 +1043,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
   return {
     ok: true,
     widgets,
+    dailyStartup,
     revenueCommandCenter,
     executiveWorkforce,
     morningBrief,
