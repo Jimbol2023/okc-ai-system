@@ -21,6 +21,17 @@ test("dashboard navigation consolidates security and safety labels", () => {
   assert.ok(!labels.includes("Safety Center"));
 });
 
+test("dashboard navigation is grouped like an operating company", () => {
+  const groups = new Set(dashboardNavigationItems.map((item) => item.group));
+
+  assert.ok(groups.has("Executive"));
+  assert.ok(groups.has("Growth"));
+  assert.ok(groups.has("Intelligence"));
+  assert.ok(groups.has("Company"));
+  assert.ok(groups.has("Security & Governance"));
+  assert.equal(dashboardNavigationItems.find((item) => item.href === "/dashboard")?.label, "AI COO");
+});
+
 test("filterDashboardNavigationItems matches command palette keywords", () => {
   const results = filterDashboardNavigationItems("probate");
 

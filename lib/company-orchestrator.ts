@@ -174,6 +174,8 @@ export type DailyStartupActivationState = {
     output: string;
     ownerDepartment: AiDepartmentName;
     status: string;
+    workProduct?: unknown;
+    qualityChecklist?: unknown;
     approvalRequired: true;
   }>;
   latestDecision: {
@@ -641,14 +643,23 @@ export function createInheritedPropertyCampaignDirective(): ExecutiveDirective {
       "X draft",
       "Google Business Profile draft",
       "YouTube script",
+      "YouTube description",
+      "YouTube chapters",
+      "YouTube tags",
       "TikTok script",
       "Email draft",
       "SMS draft",
       "Call script",
+      "SEO keyword targets",
+      "Internal link plan",
+      "Lead capture CTA plan",
       "Canva brief",
       "Adobe Express brief",
       "Adobe Firefly prompt",
+      "Thumbnail concept",
+      "Instagram carousel copy",
       "Brand Review",
+      "Governance Review",
       "Executive Summary",
       "CEO Final Approval",
     ],

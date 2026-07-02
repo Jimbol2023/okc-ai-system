@@ -1,5 +1,6 @@
 import { createBusinessIntelligenceReport, type BusinessIntelligenceReport, type DepartmentHealthCard, type TrendChart } from "@/lib/business-intelligence";
 import { loadPartialData } from "@/lib/api-response";
+import { listCompanyOpportunityQueue } from "@/lib/business-activation";
 import { getCompanyActivationSnapshot } from "@/lib/company-activation";
 import { createInheritedPropertyCampaignDirective, runCompanyOrchestrator, startDailyCompanyOperatingSession, type CompanyOrchestratorReport, type DailyCompanyOperatingSession } from "@/lib/company-orchestrator";
 import { createContentIntelligenceReport, type ContentIntelligenceReport } from "@/lib/content-intelligence";
@@ -831,7 +832,7 @@ export function createExecutiveWorkforceReport({
 }
 
 export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboardReport> {
-  const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, memoryEventsResult, referralResult, activationResult, departmentIntelligenceResult, systemHealth, recentSystemActivity] = await Promise.all([
+  const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, memoryEventsResult, referralResult, activationResult, departmentIntelligenceResult, opportunityQueueResult, systemHealth, recentSystemActivity] = await Promise.all([
     loadPartialData("Lead", listDbLeads, [] as StoredLead[]),
     loadPartialData("Marketing workflow", listMarketingWorkflow, null),
     loadPartialData("Finance", listFinanceEntries, []),
@@ -840,6 +841,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
     loadPartialData("Referral dashboard", getReferralDashboard, null),
     loadPartialData("Company activation", getCompanyActivationSnapshot, null),
     loadPartialData("Department Intelligence", getDepartmentIntelligenceReport, null),
+    loadPartialData("Company Opportunity Queue", listCompanyOpportunityQueue, []),
     getSystemHealth().catch(() => null),
     getRecentSystemActivity().catch(() => []),
   ]);
@@ -850,6 +852,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
   const memoryEvents = memoryEventsResult.data;
   const referralSummary = referralResult.data?.summary ?? null;
   const departmentIntelligence = departmentIntelligenceResult.data;
+  const opportunityQueueItems = opportunityQueueResult.data ?? [];
   const today = startOfToday();
   const revenuePipeline = getRevenuePipelineSummary(leads);
   const providerReadiness = createProviderReadinessReport();
@@ -894,11 +897,12 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
   const primaryDirective = activeDirectives?.[0] ?? createInheritedPropertyCampaignDirective();
   const companyOrchestrator = runCompanyOrchestrator({
     directive: primaryDirective,
-    opportunities: [],
+    opportunities: opportunityQueueItems,
   });
   const dailyStartup = startDailyCompanyOperatingSession({
     date: today.toISOString(),
     directives: activeDirectives,
+    opportunities: opportunityQueueItems,
     providerReadiness: {
       ready: providerReadyCount,
       missing: providerMissingCount,
@@ -916,6 +920,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
       activationSnapshot
         ? "AI Company Activation persistence is connected for internal CEO decisions."
         : "Daily Startup is preparing the CEO review agenda without external execution.",
+      `${opportunityQueueItems.length} approved/manual opportunity queue item(s) are available for Lead Intelligence review.`,
     ],
   });
   const widgets: ExecutiveWidget[] = [

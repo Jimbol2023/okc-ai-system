@@ -32,6 +32,8 @@ const navIconByHref = {
   "/dashboard/driving-for-dollars": HousePlus,
 };
 
+const dashboardNavigationGroups = ["Executive", "Growth", "Intelligence", "Company", "Security & Governance"] as const;
+
 export default async function DashboardLayout({
   children,
 }: Readonly<{
@@ -71,19 +73,28 @@ export default async function DashboardLayout({
                 </button>
               </form>
             </div>
-            <div className="mt-8 space-y-1">
-              {dashboardNavigationItems.map(({ href, label }) => {
-                const Icon = navIconByHref[href as keyof typeof navIconByHref] ?? LayoutGrid;
+            <div className="mt-8 space-y-5">
+              {dashboardNavigationGroups.map((group) => {
+                const items = dashboardNavigationItems.filter((item) => item.group === group);
 
                 return (
-                  <Link
-                    key={href}
-                    href={href as Route}
-                    className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-white/78 transition hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-                  >
-                    <Icon className="h-4 w-4" />
-                    {label}
-                  </Link>
+                  <div key={group} className="space-y-1">
+                    <p className="px-4 text-[11px] font-bold uppercase tracking-[0.16em] text-white/42">{group}</p>
+                    {items.map(({ href, label }) => {
+                      const Icon = navIconByHref[href as keyof typeof navIconByHref] ?? LayoutGrid;
+
+                      return (
+                        <Link
+                          key={href}
+                          href={href as Route}
+                          className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-white/78 transition hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                        >
+                          <Icon className="h-4 w-4" />
+                          {label}
+                        </Link>
+                      );
+                    })}
+                  </div>
                 );
               })}
             </div>
