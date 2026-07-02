@@ -149,6 +149,26 @@ export type UnifiedApprovalItem = $Result.DefaultSelection<Prisma.$UnifiedApprov
  */
 export type UnifiedApprovalDecision = $Result.DefaultSelection<Prisma.$UnifiedApprovalDecisionPayload>
 /**
+ * Model AiCompanyExecutiveDirective
+ * 
+ */
+export type AiCompanyExecutiveDirective = $Result.DefaultSelection<Prisma.$AiCompanyExecutiveDirectivePayload>
+/**
+ * Model AiCompanyWorkAssignment
+ * 
+ */
+export type AiCompanyWorkAssignment = $Result.DefaultSelection<Prisma.$AiCompanyWorkAssignmentPayload>
+/**
+ * Model AiCompanyDraftQueueItem
+ * 
+ */
+export type AiCompanyDraftQueueItem = $Result.DefaultSelection<Prisma.$AiCompanyDraftQueueItemPayload>
+/**
+ * Model AiCompanyDecisionLog
+ * 
+ */
+export type AiCompanyDecisionLog = $Result.DefaultSelection<Prisma.$AiCompanyDecisionLogPayload>
+/**
  * Model SocialContentSource
  * 
  */
@@ -751,6 +771,46 @@ export class PrismaClient<
     * ```
     */
   get unifiedApprovalDecision(): Prisma.UnifiedApprovalDecisionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.aiCompanyExecutiveDirective`: Exposes CRUD operations for the **AiCompanyExecutiveDirective** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AiCompanyExecutiveDirectives
+    * const aiCompanyExecutiveDirectives = await prisma.aiCompanyExecutiveDirective.findMany()
+    * ```
+    */
+  get aiCompanyExecutiveDirective(): Prisma.AiCompanyExecutiveDirectiveDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.aiCompanyWorkAssignment`: Exposes CRUD operations for the **AiCompanyWorkAssignment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AiCompanyWorkAssignments
+    * const aiCompanyWorkAssignments = await prisma.aiCompanyWorkAssignment.findMany()
+    * ```
+    */
+  get aiCompanyWorkAssignment(): Prisma.AiCompanyWorkAssignmentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.aiCompanyDraftQueueItem`: Exposes CRUD operations for the **AiCompanyDraftQueueItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AiCompanyDraftQueueItems
+    * const aiCompanyDraftQueueItems = await prisma.aiCompanyDraftQueueItem.findMany()
+    * ```
+    */
+  get aiCompanyDraftQueueItem(): Prisma.AiCompanyDraftQueueItemDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.aiCompanyDecisionLog`: Exposes CRUD operations for the **AiCompanyDecisionLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AiCompanyDecisionLogs
+    * const aiCompanyDecisionLogs = await prisma.aiCompanyDecisionLog.findMany()
+    * ```
+    */
+  get aiCompanyDecisionLog(): Prisma.AiCompanyDecisionLogDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.socialContentSource`: Exposes CRUD operations for the **SocialContentSource** model.
@@ -1539,6 +1599,10 @@ export namespace Prisma {
     AiPermissionPolicy: 'AiPermissionPolicy',
     UnifiedApprovalItem: 'UnifiedApprovalItem',
     UnifiedApprovalDecision: 'UnifiedApprovalDecision',
+    AiCompanyExecutiveDirective: 'AiCompanyExecutiveDirective',
+    AiCompanyWorkAssignment: 'AiCompanyWorkAssignment',
+    AiCompanyDraftQueueItem: 'AiCompanyDraftQueueItem',
+    AiCompanyDecisionLog: 'AiCompanyDecisionLog',
     SocialContentSource: 'SocialContentSource',
     SocialContentDraft: 'SocialContentDraft',
     SocialContentVariant: 'SocialContentVariant',
@@ -1589,7 +1653,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "lead" | "revenueAuditEvent" | "revenueLeadSource" | "referralPartner" | "referralLink" | "referralAttributionEvent" | "revenueLeadScore" | "revenueTask" | "revenuePipelineEvent" | "revenueCommunicationEvent" | "revenueDecisionLog" | "connectorDefinition" | "enterpriseConnectorRegistry" | "enterpriseConnectorHealthEvent" | "enterpriseConnectorLifecycleEvent" | "enterpriseConnectorExecutionDecision" | "featureFlagRecord" | "marketIntelligenceSignal" | "demandDiscoveryOpportunity" | "growthEngineDraft" | "executiveBriefingSnapshot" | "connectorInstallationState" | "connectorCredentialReference" | "connectorTestResult" | "aiPermissionPolicy" | "unifiedApprovalItem" | "unifiedApprovalDecision" | "socialContentSource" | "socialContentDraft" | "socialContentVariant" | "socialSchedulePlan" | "socialExecutionPlan" | "socialPerformanceSnapshot" | "automationPolicyRecord" | "automationRunRecord" | "notificationRecord" | "learningOutcomeEvent" | "dailyBriefingSnapshot" | "operationsTimelineEvent" | "manualLeadIntake" | "sellerCallOutcome" | "aiPerformanceMetric" | "aiJob" | "aiJobAction" | "aiJobLog" | "aiMemoryEvent" | "aiLearningRecommendation" | "buyer" | "buyerActivity" | "marketingDraft" | "marketingApproval" | "marketingAccountConnection" | "marketingPublishAssist" | "marketingCanvaAssetAssist" | "marketingSalesAttribution" | "salesConversionAssist" | "financeEntry" | "knowledgeItem" | "knowledgeSearchEmbedding"
+      modelProps: "lead" | "revenueAuditEvent" | "revenueLeadSource" | "referralPartner" | "referralLink" | "referralAttributionEvent" | "revenueLeadScore" | "revenueTask" | "revenuePipelineEvent" | "revenueCommunicationEvent" | "revenueDecisionLog" | "connectorDefinition" | "enterpriseConnectorRegistry" | "enterpriseConnectorHealthEvent" | "enterpriseConnectorLifecycleEvent" | "enterpriseConnectorExecutionDecision" | "featureFlagRecord" | "marketIntelligenceSignal" | "demandDiscoveryOpportunity" | "growthEngineDraft" | "executiveBriefingSnapshot" | "connectorInstallationState" | "connectorCredentialReference" | "connectorTestResult" | "aiPermissionPolicy" | "unifiedApprovalItem" | "unifiedApprovalDecision" | "aiCompanyExecutiveDirective" | "aiCompanyWorkAssignment" | "aiCompanyDraftQueueItem" | "aiCompanyDecisionLog" | "socialContentSource" | "socialContentDraft" | "socialContentVariant" | "socialSchedulePlan" | "socialExecutionPlan" | "socialPerformanceSnapshot" | "automationPolicyRecord" | "automationRunRecord" | "notificationRecord" | "learningOutcomeEvent" | "dailyBriefingSnapshot" | "operationsTimelineEvent" | "manualLeadIntake" | "sellerCallOutcome" | "aiPerformanceMetric" | "aiJob" | "aiJobAction" | "aiJobLog" | "aiMemoryEvent" | "aiLearningRecommendation" | "buyer" | "buyerActivity" | "marketingDraft" | "marketingApproval" | "marketingAccountConnection" | "marketingPublishAssist" | "marketingCanvaAssetAssist" | "marketingSalesAttribution" | "salesConversionAssist" | "financeEntry" | "knowledgeItem" | "knowledgeSearchEmbedding"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3588,6 +3652,302 @@ export namespace Prisma {
           count: {
             args: Prisma.UnifiedApprovalDecisionCountArgs<ExtArgs>
             result: $Utils.Optional<UnifiedApprovalDecisionCountAggregateOutputType> | number
+          }
+        }
+      }
+      AiCompanyExecutiveDirective: {
+        payload: Prisma.$AiCompanyExecutiveDirectivePayload<ExtArgs>
+        fields: Prisma.AiCompanyExecutiveDirectiveFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AiCompanyExecutiveDirectiveFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyExecutiveDirectivePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AiCompanyExecutiveDirectiveFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyExecutiveDirectivePayload>
+          }
+          findFirst: {
+            args: Prisma.AiCompanyExecutiveDirectiveFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyExecutiveDirectivePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AiCompanyExecutiveDirectiveFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyExecutiveDirectivePayload>
+          }
+          findMany: {
+            args: Prisma.AiCompanyExecutiveDirectiveFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyExecutiveDirectivePayload>[]
+          }
+          create: {
+            args: Prisma.AiCompanyExecutiveDirectiveCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyExecutiveDirectivePayload>
+          }
+          createMany: {
+            args: Prisma.AiCompanyExecutiveDirectiveCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AiCompanyExecutiveDirectiveCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyExecutiveDirectivePayload>[]
+          }
+          delete: {
+            args: Prisma.AiCompanyExecutiveDirectiveDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyExecutiveDirectivePayload>
+          }
+          update: {
+            args: Prisma.AiCompanyExecutiveDirectiveUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyExecutiveDirectivePayload>
+          }
+          deleteMany: {
+            args: Prisma.AiCompanyExecutiveDirectiveDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AiCompanyExecutiveDirectiveUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AiCompanyExecutiveDirectiveUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyExecutiveDirectivePayload>[]
+          }
+          upsert: {
+            args: Prisma.AiCompanyExecutiveDirectiveUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyExecutiveDirectivePayload>
+          }
+          aggregate: {
+            args: Prisma.AiCompanyExecutiveDirectiveAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAiCompanyExecutiveDirective>
+          }
+          groupBy: {
+            args: Prisma.AiCompanyExecutiveDirectiveGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AiCompanyExecutiveDirectiveGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AiCompanyExecutiveDirectiveCountArgs<ExtArgs>
+            result: $Utils.Optional<AiCompanyExecutiveDirectiveCountAggregateOutputType> | number
+          }
+        }
+      }
+      AiCompanyWorkAssignment: {
+        payload: Prisma.$AiCompanyWorkAssignmentPayload<ExtArgs>
+        fields: Prisma.AiCompanyWorkAssignmentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AiCompanyWorkAssignmentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyWorkAssignmentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AiCompanyWorkAssignmentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyWorkAssignmentPayload>
+          }
+          findFirst: {
+            args: Prisma.AiCompanyWorkAssignmentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyWorkAssignmentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AiCompanyWorkAssignmentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyWorkAssignmentPayload>
+          }
+          findMany: {
+            args: Prisma.AiCompanyWorkAssignmentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyWorkAssignmentPayload>[]
+          }
+          create: {
+            args: Prisma.AiCompanyWorkAssignmentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyWorkAssignmentPayload>
+          }
+          createMany: {
+            args: Prisma.AiCompanyWorkAssignmentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AiCompanyWorkAssignmentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyWorkAssignmentPayload>[]
+          }
+          delete: {
+            args: Prisma.AiCompanyWorkAssignmentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyWorkAssignmentPayload>
+          }
+          update: {
+            args: Prisma.AiCompanyWorkAssignmentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyWorkAssignmentPayload>
+          }
+          deleteMany: {
+            args: Prisma.AiCompanyWorkAssignmentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AiCompanyWorkAssignmentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AiCompanyWorkAssignmentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyWorkAssignmentPayload>[]
+          }
+          upsert: {
+            args: Prisma.AiCompanyWorkAssignmentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyWorkAssignmentPayload>
+          }
+          aggregate: {
+            args: Prisma.AiCompanyWorkAssignmentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAiCompanyWorkAssignment>
+          }
+          groupBy: {
+            args: Prisma.AiCompanyWorkAssignmentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AiCompanyWorkAssignmentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AiCompanyWorkAssignmentCountArgs<ExtArgs>
+            result: $Utils.Optional<AiCompanyWorkAssignmentCountAggregateOutputType> | number
+          }
+        }
+      }
+      AiCompanyDraftQueueItem: {
+        payload: Prisma.$AiCompanyDraftQueueItemPayload<ExtArgs>
+        fields: Prisma.AiCompanyDraftQueueItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AiCompanyDraftQueueItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyDraftQueueItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AiCompanyDraftQueueItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyDraftQueueItemPayload>
+          }
+          findFirst: {
+            args: Prisma.AiCompanyDraftQueueItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyDraftQueueItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AiCompanyDraftQueueItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyDraftQueueItemPayload>
+          }
+          findMany: {
+            args: Prisma.AiCompanyDraftQueueItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyDraftQueueItemPayload>[]
+          }
+          create: {
+            args: Prisma.AiCompanyDraftQueueItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyDraftQueueItemPayload>
+          }
+          createMany: {
+            args: Prisma.AiCompanyDraftQueueItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AiCompanyDraftQueueItemCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyDraftQueueItemPayload>[]
+          }
+          delete: {
+            args: Prisma.AiCompanyDraftQueueItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyDraftQueueItemPayload>
+          }
+          update: {
+            args: Prisma.AiCompanyDraftQueueItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyDraftQueueItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.AiCompanyDraftQueueItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AiCompanyDraftQueueItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AiCompanyDraftQueueItemUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyDraftQueueItemPayload>[]
+          }
+          upsert: {
+            args: Prisma.AiCompanyDraftQueueItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyDraftQueueItemPayload>
+          }
+          aggregate: {
+            args: Prisma.AiCompanyDraftQueueItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAiCompanyDraftQueueItem>
+          }
+          groupBy: {
+            args: Prisma.AiCompanyDraftQueueItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AiCompanyDraftQueueItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AiCompanyDraftQueueItemCountArgs<ExtArgs>
+            result: $Utils.Optional<AiCompanyDraftQueueItemCountAggregateOutputType> | number
+          }
+        }
+      }
+      AiCompanyDecisionLog: {
+        payload: Prisma.$AiCompanyDecisionLogPayload<ExtArgs>
+        fields: Prisma.AiCompanyDecisionLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AiCompanyDecisionLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyDecisionLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AiCompanyDecisionLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyDecisionLogPayload>
+          }
+          findFirst: {
+            args: Prisma.AiCompanyDecisionLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyDecisionLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AiCompanyDecisionLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyDecisionLogPayload>
+          }
+          findMany: {
+            args: Prisma.AiCompanyDecisionLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyDecisionLogPayload>[]
+          }
+          create: {
+            args: Prisma.AiCompanyDecisionLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyDecisionLogPayload>
+          }
+          createMany: {
+            args: Prisma.AiCompanyDecisionLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AiCompanyDecisionLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyDecisionLogPayload>[]
+          }
+          delete: {
+            args: Prisma.AiCompanyDecisionLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyDecisionLogPayload>
+          }
+          update: {
+            args: Prisma.AiCompanyDecisionLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyDecisionLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.AiCompanyDecisionLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AiCompanyDecisionLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AiCompanyDecisionLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyDecisionLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.AiCompanyDecisionLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiCompanyDecisionLogPayload>
+          }
+          aggregate: {
+            args: Prisma.AiCompanyDecisionLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAiCompanyDecisionLog>
+          }
+          groupBy: {
+            args: Prisma.AiCompanyDecisionLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AiCompanyDecisionLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AiCompanyDecisionLogCountArgs<ExtArgs>
+            result: $Utils.Optional<AiCompanyDecisionLogCountAggregateOutputType> | number
           }
         }
       }
@@ -6082,6 +6442,10 @@ export namespace Prisma {
     aiPermissionPolicy?: AiPermissionPolicyOmit
     unifiedApprovalItem?: UnifiedApprovalItemOmit
     unifiedApprovalDecision?: UnifiedApprovalDecisionOmit
+    aiCompanyExecutiveDirective?: AiCompanyExecutiveDirectiveOmit
+    aiCompanyWorkAssignment?: AiCompanyWorkAssignmentOmit
+    aiCompanyDraftQueueItem?: AiCompanyDraftQueueItemOmit
+    aiCompanyDecisionLog?: AiCompanyDecisionLogOmit
     socialContentSource?: SocialContentSourceOmit
     socialContentDraft?: SocialContentDraftOmit
     socialContentVariant?: SocialContentVariantOmit
@@ -6440,6 +6804,55 @@ export namespace Prisma {
    */
   export type UnifiedApprovalItemCountOutputTypeCountDecisionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UnifiedApprovalDecisionWhereInput
+  }
+
+
+  /**
+   * Count Type AiCompanyExecutiveDirectiveCountOutputType
+   */
+
+  export type AiCompanyExecutiveDirectiveCountOutputType = {
+    assignments: number
+    draftItems: number
+    decisions: number
+  }
+
+  export type AiCompanyExecutiveDirectiveCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    assignments?: boolean | AiCompanyExecutiveDirectiveCountOutputTypeCountAssignmentsArgs
+    draftItems?: boolean | AiCompanyExecutiveDirectiveCountOutputTypeCountDraftItemsArgs
+    decisions?: boolean | AiCompanyExecutiveDirectiveCountOutputTypeCountDecisionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AiCompanyExecutiveDirectiveCountOutputType without action
+   */
+  export type AiCompanyExecutiveDirectiveCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyExecutiveDirectiveCountOutputType
+     */
+    select?: AiCompanyExecutiveDirectiveCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AiCompanyExecutiveDirectiveCountOutputType without action
+   */
+  export type AiCompanyExecutiveDirectiveCountOutputTypeCountAssignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiCompanyWorkAssignmentWhereInput
+  }
+
+  /**
+   * AiCompanyExecutiveDirectiveCountOutputType without action
+   */
+  export type AiCompanyExecutiveDirectiveCountOutputTypeCountDraftItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiCompanyDraftQueueItemWhereInput
+  }
+
+  /**
+   * AiCompanyExecutiveDirectiveCountOutputType without action
+   */
+  export type AiCompanyExecutiveDirectiveCountOutputTypeCountDecisionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiCompanyDecisionLogWhereInput
   }
 
 
@@ -39107,6 +39520,4880 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UnifiedApprovalDecisionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AiCompanyExecutiveDirective
+   */
+
+  export type AggregateAiCompanyExecutiveDirective = {
+    _count: AiCompanyExecutiveDirectiveCountAggregateOutputType | null
+    _min: AiCompanyExecutiveDirectiveMinAggregateOutputType | null
+    _max: AiCompanyExecutiveDirectiveMaxAggregateOutputType | null
+  }
+
+  export type AiCompanyExecutiveDirectiveMinAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    title: string | null
+    businessGoal: string | null
+    sourceDepartment: string | null
+    status: string | null
+    workflowState: string | null
+    riskLevel: string | null
+    expectedBusinessValue: string | null
+    reviewReminderAt: Date | null
+    approvedBy: string | null
+    approvedAt: Date | null
+    providerCalled: boolean | null
+    sent: boolean | null
+    published: boolean | null
+    liveExecutionAllowed: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AiCompanyExecutiveDirectiveMaxAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    title: string | null
+    businessGoal: string | null
+    sourceDepartment: string | null
+    status: string | null
+    workflowState: string | null
+    riskLevel: string | null
+    expectedBusinessValue: string | null
+    reviewReminderAt: Date | null
+    approvedBy: string | null
+    approvedAt: Date | null
+    providerCalled: boolean | null
+    sent: boolean | null
+    published: boolean | null
+    liveExecutionAllowed: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AiCompanyExecutiveDirectiveCountAggregateOutputType = {
+    id: number
+    tenantId: number
+    title: number
+    businessGoal: number
+    sourceDepartment: number
+    assignedDepartments: number
+    requestedOutputs: number
+    status: number
+    workflowState: number
+    riskLevel: number
+    expectedBusinessValue: number
+    governanceNotes: number
+    revenuePriorityScore: number
+    reviewReminderAt: number
+    approvedBy: number
+    approvedAt: number
+    providerCalled: number
+    sent: number
+    published: number
+    liveExecutionAllowed: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AiCompanyExecutiveDirectiveMinAggregateInputType = {
+    id?: true
+    tenantId?: true
+    title?: true
+    businessGoal?: true
+    sourceDepartment?: true
+    status?: true
+    workflowState?: true
+    riskLevel?: true
+    expectedBusinessValue?: true
+    reviewReminderAt?: true
+    approvedBy?: true
+    approvedAt?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AiCompanyExecutiveDirectiveMaxAggregateInputType = {
+    id?: true
+    tenantId?: true
+    title?: true
+    businessGoal?: true
+    sourceDepartment?: true
+    status?: true
+    workflowState?: true
+    riskLevel?: true
+    expectedBusinessValue?: true
+    reviewReminderAt?: true
+    approvedBy?: true
+    approvedAt?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AiCompanyExecutiveDirectiveCountAggregateInputType = {
+    id?: true
+    tenantId?: true
+    title?: true
+    businessGoal?: true
+    sourceDepartment?: true
+    assignedDepartments?: true
+    requestedOutputs?: true
+    status?: true
+    workflowState?: true
+    riskLevel?: true
+    expectedBusinessValue?: true
+    governanceNotes?: true
+    revenuePriorityScore?: true
+    reviewReminderAt?: true
+    approvedBy?: true
+    approvedAt?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AiCompanyExecutiveDirectiveAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiCompanyExecutiveDirective to aggregate.
+     */
+    where?: AiCompanyExecutiveDirectiveWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiCompanyExecutiveDirectives to fetch.
+     */
+    orderBy?: AiCompanyExecutiveDirectiveOrderByWithRelationInput | AiCompanyExecutiveDirectiveOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AiCompanyExecutiveDirectiveWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiCompanyExecutiveDirectives from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiCompanyExecutiveDirectives.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AiCompanyExecutiveDirectives
+    **/
+    _count?: true | AiCompanyExecutiveDirectiveCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AiCompanyExecutiveDirectiveMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AiCompanyExecutiveDirectiveMaxAggregateInputType
+  }
+
+  export type GetAiCompanyExecutiveDirectiveAggregateType<T extends AiCompanyExecutiveDirectiveAggregateArgs> = {
+        [P in keyof T & keyof AggregateAiCompanyExecutiveDirective]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAiCompanyExecutiveDirective[P]>
+      : GetScalarType<T[P], AggregateAiCompanyExecutiveDirective[P]>
+  }
+
+
+
+
+  export type AiCompanyExecutiveDirectiveGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiCompanyExecutiveDirectiveWhereInput
+    orderBy?: AiCompanyExecutiveDirectiveOrderByWithAggregationInput | AiCompanyExecutiveDirectiveOrderByWithAggregationInput[]
+    by: AiCompanyExecutiveDirectiveScalarFieldEnum[] | AiCompanyExecutiveDirectiveScalarFieldEnum
+    having?: AiCompanyExecutiveDirectiveScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AiCompanyExecutiveDirectiveCountAggregateInputType | true
+    _min?: AiCompanyExecutiveDirectiveMinAggregateInputType
+    _max?: AiCompanyExecutiveDirectiveMaxAggregateInputType
+  }
+
+  export type AiCompanyExecutiveDirectiveGroupByOutputType = {
+    id: string
+    tenantId: string
+    title: string
+    businessGoal: string
+    sourceDepartment: string
+    assignedDepartments: JsonValue
+    requestedOutputs: JsonValue
+    status: string
+    workflowState: string
+    riskLevel: string
+    expectedBusinessValue: string
+    governanceNotes: JsonValue
+    revenuePriorityScore: JsonValue
+    reviewReminderAt: Date | null
+    approvedBy: string | null
+    approvedAt: Date | null
+    providerCalled: boolean
+    sent: boolean
+    published: boolean
+    liveExecutionAllowed: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: AiCompanyExecutiveDirectiveCountAggregateOutputType | null
+    _min: AiCompanyExecutiveDirectiveMinAggregateOutputType | null
+    _max: AiCompanyExecutiveDirectiveMaxAggregateOutputType | null
+  }
+
+  type GetAiCompanyExecutiveDirectiveGroupByPayload<T extends AiCompanyExecutiveDirectiveGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AiCompanyExecutiveDirectiveGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AiCompanyExecutiveDirectiveGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AiCompanyExecutiveDirectiveGroupByOutputType[P]>
+            : GetScalarType<T[P], AiCompanyExecutiveDirectiveGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AiCompanyExecutiveDirectiveSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    title?: boolean
+    businessGoal?: boolean
+    sourceDepartment?: boolean
+    assignedDepartments?: boolean
+    requestedOutputs?: boolean
+    status?: boolean
+    workflowState?: boolean
+    riskLevel?: boolean
+    expectedBusinessValue?: boolean
+    governanceNotes?: boolean
+    revenuePriorityScore?: boolean
+    reviewReminderAt?: boolean
+    approvedBy?: boolean
+    approvedAt?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    assignments?: boolean | AiCompanyExecutiveDirective$assignmentsArgs<ExtArgs>
+    draftItems?: boolean | AiCompanyExecutiveDirective$draftItemsArgs<ExtArgs>
+    decisions?: boolean | AiCompanyExecutiveDirective$decisionsArgs<ExtArgs>
+    _count?: boolean | AiCompanyExecutiveDirectiveCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["aiCompanyExecutiveDirective"]>
+
+  export type AiCompanyExecutiveDirectiveSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    title?: boolean
+    businessGoal?: boolean
+    sourceDepartment?: boolean
+    assignedDepartments?: boolean
+    requestedOutputs?: boolean
+    status?: boolean
+    workflowState?: boolean
+    riskLevel?: boolean
+    expectedBusinessValue?: boolean
+    governanceNotes?: boolean
+    revenuePriorityScore?: boolean
+    reviewReminderAt?: boolean
+    approvedBy?: boolean
+    approvedAt?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["aiCompanyExecutiveDirective"]>
+
+  export type AiCompanyExecutiveDirectiveSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    title?: boolean
+    businessGoal?: boolean
+    sourceDepartment?: boolean
+    assignedDepartments?: boolean
+    requestedOutputs?: boolean
+    status?: boolean
+    workflowState?: boolean
+    riskLevel?: boolean
+    expectedBusinessValue?: boolean
+    governanceNotes?: boolean
+    revenuePriorityScore?: boolean
+    reviewReminderAt?: boolean
+    approvedBy?: boolean
+    approvedAt?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["aiCompanyExecutiveDirective"]>
+
+  export type AiCompanyExecutiveDirectiveSelectScalar = {
+    id?: boolean
+    tenantId?: boolean
+    title?: boolean
+    businessGoal?: boolean
+    sourceDepartment?: boolean
+    assignedDepartments?: boolean
+    requestedOutputs?: boolean
+    status?: boolean
+    workflowState?: boolean
+    riskLevel?: boolean
+    expectedBusinessValue?: boolean
+    governanceNotes?: boolean
+    revenuePriorityScore?: boolean
+    reviewReminderAt?: boolean
+    approvedBy?: boolean
+    approvedAt?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AiCompanyExecutiveDirectiveOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "title" | "businessGoal" | "sourceDepartment" | "assignedDepartments" | "requestedOutputs" | "status" | "workflowState" | "riskLevel" | "expectedBusinessValue" | "governanceNotes" | "revenuePriorityScore" | "reviewReminderAt" | "approvedBy" | "approvedAt" | "providerCalled" | "sent" | "published" | "liveExecutionAllowed" | "createdAt" | "updatedAt", ExtArgs["result"]["aiCompanyExecutiveDirective"]>
+  export type AiCompanyExecutiveDirectiveInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    assignments?: boolean | AiCompanyExecutiveDirective$assignmentsArgs<ExtArgs>
+    draftItems?: boolean | AiCompanyExecutiveDirective$draftItemsArgs<ExtArgs>
+    decisions?: boolean | AiCompanyExecutiveDirective$decisionsArgs<ExtArgs>
+    _count?: boolean | AiCompanyExecutiveDirectiveCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type AiCompanyExecutiveDirectiveIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type AiCompanyExecutiveDirectiveIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $AiCompanyExecutiveDirectivePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AiCompanyExecutiveDirective"
+    objects: {
+      assignments: Prisma.$AiCompanyWorkAssignmentPayload<ExtArgs>[]
+      draftItems: Prisma.$AiCompanyDraftQueueItemPayload<ExtArgs>[]
+      decisions: Prisma.$AiCompanyDecisionLogPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenantId: string
+      title: string
+      businessGoal: string
+      sourceDepartment: string
+      assignedDepartments: Prisma.JsonValue
+      requestedOutputs: Prisma.JsonValue
+      status: string
+      workflowState: string
+      riskLevel: string
+      expectedBusinessValue: string
+      governanceNotes: Prisma.JsonValue
+      revenuePriorityScore: Prisma.JsonValue
+      reviewReminderAt: Date | null
+      approvedBy: string | null
+      approvedAt: Date | null
+      providerCalled: boolean
+      sent: boolean
+      published: boolean
+      liveExecutionAllowed: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["aiCompanyExecutiveDirective"]>
+    composites: {}
+  }
+
+  type AiCompanyExecutiveDirectiveGetPayload<S extends boolean | null | undefined | AiCompanyExecutiveDirectiveDefaultArgs> = $Result.GetResult<Prisma.$AiCompanyExecutiveDirectivePayload, S>
+
+  type AiCompanyExecutiveDirectiveCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AiCompanyExecutiveDirectiveFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AiCompanyExecutiveDirectiveCountAggregateInputType | true
+    }
+
+  export interface AiCompanyExecutiveDirectiveDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AiCompanyExecutiveDirective'], meta: { name: 'AiCompanyExecutiveDirective' } }
+    /**
+     * Find zero or one AiCompanyExecutiveDirective that matches the filter.
+     * @param {AiCompanyExecutiveDirectiveFindUniqueArgs} args - Arguments to find a AiCompanyExecutiveDirective
+     * @example
+     * // Get one AiCompanyExecutiveDirective
+     * const aiCompanyExecutiveDirective = await prisma.aiCompanyExecutiveDirective.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AiCompanyExecutiveDirectiveFindUniqueArgs>(args: SelectSubset<T, AiCompanyExecutiveDirectiveFindUniqueArgs<ExtArgs>>): Prisma__AiCompanyExecutiveDirectiveClient<$Result.GetResult<Prisma.$AiCompanyExecutiveDirectivePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AiCompanyExecutiveDirective that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AiCompanyExecutiveDirectiveFindUniqueOrThrowArgs} args - Arguments to find a AiCompanyExecutiveDirective
+     * @example
+     * // Get one AiCompanyExecutiveDirective
+     * const aiCompanyExecutiveDirective = await prisma.aiCompanyExecutiveDirective.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AiCompanyExecutiveDirectiveFindUniqueOrThrowArgs>(args: SelectSubset<T, AiCompanyExecutiveDirectiveFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AiCompanyExecutiveDirectiveClient<$Result.GetResult<Prisma.$AiCompanyExecutiveDirectivePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiCompanyExecutiveDirective that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyExecutiveDirectiveFindFirstArgs} args - Arguments to find a AiCompanyExecutiveDirective
+     * @example
+     * // Get one AiCompanyExecutiveDirective
+     * const aiCompanyExecutiveDirective = await prisma.aiCompanyExecutiveDirective.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AiCompanyExecutiveDirectiveFindFirstArgs>(args?: SelectSubset<T, AiCompanyExecutiveDirectiveFindFirstArgs<ExtArgs>>): Prisma__AiCompanyExecutiveDirectiveClient<$Result.GetResult<Prisma.$AiCompanyExecutiveDirectivePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiCompanyExecutiveDirective that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyExecutiveDirectiveFindFirstOrThrowArgs} args - Arguments to find a AiCompanyExecutiveDirective
+     * @example
+     * // Get one AiCompanyExecutiveDirective
+     * const aiCompanyExecutiveDirective = await prisma.aiCompanyExecutiveDirective.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AiCompanyExecutiveDirectiveFindFirstOrThrowArgs>(args?: SelectSubset<T, AiCompanyExecutiveDirectiveFindFirstOrThrowArgs<ExtArgs>>): Prisma__AiCompanyExecutiveDirectiveClient<$Result.GetResult<Prisma.$AiCompanyExecutiveDirectivePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AiCompanyExecutiveDirectives that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyExecutiveDirectiveFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AiCompanyExecutiveDirectives
+     * const aiCompanyExecutiveDirectives = await prisma.aiCompanyExecutiveDirective.findMany()
+     * 
+     * // Get first 10 AiCompanyExecutiveDirectives
+     * const aiCompanyExecutiveDirectives = await prisma.aiCompanyExecutiveDirective.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const aiCompanyExecutiveDirectiveWithIdOnly = await prisma.aiCompanyExecutiveDirective.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AiCompanyExecutiveDirectiveFindManyArgs>(args?: SelectSubset<T, AiCompanyExecutiveDirectiveFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiCompanyExecutiveDirectivePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AiCompanyExecutiveDirective.
+     * @param {AiCompanyExecutiveDirectiveCreateArgs} args - Arguments to create a AiCompanyExecutiveDirective.
+     * @example
+     * // Create one AiCompanyExecutiveDirective
+     * const AiCompanyExecutiveDirective = await prisma.aiCompanyExecutiveDirective.create({
+     *   data: {
+     *     // ... data to create a AiCompanyExecutiveDirective
+     *   }
+     * })
+     * 
+     */
+    create<T extends AiCompanyExecutiveDirectiveCreateArgs>(args: SelectSubset<T, AiCompanyExecutiveDirectiveCreateArgs<ExtArgs>>): Prisma__AiCompanyExecutiveDirectiveClient<$Result.GetResult<Prisma.$AiCompanyExecutiveDirectivePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AiCompanyExecutiveDirectives.
+     * @param {AiCompanyExecutiveDirectiveCreateManyArgs} args - Arguments to create many AiCompanyExecutiveDirectives.
+     * @example
+     * // Create many AiCompanyExecutiveDirectives
+     * const aiCompanyExecutiveDirective = await prisma.aiCompanyExecutiveDirective.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AiCompanyExecutiveDirectiveCreateManyArgs>(args?: SelectSubset<T, AiCompanyExecutiveDirectiveCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AiCompanyExecutiveDirectives and returns the data saved in the database.
+     * @param {AiCompanyExecutiveDirectiveCreateManyAndReturnArgs} args - Arguments to create many AiCompanyExecutiveDirectives.
+     * @example
+     * // Create many AiCompanyExecutiveDirectives
+     * const aiCompanyExecutiveDirective = await prisma.aiCompanyExecutiveDirective.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AiCompanyExecutiveDirectives and only return the `id`
+     * const aiCompanyExecutiveDirectiveWithIdOnly = await prisma.aiCompanyExecutiveDirective.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AiCompanyExecutiveDirectiveCreateManyAndReturnArgs>(args?: SelectSubset<T, AiCompanyExecutiveDirectiveCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiCompanyExecutiveDirectivePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AiCompanyExecutiveDirective.
+     * @param {AiCompanyExecutiveDirectiveDeleteArgs} args - Arguments to delete one AiCompanyExecutiveDirective.
+     * @example
+     * // Delete one AiCompanyExecutiveDirective
+     * const AiCompanyExecutiveDirective = await prisma.aiCompanyExecutiveDirective.delete({
+     *   where: {
+     *     // ... filter to delete one AiCompanyExecutiveDirective
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AiCompanyExecutiveDirectiveDeleteArgs>(args: SelectSubset<T, AiCompanyExecutiveDirectiveDeleteArgs<ExtArgs>>): Prisma__AiCompanyExecutiveDirectiveClient<$Result.GetResult<Prisma.$AiCompanyExecutiveDirectivePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AiCompanyExecutiveDirective.
+     * @param {AiCompanyExecutiveDirectiveUpdateArgs} args - Arguments to update one AiCompanyExecutiveDirective.
+     * @example
+     * // Update one AiCompanyExecutiveDirective
+     * const aiCompanyExecutiveDirective = await prisma.aiCompanyExecutiveDirective.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AiCompanyExecutiveDirectiveUpdateArgs>(args: SelectSubset<T, AiCompanyExecutiveDirectiveUpdateArgs<ExtArgs>>): Prisma__AiCompanyExecutiveDirectiveClient<$Result.GetResult<Prisma.$AiCompanyExecutiveDirectivePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AiCompanyExecutiveDirectives.
+     * @param {AiCompanyExecutiveDirectiveDeleteManyArgs} args - Arguments to filter AiCompanyExecutiveDirectives to delete.
+     * @example
+     * // Delete a few AiCompanyExecutiveDirectives
+     * const { count } = await prisma.aiCompanyExecutiveDirective.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AiCompanyExecutiveDirectiveDeleteManyArgs>(args?: SelectSubset<T, AiCompanyExecutiveDirectiveDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiCompanyExecutiveDirectives.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyExecutiveDirectiveUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AiCompanyExecutiveDirectives
+     * const aiCompanyExecutiveDirective = await prisma.aiCompanyExecutiveDirective.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AiCompanyExecutiveDirectiveUpdateManyArgs>(args: SelectSubset<T, AiCompanyExecutiveDirectiveUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiCompanyExecutiveDirectives and returns the data updated in the database.
+     * @param {AiCompanyExecutiveDirectiveUpdateManyAndReturnArgs} args - Arguments to update many AiCompanyExecutiveDirectives.
+     * @example
+     * // Update many AiCompanyExecutiveDirectives
+     * const aiCompanyExecutiveDirective = await prisma.aiCompanyExecutiveDirective.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AiCompanyExecutiveDirectives and only return the `id`
+     * const aiCompanyExecutiveDirectiveWithIdOnly = await prisma.aiCompanyExecutiveDirective.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AiCompanyExecutiveDirectiveUpdateManyAndReturnArgs>(args: SelectSubset<T, AiCompanyExecutiveDirectiveUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiCompanyExecutiveDirectivePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AiCompanyExecutiveDirective.
+     * @param {AiCompanyExecutiveDirectiveUpsertArgs} args - Arguments to update or create a AiCompanyExecutiveDirective.
+     * @example
+     * // Update or create a AiCompanyExecutiveDirective
+     * const aiCompanyExecutiveDirective = await prisma.aiCompanyExecutiveDirective.upsert({
+     *   create: {
+     *     // ... data to create a AiCompanyExecutiveDirective
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AiCompanyExecutiveDirective we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AiCompanyExecutiveDirectiveUpsertArgs>(args: SelectSubset<T, AiCompanyExecutiveDirectiveUpsertArgs<ExtArgs>>): Prisma__AiCompanyExecutiveDirectiveClient<$Result.GetResult<Prisma.$AiCompanyExecutiveDirectivePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AiCompanyExecutiveDirectives.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyExecutiveDirectiveCountArgs} args - Arguments to filter AiCompanyExecutiveDirectives to count.
+     * @example
+     * // Count the number of AiCompanyExecutiveDirectives
+     * const count = await prisma.aiCompanyExecutiveDirective.count({
+     *   where: {
+     *     // ... the filter for the AiCompanyExecutiveDirectives we want to count
+     *   }
+     * })
+    **/
+    count<T extends AiCompanyExecutiveDirectiveCountArgs>(
+      args?: Subset<T, AiCompanyExecutiveDirectiveCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AiCompanyExecutiveDirectiveCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AiCompanyExecutiveDirective.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyExecutiveDirectiveAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AiCompanyExecutiveDirectiveAggregateArgs>(args: Subset<T, AiCompanyExecutiveDirectiveAggregateArgs>): Prisma.PrismaPromise<GetAiCompanyExecutiveDirectiveAggregateType<T>>
+
+    /**
+     * Group by AiCompanyExecutiveDirective.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyExecutiveDirectiveGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AiCompanyExecutiveDirectiveGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AiCompanyExecutiveDirectiveGroupByArgs['orderBy'] }
+        : { orderBy?: AiCompanyExecutiveDirectiveGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AiCompanyExecutiveDirectiveGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAiCompanyExecutiveDirectiveGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AiCompanyExecutiveDirective model
+   */
+  readonly fields: AiCompanyExecutiveDirectiveFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AiCompanyExecutiveDirective.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AiCompanyExecutiveDirectiveClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    assignments<T extends AiCompanyExecutiveDirective$assignmentsArgs<ExtArgs> = {}>(args?: Subset<T, AiCompanyExecutiveDirective$assignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiCompanyWorkAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    draftItems<T extends AiCompanyExecutiveDirective$draftItemsArgs<ExtArgs> = {}>(args?: Subset<T, AiCompanyExecutiveDirective$draftItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiCompanyDraftQueueItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    decisions<T extends AiCompanyExecutiveDirective$decisionsArgs<ExtArgs> = {}>(args?: Subset<T, AiCompanyExecutiveDirective$decisionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiCompanyDecisionLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AiCompanyExecutiveDirective model
+   */
+  interface AiCompanyExecutiveDirectiveFieldRefs {
+    readonly id: FieldRef<"AiCompanyExecutiveDirective", 'String'>
+    readonly tenantId: FieldRef<"AiCompanyExecutiveDirective", 'String'>
+    readonly title: FieldRef<"AiCompanyExecutiveDirective", 'String'>
+    readonly businessGoal: FieldRef<"AiCompanyExecutiveDirective", 'String'>
+    readonly sourceDepartment: FieldRef<"AiCompanyExecutiveDirective", 'String'>
+    readonly assignedDepartments: FieldRef<"AiCompanyExecutiveDirective", 'Json'>
+    readonly requestedOutputs: FieldRef<"AiCompanyExecutiveDirective", 'Json'>
+    readonly status: FieldRef<"AiCompanyExecutiveDirective", 'String'>
+    readonly workflowState: FieldRef<"AiCompanyExecutiveDirective", 'String'>
+    readonly riskLevel: FieldRef<"AiCompanyExecutiveDirective", 'String'>
+    readonly expectedBusinessValue: FieldRef<"AiCompanyExecutiveDirective", 'String'>
+    readonly governanceNotes: FieldRef<"AiCompanyExecutiveDirective", 'Json'>
+    readonly revenuePriorityScore: FieldRef<"AiCompanyExecutiveDirective", 'Json'>
+    readonly reviewReminderAt: FieldRef<"AiCompanyExecutiveDirective", 'DateTime'>
+    readonly approvedBy: FieldRef<"AiCompanyExecutiveDirective", 'String'>
+    readonly approvedAt: FieldRef<"AiCompanyExecutiveDirective", 'DateTime'>
+    readonly providerCalled: FieldRef<"AiCompanyExecutiveDirective", 'Boolean'>
+    readonly sent: FieldRef<"AiCompanyExecutiveDirective", 'Boolean'>
+    readonly published: FieldRef<"AiCompanyExecutiveDirective", 'Boolean'>
+    readonly liveExecutionAllowed: FieldRef<"AiCompanyExecutiveDirective", 'Boolean'>
+    readonly createdAt: FieldRef<"AiCompanyExecutiveDirective", 'DateTime'>
+    readonly updatedAt: FieldRef<"AiCompanyExecutiveDirective", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AiCompanyExecutiveDirective findUnique
+   */
+  export type AiCompanyExecutiveDirectiveFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyExecutiveDirective
+     */
+    select?: AiCompanyExecutiveDirectiveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyExecutiveDirective
+     */
+    omit?: AiCompanyExecutiveDirectiveOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyExecutiveDirectiveInclude<ExtArgs> | null
+    /**
+     * Filter, which AiCompanyExecutiveDirective to fetch.
+     */
+    where: AiCompanyExecutiveDirectiveWhereUniqueInput
+  }
+
+  /**
+   * AiCompanyExecutiveDirective findUniqueOrThrow
+   */
+  export type AiCompanyExecutiveDirectiveFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyExecutiveDirective
+     */
+    select?: AiCompanyExecutiveDirectiveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyExecutiveDirective
+     */
+    omit?: AiCompanyExecutiveDirectiveOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyExecutiveDirectiveInclude<ExtArgs> | null
+    /**
+     * Filter, which AiCompanyExecutiveDirective to fetch.
+     */
+    where: AiCompanyExecutiveDirectiveWhereUniqueInput
+  }
+
+  /**
+   * AiCompanyExecutiveDirective findFirst
+   */
+  export type AiCompanyExecutiveDirectiveFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyExecutiveDirective
+     */
+    select?: AiCompanyExecutiveDirectiveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyExecutiveDirective
+     */
+    omit?: AiCompanyExecutiveDirectiveOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyExecutiveDirectiveInclude<ExtArgs> | null
+    /**
+     * Filter, which AiCompanyExecutiveDirective to fetch.
+     */
+    where?: AiCompanyExecutiveDirectiveWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiCompanyExecutiveDirectives to fetch.
+     */
+    orderBy?: AiCompanyExecutiveDirectiveOrderByWithRelationInput | AiCompanyExecutiveDirectiveOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiCompanyExecutiveDirectives.
+     */
+    cursor?: AiCompanyExecutiveDirectiveWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiCompanyExecutiveDirectives from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiCompanyExecutiveDirectives.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiCompanyExecutiveDirectives.
+     */
+    distinct?: AiCompanyExecutiveDirectiveScalarFieldEnum | AiCompanyExecutiveDirectiveScalarFieldEnum[]
+  }
+
+  /**
+   * AiCompanyExecutiveDirective findFirstOrThrow
+   */
+  export type AiCompanyExecutiveDirectiveFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyExecutiveDirective
+     */
+    select?: AiCompanyExecutiveDirectiveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyExecutiveDirective
+     */
+    omit?: AiCompanyExecutiveDirectiveOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyExecutiveDirectiveInclude<ExtArgs> | null
+    /**
+     * Filter, which AiCompanyExecutiveDirective to fetch.
+     */
+    where?: AiCompanyExecutiveDirectiveWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiCompanyExecutiveDirectives to fetch.
+     */
+    orderBy?: AiCompanyExecutiveDirectiveOrderByWithRelationInput | AiCompanyExecutiveDirectiveOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiCompanyExecutiveDirectives.
+     */
+    cursor?: AiCompanyExecutiveDirectiveWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiCompanyExecutiveDirectives from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiCompanyExecutiveDirectives.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiCompanyExecutiveDirectives.
+     */
+    distinct?: AiCompanyExecutiveDirectiveScalarFieldEnum | AiCompanyExecutiveDirectiveScalarFieldEnum[]
+  }
+
+  /**
+   * AiCompanyExecutiveDirective findMany
+   */
+  export type AiCompanyExecutiveDirectiveFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyExecutiveDirective
+     */
+    select?: AiCompanyExecutiveDirectiveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyExecutiveDirective
+     */
+    omit?: AiCompanyExecutiveDirectiveOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyExecutiveDirectiveInclude<ExtArgs> | null
+    /**
+     * Filter, which AiCompanyExecutiveDirectives to fetch.
+     */
+    where?: AiCompanyExecutiveDirectiveWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiCompanyExecutiveDirectives to fetch.
+     */
+    orderBy?: AiCompanyExecutiveDirectiveOrderByWithRelationInput | AiCompanyExecutiveDirectiveOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AiCompanyExecutiveDirectives.
+     */
+    cursor?: AiCompanyExecutiveDirectiveWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiCompanyExecutiveDirectives from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiCompanyExecutiveDirectives.
+     */
+    skip?: number
+    distinct?: AiCompanyExecutiveDirectiveScalarFieldEnum | AiCompanyExecutiveDirectiveScalarFieldEnum[]
+  }
+
+  /**
+   * AiCompanyExecutiveDirective create
+   */
+  export type AiCompanyExecutiveDirectiveCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyExecutiveDirective
+     */
+    select?: AiCompanyExecutiveDirectiveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyExecutiveDirective
+     */
+    omit?: AiCompanyExecutiveDirectiveOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyExecutiveDirectiveInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AiCompanyExecutiveDirective.
+     */
+    data: XOR<AiCompanyExecutiveDirectiveCreateInput, AiCompanyExecutiveDirectiveUncheckedCreateInput>
+  }
+
+  /**
+   * AiCompanyExecutiveDirective createMany
+   */
+  export type AiCompanyExecutiveDirectiveCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AiCompanyExecutiveDirectives.
+     */
+    data: AiCompanyExecutiveDirectiveCreateManyInput | AiCompanyExecutiveDirectiveCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AiCompanyExecutiveDirective createManyAndReturn
+   */
+  export type AiCompanyExecutiveDirectiveCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyExecutiveDirective
+     */
+    select?: AiCompanyExecutiveDirectiveSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyExecutiveDirective
+     */
+    omit?: AiCompanyExecutiveDirectiveOmit<ExtArgs> | null
+    /**
+     * The data used to create many AiCompanyExecutiveDirectives.
+     */
+    data: AiCompanyExecutiveDirectiveCreateManyInput | AiCompanyExecutiveDirectiveCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AiCompanyExecutiveDirective update
+   */
+  export type AiCompanyExecutiveDirectiveUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyExecutiveDirective
+     */
+    select?: AiCompanyExecutiveDirectiveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyExecutiveDirective
+     */
+    omit?: AiCompanyExecutiveDirectiveOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyExecutiveDirectiveInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AiCompanyExecutiveDirective.
+     */
+    data: XOR<AiCompanyExecutiveDirectiveUpdateInput, AiCompanyExecutiveDirectiveUncheckedUpdateInput>
+    /**
+     * Choose, which AiCompanyExecutiveDirective to update.
+     */
+    where: AiCompanyExecutiveDirectiveWhereUniqueInput
+  }
+
+  /**
+   * AiCompanyExecutiveDirective updateMany
+   */
+  export type AiCompanyExecutiveDirectiveUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AiCompanyExecutiveDirectives.
+     */
+    data: XOR<AiCompanyExecutiveDirectiveUpdateManyMutationInput, AiCompanyExecutiveDirectiveUncheckedUpdateManyInput>
+    /**
+     * Filter which AiCompanyExecutiveDirectives to update
+     */
+    where?: AiCompanyExecutiveDirectiveWhereInput
+    /**
+     * Limit how many AiCompanyExecutiveDirectives to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiCompanyExecutiveDirective updateManyAndReturn
+   */
+  export type AiCompanyExecutiveDirectiveUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyExecutiveDirective
+     */
+    select?: AiCompanyExecutiveDirectiveSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyExecutiveDirective
+     */
+    omit?: AiCompanyExecutiveDirectiveOmit<ExtArgs> | null
+    /**
+     * The data used to update AiCompanyExecutiveDirectives.
+     */
+    data: XOR<AiCompanyExecutiveDirectiveUpdateManyMutationInput, AiCompanyExecutiveDirectiveUncheckedUpdateManyInput>
+    /**
+     * Filter which AiCompanyExecutiveDirectives to update
+     */
+    where?: AiCompanyExecutiveDirectiveWhereInput
+    /**
+     * Limit how many AiCompanyExecutiveDirectives to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiCompanyExecutiveDirective upsert
+   */
+  export type AiCompanyExecutiveDirectiveUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyExecutiveDirective
+     */
+    select?: AiCompanyExecutiveDirectiveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyExecutiveDirective
+     */
+    omit?: AiCompanyExecutiveDirectiveOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyExecutiveDirectiveInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AiCompanyExecutiveDirective to update in case it exists.
+     */
+    where: AiCompanyExecutiveDirectiveWhereUniqueInput
+    /**
+     * In case the AiCompanyExecutiveDirective found by the `where` argument doesn't exist, create a new AiCompanyExecutiveDirective with this data.
+     */
+    create: XOR<AiCompanyExecutiveDirectiveCreateInput, AiCompanyExecutiveDirectiveUncheckedCreateInput>
+    /**
+     * In case the AiCompanyExecutiveDirective was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AiCompanyExecutiveDirectiveUpdateInput, AiCompanyExecutiveDirectiveUncheckedUpdateInput>
+  }
+
+  /**
+   * AiCompanyExecutiveDirective delete
+   */
+  export type AiCompanyExecutiveDirectiveDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyExecutiveDirective
+     */
+    select?: AiCompanyExecutiveDirectiveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyExecutiveDirective
+     */
+    omit?: AiCompanyExecutiveDirectiveOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyExecutiveDirectiveInclude<ExtArgs> | null
+    /**
+     * Filter which AiCompanyExecutiveDirective to delete.
+     */
+    where: AiCompanyExecutiveDirectiveWhereUniqueInput
+  }
+
+  /**
+   * AiCompanyExecutiveDirective deleteMany
+   */
+  export type AiCompanyExecutiveDirectiveDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiCompanyExecutiveDirectives to delete
+     */
+    where?: AiCompanyExecutiveDirectiveWhereInput
+    /**
+     * Limit how many AiCompanyExecutiveDirectives to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiCompanyExecutiveDirective.assignments
+   */
+  export type AiCompanyExecutiveDirective$assignmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyWorkAssignment
+     */
+    select?: AiCompanyWorkAssignmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyWorkAssignment
+     */
+    omit?: AiCompanyWorkAssignmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyWorkAssignmentInclude<ExtArgs> | null
+    where?: AiCompanyWorkAssignmentWhereInput
+    orderBy?: AiCompanyWorkAssignmentOrderByWithRelationInput | AiCompanyWorkAssignmentOrderByWithRelationInput[]
+    cursor?: AiCompanyWorkAssignmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AiCompanyWorkAssignmentScalarFieldEnum | AiCompanyWorkAssignmentScalarFieldEnum[]
+  }
+
+  /**
+   * AiCompanyExecutiveDirective.draftItems
+   */
+  export type AiCompanyExecutiveDirective$draftItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDraftQueueItem
+     */
+    select?: AiCompanyDraftQueueItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDraftQueueItem
+     */
+    omit?: AiCompanyDraftQueueItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDraftQueueItemInclude<ExtArgs> | null
+    where?: AiCompanyDraftQueueItemWhereInput
+    orderBy?: AiCompanyDraftQueueItemOrderByWithRelationInput | AiCompanyDraftQueueItemOrderByWithRelationInput[]
+    cursor?: AiCompanyDraftQueueItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AiCompanyDraftQueueItemScalarFieldEnum | AiCompanyDraftQueueItemScalarFieldEnum[]
+  }
+
+  /**
+   * AiCompanyExecutiveDirective.decisions
+   */
+  export type AiCompanyExecutiveDirective$decisionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDecisionLog
+     */
+    select?: AiCompanyDecisionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDecisionLog
+     */
+    omit?: AiCompanyDecisionLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDecisionLogInclude<ExtArgs> | null
+    where?: AiCompanyDecisionLogWhereInput
+    orderBy?: AiCompanyDecisionLogOrderByWithRelationInput | AiCompanyDecisionLogOrderByWithRelationInput[]
+    cursor?: AiCompanyDecisionLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AiCompanyDecisionLogScalarFieldEnum | AiCompanyDecisionLogScalarFieldEnum[]
+  }
+
+  /**
+   * AiCompanyExecutiveDirective without action
+   */
+  export type AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyExecutiveDirective
+     */
+    select?: AiCompanyExecutiveDirectiveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyExecutiveDirective
+     */
+    omit?: AiCompanyExecutiveDirectiveOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyExecutiveDirectiveInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AiCompanyWorkAssignment
+   */
+
+  export type AggregateAiCompanyWorkAssignment = {
+    _count: AiCompanyWorkAssignmentCountAggregateOutputType | null
+    _min: AiCompanyWorkAssignmentMinAggregateOutputType | null
+    _max: AiCompanyWorkAssignmentMaxAggregateOutputType | null
+  }
+
+  export type AiCompanyWorkAssignmentMinAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    directiveId: string | null
+    department: string | null
+    assignmentType: string | null
+    status: string | null
+    blocker: string | null
+    approvalRequired: boolean | null
+    providerCalled: boolean | null
+    sent: boolean | null
+    published: boolean | null
+    liveExecutionAllowed: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AiCompanyWorkAssignmentMaxAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    directiveId: string | null
+    department: string | null
+    assignmentType: string | null
+    status: string | null
+    blocker: string | null
+    approvalRequired: boolean | null
+    providerCalled: boolean | null
+    sent: boolean | null
+    published: boolean | null
+    liveExecutionAllowed: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AiCompanyWorkAssignmentCountAggregateOutputType = {
+    id: number
+    tenantId: number
+    directiveId: number
+    department: number
+    assignmentType: number
+    requestedOutputs: number
+    status: number
+    blocker: number
+    approvalRequired: number
+    providerCalled: number
+    sent: number
+    published: number
+    liveExecutionAllowed: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AiCompanyWorkAssignmentMinAggregateInputType = {
+    id?: true
+    tenantId?: true
+    directiveId?: true
+    department?: true
+    assignmentType?: true
+    status?: true
+    blocker?: true
+    approvalRequired?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AiCompanyWorkAssignmentMaxAggregateInputType = {
+    id?: true
+    tenantId?: true
+    directiveId?: true
+    department?: true
+    assignmentType?: true
+    status?: true
+    blocker?: true
+    approvalRequired?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AiCompanyWorkAssignmentCountAggregateInputType = {
+    id?: true
+    tenantId?: true
+    directiveId?: true
+    department?: true
+    assignmentType?: true
+    requestedOutputs?: true
+    status?: true
+    blocker?: true
+    approvalRequired?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AiCompanyWorkAssignmentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiCompanyWorkAssignment to aggregate.
+     */
+    where?: AiCompanyWorkAssignmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiCompanyWorkAssignments to fetch.
+     */
+    orderBy?: AiCompanyWorkAssignmentOrderByWithRelationInput | AiCompanyWorkAssignmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AiCompanyWorkAssignmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiCompanyWorkAssignments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiCompanyWorkAssignments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AiCompanyWorkAssignments
+    **/
+    _count?: true | AiCompanyWorkAssignmentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AiCompanyWorkAssignmentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AiCompanyWorkAssignmentMaxAggregateInputType
+  }
+
+  export type GetAiCompanyWorkAssignmentAggregateType<T extends AiCompanyWorkAssignmentAggregateArgs> = {
+        [P in keyof T & keyof AggregateAiCompanyWorkAssignment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAiCompanyWorkAssignment[P]>
+      : GetScalarType<T[P], AggregateAiCompanyWorkAssignment[P]>
+  }
+
+
+
+
+  export type AiCompanyWorkAssignmentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiCompanyWorkAssignmentWhereInput
+    orderBy?: AiCompanyWorkAssignmentOrderByWithAggregationInput | AiCompanyWorkAssignmentOrderByWithAggregationInput[]
+    by: AiCompanyWorkAssignmentScalarFieldEnum[] | AiCompanyWorkAssignmentScalarFieldEnum
+    having?: AiCompanyWorkAssignmentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AiCompanyWorkAssignmentCountAggregateInputType | true
+    _min?: AiCompanyWorkAssignmentMinAggregateInputType
+    _max?: AiCompanyWorkAssignmentMaxAggregateInputType
+  }
+
+  export type AiCompanyWorkAssignmentGroupByOutputType = {
+    id: string
+    tenantId: string
+    directiveId: string
+    department: string
+    assignmentType: string
+    requestedOutputs: JsonValue
+    status: string
+    blocker: string | null
+    approvalRequired: boolean
+    providerCalled: boolean
+    sent: boolean
+    published: boolean
+    liveExecutionAllowed: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: AiCompanyWorkAssignmentCountAggregateOutputType | null
+    _min: AiCompanyWorkAssignmentMinAggregateOutputType | null
+    _max: AiCompanyWorkAssignmentMaxAggregateOutputType | null
+  }
+
+  type GetAiCompanyWorkAssignmentGroupByPayload<T extends AiCompanyWorkAssignmentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AiCompanyWorkAssignmentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AiCompanyWorkAssignmentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AiCompanyWorkAssignmentGroupByOutputType[P]>
+            : GetScalarType<T[P], AiCompanyWorkAssignmentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AiCompanyWorkAssignmentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    directiveId?: boolean
+    department?: boolean
+    assignmentType?: boolean
+    requestedOutputs?: boolean
+    status?: boolean
+    blocker?: boolean
+    approvalRequired?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    directive?: boolean | AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["aiCompanyWorkAssignment"]>
+
+  export type AiCompanyWorkAssignmentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    directiveId?: boolean
+    department?: boolean
+    assignmentType?: boolean
+    requestedOutputs?: boolean
+    status?: boolean
+    blocker?: boolean
+    approvalRequired?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    directive?: boolean | AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["aiCompanyWorkAssignment"]>
+
+  export type AiCompanyWorkAssignmentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    directiveId?: boolean
+    department?: boolean
+    assignmentType?: boolean
+    requestedOutputs?: boolean
+    status?: boolean
+    blocker?: boolean
+    approvalRequired?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    directive?: boolean | AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["aiCompanyWorkAssignment"]>
+
+  export type AiCompanyWorkAssignmentSelectScalar = {
+    id?: boolean
+    tenantId?: boolean
+    directiveId?: boolean
+    department?: boolean
+    assignmentType?: boolean
+    requestedOutputs?: boolean
+    status?: boolean
+    blocker?: boolean
+    approvalRequired?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AiCompanyWorkAssignmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "directiveId" | "department" | "assignmentType" | "requestedOutputs" | "status" | "blocker" | "approvalRequired" | "providerCalled" | "sent" | "published" | "liveExecutionAllowed" | "createdAt" | "updatedAt", ExtArgs["result"]["aiCompanyWorkAssignment"]>
+  export type AiCompanyWorkAssignmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    directive?: boolean | AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs>
+  }
+  export type AiCompanyWorkAssignmentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    directive?: boolean | AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs>
+  }
+  export type AiCompanyWorkAssignmentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    directive?: boolean | AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs>
+  }
+
+  export type $AiCompanyWorkAssignmentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AiCompanyWorkAssignment"
+    objects: {
+      directive: Prisma.$AiCompanyExecutiveDirectivePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenantId: string
+      directiveId: string
+      department: string
+      assignmentType: string
+      requestedOutputs: Prisma.JsonValue
+      status: string
+      blocker: string | null
+      approvalRequired: boolean
+      providerCalled: boolean
+      sent: boolean
+      published: boolean
+      liveExecutionAllowed: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["aiCompanyWorkAssignment"]>
+    composites: {}
+  }
+
+  type AiCompanyWorkAssignmentGetPayload<S extends boolean | null | undefined | AiCompanyWorkAssignmentDefaultArgs> = $Result.GetResult<Prisma.$AiCompanyWorkAssignmentPayload, S>
+
+  type AiCompanyWorkAssignmentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AiCompanyWorkAssignmentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AiCompanyWorkAssignmentCountAggregateInputType | true
+    }
+
+  export interface AiCompanyWorkAssignmentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AiCompanyWorkAssignment'], meta: { name: 'AiCompanyWorkAssignment' } }
+    /**
+     * Find zero or one AiCompanyWorkAssignment that matches the filter.
+     * @param {AiCompanyWorkAssignmentFindUniqueArgs} args - Arguments to find a AiCompanyWorkAssignment
+     * @example
+     * // Get one AiCompanyWorkAssignment
+     * const aiCompanyWorkAssignment = await prisma.aiCompanyWorkAssignment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AiCompanyWorkAssignmentFindUniqueArgs>(args: SelectSubset<T, AiCompanyWorkAssignmentFindUniqueArgs<ExtArgs>>): Prisma__AiCompanyWorkAssignmentClient<$Result.GetResult<Prisma.$AiCompanyWorkAssignmentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AiCompanyWorkAssignment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AiCompanyWorkAssignmentFindUniqueOrThrowArgs} args - Arguments to find a AiCompanyWorkAssignment
+     * @example
+     * // Get one AiCompanyWorkAssignment
+     * const aiCompanyWorkAssignment = await prisma.aiCompanyWorkAssignment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AiCompanyWorkAssignmentFindUniqueOrThrowArgs>(args: SelectSubset<T, AiCompanyWorkAssignmentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AiCompanyWorkAssignmentClient<$Result.GetResult<Prisma.$AiCompanyWorkAssignmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiCompanyWorkAssignment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyWorkAssignmentFindFirstArgs} args - Arguments to find a AiCompanyWorkAssignment
+     * @example
+     * // Get one AiCompanyWorkAssignment
+     * const aiCompanyWorkAssignment = await prisma.aiCompanyWorkAssignment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AiCompanyWorkAssignmentFindFirstArgs>(args?: SelectSubset<T, AiCompanyWorkAssignmentFindFirstArgs<ExtArgs>>): Prisma__AiCompanyWorkAssignmentClient<$Result.GetResult<Prisma.$AiCompanyWorkAssignmentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiCompanyWorkAssignment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyWorkAssignmentFindFirstOrThrowArgs} args - Arguments to find a AiCompanyWorkAssignment
+     * @example
+     * // Get one AiCompanyWorkAssignment
+     * const aiCompanyWorkAssignment = await prisma.aiCompanyWorkAssignment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AiCompanyWorkAssignmentFindFirstOrThrowArgs>(args?: SelectSubset<T, AiCompanyWorkAssignmentFindFirstOrThrowArgs<ExtArgs>>): Prisma__AiCompanyWorkAssignmentClient<$Result.GetResult<Prisma.$AiCompanyWorkAssignmentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AiCompanyWorkAssignments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyWorkAssignmentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AiCompanyWorkAssignments
+     * const aiCompanyWorkAssignments = await prisma.aiCompanyWorkAssignment.findMany()
+     * 
+     * // Get first 10 AiCompanyWorkAssignments
+     * const aiCompanyWorkAssignments = await prisma.aiCompanyWorkAssignment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const aiCompanyWorkAssignmentWithIdOnly = await prisma.aiCompanyWorkAssignment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AiCompanyWorkAssignmentFindManyArgs>(args?: SelectSubset<T, AiCompanyWorkAssignmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiCompanyWorkAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AiCompanyWorkAssignment.
+     * @param {AiCompanyWorkAssignmentCreateArgs} args - Arguments to create a AiCompanyWorkAssignment.
+     * @example
+     * // Create one AiCompanyWorkAssignment
+     * const AiCompanyWorkAssignment = await prisma.aiCompanyWorkAssignment.create({
+     *   data: {
+     *     // ... data to create a AiCompanyWorkAssignment
+     *   }
+     * })
+     * 
+     */
+    create<T extends AiCompanyWorkAssignmentCreateArgs>(args: SelectSubset<T, AiCompanyWorkAssignmentCreateArgs<ExtArgs>>): Prisma__AiCompanyWorkAssignmentClient<$Result.GetResult<Prisma.$AiCompanyWorkAssignmentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AiCompanyWorkAssignments.
+     * @param {AiCompanyWorkAssignmentCreateManyArgs} args - Arguments to create many AiCompanyWorkAssignments.
+     * @example
+     * // Create many AiCompanyWorkAssignments
+     * const aiCompanyWorkAssignment = await prisma.aiCompanyWorkAssignment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AiCompanyWorkAssignmentCreateManyArgs>(args?: SelectSubset<T, AiCompanyWorkAssignmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AiCompanyWorkAssignments and returns the data saved in the database.
+     * @param {AiCompanyWorkAssignmentCreateManyAndReturnArgs} args - Arguments to create many AiCompanyWorkAssignments.
+     * @example
+     * // Create many AiCompanyWorkAssignments
+     * const aiCompanyWorkAssignment = await prisma.aiCompanyWorkAssignment.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AiCompanyWorkAssignments and only return the `id`
+     * const aiCompanyWorkAssignmentWithIdOnly = await prisma.aiCompanyWorkAssignment.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AiCompanyWorkAssignmentCreateManyAndReturnArgs>(args?: SelectSubset<T, AiCompanyWorkAssignmentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiCompanyWorkAssignmentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AiCompanyWorkAssignment.
+     * @param {AiCompanyWorkAssignmentDeleteArgs} args - Arguments to delete one AiCompanyWorkAssignment.
+     * @example
+     * // Delete one AiCompanyWorkAssignment
+     * const AiCompanyWorkAssignment = await prisma.aiCompanyWorkAssignment.delete({
+     *   where: {
+     *     // ... filter to delete one AiCompanyWorkAssignment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AiCompanyWorkAssignmentDeleteArgs>(args: SelectSubset<T, AiCompanyWorkAssignmentDeleteArgs<ExtArgs>>): Prisma__AiCompanyWorkAssignmentClient<$Result.GetResult<Prisma.$AiCompanyWorkAssignmentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AiCompanyWorkAssignment.
+     * @param {AiCompanyWorkAssignmentUpdateArgs} args - Arguments to update one AiCompanyWorkAssignment.
+     * @example
+     * // Update one AiCompanyWorkAssignment
+     * const aiCompanyWorkAssignment = await prisma.aiCompanyWorkAssignment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AiCompanyWorkAssignmentUpdateArgs>(args: SelectSubset<T, AiCompanyWorkAssignmentUpdateArgs<ExtArgs>>): Prisma__AiCompanyWorkAssignmentClient<$Result.GetResult<Prisma.$AiCompanyWorkAssignmentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AiCompanyWorkAssignments.
+     * @param {AiCompanyWorkAssignmentDeleteManyArgs} args - Arguments to filter AiCompanyWorkAssignments to delete.
+     * @example
+     * // Delete a few AiCompanyWorkAssignments
+     * const { count } = await prisma.aiCompanyWorkAssignment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AiCompanyWorkAssignmentDeleteManyArgs>(args?: SelectSubset<T, AiCompanyWorkAssignmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiCompanyWorkAssignments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyWorkAssignmentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AiCompanyWorkAssignments
+     * const aiCompanyWorkAssignment = await prisma.aiCompanyWorkAssignment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AiCompanyWorkAssignmentUpdateManyArgs>(args: SelectSubset<T, AiCompanyWorkAssignmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiCompanyWorkAssignments and returns the data updated in the database.
+     * @param {AiCompanyWorkAssignmentUpdateManyAndReturnArgs} args - Arguments to update many AiCompanyWorkAssignments.
+     * @example
+     * // Update many AiCompanyWorkAssignments
+     * const aiCompanyWorkAssignment = await prisma.aiCompanyWorkAssignment.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AiCompanyWorkAssignments and only return the `id`
+     * const aiCompanyWorkAssignmentWithIdOnly = await prisma.aiCompanyWorkAssignment.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AiCompanyWorkAssignmentUpdateManyAndReturnArgs>(args: SelectSubset<T, AiCompanyWorkAssignmentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiCompanyWorkAssignmentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AiCompanyWorkAssignment.
+     * @param {AiCompanyWorkAssignmentUpsertArgs} args - Arguments to update or create a AiCompanyWorkAssignment.
+     * @example
+     * // Update or create a AiCompanyWorkAssignment
+     * const aiCompanyWorkAssignment = await prisma.aiCompanyWorkAssignment.upsert({
+     *   create: {
+     *     // ... data to create a AiCompanyWorkAssignment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AiCompanyWorkAssignment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AiCompanyWorkAssignmentUpsertArgs>(args: SelectSubset<T, AiCompanyWorkAssignmentUpsertArgs<ExtArgs>>): Prisma__AiCompanyWorkAssignmentClient<$Result.GetResult<Prisma.$AiCompanyWorkAssignmentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AiCompanyWorkAssignments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyWorkAssignmentCountArgs} args - Arguments to filter AiCompanyWorkAssignments to count.
+     * @example
+     * // Count the number of AiCompanyWorkAssignments
+     * const count = await prisma.aiCompanyWorkAssignment.count({
+     *   where: {
+     *     // ... the filter for the AiCompanyWorkAssignments we want to count
+     *   }
+     * })
+    **/
+    count<T extends AiCompanyWorkAssignmentCountArgs>(
+      args?: Subset<T, AiCompanyWorkAssignmentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AiCompanyWorkAssignmentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AiCompanyWorkAssignment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyWorkAssignmentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AiCompanyWorkAssignmentAggregateArgs>(args: Subset<T, AiCompanyWorkAssignmentAggregateArgs>): Prisma.PrismaPromise<GetAiCompanyWorkAssignmentAggregateType<T>>
+
+    /**
+     * Group by AiCompanyWorkAssignment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyWorkAssignmentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AiCompanyWorkAssignmentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AiCompanyWorkAssignmentGroupByArgs['orderBy'] }
+        : { orderBy?: AiCompanyWorkAssignmentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AiCompanyWorkAssignmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAiCompanyWorkAssignmentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AiCompanyWorkAssignment model
+   */
+  readonly fields: AiCompanyWorkAssignmentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AiCompanyWorkAssignment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AiCompanyWorkAssignmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    directive<T extends AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs>>): Prisma__AiCompanyExecutiveDirectiveClient<$Result.GetResult<Prisma.$AiCompanyExecutiveDirectivePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AiCompanyWorkAssignment model
+   */
+  interface AiCompanyWorkAssignmentFieldRefs {
+    readonly id: FieldRef<"AiCompanyWorkAssignment", 'String'>
+    readonly tenantId: FieldRef<"AiCompanyWorkAssignment", 'String'>
+    readonly directiveId: FieldRef<"AiCompanyWorkAssignment", 'String'>
+    readonly department: FieldRef<"AiCompanyWorkAssignment", 'String'>
+    readonly assignmentType: FieldRef<"AiCompanyWorkAssignment", 'String'>
+    readonly requestedOutputs: FieldRef<"AiCompanyWorkAssignment", 'Json'>
+    readonly status: FieldRef<"AiCompanyWorkAssignment", 'String'>
+    readonly blocker: FieldRef<"AiCompanyWorkAssignment", 'String'>
+    readonly approvalRequired: FieldRef<"AiCompanyWorkAssignment", 'Boolean'>
+    readonly providerCalled: FieldRef<"AiCompanyWorkAssignment", 'Boolean'>
+    readonly sent: FieldRef<"AiCompanyWorkAssignment", 'Boolean'>
+    readonly published: FieldRef<"AiCompanyWorkAssignment", 'Boolean'>
+    readonly liveExecutionAllowed: FieldRef<"AiCompanyWorkAssignment", 'Boolean'>
+    readonly createdAt: FieldRef<"AiCompanyWorkAssignment", 'DateTime'>
+    readonly updatedAt: FieldRef<"AiCompanyWorkAssignment", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AiCompanyWorkAssignment findUnique
+   */
+  export type AiCompanyWorkAssignmentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyWorkAssignment
+     */
+    select?: AiCompanyWorkAssignmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyWorkAssignment
+     */
+    omit?: AiCompanyWorkAssignmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyWorkAssignmentInclude<ExtArgs> | null
+    /**
+     * Filter, which AiCompanyWorkAssignment to fetch.
+     */
+    where: AiCompanyWorkAssignmentWhereUniqueInput
+  }
+
+  /**
+   * AiCompanyWorkAssignment findUniqueOrThrow
+   */
+  export type AiCompanyWorkAssignmentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyWorkAssignment
+     */
+    select?: AiCompanyWorkAssignmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyWorkAssignment
+     */
+    omit?: AiCompanyWorkAssignmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyWorkAssignmentInclude<ExtArgs> | null
+    /**
+     * Filter, which AiCompanyWorkAssignment to fetch.
+     */
+    where: AiCompanyWorkAssignmentWhereUniqueInput
+  }
+
+  /**
+   * AiCompanyWorkAssignment findFirst
+   */
+  export type AiCompanyWorkAssignmentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyWorkAssignment
+     */
+    select?: AiCompanyWorkAssignmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyWorkAssignment
+     */
+    omit?: AiCompanyWorkAssignmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyWorkAssignmentInclude<ExtArgs> | null
+    /**
+     * Filter, which AiCompanyWorkAssignment to fetch.
+     */
+    where?: AiCompanyWorkAssignmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiCompanyWorkAssignments to fetch.
+     */
+    orderBy?: AiCompanyWorkAssignmentOrderByWithRelationInput | AiCompanyWorkAssignmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiCompanyWorkAssignments.
+     */
+    cursor?: AiCompanyWorkAssignmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiCompanyWorkAssignments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiCompanyWorkAssignments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiCompanyWorkAssignments.
+     */
+    distinct?: AiCompanyWorkAssignmentScalarFieldEnum | AiCompanyWorkAssignmentScalarFieldEnum[]
+  }
+
+  /**
+   * AiCompanyWorkAssignment findFirstOrThrow
+   */
+  export type AiCompanyWorkAssignmentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyWorkAssignment
+     */
+    select?: AiCompanyWorkAssignmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyWorkAssignment
+     */
+    omit?: AiCompanyWorkAssignmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyWorkAssignmentInclude<ExtArgs> | null
+    /**
+     * Filter, which AiCompanyWorkAssignment to fetch.
+     */
+    where?: AiCompanyWorkAssignmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiCompanyWorkAssignments to fetch.
+     */
+    orderBy?: AiCompanyWorkAssignmentOrderByWithRelationInput | AiCompanyWorkAssignmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiCompanyWorkAssignments.
+     */
+    cursor?: AiCompanyWorkAssignmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiCompanyWorkAssignments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiCompanyWorkAssignments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiCompanyWorkAssignments.
+     */
+    distinct?: AiCompanyWorkAssignmentScalarFieldEnum | AiCompanyWorkAssignmentScalarFieldEnum[]
+  }
+
+  /**
+   * AiCompanyWorkAssignment findMany
+   */
+  export type AiCompanyWorkAssignmentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyWorkAssignment
+     */
+    select?: AiCompanyWorkAssignmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyWorkAssignment
+     */
+    omit?: AiCompanyWorkAssignmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyWorkAssignmentInclude<ExtArgs> | null
+    /**
+     * Filter, which AiCompanyWorkAssignments to fetch.
+     */
+    where?: AiCompanyWorkAssignmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiCompanyWorkAssignments to fetch.
+     */
+    orderBy?: AiCompanyWorkAssignmentOrderByWithRelationInput | AiCompanyWorkAssignmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AiCompanyWorkAssignments.
+     */
+    cursor?: AiCompanyWorkAssignmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiCompanyWorkAssignments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiCompanyWorkAssignments.
+     */
+    skip?: number
+    distinct?: AiCompanyWorkAssignmentScalarFieldEnum | AiCompanyWorkAssignmentScalarFieldEnum[]
+  }
+
+  /**
+   * AiCompanyWorkAssignment create
+   */
+  export type AiCompanyWorkAssignmentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyWorkAssignment
+     */
+    select?: AiCompanyWorkAssignmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyWorkAssignment
+     */
+    omit?: AiCompanyWorkAssignmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyWorkAssignmentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AiCompanyWorkAssignment.
+     */
+    data: XOR<AiCompanyWorkAssignmentCreateInput, AiCompanyWorkAssignmentUncheckedCreateInput>
+  }
+
+  /**
+   * AiCompanyWorkAssignment createMany
+   */
+  export type AiCompanyWorkAssignmentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AiCompanyWorkAssignments.
+     */
+    data: AiCompanyWorkAssignmentCreateManyInput | AiCompanyWorkAssignmentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AiCompanyWorkAssignment createManyAndReturn
+   */
+  export type AiCompanyWorkAssignmentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyWorkAssignment
+     */
+    select?: AiCompanyWorkAssignmentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyWorkAssignment
+     */
+    omit?: AiCompanyWorkAssignmentOmit<ExtArgs> | null
+    /**
+     * The data used to create many AiCompanyWorkAssignments.
+     */
+    data: AiCompanyWorkAssignmentCreateManyInput | AiCompanyWorkAssignmentCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyWorkAssignmentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AiCompanyWorkAssignment update
+   */
+  export type AiCompanyWorkAssignmentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyWorkAssignment
+     */
+    select?: AiCompanyWorkAssignmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyWorkAssignment
+     */
+    omit?: AiCompanyWorkAssignmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyWorkAssignmentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AiCompanyWorkAssignment.
+     */
+    data: XOR<AiCompanyWorkAssignmentUpdateInput, AiCompanyWorkAssignmentUncheckedUpdateInput>
+    /**
+     * Choose, which AiCompanyWorkAssignment to update.
+     */
+    where: AiCompanyWorkAssignmentWhereUniqueInput
+  }
+
+  /**
+   * AiCompanyWorkAssignment updateMany
+   */
+  export type AiCompanyWorkAssignmentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AiCompanyWorkAssignments.
+     */
+    data: XOR<AiCompanyWorkAssignmentUpdateManyMutationInput, AiCompanyWorkAssignmentUncheckedUpdateManyInput>
+    /**
+     * Filter which AiCompanyWorkAssignments to update
+     */
+    where?: AiCompanyWorkAssignmentWhereInput
+    /**
+     * Limit how many AiCompanyWorkAssignments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiCompanyWorkAssignment updateManyAndReturn
+   */
+  export type AiCompanyWorkAssignmentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyWorkAssignment
+     */
+    select?: AiCompanyWorkAssignmentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyWorkAssignment
+     */
+    omit?: AiCompanyWorkAssignmentOmit<ExtArgs> | null
+    /**
+     * The data used to update AiCompanyWorkAssignments.
+     */
+    data: XOR<AiCompanyWorkAssignmentUpdateManyMutationInput, AiCompanyWorkAssignmentUncheckedUpdateManyInput>
+    /**
+     * Filter which AiCompanyWorkAssignments to update
+     */
+    where?: AiCompanyWorkAssignmentWhereInput
+    /**
+     * Limit how many AiCompanyWorkAssignments to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyWorkAssignmentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AiCompanyWorkAssignment upsert
+   */
+  export type AiCompanyWorkAssignmentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyWorkAssignment
+     */
+    select?: AiCompanyWorkAssignmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyWorkAssignment
+     */
+    omit?: AiCompanyWorkAssignmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyWorkAssignmentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AiCompanyWorkAssignment to update in case it exists.
+     */
+    where: AiCompanyWorkAssignmentWhereUniqueInput
+    /**
+     * In case the AiCompanyWorkAssignment found by the `where` argument doesn't exist, create a new AiCompanyWorkAssignment with this data.
+     */
+    create: XOR<AiCompanyWorkAssignmentCreateInput, AiCompanyWorkAssignmentUncheckedCreateInput>
+    /**
+     * In case the AiCompanyWorkAssignment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AiCompanyWorkAssignmentUpdateInput, AiCompanyWorkAssignmentUncheckedUpdateInput>
+  }
+
+  /**
+   * AiCompanyWorkAssignment delete
+   */
+  export type AiCompanyWorkAssignmentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyWorkAssignment
+     */
+    select?: AiCompanyWorkAssignmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyWorkAssignment
+     */
+    omit?: AiCompanyWorkAssignmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyWorkAssignmentInclude<ExtArgs> | null
+    /**
+     * Filter which AiCompanyWorkAssignment to delete.
+     */
+    where: AiCompanyWorkAssignmentWhereUniqueInput
+  }
+
+  /**
+   * AiCompanyWorkAssignment deleteMany
+   */
+  export type AiCompanyWorkAssignmentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiCompanyWorkAssignments to delete
+     */
+    where?: AiCompanyWorkAssignmentWhereInput
+    /**
+     * Limit how many AiCompanyWorkAssignments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiCompanyWorkAssignment without action
+   */
+  export type AiCompanyWorkAssignmentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyWorkAssignment
+     */
+    select?: AiCompanyWorkAssignmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyWorkAssignment
+     */
+    omit?: AiCompanyWorkAssignmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyWorkAssignmentInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AiCompanyDraftQueueItem
+   */
+
+  export type AggregateAiCompanyDraftQueueItem = {
+    _count: AiCompanyDraftQueueItemCountAggregateOutputType | null
+    _min: AiCompanyDraftQueueItemMinAggregateOutputType | null
+    _max: AiCompanyDraftQueueItemMaxAggregateOutputType | null
+  }
+
+  export type AiCompanyDraftQueueItemMinAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    directiveId: string | null
+    output: string | null
+    ownerDepartment: string | null
+    status: string | null
+    sourceLabel: string | null
+    approvalRequired: boolean | null
+    providerCalled: boolean | null
+    sent: boolean | null
+    published: boolean | null
+    liveExecutionAllowed: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AiCompanyDraftQueueItemMaxAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    directiveId: string | null
+    output: string | null
+    ownerDepartment: string | null
+    status: string | null
+    sourceLabel: string | null
+    approvalRequired: boolean | null
+    providerCalled: boolean | null
+    sent: boolean | null
+    published: boolean | null
+    liveExecutionAllowed: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AiCompanyDraftQueueItemCountAggregateOutputType = {
+    id: number
+    tenantId: number
+    directiveId: number
+    output: number
+    ownerDepartment: number
+    status: number
+    sourceLabel: number
+    approvalRequired: number
+    providerCalled: number
+    sent: number
+    published: number
+    liveExecutionAllowed: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AiCompanyDraftQueueItemMinAggregateInputType = {
+    id?: true
+    tenantId?: true
+    directiveId?: true
+    output?: true
+    ownerDepartment?: true
+    status?: true
+    sourceLabel?: true
+    approvalRequired?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AiCompanyDraftQueueItemMaxAggregateInputType = {
+    id?: true
+    tenantId?: true
+    directiveId?: true
+    output?: true
+    ownerDepartment?: true
+    status?: true
+    sourceLabel?: true
+    approvalRequired?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AiCompanyDraftQueueItemCountAggregateInputType = {
+    id?: true
+    tenantId?: true
+    directiveId?: true
+    output?: true
+    ownerDepartment?: true
+    status?: true
+    sourceLabel?: true
+    approvalRequired?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AiCompanyDraftQueueItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiCompanyDraftQueueItem to aggregate.
+     */
+    where?: AiCompanyDraftQueueItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiCompanyDraftQueueItems to fetch.
+     */
+    orderBy?: AiCompanyDraftQueueItemOrderByWithRelationInput | AiCompanyDraftQueueItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AiCompanyDraftQueueItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiCompanyDraftQueueItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiCompanyDraftQueueItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AiCompanyDraftQueueItems
+    **/
+    _count?: true | AiCompanyDraftQueueItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AiCompanyDraftQueueItemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AiCompanyDraftQueueItemMaxAggregateInputType
+  }
+
+  export type GetAiCompanyDraftQueueItemAggregateType<T extends AiCompanyDraftQueueItemAggregateArgs> = {
+        [P in keyof T & keyof AggregateAiCompanyDraftQueueItem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAiCompanyDraftQueueItem[P]>
+      : GetScalarType<T[P], AggregateAiCompanyDraftQueueItem[P]>
+  }
+
+
+
+
+  export type AiCompanyDraftQueueItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiCompanyDraftQueueItemWhereInput
+    orderBy?: AiCompanyDraftQueueItemOrderByWithAggregationInput | AiCompanyDraftQueueItemOrderByWithAggregationInput[]
+    by: AiCompanyDraftQueueItemScalarFieldEnum[] | AiCompanyDraftQueueItemScalarFieldEnum
+    having?: AiCompanyDraftQueueItemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AiCompanyDraftQueueItemCountAggregateInputType | true
+    _min?: AiCompanyDraftQueueItemMinAggregateInputType
+    _max?: AiCompanyDraftQueueItemMaxAggregateInputType
+  }
+
+  export type AiCompanyDraftQueueItemGroupByOutputType = {
+    id: string
+    tenantId: string
+    directiveId: string
+    output: string
+    ownerDepartment: string
+    status: string
+    sourceLabel: string
+    approvalRequired: boolean
+    providerCalled: boolean
+    sent: boolean
+    published: boolean
+    liveExecutionAllowed: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: AiCompanyDraftQueueItemCountAggregateOutputType | null
+    _min: AiCompanyDraftQueueItemMinAggregateOutputType | null
+    _max: AiCompanyDraftQueueItemMaxAggregateOutputType | null
+  }
+
+  type GetAiCompanyDraftQueueItemGroupByPayload<T extends AiCompanyDraftQueueItemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AiCompanyDraftQueueItemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AiCompanyDraftQueueItemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AiCompanyDraftQueueItemGroupByOutputType[P]>
+            : GetScalarType<T[P], AiCompanyDraftQueueItemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AiCompanyDraftQueueItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    directiveId?: boolean
+    output?: boolean
+    ownerDepartment?: boolean
+    status?: boolean
+    sourceLabel?: boolean
+    approvalRequired?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    directive?: boolean | AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["aiCompanyDraftQueueItem"]>
+
+  export type AiCompanyDraftQueueItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    directiveId?: boolean
+    output?: boolean
+    ownerDepartment?: boolean
+    status?: boolean
+    sourceLabel?: boolean
+    approvalRequired?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    directive?: boolean | AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["aiCompanyDraftQueueItem"]>
+
+  export type AiCompanyDraftQueueItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    directiveId?: boolean
+    output?: boolean
+    ownerDepartment?: boolean
+    status?: boolean
+    sourceLabel?: boolean
+    approvalRequired?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    directive?: boolean | AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["aiCompanyDraftQueueItem"]>
+
+  export type AiCompanyDraftQueueItemSelectScalar = {
+    id?: boolean
+    tenantId?: boolean
+    directiveId?: boolean
+    output?: boolean
+    ownerDepartment?: boolean
+    status?: boolean
+    sourceLabel?: boolean
+    approvalRequired?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AiCompanyDraftQueueItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "directiveId" | "output" | "ownerDepartment" | "status" | "sourceLabel" | "approvalRequired" | "providerCalled" | "sent" | "published" | "liveExecutionAllowed" | "createdAt" | "updatedAt", ExtArgs["result"]["aiCompanyDraftQueueItem"]>
+  export type AiCompanyDraftQueueItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    directive?: boolean | AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs>
+  }
+  export type AiCompanyDraftQueueItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    directive?: boolean | AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs>
+  }
+  export type AiCompanyDraftQueueItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    directive?: boolean | AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs>
+  }
+
+  export type $AiCompanyDraftQueueItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AiCompanyDraftQueueItem"
+    objects: {
+      directive: Prisma.$AiCompanyExecutiveDirectivePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenantId: string
+      directiveId: string
+      output: string
+      ownerDepartment: string
+      status: string
+      sourceLabel: string
+      approvalRequired: boolean
+      providerCalled: boolean
+      sent: boolean
+      published: boolean
+      liveExecutionAllowed: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["aiCompanyDraftQueueItem"]>
+    composites: {}
+  }
+
+  type AiCompanyDraftQueueItemGetPayload<S extends boolean | null | undefined | AiCompanyDraftQueueItemDefaultArgs> = $Result.GetResult<Prisma.$AiCompanyDraftQueueItemPayload, S>
+
+  type AiCompanyDraftQueueItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AiCompanyDraftQueueItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AiCompanyDraftQueueItemCountAggregateInputType | true
+    }
+
+  export interface AiCompanyDraftQueueItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AiCompanyDraftQueueItem'], meta: { name: 'AiCompanyDraftQueueItem' } }
+    /**
+     * Find zero or one AiCompanyDraftQueueItem that matches the filter.
+     * @param {AiCompanyDraftQueueItemFindUniqueArgs} args - Arguments to find a AiCompanyDraftQueueItem
+     * @example
+     * // Get one AiCompanyDraftQueueItem
+     * const aiCompanyDraftQueueItem = await prisma.aiCompanyDraftQueueItem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AiCompanyDraftQueueItemFindUniqueArgs>(args: SelectSubset<T, AiCompanyDraftQueueItemFindUniqueArgs<ExtArgs>>): Prisma__AiCompanyDraftQueueItemClient<$Result.GetResult<Prisma.$AiCompanyDraftQueueItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AiCompanyDraftQueueItem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AiCompanyDraftQueueItemFindUniqueOrThrowArgs} args - Arguments to find a AiCompanyDraftQueueItem
+     * @example
+     * // Get one AiCompanyDraftQueueItem
+     * const aiCompanyDraftQueueItem = await prisma.aiCompanyDraftQueueItem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AiCompanyDraftQueueItemFindUniqueOrThrowArgs>(args: SelectSubset<T, AiCompanyDraftQueueItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AiCompanyDraftQueueItemClient<$Result.GetResult<Prisma.$AiCompanyDraftQueueItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiCompanyDraftQueueItem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyDraftQueueItemFindFirstArgs} args - Arguments to find a AiCompanyDraftQueueItem
+     * @example
+     * // Get one AiCompanyDraftQueueItem
+     * const aiCompanyDraftQueueItem = await prisma.aiCompanyDraftQueueItem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AiCompanyDraftQueueItemFindFirstArgs>(args?: SelectSubset<T, AiCompanyDraftQueueItemFindFirstArgs<ExtArgs>>): Prisma__AiCompanyDraftQueueItemClient<$Result.GetResult<Prisma.$AiCompanyDraftQueueItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiCompanyDraftQueueItem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyDraftQueueItemFindFirstOrThrowArgs} args - Arguments to find a AiCompanyDraftQueueItem
+     * @example
+     * // Get one AiCompanyDraftQueueItem
+     * const aiCompanyDraftQueueItem = await prisma.aiCompanyDraftQueueItem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AiCompanyDraftQueueItemFindFirstOrThrowArgs>(args?: SelectSubset<T, AiCompanyDraftQueueItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__AiCompanyDraftQueueItemClient<$Result.GetResult<Prisma.$AiCompanyDraftQueueItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AiCompanyDraftQueueItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyDraftQueueItemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AiCompanyDraftQueueItems
+     * const aiCompanyDraftQueueItems = await prisma.aiCompanyDraftQueueItem.findMany()
+     * 
+     * // Get first 10 AiCompanyDraftQueueItems
+     * const aiCompanyDraftQueueItems = await prisma.aiCompanyDraftQueueItem.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const aiCompanyDraftQueueItemWithIdOnly = await prisma.aiCompanyDraftQueueItem.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AiCompanyDraftQueueItemFindManyArgs>(args?: SelectSubset<T, AiCompanyDraftQueueItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiCompanyDraftQueueItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AiCompanyDraftQueueItem.
+     * @param {AiCompanyDraftQueueItemCreateArgs} args - Arguments to create a AiCompanyDraftQueueItem.
+     * @example
+     * // Create one AiCompanyDraftQueueItem
+     * const AiCompanyDraftQueueItem = await prisma.aiCompanyDraftQueueItem.create({
+     *   data: {
+     *     // ... data to create a AiCompanyDraftQueueItem
+     *   }
+     * })
+     * 
+     */
+    create<T extends AiCompanyDraftQueueItemCreateArgs>(args: SelectSubset<T, AiCompanyDraftQueueItemCreateArgs<ExtArgs>>): Prisma__AiCompanyDraftQueueItemClient<$Result.GetResult<Prisma.$AiCompanyDraftQueueItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AiCompanyDraftQueueItems.
+     * @param {AiCompanyDraftQueueItemCreateManyArgs} args - Arguments to create many AiCompanyDraftQueueItems.
+     * @example
+     * // Create many AiCompanyDraftQueueItems
+     * const aiCompanyDraftQueueItem = await prisma.aiCompanyDraftQueueItem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AiCompanyDraftQueueItemCreateManyArgs>(args?: SelectSubset<T, AiCompanyDraftQueueItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AiCompanyDraftQueueItems and returns the data saved in the database.
+     * @param {AiCompanyDraftQueueItemCreateManyAndReturnArgs} args - Arguments to create many AiCompanyDraftQueueItems.
+     * @example
+     * // Create many AiCompanyDraftQueueItems
+     * const aiCompanyDraftQueueItem = await prisma.aiCompanyDraftQueueItem.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AiCompanyDraftQueueItems and only return the `id`
+     * const aiCompanyDraftQueueItemWithIdOnly = await prisma.aiCompanyDraftQueueItem.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AiCompanyDraftQueueItemCreateManyAndReturnArgs>(args?: SelectSubset<T, AiCompanyDraftQueueItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiCompanyDraftQueueItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AiCompanyDraftQueueItem.
+     * @param {AiCompanyDraftQueueItemDeleteArgs} args - Arguments to delete one AiCompanyDraftQueueItem.
+     * @example
+     * // Delete one AiCompanyDraftQueueItem
+     * const AiCompanyDraftQueueItem = await prisma.aiCompanyDraftQueueItem.delete({
+     *   where: {
+     *     // ... filter to delete one AiCompanyDraftQueueItem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AiCompanyDraftQueueItemDeleteArgs>(args: SelectSubset<T, AiCompanyDraftQueueItemDeleteArgs<ExtArgs>>): Prisma__AiCompanyDraftQueueItemClient<$Result.GetResult<Prisma.$AiCompanyDraftQueueItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AiCompanyDraftQueueItem.
+     * @param {AiCompanyDraftQueueItemUpdateArgs} args - Arguments to update one AiCompanyDraftQueueItem.
+     * @example
+     * // Update one AiCompanyDraftQueueItem
+     * const aiCompanyDraftQueueItem = await prisma.aiCompanyDraftQueueItem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AiCompanyDraftQueueItemUpdateArgs>(args: SelectSubset<T, AiCompanyDraftQueueItemUpdateArgs<ExtArgs>>): Prisma__AiCompanyDraftQueueItemClient<$Result.GetResult<Prisma.$AiCompanyDraftQueueItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AiCompanyDraftQueueItems.
+     * @param {AiCompanyDraftQueueItemDeleteManyArgs} args - Arguments to filter AiCompanyDraftQueueItems to delete.
+     * @example
+     * // Delete a few AiCompanyDraftQueueItems
+     * const { count } = await prisma.aiCompanyDraftQueueItem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AiCompanyDraftQueueItemDeleteManyArgs>(args?: SelectSubset<T, AiCompanyDraftQueueItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiCompanyDraftQueueItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyDraftQueueItemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AiCompanyDraftQueueItems
+     * const aiCompanyDraftQueueItem = await prisma.aiCompanyDraftQueueItem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AiCompanyDraftQueueItemUpdateManyArgs>(args: SelectSubset<T, AiCompanyDraftQueueItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiCompanyDraftQueueItems and returns the data updated in the database.
+     * @param {AiCompanyDraftQueueItemUpdateManyAndReturnArgs} args - Arguments to update many AiCompanyDraftQueueItems.
+     * @example
+     * // Update many AiCompanyDraftQueueItems
+     * const aiCompanyDraftQueueItem = await prisma.aiCompanyDraftQueueItem.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AiCompanyDraftQueueItems and only return the `id`
+     * const aiCompanyDraftQueueItemWithIdOnly = await prisma.aiCompanyDraftQueueItem.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AiCompanyDraftQueueItemUpdateManyAndReturnArgs>(args: SelectSubset<T, AiCompanyDraftQueueItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiCompanyDraftQueueItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AiCompanyDraftQueueItem.
+     * @param {AiCompanyDraftQueueItemUpsertArgs} args - Arguments to update or create a AiCompanyDraftQueueItem.
+     * @example
+     * // Update or create a AiCompanyDraftQueueItem
+     * const aiCompanyDraftQueueItem = await prisma.aiCompanyDraftQueueItem.upsert({
+     *   create: {
+     *     // ... data to create a AiCompanyDraftQueueItem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AiCompanyDraftQueueItem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AiCompanyDraftQueueItemUpsertArgs>(args: SelectSubset<T, AiCompanyDraftQueueItemUpsertArgs<ExtArgs>>): Prisma__AiCompanyDraftQueueItemClient<$Result.GetResult<Prisma.$AiCompanyDraftQueueItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AiCompanyDraftQueueItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyDraftQueueItemCountArgs} args - Arguments to filter AiCompanyDraftQueueItems to count.
+     * @example
+     * // Count the number of AiCompanyDraftQueueItems
+     * const count = await prisma.aiCompanyDraftQueueItem.count({
+     *   where: {
+     *     // ... the filter for the AiCompanyDraftQueueItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends AiCompanyDraftQueueItemCountArgs>(
+      args?: Subset<T, AiCompanyDraftQueueItemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AiCompanyDraftQueueItemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AiCompanyDraftQueueItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyDraftQueueItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AiCompanyDraftQueueItemAggregateArgs>(args: Subset<T, AiCompanyDraftQueueItemAggregateArgs>): Prisma.PrismaPromise<GetAiCompanyDraftQueueItemAggregateType<T>>
+
+    /**
+     * Group by AiCompanyDraftQueueItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyDraftQueueItemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AiCompanyDraftQueueItemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AiCompanyDraftQueueItemGroupByArgs['orderBy'] }
+        : { orderBy?: AiCompanyDraftQueueItemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AiCompanyDraftQueueItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAiCompanyDraftQueueItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AiCompanyDraftQueueItem model
+   */
+  readonly fields: AiCompanyDraftQueueItemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AiCompanyDraftQueueItem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AiCompanyDraftQueueItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    directive<T extends AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs>>): Prisma__AiCompanyExecutiveDirectiveClient<$Result.GetResult<Prisma.$AiCompanyExecutiveDirectivePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AiCompanyDraftQueueItem model
+   */
+  interface AiCompanyDraftQueueItemFieldRefs {
+    readonly id: FieldRef<"AiCompanyDraftQueueItem", 'String'>
+    readonly tenantId: FieldRef<"AiCompanyDraftQueueItem", 'String'>
+    readonly directiveId: FieldRef<"AiCompanyDraftQueueItem", 'String'>
+    readonly output: FieldRef<"AiCompanyDraftQueueItem", 'String'>
+    readonly ownerDepartment: FieldRef<"AiCompanyDraftQueueItem", 'String'>
+    readonly status: FieldRef<"AiCompanyDraftQueueItem", 'String'>
+    readonly sourceLabel: FieldRef<"AiCompanyDraftQueueItem", 'String'>
+    readonly approvalRequired: FieldRef<"AiCompanyDraftQueueItem", 'Boolean'>
+    readonly providerCalled: FieldRef<"AiCompanyDraftQueueItem", 'Boolean'>
+    readonly sent: FieldRef<"AiCompanyDraftQueueItem", 'Boolean'>
+    readonly published: FieldRef<"AiCompanyDraftQueueItem", 'Boolean'>
+    readonly liveExecutionAllowed: FieldRef<"AiCompanyDraftQueueItem", 'Boolean'>
+    readonly createdAt: FieldRef<"AiCompanyDraftQueueItem", 'DateTime'>
+    readonly updatedAt: FieldRef<"AiCompanyDraftQueueItem", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AiCompanyDraftQueueItem findUnique
+   */
+  export type AiCompanyDraftQueueItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDraftQueueItem
+     */
+    select?: AiCompanyDraftQueueItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDraftQueueItem
+     */
+    omit?: AiCompanyDraftQueueItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDraftQueueItemInclude<ExtArgs> | null
+    /**
+     * Filter, which AiCompanyDraftQueueItem to fetch.
+     */
+    where: AiCompanyDraftQueueItemWhereUniqueInput
+  }
+
+  /**
+   * AiCompanyDraftQueueItem findUniqueOrThrow
+   */
+  export type AiCompanyDraftQueueItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDraftQueueItem
+     */
+    select?: AiCompanyDraftQueueItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDraftQueueItem
+     */
+    omit?: AiCompanyDraftQueueItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDraftQueueItemInclude<ExtArgs> | null
+    /**
+     * Filter, which AiCompanyDraftQueueItem to fetch.
+     */
+    where: AiCompanyDraftQueueItemWhereUniqueInput
+  }
+
+  /**
+   * AiCompanyDraftQueueItem findFirst
+   */
+  export type AiCompanyDraftQueueItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDraftQueueItem
+     */
+    select?: AiCompanyDraftQueueItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDraftQueueItem
+     */
+    omit?: AiCompanyDraftQueueItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDraftQueueItemInclude<ExtArgs> | null
+    /**
+     * Filter, which AiCompanyDraftQueueItem to fetch.
+     */
+    where?: AiCompanyDraftQueueItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiCompanyDraftQueueItems to fetch.
+     */
+    orderBy?: AiCompanyDraftQueueItemOrderByWithRelationInput | AiCompanyDraftQueueItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiCompanyDraftQueueItems.
+     */
+    cursor?: AiCompanyDraftQueueItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiCompanyDraftQueueItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiCompanyDraftQueueItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiCompanyDraftQueueItems.
+     */
+    distinct?: AiCompanyDraftQueueItemScalarFieldEnum | AiCompanyDraftQueueItemScalarFieldEnum[]
+  }
+
+  /**
+   * AiCompanyDraftQueueItem findFirstOrThrow
+   */
+  export type AiCompanyDraftQueueItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDraftQueueItem
+     */
+    select?: AiCompanyDraftQueueItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDraftQueueItem
+     */
+    omit?: AiCompanyDraftQueueItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDraftQueueItemInclude<ExtArgs> | null
+    /**
+     * Filter, which AiCompanyDraftQueueItem to fetch.
+     */
+    where?: AiCompanyDraftQueueItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiCompanyDraftQueueItems to fetch.
+     */
+    orderBy?: AiCompanyDraftQueueItemOrderByWithRelationInput | AiCompanyDraftQueueItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiCompanyDraftQueueItems.
+     */
+    cursor?: AiCompanyDraftQueueItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiCompanyDraftQueueItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiCompanyDraftQueueItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiCompanyDraftQueueItems.
+     */
+    distinct?: AiCompanyDraftQueueItemScalarFieldEnum | AiCompanyDraftQueueItemScalarFieldEnum[]
+  }
+
+  /**
+   * AiCompanyDraftQueueItem findMany
+   */
+  export type AiCompanyDraftQueueItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDraftQueueItem
+     */
+    select?: AiCompanyDraftQueueItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDraftQueueItem
+     */
+    omit?: AiCompanyDraftQueueItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDraftQueueItemInclude<ExtArgs> | null
+    /**
+     * Filter, which AiCompanyDraftQueueItems to fetch.
+     */
+    where?: AiCompanyDraftQueueItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiCompanyDraftQueueItems to fetch.
+     */
+    orderBy?: AiCompanyDraftQueueItemOrderByWithRelationInput | AiCompanyDraftQueueItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AiCompanyDraftQueueItems.
+     */
+    cursor?: AiCompanyDraftQueueItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiCompanyDraftQueueItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiCompanyDraftQueueItems.
+     */
+    skip?: number
+    distinct?: AiCompanyDraftQueueItemScalarFieldEnum | AiCompanyDraftQueueItemScalarFieldEnum[]
+  }
+
+  /**
+   * AiCompanyDraftQueueItem create
+   */
+  export type AiCompanyDraftQueueItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDraftQueueItem
+     */
+    select?: AiCompanyDraftQueueItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDraftQueueItem
+     */
+    omit?: AiCompanyDraftQueueItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDraftQueueItemInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AiCompanyDraftQueueItem.
+     */
+    data: XOR<AiCompanyDraftQueueItemCreateInput, AiCompanyDraftQueueItemUncheckedCreateInput>
+  }
+
+  /**
+   * AiCompanyDraftQueueItem createMany
+   */
+  export type AiCompanyDraftQueueItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AiCompanyDraftQueueItems.
+     */
+    data: AiCompanyDraftQueueItemCreateManyInput | AiCompanyDraftQueueItemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AiCompanyDraftQueueItem createManyAndReturn
+   */
+  export type AiCompanyDraftQueueItemCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDraftQueueItem
+     */
+    select?: AiCompanyDraftQueueItemSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDraftQueueItem
+     */
+    omit?: AiCompanyDraftQueueItemOmit<ExtArgs> | null
+    /**
+     * The data used to create many AiCompanyDraftQueueItems.
+     */
+    data: AiCompanyDraftQueueItemCreateManyInput | AiCompanyDraftQueueItemCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDraftQueueItemIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AiCompanyDraftQueueItem update
+   */
+  export type AiCompanyDraftQueueItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDraftQueueItem
+     */
+    select?: AiCompanyDraftQueueItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDraftQueueItem
+     */
+    omit?: AiCompanyDraftQueueItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDraftQueueItemInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AiCompanyDraftQueueItem.
+     */
+    data: XOR<AiCompanyDraftQueueItemUpdateInput, AiCompanyDraftQueueItemUncheckedUpdateInput>
+    /**
+     * Choose, which AiCompanyDraftQueueItem to update.
+     */
+    where: AiCompanyDraftQueueItemWhereUniqueInput
+  }
+
+  /**
+   * AiCompanyDraftQueueItem updateMany
+   */
+  export type AiCompanyDraftQueueItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AiCompanyDraftQueueItems.
+     */
+    data: XOR<AiCompanyDraftQueueItemUpdateManyMutationInput, AiCompanyDraftQueueItemUncheckedUpdateManyInput>
+    /**
+     * Filter which AiCompanyDraftQueueItems to update
+     */
+    where?: AiCompanyDraftQueueItemWhereInput
+    /**
+     * Limit how many AiCompanyDraftQueueItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiCompanyDraftQueueItem updateManyAndReturn
+   */
+  export type AiCompanyDraftQueueItemUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDraftQueueItem
+     */
+    select?: AiCompanyDraftQueueItemSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDraftQueueItem
+     */
+    omit?: AiCompanyDraftQueueItemOmit<ExtArgs> | null
+    /**
+     * The data used to update AiCompanyDraftQueueItems.
+     */
+    data: XOR<AiCompanyDraftQueueItemUpdateManyMutationInput, AiCompanyDraftQueueItemUncheckedUpdateManyInput>
+    /**
+     * Filter which AiCompanyDraftQueueItems to update
+     */
+    where?: AiCompanyDraftQueueItemWhereInput
+    /**
+     * Limit how many AiCompanyDraftQueueItems to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDraftQueueItemIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AiCompanyDraftQueueItem upsert
+   */
+  export type AiCompanyDraftQueueItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDraftQueueItem
+     */
+    select?: AiCompanyDraftQueueItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDraftQueueItem
+     */
+    omit?: AiCompanyDraftQueueItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDraftQueueItemInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AiCompanyDraftQueueItem to update in case it exists.
+     */
+    where: AiCompanyDraftQueueItemWhereUniqueInput
+    /**
+     * In case the AiCompanyDraftQueueItem found by the `where` argument doesn't exist, create a new AiCompanyDraftQueueItem with this data.
+     */
+    create: XOR<AiCompanyDraftQueueItemCreateInput, AiCompanyDraftQueueItemUncheckedCreateInput>
+    /**
+     * In case the AiCompanyDraftQueueItem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AiCompanyDraftQueueItemUpdateInput, AiCompanyDraftQueueItemUncheckedUpdateInput>
+  }
+
+  /**
+   * AiCompanyDraftQueueItem delete
+   */
+  export type AiCompanyDraftQueueItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDraftQueueItem
+     */
+    select?: AiCompanyDraftQueueItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDraftQueueItem
+     */
+    omit?: AiCompanyDraftQueueItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDraftQueueItemInclude<ExtArgs> | null
+    /**
+     * Filter which AiCompanyDraftQueueItem to delete.
+     */
+    where: AiCompanyDraftQueueItemWhereUniqueInput
+  }
+
+  /**
+   * AiCompanyDraftQueueItem deleteMany
+   */
+  export type AiCompanyDraftQueueItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiCompanyDraftQueueItems to delete
+     */
+    where?: AiCompanyDraftQueueItemWhereInput
+    /**
+     * Limit how many AiCompanyDraftQueueItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiCompanyDraftQueueItem without action
+   */
+  export type AiCompanyDraftQueueItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDraftQueueItem
+     */
+    select?: AiCompanyDraftQueueItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDraftQueueItem
+     */
+    omit?: AiCompanyDraftQueueItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDraftQueueItemInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AiCompanyDecisionLog
+   */
+
+  export type AggregateAiCompanyDecisionLog = {
+    _count: AiCompanyDecisionLogCountAggregateOutputType | null
+    _min: AiCompanyDecisionLogMinAggregateOutputType | null
+    _max: AiCompanyDecisionLogMaxAggregateOutputType | null
+  }
+
+  export type AiCompanyDecisionLogMinAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    directiveId: string | null
+    decision: string | null
+    note: string | null
+    decidedBy: string | null
+    previousStatus: string | null
+    resultingStatus: string | null
+    reviewReminderAt: Date | null
+    providerCalled: boolean | null
+    sent: boolean | null
+    published: boolean | null
+    liveExecutionAllowed: boolean | null
+    createdAt: Date | null
+  }
+
+  export type AiCompanyDecisionLogMaxAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    directiveId: string | null
+    decision: string | null
+    note: string | null
+    decidedBy: string | null
+    previousStatus: string | null
+    resultingStatus: string | null
+    reviewReminderAt: Date | null
+    providerCalled: boolean | null
+    sent: boolean | null
+    published: boolean | null
+    liveExecutionAllowed: boolean | null
+    createdAt: Date | null
+  }
+
+  export type AiCompanyDecisionLogCountAggregateOutputType = {
+    id: number
+    tenantId: number
+    directiveId: number
+    decision: number
+    note: number
+    decidedBy: number
+    previousStatus: number
+    resultingStatus: number
+    reviewReminderAt: number
+    safetyFlags: number
+    providerCalled: number
+    sent: number
+    published: number
+    liveExecutionAllowed: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AiCompanyDecisionLogMinAggregateInputType = {
+    id?: true
+    tenantId?: true
+    directiveId?: true
+    decision?: true
+    note?: true
+    decidedBy?: true
+    previousStatus?: true
+    resultingStatus?: true
+    reviewReminderAt?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+  }
+
+  export type AiCompanyDecisionLogMaxAggregateInputType = {
+    id?: true
+    tenantId?: true
+    directiveId?: true
+    decision?: true
+    note?: true
+    decidedBy?: true
+    previousStatus?: true
+    resultingStatus?: true
+    reviewReminderAt?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+  }
+
+  export type AiCompanyDecisionLogCountAggregateInputType = {
+    id?: true
+    tenantId?: true
+    directiveId?: true
+    decision?: true
+    note?: true
+    decidedBy?: true
+    previousStatus?: true
+    resultingStatus?: true
+    reviewReminderAt?: true
+    safetyFlags?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AiCompanyDecisionLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiCompanyDecisionLog to aggregate.
+     */
+    where?: AiCompanyDecisionLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiCompanyDecisionLogs to fetch.
+     */
+    orderBy?: AiCompanyDecisionLogOrderByWithRelationInput | AiCompanyDecisionLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AiCompanyDecisionLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiCompanyDecisionLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiCompanyDecisionLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AiCompanyDecisionLogs
+    **/
+    _count?: true | AiCompanyDecisionLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AiCompanyDecisionLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AiCompanyDecisionLogMaxAggregateInputType
+  }
+
+  export type GetAiCompanyDecisionLogAggregateType<T extends AiCompanyDecisionLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateAiCompanyDecisionLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAiCompanyDecisionLog[P]>
+      : GetScalarType<T[P], AggregateAiCompanyDecisionLog[P]>
+  }
+
+
+
+
+  export type AiCompanyDecisionLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiCompanyDecisionLogWhereInput
+    orderBy?: AiCompanyDecisionLogOrderByWithAggregationInput | AiCompanyDecisionLogOrderByWithAggregationInput[]
+    by: AiCompanyDecisionLogScalarFieldEnum[] | AiCompanyDecisionLogScalarFieldEnum
+    having?: AiCompanyDecisionLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AiCompanyDecisionLogCountAggregateInputType | true
+    _min?: AiCompanyDecisionLogMinAggregateInputType
+    _max?: AiCompanyDecisionLogMaxAggregateInputType
+  }
+
+  export type AiCompanyDecisionLogGroupByOutputType = {
+    id: string
+    tenantId: string
+    directiveId: string
+    decision: string
+    note: string | null
+    decidedBy: string | null
+    previousStatus: string
+    resultingStatus: string
+    reviewReminderAt: Date | null
+    safetyFlags: JsonValue
+    providerCalled: boolean
+    sent: boolean
+    published: boolean
+    liveExecutionAllowed: boolean
+    createdAt: Date
+    _count: AiCompanyDecisionLogCountAggregateOutputType | null
+    _min: AiCompanyDecisionLogMinAggregateOutputType | null
+    _max: AiCompanyDecisionLogMaxAggregateOutputType | null
+  }
+
+  type GetAiCompanyDecisionLogGroupByPayload<T extends AiCompanyDecisionLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AiCompanyDecisionLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AiCompanyDecisionLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AiCompanyDecisionLogGroupByOutputType[P]>
+            : GetScalarType<T[P], AiCompanyDecisionLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AiCompanyDecisionLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    directiveId?: boolean
+    decision?: boolean
+    note?: boolean
+    decidedBy?: boolean
+    previousStatus?: boolean
+    resultingStatus?: boolean
+    reviewReminderAt?: boolean
+    safetyFlags?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    directive?: boolean | AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["aiCompanyDecisionLog"]>
+
+  export type AiCompanyDecisionLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    directiveId?: boolean
+    decision?: boolean
+    note?: boolean
+    decidedBy?: boolean
+    previousStatus?: boolean
+    resultingStatus?: boolean
+    reviewReminderAt?: boolean
+    safetyFlags?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    directive?: boolean | AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["aiCompanyDecisionLog"]>
+
+  export type AiCompanyDecisionLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    directiveId?: boolean
+    decision?: boolean
+    note?: boolean
+    decidedBy?: boolean
+    previousStatus?: boolean
+    resultingStatus?: boolean
+    reviewReminderAt?: boolean
+    safetyFlags?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    directive?: boolean | AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["aiCompanyDecisionLog"]>
+
+  export type AiCompanyDecisionLogSelectScalar = {
+    id?: boolean
+    tenantId?: boolean
+    directiveId?: boolean
+    decision?: boolean
+    note?: boolean
+    decidedBy?: boolean
+    previousStatus?: boolean
+    resultingStatus?: boolean
+    reviewReminderAt?: boolean
+    safetyFlags?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+  }
+
+  export type AiCompanyDecisionLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "directiveId" | "decision" | "note" | "decidedBy" | "previousStatus" | "resultingStatus" | "reviewReminderAt" | "safetyFlags" | "providerCalled" | "sent" | "published" | "liveExecutionAllowed" | "createdAt", ExtArgs["result"]["aiCompanyDecisionLog"]>
+  export type AiCompanyDecisionLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    directive?: boolean | AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs>
+  }
+  export type AiCompanyDecisionLogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    directive?: boolean | AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs>
+  }
+  export type AiCompanyDecisionLogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    directive?: boolean | AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs>
+  }
+
+  export type $AiCompanyDecisionLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AiCompanyDecisionLog"
+    objects: {
+      directive: Prisma.$AiCompanyExecutiveDirectivePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenantId: string
+      directiveId: string
+      decision: string
+      note: string | null
+      decidedBy: string | null
+      previousStatus: string
+      resultingStatus: string
+      reviewReminderAt: Date | null
+      safetyFlags: Prisma.JsonValue
+      providerCalled: boolean
+      sent: boolean
+      published: boolean
+      liveExecutionAllowed: boolean
+      createdAt: Date
+    }, ExtArgs["result"]["aiCompanyDecisionLog"]>
+    composites: {}
+  }
+
+  type AiCompanyDecisionLogGetPayload<S extends boolean | null | undefined | AiCompanyDecisionLogDefaultArgs> = $Result.GetResult<Prisma.$AiCompanyDecisionLogPayload, S>
+
+  type AiCompanyDecisionLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AiCompanyDecisionLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AiCompanyDecisionLogCountAggregateInputType | true
+    }
+
+  export interface AiCompanyDecisionLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AiCompanyDecisionLog'], meta: { name: 'AiCompanyDecisionLog' } }
+    /**
+     * Find zero or one AiCompanyDecisionLog that matches the filter.
+     * @param {AiCompanyDecisionLogFindUniqueArgs} args - Arguments to find a AiCompanyDecisionLog
+     * @example
+     * // Get one AiCompanyDecisionLog
+     * const aiCompanyDecisionLog = await prisma.aiCompanyDecisionLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AiCompanyDecisionLogFindUniqueArgs>(args: SelectSubset<T, AiCompanyDecisionLogFindUniqueArgs<ExtArgs>>): Prisma__AiCompanyDecisionLogClient<$Result.GetResult<Prisma.$AiCompanyDecisionLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AiCompanyDecisionLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AiCompanyDecisionLogFindUniqueOrThrowArgs} args - Arguments to find a AiCompanyDecisionLog
+     * @example
+     * // Get one AiCompanyDecisionLog
+     * const aiCompanyDecisionLog = await prisma.aiCompanyDecisionLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AiCompanyDecisionLogFindUniqueOrThrowArgs>(args: SelectSubset<T, AiCompanyDecisionLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AiCompanyDecisionLogClient<$Result.GetResult<Prisma.$AiCompanyDecisionLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiCompanyDecisionLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyDecisionLogFindFirstArgs} args - Arguments to find a AiCompanyDecisionLog
+     * @example
+     * // Get one AiCompanyDecisionLog
+     * const aiCompanyDecisionLog = await prisma.aiCompanyDecisionLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AiCompanyDecisionLogFindFirstArgs>(args?: SelectSubset<T, AiCompanyDecisionLogFindFirstArgs<ExtArgs>>): Prisma__AiCompanyDecisionLogClient<$Result.GetResult<Prisma.$AiCompanyDecisionLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiCompanyDecisionLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyDecisionLogFindFirstOrThrowArgs} args - Arguments to find a AiCompanyDecisionLog
+     * @example
+     * // Get one AiCompanyDecisionLog
+     * const aiCompanyDecisionLog = await prisma.aiCompanyDecisionLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AiCompanyDecisionLogFindFirstOrThrowArgs>(args?: SelectSubset<T, AiCompanyDecisionLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__AiCompanyDecisionLogClient<$Result.GetResult<Prisma.$AiCompanyDecisionLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AiCompanyDecisionLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyDecisionLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AiCompanyDecisionLogs
+     * const aiCompanyDecisionLogs = await prisma.aiCompanyDecisionLog.findMany()
+     * 
+     * // Get first 10 AiCompanyDecisionLogs
+     * const aiCompanyDecisionLogs = await prisma.aiCompanyDecisionLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const aiCompanyDecisionLogWithIdOnly = await prisma.aiCompanyDecisionLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AiCompanyDecisionLogFindManyArgs>(args?: SelectSubset<T, AiCompanyDecisionLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiCompanyDecisionLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AiCompanyDecisionLog.
+     * @param {AiCompanyDecisionLogCreateArgs} args - Arguments to create a AiCompanyDecisionLog.
+     * @example
+     * // Create one AiCompanyDecisionLog
+     * const AiCompanyDecisionLog = await prisma.aiCompanyDecisionLog.create({
+     *   data: {
+     *     // ... data to create a AiCompanyDecisionLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends AiCompanyDecisionLogCreateArgs>(args: SelectSubset<T, AiCompanyDecisionLogCreateArgs<ExtArgs>>): Prisma__AiCompanyDecisionLogClient<$Result.GetResult<Prisma.$AiCompanyDecisionLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AiCompanyDecisionLogs.
+     * @param {AiCompanyDecisionLogCreateManyArgs} args - Arguments to create many AiCompanyDecisionLogs.
+     * @example
+     * // Create many AiCompanyDecisionLogs
+     * const aiCompanyDecisionLog = await prisma.aiCompanyDecisionLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AiCompanyDecisionLogCreateManyArgs>(args?: SelectSubset<T, AiCompanyDecisionLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AiCompanyDecisionLogs and returns the data saved in the database.
+     * @param {AiCompanyDecisionLogCreateManyAndReturnArgs} args - Arguments to create many AiCompanyDecisionLogs.
+     * @example
+     * // Create many AiCompanyDecisionLogs
+     * const aiCompanyDecisionLog = await prisma.aiCompanyDecisionLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AiCompanyDecisionLogs and only return the `id`
+     * const aiCompanyDecisionLogWithIdOnly = await prisma.aiCompanyDecisionLog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AiCompanyDecisionLogCreateManyAndReturnArgs>(args?: SelectSubset<T, AiCompanyDecisionLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiCompanyDecisionLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AiCompanyDecisionLog.
+     * @param {AiCompanyDecisionLogDeleteArgs} args - Arguments to delete one AiCompanyDecisionLog.
+     * @example
+     * // Delete one AiCompanyDecisionLog
+     * const AiCompanyDecisionLog = await prisma.aiCompanyDecisionLog.delete({
+     *   where: {
+     *     // ... filter to delete one AiCompanyDecisionLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AiCompanyDecisionLogDeleteArgs>(args: SelectSubset<T, AiCompanyDecisionLogDeleteArgs<ExtArgs>>): Prisma__AiCompanyDecisionLogClient<$Result.GetResult<Prisma.$AiCompanyDecisionLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AiCompanyDecisionLog.
+     * @param {AiCompanyDecisionLogUpdateArgs} args - Arguments to update one AiCompanyDecisionLog.
+     * @example
+     * // Update one AiCompanyDecisionLog
+     * const aiCompanyDecisionLog = await prisma.aiCompanyDecisionLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AiCompanyDecisionLogUpdateArgs>(args: SelectSubset<T, AiCompanyDecisionLogUpdateArgs<ExtArgs>>): Prisma__AiCompanyDecisionLogClient<$Result.GetResult<Prisma.$AiCompanyDecisionLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AiCompanyDecisionLogs.
+     * @param {AiCompanyDecisionLogDeleteManyArgs} args - Arguments to filter AiCompanyDecisionLogs to delete.
+     * @example
+     * // Delete a few AiCompanyDecisionLogs
+     * const { count } = await prisma.aiCompanyDecisionLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AiCompanyDecisionLogDeleteManyArgs>(args?: SelectSubset<T, AiCompanyDecisionLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiCompanyDecisionLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyDecisionLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AiCompanyDecisionLogs
+     * const aiCompanyDecisionLog = await prisma.aiCompanyDecisionLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AiCompanyDecisionLogUpdateManyArgs>(args: SelectSubset<T, AiCompanyDecisionLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiCompanyDecisionLogs and returns the data updated in the database.
+     * @param {AiCompanyDecisionLogUpdateManyAndReturnArgs} args - Arguments to update many AiCompanyDecisionLogs.
+     * @example
+     * // Update many AiCompanyDecisionLogs
+     * const aiCompanyDecisionLog = await prisma.aiCompanyDecisionLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AiCompanyDecisionLogs and only return the `id`
+     * const aiCompanyDecisionLogWithIdOnly = await prisma.aiCompanyDecisionLog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AiCompanyDecisionLogUpdateManyAndReturnArgs>(args: SelectSubset<T, AiCompanyDecisionLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiCompanyDecisionLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AiCompanyDecisionLog.
+     * @param {AiCompanyDecisionLogUpsertArgs} args - Arguments to update or create a AiCompanyDecisionLog.
+     * @example
+     * // Update or create a AiCompanyDecisionLog
+     * const aiCompanyDecisionLog = await prisma.aiCompanyDecisionLog.upsert({
+     *   create: {
+     *     // ... data to create a AiCompanyDecisionLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AiCompanyDecisionLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AiCompanyDecisionLogUpsertArgs>(args: SelectSubset<T, AiCompanyDecisionLogUpsertArgs<ExtArgs>>): Prisma__AiCompanyDecisionLogClient<$Result.GetResult<Prisma.$AiCompanyDecisionLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AiCompanyDecisionLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyDecisionLogCountArgs} args - Arguments to filter AiCompanyDecisionLogs to count.
+     * @example
+     * // Count the number of AiCompanyDecisionLogs
+     * const count = await prisma.aiCompanyDecisionLog.count({
+     *   where: {
+     *     // ... the filter for the AiCompanyDecisionLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends AiCompanyDecisionLogCountArgs>(
+      args?: Subset<T, AiCompanyDecisionLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AiCompanyDecisionLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AiCompanyDecisionLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyDecisionLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AiCompanyDecisionLogAggregateArgs>(args: Subset<T, AiCompanyDecisionLogAggregateArgs>): Prisma.PrismaPromise<GetAiCompanyDecisionLogAggregateType<T>>
+
+    /**
+     * Group by AiCompanyDecisionLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiCompanyDecisionLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AiCompanyDecisionLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AiCompanyDecisionLogGroupByArgs['orderBy'] }
+        : { orderBy?: AiCompanyDecisionLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AiCompanyDecisionLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAiCompanyDecisionLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AiCompanyDecisionLog model
+   */
+  readonly fields: AiCompanyDecisionLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AiCompanyDecisionLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AiCompanyDecisionLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    directive<T extends AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AiCompanyExecutiveDirectiveDefaultArgs<ExtArgs>>): Prisma__AiCompanyExecutiveDirectiveClient<$Result.GetResult<Prisma.$AiCompanyExecutiveDirectivePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AiCompanyDecisionLog model
+   */
+  interface AiCompanyDecisionLogFieldRefs {
+    readonly id: FieldRef<"AiCompanyDecisionLog", 'String'>
+    readonly tenantId: FieldRef<"AiCompanyDecisionLog", 'String'>
+    readonly directiveId: FieldRef<"AiCompanyDecisionLog", 'String'>
+    readonly decision: FieldRef<"AiCompanyDecisionLog", 'String'>
+    readonly note: FieldRef<"AiCompanyDecisionLog", 'String'>
+    readonly decidedBy: FieldRef<"AiCompanyDecisionLog", 'String'>
+    readonly previousStatus: FieldRef<"AiCompanyDecisionLog", 'String'>
+    readonly resultingStatus: FieldRef<"AiCompanyDecisionLog", 'String'>
+    readonly reviewReminderAt: FieldRef<"AiCompanyDecisionLog", 'DateTime'>
+    readonly safetyFlags: FieldRef<"AiCompanyDecisionLog", 'Json'>
+    readonly providerCalled: FieldRef<"AiCompanyDecisionLog", 'Boolean'>
+    readonly sent: FieldRef<"AiCompanyDecisionLog", 'Boolean'>
+    readonly published: FieldRef<"AiCompanyDecisionLog", 'Boolean'>
+    readonly liveExecutionAllowed: FieldRef<"AiCompanyDecisionLog", 'Boolean'>
+    readonly createdAt: FieldRef<"AiCompanyDecisionLog", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AiCompanyDecisionLog findUnique
+   */
+  export type AiCompanyDecisionLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDecisionLog
+     */
+    select?: AiCompanyDecisionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDecisionLog
+     */
+    omit?: AiCompanyDecisionLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDecisionLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AiCompanyDecisionLog to fetch.
+     */
+    where: AiCompanyDecisionLogWhereUniqueInput
+  }
+
+  /**
+   * AiCompanyDecisionLog findUniqueOrThrow
+   */
+  export type AiCompanyDecisionLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDecisionLog
+     */
+    select?: AiCompanyDecisionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDecisionLog
+     */
+    omit?: AiCompanyDecisionLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDecisionLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AiCompanyDecisionLog to fetch.
+     */
+    where: AiCompanyDecisionLogWhereUniqueInput
+  }
+
+  /**
+   * AiCompanyDecisionLog findFirst
+   */
+  export type AiCompanyDecisionLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDecisionLog
+     */
+    select?: AiCompanyDecisionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDecisionLog
+     */
+    omit?: AiCompanyDecisionLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDecisionLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AiCompanyDecisionLog to fetch.
+     */
+    where?: AiCompanyDecisionLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiCompanyDecisionLogs to fetch.
+     */
+    orderBy?: AiCompanyDecisionLogOrderByWithRelationInput | AiCompanyDecisionLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiCompanyDecisionLogs.
+     */
+    cursor?: AiCompanyDecisionLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiCompanyDecisionLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiCompanyDecisionLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiCompanyDecisionLogs.
+     */
+    distinct?: AiCompanyDecisionLogScalarFieldEnum | AiCompanyDecisionLogScalarFieldEnum[]
+  }
+
+  /**
+   * AiCompanyDecisionLog findFirstOrThrow
+   */
+  export type AiCompanyDecisionLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDecisionLog
+     */
+    select?: AiCompanyDecisionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDecisionLog
+     */
+    omit?: AiCompanyDecisionLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDecisionLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AiCompanyDecisionLog to fetch.
+     */
+    where?: AiCompanyDecisionLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiCompanyDecisionLogs to fetch.
+     */
+    orderBy?: AiCompanyDecisionLogOrderByWithRelationInput | AiCompanyDecisionLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiCompanyDecisionLogs.
+     */
+    cursor?: AiCompanyDecisionLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiCompanyDecisionLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiCompanyDecisionLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiCompanyDecisionLogs.
+     */
+    distinct?: AiCompanyDecisionLogScalarFieldEnum | AiCompanyDecisionLogScalarFieldEnum[]
+  }
+
+  /**
+   * AiCompanyDecisionLog findMany
+   */
+  export type AiCompanyDecisionLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDecisionLog
+     */
+    select?: AiCompanyDecisionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDecisionLog
+     */
+    omit?: AiCompanyDecisionLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDecisionLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AiCompanyDecisionLogs to fetch.
+     */
+    where?: AiCompanyDecisionLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiCompanyDecisionLogs to fetch.
+     */
+    orderBy?: AiCompanyDecisionLogOrderByWithRelationInput | AiCompanyDecisionLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AiCompanyDecisionLogs.
+     */
+    cursor?: AiCompanyDecisionLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiCompanyDecisionLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiCompanyDecisionLogs.
+     */
+    skip?: number
+    distinct?: AiCompanyDecisionLogScalarFieldEnum | AiCompanyDecisionLogScalarFieldEnum[]
+  }
+
+  /**
+   * AiCompanyDecisionLog create
+   */
+  export type AiCompanyDecisionLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDecisionLog
+     */
+    select?: AiCompanyDecisionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDecisionLog
+     */
+    omit?: AiCompanyDecisionLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDecisionLogInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AiCompanyDecisionLog.
+     */
+    data: XOR<AiCompanyDecisionLogCreateInput, AiCompanyDecisionLogUncheckedCreateInput>
+  }
+
+  /**
+   * AiCompanyDecisionLog createMany
+   */
+  export type AiCompanyDecisionLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AiCompanyDecisionLogs.
+     */
+    data: AiCompanyDecisionLogCreateManyInput | AiCompanyDecisionLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AiCompanyDecisionLog createManyAndReturn
+   */
+  export type AiCompanyDecisionLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDecisionLog
+     */
+    select?: AiCompanyDecisionLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDecisionLog
+     */
+    omit?: AiCompanyDecisionLogOmit<ExtArgs> | null
+    /**
+     * The data used to create many AiCompanyDecisionLogs.
+     */
+    data: AiCompanyDecisionLogCreateManyInput | AiCompanyDecisionLogCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDecisionLogIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AiCompanyDecisionLog update
+   */
+  export type AiCompanyDecisionLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDecisionLog
+     */
+    select?: AiCompanyDecisionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDecisionLog
+     */
+    omit?: AiCompanyDecisionLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDecisionLogInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AiCompanyDecisionLog.
+     */
+    data: XOR<AiCompanyDecisionLogUpdateInput, AiCompanyDecisionLogUncheckedUpdateInput>
+    /**
+     * Choose, which AiCompanyDecisionLog to update.
+     */
+    where: AiCompanyDecisionLogWhereUniqueInput
+  }
+
+  /**
+   * AiCompanyDecisionLog updateMany
+   */
+  export type AiCompanyDecisionLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AiCompanyDecisionLogs.
+     */
+    data: XOR<AiCompanyDecisionLogUpdateManyMutationInput, AiCompanyDecisionLogUncheckedUpdateManyInput>
+    /**
+     * Filter which AiCompanyDecisionLogs to update
+     */
+    where?: AiCompanyDecisionLogWhereInput
+    /**
+     * Limit how many AiCompanyDecisionLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiCompanyDecisionLog updateManyAndReturn
+   */
+  export type AiCompanyDecisionLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDecisionLog
+     */
+    select?: AiCompanyDecisionLogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDecisionLog
+     */
+    omit?: AiCompanyDecisionLogOmit<ExtArgs> | null
+    /**
+     * The data used to update AiCompanyDecisionLogs.
+     */
+    data: XOR<AiCompanyDecisionLogUpdateManyMutationInput, AiCompanyDecisionLogUncheckedUpdateManyInput>
+    /**
+     * Filter which AiCompanyDecisionLogs to update
+     */
+    where?: AiCompanyDecisionLogWhereInput
+    /**
+     * Limit how many AiCompanyDecisionLogs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDecisionLogIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AiCompanyDecisionLog upsert
+   */
+  export type AiCompanyDecisionLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDecisionLog
+     */
+    select?: AiCompanyDecisionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDecisionLog
+     */
+    omit?: AiCompanyDecisionLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDecisionLogInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AiCompanyDecisionLog to update in case it exists.
+     */
+    where: AiCompanyDecisionLogWhereUniqueInput
+    /**
+     * In case the AiCompanyDecisionLog found by the `where` argument doesn't exist, create a new AiCompanyDecisionLog with this data.
+     */
+    create: XOR<AiCompanyDecisionLogCreateInput, AiCompanyDecisionLogUncheckedCreateInput>
+    /**
+     * In case the AiCompanyDecisionLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AiCompanyDecisionLogUpdateInput, AiCompanyDecisionLogUncheckedUpdateInput>
+  }
+
+  /**
+   * AiCompanyDecisionLog delete
+   */
+  export type AiCompanyDecisionLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDecisionLog
+     */
+    select?: AiCompanyDecisionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDecisionLog
+     */
+    omit?: AiCompanyDecisionLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDecisionLogInclude<ExtArgs> | null
+    /**
+     * Filter which AiCompanyDecisionLog to delete.
+     */
+    where: AiCompanyDecisionLogWhereUniqueInput
+  }
+
+  /**
+   * AiCompanyDecisionLog deleteMany
+   */
+  export type AiCompanyDecisionLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiCompanyDecisionLogs to delete
+     */
+    where?: AiCompanyDecisionLogWhereInput
+    /**
+     * Limit how many AiCompanyDecisionLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiCompanyDecisionLog without action
+   */
+  export type AiCompanyDecisionLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiCompanyDecisionLog
+     */
+    select?: AiCompanyDecisionLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiCompanyDecisionLog
+     */
+    omit?: AiCompanyDecisionLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiCompanyDecisionLogInclude<ExtArgs> | null
   }
 
 
@@ -76544,6 +81831,96 @@ export namespace Prisma {
   export type UnifiedApprovalDecisionScalarFieldEnum = (typeof UnifiedApprovalDecisionScalarFieldEnum)[keyof typeof UnifiedApprovalDecisionScalarFieldEnum]
 
 
+  export const AiCompanyExecutiveDirectiveScalarFieldEnum: {
+    id: 'id',
+    tenantId: 'tenantId',
+    title: 'title',
+    businessGoal: 'businessGoal',
+    sourceDepartment: 'sourceDepartment',
+    assignedDepartments: 'assignedDepartments',
+    requestedOutputs: 'requestedOutputs',
+    status: 'status',
+    workflowState: 'workflowState',
+    riskLevel: 'riskLevel',
+    expectedBusinessValue: 'expectedBusinessValue',
+    governanceNotes: 'governanceNotes',
+    revenuePriorityScore: 'revenuePriorityScore',
+    reviewReminderAt: 'reviewReminderAt',
+    approvedBy: 'approvedBy',
+    approvedAt: 'approvedAt',
+    providerCalled: 'providerCalled',
+    sent: 'sent',
+    published: 'published',
+    liveExecutionAllowed: 'liveExecutionAllowed',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AiCompanyExecutiveDirectiveScalarFieldEnum = (typeof AiCompanyExecutiveDirectiveScalarFieldEnum)[keyof typeof AiCompanyExecutiveDirectiveScalarFieldEnum]
+
+
+  export const AiCompanyWorkAssignmentScalarFieldEnum: {
+    id: 'id',
+    tenantId: 'tenantId',
+    directiveId: 'directiveId',
+    department: 'department',
+    assignmentType: 'assignmentType',
+    requestedOutputs: 'requestedOutputs',
+    status: 'status',
+    blocker: 'blocker',
+    approvalRequired: 'approvalRequired',
+    providerCalled: 'providerCalled',
+    sent: 'sent',
+    published: 'published',
+    liveExecutionAllowed: 'liveExecutionAllowed',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AiCompanyWorkAssignmentScalarFieldEnum = (typeof AiCompanyWorkAssignmentScalarFieldEnum)[keyof typeof AiCompanyWorkAssignmentScalarFieldEnum]
+
+
+  export const AiCompanyDraftQueueItemScalarFieldEnum: {
+    id: 'id',
+    tenantId: 'tenantId',
+    directiveId: 'directiveId',
+    output: 'output',
+    ownerDepartment: 'ownerDepartment',
+    status: 'status',
+    sourceLabel: 'sourceLabel',
+    approvalRequired: 'approvalRequired',
+    providerCalled: 'providerCalled',
+    sent: 'sent',
+    published: 'published',
+    liveExecutionAllowed: 'liveExecutionAllowed',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AiCompanyDraftQueueItemScalarFieldEnum = (typeof AiCompanyDraftQueueItemScalarFieldEnum)[keyof typeof AiCompanyDraftQueueItemScalarFieldEnum]
+
+
+  export const AiCompanyDecisionLogScalarFieldEnum: {
+    id: 'id',
+    tenantId: 'tenantId',
+    directiveId: 'directiveId',
+    decision: 'decision',
+    note: 'note',
+    decidedBy: 'decidedBy',
+    previousStatus: 'previousStatus',
+    resultingStatus: 'resultingStatus',
+    reviewReminderAt: 'reviewReminderAt',
+    safetyFlags: 'safetyFlags',
+    providerCalled: 'providerCalled',
+    sent: 'sent',
+    published: 'published',
+    liveExecutionAllowed: 'liveExecutionAllowed',
+    createdAt: 'createdAt'
+  };
+
+  export type AiCompanyDecisionLogScalarFieldEnum = (typeof AiCompanyDecisionLogScalarFieldEnum)[keyof typeof AiCompanyDecisionLogScalarFieldEnum]
+
+
   export const SocialContentSourceScalarFieldEnum: {
     id: 'id',
     tenantId: 'tenantId',
@@ -80275,6 +85652,464 @@ export namespace Prisma {
     published?: BoolWithAggregatesFilter<"UnifiedApprovalDecision"> | boolean
     liveExecutionAllowed?: BoolWithAggregatesFilter<"UnifiedApprovalDecision"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"UnifiedApprovalDecision"> | Date | string
+  }
+
+  export type AiCompanyExecutiveDirectiveWhereInput = {
+    AND?: AiCompanyExecutiveDirectiveWhereInput | AiCompanyExecutiveDirectiveWhereInput[]
+    OR?: AiCompanyExecutiveDirectiveWhereInput[]
+    NOT?: AiCompanyExecutiveDirectiveWhereInput | AiCompanyExecutiveDirectiveWhereInput[]
+    id?: StringFilter<"AiCompanyExecutiveDirective"> | string
+    tenantId?: StringFilter<"AiCompanyExecutiveDirective"> | string
+    title?: StringFilter<"AiCompanyExecutiveDirective"> | string
+    businessGoal?: StringFilter<"AiCompanyExecutiveDirective"> | string
+    sourceDepartment?: StringFilter<"AiCompanyExecutiveDirective"> | string
+    assignedDepartments?: JsonFilter<"AiCompanyExecutiveDirective">
+    requestedOutputs?: JsonFilter<"AiCompanyExecutiveDirective">
+    status?: StringFilter<"AiCompanyExecutiveDirective"> | string
+    workflowState?: StringFilter<"AiCompanyExecutiveDirective"> | string
+    riskLevel?: StringFilter<"AiCompanyExecutiveDirective"> | string
+    expectedBusinessValue?: StringFilter<"AiCompanyExecutiveDirective"> | string
+    governanceNotes?: JsonFilter<"AiCompanyExecutiveDirective">
+    revenuePriorityScore?: JsonFilter<"AiCompanyExecutiveDirective">
+    reviewReminderAt?: DateTimeNullableFilter<"AiCompanyExecutiveDirective"> | Date | string | null
+    approvedBy?: StringNullableFilter<"AiCompanyExecutiveDirective"> | string | null
+    approvedAt?: DateTimeNullableFilter<"AiCompanyExecutiveDirective"> | Date | string | null
+    providerCalled?: BoolFilter<"AiCompanyExecutiveDirective"> | boolean
+    sent?: BoolFilter<"AiCompanyExecutiveDirective"> | boolean
+    published?: BoolFilter<"AiCompanyExecutiveDirective"> | boolean
+    liveExecutionAllowed?: BoolFilter<"AiCompanyExecutiveDirective"> | boolean
+    createdAt?: DateTimeFilter<"AiCompanyExecutiveDirective"> | Date | string
+    updatedAt?: DateTimeFilter<"AiCompanyExecutiveDirective"> | Date | string
+    assignments?: AiCompanyWorkAssignmentListRelationFilter
+    draftItems?: AiCompanyDraftQueueItemListRelationFilter
+    decisions?: AiCompanyDecisionLogListRelationFilter
+  }
+
+  export type AiCompanyExecutiveDirectiveOrderByWithRelationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    title?: SortOrder
+    businessGoal?: SortOrder
+    sourceDepartment?: SortOrder
+    assignedDepartments?: SortOrder
+    requestedOutputs?: SortOrder
+    status?: SortOrder
+    workflowState?: SortOrder
+    riskLevel?: SortOrder
+    expectedBusinessValue?: SortOrder
+    governanceNotes?: SortOrder
+    revenuePriorityScore?: SortOrder
+    reviewReminderAt?: SortOrderInput | SortOrder
+    approvedBy?: SortOrderInput | SortOrder
+    approvedAt?: SortOrderInput | SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    assignments?: AiCompanyWorkAssignmentOrderByRelationAggregateInput
+    draftItems?: AiCompanyDraftQueueItemOrderByRelationAggregateInput
+    decisions?: AiCompanyDecisionLogOrderByRelationAggregateInput
+  }
+
+  export type AiCompanyExecutiveDirectiveWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AiCompanyExecutiveDirectiveWhereInput | AiCompanyExecutiveDirectiveWhereInput[]
+    OR?: AiCompanyExecutiveDirectiveWhereInput[]
+    NOT?: AiCompanyExecutiveDirectiveWhereInput | AiCompanyExecutiveDirectiveWhereInput[]
+    tenantId?: StringFilter<"AiCompanyExecutiveDirective"> | string
+    title?: StringFilter<"AiCompanyExecutiveDirective"> | string
+    businessGoal?: StringFilter<"AiCompanyExecutiveDirective"> | string
+    sourceDepartment?: StringFilter<"AiCompanyExecutiveDirective"> | string
+    assignedDepartments?: JsonFilter<"AiCompanyExecutiveDirective">
+    requestedOutputs?: JsonFilter<"AiCompanyExecutiveDirective">
+    status?: StringFilter<"AiCompanyExecutiveDirective"> | string
+    workflowState?: StringFilter<"AiCompanyExecutiveDirective"> | string
+    riskLevel?: StringFilter<"AiCompanyExecutiveDirective"> | string
+    expectedBusinessValue?: StringFilter<"AiCompanyExecutiveDirective"> | string
+    governanceNotes?: JsonFilter<"AiCompanyExecutiveDirective">
+    revenuePriorityScore?: JsonFilter<"AiCompanyExecutiveDirective">
+    reviewReminderAt?: DateTimeNullableFilter<"AiCompanyExecutiveDirective"> | Date | string | null
+    approvedBy?: StringNullableFilter<"AiCompanyExecutiveDirective"> | string | null
+    approvedAt?: DateTimeNullableFilter<"AiCompanyExecutiveDirective"> | Date | string | null
+    providerCalled?: BoolFilter<"AiCompanyExecutiveDirective"> | boolean
+    sent?: BoolFilter<"AiCompanyExecutiveDirective"> | boolean
+    published?: BoolFilter<"AiCompanyExecutiveDirective"> | boolean
+    liveExecutionAllowed?: BoolFilter<"AiCompanyExecutiveDirective"> | boolean
+    createdAt?: DateTimeFilter<"AiCompanyExecutiveDirective"> | Date | string
+    updatedAt?: DateTimeFilter<"AiCompanyExecutiveDirective"> | Date | string
+    assignments?: AiCompanyWorkAssignmentListRelationFilter
+    draftItems?: AiCompanyDraftQueueItemListRelationFilter
+    decisions?: AiCompanyDecisionLogListRelationFilter
+  }, "id">
+
+  export type AiCompanyExecutiveDirectiveOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    title?: SortOrder
+    businessGoal?: SortOrder
+    sourceDepartment?: SortOrder
+    assignedDepartments?: SortOrder
+    requestedOutputs?: SortOrder
+    status?: SortOrder
+    workflowState?: SortOrder
+    riskLevel?: SortOrder
+    expectedBusinessValue?: SortOrder
+    governanceNotes?: SortOrder
+    revenuePriorityScore?: SortOrder
+    reviewReminderAt?: SortOrderInput | SortOrder
+    approvedBy?: SortOrderInput | SortOrder
+    approvedAt?: SortOrderInput | SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AiCompanyExecutiveDirectiveCountOrderByAggregateInput
+    _max?: AiCompanyExecutiveDirectiveMaxOrderByAggregateInput
+    _min?: AiCompanyExecutiveDirectiveMinOrderByAggregateInput
+  }
+
+  export type AiCompanyExecutiveDirectiveScalarWhereWithAggregatesInput = {
+    AND?: AiCompanyExecutiveDirectiveScalarWhereWithAggregatesInput | AiCompanyExecutiveDirectiveScalarWhereWithAggregatesInput[]
+    OR?: AiCompanyExecutiveDirectiveScalarWhereWithAggregatesInput[]
+    NOT?: AiCompanyExecutiveDirectiveScalarWhereWithAggregatesInput | AiCompanyExecutiveDirectiveScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AiCompanyExecutiveDirective"> | string
+    tenantId?: StringWithAggregatesFilter<"AiCompanyExecutiveDirective"> | string
+    title?: StringWithAggregatesFilter<"AiCompanyExecutiveDirective"> | string
+    businessGoal?: StringWithAggregatesFilter<"AiCompanyExecutiveDirective"> | string
+    sourceDepartment?: StringWithAggregatesFilter<"AiCompanyExecutiveDirective"> | string
+    assignedDepartments?: JsonWithAggregatesFilter<"AiCompanyExecutiveDirective">
+    requestedOutputs?: JsonWithAggregatesFilter<"AiCompanyExecutiveDirective">
+    status?: StringWithAggregatesFilter<"AiCompanyExecutiveDirective"> | string
+    workflowState?: StringWithAggregatesFilter<"AiCompanyExecutiveDirective"> | string
+    riskLevel?: StringWithAggregatesFilter<"AiCompanyExecutiveDirective"> | string
+    expectedBusinessValue?: StringWithAggregatesFilter<"AiCompanyExecutiveDirective"> | string
+    governanceNotes?: JsonWithAggregatesFilter<"AiCompanyExecutiveDirective">
+    revenuePriorityScore?: JsonWithAggregatesFilter<"AiCompanyExecutiveDirective">
+    reviewReminderAt?: DateTimeNullableWithAggregatesFilter<"AiCompanyExecutiveDirective"> | Date | string | null
+    approvedBy?: StringNullableWithAggregatesFilter<"AiCompanyExecutiveDirective"> | string | null
+    approvedAt?: DateTimeNullableWithAggregatesFilter<"AiCompanyExecutiveDirective"> | Date | string | null
+    providerCalled?: BoolWithAggregatesFilter<"AiCompanyExecutiveDirective"> | boolean
+    sent?: BoolWithAggregatesFilter<"AiCompanyExecutiveDirective"> | boolean
+    published?: BoolWithAggregatesFilter<"AiCompanyExecutiveDirective"> | boolean
+    liveExecutionAllowed?: BoolWithAggregatesFilter<"AiCompanyExecutiveDirective"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"AiCompanyExecutiveDirective"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AiCompanyExecutiveDirective"> | Date | string
+  }
+
+  export type AiCompanyWorkAssignmentWhereInput = {
+    AND?: AiCompanyWorkAssignmentWhereInput | AiCompanyWorkAssignmentWhereInput[]
+    OR?: AiCompanyWorkAssignmentWhereInput[]
+    NOT?: AiCompanyWorkAssignmentWhereInput | AiCompanyWorkAssignmentWhereInput[]
+    id?: StringFilter<"AiCompanyWorkAssignment"> | string
+    tenantId?: StringFilter<"AiCompanyWorkAssignment"> | string
+    directiveId?: StringFilter<"AiCompanyWorkAssignment"> | string
+    department?: StringFilter<"AiCompanyWorkAssignment"> | string
+    assignmentType?: StringFilter<"AiCompanyWorkAssignment"> | string
+    requestedOutputs?: JsonFilter<"AiCompanyWorkAssignment">
+    status?: StringFilter<"AiCompanyWorkAssignment"> | string
+    blocker?: StringNullableFilter<"AiCompanyWorkAssignment"> | string | null
+    approvalRequired?: BoolFilter<"AiCompanyWorkAssignment"> | boolean
+    providerCalled?: BoolFilter<"AiCompanyWorkAssignment"> | boolean
+    sent?: BoolFilter<"AiCompanyWorkAssignment"> | boolean
+    published?: BoolFilter<"AiCompanyWorkAssignment"> | boolean
+    liveExecutionAllowed?: BoolFilter<"AiCompanyWorkAssignment"> | boolean
+    createdAt?: DateTimeFilter<"AiCompanyWorkAssignment"> | Date | string
+    updatedAt?: DateTimeFilter<"AiCompanyWorkAssignment"> | Date | string
+    directive?: XOR<AiCompanyExecutiveDirectiveScalarRelationFilter, AiCompanyExecutiveDirectiveWhereInput>
+  }
+
+  export type AiCompanyWorkAssignmentOrderByWithRelationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    directiveId?: SortOrder
+    department?: SortOrder
+    assignmentType?: SortOrder
+    requestedOutputs?: SortOrder
+    status?: SortOrder
+    blocker?: SortOrderInput | SortOrder
+    approvalRequired?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    directive?: AiCompanyExecutiveDirectiveOrderByWithRelationInput
+  }
+
+  export type AiCompanyWorkAssignmentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    directiveId_department_assignmentType?: AiCompanyWorkAssignmentDirectiveIdDepartmentAssignmentTypeCompoundUniqueInput
+    AND?: AiCompanyWorkAssignmentWhereInput | AiCompanyWorkAssignmentWhereInput[]
+    OR?: AiCompanyWorkAssignmentWhereInput[]
+    NOT?: AiCompanyWorkAssignmentWhereInput | AiCompanyWorkAssignmentWhereInput[]
+    tenantId?: StringFilter<"AiCompanyWorkAssignment"> | string
+    directiveId?: StringFilter<"AiCompanyWorkAssignment"> | string
+    department?: StringFilter<"AiCompanyWorkAssignment"> | string
+    assignmentType?: StringFilter<"AiCompanyWorkAssignment"> | string
+    requestedOutputs?: JsonFilter<"AiCompanyWorkAssignment">
+    status?: StringFilter<"AiCompanyWorkAssignment"> | string
+    blocker?: StringNullableFilter<"AiCompanyWorkAssignment"> | string | null
+    approvalRequired?: BoolFilter<"AiCompanyWorkAssignment"> | boolean
+    providerCalled?: BoolFilter<"AiCompanyWorkAssignment"> | boolean
+    sent?: BoolFilter<"AiCompanyWorkAssignment"> | boolean
+    published?: BoolFilter<"AiCompanyWorkAssignment"> | boolean
+    liveExecutionAllowed?: BoolFilter<"AiCompanyWorkAssignment"> | boolean
+    createdAt?: DateTimeFilter<"AiCompanyWorkAssignment"> | Date | string
+    updatedAt?: DateTimeFilter<"AiCompanyWorkAssignment"> | Date | string
+    directive?: XOR<AiCompanyExecutiveDirectiveScalarRelationFilter, AiCompanyExecutiveDirectiveWhereInput>
+  }, "id" | "directiveId_department_assignmentType">
+
+  export type AiCompanyWorkAssignmentOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    directiveId?: SortOrder
+    department?: SortOrder
+    assignmentType?: SortOrder
+    requestedOutputs?: SortOrder
+    status?: SortOrder
+    blocker?: SortOrderInput | SortOrder
+    approvalRequired?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AiCompanyWorkAssignmentCountOrderByAggregateInput
+    _max?: AiCompanyWorkAssignmentMaxOrderByAggregateInput
+    _min?: AiCompanyWorkAssignmentMinOrderByAggregateInput
+  }
+
+  export type AiCompanyWorkAssignmentScalarWhereWithAggregatesInput = {
+    AND?: AiCompanyWorkAssignmentScalarWhereWithAggregatesInput | AiCompanyWorkAssignmentScalarWhereWithAggregatesInput[]
+    OR?: AiCompanyWorkAssignmentScalarWhereWithAggregatesInput[]
+    NOT?: AiCompanyWorkAssignmentScalarWhereWithAggregatesInput | AiCompanyWorkAssignmentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AiCompanyWorkAssignment"> | string
+    tenantId?: StringWithAggregatesFilter<"AiCompanyWorkAssignment"> | string
+    directiveId?: StringWithAggregatesFilter<"AiCompanyWorkAssignment"> | string
+    department?: StringWithAggregatesFilter<"AiCompanyWorkAssignment"> | string
+    assignmentType?: StringWithAggregatesFilter<"AiCompanyWorkAssignment"> | string
+    requestedOutputs?: JsonWithAggregatesFilter<"AiCompanyWorkAssignment">
+    status?: StringWithAggregatesFilter<"AiCompanyWorkAssignment"> | string
+    blocker?: StringNullableWithAggregatesFilter<"AiCompanyWorkAssignment"> | string | null
+    approvalRequired?: BoolWithAggregatesFilter<"AiCompanyWorkAssignment"> | boolean
+    providerCalled?: BoolWithAggregatesFilter<"AiCompanyWorkAssignment"> | boolean
+    sent?: BoolWithAggregatesFilter<"AiCompanyWorkAssignment"> | boolean
+    published?: BoolWithAggregatesFilter<"AiCompanyWorkAssignment"> | boolean
+    liveExecutionAllowed?: BoolWithAggregatesFilter<"AiCompanyWorkAssignment"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"AiCompanyWorkAssignment"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AiCompanyWorkAssignment"> | Date | string
+  }
+
+  export type AiCompanyDraftQueueItemWhereInput = {
+    AND?: AiCompanyDraftQueueItemWhereInput | AiCompanyDraftQueueItemWhereInput[]
+    OR?: AiCompanyDraftQueueItemWhereInput[]
+    NOT?: AiCompanyDraftQueueItemWhereInput | AiCompanyDraftQueueItemWhereInput[]
+    id?: StringFilter<"AiCompanyDraftQueueItem"> | string
+    tenantId?: StringFilter<"AiCompanyDraftQueueItem"> | string
+    directiveId?: StringFilter<"AiCompanyDraftQueueItem"> | string
+    output?: StringFilter<"AiCompanyDraftQueueItem"> | string
+    ownerDepartment?: StringFilter<"AiCompanyDraftQueueItem"> | string
+    status?: StringFilter<"AiCompanyDraftQueueItem"> | string
+    sourceLabel?: StringFilter<"AiCompanyDraftQueueItem"> | string
+    approvalRequired?: BoolFilter<"AiCompanyDraftQueueItem"> | boolean
+    providerCalled?: BoolFilter<"AiCompanyDraftQueueItem"> | boolean
+    sent?: BoolFilter<"AiCompanyDraftQueueItem"> | boolean
+    published?: BoolFilter<"AiCompanyDraftQueueItem"> | boolean
+    liveExecutionAllowed?: BoolFilter<"AiCompanyDraftQueueItem"> | boolean
+    createdAt?: DateTimeFilter<"AiCompanyDraftQueueItem"> | Date | string
+    updatedAt?: DateTimeFilter<"AiCompanyDraftQueueItem"> | Date | string
+    directive?: XOR<AiCompanyExecutiveDirectiveScalarRelationFilter, AiCompanyExecutiveDirectiveWhereInput>
+  }
+
+  export type AiCompanyDraftQueueItemOrderByWithRelationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    directiveId?: SortOrder
+    output?: SortOrder
+    ownerDepartment?: SortOrder
+    status?: SortOrder
+    sourceLabel?: SortOrder
+    approvalRequired?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    directive?: AiCompanyExecutiveDirectiveOrderByWithRelationInput
+  }
+
+  export type AiCompanyDraftQueueItemWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    directiveId_output?: AiCompanyDraftQueueItemDirectiveIdOutputCompoundUniqueInput
+    AND?: AiCompanyDraftQueueItemWhereInput | AiCompanyDraftQueueItemWhereInput[]
+    OR?: AiCompanyDraftQueueItemWhereInput[]
+    NOT?: AiCompanyDraftQueueItemWhereInput | AiCompanyDraftQueueItemWhereInput[]
+    tenantId?: StringFilter<"AiCompanyDraftQueueItem"> | string
+    directiveId?: StringFilter<"AiCompanyDraftQueueItem"> | string
+    output?: StringFilter<"AiCompanyDraftQueueItem"> | string
+    ownerDepartment?: StringFilter<"AiCompanyDraftQueueItem"> | string
+    status?: StringFilter<"AiCompanyDraftQueueItem"> | string
+    sourceLabel?: StringFilter<"AiCompanyDraftQueueItem"> | string
+    approvalRequired?: BoolFilter<"AiCompanyDraftQueueItem"> | boolean
+    providerCalled?: BoolFilter<"AiCompanyDraftQueueItem"> | boolean
+    sent?: BoolFilter<"AiCompanyDraftQueueItem"> | boolean
+    published?: BoolFilter<"AiCompanyDraftQueueItem"> | boolean
+    liveExecutionAllowed?: BoolFilter<"AiCompanyDraftQueueItem"> | boolean
+    createdAt?: DateTimeFilter<"AiCompanyDraftQueueItem"> | Date | string
+    updatedAt?: DateTimeFilter<"AiCompanyDraftQueueItem"> | Date | string
+    directive?: XOR<AiCompanyExecutiveDirectiveScalarRelationFilter, AiCompanyExecutiveDirectiveWhereInput>
+  }, "id" | "directiveId_output">
+
+  export type AiCompanyDraftQueueItemOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    directiveId?: SortOrder
+    output?: SortOrder
+    ownerDepartment?: SortOrder
+    status?: SortOrder
+    sourceLabel?: SortOrder
+    approvalRequired?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AiCompanyDraftQueueItemCountOrderByAggregateInput
+    _max?: AiCompanyDraftQueueItemMaxOrderByAggregateInput
+    _min?: AiCompanyDraftQueueItemMinOrderByAggregateInput
+  }
+
+  export type AiCompanyDraftQueueItemScalarWhereWithAggregatesInput = {
+    AND?: AiCompanyDraftQueueItemScalarWhereWithAggregatesInput | AiCompanyDraftQueueItemScalarWhereWithAggregatesInput[]
+    OR?: AiCompanyDraftQueueItemScalarWhereWithAggregatesInput[]
+    NOT?: AiCompanyDraftQueueItemScalarWhereWithAggregatesInput | AiCompanyDraftQueueItemScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AiCompanyDraftQueueItem"> | string
+    tenantId?: StringWithAggregatesFilter<"AiCompanyDraftQueueItem"> | string
+    directiveId?: StringWithAggregatesFilter<"AiCompanyDraftQueueItem"> | string
+    output?: StringWithAggregatesFilter<"AiCompanyDraftQueueItem"> | string
+    ownerDepartment?: StringWithAggregatesFilter<"AiCompanyDraftQueueItem"> | string
+    status?: StringWithAggregatesFilter<"AiCompanyDraftQueueItem"> | string
+    sourceLabel?: StringWithAggregatesFilter<"AiCompanyDraftQueueItem"> | string
+    approvalRequired?: BoolWithAggregatesFilter<"AiCompanyDraftQueueItem"> | boolean
+    providerCalled?: BoolWithAggregatesFilter<"AiCompanyDraftQueueItem"> | boolean
+    sent?: BoolWithAggregatesFilter<"AiCompanyDraftQueueItem"> | boolean
+    published?: BoolWithAggregatesFilter<"AiCompanyDraftQueueItem"> | boolean
+    liveExecutionAllowed?: BoolWithAggregatesFilter<"AiCompanyDraftQueueItem"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"AiCompanyDraftQueueItem"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AiCompanyDraftQueueItem"> | Date | string
+  }
+
+  export type AiCompanyDecisionLogWhereInput = {
+    AND?: AiCompanyDecisionLogWhereInput | AiCompanyDecisionLogWhereInput[]
+    OR?: AiCompanyDecisionLogWhereInput[]
+    NOT?: AiCompanyDecisionLogWhereInput | AiCompanyDecisionLogWhereInput[]
+    id?: StringFilter<"AiCompanyDecisionLog"> | string
+    tenantId?: StringFilter<"AiCompanyDecisionLog"> | string
+    directiveId?: StringFilter<"AiCompanyDecisionLog"> | string
+    decision?: StringFilter<"AiCompanyDecisionLog"> | string
+    note?: StringNullableFilter<"AiCompanyDecisionLog"> | string | null
+    decidedBy?: StringNullableFilter<"AiCompanyDecisionLog"> | string | null
+    previousStatus?: StringFilter<"AiCompanyDecisionLog"> | string
+    resultingStatus?: StringFilter<"AiCompanyDecisionLog"> | string
+    reviewReminderAt?: DateTimeNullableFilter<"AiCompanyDecisionLog"> | Date | string | null
+    safetyFlags?: JsonFilter<"AiCompanyDecisionLog">
+    providerCalled?: BoolFilter<"AiCompanyDecisionLog"> | boolean
+    sent?: BoolFilter<"AiCompanyDecisionLog"> | boolean
+    published?: BoolFilter<"AiCompanyDecisionLog"> | boolean
+    liveExecutionAllowed?: BoolFilter<"AiCompanyDecisionLog"> | boolean
+    createdAt?: DateTimeFilter<"AiCompanyDecisionLog"> | Date | string
+    directive?: XOR<AiCompanyExecutiveDirectiveScalarRelationFilter, AiCompanyExecutiveDirectiveWhereInput>
+  }
+
+  export type AiCompanyDecisionLogOrderByWithRelationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    directiveId?: SortOrder
+    decision?: SortOrder
+    note?: SortOrderInput | SortOrder
+    decidedBy?: SortOrderInput | SortOrder
+    previousStatus?: SortOrder
+    resultingStatus?: SortOrder
+    reviewReminderAt?: SortOrderInput | SortOrder
+    safetyFlags?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    directive?: AiCompanyExecutiveDirectiveOrderByWithRelationInput
+  }
+
+  export type AiCompanyDecisionLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AiCompanyDecisionLogWhereInput | AiCompanyDecisionLogWhereInput[]
+    OR?: AiCompanyDecisionLogWhereInput[]
+    NOT?: AiCompanyDecisionLogWhereInput | AiCompanyDecisionLogWhereInput[]
+    tenantId?: StringFilter<"AiCompanyDecisionLog"> | string
+    directiveId?: StringFilter<"AiCompanyDecisionLog"> | string
+    decision?: StringFilter<"AiCompanyDecisionLog"> | string
+    note?: StringNullableFilter<"AiCompanyDecisionLog"> | string | null
+    decidedBy?: StringNullableFilter<"AiCompanyDecisionLog"> | string | null
+    previousStatus?: StringFilter<"AiCompanyDecisionLog"> | string
+    resultingStatus?: StringFilter<"AiCompanyDecisionLog"> | string
+    reviewReminderAt?: DateTimeNullableFilter<"AiCompanyDecisionLog"> | Date | string | null
+    safetyFlags?: JsonFilter<"AiCompanyDecisionLog">
+    providerCalled?: BoolFilter<"AiCompanyDecisionLog"> | boolean
+    sent?: BoolFilter<"AiCompanyDecisionLog"> | boolean
+    published?: BoolFilter<"AiCompanyDecisionLog"> | boolean
+    liveExecutionAllowed?: BoolFilter<"AiCompanyDecisionLog"> | boolean
+    createdAt?: DateTimeFilter<"AiCompanyDecisionLog"> | Date | string
+    directive?: XOR<AiCompanyExecutiveDirectiveScalarRelationFilter, AiCompanyExecutiveDirectiveWhereInput>
+  }, "id">
+
+  export type AiCompanyDecisionLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    directiveId?: SortOrder
+    decision?: SortOrder
+    note?: SortOrderInput | SortOrder
+    decidedBy?: SortOrderInput | SortOrder
+    previousStatus?: SortOrder
+    resultingStatus?: SortOrder
+    reviewReminderAt?: SortOrderInput | SortOrder
+    safetyFlags?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    _count?: AiCompanyDecisionLogCountOrderByAggregateInput
+    _max?: AiCompanyDecisionLogMaxOrderByAggregateInput
+    _min?: AiCompanyDecisionLogMinOrderByAggregateInput
+  }
+
+  export type AiCompanyDecisionLogScalarWhereWithAggregatesInput = {
+    AND?: AiCompanyDecisionLogScalarWhereWithAggregatesInput | AiCompanyDecisionLogScalarWhereWithAggregatesInput[]
+    OR?: AiCompanyDecisionLogScalarWhereWithAggregatesInput[]
+    NOT?: AiCompanyDecisionLogScalarWhereWithAggregatesInput | AiCompanyDecisionLogScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AiCompanyDecisionLog"> | string
+    tenantId?: StringWithAggregatesFilter<"AiCompanyDecisionLog"> | string
+    directiveId?: StringWithAggregatesFilter<"AiCompanyDecisionLog"> | string
+    decision?: StringWithAggregatesFilter<"AiCompanyDecisionLog"> | string
+    note?: StringNullableWithAggregatesFilter<"AiCompanyDecisionLog"> | string | null
+    decidedBy?: StringNullableWithAggregatesFilter<"AiCompanyDecisionLog"> | string | null
+    previousStatus?: StringWithAggregatesFilter<"AiCompanyDecisionLog"> | string
+    resultingStatus?: StringWithAggregatesFilter<"AiCompanyDecisionLog"> | string
+    reviewReminderAt?: DateTimeNullableWithAggregatesFilter<"AiCompanyDecisionLog"> | Date | string | null
+    safetyFlags?: JsonWithAggregatesFilter<"AiCompanyDecisionLog">
+    providerCalled?: BoolWithAggregatesFilter<"AiCompanyDecisionLog"> | boolean
+    sent?: BoolWithAggregatesFilter<"AiCompanyDecisionLog"> | boolean
+    published?: BoolWithAggregatesFilter<"AiCompanyDecisionLog"> | boolean
+    liveExecutionAllowed?: BoolWithAggregatesFilter<"AiCompanyDecisionLog"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"AiCompanyDecisionLog"> | Date | string
   }
 
   export type SocialContentSourceWhereInput = {
@@ -86833,6 +92668,561 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AiCompanyExecutiveDirectiveCreateInput = {
+    id: string
+    tenantId?: string
+    title: string
+    businessGoal: string
+    sourceDepartment: string
+    assignedDepartments: JsonNullValueInput | InputJsonValue
+    requestedOutputs: JsonNullValueInput | InputJsonValue
+    status?: string
+    workflowState?: string
+    riskLevel?: string
+    expectedBusinessValue: string
+    governanceNotes: JsonNullValueInput | InputJsonValue
+    revenuePriorityScore: JsonNullValueInput | InputJsonValue
+    reviewReminderAt?: Date | string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assignments?: AiCompanyWorkAssignmentCreateNestedManyWithoutDirectiveInput
+    draftItems?: AiCompanyDraftQueueItemCreateNestedManyWithoutDirectiveInput
+    decisions?: AiCompanyDecisionLogCreateNestedManyWithoutDirectiveInput
+  }
+
+  export type AiCompanyExecutiveDirectiveUncheckedCreateInput = {
+    id: string
+    tenantId?: string
+    title: string
+    businessGoal: string
+    sourceDepartment: string
+    assignedDepartments: JsonNullValueInput | InputJsonValue
+    requestedOutputs: JsonNullValueInput | InputJsonValue
+    status?: string
+    workflowState?: string
+    riskLevel?: string
+    expectedBusinessValue: string
+    governanceNotes: JsonNullValueInput | InputJsonValue
+    revenuePriorityScore: JsonNullValueInput | InputJsonValue
+    reviewReminderAt?: Date | string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assignments?: AiCompanyWorkAssignmentUncheckedCreateNestedManyWithoutDirectiveInput
+    draftItems?: AiCompanyDraftQueueItemUncheckedCreateNestedManyWithoutDirectiveInput
+    decisions?: AiCompanyDecisionLogUncheckedCreateNestedManyWithoutDirectiveInput
+  }
+
+  export type AiCompanyExecutiveDirectiveUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    businessGoal?: StringFieldUpdateOperationsInput | string
+    sourceDepartment?: StringFieldUpdateOperationsInput | string
+    assignedDepartments?: JsonNullValueInput | InputJsonValue
+    requestedOutputs?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    workflowState?: StringFieldUpdateOperationsInput | string
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    expectedBusinessValue?: StringFieldUpdateOperationsInput | string
+    governanceNotes?: JsonNullValueInput | InputJsonValue
+    revenuePriorityScore?: JsonNullValueInput | InputJsonValue
+    reviewReminderAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignments?: AiCompanyWorkAssignmentUpdateManyWithoutDirectiveNestedInput
+    draftItems?: AiCompanyDraftQueueItemUpdateManyWithoutDirectiveNestedInput
+    decisions?: AiCompanyDecisionLogUpdateManyWithoutDirectiveNestedInput
+  }
+
+  export type AiCompanyExecutiveDirectiveUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    businessGoal?: StringFieldUpdateOperationsInput | string
+    sourceDepartment?: StringFieldUpdateOperationsInput | string
+    assignedDepartments?: JsonNullValueInput | InputJsonValue
+    requestedOutputs?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    workflowState?: StringFieldUpdateOperationsInput | string
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    expectedBusinessValue?: StringFieldUpdateOperationsInput | string
+    governanceNotes?: JsonNullValueInput | InputJsonValue
+    revenuePriorityScore?: JsonNullValueInput | InputJsonValue
+    reviewReminderAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignments?: AiCompanyWorkAssignmentUncheckedUpdateManyWithoutDirectiveNestedInput
+    draftItems?: AiCompanyDraftQueueItemUncheckedUpdateManyWithoutDirectiveNestedInput
+    decisions?: AiCompanyDecisionLogUncheckedUpdateManyWithoutDirectiveNestedInput
+  }
+
+  export type AiCompanyExecutiveDirectiveCreateManyInput = {
+    id: string
+    tenantId?: string
+    title: string
+    businessGoal: string
+    sourceDepartment: string
+    assignedDepartments: JsonNullValueInput | InputJsonValue
+    requestedOutputs: JsonNullValueInput | InputJsonValue
+    status?: string
+    workflowState?: string
+    riskLevel?: string
+    expectedBusinessValue: string
+    governanceNotes: JsonNullValueInput | InputJsonValue
+    revenuePriorityScore: JsonNullValueInput | InputJsonValue
+    reviewReminderAt?: Date | string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AiCompanyExecutiveDirectiveUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    businessGoal?: StringFieldUpdateOperationsInput | string
+    sourceDepartment?: StringFieldUpdateOperationsInput | string
+    assignedDepartments?: JsonNullValueInput | InputJsonValue
+    requestedOutputs?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    workflowState?: StringFieldUpdateOperationsInput | string
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    expectedBusinessValue?: StringFieldUpdateOperationsInput | string
+    governanceNotes?: JsonNullValueInput | InputJsonValue
+    revenuePriorityScore?: JsonNullValueInput | InputJsonValue
+    reviewReminderAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiCompanyExecutiveDirectiveUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    businessGoal?: StringFieldUpdateOperationsInput | string
+    sourceDepartment?: StringFieldUpdateOperationsInput | string
+    assignedDepartments?: JsonNullValueInput | InputJsonValue
+    requestedOutputs?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    workflowState?: StringFieldUpdateOperationsInput | string
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    expectedBusinessValue?: StringFieldUpdateOperationsInput | string
+    governanceNotes?: JsonNullValueInput | InputJsonValue
+    revenuePriorityScore?: JsonNullValueInput | InputJsonValue
+    reviewReminderAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiCompanyWorkAssignmentCreateInput = {
+    id?: string
+    tenantId?: string
+    department: string
+    assignmentType?: string
+    requestedOutputs: JsonNullValueInput | InputJsonValue
+    status?: string
+    blocker?: string | null
+    approvalRequired?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    directive: AiCompanyExecutiveDirectiveCreateNestedOneWithoutAssignmentsInput
+  }
+
+  export type AiCompanyWorkAssignmentUncheckedCreateInput = {
+    id?: string
+    tenantId?: string
+    directiveId: string
+    department: string
+    assignmentType?: string
+    requestedOutputs: JsonNullValueInput | InputJsonValue
+    status?: string
+    blocker?: string | null
+    approvalRequired?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AiCompanyWorkAssignmentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    assignmentType?: StringFieldUpdateOperationsInput | string
+    requestedOutputs?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    blocker?: NullableStringFieldUpdateOperationsInput | string | null
+    approvalRequired?: BoolFieldUpdateOperationsInput | boolean
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directive?: AiCompanyExecutiveDirectiveUpdateOneRequiredWithoutAssignmentsNestedInput
+  }
+
+  export type AiCompanyWorkAssignmentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    directiveId?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    assignmentType?: StringFieldUpdateOperationsInput | string
+    requestedOutputs?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    blocker?: NullableStringFieldUpdateOperationsInput | string | null
+    approvalRequired?: BoolFieldUpdateOperationsInput | boolean
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiCompanyWorkAssignmentCreateManyInput = {
+    id?: string
+    tenantId?: string
+    directiveId: string
+    department: string
+    assignmentType?: string
+    requestedOutputs: JsonNullValueInput | InputJsonValue
+    status?: string
+    blocker?: string | null
+    approvalRequired?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AiCompanyWorkAssignmentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    assignmentType?: StringFieldUpdateOperationsInput | string
+    requestedOutputs?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    blocker?: NullableStringFieldUpdateOperationsInput | string | null
+    approvalRequired?: BoolFieldUpdateOperationsInput | boolean
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiCompanyWorkAssignmentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    directiveId?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    assignmentType?: StringFieldUpdateOperationsInput | string
+    requestedOutputs?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    blocker?: NullableStringFieldUpdateOperationsInput | string | null
+    approvalRequired?: BoolFieldUpdateOperationsInput | boolean
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiCompanyDraftQueueItemCreateInput = {
+    id?: string
+    tenantId?: string
+    output: string
+    ownerDepartment: string
+    status?: string
+    sourceLabel: string
+    approvalRequired?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    directive: AiCompanyExecutiveDirectiveCreateNestedOneWithoutDraftItemsInput
+  }
+
+  export type AiCompanyDraftQueueItemUncheckedCreateInput = {
+    id?: string
+    tenantId?: string
+    directiveId: string
+    output: string
+    ownerDepartment: string
+    status?: string
+    sourceLabel: string
+    approvalRequired?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AiCompanyDraftQueueItemUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    output?: StringFieldUpdateOperationsInput | string
+    ownerDepartment?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    approvalRequired?: BoolFieldUpdateOperationsInput | boolean
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directive?: AiCompanyExecutiveDirectiveUpdateOneRequiredWithoutDraftItemsNestedInput
+  }
+
+  export type AiCompanyDraftQueueItemUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    directiveId?: StringFieldUpdateOperationsInput | string
+    output?: StringFieldUpdateOperationsInput | string
+    ownerDepartment?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    approvalRequired?: BoolFieldUpdateOperationsInput | boolean
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiCompanyDraftQueueItemCreateManyInput = {
+    id?: string
+    tenantId?: string
+    directiveId: string
+    output: string
+    ownerDepartment: string
+    status?: string
+    sourceLabel: string
+    approvalRequired?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AiCompanyDraftQueueItemUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    output?: StringFieldUpdateOperationsInput | string
+    ownerDepartment?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    approvalRequired?: BoolFieldUpdateOperationsInput | boolean
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiCompanyDraftQueueItemUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    directiveId?: StringFieldUpdateOperationsInput | string
+    output?: StringFieldUpdateOperationsInput | string
+    ownerDepartment?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    approvalRequired?: BoolFieldUpdateOperationsInput | boolean
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiCompanyDecisionLogCreateInput = {
+    id?: string
+    tenantId?: string
+    decision: string
+    note?: string | null
+    decidedBy?: string | null
+    previousStatus: string
+    resultingStatus: string
+    reviewReminderAt?: Date | string | null
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    directive: AiCompanyExecutiveDirectiveCreateNestedOneWithoutDecisionsInput
+  }
+
+  export type AiCompanyDecisionLogUncheckedCreateInput = {
+    id?: string
+    tenantId?: string
+    directiveId: string
+    decision: string
+    note?: string | null
+    decidedBy?: string | null
+    previousStatus: string
+    resultingStatus: string
+    reviewReminderAt?: Date | string | null
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AiCompanyDecisionLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    decision?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    decidedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    previousStatus?: StringFieldUpdateOperationsInput | string
+    resultingStatus?: StringFieldUpdateOperationsInput | string
+    reviewReminderAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directive?: AiCompanyExecutiveDirectiveUpdateOneRequiredWithoutDecisionsNestedInput
+  }
+
+  export type AiCompanyDecisionLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    directiveId?: StringFieldUpdateOperationsInput | string
+    decision?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    decidedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    previousStatus?: StringFieldUpdateOperationsInput | string
+    resultingStatus?: StringFieldUpdateOperationsInput | string
+    reviewReminderAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiCompanyDecisionLogCreateManyInput = {
+    id?: string
+    tenantId?: string
+    directiveId: string
+    decision: string
+    note?: string | null
+    decidedBy?: string | null
+    previousStatus: string
+    resultingStatus: string
+    reviewReminderAt?: Date | string | null
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AiCompanyDecisionLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    decision?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    decidedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    previousStatus?: StringFieldUpdateOperationsInput | string
+    resultingStatus?: StringFieldUpdateOperationsInput | string
+    reviewReminderAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiCompanyDecisionLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    directiveId?: StringFieldUpdateOperationsInput | string
+    decision?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    decidedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    previousStatus?: StringFieldUpdateOperationsInput | string
+    resultingStatus?: StringFieldUpdateOperationsInput | string
+    reviewReminderAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type SocialContentSourceCreateInput = {
     id?: string
     tenantId?: string
@@ -92386,6 +98776,274 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type AiCompanyWorkAssignmentListRelationFilter = {
+    every?: AiCompanyWorkAssignmentWhereInput
+    some?: AiCompanyWorkAssignmentWhereInput
+    none?: AiCompanyWorkAssignmentWhereInput
+  }
+
+  export type AiCompanyDraftQueueItemListRelationFilter = {
+    every?: AiCompanyDraftQueueItemWhereInput
+    some?: AiCompanyDraftQueueItemWhereInput
+    none?: AiCompanyDraftQueueItemWhereInput
+  }
+
+  export type AiCompanyDecisionLogListRelationFilter = {
+    every?: AiCompanyDecisionLogWhereInput
+    some?: AiCompanyDecisionLogWhereInput
+    none?: AiCompanyDecisionLogWhereInput
+  }
+
+  export type AiCompanyWorkAssignmentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AiCompanyDraftQueueItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AiCompanyDecisionLogOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AiCompanyExecutiveDirectiveCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    title?: SortOrder
+    businessGoal?: SortOrder
+    sourceDepartment?: SortOrder
+    assignedDepartments?: SortOrder
+    requestedOutputs?: SortOrder
+    status?: SortOrder
+    workflowState?: SortOrder
+    riskLevel?: SortOrder
+    expectedBusinessValue?: SortOrder
+    governanceNotes?: SortOrder
+    revenuePriorityScore?: SortOrder
+    reviewReminderAt?: SortOrder
+    approvedBy?: SortOrder
+    approvedAt?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AiCompanyExecutiveDirectiveMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    title?: SortOrder
+    businessGoal?: SortOrder
+    sourceDepartment?: SortOrder
+    status?: SortOrder
+    workflowState?: SortOrder
+    riskLevel?: SortOrder
+    expectedBusinessValue?: SortOrder
+    reviewReminderAt?: SortOrder
+    approvedBy?: SortOrder
+    approvedAt?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AiCompanyExecutiveDirectiveMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    title?: SortOrder
+    businessGoal?: SortOrder
+    sourceDepartment?: SortOrder
+    status?: SortOrder
+    workflowState?: SortOrder
+    riskLevel?: SortOrder
+    expectedBusinessValue?: SortOrder
+    reviewReminderAt?: SortOrder
+    approvedBy?: SortOrder
+    approvedAt?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AiCompanyExecutiveDirectiveScalarRelationFilter = {
+    is?: AiCompanyExecutiveDirectiveWhereInput
+    isNot?: AiCompanyExecutiveDirectiveWhereInput
+  }
+
+  export type AiCompanyWorkAssignmentDirectiveIdDepartmentAssignmentTypeCompoundUniqueInput = {
+    directiveId: string
+    department: string
+    assignmentType: string
+  }
+
+  export type AiCompanyWorkAssignmentCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    directiveId?: SortOrder
+    department?: SortOrder
+    assignmentType?: SortOrder
+    requestedOutputs?: SortOrder
+    status?: SortOrder
+    blocker?: SortOrder
+    approvalRequired?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AiCompanyWorkAssignmentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    directiveId?: SortOrder
+    department?: SortOrder
+    assignmentType?: SortOrder
+    status?: SortOrder
+    blocker?: SortOrder
+    approvalRequired?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AiCompanyWorkAssignmentMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    directiveId?: SortOrder
+    department?: SortOrder
+    assignmentType?: SortOrder
+    status?: SortOrder
+    blocker?: SortOrder
+    approvalRequired?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AiCompanyDraftQueueItemDirectiveIdOutputCompoundUniqueInput = {
+    directiveId: string
+    output: string
+  }
+
+  export type AiCompanyDraftQueueItemCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    directiveId?: SortOrder
+    output?: SortOrder
+    ownerDepartment?: SortOrder
+    status?: SortOrder
+    sourceLabel?: SortOrder
+    approvalRequired?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AiCompanyDraftQueueItemMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    directiveId?: SortOrder
+    output?: SortOrder
+    ownerDepartment?: SortOrder
+    status?: SortOrder
+    sourceLabel?: SortOrder
+    approvalRequired?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AiCompanyDraftQueueItemMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    directiveId?: SortOrder
+    output?: SortOrder
+    ownerDepartment?: SortOrder
+    status?: SortOrder
+    sourceLabel?: SortOrder
+    approvalRequired?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AiCompanyDecisionLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    directiveId?: SortOrder
+    decision?: SortOrder
+    note?: SortOrder
+    decidedBy?: SortOrder
+    previousStatus?: SortOrder
+    resultingStatus?: SortOrder
+    reviewReminderAt?: SortOrder
+    safetyFlags?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AiCompanyDecisionLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    directiveId?: SortOrder
+    decision?: SortOrder
+    note?: SortOrder
+    decidedBy?: SortOrder
+    previousStatus?: SortOrder
+    resultingStatus?: SortOrder
+    reviewReminderAt?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AiCompanyDecisionLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    directiveId?: SortOrder
+    decision?: SortOrder
+    note?: SortOrder
+    decidedBy?: SortOrder
+    previousStatus?: SortOrder
+    resultingStatus?: SortOrder
+    reviewReminderAt?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type SocialContentDraftListRelationFilter = {
     every?: SocialContentDraftWhereInput
     some?: SocialContentDraftWhereInput
@@ -95043,6 +101701,174 @@ export namespace Prisma {
     upsert?: UnifiedApprovalItemUpsertWithoutDecisionsInput
     connect?: UnifiedApprovalItemWhereUniqueInput
     update?: XOR<XOR<UnifiedApprovalItemUpdateToOneWithWhereWithoutDecisionsInput, UnifiedApprovalItemUpdateWithoutDecisionsInput>, UnifiedApprovalItemUncheckedUpdateWithoutDecisionsInput>
+  }
+
+  export type AiCompanyWorkAssignmentCreateNestedManyWithoutDirectiveInput = {
+    create?: XOR<AiCompanyWorkAssignmentCreateWithoutDirectiveInput, AiCompanyWorkAssignmentUncheckedCreateWithoutDirectiveInput> | AiCompanyWorkAssignmentCreateWithoutDirectiveInput[] | AiCompanyWorkAssignmentUncheckedCreateWithoutDirectiveInput[]
+    connectOrCreate?: AiCompanyWorkAssignmentCreateOrConnectWithoutDirectiveInput | AiCompanyWorkAssignmentCreateOrConnectWithoutDirectiveInput[]
+    createMany?: AiCompanyWorkAssignmentCreateManyDirectiveInputEnvelope
+    connect?: AiCompanyWorkAssignmentWhereUniqueInput | AiCompanyWorkAssignmentWhereUniqueInput[]
+  }
+
+  export type AiCompanyDraftQueueItemCreateNestedManyWithoutDirectiveInput = {
+    create?: XOR<AiCompanyDraftQueueItemCreateWithoutDirectiveInput, AiCompanyDraftQueueItemUncheckedCreateWithoutDirectiveInput> | AiCompanyDraftQueueItemCreateWithoutDirectiveInput[] | AiCompanyDraftQueueItemUncheckedCreateWithoutDirectiveInput[]
+    connectOrCreate?: AiCompanyDraftQueueItemCreateOrConnectWithoutDirectiveInput | AiCompanyDraftQueueItemCreateOrConnectWithoutDirectiveInput[]
+    createMany?: AiCompanyDraftQueueItemCreateManyDirectiveInputEnvelope
+    connect?: AiCompanyDraftQueueItemWhereUniqueInput | AiCompanyDraftQueueItemWhereUniqueInput[]
+  }
+
+  export type AiCompanyDecisionLogCreateNestedManyWithoutDirectiveInput = {
+    create?: XOR<AiCompanyDecisionLogCreateWithoutDirectiveInput, AiCompanyDecisionLogUncheckedCreateWithoutDirectiveInput> | AiCompanyDecisionLogCreateWithoutDirectiveInput[] | AiCompanyDecisionLogUncheckedCreateWithoutDirectiveInput[]
+    connectOrCreate?: AiCompanyDecisionLogCreateOrConnectWithoutDirectiveInput | AiCompanyDecisionLogCreateOrConnectWithoutDirectiveInput[]
+    createMany?: AiCompanyDecisionLogCreateManyDirectiveInputEnvelope
+    connect?: AiCompanyDecisionLogWhereUniqueInput | AiCompanyDecisionLogWhereUniqueInput[]
+  }
+
+  export type AiCompanyWorkAssignmentUncheckedCreateNestedManyWithoutDirectiveInput = {
+    create?: XOR<AiCompanyWorkAssignmentCreateWithoutDirectiveInput, AiCompanyWorkAssignmentUncheckedCreateWithoutDirectiveInput> | AiCompanyWorkAssignmentCreateWithoutDirectiveInput[] | AiCompanyWorkAssignmentUncheckedCreateWithoutDirectiveInput[]
+    connectOrCreate?: AiCompanyWorkAssignmentCreateOrConnectWithoutDirectiveInput | AiCompanyWorkAssignmentCreateOrConnectWithoutDirectiveInput[]
+    createMany?: AiCompanyWorkAssignmentCreateManyDirectiveInputEnvelope
+    connect?: AiCompanyWorkAssignmentWhereUniqueInput | AiCompanyWorkAssignmentWhereUniqueInput[]
+  }
+
+  export type AiCompanyDraftQueueItemUncheckedCreateNestedManyWithoutDirectiveInput = {
+    create?: XOR<AiCompanyDraftQueueItemCreateWithoutDirectiveInput, AiCompanyDraftQueueItemUncheckedCreateWithoutDirectiveInput> | AiCompanyDraftQueueItemCreateWithoutDirectiveInput[] | AiCompanyDraftQueueItemUncheckedCreateWithoutDirectiveInput[]
+    connectOrCreate?: AiCompanyDraftQueueItemCreateOrConnectWithoutDirectiveInput | AiCompanyDraftQueueItemCreateOrConnectWithoutDirectiveInput[]
+    createMany?: AiCompanyDraftQueueItemCreateManyDirectiveInputEnvelope
+    connect?: AiCompanyDraftQueueItemWhereUniqueInput | AiCompanyDraftQueueItemWhereUniqueInput[]
+  }
+
+  export type AiCompanyDecisionLogUncheckedCreateNestedManyWithoutDirectiveInput = {
+    create?: XOR<AiCompanyDecisionLogCreateWithoutDirectiveInput, AiCompanyDecisionLogUncheckedCreateWithoutDirectiveInput> | AiCompanyDecisionLogCreateWithoutDirectiveInput[] | AiCompanyDecisionLogUncheckedCreateWithoutDirectiveInput[]
+    connectOrCreate?: AiCompanyDecisionLogCreateOrConnectWithoutDirectiveInput | AiCompanyDecisionLogCreateOrConnectWithoutDirectiveInput[]
+    createMany?: AiCompanyDecisionLogCreateManyDirectiveInputEnvelope
+    connect?: AiCompanyDecisionLogWhereUniqueInput | AiCompanyDecisionLogWhereUniqueInput[]
+  }
+
+  export type AiCompanyWorkAssignmentUpdateManyWithoutDirectiveNestedInput = {
+    create?: XOR<AiCompanyWorkAssignmentCreateWithoutDirectiveInput, AiCompanyWorkAssignmentUncheckedCreateWithoutDirectiveInput> | AiCompanyWorkAssignmentCreateWithoutDirectiveInput[] | AiCompanyWorkAssignmentUncheckedCreateWithoutDirectiveInput[]
+    connectOrCreate?: AiCompanyWorkAssignmentCreateOrConnectWithoutDirectiveInput | AiCompanyWorkAssignmentCreateOrConnectWithoutDirectiveInput[]
+    upsert?: AiCompanyWorkAssignmentUpsertWithWhereUniqueWithoutDirectiveInput | AiCompanyWorkAssignmentUpsertWithWhereUniqueWithoutDirectiveInput[]
+    createMany?: AiCompanyWorkAssignmentCreateManyDirectiveInputEnvelope
+    set?: AiCompanyWorkAssignmentWhereUniqueInput | AiCompanyWorkAssignmentWhereUniqueInput[]
+    disconnect?: AiCompanyWorkAssignmentWhereUniqueInput | AiCompanyWorkAssignmentWhereUniqueInput[]
+    delete?: AiCompanyWorkAssignmentWhereUniqueInput | AiCompanyWorkAssignmentWhereUniqueInput[]
+    connect?: AiCompanyWorkAssignmentWhereUniqueInput | AiCompanyWorkAssignmentWhereUniqueInput[]
+    update?: AiCompanyWorkAssignmentUpdateWithWhereUniqueWithoutDirectiveInput | AiCompanyWorkAssignmentUpdateWithWhereUniqueWithoutDirectiveInput[]
+    updateMany?: AiCompanyWorkAssignmentUpdateManyWithWhereWithoutDirectiveInput | AiCompanyWorkAssignmentUpdateManyWithWhereWithoutDirectiveInput[]
+    deleteMany?: AiCompanyWorkAssignmentScalarWhereInput | AiCompanyWorkAssignmentScalarWhereInput[]
+  }
+
+  export type AiCompanyDraftQueueItemUpdateManyWithoutDirectiveNestedInput = {
+    create?: XOR<AiCompanyDraftQueueItemCreateWithoutDirectiveInput, AiCompanyDraftQueueItemUncheckedCreateWithoutDirectiveInput> | AiCompanyDraftQueueItemCreateWithoutDirectiveInput[] | AiCompanyDraftQueueItemUncheckedCreateWithoutDirectiveInput[]
+    connectOrCreate?: AiCompanyDraftQueueItemCreateOrConnectWithoutDirectiveInput | AiCompanyDraftQueueItemCreateOrConnectWithoutDirectiveInput[]
+    upsert?: AiCompanyDraftQueueItemUpsertWithWhereUniqueWithoutDirectiveInput | AiCompanyDraftQueueItemUpsertWithWhereUniqueWithoutDirectiveInput[]
+    createMany?: AiCompanyDraftQueueItemCreateManyDirectiveInputEnvelope
+    set?: AiCompanyDraftQueueItemWhereUniqueInput | AiCompanyDraftQueueItemWhereUniqueInput[]
+    disconnect?: AiCompanyDraftQueueItemWhereUniqueInput | AiCompanyDraftQueueItemWhereUniqueInput[]
+    delete?: AiCompanyDraftQueueItemWhereUniqueInput | AiCompanyDraftQueueItemWhereUniqueInput[]
+    connect?: AiCompanyDraftQueueItemWhereUniqueInput | AiCompanyDraftQueueItemWhereUniqueInput[]
+    update?: AiCompanyDraftQueueItemUpdateWithWhereUniqueWithoutDirectiveInput | AiCompanyDraftQueueItemUpdateWithWhereUniqueWithoutDirectiveInput[]
+    updateMany?: AiCompanyDraftQueueItemUpdateManyWithWhereWithoutDirectiveInput | AiCompanyDraftQueueItemUpdateManyWithWhereWithoutDirectiveInput[]
+    deleteMany?: AiCompanyDraftQueueItemScalarWhereInput | AiCompanyDraftQueueItemScalarWhereInput[]
+  }
+
+  export type AiCompanyDecisionLogUpdateManyWithoutDirectiveNestedInput = {
+    create?: XOR<AiCompanyDecisionLogCreateWithoutDirectiveInput, AiCompanyDecisionLogUncheckedCreateWithoutDirectiveInput> | AiCompanyDecisionLogCreateWithoutDirectiveInput[] | AiCompanyDecisionLogUncheckedCreateWithoutDirectiveInput[]
+    connectOrCreate?: AiCompanyDecisionLogCreateOrConnectWithoutDirectiveInput | AiCompanyDecisionLogCreateOrConnectWithoutDirectiveInput[]
+    upsert?: AiCompanyDecisionLogUpsertWithWhereUniqueWithoutDirectiveInput | AiCompanyDecisionLogUpsertWithWhereUniqueWithoutDirectiveInput[]
+    createMany?: AiCompanyDecisionLogCreateManyDirectiveInputEnvelope
+    set?: AiCompanyDecisionLogWhereUniqueInput | AiCompanyDecisionLogWhereUniqueInput[]
+    disconnect?: AiCompanyDecisionLogWhereUniqueInput | AiCompanyDecisionLogWhereUniqueInput[]
+    delete?: AiCompanyDecisionLogWhereUniqueInput | AiCompanyDecisionLogWhereUniqueInput[]
+    connect?: AiCompanyDecisionLogWhereUniqueInput | AiCompanyDecisionLogWhereUniqueInput[]
+    update?: AiCompanyDecisionLogUpdateWithWhereUniqueWithoutDirectiveInput | AiCompanyDecisionLogUpdateWithWhereUniqueWithoutDirectiveInput[]
+    updateMany?: AiCompanyDecisionLogUpdateManyWithWhereWithoutDirectiveInput | AiCompanyDecisionLogUpdateManyWithWhereWithoutDirectiveInput[]
+    deleteMany?: AiCompanyDecisionLogScalarWhereInput | AiCompanyDecisionLogScalarWhereInput[]
+  }
+
+  export type AiCompanyWorkAssignmentUncheckedUpdateManyWithoutDirectiveNestedInput = {
+    create?: XOR<AiCompanyWorkAssignmentCreateWithoutDirectiveInput, AiCompanyWorkAssignmentUncheckedCreateWithoutDirectiveInput> | AiCompanyWorkAssignmentCreateWithoutDirectiveInput[] | AiCompanyWorkAssignmentUncheckedCreateWithoutDirectiveInput[]
+    connectOrCreate?: AiCompanyWorkAssignmentCreateOrConnectWithoutDirectiveInput | AiCompanyWorkAssignmentCreateOrConnectWithoutDirectiveInput[]
+    upsert?: AiCompanyWorkAssignmentUpsertWithWhereUniqueWithoutDirectiveInput | AiCompanyWorkAssignmentUpsertWithWhereUniqueWithoutDirectiveInput[]
+    createMany?: AiCompanyWorkAssignmentCreateManyDirectiveInputEnvelope
+    set?: AiCompanyWorkAssignmentWhereUniqueInput | AiCompanyWorkAssignmentWhereUniqueInput[]
+    disconnect?: AiCompanyWorkAssignmentWhereUniqueInput | AiCompanyWorkAssignmentWhereUniqueInput[]
+    delete?: AiCompanyWorkAssignmentWhereUniqueInput | AiCompanyWorkAssignmentWhereUniqueInput[]
+    connect?: AiCompanyWorkAssignmentWhereUniqueInput | AiCompanyWorkAssignmentWhereUniqueInput[]
+    update?: AiCompanyWorkAssignmentUpdateWithWhereUniqueWithoutDirectiveInput | AiCompanyWorkAssignmentUpdateWithWhereUniqueWithoutDirectiveInput[]
+    updateMany?: AiCompanyWorkAssignmentUpdateManyWithWhereWithoutDirectiveInput | AiCompanyWorkAssignmentUpdateManyWithWhereWithoutDirectiveInput[]
+    deleteMany?: AiCompanyWorkAssignmentScalarWhereInput | AiCompanyWorkAssignmentScalarWhereInput[]
+  }
+
+  export type AiCompanyDraftQueueItemUncheckedUpdateManyWithoutDirectiveNestedInput = {
+    create?: XOR<AiCompanyDraftQueueItemCreateWithoutDirectiveInput, AiCompanyDraftQueueItemUncheckedCreateWithoutDirectiveInput> | AiCompanyDraftQueueItemCreateWithoutDirectiveInput[] | AiCompanyDraftQueueItemUncheckedCreateWithoutDirectiveInput[]
+    connectOrCreate?: AiCompanyDraftQueueItemCreateOrConnectWithoutDirectiveInput | AiCompanyDraftQueueItemCreateOrConnectWithoutDirectiveInput[]
+    upsert?: AiCompanyDraftQueueItemUpsertWithWhereUniqueWithoutDirectiveInput | AiCompanyDraftQueueItemUpsertWithWhereUniqueWithoutDirectiveInput[]
+    createMany?: AiCompanyDraftQueueItemCreateManyDirectiveInputEnvelope
+    set?: AiCompanyDraftQueueItemWhereUniqueInput | AiCompanyDraftQueueItemWhereUniqueInput[]
+    disconnect?: AiCompanyDraftQueueItemWhereUniqueInput | AiCompanyDraftQueueItemWhereUniqueInput[]
+    delete?: AiCompanyDraftQueueItemWhereUniqueInput | AiCompanyDraftQueueItemWhereUniqueInput[]
+    connect?: AiCompanyDraftQueueItemWhereUniqueInput | AiCompanyDraftQueueItemWhereUniqueInput[]
+    update?: AiCompanyDraftQueueItemUpdateWithWhereUniqueWithoutDirectiveInput | AiCompanyDraftQueueItemUpdateWithWhereUniqueWithoutDirectiveInput[]
+    updateMany?: AiCompanyDraftQueueItemUpdateManyWithWhereWithoutDirectiveInput | AiCompanyDraftQueueItemUpdateManyWithWhereWithoutDirectiveInput[]
+    deleteMany?: AiCompanyDraftQueueItemScalarWhereInput | AiCompanyDraftQueueItemScalarWhereInput[]
+  }
+
+  export type AiCompanyDecisionLogUncheckedUpdateManyWithoutDirectiveNestedInput = {
+    create?: XOR<AiCompanyDecisionLogCreateWithoutDirectiveInput, AiCompanyDecisionLogUncheckedCreateWithoutDirectiveInput> | AiCompanyDecisionLogCreateWithoutDirectiveInput[] | AiCompanyDecisionLogUncheckedCreateWithoutDirectiveInput[]
+    connectOrCreate?: AiCompanyDecisionLogCreateOrConnectWithoutDirectiveInput | AiCompanyDecisionLogCreateOrConnectWithoutDirectiveInput[]
+    upsert?: AiCompanyDecisionLogUpsertWithWhereUniqueWithoutDirectiveInput | AiCompanyDecisionLogUpsertWithWhereUniqueWithoutDirectiveInput[]
+    createMany?: AiCompanyDecisionLogCreateManyDirectiveInputEnvelope
+    set?: AiCompanyDecisionLogWhereUniqueInput | AiCompanyDecisionLogWhereUniqueInput[]
+    disconnect?: AiCompanyDecisionLogWhereUniqueInput | AiCompanyDecisionLogWhereUniqueInput[]
+    delete?: AiCompanyDecisionLogWhereUniqueInput | AiCompanyDecisionLogWhereUniqueInput[]
+    connect?: AiCompanyDecisionLogWhereUniqueInput | AiCompanyDecisionLogWhereUniqueInput[]
+    update?: AiCompanyDecisionLogUpdateWithWhereUniqueWithoutDirectiveInput | AiCompanyDecisionLogUpdateWithWhereUniqueWithoutDirectiveInput[]
+    updateMany?: AiCompanyDecisionLogUpdateManyWithWhereWithoutDirectiveInput | AiCompanyDecisionLogUpdateManyWithWhereWithoutDirectiveInput[]
+    deleteMany?: AiCompanyDecisionLogScalarWhereInput | AiCompanyDecisionLogScalarWhereInput[]
+  }
+
+  export type AiCompanyExecutiveDirectiveCreateNestedOneWithoutAssignmentsInput = {
+    create?: XOR<AiCompanyExecutiveDirectiveCreateWithoutAssignmentsInput, AiCompanyExecutiveDirectiveUncheckedCreateWithoutAssignmentsInput>
+    connectOrCreate?: AiCompanyExecutiveDirectiveCreateOrConnectWithoutAssignmentsInput
+    connect?: AiCompanyExecutiveDirectiveWhereUniqueInput
+  }
+
+  export type AiCompanyExecutiveDirectiveUpdateOneRequiredWithoutAssignmentsNestedInput = {
+    create?: XOR<AiCompanyExecutiveDirectiveCreateWithoutAssignmentsInput, AiCompanyExecutiveDirectiveUncheckedCreateWithoutAssignmentsInput>
+    connectOrCreate?: AiCompanyExecutiveDirectiveCreateOrConnectWithoutAssignmentsInput
+    upsert?: AiCompanyExecutiveDirectiveUpsertWithoutAssignmentsInput
+    connect?: AiCompanyExecutiveDirectiveWhereUniqueInput
+    update?: XOR<XOR<AiCompanyExecutiveDirectiveUpdateToOneWithWhereWithoutAssignmentsInput, AiCompanyExecutiveDirectiveUpdateWithoutAssignmentsInput>, AiCompanyExecutiveDirectiveUncheckedUpdateWithoutAssignmentsInput>
+  }
+
+  export type AiCompanyExecutiveDirectiveCreateNestedOneWithoutDraftItemsInput = {
+    create?: XOR<AiCompanyExecutiveDirectiveCreateWithoutDraftItemsInput, AiCompanyExecutiveDirectiveUncheckedCreateWithoutDraftItemsInput>
+    connectOrCreate?: AiCompanyExecutiveDirectiveCreateOrConnectWithoutDraftItemsInput
+    connect?: AiCompanyExecutiveDirectiveWhereUniqueInput
+  }
+
+  export type AiCompanyExecutiveDirectiveUpdateOneRequiredWithoutDraftItemsNestedInput = {
+    create?: XOR<AiCompanyExecutiveDirectiveCreateWithoutDraftItemsInput, AiCompanyExecutiveDirectiveUncheckedCreateWithoutDraftItemsInput>
+    connectOrCreate?: AiCompanyExecutiveDirectiveCreateOrConnectWithoutDraftItemsInput
+    upsert?: AiCompanyExecutiveDirectiveUpsertWithoutDraftItemsInput
+    connect?: AiCompanyExecutiveDirectiveWhereUniqueInput
+    update?: XOR<XOR<AiCompanyExecutiveDirectiveUpdateToOneWithWhereWithoutDraftItemsInput, AiCompanyExecutiveDirectiveUpdateWithoutDraftItemsInput>, AiCompanyExecutiveDirectiveUncheckedUpdateWithoutDraftItemsInput>
+  }
+
+  export type AiCompanyExecutiveDirectiveCreateNestedOneWithoutDecisionsInput = {
+    create?: XOR<AiCompanyExecutiveDirectiveCreateWithoutDecisionsInput, AiCompanyExecutiveDirectiveUncheckedCreateWithoutDecisionsInput>
+    connectOrCreate?: AiCompanyExecutiveDirectiveCreateOrConnectWithoutDecisionsInput
+    connect?: AiCompanyExecutiveDirectiveWhereUniqueInput
+  }
+
+  export type AiCompanyExecutiveDirectiveUpdateOneRequiredWithoutDecisionsNestedInput = {
+    create?: XOR<AiCompanyExecutiveDirectiveCreateWithoutDecisionsInput, AiCompanyExecutiveDirectiveUncheckedCreateWithoutDecisionsInput>
+    connectOrCreate?: AiCompanyExecutiveDirectiveCreateOrConnectWithoutDecisionsInput
+    upsert?: AiCompanyExecutiveDirectiveUpsertWithoutDecisionsInput
+    connect?: AiCompanyExecutiveDirectiveWhereUniqueInput
+    update?: XOR<XOR<AiCompanyExecutiveDirectiveUpdateToOneWithWhereWithoutDecisionsInput, AiCompanyExecutiveDirectiveUpdateWithoutDecisionsInput>, AiCompanyExecutiveDirectiveUncheckedUpdateWithoutDecisionsInput>
   }
 
   export type SocialContentDraftCreateNestedManyWithoutSourceInput = {
@@ -99433,6 +106259,618 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AiCompanyWorkAssignmentCreateWithoutDirectiveInput = {
+    id?: string
+    tenantId?: string
+    department: string
+    assignmentType?: string
+    requestedOutputs: JsonNullValueInput | InputJsonValue
+    status?: string
+    blocker?: string | null
+    approvalRequired?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AiCompanyWorkAssignmentUncheckedCreateWithoutDirectiveInput = {
+    id?: string
+    tenantId?: string
+    department: string
+    assignmentType?: string
+    requestedOutputs: JsonNullValueInput | InputJsonValue
+    status?: string
+    blocker?: string | null
+    approvalRequired?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AiCompanyWorkAssignmentCreateOrConnectWithoutDirectiveInput = {
+    where: AiCompanyWorkAssignmentWhereUniqueInput
+    create: XOR<AiCompanyWorkAssignmentCreateWithoutDirectiveInput, AiCompanyWorkAssignmentUncheckedCreateWithoutDirectiveInput>
+  }
+
+  export type AiCompanyWorkAssignmentCreateManyDirectiveInputEnvelope = {
+    data: AiCompanyWorkAssignmentCreateManyDirectiveInput | AiCompanyWorkAssignmentCreateManyDirectiveInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AiCompanyDraftQueueItemCreateWithoutDirectiveInput = {
+    id?: string
+    tenantId?: string
+    output: string
+    ownerDepartment: string
+    status?: string
+    sourceLabel: string
+    approvalRequired?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AiCompanyDraftQueueItemUncheckedCreateWithoutDirectiveInput = {
+    id?: string
+    tenantId?: string
+    output: string
+    ownerDepartment: string
+    status?: string
+    sourceLabel: string
+    approvalRequired?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AiCompanyDraftQueueItemCreateOrConnectWithoutDirectiveInput = {
+    where: AiCompanyDraftQueueItemWhereUniqueInput
+    create: XOR<AiCompanyDraftQueueItemCreateWithoutDirectiveInput, AiCompanyDraftQueueItemUncheckedCreateWithoutDirectiveInput>
+  }
+
+  export type AiCompanyDraftQueueItemCreateManyDirectiveInputEnvelope = {
+    data: AiCompanyDraftQueueItemCreateManyDirectiveInput | AiCompanyDraftQueueItemCreateManyDirectiveInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AiCompanyDecisionLogCreateWithoutDirectiveInput = {
+    id?: string
+    tenantId?: string
+    decision: string
+    note?: string | null
+    decidedBy?: string | null
+    previousStatus: string
+    resultingStatus: string
+    reviewReminderAt?: Date | string | null
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AiCompanyDecisionLogUncheckedCreateWithoutDirectiveInput = {
+    id?: string
+    tenantId?: string
+    decision: string
+    note?: string | null
+    decidedBy?: string | null
+    previousStatus: string
+    resultingStatus: string
+    reviewReminderAt?: Date | string | null
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AiCompanyDecisionLogCreateOrConnectWithoutDirectiveInput = {
+    where: AiCompanyDecisionLogWhereUniqueInput
+    create: XOR<AiCompanyDecisionLogCreateWithoutDirectiveInput, AiCompanyDecisionLogUncheckedCreateWithoutDirectiveInput>
+  }
+
+  export type AiCompanyDecisionLogCreateManyDirectiveInputEnvelope = {
+    data: AiCompanyDecisionLogCreateManyDirectiveInput | AiCompanyDecisionLogCreateManyDirectiveInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AiCompanyWorkAssignmentUpsertWithWhereUniqueWithoutDirectiveInput = {
+    where: AiCompanyWorkAssignmentWhereUniqueInput
+    update: XOR<AiCompanyWorkAssignmentUpdateWithoutDirectiveInput, AiCompanyWorkAssignmentUncheckedUpdateWithoutDirectiveInput>
+    create: XOR<AiCompanyWorkAssignmentCreateWithoutDirectiveInput, AiCompanyWorkAssignmentUncheckedCreateWithoutDirectiveInput>
+  }
+
+  export type AiCompanyWorkAssignmentUpdateWithWhereUniqueWithoutDirectiveInput = {
+    where: AiCompanyWorkAssignmentWhereUniqueInput
+    data: XOR<AiCompanyWorkAssignmentUpdateWithoutDirectiveInput, AiCompanyWorkAssignmentUncheckedUpdateWithoutDirectiveInput>
+  }
+
+  export type AiCompanyWorkAssignmentUpdateManyWithWhereWithoutDirectiveInput = {
+    where: AiCompanyWorkAssignmentScalarWhereInput
+    data: XOR<AiCompanyWorkAssignmentUpdateManyMutationInput, AiCompanyWorkAssignmentUncheckedUpdateManyWithoutDirectiveInput>
+  }
+
+  export type AiCompanyWorkAssignmentScalarWhereInput = {
+    AND?: AiCompanyWorkAssignmentScalarWhereInput | AiCompanyWorkAssignmentScalarWhereInput[]
+    OR?: AiCompanyWorkAssignmentScalarWhereInput[]
+    NOT?: AiCompanyWorkAssignmentScalarWhereInput | AiCompanyWorkAssignmentScalarWhereInput[]
+    id?: StringFilter<"AiCompanyWorkAssignment"> | string
+    tenantId?: StringFilter<"AiCompanyWorkAssignment"> | string
+    directiveId?: StringFilter<"AiCompanyWorkAssignment"> | string
+    department?: StringFilter<"AiCompanyWorkAssignment"> | string
+    assignmentType?: StringFilter<"AiCompanyWorkAssignment"> | string
+    requestedOutputs?: JsonFilter<"AiCompanyWorkAssignment">
+    status?: StringFilter<"AiCompanyWorkAssignment"> | string
+    blocker?: StringNullableFilter<"AiCompanyWorkAssignment"> | string | null
+    approvalRequired?: BoolFilter<"AiCompanyWorkAssignment"> | boolean
+    providerCalled?: BoolFilter<"AiCompanyWorkAssignment"> | boolean
+    sent?: BoolFilter<"AiCompanyWorkAssignment"> | boolean
+    published?: BoolFilter<"AiCompanyWorkAssignment"> | boolean
+    liveExecutionAllowed?: BoolFilter<"AiCompanyWorkAssignment"> | boolean
+    createdAt?: DateTimeFilter<"AiCompanyWorkAssignment"> | Date | string
+    updatedAt?: DateTimeFilter<"AiCompanyWorkAssignment"> | Date | string
+  }
+
+  export type AiCompanyDraftQueueItemUpsertWithWhereUniqueWithoutDirectiveInput = {
+    where: AiCompanyDraftQueueItemWhereUniqueInput
+    update: XOR<AiCompanyDraftQueueItemUpdateWithoutDirectiveInput, AiCompanyDraftQueueItemUncheckedUpdateWithoutDirectiveInput>
+    create: XOR<AiCompanyDraftQueueItemCreateWithoutDirectiveInput, AiCompanyDraftQueueItemUncheckedCreateWithoutDirectiveInput>
+  }
+
+  export type AiCompanyDraftQueueItemUpdateWithWhereUniqueWithoutDirectiveInput = {
+    where: AiCompanyDraftQueueItemWhereUniqueInput
+    data: XOR<AiCompanyDraftQueueItemUpdateWithoutDirectiveInput, AiCompanyDraftQueueItemUncheckedUpdateWithoutDirectiveInput>
+  }
+
+  export type AiCompanyDraftQueueItemUpdateManyWithWhereWithoutDirectiveInput = {
+    where: AiCompanyDraftQueueItemScalarWhereInput
+    data: XOR<AiCompanyDraftQueueItemUpdateManyMutationInput, AiCompanyDraftQueueItemUncheckedUpdateManyWithoutDirectiveInput>
+  }
+
+  export type AiCompanyDraftQueueItemScalarWhereInput = {
+    AND?: AiCompanyDraftQueueItemScalarWhereInput | AiCompanyDraftQueueItemScalarWhereInput[]
+    OR?: AiCompanyDraftQueueItemScalarWhereInput[]
+    NOT?: AiCompanyDraftQueueItemScalarWhereInput | AiCompanyDraftQueueItemScalarWhereInput[]
+    id?: StringFilter<"AiCompanyDraftQueueItem"> | string
+    tenantId?: StringFilter<"AiCompanyDraftQueueItem"> | string
+    directiveId?: StringFilter<"AiCompanyDraftQueueItem"> | string
+    output?: StringFilter<"AiCompanyDraftQueueItem"> | string
+    ownerDepartment?: StringFilter<"AiCompanyDraftQueueItem"> | string
+    status?: StringFilter<"AiCompanyDraftQueueItem"> | string
+    sourceLabel?: StringFilter<"AiCompanyDraftQueueItem"> | string
+    approvalRequired?: BoolFilter<"AiCompanyDraftQueueItem"> | boolean
+    providerCalled?: BoolFilter<"AiCompanyDraftQueueItem"> | boolean
+    sent?: BoolFilter<"AiCompanyDraftQueueItem"> | boolean
+    published?: BoolFilter<"AiCompanyDraftQueueItem"> | boolean
+    liveExecutionAllowed?: BoolFilter<"AiCompanyDraftQueueItem"> | boolean
+    createdAt?: DateTimeFilter<"AiCompanyDraftQueueItem"> | Date | string
+    updatedAt?: DateTimeFilter<"AiCompanyDraftQueueItem"> | Date | string
+  }
+
+  export type AiCompanyDecisionLogUpsertWithWhereUniqueWithoutDirectiveInput = {
+    where: AiCompanyDecisionLogWhereUniqueInput
+    update: XOR<AiCompanyDecisionLogUpdateWithoutDirectiveInput, AiCompanyDecisionLogUncheckedUpdateWithoutDirectiveInput>
+    create: XOR<AiCompanyDecisionLogCreateWithoutDirectiveInput, AiCompanyDecisionLogUncheckedCreateWithoutDirectiveInput>
+  }
+
+  export type AiCompanyDecisionLogUpdateWithWhereUniqueWithoutDirectiveInput = {
+    where: AiCompanyDecisionLogWhereUniqueInput
+    data: XOR<AiCompanyDecisionLogUpdateWithoutDirectiveInput, AiCompanyDecisionLogUncheckedUpdateWithoutDirectiveInput>
+  }
+
+  export type AiCompanyDecisionLogUpdateManyWithWhereWithoutDirectiveInput = {
+    where: AiCompanyDecisionLogScalarWhereInput
+    data: XOR<AiCompanyDecisionLogUpdateManyMutationInput, AiCompanyDecisionLogUncheckedUpdateManyWithoutDirectiveInput>
+  }
+
+  export type AiCompanyDecisionLogScalarWhereInput = {
+    AND?: AiCompanyDecisionLogScalarWhereInput | AiCompanyDecisionLogScalarWhereInput[]
+    OR?: AiCompanyDecisionLogScalarWhereInput[]
+    NOT?: AiCompanyDecisionLogScalarWhereInput | AiCompanyDecisionLogScalarWhereInput[]
+    id?: StringFilter<"AiCompanyDecisionLog"> | string
+    tenantId?: StringFilter<"AiCompanyDecisionLog"> | string
+    directiveId?: StringFilter<"AiCompanyDecisionLog"> | string
+    decision?: StringFilter<"AiCompanyDecisionLog"> | string
+    note?: StringNullableFilter<"AiCompanyDecisionLog"> | string | null
+    decidedBy?: StringNullableFilter<"AiCompanyDecisionLog"> | string | null
+    previousStatus?: StringFilter<"AiCompanyDecisionLog"> | string
+    resultingStatus?: StringFilter<"AiCompanyDecisionLog"> | string
+    reviewReminderAt?: DateTimeNullableFilter<"AiCompanyDecisionLog"> | Date | string | null
+    safetyFlags?: JsonFilter<"AiCompanyDecisionLog">
+    providerCalled?: BoolFilter<"AiCompanyDecisionLog"> | boolean
+    sent?: BoolFilter<"AiCompanyDecisionLog"> | boolean
+    published?: BoolFilter<"AiCompanyDecisionLog"> | boolean
+    liveExecutionAllowed?: BoolFilter<"AiCompanyDecisionLog"> | boolean
+    createdAt?: DateTimeFilter<"AiCompanyDecisionLog"> | Date | string
+  }
+
+  export type AiCompanyExecutiveDirectiveCreateWithoutAssignmentsInput = {
+    id: string
+    tenantId?: string
+    title: string
+    businessGoal: string
+    sourceDepartment: string
+    assignedDepartments: JsonNullValueInput | InputJsonValue
+    requestedOutputs: JsonNullValueInput | InputJsonValue
+    status?: string
+    workflowState?: string
+    riskLevel?: string
+    expectedBusinessValue: string
+    governanceNotes: JsonNullValueInput | InputJsonValue
+    revenuePriorityScore: JsonNullValueInput | InputJsonValue
+    reviewReminderAt?: Date | string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    draftItems?: AiCompanyDraftQueueItemCreateNestedManyWithoutDirectiveInput
+    decisions?: AiCompanyDecisionLogCreateNestedManyWithoutDirectiveInput
+  }
+
+  export type AiCompanyExecutiveDirectiveUncheckedCreateWithoutAssignmentsInput = {
+    id: string
+    tenantId?: string
+    title: string
+    businessGoal: string
+    sourceDepartment: string
+    assignedDepartments: JsonNullValueInput | InputJsonValue
+    requestedOutputs: JsonNullValueInput | InputJsonValue
+    status?: string
+    workflowState?: string
+    riskLevel?: string
+    expectedBusinessValue: string
+    governanceNotes: JsonNullValueInput | InputJsonValue
+    revenuePriorityScore: JsonNullValueInput | InputJsonValue
+    reviewReminderAt?: Date | string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    draftItems?: AiCompanyDraftQueueItemUncheckedCreateNestedManyWithoutDirectiveInput
+    decisions?: AiCompanyDecisionLogUncheckedCreateNestedManyWithoutDirectiveInput
+  }
+
+  export type AiCompanyExecutiveDirectiveCreateOrConnectWithoutAssignmentsInput = {
+    where: AiCompanyExecutiveDirectiveWhereUniqueInput
+    create: XOR<AiCompanyExecutiveDirectiveCreateWithoutAssignmentsInput, AiCompanyExecutiveDirectiveUncheckedCreateWithoutAssignmentsInput>
+  }
+
+  export type AiCompanyExecutiveDirectiveUpsertWithoutAssignmentsInput = {
+    update: XOR<AiCompanyExecutiveDirectiveUpdateWithoutAssignmentsInput, AiCompanyExecutiveDirectiveUncheckedUpdateWithoutAssignmentsInput>
+    create: XOR<AiCompanyExecutiveDirectiveCreateWithoutAssignmentsInput, AiCompanyExecutiveDirectiveUncheckedCreateWithoutAssignmentsInput>
+    where?: AiCompanyExecutiveDirectiveWhereInput
+  }
+
+  export type AiCompanyExecutiveDirectiveUpdateToOneWithWhereWithoutAssignmentsInput = {
+    where?: AiCompanyExecutiveDirectiveWhereInput
+    data: XOR<AiCompanyExecutiveDirectiveUpdateWithoutAssignmentsInput, AiCompanyExecutiveDirectiveUncheckedUpdateWithoutAssignmentsInput>
+  }
+
+  export type AiCompanyExecutiveDirectiveUpdateWithoutAssignmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    businessGoal?: StringFieldUpdateOperationsInput | string
+    sourceDepartment?: StringFieldUpdateOperationsInput | string
+    assignedDepartments?: JsonNullValueInput | InputJsonValue
+    requestedOutputs?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    workflowState?: StringFieldUpdateOperationsInput | string
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    expectedBusinessValue?: StringFieldUpdateOperationsInput | string
+    governanceNotes?: JsonNullValueInput | InputJsonValue
+    revenuePriorityScore?: JsonNullValueInput | InputJsonValue
+    reviewReminderAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    draftItems?: AiCompanyDraftQueueItemUpdateManyWithoutDirectiveNestedInput
+    decisions?: AiCompanyDecisionLogUpdateManyWithoutDirectiveNestedInput
+  }
+
+  export type AiCompanyExecutiveDirectiveUncheckedUpdateWithoutAssignmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    businessGoal?: StringFieldUpdateOperationsInput | string
+    sourceDepartment?: StringFieldUpdateOperationsInput | string
+    assignedDepartments?: JsonNullValueInput | InputJsonValue
+    requestedOutputs?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    workflowState?: StringFieldUpdateOperationsInput | string
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    expectedBusinessValue?: StringFieldUpdateOperationsInput | string
+    governanceNotes?: JsonNullValueInput | InputJsonValue
+    revenuePriorityScore?: JsonNullValueInput | InputJsonValue
+    reviewReminderAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    draftItems?: AiCompanyDraftQueueItemUncheckedUpdateManyWithoutDirectiveNestedInput
+    decisions?: AiCompanyDecisionLogUncheckedUpdateManyWithoutDirectiveNestedInput
+  }
+
+  export type AiCompanyExecutiveDirectiveCreateWithoutDraftItemsInput = {
+    id: string
+    tenantId?: string
+    title: string
+    businessGoal: string
+    sourceDepartment: string
+    assignedDepartments: JsonNullValueInput | InputJsonValue
+    requestedOutputs: JsonNullValueInput | InputJsonValue
+    status?: string
+    workflowState?: string
+    riskLevel?: string
+    expectedBusinessValue: string
+    governanceNotes: JsonNullValueInput | InputJsonValue
+    revenuePriorityScore: JsonNullValueInput | InputJsonValue
+    reviewReminderAt?: Date | string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assignments?: AiCompanyWorkAssignmentCreateNestedManyWithoutDirectiveInput
+    decisions?: AiCompanyDecisionLogCreateNestedManyWithoutDirectiveInput
+  }
+
+  export type AiCompanyExecutiveDirectiveUncheckedCreateWithoutDraftItemsInput = {
+    id: string
+    tenantId?: string
+    title: string
+    businessGoal: string
+    sourceDepartment: string
+    assignedDepartments: JsonNullValueInput | InputJsonValue
+    requestedOutputs: JsonNullValueInput | InputJsonValue
+    status?: string
+    workflowState?: string
+    riskLevel?: string
+    expectedBusinessValue: string
+    governanceNotes: JsonNullValueInput | InputJsonValue
+    revenuePriorityScore: JsonNullValueInput | InputJsonValue
+    reviewReminderAt?: Date | string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assignments?: AiCompanyWorkAssignmentUncheckedCreateNestedManyWithoutDirectiveInput
+    decisions?: AiCompanyDecisionLogUncheckedCreateNestedManyWithoutDirectiveInput
+  }
+
+  export type AiCompanyExecutiveDirectiveCreateOrConnectWithoutDraftItemsInput = {
+    where: AiCompanyExecutiveDirectiveWhereUniqueInput
+    create: XOR<AiCompanyExecutiveDirectiveCreateWithoutDraftItemsInput, AiCompanyExecutiveDirectiveUncheckedCreateWithoutDraftItemsInput>
+  }
+
+  export type AiCompanyExecutiveDirectiveUpsertWithoutDraftItemsInput = {
+    update: XOR<AiCompanyExecutiveDirectiveUpdateWithoutDraftItemsInput, AiCompanyExecutiveDirectiveUncheckedUpdateWithoutDraftItemsInput>
+    create: XOR<AiCompanyExecutiveDirectiveCreateWithoutDraftItemsInput, AiCompanyExecutiveDirectiveUncheckedCreateWithoutDraftItemsInput>
+    where?: AiCompanyExecutiveDirectiveWhereInput
+  }
+
+  export type AiCompanyExecutiveDirectiveUpdateToOneWithWhereWithoutDraftItemsInput = {
+    where?: AiCompanyExecutiveDirectiveWhereInput
+    data: XOR<AiCompanyExecutiveDirectiveUpdateWithoutDraftItemsInput, AiCompanyExecutiveDirectiveUncheckedUpdateWithoutDraftItemsInput>
+  }
+
+  export type AiCompanyExecutiveDirectiveUpdateWithoutDraftItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    businessGoal?: StringFieldUpdateOperationsInput | string
+    sourceDepartment?: StringFieldUpdateOperationsInput | string
+    assignedDepartments?: JsonNullValueInput | InputJsonValue
+    requestedOutputs?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    workflowState?: StringFieldUpdateOperationsInput | string
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    expectedBusinessValue?: StringFieldUpdateOperationsInput | string
+    governanceNotes?: JsonNullValueInput | InputJsonValue
+    revenuePriorityScore?: JsonNullValueInput | InputJsonValue
+    reviewReminderAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignments?: AiCompanyWorkAssignmentUpdateManyWithoutDirectiveNestedInput
+    decisions?: AiCompanyDecisionLogUpdateManyWithoutDirectiveNestedInput
+  }
+
+  export type AiCompanyExecutiveDirectiveUncheckedUpdateWithoutDraftItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    businessGoal?: StringFieldUpdateOperationsInput | string
+    sourceDepartment?: StringFieldUpdateOperationsInput | string
+    assignedDepartments?: JsonNullValueInput | InputJsonValue
+    requestedOutputs?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    workflowState?: StringFieldUpdateOperationsInput | string
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    expectedBusinessValue?: StringFieldUpdateOperationsInput | string
+    governanceNotes?: JsonNullValueInput | InputJsonValue
+    revenuePriorityScore?: JsonNullValueInput | InputJsonValue
+    reviewReminderAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignments?: AiCompanyWorkAssignmentUncheckedUpdateManyWithoutDirectiveNestedInput
+    decisions?: AiCompanyDecisionLogUncheckedUpdateManyWithoutDirectiveNestedInput
+  }
+
+  export type AiCompanyExecutiveDirectiveCreateWithoutDecisionsInput = {
+    id: string
+    tenantId?: string
+    title: string
+    businessGoal: string
+    sourceDepartment: string
+    assignedDepartments: JsonNullValueInput | InputJsonValue
+    requestedOutputs: JsonNullValueInput | InputJsonValue
+    status?: string
+    workflowState?: string
+    riskLevel?: string
+    expectedBusinessValue: string
+    governanceNotes: JsonNullValueInput | InputJsonValue
+    revenuePriorityScore: JsonNullValueInput | InputJsonValue
+    reviewReminderAt?: Date | string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assignments?: AiCompanyWorkAssignmentCreateNestedManyWithoutDirectiveInput
+    draftItems?: AiCompanyDraftQueueItemCreateNestedManyWithoutDirectiveInput
+  }
+
+  export type AiCompanyExecutiveDirectiveUncheckedCreateWithoutDecisionsInput = {
+    id: string
+    tenantId?: string
+    title: string
+    businessGoal: string
+    sourceDepartment: string
+    assignedDepartments: JsonNullValueInput | InputJsonValue
+    requestedOutputs: JsonNullValueInput | InputJsonValue
+    status?: string
+    workflowState?: string
+    riskLevel?: string
+    expectedBusinessValue: string
+    governanceNotes: JsonNullValueInput | InputJsonValue
+    revenuePriorityScore: JsonNullValueInput | InputJsonValue
+    reviewReminderAt?: Date | string | null
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assignments?: AiCompanyWorkAssignmentUncheckedCreateNestedManyWithoutDirectiveInput
+    draftItems?: AiCompanyDraftQueueItemUncheckedCreateNestedManyWithoutDirectiveInput
+  }
+
+  export type AiCompanyExecutiveDirectiveCreateOrConnectWithoutDecisionsInput = {
+    where: AiCompanyExecutiveDirectiveWhereUniqueInput
+    create: XOR<AiCompanyExecutiveDirectiveCreateWithoutDecisionsInput, AiCompanyExecutiveDirectiveUncheckedCreateWithoutDecisionsInput>
+  }
+
+  export type AiCompanyExecutiveDirectiveUpsertWithoutDecisionsInput = {
+    update: XOR<AiCompanyExecutiveDirectiveUpdateWithoutDecisionsInput, AiCompanyExecutiveDirectiveUncheckedUpdateWithoutDecisionsInput>
+    create: XOR<AiCompanyExecutiveDirectiveCreateWithoutDecisionsInput, AiCompanyExecutiveDirectiveUncheckedCreateWithoutDecisionsInput>
+    where?: AiCompanyExecutiveDirectiveWhereInput
+  }
+
+  export type AiCompanyExecutiveDirectiveUpdateToOneWithWhereWithoutDecisionsInput = {
+    where?: AiCompanyExecutiveDirectiveWhereInput
+    data: XOR<AiCompanyExecutiveDirectiveUpdateWithoutDecisionsInput, AiCompanyExecutiveDirectiveUncheckedUpdateWithoutDecisionsInput>
+  }
+
+  export type AiCompanyExecutiveDirectiveUpdateWithoutDecisionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    businessGoal?: StringFieldUpdateOperationsInput | string
+    sourceDepartment?: StringFieldUpdateOperationsInput | string
+    assignedDepartments?: JsonNullValueInput | InputJsonValue
+    requestedOutputs?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    workflowState?: StringFieldUpdateOperationsInput | string
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    expectedBusinessValue?: StringFieldUpdateOperationsInput | string
+    governanceNotes?: JsonNullValueInput | InputJsonValue
+    revenuePriorityScore?: JsonNullValueInput | InputJsonValue
+    reviewReminderAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignments?: AiCompanyWorkAssignmentUpdateManyWithoutDirectiveNestedInput
+    draftItems?: AiCompanyDraftQueueItemUpdateManyWithoutDirectiveNestedInput
+  }
+
+  export type AiCompanyExecutiveDirectiveUncheckedUpdateWithoutDecisionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    businessGoal?: StringFieldUpdateOperationsInput | string
+    sourceDepartment?: StringFieldUpdateOperationsInput | string
+    assignedDepartments?: JsonNullValueInput | InputJsonValue
+    requestedOutputs?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    workflowState?: StringFieldUpdateOperationsInput | string
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    expectedBusinessValue?: StringFieldUpdateOperationsInput | string
+    governanceNotes?: JsonNullValueInput | InputJsonValue
+    revenuePriorityScore?: JsonNullValueInput | InputJsonValue
+    reviewReminderAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assignments?: AiCompanyWorkAssignmentUncheckedUpdateManyWithoutDirectiveNestedInput
+    draftItems?: AiCompanyDraftQueueItemUncheckedUpdateManyWithoutDirectiveNestedInput
+  }
+
   export type SocialContentDraftCreateWithoutSourceInput = {
     id?: string
     tenantId?: string
@@ -103343,6 +110781,206 @@ export namespace Prisma {
     delegatedTo?: NullableStringFieldUpdateOperationsInput | string | null
     rescheduledFor?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiCompanyWorkAssignmentCreateManyDirectiveInput = {
+    id?: string
+    tenantId?: string
+    department: string
+    assignmentType?: string
+    requestedOutputs: JsonNullValueInput | InputJsonValue
+    status?: string
+    blocker?: string | null
+    approvalRequired?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AiCompanyDraftQueueItemCreateManyDirectiveInput = {
+    id?: string
+    tenantId?: string
+    output: string
+    ownerDepartment: string
+    status?: string
+    sourceLabel: string
+    approvalRequired?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AiCompanyDecisionLogCreateManyDirectiveInput = {
+    id?: string
+    tenantId?: string
+    decision: string
+    note?: string | null
+    decidedBy?: string | null
+    previousStatus: string
+    resultingStatus: string
+    reviewReminderAt?: Date | string | null
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+  }
+
+  export type AiCompanyWorkAssignmentUpdateWithoutDirectiveInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    assignmentType?: StringFieldUpdateOperationsInput | string
+    requestedOutputs?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    blocker?: NullableStringFieldUpdateOperationsInput | string | null
+    approvalRequired?: BoolFieldUpdateOperationsInput | boolean
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiCompanyWorkAssignmentUncheckedUpdateWithoutDirectiveInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    assignmentType?: StringFieldUpdateOperationsInput | string
+    requestedOutputs?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    blocker?: NullableStringFieldUpdateOperationsInput | string | null
+    approvalRequired?: BoolFieldUpdateOperationsInput | boolean
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiCompanyWorkAssignmentUncheckedUpdateManyWithoutDirectiveInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    assignmentType?: StringFieldUpdateOperationsInput | string
+    requestedOutputs?: JsonNullValueInput | InputJsonValue
+    status?: StringFieldUpdateOperationsInput | string
+    blocker?: NullableStringFieldUpdateOperationsInput | string | null
+    approvalRequired?: BoolFieldUpdateOperationsInput | boolean
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiCompanyDraftQueueItemUpdateWithoutDirectiveInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    output?: StringFieldUpdateOperationsInput | string
+    ownerDepartment?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    approvalRequired?: BoolFieldUpdateOperationsInput | boolean
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiCompanyDraftQueueItemUncheckedUpdateWithoutDirectiveInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    output?: StringFieldUpdateOperationsInput | string
+    ownerDepartment?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    approvalRequired?: BoolFieldUpdateOperationsInput | boolean
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiCompanyDraftQueueItemUncheckedUpdateManyWithoutDirectiveInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    output?: StringFieldUpdateOperationsInput | string
+    ownerDepartment?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    sourceLabel?: StringFieldUpdateOperationsInput | string
+    approvalRequired?: BoolFieldUpdateOperationsInput | boolean
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiCompanyDecisionLogUpdateWithoutDirectiveInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    decision?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    decidedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    previousStatus?: StringFieldUpdateOperationsInput | string
+    resultingStatus?: StringFieldUpdateOperationsInput | string
+    reviewReminderAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiCompanyDecisionLogUncheckedUpdateWithoutDirectiveInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    decision?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    decidedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    previousStatus?: StringFieldUpdateOperationsInput | string
+    resultingStatus?: StringFieldUpdateOperationsInput | string
+    reviewReminderAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiCompanyDecisionLogUncheckedUpdateManyWithoutDirectiveInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    decision?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    decidedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    previousStatus?: StringFieldUpdateOperationsInput | string
+    resultingStatus?: StringFieldUpdateOperationsInput | string
+    reviewReminderAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    safetyFlags?: JsonNullValueInput | InputJsonValue
     providerCalled?: BoolFieldUpdateOperationsInput | boolean
     sent?: BoolFieldUpdateOperationsInput | boolean
     published?: BoolFieldUpdateOperationsInput | boolean

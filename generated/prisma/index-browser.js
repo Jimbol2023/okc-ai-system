@@ -628,6 +628,84 @@ exports.Prisma.UnifiedApprovalDecisionScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.AiCompanyExecutiveDirectiveScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  title: 'title',
+  businessGoal: 'businessGoal',
+  sourceDepartment: 'sourceDepartment',
+  assignedDepartments: 'assignedDepartments',
+  requestedOutputs: 'requestedOutputs',
+  status: 'status',
+  workflowState: 'workflowState',
+  riskLevel: 'riskLevel',
+  expectedBusinessValue: 'expectedBusinessValue',
+  governanceNotes: 'governanceNotes',
+  revenuePriorityScore: 'revenuePriorityScore',
+  reviewReminderAt: 'reviewReminderAt',
+  approvedBy: 'approvedBy',
+  approvedAt: 'approvedAt',
+  providerCalled: 'providerCalled',
+  sent: 'sent',
+  published: 'published',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AiCompanyWorkAssignmentScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  directiveId: 'directiveId',
+  department: 'department',
+  assignmentType: 'assignmentType',
+  requestedOutputs: 'requestedOutputs',
+  status: 'status',
+  blocker: 'blocker',
+  approvalRequired: 'approvalRequired',
+  providerCalled: 'providerCalled',
+  sent: 'sent',
+  published: 'published',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AiCompanyDraftQueueItemScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  directiveId: 'directiveId',
+  output: 'output',
+  ownerDepartment: 'ownerDepartment',
+  status: 'status',
+  sourceLabel: 'sourceLabel',
+  approvalRequired: 'approvalRequired',
+  providerCalled: 'providerCalled',
+  sent: 'sent',
+  published: 'published',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AiCompanyDecisionLogScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  directiveId: 'directiveId',
+  decision: 'decision',
+  note: 'note',
+  decidedBy: 'decidedBy',
+  previousStatus: 'previousStatus',
+  resultingStatus: 'resultingStatus',
+  reviewReminderAt: 'reviewReminderAt',
+  safetyFlags: 'safetyFlags',
+  providerCalled: 'providerCalled',
+  sent: 'sent',
+  published: 'published',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SocialContentSourceScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -1205,6 +1283,10 @@ exports.Prisma.ModelName = {
   AiPermissionPolicy: 'AiPermissionPolicy',
   UnifiedApprovalItem: 'UnifiedApprovalItem',
   UnifiedApprovalDecision: 'UnifiedApprovalDecision',
+  AiCompanyExecutiveDirective: 'AiCompanyExecutiveDirective',
+  AiCompanyWorkAssignment: 'AiCompanyWorkAssignment',
+  AiCompanyDraftQueueItem: 'AiCompanyDraftQueueItem',
+  AiCompanyDecisionLog: 'AiCompanyDecisionLog',
   SocialContentSource: 'SocialContentSource',
   SocialContentDraft: 'SocialContentDraft',
   SocialContentVariant: 'SocialContentVariant',

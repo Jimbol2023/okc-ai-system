@@ -1,5 +1,6 @@
 import { createBusinessIntelligenceReport, type BusinessIntelligenceReport, type DepartmentHealthCard, type TrendChart } from "@/lib/business-intelligence";
 import { loadPartialData } from "@/lib/api-response";
+import { getCompanyActivationSnapshot } from "@/lib/company-activation";
 import { createInheritedPropertyCampaignDirective, runCompanyOrchestrator, startDailyCompanyOperatingSession, type CompanyOrchestratorReport, type DailyCompanyOperatingSession } from "@/lib/company-orchestrator";
 import { createContentIntelligenceReport, type ContentIntelligenceReport } from "@/lib/content-intelligence";
 import { createExecutiveLearningRecommendations, type ExecutiveLearningMemoryEvent, type ExecutiveLearningRecommendation } from "@/lib/executive-learning";
@@ -828,13 +829,14 @@ export function createExecutiveWorkforceReport({
 }
 
 export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboardReport> {
-  const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, memoryEventsResult, referralResult, systemHealth, recentSystemActivity] = await Promise.all([
+  const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, memoryEventsResult, referralResult, activationResult, systemHealth, recentSystemActivity] = await Promise.all([
     loadPartialData("Lead", listDbLeads, [] as StoredLead[]),
     loadPartialData("Marketing workflow", listMarketingWorkflow, null),
     loadPartialData("Finance", listFinanceEntries, []),
     loadPartialData("Knowledge", listKnowledgeItems, []),
     loadPartialData("AI memory", loadExecutiveLearningMemoryEvents, [] as ExecutiveLearningMemoryEvent[]),
     loadPartialData("Referral dashboard", getReferralDashboard, null),
+    loadPartialData("Company activation", getCompanyActivationSnapshot, null),
     getSystemHealth().catch(() => null),
     getRecentSystemActivity().catch(() => []),
   ]);
@@ -883,20 +885,33 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
     knowledgeItems,
     businessIntelligence,
   });
+  const activationSnapshot = activationResult.data;
+  const activeDirectives = activationSnapshot?.directives.length ? activationSnapshot.directives : undefined;
+  const primaryDirective = activeDirectives?.[0] ?? createInheritedPropertyCampaignDirective();
   const companyOrchestrator = runCompanyOrchestrator({
-    directive: createInheritedPropertyCampaignDirective(),
+    directive: primaryDirective,
     opportunities: [],
   });
   const dailyStartup = startDailyCompanyOperatingSession({
     date: today.toISOString(),
+    directives: activeDirectives,
     providerReadiness: {
       ready: providerReadyCount,
       missing: providerMissingCount,
     },
+    activationState: activationSnapshot
+      ? {
+          assignments: activationSnapshot.assignments,
+          draftQueueItems: activationSnapshot.draftQueueItems,
+          latestDecision: activationSnapshot.latestDecision,
+        }
+      : undefined,
     engineeringProgress: [
       "Revenue Command Center is merged and production-ready.",
       "Executive Workforce and AI COO foundations are merged.",
-      "Daily Startup is preparing the CEO review agenda without external execution.",
+      activationSnapshot
+        ? "AI Company Activation persistence is connected for internal CEO decisions."
+        : "Daily Startup is preparing the CEO review agenda without external execution.",
     ],
   });
   const widgets: ExecutiveWidget[] = [
