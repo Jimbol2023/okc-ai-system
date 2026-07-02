@@ -1,4 +1,4 @@
-export const marketingChannels = ["facebook", "instagram", "google_business_profile"] as const;
+export const marketingChannels = ["facebook", "instagram", "google_business_profile", "linkedin"] as const;
 
 export type MarketingChannel = (typeof marketingChannels)[number];
 
@@ -6,6 +6,7 @@ export const marketingChannelLabels: Record<MarketingChannel, string> = {
   facebook: "Facebook",
   instagram: "Instagram",
   google_business_profile: "Google Business Profile",
+  linkedin: "LinkedIn",
 };
 
 export const marketingDraftStatuses = [

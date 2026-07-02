@@ -56,6 +56,7 @@ export const publishAssistSchema = z.object({
 
 export const canvaAssetAssistSchema = z.object({
   assetNotes: z.string().trim().max(1000, "Asset notes must stay under 1,000 characters.").optional().or(z.literal("")),
+  intendedPlatforms: z.array(marketingChannelSchema).max(4, "Select no more than four intended platforms.").optional(),
   manualApprovalStatus: marketingCanvaAssetApprovalStatusSchema.optional(),
 });
 

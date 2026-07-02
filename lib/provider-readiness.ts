@@ -8,13 +8,24 @@ export type ProviderReadinessStatus =
 
 export type ProviderActivationState = "blocked_readiness_only";
 
+export type ProviderConnectionState = "connected" | "not_connected" | "not_required";
+
 export type ProviderReadinessDefinition = {
   id: string;
   label: string;
+  icon?: string;
   group: ProviderReadinessGroup;
   roiPriority: number;
   requiredEnvKeys: string[];
   optionalEnvKeys?: string[];
+  statusOverride?: ProviderReadinessStatus;
+  readiness?: string;
+  connectionState?: ProviderConnectionState;
+  publicProfileUrl?: string;
+  authenticationRequired?: boolean;
+  supportedCapabilities?: string[];
+  governanceLevel?: string;
+  permissionsRequired?: string[];
   safeNextAction: string;
 };
 
@@ -23,9 +34,20 @@ export type ProviderReadinessItem = ProviderReadinessDefinition & {
   configuredEnvKeys: string[];
   missingEnvKeys: string[];
   activationState: ProviderActivationState;
+  readiness: string;
+  connectionState: ProviderConnectionState;
+  authenticationRequired: boolean;
+  supportedCapabilities: string[];
+  governanceLevel: string;
+  permissionsRequired: string[];
+  publicProfileUrl?: string;
   providerCalled: false;
+  liveExecutionAllowed: false;
   liveCallsAllowed: false;
   oauthStarted: false;
+  published: false;
+  scheduled: false;
+  connectorWrite: false;
   adsCreated: false;
   enrichmentWritten: false;
 };
@@ -168,21 +190,110 @@ export const providerReadinessDefinitions: ProviderReadinessDefinition[] = [
     safeNextAction: "Keep Google Ads in planning mode until tracking, budgets, and compliance review are complete.",
   },
   {
+    id: "facebook_page",
+    label: "Facebook",
+    icon: "facebook",
+    group: "marketing_ads",
+    roiPriority: 14,
+    requiredEnvKeys: [],
+    statusOverride: "configured",
+    readiness: "Configured / Not Connected",
+    connectionState: "not_connected",
+    authenticationRequired: true,
+    supportedCapabilities: ["page_posts", "image_posts", "analytics (future)"],
+    governanceLevel: "approval_required_planning_only",
+    permissionsRequired: ["planning only", "future OAuth page scope review", "future publish approval"],
+    safeNextAction: "Keep Facebook configured as planning metadata only until OAuth, scopes, approval logging, and publishing policy are approved.",
+  },
+  {
+    id: "instagram_business",
+    label: "Instagram",
+    icon: "instagram",
+    group: "marketing_ads",
+    roiPriority: 15,
+    requiredEnvKeys: [],
+    statusOverride: "configured",
+    readiness: "Configured / Not Connected",
+    connectionState: "not_connected",
+    authenticationRequired: true,
+    supportedCapabilities: ["image_posts", "caption_planning", "analytics (future)"],
+    governanceLevel: "approval_required_planning_only",
+    permissionsRequired: ["planning only", "future OAuth business account scope review", "future publish approval"],
+    safeNextAction: "Keep Instagram as destination metadata only; no Graph API calls, publishing, scheduling, or connector writes are enabled.",
+  },
+  {
+    id: "google_business_profile",
+    label: "Google Business Profile",
+    icon: "google",
+    group: "marketing_ads",
+    roiPriority: 16,
+    requiredEnvKeys: [],
+    statusOverride: "configured",
+    readiness: "Configured / Not Connected",
+    connectionState: "not_connected",
+    authenticationRequired: true,
+    supportedCapabilities: ["business_updates", "image_posts", "analytics (future)"],
+    governanceLevel: "approval_required_planning_only",
+    permissionsRequired: ["planning only", "future OAuth business profile scope review", "future publish approval"],
+    safeNextAction: "Use GBP as a manual planning destination only until ownership, OAuth, approval, audit, and rollback controls exist.",
+  },
+  {
+    id: "ga4",
+    label: "GA4",
+    icon: "analytics",
+    group: "marketing_ads",
+    roiPriority: 17,
+    requiredEnvKeys: [],
+    statusOverride: "configured",
+    readiness: "Configured / Not Connected",
+    connectionState: "not_connected",
+    authenticationRequired: true,
+    supportedCapabilities: ["analytics (future)", "traffic_reporting (future)", "conversion_review (future)"],
+    governanceLevel: "read_only_planning",
+    permissionsRequired: ["planning only", "future read-only analytics scope review"],
+    safeNextAction: "Keep GA4 as manual analytics readiness metadata until read-only API access is approved.",
+  },
+  {
+    id: "search_console",
+    label: "Search Console",
+    icon: "search",
+    group: "marketing_ads",
+    roiPriority: 18,
+    requiredEnvKeys: [],
+    statusOverride: "configured",
+    readiness: "Configured / Not Connected",
+    connectionState: "not_connected",
+    authenticationRequired: true,
+    supportedCapabilities: ["search_performance (future)", "index_visibility (future)", "query_review (future)"],
+    governanceLevel: "read_only_planning",
+    permissionsRequired: ["planning only", "future read-only Search Console scope review"],
+    safeNextAction: "Keep Search Console as manual SEO readiness metadata until read-only API access is approved.",
+  },
+  {
     id: "meta_marketing",
     label: "Meta Marketing API",
     group: "marketing_ads",
-    roiPriority: 14,
+    roiPriority: 19,
     requiredEnvKeys: ["META_MARKETING_ACCESS_TOKEN", "META_AD_ACCOUNT_ID", "META_APP_ID", "META_APP_SECRET"],
     safeNextAction: "Keep Meta ad operations manual until source attribution and budget controls are verified.",
   },
   {
-    id: "linkedin_marketing",
-    label: "LinkedIn Marketing API",
+    id: "linkedin_company_page",
+    label: "LinkedIn",
+    icon: "linkedin",
     group: "marketing_ads",
-    roiPriority: 15,
-    requiredEnvKeys: ["LINKEDIN_CLIENT_ID", "LINKEDIN_CLIENT_SECRET", "LINKEDIN_AD_ACCOUNT_ID"],
-    optionalEnvKeys: ["LINKEDIN_ACCESS_TOKEN"],
-    safeNextAction: "Treat LinkedIn as a later B2B buyer/investor channel after lead capture and enrichment are stable.",
+    roiPriority: 20,
+    requiredEnvKeys: [],
+    statusOverride: "configured",
+    readiness: "Configured / Not Connected",
+    connectionState: "not_connected",
+    publicProfileUrl: "https://www.linkedin.com/company/109661667/",
+    authenticationRequired: true,
+    supportedCapabilities: ["company_posts", "image_posts", "article_posts", "analytics (future)"],
+    governanceLevel: "approval_required_planning_only",
+    permissionsRequired: ["planning only", "future OAuth organization scope review", "future company-page publishing approval"],
+    safeNextAction:
+      "Store only the public LinkedIn Company Page metadata for future approval-controlled publishing; do not start OAuth, call LinkedIn, schedule, publish, scrape, or write connector data.",
   },
 ];
 
@@ -198,13 +309,14 @@ function evaluateProvider(definition: ProviderReadinessDefinition, env: NodeJS.P
   const configuredEnvKeys = definition.requiredEnvKeys.filter((key) => hasUsableEnvValue(env[key]));
   const missingEnvKeys = definition.requiredEnvKeys.filter((key) => !hasUsableEnvValue(env[key]));
   const status: ProviderReadinessStatus =
-    definition.requiredEnvKeys.length === 0
+    definition.statusOverride ??
+    (definition.requiredEnvKeys.length === 0
       ? "no_credentials_required"
       : missingEnvKeys.length === 0
         ? "configured"
         : configuredEnvKeys.length > 0
           ? "partial"
-          : "missing";
+          : "missing");
 
   return {
     ...definition,
@@ -212,12 +324,32 @@ function evaluateProvider(definition: ProviderReadinessDefinition, env: NodeJS.P
     configuredEnvKeys,
     missingEnvKeys,
     activationState: "blocked_readiness_only",
+    readiness: definition.readiness ?? formatReadiness(status),
+    connectionState:
+      definition.connectionState ?? (definition.requiredEnvKeys.length === 0 ? "not_required" : "not_connected"),
+    authenticationRequired: definition.authenticationRequired ?? definition.requiredEnvKeys.length > 0,
+    supportedCapabilities: definition.supportedCapabilities ?? [],
+    governanceLevel: definition.governanceLevel ?? "readiness_only",
+    permissionsRequired: definition.permissionsRequired ?? ["future approval required before external action"],
     providerCalled: false,
+    liveExecutionAllowed: false,
     liveCallsAllowed: false,
     oauthStarted: false,
+    published: false,
+    scheduled: false,
+    connectorWrite: false,
     adsCreated: false,
     enrichmentWritten: false,
   };
+}
+
+function formatReadiness(status: ProviderReadinessStatus) {
+  if (status === "no_credentials_required") return "No Credentials Required / Readiness Only";
+  return status
+    .replaceAll("_", " ")
+    .split(" ")
+    .map((word) => `${word.charAt(0).toUpperCase()}${word.slice(1)}`)
+    .join(" ");
 }
 
 export function createProviderReadinessReport(env: NodeJS.ProcessEnv = process.env): ProviderReadinessReport {
@@ -236,7 +368,7 @@ export function createProviderReadinessReport(env: NodeJS.ProcessEnv = process.e
     roiPriority: [
       "Lead capture and enrichment: Supabase/Postgres, ATTOM, Google Maps/OpenStreetMap, OpenAI/Gemini/xAI, and n8n.",
       "Operations tooling: Vercel CLI, Docker, Postman, and Google Calendar.",
-      "Marketing ads: Google Ads, Meta Marketing, and LinkedIn Marketing after attribution and budgets are ready.",
+      "Marketing providers: Facebook, Instagram, Google Business Profile, GA4, Search Console, and LinkedIn remain configured but not connected until governed OAuth and approval policies exist.",
     ],
     liveCallsAllowed: false,
     providerCalled: false,

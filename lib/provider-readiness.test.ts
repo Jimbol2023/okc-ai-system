@@ -78,10 +78,35 @@ describe("provider readiness registry", () => {
     for (const provider of report.providers) {
       assert.equal(provider.activationState, "blocked_readiness_only");
       assert.equal(provider.providerCalled, false);
+      assert.equal(provider.liveExecutionAllowed, false);
       assert.equal(provider.liveCallsAllowed, false);
       assert.equal(provider.oauthStarted, false);
+      assert.equal(provider.published, false);
+      assert.equal(provider.scheduled, false);
+      assert.equal(provider.connectorWrite, false);
       assert.equal(provider.adsCreated, false);
       assert.equal(provider.enrichmentWritten, false);
     }
+  });
+
+  it("registers LinkedIn Company Page as configured but not connected", () => {
+    const report = createProviderReadinessReport({});
+    const linkedin = report.providers.find((provider) => provider.id === "linkedin_company_page");
+
+    assert.ok(linkedin);
+    assert.equal(linkedin.label, "LinkedIn");
+    assert.equal(linkedin.status, "configured");
+    assert.equal(linkedin.readiness, "Configured / Not Connected");
+    assert.equal(linkedin.connectionState, "not_connected");
+    assert.equal(linkedin.publicProfileUrl, "https://www.linkedin.com/company/109661667/");
+    assert.equal(linkedin.providerCalled, false);
+    assert.equal(linkedin.liveExecutionAllowed, false);
+    assert.equal(linkedin.liveCallsAllowed, false);
+    assert.equal(linkedin.oauthStarted, false);
+    assert.equal(linkedin.published, false);
+    assert.equal(linkedin.scheduled, false);
+    assert.equal(linkedin.connectorWrite, false);
+    assert.equal(linkedin.authenticationRequired, true);
+    assert.deepEqual(linkedin.supportedCapabilities, ["company_posts", "image_posts", "article_posts", "analytics (future)"]);
   });
 });

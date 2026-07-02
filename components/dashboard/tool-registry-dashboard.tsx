@@ -14,6 +14,7 @@ export function ToolRegistryDashboard() {
   const exampleDecisions = [
     selectToolForAction({ requestedAction: "create_flyer_brief", preferredToolKey: "canva", module: "Executive AI" }),
     selectToolForAction({ requestedAction: "prepare_gbp_post", preferredToolKey: "google_business_profile", module: "Marketing AI" }),
+    selectToolForAction({ requestedAction: "prepare_linkedin_company_post", preferredToolKey: "linkedin_company_page", module: "Marketing AI" }),
     selectToolForAction({ requestedAction: "verify_ownership", preferredToolKey: "attom", module: "Property Intelligence AI" }),
     selectToolForAction({ requestedAction: "queue_sms_draft", preferredToolKey: "twilio", module: "Revenue Spine" }),
   ];

@@ -10,6 +10,7 @@ import type {
 } from "@/lib/validations/marketing-workflow";
 import {
   marketingChannelLabels,
+  marketingChannels,
   type MarketingChannel,
   type MarketingSafetyFlags,
 } from "@/types/marketing-workflow";
@@ -40,6 +41,10 @@ const manualPostingChecklist = [
 ] as const;
 
 function getAssetChecklist(channel: MarketingChannel) {
+  if (channel === "linkedin") {
+    return ["Select approved professional brand image.", "Confirm the draft is appropriate for a Company Page.", "Record LinkedIn source label manually if posted later."];
+  }
+
   if (channel === "instagram") {
     return ["Select approved brand image.", "Confirm caption fits mobile view.", "Add source label to manual tracking notes."];
   }
@@ -54,6 +59,7 @@ function getAssetChecklist(channel: MarketingChannel) {
 function getCanvaFormat(channel: MarketingChannel) {
   if (channel === "instagram") return "Instagram post";
   if (channel === "google_business_profile") return "Google Business Profile update image";
+  if (channel === "linkedin") return "LinkedIn company page image";
 
   return "Facebook post";
 }
@@ -95,6 +101,7 @@ function getCanvaCopyBlocks(draft: {
 
 function buildCanvaDesignBrief(draft: {
   channel: string;
+  intendedPlatforms?: MarketingChannel[];
   topic: string;
   sourceLabel: string;
   draftCopy: string;
@@ -103,10 +110,14 @@ function buildCanvaDesignBrief(draft: {
 }) {
   const channel = draft.channel as MarketingChannel;
   const format = getCanvaFormat(channel);
+  const intendedPlatforms = normalizeIntendedPlatforms(draft.intendedPlatforms, channel);
+  const intendedPlatformLabels = intendedPlatforms.map((platform) => marketingChannelLabels[platform]).join(", ");
 
   return `Create a clean J Capital Property Group ${format} visual for "${draft.topic}".
 
 Goal: prepare a professional manual-posting asset for Oklahoma City property-owner education.
+
+Intended platforms metadata only: ${intendedPlatformLabels}.
 
 Use the approved copy blocks from this record. Keep the visual simple, mobile-first, and professional. Do not add property-specific facts, owner names, tax status, repair claims, valuation claims, legal claims, urgency claims, or guarantees.
 
@@ -145,9 +156,23 @@ Caption note: Keep the visual simple and avoid showing any property that has not
 GBP note: Keep this as a short business update and verify the final text manually before posting.`;
   }
 
+  if (input.channel === "linkedin") {
+    return `${base}
+
+LinkedIn note: Keep this appropriate for the Company Page and do not imply endorsements, partnerships, investment returns, or verified market facts without human-supplied sources.`;
+  }
+
   return `${base}
 
 Facebook note: Keep comments and messages human-managed. Do not use this app to message prospects.`;
+}
+
+function normalizeIntendedPlatforms(platforms: MarketingChannel[] | undefined, fallback: MarketingChannel) {
+  const allowed = new Set<MarketingChannel>(marketingChannels);
+  const normalized = (platforms ?? [fallback]).filter((platform): platform is MarketingChannel => allowed.has(platform));
+  const deduped = Array.from(new Set(normalized));
+
+  return deduped.length > 0 ? deduped : [fallback];
 }
 
 function getAssumptions(input: CreateMarketingDraftInput) {
@@ -434,6 +459,7 @@ export async function createMarketingCanvaAssetAssist(draftId: string, input: Ca
       recommendedFormat: getCanvaFormat(channel),
       designBrief: buildCanvaDesignBrief({
         channel: draft.channel,
+        intendedPlatforms: input.intendedPlatforms,
         topic: draft.topic,
         sourceLabel: draft.sourceLabel,
         draftCopy: draft.draftCopy,

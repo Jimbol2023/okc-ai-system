@@ -220,9 +220,10 @@ export const marketingLeadAttributionReadiness: MarketingReadinessItem[] = [
   },
   {
     channel: "LinkedIn",
-    status: "Not connected",
-    sourceTracking: "Use linkedin only if a seller or partner inquiry originates there.",
-    nextAction: "Defer until higher-intent channels are stable.",
+    status: "Configured / Not connected",
+    sourceTracking:
+      "Use linkedin only if a seller or partner inquiry originates from the public Company Page: https://www.linkedin.com/company/109661667/.",
+    nextAction: "Keep LinkedIn as manual source-tracking metadata only; no OAuth, publishing, scheduling, scraping, or provider calls.",
   },
 ];
 

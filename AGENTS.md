@@ -1,6 +1,8 @@
 # AGENTS.md
 
-This project is a wholesale real estate investment platform for Oklahoma City.
+This project is J Capital AI OS: a production-ready, enterprise AI Business Operating System.
+
+The Oklahoma City wholesale real estate experience is the first business module, not the whole platform.
 
 Rules:
 - Never invent property facts
@@ -10,12 +12,18 @@ Rules:
 - All forms must validate input
 - Every lead must track source
 - Keep code simple and maintainable
+- Treat reusable services as AI Core
+- Treat industry-specific behavior as installable Business Modules
+- Treat provider integrations as governed connector plug-ins
+- Preserve Safe Auto Mode, feature flags, audit logs, approvals, AI permissions, and connector health
+- External actions remain approval-gated unless an explicit governed policy authorizes the exact action
 
 Goals:
-- Multi-page real estate website
-- Lead capture system
-- Deal analyzer
-- Tax list importer
-- Out-of-state owner detection
-- Driving-for-dollars tool
-- CRM dashboard
+- Multi-page real estate website as the first Real Estate Business Module surface
+- Lead capture system with source attribution
+- Deal analyzer inside the Real Estate Business Module
+- Tax list importer inside the Real Estate Business Module
+- Out-of-state owner detection inside the Real Estate Business Module
+- Driving-for-dollars tool inside the Real Estate Business Module
+- Business-agnostic CRM dashboard primitives in AI Core
+- Modular plug-in architecture for future industries

@@ -31,6 +31,26 @@ test("Canva flyer request remains internal and approval gated", () => {
   assert.equal(decision.approvalRequired, true);
 });
 
+test("LinkedIn Company Page remains configured for planning without live execution", () => {
+  const tools = listToolCapabilities();
+  const linkedin = tools.find((tool) => tool.toolKey === "linkedin_company_page");
+  const decision = selectToolForAction({
+    requestedAction: "prepare_linkedin_company_post",
+    preferredToolKey: "linkedin_company_page",
+    module: "Marketing AI",
+  });
+
+  assert.ok(linkedin);
+  assert.equal(linkedin.authenticationMethod, "future_oauth_not_started");
+  assert.equal(linkedin.providerCallsAllowed, false);
+  assert.equal(linkedin.healthStatus, "readiness_only");
+  assert.match(linkedin.safetyNotes, /https:\/\/www\.linkedin\.com\/company\/109661667\//);
+  assert.equal(decision.selectedToolKey, "linkedin_company_page");
+  assert.equal(decision.providerCalled, false);
+  assert.equal(decision.liveExecutionAllowed, false);
+  assert.equal(decision.approvalRequired, true);
+});
+
 test("ATTOM unavailable falls back to county assessor for ownership verification", () => {
   const decision = selectToolForAction({
     requestedAction: "verify_ownership",

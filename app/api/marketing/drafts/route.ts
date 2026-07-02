@@ -56,6 +56,8 @@ export async function POST(request: Request) {
       draft,
       providerCalled: false,
       published: false,
+      scheduled: false,
+      approvalRequired: true,
       sent: false,
     });
   } catch (error) {

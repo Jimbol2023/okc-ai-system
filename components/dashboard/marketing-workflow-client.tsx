@@ -85,6 +85,8 @@ const emptyAccountForm = {
   proofNote: "",
 };
 
+const canvaDestinationChannels: MarketingChannel[] = ["facebook", "instagram", "google_business_profile", "linkedin"];
+
 function formatStatus(value: string) {
   return value.replaceAll("_", " ");
 }
@@ -108,6 +110,7 @@ export function MarketingWorkflowClient() {
   const [editedCopies, setEditedCopies] = useState<Record<string, string>>({});
   const [publishedUrls, setPublishedUrls] = useState<Record<string, string>>({});
   const [canvaAssetNotes, setCanvaAssetNotes] = useState<Record<string, string>>({});
+  const [canvaIntendedPlatforms, setCanvaIntendedPlatforms] = useState<Record<string, MarketingChannel[]>>({});
   const [message, setMessage] = useState("Loading marketing workflow...");
   const [busy, setBusy] = useState(false);
 
@@ -206,9 +209,22 @@ export function MarketingWorkflowClient() {
   async function prepareCanvaAssetAssist(draft: MarketingDraft) {
     await submitJson(`/api/marketing/drafts/${draft.id}/canva-asset-assist`, {
       assetNotes: canvaAssetNotes[draft.id] || draft.assetNotes || "",
+      intendedPlatforms: canvaIntendedPlatforms[draft.id] ?? [draft.channel],
       manualApprovalStatus: "pending_manual_asset_approval",
     });
     setMessage("Canva design brief prepared for manual approval. No Canva API, export, or design creation occurred.");
+  }
+
+  function toggleCanvaIntendedPlatform(draft: MarketingDraft, platform: MarketingChannel) {
+    setCanvaIntendedPlatforms((current) => {
+      const selected = current[draft.id] ?? [draft.channel];
+      const next = selected.includes(platform) ? selected.filter((item) => item !== platform) : [...selected, platform];
+
+      return {
+        ...current,
+        [draft.id]: next.length > 0 ? next : [draft.channel],
+      };
+    });
   }
 
   return (
@@ -400,6 +416,29 @@ export function MarketingWorkflowClient() {
                 value={canvaAssetNotes[draft.id] ?? ""}
                 onChange={(event) => setCanvaAssetNotes((current) => ({ ...current, [draft.id]: event.target.value }))}
               />
+              <fieldset className="mt-3 rounded-xl border border-border bg-white p-3">
+                <legend className="px-1 text-xs font-bold uppercase tracking-[0.08em] text-muted">Intended Platforms</legend>
+                <div className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+                  {canvaDestinationChannels.map((platform) => {
+                    const selected = canvaIntendedPlatforms[draft.id] ?? [draft.channel];
+
+                    return (
+                      <label key={`${draft.id}-${platform}`} className="flex items-center gap-2 text-sm font-medium text-primary">
+                        <input
+                          type="checkbox"
+                          checked={selected.includes(platform)}
+                          onChange={() => toggleCanvaIntendedPlatform(draft, platform)}
+                          className="h-4 w-4 rounded border-border"
+                        />
+                        {marketingChannelLabels[platform]}
+                      </label>
+                    );
+                  })}
+                </div>
+                <p className="mt-2 text-xs leading-5 text-muted">
+                  Metadata only. This does not publish, schedule, call providers, start OAuth, or write connector data.
+                </p>
+              </fieldset>
               <button onClick={() => prepareCanvaAssetAssist(draft)} disabled={busy} className="mt-3 rounded-xl bg-primary px-4 py-2 text-sm font-bold text-white disabled:opacity-60">
                 Generate Canva Brief
               </button>
