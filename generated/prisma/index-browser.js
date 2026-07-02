@@ -706,6 +706,51 @@ exports.Prisma.AiCompanyDecisionLogScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.AiDepartmentMemoryEventScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  memoryKey: 'memoryKey',
+  department: 'department',
+  directiveId: 'directiveId',
+  assignmentId: 'assignmentId',
+  draftQueueItemId: 'draftQueueItemId',
+  eventType: 'eventType',
+  summary: 'summary',
+  lesson: 'lesson',
+  recommendation: 'recommendation',
+  metrics: 'metrics',
+  evidenceLabels: 'evidenceLabels',
+  confidence: 'confidence',
+  outcome: 'outcome',
+  assumptions: 'assumptions',
+  providerCalled: 'providerCalled',
+  sent: 'sent',
+  published: 'published',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AiDepartmentIntelligenceSnapshotScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  snapshotKey: 'snapshotKey',
+  department: 'department',
+  summary: 'summary',
+  highRoiFocus: 'highRoiFocus',
+  lessonsLearned: 'lessonsLearned',
+  recommendationQueue: 'recommendationQueue',
+  memoryStatus: 'memoryStatus',
+  confidence: 'confidence',
+  sourceLabels: 'sourceLabels',
+  assumptions: 'assumptions',
+  providerCalled: 'providerCalled',
+  sent: 'sent',
+  published: 'published',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SocialContentSourceScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -1287,6 +1332,8 @@ exports.Prisma.ModelName = {
   AiCompanyWorkAssignment: 'AiCompanyWorkAssignment',
   AiCompanyDraftQueueItem: 'AiCompanyDraftQueueItem',
   AiCompanyDecisionLog: 'AiCompanyDecisionLog',
+  AiDepartmentMemoryEvent: 'AiDepartmentMemoryEvent',
+  AiDepartmentIntelligenceSnapshot: 'AiDepartmentIntelligenceSnapshot',
   SocialContentSource: 'SocialContentSource',
   SocialContentDraft: 'SocialContentDraft',
   SocialContentVariant: 'SocialContentVariant',

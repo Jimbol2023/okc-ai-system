@@ -904,6 +904,70 @@ model AiCompanyDecisionLog {
   @@index([createdAt])
 }
 
+model AiDepartmentMemoryEvent {
+  id                   String   @id @default(uuid())
+  tenantId             String   @default("default")
+  memoryKey            String   @unique
+  department           String
+  directiveId          String?
+  assignmentId         String?
+  draftQueueItemId     String?
+  eventType            String
+  summary              String
+  lesson               String
+  recommendation       String
+  metrics              Json
+  evidenceLabels       Json
+  confidence           Int
+  outcome              String   @default("insufficient_outcome_data")
+  assumptions          Json
+  providerCalled       Boolean  @default(false)
+  sent                 Boolean  @default(false)
+  published            Boolean  @default(false)
+  liveExecutionAllowed Boolean  @default(false)
+  createdAt            DateTime @default(now())
+
+  @@index([tenantId])
+  @@index([department])
+  @@index([directiveId])
+  @@index([assignmentId])
+  @@index([draftQueueItemId])
+  @@index([eventType])
+  @@index([outcome])
+  @@index([providerCalled])
+  @@index([liveExecutionAllowed])
+  @@index([createdAt])
+}
+
+model AiDepartmentIntelligenceSnapshot {
+  id                   String   @id @default(uuid())
+  tenantId             String   @default("default")
+  snapshotKey          String   @unique
+  department           String
+  summary              String
+  highRoiFocus         String
+  lessonsLearned       Json
+  recommendationQueue  Json
+  memoryStatus         String
+  confidence           Int
+  sourceLabels         Json
+  assumptions          Json
+  providerCalled       Boolean  @default(false)
+  sent                 Boolean  @default(false)
+  published            Boolean  @default(false)
+  liveExecutionAllowed Boolean  @default(false)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([department])
+  @@index([memoryStatus])
+  @@index([confidence])
+  @@index([providerCalled])
+  @@index([liveExecutionAllowed])
+  @@index([createdAt])
+}
+
 model SocialContentSource {
   id                    String   @id @default(uuid())
   tenantId              String   @default("default")

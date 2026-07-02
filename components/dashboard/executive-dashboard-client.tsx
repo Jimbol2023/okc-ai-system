@@ -239,6 +239,60 @@ type ExecutiveWorkforce = {
   };
 };
 
+type DepartmentIntelligence = {
+  generatedAt: string;
+  summary: string;
+  departments: Array<{
+    department: string;
+    memoryStatus: "no_memory" | "memory_started" | "outcome_pending" | "outcome_supported";
+    eventCount: number;
+    latestLesson: string;
+    highRoiFocus: string;
+    recommendations: Array<{
+      id: string;
+      title: string;
+      summary: string;
+      score: number;
+      expectedBusinessValue: string;
+      sourceLabel: string;
+      assumption: string;
+      approvalRequired: true;
+      providerCalled: false;
+      liveExecutionAllowed: false;
+    }>;
+    lessonsLearned: string[];
+    sourceLabels: string[];
+    assumptions: string[];
+    confidence: number;
+  }>;
+  topRecommendations: Array<{
+    id: string;
+    title: string;
+    summary: string;
+    score: number;
+    expectedBusinessValue: string;
+    sourceLabel: string;
+    assumption: string;
+    approvalRequired: true;
+    providerCalled: false;
+    liveExecutionAllowed: false;
+  }>;
+  decisionReasonTemplates: Record<DirectiveDecision, readonly string[]>;
+  safety: {
+    providerCalled: false;
+    liveExecutionAllowed: false;
+    published: false;
+    sent: false;
+    outreachBlocked: true;
+    workflowExecutionBlocked: true;
+    scrapingBlocked: true;
+    adsBlocked: true;
+    emailBlocked: true;
+    smsBlocked: true;
+    approvalRequired: true;
+  };
+};
+
 type DailyStartup = {
   date: string;
   companyOperatingMode: "planning" | "daily_startup_ready" | "ceo_review" | "approved_internal_workflow";
@@ -355,6 +409,7 @@ type ExecutiveDashboardResponse = {
   dailyStartup?: DailyStartup;
   revenueCommandCenter?: RevenueCommandCenter;
   executiveWorkforce?: ExecutiveWorkforce;
+  departmentIntelligence?: DepartmentIntelligence | null;
   morningBrief?: MorningBrief;
   todayPriorities?: ExecutiveWidget[];
   kpiInterpretations?: Record<string, string>;
@@ -611,6 +666,13 @@ function formatDecisionLabel(decision: DirectiveDecision) {
   return decision.charAt(0).toUpperCase() + decision.slice(1);
 }
 
+const fallbackDecisionReasonTemplates: Record<DirectiveDecision, readonly string[]> = {
+  approve: ["High ROI", "Strong brand value", "Urgent revenue opportunity", "Low risk"],
+  request_changes: ["Brand risk", "Weak CTA", "Insufficient source data", "Unclear owner"],
+  reject: ["Low revenue value", "Too risky", "Duplicate work", "Not aligned"],
+  defer: ["Timing", "Dependency missing", "Awaiting outcome data"],
+};
+
 function DailyStartupPanel({ startup, onDecisionComplete }: { startup: DailyStartup; onDecisionComplete: () => Promise<void> }) {
   const [decisionNotes, setDecisionNotes] = useState<Record<string, string>>({});
   const [decisionReminders, setDecisionReminders] = useState<Record<string, string>>({});
@@ -773,6 +835,18 @@ function DailyStartupPanel({ startup, onDecisionComplete }: { startup: DailyStar
                     className="mt-2 min-h-20 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-primary outline-none focus:border-primary/40"
                     placeholder="Required for reject or request changes."
                   />
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {fallbackDecisionReasonTemplates[item.recommended_action].slice(0, 4).map((reason) => (
+                      <button
+                        key={`${item.directive_id}-${reason}`}
+                        type="button"
+                        onClick={() => setDecisionNotes((current) => ({ ...current, [item.directive_id]: reason }))}
+                        className="rounded-md border border-slate-200 bg-white px-2 py-1 text-[11px] font-semibold text-muted transition hover:border-primary/30 hover:text-primary"
+                      >
+                        {reason}
+                      </button>
+                    ))}
+                  </div>
                   <label className="mt-3 block text-[11px] font-semibold uppercase tracking-[0.08em] text-muted" htmlFor={`decision-reminder-${item.directive_id}`}>
                     Defer reminder
                   </label>
@@ -852,6 +926,82 @@ function DailyStartupPanel({ startup, onDecisionComplete }: { startup: DailyStar
               </div>
             </div>
           ) : null}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function getMemoryStatusColor(status: DepartmentIntelligence["departments"][number]["memoryStatus"]): MetricStatus {
+  if (status === "outcome_supported") return "good";
+  if (status === "outcome_pending" || status === "memory_started") return "watch";
+
+  return "missing";
+}
+
+function DepartmentIntelligencePanel({ intelligence }: { intelligence: DepartmentIntelligence }) {
+  return (
+    <section aria-labelledby="department-intelligence-heading" className="rounded-lg border border-border bg-surface p-5 md:p-6">
+      <div className="flex min-w-0 flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+        <div className="min-w-0 space-y-2">
+          <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-muted">Department Intelligence</p>
+          <h2 id="department-intelligence-heading" className="break-words text-2xl font-semibold text-primary md:text-3xl">
+            Department Memory
+          </h2>
+          <p className="max-w-5xl break-words text-sm leading-6 text-muted">{intelligence.summary}</p>
+          <p className="break-words text-xs font-semibold uppercase tracking-[0.08em] text-muted">Generated: {formatTime(intelligence.generatedAt)}</p>
+        </div>
+        <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+          <SafetyBadge>providerCalled:{String(intelligence.safety.providerCalled)}</SafetyBadge>
+          <SafetyBadge tone="urgent">liveExecution:{String(intelligence.safety.liveExecutionAllowed)}</SafetyBadge>
+          <SafetyBadge>approval:{String(intelligence.safety.approvalRequired)}</SafetyBadge>
+        </div>
+      </div>
+
+      <div className="mt-5 grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          {intelligence.departments.slice(0, 6).map((department) => (
+            <article key={department.department} className="rounded-lg border border-border bg-white p-4">
+              <div className="flex min-w-0 items-start justify-between gap-2">
+                <h3 className="break-words text-sm font-semibold text-primary">{department.department}</h3>
+                <StatusBadge status={getMemoryStatusColor(department.memoryStatus)} />
+              </div>
+              <p className="mt-2 break-words text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+                {department.memoryStatus} | {department.eventCount} event(s)
+              </p>
+              <p className="mt-3 break-words text-sm leading-6 text-muted">{department.latestLesson}</p>
+              <p className="mt-3 break-words text-xs leading-5 text-primary">{department.highRoiFocus}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className="space-y-4">
+          <div className="rounded-lg border border-blue-100 bg-blue-50 p-4">
+            <h3 className="break-words text-lg font-semibold text-blue-950">Top recommendations</h3>
+            <div className="mt-3 space-y-3">
+              {intelligence.topRecommendations.slice(0, 4).map((recommendation) => (
+                <article key={recommendation.id} className="rounded-lg border border-blue-200 bg-white p-3">
+                  <div className="flex min-w-0 items-start justify-between gap-2">
+                    <h4 className="break-words text-sm font-semibold text-primary">{recommendation.title}</h4>
+                    <SafetyBadge>{recommendation.score}</SafetyBadge>
+                  </div>
+                  <p className="mt-2 break-words text-xs leading-5 text-muted">{recommendation.summary}</p>
+                  <p className="mt-2 break-words text-xs leading-5 text-primary">{recommendation.expectedBusinessValue}</p>
+                  <p className="mt-2 break-words text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                    Source: {recommendation.sourceLabel}
+                  </p>
+                  <p className="mt-1 break-words text-[11px] leading-4 text-muted">Assumption: {recommendation.assumption}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-amber-100 bg-amber-50 p-4">
+            <h3 className="break-words text-lg font-semibold text-amber-950">Learning boundary</h3>
+            <p className="mt-2 break-words text-sm leading-6 text-amber-950">
+              Department learning is evidence-based and advisory. Departments do not silently change behavior, publish, message, scrape, call providers, or execute workflows.
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -982,6 +1132,7 @@ export function ExecutiveDashboardClient() {
   const [dailyStartup, setDailyStartup] = useState<DailyStartup | null>(null);
   const [revenueCommandCenter, setRevenueCommandCenter] = useState<RevenueCommandCenter | null>(null);
   const [executiveWorkforce, setExecutiveWorkforce] = useState<ExecutiveWorkforce | null>(null);
+  const [departmentIntelligence, setDepartmentIntelligence] = useState<DepartmentIntelligence | null>(null);
   const [morningBrief, setMorningBrief] = useState<MorningBrief | null>(null);
   const [todayPriorities, setTodayPriorities] = useState<ExecutiveWidget[]>([]);
   const [kpiInterpretations, setKpiInterpretations] = useState<Record<string, string>>({});
@@ -1013,6 +1164,7 @@ export function ExecutiveDashboardClient() {
       setDailyStartup(data.dailyStartup ?? null);
       setRevenueCommandCenter(data.revenueCommandCenter ?? null);
       setExecutiveWorkforce(data.executiveWorkforce ?? null);
+      setDepartmentIntelligence(data.departmentIntelligence ?? null);
       setMorningBrief(data.morningBrief ?? null);
       setTodayPriorities(
         data.todayPriorities ??
@@ -1046,6 +1198,7 @@ export function ExecutiveDashboardClient() {
       {dailyStartup ? <DailyStartupPanel startup={dailyStartup} onDecisionComplete={loadDashboard} /> : null}
       {revenueCommandCenter ? <RevenueCommandCenterPanel commandCenter={revenueCommandCenter} /> : null}
       {executiveWorkforce ? <ExecutiveWorkforcePanel workforce={executiveWorkforce} /> : null}
+      {departmentIntelligence ? <DepartmentIntelligencePanel intelligence={departmentIntelligence} /> : null}
 
       <section aria-labelledby="morning-brief-heading" className="rounded-lg border border-border bg-surface p-5 md:p-6">
         <div className="flex min-w-0 flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
