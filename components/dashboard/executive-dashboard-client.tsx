@@ -239,6 +239,82 @@ type ExecutiveWorkforce = {
   };
 };
 
+type DailyStartup = {
+  date: string;
+  companyOperatingMode: "planning" | "daily_startup_ready" | "ceo_review" | "approved_internal_workflow";
+  company_health: {
+    score: number;
+    status: MetricStatus;
+    summary: string;
+    sourceLabel: string;
+    assumption: string;
+  };
+  department_health: Array<{
+    department: string;
+    status: "ready" | "blocked_awaiting_directive" | "review_only";
+    summary: string;
+    approval_required: true;
+  }>;
+  active_executive_directives: Array<{
+    id: string;
+    title: string;
+    approval_status: string;
+    expected_business_value: string;
+    risk_level: "low" | "medium" | "high";
+  }>;
+  opportunity_queue_summary: QueueSummary;
+  campaign_queue_summary: QueueSummary;
+  draft_queue_summary: QueueSummary;
+  approval_queue_summary: QueueSummary;
+  blocked_items: string[];
+  provider_readiness: {
+    summary: string;
+    missing: number;
+    ready: number;
+    providerCalled: false;
+    liveExecutionAllowed: false;
+  };
+  government_policy_updates: string[];
+  news_intelligence_updates: string[];
+  engineering_progress: string[];
+  executive_brief: string;
+  ceo_decision_agenda: Array<{
+    id: string;
+    title: string;
+    business_goal: string;
+    reason: string;
+    expected_business_value: string;
+    risk_level: "low" | "medium" | "high";
+    departments_involved: string[];
+    recommended_action: "approve" | "reject" | "request_changes" | "defer";
+    approval_required: true;
+    status: string;
+    sourceLabel: string;
+    assumption: string;
+  }>;
+  safety: {
+    internalOnly: true;
+    providerCalled: false;
+    liveExecutionAllowed: false;
+    publishingBlocked: true;
+    emailBlocked: true;
+    smsBlocked: true;
+    scrapingBlocked: true;
+    adsBlocked: true;
+    outreachBlocked: true;
+    workflowExecutionBlocked: true;
+    recommendationsOnly: true;
+  };
+};
+
+type QueueSummary = {
+  total: number;
+  awaiting_ceo_approval: number;
+  ready_for_review: number;
+  blocked: number;
+  summary: string;
+};
+
 type BusinessIntelligenceReport = {
   kpis: BusinessKpiCard[];
   channelPerformance: MarketingChannelPerformance[];
@@ -249,6 +325,7 @@ type BusinessIntelligenceReport = {
 type ExecutiveDashboardResponse = {
   ok: boolean;
   widgets?: ExecutiveWidget[];
+  dailyStartup?: DailyStartup;
   revenueCommandCenter?: RevenueCommandCenter;
   executiveWorkforce?: ExecutiveWorkforce;
   morningBrief?: MorningBrief;
@@ -476,6 +553,140 @@ function RevenueCommandCenterPanel({ commandCenter }: { commandCenter: RevenueCo
   );
 }
 
+function QueueSummaryCard({ title, summary }: { title: string; summary: QueueSummary }) {
+  return (
+    <article className="rounded-lg border border-border bg-white p-4">
+      <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">{title}</p>
+      <p className="mt-2 text-3xl font-semibold text-primary">{summary.total}</p>
+      <p className="mt-2 break-words text-xs leading-5 text-muted">{summary.summary}</p>
+      <div className="mt-3 grid grid-cols-3 gap-2 text-center text-[11px] font-semibold uppercase tracking-[0.06em] text-muted">
+        <span className="rounded-md bg-slate-100 px-2 py-1">Approval {summary.awaiting_ceo_approval}</span>
+        <span className="rounded-md bg-slate-100 px-2 py-1">Review {summary.ready_for_review}</span>
+        <span className="rounded-md bg-slate-100 px-2 py-1">Blocked {summary.blocked}</span>
+      </div>
+    </article>
+  );
+}
+
+function DailyStartupPanel({ startup }: { startup: DailyStartup }) {
+  return (
+    <section aria-labelledby="daily-startup-heading" className="rounded-lg border border-border bg-surface p-5 md:p-6">
+      <div className="flex min-w-0 flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+        <div className="min-w-0 space-y-2">
+          <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-muted">Daily Executive Brief</p>
+          <h2 id="daily-startup-heading" className="break-words text-2xl font-semibold text-primary md:text-3xl">
+            Start the Company
+          </h2>
+          <p className="max-w-5xl break-words text-sm leading-6 text-muted">{startup.executive_brief}</p>
+          <p className="break-words text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+            Mode: {startup.companyOperatingMode} | Date: {formatTime(startup.date)}
+          </p>
+        </div>
+        <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+          <SafetyBadge>internalOnly:{String(startup.safety.internalOnly)}</SafetyBadge>
+          <SafetyBadge>providerCalled:{String(startup.safety.providerCalled)}</SafetyBadge>
+          <SafetyBadge tone="urgent">liveExecution:{String(startup.safety.liveExecutionAllowed)}</SafetyBadge>
+          <SafetyBadge>recommendationsOnly:{String(startup.safety.recommendationsOnly)}</SafetyBadge>
+        </div>
+      </div>
+
+      <div className="mt-5 grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
+        <div className="space-y-4">
+          <div className="rounded-lg border border-blue-100 bg-blue-50 p-4">
+            <div className="flex min-w-0 items-start justify-between gap-3">
+              <div className="min-w-0">
+                <h3 className="break-words text-lg font-semibold text-blue-950">Company Health</h3>
+                <p className="mt-2 break-words text-sm leading-6 text-blue-950">{startup.company_health.summary}</p>
+              </div>
+              <StatusBadge status={startup.company_health.status} />
+            </div>
+            <p className="mt-3 text-3xl font-semibold text-blue-950">{startup.company_health.score}</p>
+            <p className="mt-2 break-words text-[11px] font-semibold uppercase tracking-[0.08em] text-blue-900">
+              Source: {startup.company_health.sourceLabel}
+            </p>
+            <p className="mt-1 break-words text-[11px] leading-4 text-blue-900">Assumption: {startup.company_health.assumption}</p>
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            <QueueSummaryCard title="Opportunities" summary={startup.opportunity_queue_summary} />
+            <QueueSummaryCard title="Campaigns" summary={startup.campaign_queue_summary} />
+            <QueueSummaryCard title="Draft Queue" summary={startup.draft_queue_summary} />
+            <QueueSummaryCard title="Approvals" summary={startup.approval_queue_summary} />
+          </div>
+
+          <div className="rounded-lg border border-red-100 bg-red-50 p-4">
+            <h3 className="break-words text-lg font-semibold text-red-950">Blocked Actions</h3>
+            <ul className="mt-3 space-y-2 text-sm leading-6 text-red-950">
+              {startup.blocked_items.map((item) => (
+                <li key={item} className="break-words">{item}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <div className="rounded-lg border border-border bg-white p-4">
+            <h3 className="break-words text-lg font-semibold text-primary">CEO Decision Agenda</h3>
+            <div className="mt-4 space-y-3">
+              {startup.ceo_decision_agenda.map((item) => (
+                <article key={item.id} className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+                  <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                    <div className="min-w-0">
+                      <h4 className="break-words text-sm font-semibold text-primary">{item.title}</h4>
+                      <p className="mt-1 break-words text-xs leading-5 text-muted">{item.reason}</p>
+                    </div>
+                    <SafetyBadge>{item.recommended_action}</SafetyBadge>
+                  </div>
+                  <p className="mt-3 break-words text-xs leading-5 text-primary">{item.expected_business_value}</p>
+                  <p className="mt-2 break-words text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                    Status: {item.status} | Risk: {item.risk_level}
+                  </p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {(["Approve", "Reject", "Request Changes", "Defer"] as const).map((label) => (
+                      <button
+                        key={label}
+                        type="button"
+                        disabled
+                        className="rounded-md border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-muted"
+                        title="Review-only placeholder. Decision persistence is not enabled in this sprint."
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="mt-3 break-words text-[11px] leading-4 text-muted">
+                    Source: {item.sourceLabel}. Assumption: {item.assumption}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid gap-3 md:grid-cols-2">
+            <div className="rounded-lg border border-border bg-white p-4">
+              <h3 className="break-words text-sm font-semibold text-primary">Department Health</h3>
+              <ul className="mt-3 space-y-2 text-xs leading-5 text-muted">
+                {startup.department_health.slice(0, 8).map((department) => (
+                  <li key={department.department} className="break-words">
+                    {department.department}: {department.status}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-lg border border-border bg-white p-4">
+              <h3 className="break-words text-sm font-semibold text-primary">Readiness Updates</h3>
+              <p className="mt-2 break-words text-xs leading-5 text-muted">{startup.provider_readiness.summary}</p>
+              {[...startup.government_policy_updates, ...startup.news_intelligence_updates, ...startup.engineering_progress].slice(0, 5).map((update) => (
+                <p key={update} className="mt-2 break-words text-xs leading-5 text-muted">{update}</p>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ExecutiveWorkforcePanel({ workforce }: { workforce: ExecutiveWorkforce }) {
   return (
     <section aria-labelledby="executive-workforce-heading" className="rounded-lg border border-border bg-surface p-5 md:p-6">
@@ -597,6 +808,7 @@ function ExecutiveWorkforcePanel({ workforce }: { workforce: ExecutiveWorkforce 
 }
 
 export function ExecutiveDashboardClient() {
+  const [dailyStartup, setDailyStartup] = useState<DailyStartup | null>(null);
   const [revenueCommandCenter, setRevenueCommandCenter] = useState<RevenueCommandCenter | null>(null);
   const [executiveWorkforce, setExecutiveWorkforce] = useState<ExecutiveWorkforce | null>(null);
   const [morningBrief, setMorningBrief] = useState<MorningBrief | null>(null);
@@ -627,6 +839,7 @@ export function ExecutiveDashboardClient() {
         throw new Error(data.error || "Failed to load executive dashboard.");
       }
 
+      setDailyStartup(data.dailyStartup ?? null);
       setRevenueCommandCenter(data.revenueCommandCenter ?? null);
       setExecutiveWorkforce(data.executiveWorkforce ?? null);
       setMorningBrief(data.morningBrief ?? null);
@@ -659,6 +872,7 @@ export function ExecutiveDashboardClient() {
       {loading ? <LoadingState label="Loading executive dashboard..." /> : null}
       {error ? <ErrorState message={error} /> : null}
 
+      {dailyStartup ? <DailyStartupPanel startup={dailyStartup} /> : null}
       {revenueCommandCenter ? <RevenueCommandCenterPanel commandCenter={revenueCommandCenter} /> : null}
       {executiveWorkforce ? <ExecutiveWorkforcePanel workforce={executiveWorkforce} /> : null}
 

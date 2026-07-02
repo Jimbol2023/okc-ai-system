@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { createExecutiveRecommendations, createExecutiveWorkforceReport, createRevenueCommandCenter } from "./executive-dashboard";
+import { createExecutiveDashboardReport, createExecutiveRecommendations, createExecutiveWorkforceReport, createRevenueCommandCenter } from "./executive-dashboard";
 import type { BusinessIntelligenceReport } from "./business-intelligence";
 import { createInheritedPropertyCampaignDirective, runCompanyOrchestrator } from "./company-orchestrator";
 import { createContentIntelligenceReport } from "./content-intelligence";
@@ -213,5 +213,27 @@ describe("executive workforce health", () => {
     assert.equal(report.safetyFlags.publishingBlocked, true);
     assert.ok(report.healthCards.every((card) => card.sourceLabel.length > 0));
     assert.ok(report.healthCards.every((card) => card.assumption.length > 0));
+  });
+});
+
+describe("daily startup", () => {
+  it("surfaces a CEO decision agenda without activation or provider execution", async () => {
+    const report = await createExecutiveDashboardReport();
+
+    assert.equal(report.dailyStartup.companyOperatingMode, "daily_startup_ready");
+    assert.equal(report.dailyStartup.safety.providerCalled, false);
+    assert.equal(report.dailyStartup.safety.liveExecutionAllowed, false);
+    assert.equal(report.dailyStartup.safety.publishingBlocked, true);
+    assert.equal(report.dailyStartup.safety.emailBlocked, true);
+    assert.equal(report.dailyStartup.safety.smsBlocked, true);
+    assert.equal(report.dailyStartup.safety.scrapingBlocked, true);
+    assert.equal(report.dailyStartup.safety.adsBlocked, true);
+    assert.equal(report.dailyStartup.safety.outreachBlocked, true);
+    assert.equal(report.dailyStartup.safety.workflowExecutionBlocked, true);
+    assert.equal(report.dailyStartup.safety.recommendationsOnly, true);
+    assert.ok(report.dailyStartup.active_executive_directives.some((directive) => directive.id === "campaign-001"));
+    assert.ok(report.dailyStartup.ceo_decision_agenda.some((item) => item.title.includes("Inherited Property") && item.recommended_action === "approve"));
+    assert.ok(report.dailyStartup.blocked_items.some((item) => /No department work starts/i.test(item)));
+    assert.ok(report.dailyStartup.ceo_decision_agenda.every((item) => item.approval_required));
   });
 });

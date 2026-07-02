@@ -116,6 +116,41 @@ export type OpportunityQueueItem = {
   outreachAllowed: false;
 };
 
+export type CompanyOperatingMode = "planning" | "daily_startup_ready" | "ceo_review" | "approved_internal_workflow";
+
+export type CeoDecisionType = "approve" | "reject" | "request_changes" | "defer";
+
+export type CeoDecisionAgendaItem = {
+  id: string;
+  title: string;
+  business_goal: CompanyGoal;
+  reason: string;
+  expected_business_value: string;
+  risk_level: ExecutiveDirective["risk_level"];
+  departments_involved: AiDepartmentName[];
+  recommended_action: CeoDecisionType;
+  approval_required: true;
+  status: ExecutiveDirectiveStatus;
+  sourceLabel: string;
+  assumption: string;
+};
+
+export type DailyStartupHealth = {
+  score: number;
+  status: "good" | "watch" | "urgent" | "missing";
+  summary: string;
+  sourceLabel: string;
+  assumption: string;
+};
+
+export type DailyStartupQueueSummary = {
+  total: number;
+  awaiting_ceo_approval: number;
+  ready_for_review: number;
+  blocked: number;
+  summary: string;
+};
+
 export type CompanyOrchestratorWorkflowState =
   | "blocked_awaiting_ceo_approval"
   | "approved_assignment_ready"
@@ -169,6 +204,57 @@ export type CompanyOrchestratorReport = {
     scrapingBlocked: true;
     adsBlocked: true;
     workflowExecutionBlocked: true;
+  };
+};
+
+export type DailyCompanyOperatingSession = {
+  ok: true;
+  date: string;
+  companyOperatingMode: CompanyOperatingMode;
+  company_health: DailyStartupHealth;
+  revenue_health: DailyStartupHealth;
+  brand_health: DailyStartupHealth;
+  marketing_health: DailyStartupHealth;
+  seo_health: DailyStartupHealth;
+  lead_health: DailyStartupHealth;
+  operations_health: DailyStartupHealth;
+  security_health: DailyStartupHealth;
+  department_health: Array<{
+    department: AiDepartmentName;
+    status: "ready" | "blocked_awaiting_directive" | "review_only";
+    summary: string;
+    approval_required: true;
+  }>;
+  active_executive_directives: ExecutiveDirective[];
+  opportunity_queue_summary: DailyStartupQueueSummary;
+  campaign_queue_summary: DailyStartupQueueSummary;
+  draft_queue_summary: DailyStartupQueueSummary;
+  approval_queue_summary: DailyStartupQueueSummary;
+  blocked_items: string[];
+  provider_readiness: {
+    summary: string;
+    missing: number;
+    ready: number;
+    providerCalled: false;
+    liveExecutionAllowed: false;
+  };
+  government_policy_updates: string[];
+  news_intelligence_updates: string[];
+  engineering_progress: string[];
+  executive_brief: string;
+  ceo_decision_agenda: CeoDecisionAgendaItem[];
+  safety: {
+    internalOnly: true;
+    providerCalled: false;
+    liveExecutionAllowed: false;
+    publishingBlocked: true;
+    emailBlocked: true;
+    smsBlocked: true;
+    scrapingBlocked: true;
+    adsBlocked: true;
+    outreachBlocked: true;
+    workflowExecutionBlocked: true;
+    recommendationsOnly: true;
   };
 };
 
@@ -247,6 +333,198 @@ export function createOpportunityQueue(items: OpportunityQueueItem[] = []) {
   };
 }
 
+export function createBrandReadinessReviewDirective(): ExecutiveDirective {
+  return {
+    id: "directive-brand-readiness-review",
+    title: "Brand Readiness Review",
+    business_goal: "increase_brand_value",
+    source_department: "Brand Intelligence AI",
+    assigned_departments: ["Brand Intelligence AI", "Design AI", "Executive AI"],
+    requested_outputs: ["Brand readiness summary", "Platform profile gap notes", "Executive Summary", "CEO Final Approval"],
+    approval_status: "awaiting_ceo_approval",
+    risk_level: "low",
+    expected_business_value: "Improve public trust and brand consistency before larger campaign volume.",
+    governance_notes: ["Review-only readiness directive.", "No platform login, provider call, publishing, or profile update is authorized."],
+  };
+}
+
+export function createContentRefreshReviewDirective(): ExecutiveDirective {
+  return {
+    id: "directive-content-refresh-review",
+    title: "Content Refresh Review",
+    business_goal: "generate_revenue",
+    source_department: "Content Intelligence AI",
+    assigned_departments: ["Content Intelligence AI", "SEO AI", "Marketing AI", "Executive AI"],
+    requested_outputs: ["Refresh brief", "SEO opportunity notes", "Campaign recommendation", "Executive Summary", "CEO Final Approval"],
+    approval_status: "awaiting_ceo_approval",
+    risk_level: "low",
+    expected_business_value: "Identify existing educational content that can be refreshed to support qualified seller lead generation.",
+    governance_notes: ["Manual/read-only inputs only.", "No analytics API, scraping, publishing, or scheduling is authorized."],
+  };
+}
+
+export function createLeadSourceQualityReviewDirective(): ExecutiveDirective {
+  return {
+    id: "directive-lead-source-quality-review",
+    title: "Lead Source Quality Review",
+    business_goal: "improve_executive_decisions",
+    source_department: "Lead Intelligence AI",
+    assigned_departments: ["Lead Intelligence AI", "Revenue AI", "Executive AI"],
+    requested_outputs: ["Source quality summary", "Qualified lead assumptions", "Revenue priority notes", "Executive Summary", "CEO Final Approval"],
+    approval_status: "awaiting_ceo_approval",
+    risk_level: "medium",
+    expected_business_value: "Help focus operator attention on sources most likely to create qualified seller opportunities.",
+    governance_notes: ["Uses internal/manual source labels only.", "No outreach, enrichment provider, skip trace, or CRM mutation is authorized."],
+  };
+}
+
+export function listExecutiveDirectives(): ExecutiveDirective[] {
+  return [
+    createInheritedPropertyCampaignDirective(),
+    createBrandReadinessReviewDirective(),
+    createContentRefreshReviewDirective(),
+    createLeadSourceQualityReviewDirective(),
+  ];
+}
+
+function createHealth(summary: string, status: DailyStartupHealth["status"], score: number, sourceLabel: string): DailyStartupHealth {
+  return {
+    score,
+    status,
+    summary,
+    sourceLabel,
+    assumption: "Daily Startup v1 uses internal/manual platform state and local dashboard summaries only.",
+  };
+}
+
+function summarizeDirectives(directives: ExecutiveDirective[]): DailyStartupQueueSummary {
+  const awaiting = directives.filter((directive) => directive.approval_status === "awaiting_ceo_approval").length;
+  const ready = directives.filter((directive) => directive.approval_status === "approved" || directive.approval_status === "department_review" || directive.approval_status === "executive_review").length;
+
+  return {
+    total: directives.length,
+    awaiting_ceo_approval: awaiting,
+    ready_for_review: ready,
+    blocked: awaiting,
+    summary: `${directives.length} directive(s), ${awaiting} awaiting CEO approval, ${ready} ready for internal review.`,
+  };
+}
+
+function createDecisionAgenda(directives: ExecutiveDirective[]): CeoDecisionAgendaItem[] {
+  return directives.map((directive) => ({
+    id: `decision-${directive.id}`,
+    title: directive.title,
+    business_goal: directive.business_goal,
+    reason:
+      directive.id === "campaign-001"
+        ? "Campaign 001 is the first activation candidate and should be reviewed before any department draft workflow begins."
+        : "This directive can improve activation readiness, but it should remain blocked until the CEO chooses the next priority.",
+    expected_business_value: directive.expected_business_value,
+    risk_level: directive.risk_level,
+    departments_involved: directive.assigned_departments,
+    recommended_action: directive.id === "campaign-001" ? "approve" : "defer",
+    approval_required: true,
+    status: directive.approval_status,
+    sourceLabel: "company_orchestrator_directive_registry",
+    assumption: "Recommendation only; no workflow state changes or external execution are performed.",
+  }));
+}
+
+export function startDailyCompanyOperatingSession({
+  date = new Date().toISOString(),
+  companyOperatingMode = "daily_startup_ready",
+  directives = listExecutiveDirectives(),
+  opportunities = [],
+  providerReadiness = { missing: 0, ready: 0 },
+  engineeringProgress = ["Executive Workforce and AI COO foundations are available for Daily Startup review."],
+}: {
+  date?: string;
+  companyOperatingMode?: CompanyOperatingMode;
+  directives?: ExecutiveDirective[];
+  opportunities?: OpportunityQueueItem[];
+  providerReadiness?: { missing: number; ready: number };
+  engineeringProgress?: string[];
+} = {}): DailyCompanyOperatingSession {
+  const directiveSummary = summarizeDirectives(directives);
+  const decisionAgenda = createDecisionAgenda(directives);
+  const opportunityQueue = createOpportunityQueue(opportunities);
+  const blockedItems = [
+    ...directives.filter((directive) => directive.approval_status === "awaiting_ceo_approval").map((directive) => `${directive.title} is awaiting CEO approval.`),
+    "No department work starts without an approved Executive Directive.",
+    "External execution remains blocked: providers, publishing, email, SMS, scraping, ads, outreach, and workflow automation.",
+  ];
+  const departments = getCompanyDepartmentRegistry();
+
+  return {
+    ok: true,
+    date,
+    companyOperatingMode,
+    company_health: createHealth("Company is ready for internal Daily Startup review; activation remains approval-gated.", "watch", 72, "daily_startup_internal_model"),
+    revenue_health: createHealth("Revenue priorities are ready for CEO review through Campaign 001 and lead-source quality recommendations.", "watch", 70, "revenue_command_center"),
+    brand_health: createHealth("Brand Intelligence can review platform readiness after directive approval.", "watch", 68, "marketing_platform_registry"),
+    marketing_health: createHealth("Marketing work remains draft-only until the CEO approves an Executive Directive.", "watch", 66, "marketing_draft_queue"),
+    seo_health: createHealth("SEO can recommend refresh and education opportunities without provider calls or scraping.", "good", 74, "content_intelligence_manual_inputs"),
+    lead_health: createHealth("Lead Intelligence can review source quality from internal/manual source labels only.", "watch", 69, "lead_source_attribution"),
+    operations_health: createHealth("AI COO can coordinate departments, dependencies, draft queue, blocked actions, and executive summary.", "good", 82, "company_orchestrator"),
+    security_health: createHealth("Security and governance boundaries remain active with external actions blocked.", "good", 90, "safety_flags"),
+    department_health: departments.map((departmentItem) => ({
+      department: departmentItem.name,
+      status: directiveSummary.awaiting_ceo_approval > 0 ? "blocked_awaiting_directive" : "review_only",
+      summary: `${departmentItem.name} communicates through AI COO and remains advisory until CEO approval.`,
+      approval_required: true,
+    })),
+    active_executive_directives: directives,
+    opportunity_queue_summary: {
+      total: opportunityQueue.totals.opportunities,
+      awaiting_ceo_approval: 0,
+      ready_for_review: opportunityQueue.totals.readyForLeadIntelligence,
+      blocked: 0,
+      summary: `${opportunityQueue.totals.opportunities} opportunity item(s), ${opportunityQueue.totals.readyForLeadIntelligence} ready for Lead Intelligence review.`,
+    },
+    campaign_queue_summary: directiveSummary,
+    draft_queue_summary: {
+      total: 0,
+      awaiting_ceo_approval: directiveSummary.awaiting_ceo_approval,
+      ready_for_review: 0,
+      blocked: directiveSummary.awaiting_ceo_approval,
+      summary: "Draft queue is blocked until the CEO approves an Executive Directive.",
+    },
+    approval_queue_summary: {
+      total: decisionAgenda.length,
+      awaiting_ceo_approval: decisionAgenda.filter((item) => item.status === "awaiting_ceo_approval").length,
+      ready_for_review: decisionAgenda.length,
+      blocked: 0,
+      summary: `${decisionAgenda.length} CEO decision item(s): approve, reject, request changes, or defer.`,
+    },
+    blocked_items: blockedItems,
+    provider_readiness: {
+      summary: `${providerReadiness.ready} provider(s) ready, ${providerReadiness.missing} missing; readiness is informational only.`,
+      missing: providerReadiness.missing,
+      ready: providerReadiness.ready,
+      providerCalled: false,
+      liveExecutionAllowed: false,
+    },
+    government_policy_updates: ["No live government or policy feeds are connected; add manual updates for review."],
+    news_intelligence_updates: ["No live news feeds are connected; add manual news intelligence updates for review."],
+    engineering_progress: engineeringProgress,
+    executive_brief: "Good morning Moses. The AI company is ready to prepare internal work, but Campaign 001 and supporting directives require CEO approval before departments begin.",
+    ceo_decision_agenda: decisionAgenda,
+    safety: {
+      internalOnly: true,
+      providerCalled: false,
+      liveExecutionAllowed: false,
+      publishingBlocked: true,
+      emailBlocked: true,
+      smsBlocked: true,
+      scrapingBlocked: true,
+      adsBlocked: true,
+      outreachBlocked: true,
+      workflowExecutionBlocked: true,
+      recommendationsOnly: true,
+    },
+  };
+}
+
 export function runCompanyOrchestrator({ directive, opportunities = [] }: { directive: ExecutiveDirective; opportunities?: OpportunityQueueItem[] }): CompanyOrchestratorReport {
   const approvalValid = isDirectiveApproved(directive);
   const assignedDepartments = directive.assigned_departments.map((departmentName) => findDepartment(departmentName)).filter(Boolean) as CompanyDepartment[];
@@ -310,7 +588,7 @@ export function runCompanyOrchestrator({ directive, opportunities = [] }: { dire
 export function createInheritedPropertyCampaignDirective(): ExecutiveDirective {
   return {
     id: "campaign-001",
-    title: "Inherited Property Oklahoma",
+    title: "Campaign 001: Inherited Property in Oklahoma",
     business_goal: "generate_revenue",
     source_department: "Executive AI",
     assigned_departments: ["Executive AI", "Revenue AI", "Marketing AI", "SEO AI", "Design AI", "Brand Intelligence AI", "Lead Intelligence AI", "Sales AI"],
@@ -334,11 +612,13 @@ export function createInheritedPropertyCampaignDirective(): ExecutiveDirective {
       "Executive Summary",
       "CEO Final Approval",
     ],
-    approval_status: "approved",
-    approved_by: "Moses Adebajo",
-    approved_at: "manual-ceo-approval-required-before-real-use",
+    approval_status: "awaiting_ceo_approval",
     risk_level: "medium",
     expected_business_value: "Generate qualified seller leads by educating Oklahoma homeowners about inherited property decisions.",
-    governance_notes: ["Template directive for workflow capability validation.", "Real execution still requires current CEO approval and manual publishing."],
+    governance_notes: [
+      "Primary URL: https://jcapitalpropertygroup.com/resources/inherited-property-oklahoma",
+      "Awaiting CEO approval before any internal draft workflow begins.",
+      "No publishing, outreach, provider execution, scraping, email, SMS, ads, or workflow automation is authorized.",
+    ],
   };
 }
