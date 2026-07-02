@@ -161,6 +161,56 @@ type ContentIntelligenceRecommendation = {
 
 type ExecutiveWorkforce = {
   healthCards: ExecutiveWorkforceHealthCard[];
+  companyOrchestrator: {
+    businessName: "AI Chief Operating Officer (AI COO)";
+    internalName: "company-orchestrator";
+    summary: string;
+    workflowState: string;
+    approvalValid: boolean;
+    directive: {
+      id: string;
+      title: string;
+      approval_status: string;
+      expected_business_value: string;
+    };
+    departmentAssignments: Array<{
+      department: string;
+      requestedOutputs: string[];
+      status: "blocked" | "assigned_for_preparation";
+    }>;
+    opportunityQueue: {
+      totals: {
+        opportunities: number;
+        highConfidence: number;
+        readyForLeadIntelligence: number;
+      };
+    };
+    draftQueue: Array<{
+      output: string;
+      ownerDepartment: string;
+      status: "draft_required" | "blocked_until_directive_approved";
+      approvalRequired: true;
+    }>;
+    reviewRoutes: {
+      brandReview: string;
+      governanceReview: string;
+      executiveSummaryOwner: string;
+      finalApprovalOwner: "CEO";
+    };
+    executiveSummary: string;
+    blockedActions: string[];
+    safety: {
+      approvalFirst: true;
+      providerCalled: false;
+      liveExecutionAllowed: false;
+      noDepartmentDirectCommunication: true;
+      publishingBlocked: true;
+      outreachBlocked: true;
+      scrapingBlocked: true;
+      adsBlocked: true;
+      workflowExecutionBlocked: true;
+    };
+  };
   contentIntelligence: {
     summary: string;
     recommendations: ContentIntelligenceRecommendation[];
@@ -444,6 +494,62 @@ function ExecutiveWorkforcePanel({ workforce }: { workforce: ExecutiveWorkforce 
           <SafetyBadge>providerCalled:{String(workforce.safetyFlags.providerCalled)}</SafetyBadge>
           <SafetyBadge tone="urgent">liveExecution:{String(workforce.safetyFlags.liveExecutionAllowed)}</SafetyBadge>
           <SafetyBadge>approval:{String(workforce.safetyFlags.approvalRequired)}</SafetyBadge>
+        </div>
+      </div>
+
+      <div className="mt-5 rounded-lg border border-slate-200 bg-white p-4">
+        <div className="flex min-w-0 flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
+          <div className="min-w-0">
+            <p className="break-words text-sm font-semibold uppercase tracking-[0.14em] text-muted">
+              {workforce.companyOrchestrator.internalName}
+            </p>
+            <h3 className="mt-1 break-words text-xl font-semibold text-primary">{workforce.companyOrchestrator.businessName}</h3>
+            <p className="mt-2 max-w-5xl break-words text-sm leading-6 text-muted">{workforce.companyOrchestrator.summary}</p>
+          </div>
+          <div className="flex max-w-full flex-wrap gap-2">
+            <SafetyBadge>approval:{String(workforce.companyOrchestrator.approvalValid)}</SafetyBadge>
+            <SafetyBadge>providerCalled:{String(workforce.companyOrchestrator.safety.providerCalled)}</SafetyBadge>
+            <SafetyBadge tone="urgent">liveExecution:{String(workforce.companyOrchestrator.safety.liveExecutionAllowed)}</SafetyBadge>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 md:grid-cols-3">
+          <div className="rounded-lg border border-border bg-slate-50 p-3">
+            <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Executive Directives</p>
+            <p className="mt-2 break-words text-lg font-semibold text-primary">{workforce.companyOrchestrator.directive.title}</p>
+            <p className="mt-1 break-words text-xs leading-5 text-muted">Status: {workforce.companyOrchestrator.directive.approval_status}</p>
+          </div>
+          <div className="rounded-lg border border-border bg-slate-50 p-3">
+            <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Opportunity Queue</p>
+            <p className="mt-2 text-3xl font-semibold text-primary">{workforce.companyOrchestrator.opportunityQueue.totals.opportunities}</p>
+            <p className="mt-1 text-xs leading-5 text-muted">{workforce.companyOrchestrator.opportunityQueue.totals.readyForLeadIntelligence} ready for Lead Intelligence review.</p>
+          </div>
+          <div className="rounded-lg border border-border bg-slate-50 p-3">
+            <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Draft Queue</p>
+            <p className="mt-2 text-3xl font-semibold text-primary">{workforce.companyOrchestrator.draftQueue.length}</p>
+            <p className="mt-1 text-xs leading-5 text-muted">Brand Review: {workforce.companyOrchestrator.reviewRoutes.brandReview}</p>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-2">
+          <div className="rounded-lg border border-emerald-100 bg-emerald-50 p-3">
+            <h4 className="break-words text-sm font-semibold text-emerald-950">Department assignments</h4>
+            <ul className="mt-2 space-y-2 text-xs leading-5 text-emerald-950">
+              {workforce.companyOrchestrator.departmentAssignments.slice(0, 8).map((assignment) => (
+                <li key={assignment.department} className="break-words">
+                  {assignment.department}: {assignment.status}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="rounded-lg border border-red-100 bg-red-50 p-3">
+            <h4 className="break-words text-sm font-semibold text-red-950">Blocked actions</h4>
+            <ul className="mt-2 space-y-2 text-xs leading-5 text-red-950">
+              {workforce.companyOrchestrator.blockedActions.map((action) => (
+                <li key={action} className="break-words">{action}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
 
