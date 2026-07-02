@@ -7,18 +7,30 @@ type ProviderGroup = "lead_enrichment" | "marketing_ads" | "ops_tooling";
 type ProviderReadinessItem = {
   id: string;
   label: string;
+  icon?: string;
   group: ProviderGroup;
   roiPriority: number;
   requiredEnvKeys: string[];
   optionalEnvKeys?: string[];
+  readiness: string;
+  connectionState: "connected" | "not_connected" | "not_required";
+  publicProfileUrl?: string;
+  authenticationRequired: boolean;
+  supportedCapabilities: string[];
+  governanceLevel: string;
+  permissionsRequired: string[];
   safeNextAction: string;
   status: "configured" | "partial" | "missing" | "no_credentials_required";
   configuredEnvKeys: string[];
   missingEnvKeys: string[];
   activationState: "blocked_readiness_only";
   providerCalled: false;
+  liveExecutionAllowed: false;
   liveCallsAllowed: false;
   oauthStarted: false;
+  published: false;
+  scheduled: false;
+  connectorWrite: false;
   adsCreated: false;
   enrichmentWritten: false;
 };
@@ -150,7 +162,10 @@ export function ProviderReadinessPanel() {
               {groupProviders.map((provider) => (
                 <article key={provider.id} className="min-w-0 rounded-xl border border-border bg-white p-4">
                   <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                    <h4 className="break-words text-sm font-semibold text-primary">{provider.label}</h4>
+                    <h4 className="break-words text-sm font-semibold text-primary">
+                      {provider.icon ? <span aria-hidden="true" className="mr-2 uppercase">{provider.icon}</span> : null}
+                      {provider.label}
+                    </h4>
                     <span
                       className={`max-w-full break-words rounded-full border px-3 py-1 text-xs font-bold uppercase leading-5 ${getStatusClass(
                         provider.status,
@@ -159,7 +174,25 @@ export function ProviderReadinessPanel() {
                       {formatStatus(provider.status)}
                     </span>
                   </div>
+                  <p className="mt-3 break-words text-xs font-bold uppercase leading-5 tracking-[0.08em] text-blue-950">
+                    {provider.readiness}
+                  </p>
                   <p className="mt-3 break-words text-sm leading-6 text-muted">{provider.safeNextAction}</p>
+                  {provider.publicProfileUrl ? (
+                    <p className="mt-3 break-words text-xs font-semibold leading-5 text-primary">
+                      Public page: {provider.publicProfileUrl}
+                    </p>
+                  ) : null}
+                  {provider.supportedCapabilities.length > 0 ? (
+                    <p className="mt-3 break-words text-xs font-semibold uppercase leading-5 tracking-[0.08em] text-muted">
+                      Capabilities: {provider.supportedCapabilities.join(", ")}
+                    </p>
+                  ) : null}
+                  {provider.permissionsRequired.length > 0 ? (
+                    <p className="mt-2 break-words text-xs font-semibold uppercase leading-5 tracking-[0.08em] text-muted">
+                      Permissions: {provider.permissionsRequired.join(", ")}
+                    </p>
+                  ) : null}
                   <p className="mt-3 break-words text-xs font-semibold uppercase leading-5 tracking-[0.08em] text-muted">
                     Missing: {provider.missingEnvKeys.length > 0 ? provider.missingEnvKeys.join(", ") : "none"}
                   </p>
@@ -182,7 +215,7 @@ export function ProviderReadinessPanel() {
       ) : null}
 
       <p className="mt-4 break-words text-xs font-semibold uppercase leading-5 tracking-[0.1em] text-muted">
-        readinessOnly:true liveCallsAllowed:false oauthStarted:false adsCreated:false enrichmentWritten:false
+        readinessOnly:true liveExecutionAllowed:false liveCallsAllowed:false oauthStarted:false published:false scheduled:false connectorWrite:false adsCreated:false enrichmentWritten:false
       </p>
     </section>
   );

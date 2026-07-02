@@ -40,6 +40,7 @@ type MarketingDraft = {
   channel: MarketingChannel;
   topic: string;
   sourceLabel: string;
+  referralLink?: string | null;
   status: string;
   draftCopy: string;
   assetNotes?: string | null;
@@ -71,6 +72,7 @@ const emptyDraftForm = {
   channel: "facebook" as MarketingChannel,
   topic: "",
   sourceLabel: "",
+  referralLink: "",
   assetNotes: "",
 };
 
@@ -82,6 +84,8 @@ const emptyAccountForm = {
   verificationStatus: "manual_setup",
   proofNote: "",
 };
+
+const canvaDestinationChannels: MarketingChannel[] = ["facebook", "instagram", "google_business_profile", "linkedin"];
 
 function formatStatus(value: string) {
   return value.replaceAll("_", " ");
@@ -106,6 +110,7 @@ export function MarketingWorkflowClient() {
   const [editedCopies, setEditedCopies] = useState<Record<string, string>>({});
   const [publishedUrls, setPublishedUrls] = useState<Record<string, string>>({});
   const [canvaAssetNotes, setCanvaAssetNotes] = useState<Record<string, string>>({});
+  const [canvaIntendedPlatforms, setCanvaIntendedPlatforms] = useState<Record<string, MarketingChannel[]>>({});
   const [message, setMessage] = useState("Loading marketing workflow...");
   const [busy, setBusy] = useState(false);
 
@@ -204,9 +209,22 @@ export function MarketingWorkflowClient() {
   async function prepareCanvaAssetAssist(draft: MarketingDraft) {
     await submitJson(`/api/marketing/drafts/${draft.id}/canva-asset-assist`, {
       assetNotes: canvaAssetNotes[draft.id] || draft.assetNotes || "",
+      intendedPlatforms: canvaIntendedPlatforms[draft.id] ?? [draft.channel],
       manualApprovalStatus: "pending_manual_asset_approval",
     });
     setMessage("Canva design brief prepared for manual approval. No Canva API, export, or design creation occurred.");
+  }
+
+  function toggleCanvaIntendedPlatform(draft: MarketingDraft, platform: MarketingChannel) {
+    setCanvaIntendedPlatforms((current) => {
+      const selected = current[draft.id] ?? [draft.channel];
+      const next = selected.includes(platform) ? selected.filter((item) => item !== platform) : [...selected, platform];
+
+      return {
+        ...current,
+        [draft.id]: next.length > 0 ? next : [draft.channel],
+      };
+    });
   }
 
   return (
@@ -247,6 +265,14 @@ export function MarketingWorkflowClient() {
             value={draftForm.sourceLabel}
             onChange={(event) => setDraftForm((current) => ({ ...current, sourceLabel: event.target.value }))}
           />
+          <input
+            type="url"
+            maxLength={300}
+            className="rounded-xl border border-border bg-white px-3 py-3 text-sm lg:col-span-3"
+            placeholder="Optional referral link for manual attribution"
+            value={draftForm.referralLink}
+            onChange={(event) => setDraftForm((current) => ({ ...current, referralLink: event.target.value }))}
+          />
           <textarea
             className="min-h-24 rounded-xl border border-border bg-white px-3 py-3 text-sm lg:col-span-3"
             maxLength={1000}
@@ -270,6 +296,7 @@ export function MarketingWorkflowClient() {
                   {formatStatus(draft.status)}
                 </span>
               </div>
+              {draft.referralLink ? <p className="mt-2 break-words text-xs font-semibold text-blue-950">Referral Link: {draft.referralLink}</p> : null}
               <p className="mt-3 whitespace-pre-wrap text-sm leading-6 text-muted">{draft.draftCopy}</p>
             </article>
           ))}
@@ -350,6 +377,7 @@ export function MarketingWorkflowClient() {
           {approvedDrafts.map((draft) => (
             <article key={draft.id} className="rounded-2xl border border-border bg-white p-4">
               <h3 className="text-sm font-semibold text-primary">{draft.topic}</h3>
+              {draft.referralLink ? <p className="mt-2 break-words text-xs font-semibold text-blue-950">Referral Link: {draft.referralLink}</p> : null}
               <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-muted">{draft.draftCopy}</p>
               <input className="mt-3 w-full rounded-xl border border-border px-3 py-3 text-sm" type="url" placeholder="Optional manual published URL" value={publishedUrls[draft.id] ?? ""} onChange={(event) => setPublishedUrls((current) => ({ ...current, [draft.id]: event.target.value }))} />
               <div className="mt-3 flex flex-wrap gap-2">
@@ -375,6 +403,7 @@ export function MarketingWorkflowClient() {
                 <div>
                   <h3 className="text-sm font-semibold text-primary">{draft.topic}</h3>
                   <p className="mt-1 text-xs font-bold uppercase tracking-[0.08em] text-muted">{marketingChannelLabels[draft.channel]} | {draft.sourceLabel}</p>
+                  {draft.referralLink ? <p className="mt-2 break-words text-xs font-semibold text-blue-950">Referral Link: {draft.referralLink}</p> : null}
                 </div>
                 <span className="w-fit rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.08em] text-blue-950">
                   Manual Canva only
@@ -387,6 +416,29 @@ export function MarketingWorkflowClient() {
                 value={canvaAssetNotes[draft.id] ?? ""}
                 onChange={(event) => setCanvaAssetNotes((current) => ({ ...current, [draft.id]: event.target.value }))}
               />
+              <fieldset className="mt-3 rounded-xl border border-border bg-white p-3">
+                <legend className="px-1 text-xs font-bold uppercase tracking-[0.08em] text-muted">Intended Platforms</legend>
+                <div className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+                  {canvaDestinationChannels.map((platform) => {
+                    const selected = canvaIntendedPlatforms[draft.id] ?? [draft.channel];
+
+                    return (
+                      <label key={`${draft.id}-${platform}`} className="flex items-center gap-2 text-sm font-medium text-primary">
+                        <input
+                          type="checkbox"
+                          checked={selected.includes(platform)}
+                          onChange={() => toggleCanvaIntendedPlatform(draft, platform)}
+                          className="h-4 w-4 rounded border-border"
+                        />
+                        {marketingChannelLabels[platform]}
+                      </label>
+                    );
+                  })}
+                </div>
+                <p className="mt-2 text-xs leading-5 text-muted">
+                  Metadata only. This does not publish, schedule, call providers, start OAuth, or write connector data.
+                </p>
+              </fieldset>
               <button onClick={() => prepareCanvaAssetAssist(draft)} disabled={busy} className="mt-3 rounded-xl bg-primary px-4 py-2 text-sm font-bold text-white disabled:opacity-60">
                 Generate Canva Brief
               </button>

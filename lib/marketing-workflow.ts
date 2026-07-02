@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { buildReferralCopySuggestion } from "@/lib/referrals";
 import type {
   CreateMarketingDraftInput,
   CanvaAssetAssistInput,
@@ -9,6 +10,7 @@ import type {
 } from "@/lib/validations/marketing-workflow";
 import {
   marketingChannelLabels,
+  marketingChannels,
   type MarketingChannel,
   type MarketingSafetyFlags,
 } from "@/types/marketing-workflow";
@@ -39,6 +41,10 @@ const manualPostingChecklist = [
 ] as const;
 
 function getAssetChecklist(channel: MarketingChannel) {
+  if (channel === "linkedin") {
+    return ["Select approved professional brand image.", "Confirm the draft is appropriate for a Company Page.", "Record LinkedIn source label manually if posted later."];
+  }
+
   if (channel === "instagram") {
     return ["Select approved brand image.", "Confirm caption fits mobile view.", "Add source label to manual tracking notes."];
   }
@@ -53,6 +59,7 @@ function getAssetChecklist(channel: MarketingChannel) {
 function getCanvaFormat(channel: MarketingChannel) {
   if (channel === "instagram") return "Instagram post";
   if (channel === "google_business_profile") return "Google Business Profile update image";
+  if (channel === "linkedin") return "LinkedIn company page image";
 
   return "Facebook post";
 }
@@ -62,6 +69,7 @@ function getCanvaCopyBlocks(draft: {
   topic: string;
   sourceLabel: string;
   draftCopy: string;
+  referralLink?: string | null;
 }) {
   return [
     {
@@ -76,6 +84,14 @@ function getCanvaCopyBlocks(draft: {
       label: "Source tracking note",
       copy: `Source label: ${draft.sourceLabel}`,
     },
+    ...(buildReferralCopySuggestion((draft as { referralLink?: string | null }).referralLink)
+      ? [
+          {
+            label: "Referral note",
+            copy: buildReferralCopySuggestion((draft as { referralLink?: string | null }).referralLink) ?? "",
+          },
+        ]
+      : []),
     {
       label: "Safety note",
       copy: "Educational marketing only. Do not include property-specific claims or owner-specific facts.",
@@ -85,23 +101,30 @@ function getCanvaCopyBlocks(draft: {
 
 function buildCanvaDesignBrief(draft: {
   channel: string;
+  intendedPlatforms?: MarketingChannel[];
   topic: string;
   sourceLabel: string;
   draftCopy: string;
   assetNotes: string | null;
+  referralLink?: string | null;
 }) {
   const channel = draft.channel as MarketingChannel;
   const format = getCanvaFormat(channel);
+  const intendedPlatforms = normalizeIntendedPlatforms(draft.intendedPlatforms, channel);
+  const intendedPlatformLabels = intendedPlatforms.map((platform) => marketingChannelLabels[platform]).join(", ");
 
   return `Create a clean J Capital Property Group ${format} visual for "${draft.topic}".
 
 Goal: prepare a professional manual-posting asset for Oklahoma City property-owner education.
+
+Intended platforms metadata only: ${intendedPlatformLabels}.
 
 Use the approved copy blocks from this record. Keep the visual simple, mobile-first, and professional. Do not add property-specific facts, owner names, tax status, repair claims, valuation claims, legal claims, urgency claims, or guarantees.
 
 Recommended visual direction: brand-safe real estate education graphic with calm typography, clear spacing, and no scraped or unapproved property imagery.
 
 Manual source tracking: ${draft.sourceLabel}.
+${buildReferralCopySuggestion(draft.referralLink) ? `\nManual referral tracking: ${buildReferralCopySuggestion(draft.referralLink)}.\n` : ""}
 
 Asset notes: ${draft.assetNotes || "No extra asset notes provided."}
 
@@ -110,6 +133,7 @@ Approval boundary: this brief is for manual Canva work only. The app must not cr
 
 function buildDraftCopy(input: CreateMarketingDraftInput) {
   const channelLabel = marketingChannelLabels[input.channel];
+  const referralSuggestion = buildReferralCopySuggestion(input.referralLink);
   const base = `Draft for ${channelLabel}: ${input.topic}
 
 Oklahoma City property owners sometimes need a simple way to understand their options before making a decision. J Capital Property Group can review the situation, explain possible next steps, and keep the conversation clear.
@@ -118,7 +142,7 @@ This draft is educational only. It does not claim facts about any specific prope
 
 Source label: ${input.sourceLabel}
 
-Suggested call to action: If you want to talk through your property situation, contact J Capital Property Group for a private review.`;
+Suggested call to action: If you want to talk through your property situation, contact J Capital Property Group for a private review.${referralSuggestion ? `\n\n${referralSuggestion}` : ""}`;
 
   if (input.channel === "instagram") {
     return `${base}
@@ -132,9 +156,23 @@ Caption note: Keep the visual simple and avoid showing any property that has not
 GBP note: Keep this as a short business update and verify the final text manually before posting.`;
   }
 
+  if (input.channel === "linkedin") {
+    return `${base}
+
+LinkedIn note: Keep this appropriate for the Company Page and do not imply endorsements, partnerships, investment returns, or verified market facts without human-supplied sources.`;
+  }
+
   return `${base}
 
 Facebook note: Keep comments and messages human-managed. Do not use this app to message prospects.`;
+}
+
+function normalizeIntendedPlatforms(platforms: MarketingChannel[] | undefined, fallback: MarketingChannel) {
+  const allowed = new Set<MarketingChannel>(marketingChannels);
+  const normalized = (platforms ?? [fallback]).filter((platform): platform is MarketingChannel => allowed.has(platform));
+  const deduped = Array.from(new Set(normalized));
+
+  return deduped.length > 0 ? deduped : [fallback];
 }
 
 function getAssumptions(input: CreateMarketingDraftInput) {
@@ -142,6 +180,7 @@ function getAssumptions(input: CreateMarketingDraftInput) {
     `Topic was provided by the operator: ${input.topic}.`,
     `Channel was selected by the operator: ${marketingChannelLabels[input.channel]}.`,
     `Source label was provided by the operator: ${input.sourceLabel}.`,
+    ...(input.referralLink ? [`Referral link was provided by the operator for manual attribution: ${input.referralLink}.`] : []),
     "No property-specific facts were generated or inferred.",
   ];
 }
@@ -196,6 +235,7 @@ export async function createMarketingDraft(input: CreateMarketingDraftInput) {
       status: "pending_approval",
       draftCopy: buildDraftCopy(input),
       assetNotes: input.assetNotes || null,
+      referralLink: input.referralLink || null,
       assumptions: getAssumptions(input),
       safetyFlags,
       createdSource: "template",
@@ -216,6 +256,7 @@ export async function updateMarketingDraft(id: string, input: UpdateMarketingDra
     data: {
       ...(input.topic ? { topic: input.topic } : {}),
       ...(input.sourceLabel ? { sourceLabel: input.sourceLabel } : {}),
+      ...(typeof input.referralLink === "string" ? { referralLink: input.referralLink || null } : {}),
       ...(input.draftCopy ? { draftCopy: input.draftCopy } : {}),
       ...(typeof input.assetNotes === "string" ? { assetNotes: input.assetNotes || null } : {}),
       ...(input.status ? { status: input.status } : {}),
@@ -418,10 +459,12 @@ export async function createMarketingCanvaAssetAssist(draftId: string, input: Ca
       recommendedFormat: getCanvaFormat(channel),
       designBrief: buildCanvaDesignBrief({
         channel: draft.channel,
+        intendedPlatforms: input.intendedPlatforms,
         topic: draft.topic,
         sourceLabel: draft.sourceLabel,
         draftCopy: draft.draftCopy,
         assetNotes: input.assetNotes?.trim() || draft.assetNotes,
+        referralLink: draft.referralLink,
       }),
       brandSafeCopyBlocks: getCanvaCopyBlocks(draft),
       assetNotes: input.assetNotes?.trim() || draft.assetNotes,
