@@ -2,6 +2,7 @@ import { createCreativeStudioPlatformReport } from "@/lib/ai-creative-growth-stu
 import { createDocumentIntelligencePlatformReport } from "@/lib/document-intelligence-platform";
 import { createEnterpriseSecurityPlatformReport } from "@/lib/enterprise-security-platform";
 import { getFeatureFlagSnapshot, type FeatureFlagKey } from "@/lib/feature-flags";
+import { createMarketingPlatformRegistryReport, type MarketingPlatformReadiness, type MarketingPlatformStatus } from "@/lib/marketing-platform-registry";
 import {
   realEstateBusinessModule,
   registerBusinessModuleDefinition,
@@ -73,15 +74,45 @@ export type CoreProviderRegistryEntry = {
   providerId: string;
   displayName: string;
   icon: string;
-  status: "configured";
-  readiness: "Configured / Not Connected";
+  status: MarketingPlatformStatus;
+  readiness: string;
   publicProfileUrl?: string;
+  readinessScore: number;
+  manualPublishing: true;
+  publishingMode: "MANUAL";
+  approvalRequired: "CEO APPROVAL REQUIRED";
+  futureProviderSupport: boolean;
   providerCalled: false;
   liveExecutionAllowed: false;
-  authenticationRequired: true;
+  authenticationRequired: boolean;
   supportedCapabilities: string[];
   governanceLevel: "approval_required_planning_only" | "read_only_planning";
   permissionsRequired: string[];
+};
+
+export type AiDepartmentRegistryEntry = {
+  key: string;
+  name:
+    | "Executive AI"
+    | "Marketing AI"
+    | "SEO AI"
+    | "Design AI"
+    | "Brand Intelligence AI"
+    | "Content Intelligence AI"
+    | "Lead Intelligence AI"
+    | "Revenue AI";
+  purpose: string;
+  responsibilities: string[];
+  outputs: string[];
+  approvalRequired: true;
+  executionBoundary: {
+    advisoryOnly: true;
+    providerCalled: false;
+    liveExecutionAllowed: false;
+    publishingBlocked: true;
+    scrapingBlocked: true;
+    outreachBlocked: true;
+  };
 };
 
 export type CorePlatformRegistryReport = {
@@ -91,12 +122,14 @@ export type CorePlatformRegistryReport = {
   corePlatforms: CorePlatformRegistryItem[];
   businessModules: BusinessModuleMarketplaceItem[];
   providerRegistry: CoreProviderRegistryEntry[];
+  aiDepartments: AiDepartmentRegistryEntry[];
   totals: {
     corePlatforms: number;
     readyCorePlatforms: number;
     businessModules: number;
     installedBusinessModules: number;
     plannedBusinessModules: number;
+    aiDepartments: number;
   };
   nextHighRoiMoves: string[];
   providerCalled: false;
@@ -321,87 +354,134 @@ function createCorePlatformItems(): CorePlatformRegistryItem[] {
 
 const futureModuleExtensionPoints: ExtensionPoint[] = ["capability", "workflow", "permission", "ui_surface", "connector", "audit_event", "schema", "analytics", "document"];
 
+function providerIdForPlatform(platform: MarketingPlatformReadiness) {
+  if (platform.id === "facebook_business") return "facebook_page";
+  if (platform.id === "linkedin_company") return "linkedin_company_page";
+
+  return platform.id;
+}
+
+function iconForPlatform(platform: MarketingPlatformReadiness) {
+  if (platform.id === "google_business_profile") return "google";
+  if (platform.id === "facebook_business") return "facebook";
+  if (platform.id === "instagram_business") return "instagram";
+  if (platform.id === "linkedin_company") return "linkedin";
+  if (platform.id === "youtube") return "youtube";
+  if (platform.id === "x") return "x";
+  if (platform.id === "tiktok") return "tiktok";
+  if (platform.id === "pinterest_business") return "pinterest";
+
+  return "website";
+}
+
+function capabilitiesForPlatform(platform: MarketingPlatformReadiness) {
+  if (platform.id === "website") return ["owned content", "lead capture", "authority pages"];
+  if (platform.id === "youtube") return ["video education", "descriptions", "chapters", "analytics (future)"];
+  if (platform.id === "pinterest_business") return ["visual education", "pin planning", "analytics (future)"];
+  if (platform.id === "x") return ["short posts", "market commentary", "analytics (future)"];
+  if (platform.id === "tiktok") return ["short-form video", "caption planning", "analytics (future)"];
+  if (platform.id === "google_business_profile") return ["business_updates", "image_posts", "analytics (future)"];
+  if (platform.id === "linkedin_company") return ["company_posts", "image_posts", "article_posts", "analytics (future)"];
+  if (platform.id === "instagram_business") return ["image_posts", "caption_planning", "analytics (future)"];
+
+  return ["page_posts", "image_posts", "analytics (future)"];
+}
+
 function createCoreProviderRegistryEntries(): CoreProviderRegistryEntry[] {
+  return createMarketingPlatformRegistryReport().platforms.map((platform) => ({
+    providerId: providerIdForPlatform(platform),
+    displayName: platform.id === "linkedin_company" ? "LinkedIn" : platform.label,
+    icon: iconForPlatform(platform),
+    status: platform.status,
+    readiness: platform.status === "configured" ? "Configured / Not Connected" : platform.readiness,
+    readinessScore: platform.readinessScore,
+    manualPublishing: true,
+    publishingMode: platform.publishingMode,
+    approvalRequired: platform.approvalRequired,
+    futureProviderSupport: platform.futureProviderSupport,
+    publicProfileUrl: platform.id === "linkedin_company" ? "https://www.linkedin.com/company/109661667/" : undefined,
+    providerCalled: false,
+    liveExecutionAllowed: false,
+    authenticationRequired: platform.futureProviderSupport,
+    supportedCapabilities: capabilitiesForPlatform(platform),
+    governanceLevel: platform.id === "website" ? "read_only_planning" : "approval_required_planning_only",
+    permissionsRequired: ["planning only", "CEO approval required", "future provider scope review before activation"],
+  }));
+}
+
+function department(input: Omit<AiDepartmentRegistryEntry, "approvalRequired" | "executionBoundary">): AiDepartmentRegistryEntry {
+  return {
+    ...input,
+    approvalRequired: true,
+    executionBoundary: {
+      advisoryOnly: true,
+      providerCalled: false,
+      liveExecutionAllowed: false,
+      publishingBlocked: true,
+      scrapingBlocked: true,
+      outreachBlocked: true,
+    },
+  };
+}
+
+function createAiDepartmentRegistryEntries(): AiDepartmentRegistryEntry[] {
   return [
-    {
-      providerId: "facebook_page",
-      displayName: "Facebook",
-      icon: "facebook",
-      status: "configured",
-      readiness: "Configured / Not Connected",
-      providerCalled: false,
-      liveExecutionAllowed: false,
-      authenticationRequired: true,
-      supportedCapabilities: ["page_posts", "image_posts", "analytics (future)"],
-      governanceLevel: "approval_required_planning_only",
-      permissionsRequired: ["planning only", "future OAuth page scope review", "future publish approval"],
-    },
-    {
-      providerId: "instagram_business",
-      displayName: "Instagram",
-      icon: "instagram",
-      status: "configured",
-      readiness: "Configured / Not Connected",
-      providerCalled: false,
-      liveExecutionAllowed: false,
-      authenticationRequired: true,
-      supportedCapabilities: ["image_posts", "caption_planning", "analytics (future)"],
-      governanceLevel: "approval_required_planning_only",
-      permissionsRequired: ["planning only", "future OAuth business account scope review", "future publish approval"],
-    },
-    {
-      providerId: "google_business_profile",
-      displayName: "Google Business Profile",
-      icon: "google",
-      status: "configured",
-      readiness: "Configured / Not Connected",
-      providerCalled: false,
-      liveExecutionAllowed: false,
-      authenticationRequired: true,
-      supportedCapabilities: ["business_updates", "image_posts", "analytics (future)"],
-      governanceLevel: "approval_required_planning_only",
-      permissionsRequired: ["planning only", "future OAuth business profile scope review", "future publish approval"],
-    },
-    {
-      providerId: "ga4",
-      displayName: "GA4",
-      icon: "analytics",
-      status: "configured",
-      readiness: "Configured / Not Connected",
-      providerCalled: false,
-      liveExecutionAllowed: false,
-      authenticationRequired: true,
-      supportedCapabilities: ["analytics (future)", "traffic_reporting (future)", "conversion_review (future)"],
-      governanceLevel: "read_only_planning",
-      permissionsRequired: ["planning only", "future read-only analytics scope review"],
-    },
-    {
-      providerId: "search_console",
-      displayName: "Search Console",
-      icon: "search",
-      status: "configured",
-      readiness: "Configured / Not Connected",
-      providerCalled: false,
-      liveExecutionAllowed: false,
-      authenticationRequired: true,
-      supportedCapabilities: ["search_performance (future)", "index_visibility (future)", "query_review (future)"],
-      governanceLevel: "read_only_planning",
-      permissionsRequired: ["planning only", "future read-only Search Console scope review"],
-    },
-    {
-      providerId: "linkedin_company_page",
-      displayName: "LinkedIn",
-      icon: "linkedin",
-      status: "configured",
-      readiness: "Configured / Not Connected",
-      publicProfileUrl: "https://www.linkedin.com/company/109661667/",
-      providerCalled: false,
-      liveExecutionAllowed: false,
-      authenticationRequired: true,
-      supportedCapabilities: ["company_posts", "image_posts", "article_posts", "analytics (future)"],
-      governanceLevel: "approval_required_planning_only",
-      permissionsRequired: ["planning only", "future OAuth organization scope review", "future company-page publishing approval"],
-    },
+    department({
+      key: "executive_ai",
+      name: "Executive AI",
+      purpose: "Delegates priorities, summarizes business health, and keeps CEO attention on revenue-moving decisions.",
+      responsibilities: ["morning briefing", "approval dashboard", "executive recommendations", "weekly and monthly KPI review"],
+      outputs: ["daily command summary", "priority order", "approval summary", "business review notes"],
+    }),
+    department({
+      key: "marketing_ai",
+      name: "Marketing AI",
+      purpose: "Creates complete seller-education campaign packages for review.",
+      responsibilities: ["campaign drafting", "channel-specific copy", "email draft", "video script draft"],
+      outputs: ["website article drafts", "social drafts", "YouTube scripts", "email newsletter drafts"],
+    }),
+    department({
+      key: "seo_ai",
+      name: "SEO AI",
+      purpose: "Recommends local authority, keyword, service area, internal linking, and refresh opportunities.",
+      responsibilities: ["keyword review", "content gaps", "service area expansion", "schema and internal linking recommendations"],
+      outputs: ["SEO recommendations", "content gap briefs", "refresh candidates"],
+    }),
+    department({
+      key: "design_ai",
+      name: "Design AI",
+      purpose: "Prepares manual creative briefs for brand-safe assets.",
+      responsibilities: ["Canva briefs", "Adobe/Firefly prompts", "thumbnail concepts", "accessibility review"],
+      outputs: ["design briefs", "thumbnail concepts", "carousel concepts", "brand compliance notes"],
+    }),
+    department({
+      key: "brand_intelligence_ai",
+      name: "Brand Intelligence AI",
+      purpose: "Scores brand readiness and protects trust across owned and social platforms.",
+      responsibilities: ["platform readiness scoring", "brand consistency review", "manual profile completeness review"],
+      outputs: ["brand health summary", "platform readiness notes", "manual brand next actions"],
+    }),
+    department({
+      key: "content_intelligence_ai",
+      name: "Content Intelligence AI",
+      purpose: "Turns marketing, SEO, social, and lead-source performance into campaign recommendations.",
+      responsibilities: ["content performance review", "refresh recommendations", "repurposing recommendations", "topic/channel ROI analysis"],
+      outputs: ["campaign briefs", "refresh briefs", "repurpose briefs", "source/topic recommendations"],
+    }),
+    department({
+      key: "lead_intelligence_ai",
+      name: "Lead Intelligence AI",
+      purpose: "Ranks seller opportunities and identifies follow-up, motivation, attribution, and pipeline quality signals.",
+      responsibilities: ["lead attribution", "lead scoring", "seller motivation", "pipeline health"],
+      outputs: ["lead priority recommendations", "source quality notes", "follow-up recommendations"],
+    }),
+    department({
+      key: "revenue_ai",
+      name: "Revenue AI",
+      purpose: "Connects seller-lead activity, offer readiness, pipeline value, and source attribution to revenue priorities.",
+      responsibilities: ["pipeline review", "offer readiness", "revenue prioritization", "source ROI review"],
+      outputs: ["revenue health summary", "offer-ready recommendations", "pipeline risk notes"],
+    }),
   ];
 }
 
@@ -514,6 +594,7 @@ export function createCorePlatformRegistryReport(): CorePlatformRegistryReport {
   const corePlatforms = createCorePlatformItems();
   const businessModules = createBusinessModuleItems();
   const providerRegistry = createCoreProviderRegistryEntries();
+  const aiDepartments = createAiDepartmentRegistryEntries();
   const flags = getFeatureFlagSnapshot();
 
   return {
@@ -524,18 +605,24 @@ export function createCorePlatformRegistryReport(): CorePlatformRegistryReport {
     corePlatforms,
     businessModules,
     providerRegistry,
+    aiDepartments,
     totals: {
       corePlatforms: corePlatforms.length,
       readyCorePlatforms: corePlatforms.filter((platform) => platform.status === "ready").length,
       businessModules: businessModules.length,
       installedBusinessModules: businessModules.filter((module) => module.status === "installed").length,
       plannedBusinessModules: businessModules.filter((module) => module.status === "planned").length,
+      aiDepartments: aiDepartments.length,
     },
     nextHighRoiMoves: [
       "Persist audit, security, creative, document, connector, and approval events.",
       "Upgrade the unified Approval Center to cover every module and AI Core action.",
       "Add tenant, organization, team, role, and service-account foundations before live connectors.",
       "Implement encrypted connector credential vault and scope validation.",
+      "Use Content Intelligence to decide what Marketing AI should create, refresh, or repurpose next.",
+      "Raise Brand Health by completing manual platform readiness gaps before expanding publishing volume.",
+      "Route every campaign, design brief, and platform update through approval-first governance.",
+      "Connect source labels to lead quality before investing more time in any channel.",
       `Keep disabled live flags blocked until security and approval evidence is complete: ${flags.disabled.slice(0, 6).join(", ")}.`,
     ],
     providerCalled: false,

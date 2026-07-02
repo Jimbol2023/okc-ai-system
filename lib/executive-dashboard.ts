@@ -1,5 +1,6 @@
 import { createBusinessIntelligenceReport, type BusinessIntelligenceReport, type DepartmentHealthCard, type TrendChart } from "@/lib/business-intelligence";
 import { loadPartialData } from "@/lib/api-response";
+import { createContentIntelligenceReport, type ContentIntelligenceReport } from "@/lib/content-intelligence";
 import { createExecutiveLearningRecommendations, type ExecutiveLearningMemoryEvent, type ExecutiveLearningRecommendation } from "@/lib/executive-learning";
 import { createExecutiveRecommendationsFromBi } from "@/lib/executive-recommendations";
 import { listFinanceEntries, calculateFinanceKpis, formatFinanceDollars } from "@/lib/finance";
@@ -7,6 +8,7 @@ import { listKnowledgeItems } from "@/lib/knowledge";
 import { listDbLeads } from "@/lib/leads-db";
 import type { StoredLead } from "@/lib/leads-storage";
 import { listMarketingWorkflow } from "@/lib/marketing-workflow";
+import { createMarketingPlatformRegistryReport, type MarketingPlatformRegistryReport } from "@/lib/marketing-platform-registry";
 import { createProviderReadinessReport } from "@/lib/provider-readiness";
 import { getReferralDashboard } from "@/lib/referrals";
 import { getRevenuePipelineSummary } from "@/lib/revenue-pipeline";
@@ -82,10 +84,36 @@ export type RevenueCommandCenterReport = {
   };
 };
 
+export type ExecutiveWorkforceHealthCard = {
+  id: "revenue" | "brand" | "marketing" | "seo" | "content" | "lead" | "operations" | "security";
+  label: string;
+  score: number;
+  status: ExecutiveWidget["status"];
+  detail: string;
+  sourceLabel: string;
+  assumption: string;
+};
+
+export type ExecutiveWorkforceReport = {
+  healthCards: ExecutiveWorkforceHealthCard[];
+  brandHealth: MarketingPlatformRegistryReport;
+  contentIntelligence: ContentIntelligenceReport;
+  safetyFlags: {
+    advisoryOnly: true;
+    providerCalled: false;
+    liveExecutionAllowed: false;
+    publishingBlocked: true;
+    scrapingBlocked: true;
+    outreachBlocked: true;
+    approvalRequired: true;
+  };
+};
+
 export type ExecutiveDashboardReport = {
   ok: true;
   widgets: ExecutiveWidget[];
   revenueCommandCenter: RevenueCommandCenterReport;
+  executiveWorkforce: ExecutiveWorkforceReport;
   morningBrief: ExecutiveMorningBrief;
   todayPriorities: ExecutiveWidget[];
   kpiInterpretations: Record<string, string>;
@@ -657,6 +685,142 @@ export function createRevenueCommandCenter({
   };
 }
 
+function statusForScore(score: number): ExecutiveWidget["status"] {
+  if (score >= 80) return "good";
+  if (score >= 55) return "watch";
+  if (score > 0) return "urgent";
+
+  return "missing";
+}
+
+function createHealthCard(input: Omit<ExecutiveWorkforceHealthCard, "status">): ExecutiveWorkforceHealthCard {
+  return {
+    ...input,
+    score: Math.max(0, Math.min(100, Math.round(input.score))),
+    status: statusForScore(input.score),
+  };
+}
+
+export function createExecutiveWorkforceReport({
+  newLeadsToday,
+  qualifiedLeads,
+  followUpsDue,
+  offerReadyCount,
+  missingInfoCount,
+  marketingAwaitingApproval,
+  canvaAwaitingDesign,
+  providerMissingCount,
+  websiteSeoReady,
+  activeKnowledgeItems,
+  revenuePipeline,
+  financeKpis,
+  businessIntelligence,
+  brandHealth,
+  contentIntelligence,
+}: {
+  newLeadsToday: number;
+  qualifiedLeads: number;
+  followUpsDue: number;
+  offerReadyCount: number;
+  missingInfoCount: number;
+  marketingAwaitingApproval: number;
+  canvaAwaitingDesign: number;
+  providerMissingCount: number;
+  websiteSeoReady: boolean;
+  activeKnowledgeItems: number;
+  revenuePipeline: ReturnType<typeof getRevenuePipelineSummary>;
+  financeKpis: ReturnType<typeof calculateFinanceKpis>;
+  businessIntelligence: BusinessIntelligenceReport;
+  brandHealth: MarketingPlatformRegistryReport;
+  contentIntelligence: ContentIntelligenceReport;
+}): ExecutiveWorkforceReport {
+  const topChannel = businessIntelligence.summary.topChannel;
+  const revenueScore = Math.min(100, qualifiedLeads * 12 + offerReadyCount * 15 + revenuePipeline.actionableLeads * 8 + newLeadsToday * 4);
+  const marketingScore = Math.min(100, marketingAwaitingApproval * 10 + canvaAwaitingDesign * 8 + brandHealth.readyPlatformCount * 6);
+  const leadScore = Math.max(0, Math.min(100, qualifiedLeads * 12 + (topChannel ? 20 : 0) - missingInfoCount * 4 - followUpsDue * 3));
+  const operationsScore = Math.max(0, 85 - providerMissingCount * 7 - financeKpis.missingData.length * 8);
+
+  return {
+    healthCards: [
+      createHealthCard({
+        id: "revenue",
+        label: "Revenue Health",
+        score: revenueScore,
+        detail: `${qualifiedLeads} qualified lead(s), ${offerReadyCount} offer-ready lead(s), ${revenuePipeline.actionableLeads} actionable pipeline item(s).`,
+        sourceLabel: "revenue_pipeline_and_leads",
+        assumption: "Revenue health is based on stored lead and pipeline signals, not closed revenue verification.",
+      }),
+      createHealthCard({
+        id: "brand",
+        label: "Brand Health",
+        score: brandHealth.averageReadinessScore,
+        detail: `${brandHealth.readyPlatformCount}/${brandHealth.platforms.length} platform(s) ready for manual use. ${brandHealth.nextManualAction}`,
+        sourceLabel: "marketing_platform_registry",
+        assumption: "Brand readiness is manual metadata and does not verify live public profiles.",
+      }),
+      createHealthCard({
+        id: "marketing",
+        label: "Marketing Health",
+        score: marketingScore,
+        detail: `${marketingAwaitingApproval} campaign approval item(s), ${canvaAwaitingDesign} design brief(s) waiting review.`,
+        sourceLabel: "marketing_workflow",
+        assumption: "Marketing health measures draft and approval readiness, not live publishing performance.",
+      }),
+      createHealthCard({
+        id: "seo",
+        label: "SEO Health",
+        score: websiteSeoReady ? Math.min(100, 60 + activeKnowledgeItems * 8) : 35,
+        detail: websiteSeoReady ? `${activeKnowledgeItems} active knowledge item(s) support authority planning.` : "Public URL or SEO readiness needs review.",
+        sourceLabel: "public_site_and_knowledge",
+        assumption: "SEO health is static/read-only and does not call Search Console.",
+      }),
+      createHealthCard({
+        id: "content",
+        label: "Content Health",
+        score: contentIntelligence.topRecommendation.score,
+        detail: contentIntelligence.topRecommendation.summary,
+        sourceLabel: contentIntelligence.topRecommendation.sourceLabel,
+        assumption: contentIntelligence.topRecommendation.assumption,
+      }),
+      createHealthCard({
+        id: "lead",
+        label: "Lead Health",
+        score: leadScore,
+        detail: `${followUpsDue} follow-up(s) due, ${missingInfoCount} record(s) missing important seller/source context.`,
+        sourceLabel: "lead_intelligence_records",
+        assumption: "Lead health is advisory and never sends follow-up automatically.",
+      }),
+      createHealthCard({
+        id: "operations",
+        label: "Operations Health",
+        score: operationsScore,
+        detail: `${providerMissingCount} provider readiness blocker(s), ${financeKpis.missingData.length} finance data gap(s).`,
+        sourceLabel: "provider_readiness_and_finance",
+        assumption: "Operations health measures readiness and data gaps, not live workflow execution.",
+      }),
+      createHealthCard({
+        id: "security",
+        label: "Security Health",
+        score: providerMissingCount > 0 ? 72 : 88,
+        detail: "Safe Auto Mode, approval-first governance, and provider execution boundaries remain active.",
+        sourceLabel: "governance_safety_flags",
+        assumption: "Security health reflects current governance posture, not a live penetration test.",
+      }),
+    ],
+    brandHealth,
+    contentIntelligence,
+    safetyFlags: {
+      advisoryOnly: true,
+      providerCalled: false,
+      liveExecutionAllowed: false,
+      publishingBlocked: true,
+      scrapingBlocked: true,
+      outreachBlocked: true,
+      approvalRequired: true,
+    },
+  };
+}
+
 export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboardReport> {
   const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, memoryEventsResult, referralResult, systemHealth, recentSystemActivity] = await Promise.all([
     loadPartialData("Lead", listDbLeads, [] as StoredLead[]),
@@ -706,6 +870,12 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
   const providerMissingCount = providerReadiness.providers.filter((provider) => provider.status === "missing").length;
   const activeKnowledgeItems = knowledgeItems.filter((item) => item.status === "active").length;
   const websiteSeoReady = publicSiteUrl.startsWith("https://") && systemHealth?.database === "ok";
+  const brandHealth = createMarketingPlatformRegistryReport();
+  const contentIntelligence = createContentIntelligenceReport({
+    marketingDrafts,
+    knowledgeItems,
+    businessIntelligence,
+  });
   const widgets: ExecutiveWidget[] = [
     {
         id: "new_leads_today",
@@ -828,11 +998,29 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
     websiteSeoReady,
     activeKnowledgeItems,
   });
+  const executiveWorkforce = createExecutiveWorkforceReport({
+    newLeadsToday,
+    qualifiedLeads,
+    followUpsDue,
+    offerReadyCount,
+    missingInfoCount,
+    marketingAwaitingApproval,
+    canvaAwaitingDesign,
+    providerMissingCount,
+    websiteSeoReady,
+    activeKnowledgeItems,
+    revenuePipeline,
+    financeKpis,
+    businessIntelligence,
+    brandHealth,
+    contentIntelligence,
+  });
 
   return {
     ok: true,
     widgets,
     revenueCommandCenter,
+    executiveWorkforce,
     morningBrief,
     todayPriorities,
     kpiInterpretations,

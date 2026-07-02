@@ -12,6 +12,15 @@ test("dashboard navigation includes core operating pages", () => {
   assert.ok(hrefs.includes("/dashboard/marketing"));
 });
 
+test("dashboard navigation consolidates security and safety labels", () => {
+  const labels = dashboardNavigationItems.map((item) => item.label);
+
+  assert.ok(labels.includes("Security & Governance"));
+  assert.ok(labels.includes("Hardening"));
+  assert.ok(!labels.includes("Security"));
+  assert.ok(!labels.includes("Safety Center"));
+});
+
 test("filterDashboardNavigationItems matches command palette keywords", () => {
   const results = filterDashboardNavigationItems("probate");
 

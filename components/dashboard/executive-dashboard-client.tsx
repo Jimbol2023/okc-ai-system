@@ -132,6 +132,63 @@ type RevenueCommandCenter = {
   };
 };
 
+type ExecutiveWorkforceHealthCard = {
+  id: "revenue" | "brand" | "marketing" | "seo" | "content" | "lead" | "operations" | "security";
+  label: string;
+  score: number;
+  status: MetricStatus;
+  detail: string;
+  sourceLabel: string;
+  assumption: string;
+};
+
+type ContentIntelligenceRecommendation = {
+  id: string;
+  type: "create_next" | "refresh" | "repurpose" | "source_topic_focus";
+  title: string;
+  summary: string;
+  priority: "high" | "medium" | "low";
+  score: number;
+  sourceLabel: string;
+  assumption: string;
+  recommendedBrief: string;
+  approvalRequired: true;
+  providerCalled: false;
+  liveExecutionAllowed: false;
+  publishingBlocked: true;
+  scrapingBlocked: true;
+};
+
+type ExecutiveWorkforce = {
+  healthCards: ExecutiveWorkforceHealthCard[];
+  contentIntelligence: {
+    summary: string;
+    recommendations: ContentIntelligenceRecommendation[];
+    safety: {
+      advisoryOnly: true;
+      manualInputsOnly: true;
+      providerCalled: false;
+      liveExecutionAllowed: false;
+      analyticsApiCalled: false;
+      publishingBlocked: true;
+      schedulingBlocked: true;
+      scrapingBlocked: true;
+      outreachBlocked: true;
+      adsBlocked: true;
+      approvalRequired: true;
+    };
+  };
+  safetyFlags: {
+    advisoryOnly: true;
+    providerCalled: false;
+    liveExecutionAllowed: false;
+    publishingBlocked: true;
+    scrapingBlocked: true;
+    outreachBlocked: true;
+    approvalRequired: true;
+  };
+};
+
 type BusinessIntelligenceReport = {
   kpis: BusinessKpiCard[];
   channelPerformance: MarketingChannelPerformance[];
@@ -143,6 +200,7 @@ type ExecutiveDashboardResponse = {
   ok: boolean;
   widgets?: ExecutiveWidget[];
   revenueCommandCenter?: RevenueCommandCenter;
+  executiveWorkforce?: ExecutiveWorkforce;
   morningBrief?: MorningBrief;
   todayPriorities?: ExecutiveWidget[];
   kpiInterpretations?: Record<string, string>;
@@ -368,8 +426,73 @@ function RevenueCommandCenterPanel({ commandCenter }: { commandCenter: RevenueCo
   );
 }
 
+function ExecutiveWorkforcePanel({ workforce }: { workforce: ExecutiveWorkforce }) {
+  return (
+    <section aria-labelledby="executive-workforce-heading" className="rounded-lg border border-border bg-surface p-5 md:p-6">
+      <div className="flex min-w-0 flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+        <div className="min-w-0 space-y-2">
+          <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-muted">Executive Workforce</p>
+          <h2 id="executive-workforce-heading" className="break-words text-2xl font-semibold text-primary md:text-3xl">
+            AI Department Health
+          </h2>
+          <p className="max-w-5xl break-words text-sm leading-6 text-muted">
+            Brand, content, marketing, lead, revenue, operations, SEO, and security health are advisory only. Every recommendation remains draft-only until CEO approval.
+          </p>
+        </div>
+        <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+          <SafetyBadge>advisoryOnly:{String(workforce.safetyFlags.advisoryOnly)}</SafetyBadge>
+          <SafetyBadge>providerCalled:{String(workforce.safetyFlags.providerCalled)}</SafetyBadge>
+          <SafetyBadge tone="urgent">liveExecution:{String(workforce.safetyFlags.liveExecutionAllowed)}</SafetyBadge>
+          <SafetyBadge>approval:{String(workforce.safetyFlags.approvalRequired)}</SafetyBadge>
+        </div>
+      </div>
+
+      <div className="mt-5 grid gap-4 xl:grid-cols-[1fr_0.9fr]">
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {workforce.healthCards.map((card) => (
+            <article key={card.id} className="rounded-lg border border-border bg-white p-4">
+              <div className="flex min-w-0 items-start justify-between gap-2">
+                <h3 className="break-words text-sm font-semibold text-primary">{card.label}</h3>
+                <StatusBadge status={card.status} />
+              </div>
+              <p className="mt-3 break-words text-3xl font-semibold text-primary">{card.score}</p>
+              <p className="mt-2 break-words text-xs leading-5 text-muted">{card.detail}</p>
+              <p className="mt-3 break-words text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                Source: {card.sourceLabel}
+              </p>
+              <p className="mt-1 break-words text-[11px] leading-4 text-muted">Assumption: {card.assumption}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className="rounded-lg border border-blue-100 bg-blue-50 p-4">
+          <h3 className="break-words text-lg font-semibold text-blue-950">Content Intelligence AI</h3>
+          <p className="mt-2 break-words text-sm leading-6 text-blue-950">{workforce.contentIntelligence.summary}</p>
+          <div className="mt-4 space-y-3">
+            {workforce.contentIntelligence.recommendations.slice(0, 4).map((recommendation) => (
+              <article key={recommendation.id} className="rounded-lg border border-blue-200 bg-white p-3">
+                <div className="flex min-w-0 items-start justify-between gap-2">
+                  <h4 className="break-words text-sm font-semibold text-primary">{recommendation.title}</h4>
+                  <SafetyBadge>{recommendation.priority}</SafetyBadge>
+                </div>
+                <p className="mt-2 break-words text-xs leading-5 text-muted">{recommendation.summary}</p>
+                <p className="mt-2 break-words text-xs leading-5 text-primary">{recommendation.recommendedBrief}</p>
+                <p className="mt-2 break-words text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
+                  Source: {recommendation.sourceLabel}
+                </p>
+                <p className="mt-1 break-words text-[11px] leading-4 text-muted">Assumption: {recommendation.assumption}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function ExecutiveDashboardClient() {
   const [revenueCommandCenter, setRevenueCommandCenter] = useState<RevenueCommandCenter | null>(null);
+  const [executiveWorkforce, setExecutiveWorkforce] = useState<ExecutiveWorkforce | null>(null);
   const [morningBrief, setMorningBrief] = useState<MorningBrief | null>(null);
   const [todayPriorities, setTodayPriorities] = useState<ExecutiveWidget[]>([]);
   const [kpiInterpretations, setKpiInterpretations] = useState<Record<string, string>>({});
@@ -399,6 +522,7 @@ export function ExecutiveDashboardClient() {
       }
 
       setRevenueCommandCenter(data.revenueCommandCenter ?? null);
+      setExecutiveWorkforce(data.executiveWorkforce ?? null);
       setMorningBrief(data.morningBrief ?? null);
       setTodayPriorities(
         data.todayPriorities ??
@@ -430,6 +554,7 @@ export function ExecutiveDashboardClient() {
       {error ? <ErrorState message={error} /> : null}
 
       {revenueCommandCenter ? <RevenueCommandCenterPanel commandCenter={revenueCommandCenter} /> : null}
+      {executiveWorkforce ? <ExecutiveWorkforcePanel workforce={executiveWorkforce} /> : null}
 
       <section aria-labelledby="morning-brief-heading" className="rounded-lg border border-border bg-surface p-5 md:p-6">
         <div className="flex min-w-0 flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">

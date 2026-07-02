@@ -1,8 +1,10 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { createExecutiveRecommendations, createRevenueCommandCenter } from "./executive-dashboard";
+import { createExecutiveRecommendations, createExecutiveWorkforceReport, createRevenueCommandCenter } from "./executive-dashboard";
 import type { BusinessIntelligenceReport } from "./business-intelligence";
+import { createContentIntelligenceReport } from "./content-intelligence";
+import { createMarketingPlatformRegistryReport } from "./marketing-platform-registry";
 
 describe("executive dashboard recommendations", () => {
   it("prioritizes daily revenue and cleanup work without execution", () => {
@@ -138,5 +140,71 @@ describe("revenue command center", () => {
     assert.equal(report.safetyFlags.outreachBlocked, true);
     assert.equal(report.safetyFlags.scrapingBlocked, true);
     assert.equal(report.safetyFlags.adsBlocked, true);
+  });
+});
+
+describe("executive workforce health", () => {
+  it("surfaces revenue, brand, marketing, seo, content, lead, operations, and security health", () => {
+    const businessIntelligence = {
+      summary: {
+        topChannel: {
+          source: "facebook",
+          totalLeads: 6,
+          qualifiedLeads: 3,
+          closedLeads: 1,
+          conversionRate: 17,
+          qualifiedShare: 60,
+        },
+      },
+    } as BusinessIntelligenceReport;
+    const brandHealth = createMarketingPlatformRegistryReport();
+    const contentIntelligence = createContentIntelligenceReport({
+      marketingDrafts: [],
+      knowledgeItems: [],
+      businessIntelligence,
+    });
+    const report = createExecutiveWorkforceReport({
+      newLeadsToday: 2,
+      qualifiedLeads: 3,
+      followUpsDue: 1,
+      offerReadyCount: 2,
+      missingInfoCount: 1,
+      marketingAwaitingApproval: 2,
+      canvaAwaitingDesign: 1,
+      providerMissingCount: 2,
+      websiteSeoReady: true,
+      activeKnowledgeItems: 4,
+      revenuePipeline: {
+        actionableLeads: 3,
+        closingBlockedLeads: 1,
+        estimatedPipelineValueLabel: "$25,000",
+        workFirstLeads: [],
+      } as never,
+      financeKpis: {
+        cashFlowCents: 100000,
+        missingData: [],
+      } as never,
+      businessIntelligence,
+      brandHealth,
+      contentIntelligence,
+    });
+
+    assert.deepEqual(report.healthCards.map((card) => card.id), [
+      "revenue",
+      "brand",
+      "marketing",
+      "seo",
+      "content",
+      "lead",
+      "operations",
+      "security",
+    ]);
+    assert.equal(report.brandHealth.safety.providerCalled, false);
+    assert.equal(report.contentIntelligence.safety.providerCalled, false);
+    assert.equal(report.contentIntelligence.safety.analyticsApiCalled, false);
+    assert.equal(report.safetyFlags.liveExecutionAllowed, false);
+    assert.equal(report.safetyFlags.publishingBlocked, true);
+    assert.ok(report.healthCards.every((card) => card.sourceLabel.length > 0));
+    assert.ok(report.healthCards.every((card) => card.assumption.length > 0));
   });
 });
