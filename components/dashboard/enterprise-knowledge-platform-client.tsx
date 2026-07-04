@@ -501,10 +501,11 @@ export function EnterpriseKnowledgePlatformClient() {
                   onChange={(event) => setDeferReminders((current) => ({ ...current, [directive.directiveKey]: event.target.value }))}
                 />
 
-                <div className="mt-4 flex flex-wrap gap-2">
+                <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:flex lg:flex-wrap">
                   <ActionButton
                     type="button"
                     disabled={disabled || directive.approvalStatus === "approved"}
+                    className="w-full min-w-28 lg:w-auto"
                     onClick={() => handleDirectiveDecision(directive.directiveKey, "approve")}
                   >
                     {isCampaign001 ? "Approve 001" : "Approve"}
@@ -512,7 +513,8 @@ export function EnterpriseKnowledgePlatformClient() {
                   <ActionButton
                     type="button"
                     disabled={disabled}
-                    className="border border-border bg-white text-primary hover:bg-slate-50"
+                    aria-label={`Reject ${directive.title}`}
+                    className="w-full min-w-28 border border-slate-300 bg-slate-50 text-slate-950 hover:bg-slate-100 disabled:text-slate-700 lg:w-auto"
                     onClick={() => handleDirectiveDecision(directive.directiveKey, "reject")}
                   >
                     Reject
@@ -520,7 +522,8 @@ export function EnterpriseKnowledgePlatformClient() {
                   <ActionButton
                     type="button"
                     disabled={disabled}
-                    className="border border-border bg-white text-primary hover:bg-slate-50"
+                    aria-label={`Request changes for ${directive.title}`}
+                    className="w-full min-w-40 border border-slate-300 bg-slate-50 text-slate-950 hover:bg-slate-100 disabled:text-slate-700 lg:w-auto"
                     onClick={() => handleDirectiveDecision(directive.directiveKey, "request_changes")}
                   >
                     Request Changes
@@ -528,7 +531,8 @@ export function EnterpriseKnowledgePlatformClient() {
                   <ActionButton
                     type="button"
                     disabled={disabled}
-                    className="border border-border bg-white text-primary hover:bg-slate-50"
+                    aria-label={`Defer ${directive.title}`}
+                    className="w-full min-w-28 border border-slate-300 bg-slate-50 text-slate-950 hover:bg-slate-100 disabled:text-slate-700 lg:w-auto"
                     onClick={() => handleDirectiveDecision(directive.directiveKey, "defer")}
                   >
                     Defer
