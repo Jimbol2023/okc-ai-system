@@ -3,6 +3,7 @@ import type { Route } from "next";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 import { getDashboardStatusClasses, getDashboardStatusLabel, type DashboardStatus } from "@/lib/dashboard-ui-status";
 
@@ -38,10 +39,12 @@ export function ActionButton({
   href?: string;
   className?: string;
 }) {
-  const classes = clsx(
-    "inline-flex min-h-10 items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-bold text-white transition hover:bg-primary-strong disabled:cursor-not-allowed disabled:opacity-70",
-    focusClasses,
-    className,
+  const classes = twMerge(
+    clsx(
+      "inline-flex min-h-10 items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-bold text-white transition hover:bg-primary-strong disabled:cursor-not-allowed disabled:opacity-70",
+      focusClasses,
+      className,
+    ),
   );
 
   if (href) {
