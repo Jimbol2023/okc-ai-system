@@ -1,7 +1,7 @@
 import type { Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { BarChart3, BookOpen, Briefcase, Building2, ClipboardCheck, DollarSign, HousePlus, LayoutGrid, Lock, Megaphone, MonitorSmartphone, Search, Shield, ShieldCheck, Upload, Users, Wrench } from "lucide-react";
+import { BarChart3, BookOpen, Briefcase, Building2, ClipboardCheck, DollarSign, Handshake, HousePlus, LayoutGrid, Lock, Megaphone, MonitorSmartphone, Search, Shield, ShieldCheck, Upload, Users, Wrench } from "lucide-react";
 
 import { CommandPaletteClient } from "@/components/dashboard/command-palette-client";
 import { getAuthenticatedAdmin } from "@/lib/auth";
@@ -19,6 +19,7 @@ const navIconByHref = {
   "/dashboard/leads": Users,
   "/dashboard/approvals": ClipboardCheck,
   "/dashboard/marketing": Megaphone,
+  "/dashboard/referrals": Handshake,
   "/dashboard/tools": Wrench,
   "/dashboard/enterprise-ai": ShieldCheck,
   "/dashboard/mobile-command": MonitorSmartphone,

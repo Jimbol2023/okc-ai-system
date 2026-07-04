@@ -69,6 +69,16 @@ export type RevenueSourcePerformance = {
   avgScore: number;
   conversionSignal: number;
 };
+export type RevenueReferralPerformance = {
+  referralCode: string;
+  partnerName: string;
+  campaign: string | null;
+  clicks: number;
+  leads: number;
+  qualified: number;
+  closed: number;
+  conversionSignal: number;
+};
 export type RevenueConnectorHealthSummary = {
   total: number;
   active: number;
@@ -111,6 +121,7 @@ export type RevenueCommandCenterReport = {
   };
   inbox: RevenueInboxItem[];
   sourcePerformance: RevenueSourcePerformance[];
+  referralPerformance: RevenueReferralPerformance[];
   tasks: RevenueCommandCenterTask[];
   auditEvents: RevenueCommandCenterAuditEvent[];
   connectors: RevenueCommandCenterConnector[];
@@ -813,6 +824,13 @@ export async function createRevenueCommandCenter(leads: StoredLead[]): Promise<R
     orderBy: [{ status: "asc" }, { label: "asc" }],
   });
   const decisionLogs = await listRevenueDecisionLogsSafe();
+  const referralLinks = await prisma.referralLink.findMany({
+    orderBy: [{ leadCount: "desc" }, { clickCount: "desc" }],
+    take: 10,
+    include: {
+      partner: true,
+    },
+  }).catch(() => []);
   const qualified = inbox.filter((item) => (item.latestScore?.score ?? 0) >= 55 || item.lead.priority !== "Low");
   const followUpDue = inbox.filter((item) => item.followUpFlags.some((flag) => /follow-up/i.test(flag)));
   const duplicateWarnings = inbox.reduce((total, item) => total + item.duplicateWarnings.length, 0);
@@ -846,6 +864,16 @@ export async function createRevenueCommandCenter(leads: StoredLead[]): Promise<R
       conversionSignal: source.leads > 0 ? Math.round((source.qualified / source.leads) * 100) : 0,
     }))
     .sort((a, b) => b.qualified - a.qualified || b.avgScore - a.avgScore);
+  const referralPerformance = referralLinks.map((link) => ({
+    referralCode: link.referralCode,
+    partnerName: link.partner?.name ?? "Unassigned",
+    campaign: link.campaign,
+    clicks: link.clickCount,
+    leads: link.leadCount,
+    qualified: link.qualifiedLeadCount,
+    closed: link.closedDealCount,
+    conversionSignal: link.clickCount > 0 ? Math.round((link.leadCount / link.clickCount) * 100) : 0,
+  }));
 
   return {
     ok: true,
@@ -862,6 +890,7 @@ export async function createRevenueCommandCenter(leads: StoredLead[]): Promise<R
     },
     inbox: inbox.slice(0, 25),
     sourcePerformance,
+    referralPerformance,
     tasks,
     auditEvents,
     connectors,

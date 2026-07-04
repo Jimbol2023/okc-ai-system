@@ -2,6 +2,7 @@ import { Footer } from "@/components/public/Footer";
 import { ConsentGatedAnalytics } from "@/components/public/ConsentGatedAnalytics";
 import { CookieConsentBanner } from "@/components/public/CookieConsentBanner";
 import { Navbar } from "@/components/public/Navbar";
+import { ReferralTrackingClient } from "@/components/public/ReferralTrackingClient";
 import { StructuredData } from "@/components/public/StructuredData";
 
 export default function PublicLayout({
@@ -18,6 +19,7 @@ export default function PublicLayout({
         Skip to main content
       </a>
       <StructuredData />
+      <ReferralTrackingClient />
       <Navbar />
       <main id="main-content" tabIndex={-1}>
         {children}

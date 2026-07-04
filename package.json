@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint app components lib --ext .ts,.tsx",
     "test:e2e": "playwright test",
-    "test:safety": "node --import tsx --test tests/safety/safety-invariants.test.ts",
+    "test:safety": "node --import tsx --test tests/safety/*.test.ts",
     "postinstall": "prisma generate",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",

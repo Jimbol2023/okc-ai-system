@@ -114,6 +114,10 @@ export type StoredLead = {
   latestMockOutreachMessage?: string | null;
   latestMockOutreachBlockedReasons?: string[];
   mockOutreachHistory?: MockOutreachHistoryItem[];
+  referralCode?: string | null;
+  referralCampaign?: string | null;
+  referralSource?: string | null;
+  referralLandingPage?: string | null;
 };
 
 const ALLOWED_LEAD_STATUSES: readonly LeadStatus[] = [

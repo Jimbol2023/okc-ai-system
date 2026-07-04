@@ -22,7 +22,11 @@ export const leadIntakeSchema = z.object({
     .max(1000, "Keep notes under 1,000 characters.")
     .optional()
     .or(z.literal("")),
-  source: z.string().trim().min(2, "Lead source is required.")
+  source: z.string().trim().min(2, "Lead source is required."),
+  referralCode: z.string().trim().max(48, "Referral code must stay under 48 characters.").optional().or(z.literal("")),
+  referralCampaign: z.string().trim().max(80, "Referral campaign must stay under 80 characters.").optional().or(z.literal("")),
+  referralSource: z.string().trim().max(60, "Referral source must stay under 60 characters.").optional().or(z.literal("")),
+  referralLandingPage: z.string().trim().max(220, "Referral landing page must stay under 220 characters.").optional().or(z.literal(""))
 });
 
 export type LeadIntakeInput = z.infer<typeof leadIntakeSchema>;

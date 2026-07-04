@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
 import { createDbLead, listDbLeads, parseLeadIntakePayload } from "@/lib/leads-db";
 import { leadIntakeToStoredLead } from "@/lib/lead-record";
+import { attachReferralAttributionToLead } from "@/lib/referrals";
 import { storedLeadArraySchema, storedLeadSchema } from "@/lib/validations/stored-lead";
 
 export const dynamic = "force-dynamic";
@@ -67,6 +68,16 @@ export async function POST(request: Request) {
         ...storedLead,
         ...buildInitialAutomationFields()
       });
+      await attachReferralAttributionToLead({
+        lead: result.lead,
+        created: result.created,
+        referral: {
+          referralCode: parsedIntakeLead.data.referralCode,
+          referralCampaign: parsedIntakeLead.data.referralCampaign,
+          referralSource: parsedIntakeLead.data.referralSource,
+          referralLandingPage: parsedIntakeLead.data.referralLandingPage
+        }
+      });
 
       return NextResponse.json({
         ok: true,
@@ -102,6 +113,20 @@ export async function POST(request: Request) {
           })
         )
       );
+      await Promise.all(
+        results.map((result, index) =>
+          attachReferralAttributionToLead({
+            lead: result.lead,
+            created: result.created,
+            referral: {
+              referralCode: parsedLeads.data[index]?.referralCode,
+              referralCampaign: parsedLeads.data[index]?.referralCampaign,
+              referralSource: parsedLeads.data[index]?.referralSource,
+              referralLandingPage: parsedLeads.data[index]?.referralLandingPage
+            }
+          })
+        )
+      );
 
       return NextResponse.json({
         ok: true,
@@ -127,6 +152,16 @@ export async function POST(request: Request) {
     const result = await createDbLead({
       ...parsedLead.data,
       ...buildInitialAutomationFields(parsedLead.data)
+    });
+    await attachReferralAttributionToLead({
+      lead: result.lead,
+      created: result.created,
+      referral: {
+        referralCode: parsedLead.data.referralCode,
+        referralCampaign: parsedLead.data.referralCampaign,
+        referralSource: parsedLead.data.referralSource,
+        referralLandingPage: parsedLead.data.referralLandingPage
+      }
     });
 
     return NextResponse.json({
