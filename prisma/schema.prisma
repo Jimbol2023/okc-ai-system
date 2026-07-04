@@ -100,6 +100,61 @@ model RevenueAuditEvent {
   @@index([createdAt])
 }
 
+model AiCompanyExecutiveDirective {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  directiveKey          String
+  title                 String
+  summary               String
+  objective             String
+  businessGoal          String   @default("generate_revenue")
+  sourceDepartment      String   @default("Executive AI")
+  assignedDepartments   Json     @default("[]")
+  requestedOutputs      Json     @default("[]")
+  status                String   @default("awaiting_ceo_approval")
+  approvalStatus        String   @default("awaiting_ceo_approval")
+  workflowState         String   @default("blocked_awaiting_ceo_approval")
+  riskLevel             String   @default("medium")
+  priority              String   @default("normal")
+  decision              String?
+  decisionNote          String?
+  decidedBy             String?
+  decidedAt             DateTime?
+  approvedBy            String?
+  approvedAt            DateTime?
+  deferReminderAt       DateTime?
+  expectedBusinessValue String   @default("")
+  governanceNotes       Json     @default("[]")
+  tags                  Json     @default("[]")
+  source                String   @default("company_orchestrator_directive_registry")
+  assumptions           Json     @default("[]")
+  safeMetadata          Json?
+  providerCalled        Boolean  @default(false)
+  published             Boolean  @default(false)
+  sent                  Boolean  @default(false)
+  scraped               Boolean  @default(false)
+  outreachSent          Boolean  @default(false)
+  workflowStarted       Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@unique([tenantId, directiveKey])
+  @@index([tenantId])
+  @@index([directiveKey])
+  @@index([businessGoal])
+  @@index([sourceDepartment])
+  @@index([status])
+  @@index([approvalStatus])
+  @@index([workflowState])
+  @@index([riskLevel])
+  @@index([priority])
+  @@index([decision])
+  @@index([approvedAt])
+  @@index([deferReminderAt])
+  @@index([createdAt])
+}
+
 model RevenueLeadSource {
   id             String   @id @default(uuid())
   tenantId       String   @default("default")
