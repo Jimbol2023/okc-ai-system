@@ -70,7 +70,12 @@ async function readJsonResponse<T>(response: Response): Promise<T> {
   const contentType = response.headers.get("content-type") ?? "";
 
   if (!contentType.includes("application/json")) {
-    throw new Error("Unexpected non-JSON response.");
+    const body = await response.text().catch(() => "");
+    const preview = body.replace(/\s+/g, " ").trim().slice(0, 140);
+
+    throw new Error(
+      `Unexpected non-JSON response from ${response.url || "knowledge API"} (${response.status}, ${contentType || "no content-type"}).${preview ? ` ${preview}` : ""}`,
+    );
   }
 
   return response.json() as Promise<T>;

@@ -403,6 +403,82 @@ type BusinessIntelligenceReport = {
   trendCharts: TrendChart[];
 };
 
+type OperatingCompany = {
+  summary: string;
+  closeGoal: "2-5 deals/month";
+  departmentCommandMatrix: Array<{
+    department: string;
+    operatingRole: string;
+    currentOutput: string;
+    nextHandoff: string;
+    blocker: string;
+    dealContribution: "lead_flow" | "conversion" | "deal_analysis" | "trust" | "operations" | "governance";
+    lifecycleStatus: "active" | "planned" | "future_ready";
+    activeExecutionOwner: boolean;
+    approvalRequired: true;
+    providerCalled: false;
+    liveExecutionAllowed: false;
+    sourceLabel: string;
+    assumption: string;
+  }>;
+  dealClosingWorkQueue: Array<{
+    id: string;
+    title: string;
+    count: number | string;
+    ownerDepartment: string;
+    nextManualAction: string;
+    revenueImpact: "high" | "medium" | "low";
+    safetyBoundary: string;
+    href: string;
+    status: MetricStatus;
+    sourceLabel: string;
+    assumption: string;
+  }>;
+  architectureImprovementBacklog: Array<{
+    id: string;
+    title: string;
+    ownerDepartment: string;
+    businessValue: string;
+    risk: "high" | "medium" | "low";
+    readinessState: "ready_for_ceo_review" | "in_progress" | "planned" | "blocked";
+    nextSafeAction: string;
+    ceoApprovalRequired: true;
+    sourceBasis: Array<{
+      category: "internal_standard" | "official_vendor_doc" | "open_standard" | "maintained_oss_pattern" | "best_practice";
+      label: string;
+      reference: string;
+      rationale: string;
+    }>;
+    providerCalled: false;
+    liveExecutionAllowed: false;
+    externalExecutionAllowed: false;
+  }>;
+  workflowHandoffReadiness: Array<{
+    id: string;
+    workQueueItemId: string;
+    currentOwner: string;
+    nextDepartment: string;
+    blocker: string;
+    evidenceRequired: string[];
+    approvalRequirement: string;
+    recoveryPath: string;
+    providerCalled: false;
+    liveExecutionAllowed: false;
+    outreachBlocked: true;
+    scrapingBlocked: true;
+    workflowStarted: false;
+  }>;
+  safetyFlags: {
+    advisoryOnly: true;
+    approvalRequired: true;
+    providerCalled: false;
+    liveExecutionAllowed: false;
+    externalActionsBlocked: true;
+    scrapingBlocked: true;
+    outreachBlocked: true;
+  };
+};
+
 type ExecutiveDashboardResponse = {
   ok: boolean;
   widgets?: ExecutiveWidget[];
@@ -410,6 +486,7 @@ type ExecutiveDashboardResponse = {
   revenueCommandCenter?: RevenueCommandCenter;
   executiveWorkforce?: ExecutiveWorkforce;
   departmentIntelligence?: DepartmentIntelligence | null;
+  operatingCompany?: OperatingCompany;
   morningBrief?: MorningBrief;
   todayPriorities?: ExecutiveWidget[];
   kpiInterpretations?: Record<string, string>;
@@ -474,7 +551,12 @@ async function readJsonResponse<T>(response: Response): Promise<T> {
   const contentType = response.headers.get("content-type") ?? "";
 
   if (!contentType.includes("application/json")) {
-    throw new Error("Unexpected non-JSON response from executive dashboard API.");
+    const body = await response.text().catch(() => "");
+    const preview = body.replace(/\s+/g, " ").trim().slice(0, 140);
+
+    throw new Error(
+      `Unexpected non-JSON response from ${response.url || "executive dashboard API"} (${response.status}, ${contentType || "no content-type"}).${preview ? ` ${preview}` : ""}`,
+    );
   }
 
   return response.json() as Promise<T>;
@@ -1008,6 +1090,175 @@ function DepartmentIntelligencePanel({ intelligence }: { intelligence: Departmen
   );
 }
 
+function getContributionClass(contribution: OperatingCompany["departmentCommandMatrix"][number]["dealContribution"]) {
+  if (contribution === "lead_flow") return "border-blue-200 bg-blue-50 text-blue-900";
+  if (contribution === "conversion") return "border-emerald-200 bg-emerald-50 text-emerald-900";
+  if (contribution === "deal_analysis") return "border-indigo-200 bg-indigo-50 text-indigo-900";
+  if (contribution === "trust") return "border-amber-200 bg-amber-50 text-amber-900";
+  if (contribution === "governance") return "border-red-200 bg-red-50 text-red-900";
+
+  return "border-slate-200 bg-slate-50 text-slate-800";
+}
+
+function getLifecycleClass(status: OperatingCompany["departmentCommandMatrix"][number]["lifecycleStatus"]) {
+  if (status === "active") return "border-emerald-200 bg-emerald-50 text-emerald-900";
+  if (status === "future_ready") return "border-blue-200 bg-blue-50 text-blue-900";
+
+  return "border-slate-200 bg-slate-50 text-slate-800";
+}
+
+function OperatingCompanyPanel({ operatingCompany }: { operatingCompany: OperatingCompany }) {
+  const featuredDepartments = operatingCompany.departmentCommandMatrix.filter((item) =>
+    [
+      "Executive AI",
+      "Revenue AI",
+      "Lead Intelligence AI",
+      "Sales AI",
+      "County Records AI",
+      "Driving for Dollars AI",
+      "Google Maps AI",
+      "Marketing AI",
+      "Design AI",
+      "Operations AI",
+      "Approval AI",
+      "Security & Governance AI",
+    ].includes(item.department),
+  );
+  const plannedDepartments = operatingCompany.departmentCommandMatrix.filter((item) => item.lifecycleStatus !== "active");
+  const handoffByQueueItem = new Map(operatingCompany.workflowHandoffReadiness.map((item) => [item.workQueueItemId, item]));
+
+  return (
+    <section aria-labelledby="operating-company-heading" className="rounded-lg border border-border bg-surface p-5 md:p-6">
+      <div className="flex min-w-0 flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+        <div className="min-w-0 space-y-2">
+          <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-muted">AI Business Operating Company</p>
+          <h2 id="operating-company-heading" className="break-words text-2xl font-semibold text-primary md:text-3xl">
+            Department Command Matrix
+          </h2>
+          <p className="max-w-5xl break-words text-sm leading-6 text-muted">{operatingCompany.summary}</p>
+          <p className="break-words text-xs font-bold uppercase tracking-[0.1em] text-primary">Close goal: {operatingCompany.closeGoal}</p>
+        </div>
+        <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+          <SafetyBadge>advisoryOnly:{String(operatingCompany.safetyFlags.advisoryOnly)}</SafetyBadge>
+          <SafetyBadge>approval:{String(operatingCompany.safetyFlags.approvalRequired)}</SafetyBadge>
+          <SafetyBadge>providerCalled:{String(operatingCompany.safetyFlags.providerCalled)}</SafetyBadge>
+          <SafetyBadge tone="urgent">liveExecution:{String(operatingCompany.safetyFlags.liveExecutionAllowed)}</SafetyBadge>
+        </div>
+      </div>
+
+      <div className="mt-5 grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
+        <div className="space-y-3">
+          <h3 className="break-words text-lg font-semibold text-primary">Deal-closing work queue</h3>
+          <div className="grid gap-3 md:grid-cols-2">
+            {operatingCompany.dealClosingWorkQueue.map((item) => (
+              <article key={item.id} className="rounded-lg border border-border bg-white p-4">
+                <Link href={item.href as Route} className="block transition hover:text-primary">
+                  <div className="flex min-w-0 items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="break-words text-sm font-semibold text-primary">{item.title}</p>
+                      <p className="mt-1 break-words text-xs font-bold uppercase tracking-[0.08em] text-muted">{item.ownerDepartment}</p>
+                    </div>
+                    <StatusBadge status={item.status} />
+                  </div>
+                  <p className="mt-3 break-words text-3xl font-semibold text-primary">{item.count}</p>
+                  <p className="mt-2 break-words text-sm leading-6 text-muted">{item.nextManualAction}</p>
+                </Link>
+                <p className="mt-3 break-words text-xs font-semibold text-primary">Impact: {item.revenueImpact}</p>
+                <p className="mt-2 break-words text-xs leading-5 text-muted">{item.safetyBoundary}</p>
+                {handoffByQueueItem.get(item.id) ? (
+                  <div className="mt-3 rounded-lg border border-slate-200 bg-slate-50 p-3">
+                    <p className="break-words text-xs font-semibold text-primary">Handoff readiness: {handoffByQueueItem.get(item.id)?.nextDepartment}</p>
+                    <p className="mt-1 break-words text-xs leading-5 text-muted">Evidence: {handoffByQueueItem.get(item.id)?.evidenceRequired.join(", ")}</p>
+                    <p className="mt-1 break-words text-xs leading-5 text-red-900">Recovery: {handoffByQueueItem.get(item.id)?.recoveryPath}</p>
+                  </div>
+                ) : null}
+                <p className="mt-3 break-words text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">Source: {item.sourceLabel}</p>
+                <p className="mt-1 break-words text-[11px] leading-4 text-muted">Assumption: {item.assumption}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-3">
+          <h3 className="break-words text-lg font-semibold text-primary">Department handoffs</h3>
+          <div className="space-y-3">
+            {featuredDepartments.map((department) => (
+              <article key={department.department} className="rounded-lg border border-border bg-white p-4">
+                <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                  <div className="min-w-0">
+                    <h4 className="break-words text-sm font-semibold text-primary">{department.department}</h4>
+                    <p className="mt-1 break-words text-xs leading-5 text-muted">{department.operatingRole}</p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <span className={`w-fit rounded-full border px-2 py-1 text-[11px] font-bold uppercase tracking-[0.08em] ${getLifecycleClass(department.lifecycleStatus)}`}>
+                      {department.lifecycleStatus.replaceAll("_", " ")}
+                    </span>
+                    <span className={`w-fit rounded-full border px-2 py-1 text-[11px] font-bold uppercase tracking-[0.08em] ${getContributionClass(department.dealContribution)}`}>
+                      {department.dealContribution.replaceAll("_", " ")}
+                    </span>
+                  </div>
+                </div>
+                <p className="mt-3 break-words text-xs leading-5 text-primary">Output: {department.currentOutput}</p>
+                <p className="mt-2 break-words text-xs leading-5 text-muted">Next handoff: {department.nextHandoff}</p>
+                <p className="mt-2 break-words text-xs leading-5 text-red-900">Boundary: {department.blocker}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-5 grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
+        <div className="space-y-3">
+          <h3 className="break-words text-lg font-semibold text-primary">Planned support departments</h3>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {plannedDepartments.map((department) => (
+              <article key={department.department} className="rounded-lg border border-border bg-white p-4">
+                <div className="flex min-w-0 items-start justify-between gap-3">
+                  <h4 className="break-words text-sm font-semibold text-primary">{department.department}</h4>
+                  <span className={`shrink-0 rounded-full border px-2 py-1 text-[11px] font-bold uppercase tracking-[0.08em] ${getLifecycleClass(department.lifecycleStatus)}`}>
+                    {department.lifecycleStatus.replaceAll("_", " ")}
+                  </span>
+                </div>
+                <p className="mt-2 break-words text-xs leading-5 text-muted">{department.operatingRole}</p>
+                <p className="mt-2 break-words text-xs leading-5 text-red-900">{department.blocker}</p>
+                <p className="mt-3 break-words text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">activeExecutionOwner:{String(department.activeExecutionOwner)}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-3">
+          <h3 className="break-words text-lg font-semibold text-primary">Architecture improvement backlog</h3>
+          <div className="space-y-3">
+            {operatingCompany.architectureImprovementBacklog.map((item) => (
+              <article key={item.id} className="rounded-lg border border-border bg-white p-4">
+                <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                  <div className="min-w-0">
+                    <h4 className="break-words text-sm font-semibold text-primary">{item.title}</h4>
+                    <p className="mt-1 break-words text-xs font-bold uppercase tracking-[0.08em] text-muted">{item.ownerDepartment}</p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-1 text-[11px] font-bold uppercase tracking-[0.08em] text-amber-900">{item.risk}</span>
+                    <span className="rounded-full border border-slate-200 bg-slate-50 px-2 py-1 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-800">{item.readinessState.replaceAll("_", " ")}</span>
+                  </div>
+                </div>
+                <p className="mt-2 break-words text-sm leading-6 text-muted">{item.businessValue}</p>
+                <p className="mt-2 break-words text-xs leading-5 text-primary">Next safe action: {item.nextSafeAction}</p>
+                <p className="mt-2 break-words text-xs leading-5 text-muted">Source basis: {item.sourceBasis.map((source) => `${source.category}: ${source.label}`).join("; ")}</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <SafetyBadge>approval:{String(item.ceoApprovalRequired)}</SafetyBadge>
+                  <SafetyBadge>providerCalled:{String(item.providerCalled)}</SafetyBadge>
+                  <SafetyBadge tone="urgent">liveExecution:{String(item.liveExecutionAllowed)}</SafetyBadge>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ExecutiveWorkforcePanel({ workforce }: { workforce: ExecutiveWorkforce }) {
   return (
     <section aria-labelledby="executive-workforce-heading" className="rounded-lg border border-border bg-surface p-5 md:p-6">
@@ -1133,6 +1384,7 @@ export function ExecutiveDashboardClient() {
   const [revenueCommandCenter, setRevenueCommandCenter] = useState<RevenueCommandCenter | null>(null);
   const [executiveWorkforce, setExecutiveWorkforce] = useState<ExecutiveWorkforce | null>(null);
   const [departmentIntelligence, setDepartmentIntelligence] = useState<DepartmentIntelligence | null>(null);
+  const [operatingCompany, setOperatingCompany] = useState<OperatingCompany | null>(null);
   const [morningBrief, setMorningBrief] = useState<MorningBrief | null>(null);
   const [todayPriorities, setTodayPriorities] = useState<ExecutiveWidget[]>([]);
   const [kpiInterpretations, setKpiInterpretations] = useState<Record<string, string>>({});
@@ -1165,6 +1417,7 @@ export function ExecutiveDashboardClient() {
       setRevenueCommandCenter(data.revenueCommandCenter ?? null);
       setExecutiveWorkforce(data.executiveWorkforce ?? null);
       setDepartmentIntelligence(data.departmentIntelligence ?? null);
+      setOperatingCompany(data.operatingCompany ?? null);
       setMorningBrief(data.morningBrief ?? null);
       setTodayPriorities(
         data.todayPriorities ??
@@ -1196,6 +1449,7 @@ export function ExecutiveDashboardClient() {
       {error ? <ErrorState message={error} /> : null}
 
       {dailyStartup ? <DailyStartupPanel startup={dailyStartup} onDecisionComplete={loadDashboard} /> : null}
+      {operatingCompany ? <OperatingCompanyPanel operatingCompany={operatingCompany} /> : null}
       {revenueCommandCenter ? <RevenueCommandCenterPanel commandCenter={revenueCommandCenter} /> : null}
       {executiveWorkforce ? <ExecutiveWorkforcePanel workforce={executiveWorkforce} /> : null}
       {departmentIntelligence ? <DepartmentIntelligencePanel intelligence={departmentIntelligence} /> : null}
