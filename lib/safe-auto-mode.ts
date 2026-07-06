@@ -27,6 +27,15 @@ const safeInternalActions = new Set([
   "score_roi_opportunity",
   "summarize_macro_signal",
   "draft_relationship_follow_up",
+  "read_gmail_inbox",
+  "read_calendar_events",
+  "read_drive_documents",
+  "read_search_console",
+  "read_ga4_traffic",
+  "read_gbp_performance",
+  "read_gbp_reviews",
+  "read_youtube_channel",
+  "read_canva_designs",
 ]);
 
 const blockedActions = new Set(["publish", "send_sms", "send_message", "activate_connector", "scrape_source", "change_budget"]);

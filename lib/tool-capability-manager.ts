@@ -86,6 +86,52 @@ const sharedBlockedActions: ToolSupportedAction[] = [
   },
 ];
 
+function readOnlyProviderTool(input: {
+  toolKey: string;
+  name: string;
+  purpose: string;
+  category: ToolCategory;
+  actionKey: string;
+  actionLabel: string;
+  risk?: ToolActionRisk;
+  requiredPermissions: string[];
+  owner: string;
+  fallbackToolKeys?: string[];
+}): ToolDefinition {
+  return {
+    toolKey: input.toolKey,
+    name: input.name,
+    purpose: input.purpose,
+    category: input.category,
+    version: "1.0.0",
+    authenticationMethod: "oauth_readonly",
+    requiredPermissions: input.requiredPermissions,
+    healthStatus: "readiness_only",
+    supportedActions: [
+      {
+        actionKey: input.actionKey,
+        label: input.actionLabel,
+        risk: input.risk ?? "low",
+        approvalRequired: false,
+        externalAction: false,
+        liveExecutionAllowed: false,
+      },
+      ...sharedBlockedActions,
+    ],
+    rateLimits: { window: "provider_quota", maxRequests: null, currentRemaining: null },
+    costPerCallCents: null,
+    lastSuccessfulRunAt: null,
+    lastFailureAt: null,
+    retryPolicy: "Record a read-only data gap and continue; never retry as a write or execution.",
+    owner: input.owner,
+    auditHistory: ["sprint18_readonly_adapter_registered"],
+    approvalRequirements: ["Read-only connector approval", "Least-privilege scope verification"],
+    fallbackToolKeys: input.fallbackToolKeys ?? [],
+    providerCallsAllowed: false,
+    safetyNotes: "Sprint 18 permits governed read-only snapshots only. No sends, publishes, updates, deletes, exports, ads, or CRM mutation.",
+  };
+}
+
 export const toolRegistry: ToolDefinition[] = [
   {
     toolKey: "canva",
@@ -97,6 +143,14 @@ export const toolRegistry: ToolDefinition[] = [
     requiredPermissions: ["Brand kit access", "Design edit access"],
     healthStatus: "readiness_only",
     supportedActions: [
+      {
+        actionKey: "read_canva_designs",
+        label: "Read Canva design metadata",
+        risk: "low",
+        approvalRequired: false,
+        externalAction: false,
+        liveExecutionAllowed: false,
+      },
       {
         actionKey: "create_flyer_brief",
         label: "Create flyer design brief",
@@ -137,6 +191,22 @@ export const toolRegistry: ToolDefinition[] = [
     requiredPermissions: ["Business profile owner or manager"],
     healthStatus: "readiness_only",
     supportedActions: [
+      {
+        actionKey: "read_gbp_performance",
+        label: "Read GBP performance",
+        risk: "low",
+        approvalRequired: false,
+        externalAction: false,
+        liveExecutionAllowed: false,
+      },
+      {
+        actionKey: "read_gbp_reviews",
+        label: "Read GBP reviews",
+        risk: "medium",
+        approvalRequired: false,
+        externalAction: false,
+        liveExecutionAllowed: false,
+      },
       {
         actionKey: "prepare_gbp_post",
         label: "Prepare GBP post",
@@ -403,6 +473,68 @@ export const toolRegistry: ToolDefinition[] = [
     providerCallsAllowed: false,
     safetyNotes: "Internal design planning only.",
   },
+  readOnlyProviderTool({
+    toolKey: "gmail",
+    name: "Gmail",
+    purpose: "Read inbox metadata and snippets for CEO morning inquiry awareness.",
+    category: "communication",
+    actionKey: "read_gmail_inbox",
+    actionLabel: "Read Gmail inbox metadata",
+    risk: "medium",
+    requiredPermissions: ["https://www.googleapis.com/auth/gmail.readonly"],
+    owner: "Revenue Operations",
+  }),
+  readOnlyProviderTool({
+    toolKey: "google_calendar",
+    name: "Google Calendar",
+    purpose: "Read upcoming event metadata for CEO daily planning.",
+    category: "communication",
+    actionKey: "read_calendar_events",
+    actionLabel: "Read calendar events",
+    requiredPermissions: ["https://www.googleapis.com/auth/calendar.events.readonly"],
+    owner: "Operations",
+  }),
+  readOnlyProviderTool({
+    toolKey: "google_drive",
+    name: "Google Drive",
+    purpose: "Read recent document metadata for draft and asset awareness.",
+    category: "communication",
+    actionKey: "read_drive_documents",
+    actionLabel: "Read Drive document metadata",
+    risk: "medium",
+    requiredPermissions: ["https://www.googleapis.com/auth/drive.metadata.readonly"],
+    owner: "Operations",
+  }),
+  readOnlyProviderTool({
+    toolKey: "google_search_console",
+    name: "Google Search Console",
+    purpose: "Read SEO impressions, clicks, top pages, and indexing signals.",
+    category: "analytics",
+    actionKey: "read_search_console",
+    actionLabel: "Read Search Console data",
+    requiredPermissions: ["https://www.googleapis.com/auth/webmasters.readonly"],
+    owner: "SEO",
+  }),
+  readOnlyProviderTool({
+    toolKey: "google_analytics",
+    name: "Google Analytics",
+    purpose: "Read GA4 traffic, conversions, and top pages.",
+    category: "analytics",
+    actionKey: "read_ga4_traffic",
+    actionLabel: "Read GA4 traffic",
+    requiredPermissions: ["https://www.googleapis.com/auth/analytics.readonly"],
+    owner: "Marketing",
+  }),
+  readOnlyProviderTool({
+    toolKey: "youtube",
+    name: "YouTube",
+    purpose: "Read recent video metadata and channel analytics.",
+    category: "marketing",
+    actionKey: "read_youtube_channel",
+    actionLabel: "Read YouTube channel data",
+    requiredPermissions: ["https://www.googleapis.com/auth/youtube.readonly", "https://www.googleapis.com/auth/yt-analytics.readonly"],
+    owner: "Marketing",
+  }),
   {
     toolKey: "approved_news_registry",
     name: "Approved News and Policy Source Registry",
