@@ -94,6 +94,61 @@ type MorningBrief = {
   safetyBadges: string[];
 };
 
+type DailyMission = {
+  title: "CEO Daily Mission";
+  greeting: "Good Morning Moses";
+  summary: string;
+  status: "ready" | "watch" | "urgent" | "data_gap";
+  overnightSummary: string[];
+  urgentCeoDecisions: Array<{
+    id: string;
+    title: string;
+    reason: string;
+    expectedBusinessValue: string;
+    riskLevel: "low" | "medium" | "high";
+    status: string;
+  }>;
+  draftsReady: Array<{
+    id: string;
+    title: string;
+    department: string;
+    approvalStatus: string;
+    sourceLabel: string;
+  }>;
+  revenuePriorities: Array<{
+    id: string;
+    title: string;
+    detail: string;
+    sourceLabel: string;
+  }>;
+  leadPriorities: Array<{
+    leadId: string;
+    source: string;
+    propertyAddress: string;
+    priority: string;
+    score: number;
+    recommendedAction: string;
+  }>;
+  connectorHealth: Array<{
+    connectorId: string;
+    displayName: string;
+    unifiedStatus: "healthy" | "degraded" | "missing_credentials" | "readiness_only";
+    lastDataGap: string | null;
+  }>;
+  dataGaps: string[];
+  estimatedCeoTimeMinutes: number;
+  safetyFlags: {
+    providerCalled: false;
+    liveExecutionAllowed: false;
+    published: false;
+    sent: false;
+    workflowStarted: false;
+    outreachBlocked: true;
+    scrapingBlocked: true;
+    adsBlocked: true;
+  };
+};
+
 type RevenueCommandCenterItem = {
   id: string;
   label: string;
@@ -487,6 +542,7 @@ type ExecutiveDashboardResponse = {
   executiveWorkforce?: ExecutiveWorkforce;
   departmentIntelligence?: DepartmentIntelligence | null;
   operatingCompany?: OperatingCompany;
+  dailyMission?: DailyMission | null;
   morningBrief?: MorningBrief;
   todayPriorities?: ExecutiveWidget[];
   kpiInterpretations?: Record<string, string>;
@@ -754,6 +810,14 @@ const fallbackDecisionReasonTemplates: Record<DirectiveDecision, readonly string
   reject: ["Low revenue value", "Too risky", "Duplicate work", "Not aligned"],
   defer: ["Timing", "Dependency missing", "Awaiting outcome data"],
 };
+
+function missionStatusToMetric(status: DailyMission["status"]): MetricStatus {
+  if (status === "ready") return "good";
+  if (status === "data_gap") return "missing";
+  if (status === "urgent") return "urgent";
+
+  return "watch";
+}
 
 function DailyStartupPanel({ startup, onDecisionComplete }: { startup: DailyStartup; onDecisionComplete: () => Promise<void> }) {
   const [decisionNotes, setDecisionNotes] = useState<Record<string, string>>({});
@@ -1379,12 +1443,111 @@ function ExecutiveWorkforcePanel({ workforce }: { workforce: ExecutiveWorkforce 
   );
 }
 
+function DailyMissionPanel({ mission }: { mission: DailyMission }) {
+  const connectorGaps = mission.connectorHealth.filter((connector) => connector.unifiedStatus !== "healthy").slice(0, 4);
+
+  return (
+    <section aria-labelledby="daily-mission-heading" className="rounded-lg border border-border bg-surface p-5 md:p-6">
+      <div className="flex min-w-0 flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+        <div className="min-w-0">
+          <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-muted">Canonical Daily Mission</p>
+          <h1 id="daily-mission-heading" className="mt-2 break-words text-3xl font-semibold text-primary md:text-4xl">
+            {mission.greeting}
+          </h1>
+          <p className="mt-3 max-w-5xl break-words text-sm leading-6 text-muted">{mission.summary}</p>
+        </div>
+        <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+          <StatusBadge status={missionStatusToMetric(mission.status)} label={mission.status.replaceAll("_", " ")} />
+          <SafetyBadge>CEO time: {mission.estimatedCeoTimeMinutes} min</SafetyBadge>
+          <SafetyBadge>providerCalled:{String(mission.safetyFlags.providerCalled)}</SafetyBadge>
+          <SafetyBadge tone="urgent">liveExecution:{String(mission.safetyFlags.liveExecutionAllowed)}</SafetyBadge>
+        </div>
+      </div>
+
+      <div className="mt-5 grid gap-4 xl:grid-cols-[1fr_1fr]">
+        <div className="space-y-4">
+          <div className="rounded-lg border border-blue-100 bg-blue-50 p-4">
+            <h2 className="break-words text-lg font-semibold text-blue-950">Overnight Summary</h2>
+            <ul className="mt-3 space-y-2 text-sm leading-6 text-blue-950">
+              {mission.overnightSummary.slice(0, 5).map((line) => (
+                <li key={line} className="break-words">{line}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="rounded-lg border border-border bg-white p-4">
+            <h2 className="break-words text-lg font-semibold text-primary">Urgent CEO Decisions</h2>
+            <div className="mt-3 space-y-3">
+              {mission.urgentCeoDecisions.length > 0 ? (
+                mission.urgentCeoDecisions.slice(0, 4).map((decision) => (
+                  <article key={decision.id} className="rounded-md border border-slate-200 bg-slate-50 p-3">
+                    <div className="flex min-w-0 items-start justify-between gap-3">
+                      <h3 className="break-words text-sm font-semibold text-primary">{decision.title}</h3>
+                      <SafetyBadge>{decision.riskLevel}</SafetyBadge>
+                    </div>
+                    <p className="mt-2 break-words text-xs leading-5 text-muted">{decision.reason}</p>
+                  </article>
+                ))
+              ) : (
+                <p className="text-sm leading-6 text-muted">No urgent CEO decisions are queued.</p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <div className="grid gap-3 md:grid-cols-2">
+            <div className="rounded-lg border border-border bg-white p-4">
+              <h2 className="break-words text-sm font-semibold text-primary">Drafts Ready</h2>
+              <p className="mt-2 text-3xl font-semibold text-primary">{mission.draftsReady.length}</p>
+              <ul className="mt-3 space-y-2 text-xs leading-5 text-muted">
+                {mission.draftsReady.slice(0, 3).map((draft) => (
+                  <li key={draft.id} className="break-words">{draft.title} · {draft.department}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-lg border border-border bg-white p-4">
+              <h2 className="break-words text-sm font-semibold text-primary">Lead Priorities</h2>
+              <p className="mt-2 text-3xl font-semibold text-primary">{mission.leadPriorities.length}</p>
+              <ul className="mt-3 space-y-2 text-xs leading-5 text-muted">
+                {mission.leadPriorities.slice(0, 3).map((lead) => (
+                  <li key={lead.leadId} className="break-words">{lead.source}: {lead.recommendedAction}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-emerald-100 bg-emerald-50 p-4">
+            <h2 className="break-words text-lg font-semibold text-emerald-950">Revenue Priorities</h2>
+            <ul className="mt-3 space-y-2 text-sm leading-6 text-emerald-950">
+              {mission.revenuePriorities.slice(0, 4).map((priority) => (
+                <li key={priority.id} className="break-words">{priority.title}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="rounded-lg border border-amber-100 bg-amber-50 p-4">
+            <h2 className="break-words text-lg font-semibold text-amber-950">Connector/Data Gaps</h2>
+            <ul className="mt-3 space-y-2 text-xs leading-5 text-amber-950">
+              {(connectorGaps.length > 0 ? connectorGaps.map((connector) => `${connector.displayName}: ${connector.lastDataGap ?? connector.unifiedStatus}`) : mission.dataGaps.slice(0, 4)).map((gap) => (
+                <li key={gap} className="break-words">{gap}</li>
+              ))}
+              {connectorGaps.length === 0 && mission.dataGaps.length === 0 ? <li>No connector data gaps are visible.</li> : null}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function ExecutiveDashboardClient() {
   const [dailyStartup, setDailyStartup] = useState<DailyStartup | null>(null);
   const [revenueCommandCenter, setRevenueCommandCenter] = useState<RevenueCommandCenter | null>(null);
   const [executiveWorkforce, setExecutiveWorkforce] = useState<ExecutiveWorkforce | null>(null);
   const [departmentIntelligence, setDepartmentIntelligence] = useState<DepartmentIntelligence | null>(null);
   const [operatingCompany, setOperatingCompany] = useState<OperatingCompany | null>(null);
+  const [dailyMission, setDailyMission] = useState<DailyMission | null>(null);
   const [morningBrief, setMorningBrief] = useState<MorningBrief | null>(null);
   const [todayPriorities, setTodayPriorities] = useState<ExecutiveWidget[]>([]);
   const [kpiInterpretations, setKpiInterpretations] = useState<Record<string, string>>({});
@@ -1418,6 +1581,7 @@ export function ExecutiveDashboardClient() {
       setExecutiveWorkforce(data.executiveWorkforce ?? null);
       setDepartmentIntelligence(data.departmentIntelligence ?? null);
       setOperatingCompany(data.operatingCompany ?? null);
+      setDailyMission(data.dailyMission ?? null);
       setMorningBrief(data.morningBrief ?? null);
       setTodayPriorities(
         data.todayPriorities ??
@@ -1448,6 +1612,7 @@ export function ExecutiveDashboardClient() {
       {loading ? <LoadingState label="Loading executive dashboard..." /> : null}
       {error ? <ErrorState message={error} /> : null}
 
+      {dailyMission ? <DailyMissionPanel mission={dailyMission} /> : null}
       {dailyStartup ? <DailyStartupPanel startup={dailyStartup} onDecisionComplete={loadDashboard} /> : null}
       {operatingCompany ? <OperatingCompanyPanel operatingCompany={operatingCompany} /> : null}
       {revenueCommandCenter ? <RevenueCommandCenterPanel commandCenter={revenueCommandCenter} /> : null}

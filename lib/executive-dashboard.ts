@@ -1,8 +1,9 @@
 import { createBusinessIntelligenceReport, type BusinessIntelligenceReport, type DepartmentHealthCard, type TrendChart } from "@/lib/business-intelligence";
 import { loadPartialData } from "@/lib/api-response";
 import { getCompanyActivationSnapshot } from "@/lib/company-activation";
-import { createInheritedPropertyCampaignDirective, runCompanyOrchestrator, startDailyCompanyOperatingSession, type CompanyOrchestratorReport, type DailyCompanyOperatingSession } from "@/lib/company-orchestrator";
+import { createInheritedPropertyCampaignDirective, getCompanyDepartmentRegistry, runCompanyOrchestrator, startDailyCompanyOperatingSession, type AiDepartmentName, type CompanyOrchestratorReport, type DailyCompanyOperatingSession } from "@/lib/company-orchestrator";
 import { createContentIntelligenceReport, type ContentIntelligenceReport } from "@/lib/content-intelligence";
+import { getDailyMission, type DailyMission } from "@/lib/daily-mission";
 import { getDepartmentIntelligenceReport, type DepartmentIntelligenceReport } from "@/lib/department-intelligence";
 import { createExecutiveLearningRecommendations, type ExecutiveLearningMemoryEvent, type ExecutiveLearningRecommendation } from "@/lib/executive-learning";
 import { createExecutiveRecommendationsFromBi } from "@/lib/executive-recommendations";
@@ -13,6 +14,7 @@ import type { StoredLead } from "@/lib/leads-storage";
 import { listMarketingWorkflow } from "@/lib/marketing-workflow";
 import { createMarketingPlatformRegistryReport, type MarketingPlatformRegistryReport } from "@/lib/marketing-platform-registry";
 import { createProviderReadinessReport } from "@/lib/provider-readiness";
+import { getLatestLiveMorningBrief } from "@/lib/read-only-business-connections";
 import { getReferralDashboard } from "@/lib/referrals";
 import { getRevenuePipelineSummary } from "@/lib/revenue-pipeline";
 import { getSystemHealth } from "@/lib/system-health";
@@ -113,6 +115,94 @@ export type ExecutiveWorkforceReport = {
   };
 };
 
+export type ArchitectureSourceBasis = {
+  category: "internal_standard" | "official_vendor_doc" | "open_standard" | "maintained_oss_pattern" | "best_practice";
+  label: string;
+  reference: string;
+  rationale: string;
+};
+
+export type DepartmentLifecycleStatus = "active" | "planned" | "future_ready";
+
+export type ArchitectureImprovementItem = {
+  id: string;
+  title: string;
+  ownerDepartment: string;
+  businessValue: string;
+  risk: "high" | "medium" | "low";
+  readinessState: "ready_for_ceo_review" | "in_progress" | "planned" | "blocked";
+  nextSafeAction: string;
+  ceoApprovalRequired: true;
+  sourceBasis: ArchitectureSourceBasis[];
+  providerCalled: false;
+  liveExecutionAllowed: false;
+  externalExecutionAllowed: false;
+};
+
+export type WorkflowHandoffReadinessItem = {
+  id: string;
+  workQueueItemId: string;
+  currentOwner: string;
+  nextDepartment: string;
+  blocker: string;
+  evidenceRequired: string[];
+  approvalRequirement: string;
+  recoveryPath: string;
+  providerCalled: false;
+  liveExecutionAllowed: false;
+  outreachBlocked: true;
+  scrapingBlocked: true;
+  workflowStarted: false;
+};
+
+export type DepartmentCommandMatrixItem = {
+  department: string;
+  operatingRole: string;
+  currentOutput: string;
+  nextHandoff: string;
+  blocker: string;
+  dealContribution: "lead_flow" | "conversion" | "deal_analysis" | "trust" | "operations" | "governance";
+  lifecycleStatus: DepartmentLifecycleStatus;
+  activeExecutionOwner: boolean;
+  approvalRequired: true;
+  providerCalled: false;
+  liveExecutionAllowed: false;
+  sourceLabel: string;
+  assumption: string;
+};
+
+export type DealClosingWorkQueueItem = {
+  id: string;
+  title: string;
+  count: number | string;
+  ownerDepartment: AiDepartmentName;
+  nextManualAction: string;
+  revenueImpact: "high" | "medium" | "low";
+  safetyBoundary: string;
+  href: string;
+  status: ExecutiveWidget["status"];
+  sourceLabel: string;
+  assumption: string;
+};
+
+export type OperatingCompanyReport = {
+  summary: string;
+  closeGoal: "2-5 deals/month";
+  departmentCommandMatrix: DepartmentCommandMatrixItem[];
+  dealClosingWorkQueue: DealClosingWorkQueueItem[];
+  architectureImprovementBacklog: ArchitectureImprovementItem[];
+  workflowHandoffReadiness: WorkflowHandoffReadinessItem[];
+  safetyFlags: {
+    advisoryOnly: true;
+    approvalRequired: true;
+    providerCalled: false;
+    liveExecutionAllowed: false;
+    externalActionsBlocked: true;
+    scrapingBlocked: true;
+    outreachBlocked: true;
+  };
+};
+
 export type ExecutiveDashboardReport = {
   ok: true;
   widgets: ExecutiveWidget[];
@@ -120,11 +210,13 @@ export type ExecutiveDashboardReport = {
   revenueCommandCenter: RevenueCommandCenterReport;
   executiveWorkforce: ExecutiveWorkforceReport;
   departmentIntelligence: DepartmentIntelligenceReport | null;
+  dailyMission: DailyMission | null;
   morningBrief: ExecutiveMorningBrief;
   todayPriorities: ExecutiveWidget[];
   kpiInterpretations: Record<string, string>;
   businessIntelligence: BusinessIntelligenceReport;
   departmentHealth: DepartmentHealthCard[];
+  operatingCompany: OperatingCompanyReport;
   trendCharts: TrendChart[];
   recommendedPriorities: string[];
   executiveRecommendations: ExecutiveLearningRecommendation[];
@@ -136,7 +228,7 @@ export type ExecutiveDashboardReport = {
   }>;
   safetyFlags: {
     readOnly: true;
-    providerCalled: false;
+    providerCalled: boolean;
     outreachSent: false;
     adsCreated: false;
     scrapingStarted: false;
@@ -371,6 +463,36 @@ function createMorningBrief({
         }
       : null,
     safetyBadges: ["providerCalled:false", "outreachSent:false", "manualReviewOnly:true"],
+  };
+}
+
+function projectLiveMorningBrief(input: {
+  liveBrief: Awaited<ReturnType<typeof getLatestLiveMorningBrief>>;
+  fallback: ExecutiveMorningBrief;
+}): ExecutiveMorningBrief {
+  const { liveBrief, fallback } = input;
+
+  return {
+    greeting: `${liveBrief.greeting}.`,
+    summary: liveBrief.overnightSummary.join(" "),
+    keySignals: [
+      ...fallback.keySignals,
+      {
+        id: "live_business_data",
+        label: "Live business data",
+        value: liveBrief.providerCalled ? "Connected" : "Needs setup",
+        detail: liveBrief.dataGaps.length > 0 ? `${liveBrief.dataGaps.length} read-only data gap(s) need review.` : "Read-only business snapshots are current.",
+        status: (liveBrief.dataGaps.length > 0 ? "watch" : "good") as ExecutiveWidget["status"],
+      },
+    ].slice(0, 6),
+    recommendedWorkOrder: liveBrief.todayPriorities.length > 0 ? liveBrief.todayPriorities : fallback.recommendedWorkOrder,
+    memoryInsight: fallback.memoryInsight,
+    safetyBadges: [
+      "readOnly:true",
+      `providerCalled:${liveBrief.providerCalled}`,
+      "liveExecutionAllowed:false",
+      "writesBlocked:true",
+    ],
   };
 }
 
@@ -707,6 +829,448 @@ function createHealthCard(input: Omit<ExecutiveWorkforceHealthCard, "status">): 
   };
 }
 
+function roleForDepartment(department: AiDepartmentName): DepartmentCommandMatrixItem["operatingRole"] {
+  if (department === "Executive AI") return "CEO brief, decision agenda, and final priority context.";
+  if (department === "Revenue AI") return "Ranks the highest-value work for qualified seller lead conversion.";
+  if (department === "Marketing AI") return "Creates seller-education campaign drafts for human approval.";
+  if (department === "SEO AI") return "Finds local authority and content refresh opportunities.";
+  if (department === "Design AI") return "Prepares manual creative briefs and visual concepts.";
+  if (department === "Brand Intelligence AI") return "Protects trust, tone, and platform readiness before public use.";
+  if (department === "Content Intelligence AI") return "Turns approved content and source signals into campaign briefs.";
+  if (department === "Lead Intelligence AI") return "Checks source quality, missing data, scoring, and follow-up priority.";
+  if (department === "Sales AI") return "Prepares human seller-call support and follow-up scripts.";
+  if (department === "County Records AI") return "Reviews manually sourced public-record opportunity signals.";
+  if (department === "Driving for Dollars AI") return "Organizes operator-observed property opportunities.";
+  if (department === "Google Maps AI") return "Supports operator-assisted route and address review only.";
+  if (department === "Government & Policy AI") return "Summarizes manually reviewed policy context and risk.";
+  if (department === "News Intelligence AI") return "Converts manually reviewed news into business context.";
+  if (department === "Market Research AI") return "Reviews local market, competitor, and demand assumptions.";
+  if (department === "Knowledge AI") return "Maintains SOPs, source labels, and reusable company memory.";
+  if (department === "Document Intelligence AI") return "Prepares document review notes and template guidance.";
+  if (department === "Provider Readiness AI") return "Tracks connector gaps without activation.";
+  if (department === "Operations AI") return "Coordinates blockers, handoffs, and work queues.";
+  if (department === "Approval AI") return "Packages CEO decisions and approval evidence.";
+  if (department === "Security & Governance AI") return "Blocks unauthorized execution and preserves audit boundaries.";
+
+  return "Contributes advisory department output through the AI COO.";
+}
+
+function contributionForDepartment(department: AiDepartmentName): DepartmentCommandMatrixItem["dealContribution"] {
+  if (["Marketing AI", "SEO AI", "Content Intelligence AI", "County Records AI", "Driving for Dollars AI", "Google Maps AI", "Market Research AI"].includes(department)) return "lead_flow";
+  if (["Sales AI", "Lead Intelligence AI"].includes(department)) return "conversion";
+  if (["Revenue AI"].includes(department)) return "deal_analysis";
+  if (["Design AI", "Brand Intelligence AI", "Government & Policy AI", "News Intelligence AI"].includes(department)) return "trust";
+  if (["Executive AI", "Knowledge AI", "Document Intelligence AI", "Provider Readiness AI", "Operations AI"].includes(department)) return "operations";
+
+  return "governance";
+}
+
+function handoffForDepartment(department: AiDepartmentName): string {
+  if (department === "Executive AI") return "CEO approval queue";
+  if (department === "Revenue AI") return "Approval AI and Acquisitions review";
+  if (department === "Lead Intelligence AI") return "Sales AI or Acquisitions after source cleanup";
+  if (department === "Sales AI") return "Human operator call/follow-up review";
+  if (department === "County Records AI") return "Lead Intelligence AI after source verification";
+  if (department === "Driving for Dollars AI") return "Lead Intelligence AI after duplicate and provenance review";
+  if (department === "Google Maps AI") return "Driving for Dollars AI with operator-reviewed address context";
+  if (department === "Marketing AI") return "Brand Intelligence AI and Approval AI";
+  if (department === "SEO AI") return "Content Intelligence AI and Marketing AI";
+  if (department === "Design AI") return "Brand Intelligence AI";
+  if (department === "Brand Intelligence AI") return "Approval AI for CEO final review";
+  if (department === "Content Intelligence AI") return "Marketing AI and SEO AI";
+  if (department === "Operations AI") return "Executive AI blocker summary";
+  if (department === "Approval AI") return "CEO decision agenda";
+  if (department === "Security & Governance AI") return "Blocked-action report and approval boundaries";
+
+  return "Executive AI summary";
+}
+
+function blockerForDepartment(department: AiDepartmentName, providerMissingCount: number) {
+  if (department === "Provider Readiness AI" && providerMissingCount > 0) return `${providerMissingCount} connector credential/readiness blocker(s).`;
+  if (department === "Google Maps AI") return "Map automation and scanning are blocked; operator-assisted review only.";
+  if (department === "County Records AI") return "Scraping and ingestion are blocked; manual source verification required.";
+  if (department === "Driving for Dollars AI") return "Persistence/promote-to-lead requires CEO-approved implementation packet.";
+  if (department === "Sales AI") return "Seller outreach remains off-platform and human-owned.";
+  if (department === "Marketing AI" || department === "Design AI") return "Publishing/export remains manual and approval-gated.";
+
+  return "No external execution authority; internal preparation only.";
+}
+
+const sourceBasis = {
+  internalModularStandard: {
+    category: "internal_standard",
+    label: "J Capital Modular AI Business OS Standard",
+    reference: "docs/architecture/modular-ai-business-os-standard.md",
+    rationale: "Internal architecture doctrine requires AI Core, Business Modules, connector plug-ins, governance controls, and source tracking.",
+  },
+  internalConstitution: {
+    category: "internal_standard",
+    label: "Enterprise AI Governance Constitution",
+    reference: "docs/architecture/enterprise-ai-governance-constitution.md",
+    rationale: "Internal governance requires approval, provenance, Safe Auto Mode, auditability, and no fabricated property facts.",
+  },
+  internalApiGovernance: {
+    category: "internal_standard",
+    label: "API Governance",
+    reference: "docs/architecture/api-governance.md",
+    rationale: "Internal API conventions require truthful safety flags, safe errors, and no provider/outreach side effects from dashboard APIs.",
+  },
+  nextRouteHandlers: {
+    category: "official_vendor_doc",
+    label: "Next.js Route Handlers",
+    reference: "https://nextjs.org/docs/app/building-your-application/routing/route-handlers",
+    rationale: "API and dashboard surfaces should align with the framework's supported server routing and response conventions.",
+  },
+  owaspAsvs: {
+    category: "open_standard",
+    label: "OWASP ASVS",
+    reference: "https://owasp.org/www-project-application-security-verification-standard/",
+    rationale: "Security verification should be tied to recognized web application security requirements.",
+  },
+  oidcOauth: {
+    category: "open_standard",
+    label: "OAuth 2.0 / OpenID Connect",
+    reference: "https://openid.net/specs/openid-connect-core-1_0.html",
+    rationale: "Future enterprise identity should align with established authorization and identity specifications.",
+  },
+  wcag: {
+    category: "open_standard",
+    label: "WCAG 2.2",
+    reference: "https://www.w3.org/TR/WCAG22/",
+    rationale: "CEO and operator workflows should remain accessible, keyboard-friendly, readable, and mobile-first.",
+  },
+  openApi: {
+    category: "open_standard",
+    label: "OpenAPI Specification",
+    reference: "https://spec.openapis.org/oas/latest.html",
+    rationale: "Stable API contracts reduce drift as AI Core, Business Modules, and connectors expand.",
+  },
+  maintainedOssPattern: {
+    category: "maintained_oss_pattern",
+    label: "Maintained open-source workflow and policy patterns",
+    reference: "Architecture pattern review, no code copied",
+    rationale: "Well-maintained OSS projects can inform modular policy, testing, and orchestration structure without becoming copied implementation.",
+  },
+  bestPractice: {
+    category: "best_practice",
+    label: "Enterprise software delivery practice",
+    reference: "Internal engineering judgment",
+    rationale: "Incremental, reversible, tested changes reduce platform risk while preserving useful CEO workflows.",
+  },
+} satisfies Record<string, ArchitectureSourceBasis>;
+
+const plannedSupportDepartments: DepartmentCommandMatrixItem[] = [
+  ["Legal & Compliance AI", "Plans compliance, consent, contract, platform-policy, and claim-review workflows.", "Compliance review notes", "Approval AI and Security & Governance AI", "Planned department only; no legal advice, contract execution, or compliance clearance is granted.", "governance", "planned"],
+  ["Customer Success AI", "Plans post-close, referral, review, and relationship-care workflows.", "Customer success playbook", "CRM and Marketing AI", "Future-ready only; no review requests or customer outreach are sent.", "conversion", "future_ready"],
+  ["Data Engineering AI", "Plans durable data pipelines, data quality, lineage, and warehouse readiness.", "Data quality backlog", "Analytics AI and API Platform AI", "Planned only; no schema migration, ETL job, or data movement is authorized.", "operations", "planned"],
+  ["API Platform AI", "Plans API contracts, versioning, response conventions, and OpenAPI readiness.", "API contract backlog", "Security & Governance AI", "Planned only; no public API expansion or connector runtime is authorized.", "operations", "planned"],
+  ["IT Operations AI", "Plans environment, deployment, backup, recovery, and incident operations.", "Operations readiness notes", "Executive AI and Security & Governance AI", "Future-ready only; no infrastructure changes or secrets handling is authorized.", "operations", "future_ready"],
+  ["Analytics AI", "Plans KPI definitions, reporting quality, attribution, and dashboard measurement.", "Analytics backlog", "Revenue AI and Knowledge AI", "Planned only; no tracking provider or analytics API is activated.", "deal_analysis", "planned"],
+  ["Social Media AI", "Plans channel-specific content workflows and social proof review.", "Social content plan", "Marketing AI and Brand Intelligence AI", "Future-ready only; no posting, scheduling, replies, or API calls are authorized.", "lead_flow", "future_ready"],
+  ["Video Production AI", "Plans educational video scripts, shot lists, repurposing, and publishing review.", "Video production brief", "Creative Studio and Marketing AI", "Future-ready only; no media generation, publishing, or platform upload is authorized.", "trust", "future_ready"],
+  ["Website Development AI", "Plans website UX, conversion, accessibility, and technical SEO improvements.", "Website improvement backlog", "SEO AI and Brand Intelligence AI", "Planned only; no deployment or content publishing is authorized.", "lead_flow", "planned"],
+  ["Support AI", "Plans internal support, issue triage, knowledge feedback, and operator help workflows.", "Support readiness notes", "Knowledge AI and Operations AI", "Future-ready only; no customer support messages or ticket automation are sent.", "operations", "future_ready"],
+  ["Human Resources AI", "Plans future hiring, onboarding, role clarity, and workforce governance.", "HR future plan", "Executive AI", "Future department only; no HR decision, hiring action, or employee record processing is authorized.", "operations", "planned"],
+].map(([department, operatingRole, currentOutput, nextHandoff, blocker, dealContribution, lifecycleStatus]) => ({
+  department,
+  operatingRole,
+  currentOutput,
+  nextHandoff,
+  blocker,
+  dealContribution: dealContribution as DepartmentCommandMatrixItem["dealContribution"],
+  lifecycleStatus: lifecycleStatus as DepartmentLifecycleStatus,
+  activeExecutionOwner: false,
+  approvalRequired: true,
+  providerCalled: false,
+  liveExecutionAllowed: false,
+  sourceLabel: "enterprise_department_gap_review",
+  assumption: "Planned support departments are visibility and architecture planning only, not active execution agents.",
+}));
+
+export function createArchitectureImprovementBacklog(): ArchitectureImprovementItem[] {
+  return [
+    {
+      id: "identity-rbac-foundation",
+      title: "Enterprise identity, RBAC, and future SSO readiness",
+      ownerDepartment: "Security & Governance AI",
+      businessValue: "Lets the CEO delegate work safely by role, department, and data class without sharing one admin boundary.",
+      risk: "high",
+      readinessState: "ready_for_ceo_review",
+      nextSafeAction: "Approve a design packet for User, Role, Permission, DepartmentMembership, and AgentPermission primitives; do not migrate auth yet.",
+      ceoApprovalRequired: true,
+      sourceBasis: [sourceBasis.internalConstitution, sourceBasis.owaspAsvs, sourceBasis.oidcOauth],
+      providerCalled: false,
+      liveExecutionAllowed: false,
+      externalExecutionAllowed: false,
+    },
+    {
+      id: "department-agent-permissions",
+      title: "Department and agent permission policy service",
+      ownerDepartment: "Executive AI",
+      businessValue: "Prevents duplicate responsibilities and ensures specialist agents only use approved tools, knowledge packs, and handoffs.",
+      risk: "high",
+      readinessState: "planned",
+      nextSafeAction: "Define permission checks around existing department registry and tool registry before adding new active agents.",
+      ceoApprovalRequired: true,
+      sourceBasis: [sourceBasis.internalModularStandard, sourceBasis.internalConstitution, sourceBasis.maintainedOssPattern],
+      providerCalled: false,
+      liveExecutionAllowed: false,
+      externalExecutionAllowed: false,
+    },
+    {
+      id: "workflow-observability",
+      title: "Workflow handoff observability",
+      ownerDepartment: "Operations AI",
+      businessValue: "Gives the CEO and departments clear owner, blocker, evidence, approval, and recovery context for deal-moving work.",
+      risk: "medium",
+      readinessState: "in_progress",
+      nextSafeAction: "Keep handoff readiness read-only until a separate WorkflowRun design is approved.",
+      ceoApprovalRequired: true,
+      sourceBasis: [sourceBasis.internalApiGovernance, sourceBasis.bestPractice],
+      providerCalled: false,
+      liveExecutionAllowed: false,
+      externalExecutionAllowed: false,
+    },
+    {
+      id: "knowledge-pack-governance",
+      title: "Knowledge Pack governance",
+      ownerDepartment: "Knowledge AI",
+      businessValue: "Improves recommendation quality by making approved sources, freshness, owners, and allowed agents explicit.",
+      risk: "medium",
+      readinessState: "planned",
+      nextSafeAction: "Add Knowledge Pack metadata design before allowing more agents to rely on generated recommendations.",
+      ceoApprovalRequired: true,
+      sourceBasis: [sourceBasis.internalConstitution, sourceBasis.internalModularStandard],
+      providerCalled: false,
+      liveExecutionAllowed: false,
+      externalExecutionAllowed: false,
+    },
+    {
+      id: "api-contract-standardization",
+      title: "API contract standardization",
+      ownerDepartment: "API Platform AI",
+      businessValue: "Reduces API drift as AI Core, Real Estate Business Module, approvals, and connectors expand.",
+      risk: "medium",
+      readinessState: "planned",
+      nextSafeAction: "Document internal response envelopes, correlation IDs, safety flags, and error shapes before OpenAPI generation.",
+      ceoApprovalRequired: true,
+      sourceBasis: [sourceBasis.internalApiGovernance, sourceBasis.nextRouteHandlers, sourceBasis.openApi],
+      providerCalled: false,
+      liveExecutionAllowed: false,
+      externalExecutionAllowed: false,
+    },
+    {
+      id: "audit-hardening",
+      title: "Audit event taxonomy and retention hardening",
+      ownerDepartment: "Security & Governance AI",
+      businessValue: "Makes approvals, AI recommendations, connector decisions, and workflow blockers easier to trace and review.",
+      risk: "high",
+      readinessState: "ready_for_ceo_review",
+      nextSafeAction: "Approve audit taxonomy and safe metadata rules before adding more durable automation.",
+      ceoApprovalRequired: true,
+      sourceBasis: [sourceBasis.internalConstitution, sourceBasis.owaspAsvs],
+      providerCalled: false,
+      liveExecutionAllowed: false,
+      externalExecutionAllowed: false,
+    },
+    {
+      id: "accessibility-quality-gate",
+      title: "Accessibility and mobile command quality gate",
+      ownerDepartment: "Website Development AI",
+      businessValue: "Keeps CEO approval, lead review, and mobile command workflows usable under real operating pressure.",
+      risk: "low",
+      readinessState: "planned",
+      nextSafeAction: "Add keyboard, focus, contrast, label, and mobile text-fit checks to dashboard acceptance criteria.",
+      ceoApprovalRequired: true,
+      sourceBasis: [sourceBasis.wcag, sourceBasis.bestPractice],
+      providerCalled: false,
+      liveExecutionAllowed: false,
+      externalExecutionAllowed: false,
+    },
+  ];
+}
+
+function createHandoffReadinessForQueue(item: DealClosingWorkQueueItem): WorkflowHandoffReadinessItem {
+  const nextDepartmentByItem: Record<string, string> = {
+    hot_follow_up_review: "Lead Intelligence AI",
+    offer_ready_review: "Approval AI",
+    lead_cleanup_review: "Revenue AI",
+    d4d_county_review: "Lead Intelligence AI",
+    campaign_approval_review: "Brand Intelligence AI",
+    operating_readiness_review: "Executive AI",
+  };
+  const evidenceByItem: Record<string, string[]> = {
+    hot_follow_up_review: ["Lead source", "DNC/opt-out status", "approval status", "last seller context"],
+    offer_ready_review: ["Analyzer fields", "source confidence", "seller motivation", "missing-data notes"],
+    lead_cleanup_review: ["Source label", "property address", "contact context", "provenance note"],
+    d4d_county_review: ["Operator observation", "manual source/provenance", "duplicate review", "human verification"],
+    campaign_approval_review: ["Approved source material", "brand review", "CTA review", "manual publish owner"],
+    operating_readiness_review: ["Readiness blocker", "business value", "risk note", "rollback expectation"],
+  };
+
+  return {
+    id: `handoff-${item.id}`,
+    workQueueItemId: item.id,
+    currentOwner: item.ownerDepartment,
+    nextDepartment: nextDepartmentByItem[item.id] ?? "Executive AI",
+    blocker: item.safetyBoundary,
+    evidenceRequired: evidenceByItem[item.id] ?? ["Source label", "assumption", "CEO review context"],
+    approvalRequirement: "CEO approval can authorize internal preparation only; external execution requires a separate exact governed policy.",
+    recoveryPath: "If evidence is missing or conflicting, return the item to Operations AI with a blocker note and no workflow execution.",
+    providerCalled: false,
+    liveExecutionAllowed: false,
+    outreachBlocked: true,
+    scrapingBlocked: true,
+    workflowStarted: false,
+  };
+}
+
+export function createOperatingCompanyReport({
+  followUpsDue,
+  offerReadyCount,
+  missingInfoCount,
+  marketingAwaitingApproval,
+  canvaAwaitingDesign,
+  providerMissingCount,
+  financeGapCount,
+  qualifiedLeads,
+  newLeadsToday,
+  revenuePipeline,
+  websiteSeoReady,
+  activeKnowledgeItems,
+}: {
+  followUpsDue: number;
+  offerReadyCount: number;
+  missingInfoCount: number;
+  marketingAwaitingApproval: number;
+  canvaAwaitingDesign: number;
+  providerMissingCount: number;
+  financeGapCount: number;
+  qualifiedLeads: number;
+  newLeadsToday: number;
+  revenuePipeline: ReturnType<typeof getRevenuePipelineSummary>;
+  websiteSeoReady: boolean;
+  activeKnowledgeItems: number;
+}): OperatingCompanyReport {
+  const departmentCommandMatrix: DepartmentCommandMatrixItem[] = getCompanyDepartmentRegistry().map((department) => ({
+    department: department.name,
+    operatingRole: roleForDepartment(department.name),
+    currentOutput: department.outputs.slice(0, 3).join(", "),
+    nextHandoff: handoffForDepartment(department.name),
+    blocker: blockerForDepartment(department.name, providerMissingCount),
+    dealContribution: contributionForDepartment(department.name),
+    lifecycleStatus: "active",
+    activeExecutionOwner: true,
+    approvalRequired: true,
+    providerCalled: false,
+    liveExecutionAllowed: false,
+    sourceLabel: "company_department_registry",
+    assumption: "Department role is advisory and routes through CEO-approved internal preparation only.",
+  }));
+  const dealClosingWorkQueue: DealClosingWorkQueueItem[] = [
+    {
+      id: "hot_follow_up_review",
+      title: "Review due seller follow-ups",
+      count: followUpsDue,
+      ownerDepartment: "Sales AI",
+      nextManualAction: "Open due follow-ups, verify DNC/approval state, then complete any outreach manually outside the app.",
+      revenueImpact: followUpsDue > 0 ? "high" : "medium",
+      safetyBoundary: "No SMS, email, call, schedule, or provider action is sent by the system.",
+      href: "/dashboard/leads",
+      status: statusForBlockedCount(followUpsDue),
+      sourceLabel: "lead_next_follow_up_at",
+      assumption: "Due follow-up counts come from stored CRM timestamps and require human verification.",
+    },
+    {
+      id: "offer_ready_review",
+      title: "Verify offer-ready opportunities",
+      count: offerReadyCount,
+      ownerDepartment: "Revenue AI",
+      nextManualAction: "Review analyzer values, source confidence, seller context, and approval state before offer work.",
+      revenueImpact: "high",
+      safetyBoundary: "No offer is generated, sent, signed, or presented automatically.",
+      href: "/dashboard/acquisitions",
+      status: statusForOpportunityCount(offerReadyCount),
+      sourceLabel: "revenue_pipeline_and_analyzer",
+      assumption: "Offer readiness is an advisory signal from stored fields, not verified property value.",
+    },
+    {
+      id: "lead_cleanup_review",
+      title: "Clean missing lead/source data",
+      count: missingInfoCount,
+      ownerDepartment: "Lead Intelligence AI",
+      nextManualAction: "Resolve missing source, address, seller context, contact, or provenance before lower-value work.",
+      revenueImpact: missingInfoCount > 0 ? "high" : "medium",
+      safetyBoundary: "No enrichment, skip tracing, merge, delete, reject, or routing automation is allowed.",
+      href: "/dashboard/properties",
+      status: statusForBlockedCount(missingInfoCount),
+      sourceLabel: "lead_record_completeness",
+      assumption: "Completeness checks are advisory and may miss context stored outside structured fields.",
+    },
+    {
+      id: "d4d_county_review",
+      title: "Build DFD and county candidate review",
+      count: "Manual",
+      ownerDepartment: "Driving for Dollars AI",
+      nextManualAction: "Approve operator-assisted DFD persistence and county/manual source review before lead promotion.",
+      revenueImpact: "high",
+      safetyBoundary: "No map crawling, county scraping, Street View automation, or property fact inference.",
+      href: "/dashboard/driving-for-dollars",
+      status: "watch",
+      sourceLabel: "manual_d4d_and_county_readiness",
+      assumption: "DFD/county lead flow is planned but not currently a live automated acquisition channel.",
+    },
+    {
+      id: "campaign_approval_review",
+      title: "Approve trust-building campaigns",
+      count: marketingAwaitingApproval + canvaAwaitingDesign,
+      ownerDepartment: "Marketing AI",
+      nextManualAction: "Approve, revise, or reject seller-education drafts and design briefs for manual publishing.",
+      revenueImpact: marketingAwaitingApproval + canvaAwaitingDesign > 0 ? "medium" : "low",
+      safetyBoundary: "No publishing, asset export, ad spend, email, or SMS execution occurs.",
+      href: "/dashboard/marketing",
+      status: statusForBlockedCount(marketingAwaitingApproval + canvaAwaitingDesign),
+      sourceLabel: "marketing_workflow_and_design_briefs",
+      assumption: "Marketing readiness measures draft volume, not live campaign performance.",
+    },
+    {
+      id: "operating_readiness_review",
+      title: "Close launch and measurement gaps",
+      count: providerMissingCount + financeGapCount,
+      ownerDepartment: "Operations AI",
+      nextManualAction: "Clear only the readiness gaps that improve attribution, reporting, or qualified lead conversion.",
+      revenueImpact: "medium",
+      safetyBoundary: "Provider readiness does not activate connectors or authorize external actions.",
+      href: "/dashboard/production-readiness",
+      status: statusForBlockedCount(providerMissingCount + financeGapCount),
+      sourceLabel: "provider_readiness_and_finance_kpis",
+      assumption: "Provider and finance gaps are readiness blockers, not proof of operational failure.",
+    },
+  ];
+  const workflowHandoffReadiness = dealClosingWorkQueue.map(createHandoffReadinessForQueue);
+  const architectureImprovementBacklog = createArchitectureImprovementBacklog();
+
+  return {
+    summary:
+      `${newLeadsToday} new lead(s), ${qualifiedLeads} qualified lead(s), ${revenuePipeline.actionableLeads} actionable pipeline item(s), and ${activeKnowledgeItems} knowledge item(s) are coordinated toward the 2-5 deals/month goal. ` +
+      `${websiteSeoReady ? "Public SEO readiness is visible." : "Public SEO readiness needs review."}`,
+    closeGoal: "2-5 deals/month",
+    departmentCommandMatrix: [...departmentCommandMatrix, ...plannedSupportDepartments],
+    dealClosingWorkQueue,
+    architectureImprovementBacklog,
+    workflowHandoffReadiness,
+    safetyFlags: {
+      advisoryOnly: true,
+      approvalRequired: true,
+      providerCalled: false,
+      liveExecutionAllowed: false,
+      externalActionsBlocked: true,
+      scrapingBlocked: true,
+      outreachBlocked: true,
+    },
+  };
+}
+
 export function createExecutiveWorkforceReport({
   newLeadsToday,
   qualifiedLeads,
@@ -831,7 +1395,7 @@ export function createExecutiveWorkforceReport({
 }
 
 export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboardReport> {
-  const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, memoryEventsResult, referralResult, activationResult, departmentIntelligenceResult, systemHealth, recentSystemActivity] = await Promise.all([
+  const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, memoryEventsResult, referralResult, activationResult, departmentIntelligenceResult, liveMorningBriefResult, dailyMissionResult, systemHealth, recentSystemActivity] = await Promise.all([
     loadPartialData("Lead", listDbLeads, [] as StoredLead[]),
     loadPartialData("Marketing workflow", listMarketingWorkflow, null),
     loadPartialData("Finance", listFinanceEntries, []),
@@ -840,6 +1404,8 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
     loadPartialData("Referral dashboard", getReferralDashboard, null),
     loadPartialData("Company activation", getCompanyActivationSnapshot, null),
     loadPartialData("Department Intelligence", getDepartmentIntelligenceReport, null),
+    loadPartialData("Live Morning Brief", getLatestLiveMorningBrief, null),
+    loadPartialData("Daily Mission", getDailyMission, null),
     getSystemHealth().catch(() => null),
     getRecentSystemActivity().catch(() => []),
   ]);
@@ -850,6 +1416,8 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
   const memoryEvents = memoryEventsResult.data;
   const referralSummary = referralResult.data?.summary ?? null;
   const departmentIntelligence = departmentIntelligenceResult.data;
+  const liveMorningBrief = liveMorningBriefResult.data;
+  const dailyMission = dailyMissionResult.data;
   const today = startOfToday();
   const revenuePipeline = getRevenuePipelineSummary(leads);
   const providerReadiness = createProviderReadinessReport();
@@ -1014,7 +1582,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
   const todayPriorityIds = new Set(["follow_ups_due", "revenue_pipeline", "offer_ready", "marketing_approval", "website_seo"]);
   const todayPriorities = widgets.filter((widget) => todayPriorityIds.has(widget.id));
   const kpiInterpretations = createKpiInterpretations(businessIntelligence);
-  const morningBrief = createMorningBrief({
+  const localMorningBrief = createMorningBrief({
     widgets,
     executiveRecommendations,
     followUpsDue,
@@ -1022,6 +1590,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
     financeGapCount: financeKpis.missingData.length,
     marketingAwaitingApproval,
   });
+  const morningBrief = liveMorningBrief ? projectLiveMorningBrief({ liveBrief: liveMorningBrief, fallback: localMorningBrief }) : localMorningBrief;
   const revenueCommandCenter = createRevenueCommandCenter({
     newLeadsToday,
     qualifiedLeads,
@@ -1058,14 +1627,30 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
     contentIntelligence,
     companyOrchestrator,
   });
+  const operatingCompany = createOperatingCompanyReport({
+    followUpsDue,
+    offerReadyCount,
+    missingInfoCount,
+    marketingAwaitingApproval,
+    canvaAwaitingDesign,
+    providerMissingCount,
+    financeGapCount: financeKpis.missingData.length,
+    qualifiedLeads,
+    newLeadsToday,
+    revenuePipeline,
+    websiteSeoReady,
+    activeKnowledgeItems,
+  });
 
   return {
     ok: true,
     widgets,
     dailyStartup,
+    dailyMission,
     revenueCommandCenter,
     executiveWorkforce,
     departmentIntelligence,
+    operatingCompany,
     morningBrief,
     todayPriorities,
     kpiInterpretations,
@@ -1082,13 +1667,17 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
       memoryEventsResult.gap,
       ...businessIntelligence.dataGaps,
       departmentIntelligenceResult.gap,
+      liveMorningBriefResult.gap,
+      dailyMissionResult.gap,
+      ...(dailyMission?.dataGaps ?? []),
+      ...(liveMorningBrief?.dataGaps ?? []),
       ...financeKpis.missingData,
       providerMissingCount > 0 ? `${providerMissingCount} provider readiness credential set(s) are missing.` : "",
     ].filter(Boolean))],
     recentSystemActivity,
     safetyFlags: {
       readOnly: true,
-      providerCalled: false,
+      providerCalled: liveMorningBrief?.providerCalled ?? false,
       outreachSent: false,
       adsCreated: false,
       scrapingStarted: false,
