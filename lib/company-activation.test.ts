@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
 import { createDirectiveDecisionPlan, scoreExecutiveDirective } from "./company-activation";
+import { createInitialDraftWorkspaceFields } from "./company-draft-workspace";
 import { createInheritedPropertyCampaignDirective } from "./company-orchestrator";
 
 describe("AI company activation", () => {
@@ -33,6 +34,29 @@ describe("AI company activation", () => {
     assert.equal(plan.safetyFlags.adsBlocked, true);
     assert.equal(plan.safetyFlags.emailBlocked, true);
     assert.equal(plan.safetyFlags.smsBlocked, true);
+  });
+
+  it("creates internal-only draft workspace fields for activation draft queue items", () => {
+    const directive = createInheritedPropertyCampaignDirective();
+    const fields = createInitialDraftWorkspaceFields({
+      output: directive.requested_outputs[0],
+      ownerDepartment: directive.assigned_departments[0],
+      directive: {
+        id: directive.id,
+        title: directive.title,
+        businessGoal: directive.business_goal,
+        expectedBusinessValue: directive.expected_business_value,
+      },
+      sourceLabel: `executive_directive:${directive.id}`,
+    });
+
+    assert.equal(fields.title, directive.requested_outputs[0]);
+    assert.equal(fields.approvalStatus, "pending_ceo_review");
+    assert.equal(fields.revisionCount, 0);
+    assert.equal(fields.metadata.sourceLabel, "executive_directive:campaign-001");
+    assert.ok(fields.knowledgeTrace.some((entry) => entry.type === "knowledge_pack"));
+    assert.ok(fields.knowledgeTrace.some((entry) => entry.type === "source_registry_entry"));
+    assert.ok(fields.executiveSummary.includes("blocked from publishing"));
   });
 
   it("routes request changes back to Executive AI without creating drafts", () => {

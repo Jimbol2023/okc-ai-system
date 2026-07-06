@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { createInitialDraftWorkspaceFields } from "@/lib/company-draft-workspace";
 import {
   createDepartmentMemoryPlan,
   recordDepartmentMemoryEvents,
@@ -106,6 +107,18 @@ type ActivationRecord = {
   blocker?: string | null;
   output?: string;
   ownerDepartment?: string;
+  sourceLabel?: string;
+  body?: string;
+  messaging?: string;
+  cta?: string;
+  metadata?: unknown;
+  priority?: string;
+  executiveSummary?: string;
+  knowledgeTrace?: unknown;
+  assumptions?: unknown;
+  confidence?: number;
+  approvalStatus?: string;
+  revisionCount?: number;
   decision?: string;
   note?: string | null;
   resultingStatus?: string;
@@ -132,10 +145,14 @@ type ActivationTransaction = DepartmentMemoryWritableTx & {
 
 type ActivationDb = Omit<typeof prisma, "$transaction"> &
   ActivationTransaction & {
-    $transaction<TResult>(fn: (tx: ActivationTransaction) => Promise<TResult>): Promise<TResult>;
+    $transaction<TResult>(
+      fn: (tx: ActivationTransaction) => Promise<TResult>,
+      options?: { maxWait?: number; timeout?: number },
+    ): Promise<TResult>;
   };
 
 const db = prisma as unknown as ActivationDb;
+const activationTransactionOptions = { maxWait: 10_000, timeout: 30_000 } as const;
 
 function asActivationRecord(record: unknown): ActivationRecord {
   return record as ActivationRecord;
@@ -431,6 +448,20 @@ export async function decideExecutiveDirective(input: CompanyDirectiveDecisionIn
       }
 
       for (const output of directive.requested_outputs) {
+        const ownerDepartment = ownerForOutput(output);
+        const sourceLabel = `executive_directive:${input.directiveId}`;
+        const draftWorkspaceFields = createInitialDraftWorkspaceFields({
+          output,
+          ownerDepartment,
+          directive: {
+            id: directive.id,
+            title: directive.title,
+            businessGoal: directive.business_goal,
+            expectedBusinessValue: directive.expected_business_value,
+          },
+          sourceLabel,
+        });
+
         await tx.aiCompanyDraftQueueItem.upsert({
           where: {
             directiveId_output: {
@@ -442,9 +473,10 @@ export async function decideExecutiveDirective(input: CompanyDirectiveDecisionIn
             tenantId,
             directiveId: input.directiveId,
             output,
-            ownerDepartment: ownerForOutput(output),
+            ownerDepartment,
+            ...draftWorkspaceFields,
             status: "draft_required",
-            sourceLabel: `executive_directive:${input.directiveId}`,
+            sourceLabel,
             approvalRequired: true,
             providerCalled: false,
             sent: false,
@@ -452,8 +484,20 @@ export async function decideExecutiveDirective(input: CompanyDirectiveDecisionIn
             liveExecutionAllowed: false,
           },
           update: {
-            ownerDepartment: ownerForOutput(output),
+            ownerDepartment,
+            title: draftWorkspaceFields.title,
+            body: draftWorkspaceFields.body,
+            messaging: draftWorkspaceFields.messaging,
+            cta: draftWorkspaceFields.cta,
+            metadata: draftWorkspaceFields.metadata,
+            priority: draftWorkspaceFields.priority,
+            businessGoal: draftWorkspaceFields.businessGoal,
+            executiveSummary: draftWorkspaceFields.executiveSummary,
+            knowledgeTrace: draftWorkspaceFields.knowledgeTrace,
+            assumptions: draftWorkspaceFields.assumptions,
+            confidence: draftWorkspaceFields.confidence,
             status: "draft_required",
+            sourceLabel,
             approvalRequired: true,
             providerCalled: false,
             sent: false,
@@ -552,7 +596,7 @@ export async function decideExecutiveDirective(input: CompanyDirectiveDecisionIn
       liveExecutionAllowed: false,
       safetyFlags,
     };
-  });
+  }, activationTransactionOptions);
 
   void refreshDepartmentIntelligenceSnapshots().catch((error) => {
     console.error("Department Intelligence snapshot refresh failed closed:", error);

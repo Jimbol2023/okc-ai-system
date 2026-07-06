@@ -13,6 +13,7 @@ export const dashboardNavigationItems: DashboardNavigationItem[] = [
   { href: "/dashboard/knowledge", label: "Knowledge", keywords: ["sop", "playbook", "probate", "search"] },
   { href: "/dashboard/leads", label: "Leads", keywords: ["crm", "follow up", "seller", "source"] },
   { href: "/dashboard/approvals", label: "Approvals", keywords: ["review", "governance", "approval"] },
+  { href: "/dashboard/drafts", label: "Draft Workspace", keywords: ["draft", "drafts", "ceo review", "workspace", "department work", "internal review"] },
   { href: "/dashboard/marketing", label: "Marketing Hub", keywords: ["campaign", "draft", "content", "gbp"] },
   { href: "/dashboard/referrals", label: "Referrals", keywords: ["referral", "partner", "partnership", "attribution", "source"] },
   { href: "/dashboard/tools", label: "Tools", keywords: ["tool registry", "capability", "connector", "safe auto", "fallback"] },

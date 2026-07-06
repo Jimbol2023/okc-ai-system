@@ -857,6 +857,21 @@ model AiCompanyDraftQueueItem {
   directiveId           String
   output                String
   ownerDepartment       String
+  title                 String   @default("")
+  body                  String   @default("")
+  messaging             String   @default("")
+  cta                   String   @default("")
+  metadata              Json     @default("{}")
+  priority              String   @default("normal")
+  businessGoal          String   @default("improve_executive_decisions")
+  executiveSummary      String   @default("")
+  knowledgeTrace        Json     @default("[]")
+  assumptions           Json     @default("[]")
+  confidence            Int      @default(72)
+  approvalStatus        String   @default("pending_ceo_review")
+  revisionCount         Int      @default(0)
+  lastModifiedBy        String?
+  lastModifiedAt        DateTime?
   status                String   @default("draft_required")
   sourceLabel           String
   approvalRequired      Boolean  @default(true)
@@ -868,13 +883,44 @@ model AiCompanyDraftQueueItem {
   updatedAt             DateTime @updatedAt
 
   directive AiCompanyExecutiveDirective @relation(fields: [directiveId], references: [id], onDelete: Cascade)
+  revisions AiCompanyDraftRevision[]
 
   @@unique([directiveId, output])
   @@index([tenantId])
   @@index([directiveId])
   @@index([ownerDepartment])
   @@index([status])
+  @@index([approvalStatus])
   @@index([approvalRequired])
+}
+
+model AiCompanyDraftRevision {
+  id                   String   @id @default(uuid())
+  tenantId             String   @default("default")
+  draftQueueItemId     String
+  directiveId          String
+  action               String
+  note                 String?
+  reviewer             String?
+  previousSnapshot     Json
+  nextSnapshot         Json
+  safetyFlags          Json
+  providerCalled       Boolean  @default(false)
+  sent                 Boolean  @default(false)
+  published            Boolean  @default(false)
+  workflowStarted      Boolean  @default(false)
+  liveExecutionAllowed Boolean  @default(false)
+  createdAt            DateTime @default(now())
+
+  draftQueueItem AiCompanyDraftQueueItem @relation(fields: [draftQueueItemId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([draftQueueItemId])
+  @@index([directiveId])
+  @@index([action])
+  @@index([providerCalled])
+  @@index([liveExecutionAllowed])
+  @@index([createdAt])
 }
 
 model AiCompanyDecisionLog {
