@@ -1014,6 +1014,43 @@ model AiDepartmentIntelligenceSnapshot {
   @@index([createdAt])
 }
 
+model BusinessDataSnapshot {
+  id                   String   @id @default(uuid())
+  tenantId             String   @default("default")
+  snapshotDate         DateTime
+  provider             String
+  connectorId          String
+  category             String
+  status               String   @default("data_gap")
+  sourceLabel          String
+  provenance           String
+  freshness            String
+  summary              String
+  metrics              Json
+  records              Json
+  dataGaps             Json
+  assumptions          Json
+  safetyFlags          Json
+  providerCalled       Boolean  @default(false)
+  sent                 Boolean  @default(false)
+  published            Boolean  @default(false)
+  crmMutated           Boolean  @default(false)
+  liveExecutionAllowed Boolean  @default(false)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@unique([tenantId, snapshotDate, provider, category])
+  @@index([tenantId])
+  @@index([snapshotDate])
+  @@index([provider])
+  @@index([connectorId])
+  @@index([category])
+  @@index([status])
+  @@index([providerCalled])
+  @@index([liveExecutionAllowed])
+  @@index([createdAt])
+}
+
 model SocialContentSource {
   id                    String   @id @default(uuid())
   tenantId              String   @default("default")

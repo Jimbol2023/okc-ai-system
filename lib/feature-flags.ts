@@ -52,16 +52,16 @@ export const phase2FeatureFlags: FeatureFlag[] = [
   },
   {
     key: "connector_live_reads",
-    enabled: false,
+    enabled: true,
     category: "connector",
-    description: "Allows approved connector adapters to perform live read-only calls after governance review.",
+    description: "Allows Sprint 18 approved connector adapters to perform live read-only calls after governance review.",
     requiresAdminApproval: true,
   },
   {
     key: "connector_google",
-    enabled: false,
+    enabled: true,
     category: "connector",
-    description: "Enables Google connector family readiness beyond static registry visibility.",
+    description: "Enables governed Google connector family read-only telemetry.",
     requiresAdminApproval: true,
   },
   {
@@ -80,16 +80,16 @@ export const phase2FeatureFlags: FeatureFlag[] = [
   },
   {
     key: "connector_marketing",
-    enabled: false,
+    enabled: true,
     category: "connector",
-    description: "Enables marketing platform connector readiness beyond internal drafts.",
+    description: "Enables governed marketing platform read-only telemetry.",
     requiresAdminApproval: true,
   },
   {
     key: "connector_communication",
-    enabled: false,
+    enabled: true,
     category: "connector",
-    description: "Enables communication connector readiness beyond internal draft/task preparation.",
+    description: "Enables governed communication platform read-only telemetry.",
     requiresAdminApproval: true,
   },
   {
@@ -129,9 +129,9 @@ export const phase2FeatureFlags: FeatureFlag[] = [
   },
   {
     key: "executive_briefings",
-    enabled: false,
+    enabled: true,
     category: "intelligence",
-    description: "Enables daily, weekly, and monthly executive briefing generation.",
+    description: "Enables daily, weekly, and monthly executive briefing generation from approved read-only snapshots.",
     requiresAdminApproval: true,
   },
   {
