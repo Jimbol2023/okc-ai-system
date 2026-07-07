@@ -364,6 +364,8 @@ type DailyStartup = {
       output: string;
       ownerDepartment: string;
       status: string;
+      workProduct?: unknown;
+      qualityChecklist?: unknown;
       approvalRequired: true;
     }>;
     latestDecision: {
@@ -755,6 +757,22 @@ const fallbackDecisionReasonTemplates: Record<DirectiveDecision, readonly string
   defer: ["Timing", "Dependency missing", "Awaiting outcome data"],
 };
 
+function getWorkProductPreview(workProduct: unknown) {
+  if (!workProduct || typeof workProduct !== "object") return "Internal work product will appear after Campaign 001 is approved.";
+  const record = workProduct as Record<string, unknown>;
+  const summary =
+    record.executiveSummary ||
+    record.draftBrief ||
+    record.designBrief ||
+    record.salesPrep ||
+    record.brandReview ||
+    record.governanceReview ||
+    record.refreshAngle ||
+    record.targetSellerProblem;
+
+  return typeof summary === "string" ? summary : "Internal work product prepared for CEO review.";
+}
+
 function DailyStartupPanel({ startup, onDecisionComplete }: { startup: DailyStartup; onDecisionComplete: () => Promise<void> }) {
   const [decisionNotes, setDecisionNotes] = useState<Record<string, string>>({});
   const [decisionReminders, setDecisionReminders] = useState<Record<string, string>>({});
@@ -816,9 +834,9 @@ function DailyStartupPanel({ startup, onDecisionComplete }: { startup: DailyStar
     <section aria-labelledby="daily-startup-heading" className="rounded-lg border border-border bg-surface p-5 md:p-6">
       <div className="flex min-w-0 flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
         <div className="min-w-0 space-y-2">
-          <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-muted">Daily Executive Brief</p>
+          <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-muted">AI COO Headquarters</p>
           <h2 id="daily-startup-heading" className="break-words text-2xl font-semibold text-primary md:text-3xl">
-            Start the Company
+            Good Morning, Moses
           </h2>
           <p className="max-w-5xl break-words text-sm leading-6 text-muted">{startup.executive_brief}</p>
           <p className="break-words text-xs font-semibold uppercase tracking-[0.08em] text-muted">
@@ -867,7 +885,7 @@ function DailyStartupPanel({ startup, onDecisionComplete }: { startup: DailyStar
           </div>
 
           <div className="rounded-lg border border-emerald-100 bg-emerald-50 p-4">
-            <h3 className="break-words text-lg font-semibold text-emerald-950">AI COO Workflow</h3>
+                <h3 className="break-words text-lg font-semibold text-emerald-950">AI COO Workflow</h3>
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
               <div className="rounded-md bg-white p-3">
                 <p className="text-xs font-bold uppercase tracking-[0.08em] text-emerald-900">Assignments</p>
@@ -1001,7 +1019,8 @@ function DailyStartupPanel({ startup, onDecisionComplete }: { startup: DailyStar
                 <ul className="mt-3 space-y-2 text-xs leading-5 text-muted">
                   {draftQueueItems.slice(0, 8).map((draft) => (
                     <li key={draft.id} className="break-words">
-                      {draft.output}: {draft.status}
+                      <span className="font-semibold text-primary">{draft.output}: {draft.status}</span>
+                      <span className="mt-1 block text-muted">{getWorkProductPreview(draft.workProduct)}</span>
                     </li>
                   ))}
                 </ul>

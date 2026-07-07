@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { activateCampaign001BusinessWork, type BusinessActivationWritableTx } from "@/lib/business-activation";
 import {
   createDepartmentMemoryPlan,
   recordDepartmentMemoryEvents,
@@ -106,6 +107,8 @@ type ActivationRecord = {
   blocker?: string | null;
   output?: string;
   ownerDepartment?: string;
+  workProduct?: unknown;
+  qualityChecklist?: unknown;
   decision?: string;
   note?: string | null;
   resultingStatus?: string;
@@ -128,7 +131,7 @@ type ActivationTransaction = DepartmentMemoryWritableTx & {
   aiCompanyDraftQueueItem: ActivationDelegate<ActivationRecord>;
   aiCompanyDecisionLog: ActivationDelegate<ActivationRecord>;
   unifiedApprovalItem: ActivationDelegate<ActivationRecord>;
-};
+} & BusinessActivationWritableTx;
 
 type ActivationDb = Omit<typeof prisma, "$transaction"> &
   ActivationTransaction & {
@@ -321,24 +324,34 @@ export async function getCompanyActivationSnapshot(): Promise<CompanyActivationS
 
   return {
     directives: directives.map((record) => toDirective(asActivationRecord(record))),
-    assignments: assignments.map((assignment) => ({
-      id: assignment.id,
-      directiveId: assignment.directiveId ?? "",
-      department: assignment.department as AiDepartmentName,
-      assignmentType: assignment.assignmentType ?? "department_work",
-      requestedOutputs: assignment.requestedOutputs as string[],
-      status: assignment.status ?? "pending_internal_work",
-      blocker: assignment.blocker ?? null,
-      approvalRequired: true,
-    })),
-    draftQueueItems: draftQueueItems.map((draft) => ({
-      id: draft.id,
-      directiveId: draft.directiveId ?? "",
-      output: draft.output ?? "Internal draft item",
-      ownerDepartment: draft.ownerDepartment as AiDepartmentName,
-      status: draft.status ?? "draft_required",
-      approvalRequired: true,
-    })),
+    assignments: assignments.map((assignmentRecord) => {
+      const assignment = asActivationRecord(assignmentRecord);
+
+      return {
+        id: assignment.id,
+        directiveId: assignment.directiveId ?? "",
+        department: assignment.department as AiDepartmentName,
+        assignmentType: assignment.assignmentType ?? "department_work",
+        requestedOutputs: assignment.requestedOutputs as string[],
+        status: assignment.status ?? "pending_internal_work",
+        blocker: assignment.blocker ?? null,
+        approvalRequired: true,
+      };
+    }),
+    draftQueueItems: draftQueueItems.map((draftRecord) => {
+      const draft = asActivationRecord(draftRecord);
+
+      return {
+        id: draft.id,
+        directiveId: draft.directiveId ?? "",
+        output: draft.output ?? "Internal draft item",
+        ownerDepartment: draft.ownerDepartment as AiDepartmentName,
+        status: draft.status ?? "draft_required",
+        workProduct: draft.workProduct ?? null,
+        qualityChecklist: draft.qualityChecklist ?? null,
+        approvalRequired: true,
+      };
+    }),
     latestDecision: latestDecision
       ? {
           decision: latestDecision.decision as CeoDecisionType,
@@ -445,6 +458,8 @@ export async function decideExecutiveDirective(input: CompanyDirectiveDecisionIn
             ownerDepartment: ownerForOutput(output),
             status: "draft_required",
             sourceLabel: `executive_directive:${input.directiveId}`,
+            workProduct: null,
+            qualityChecklist: null,
             approvalRequired: true,
             providerCalled: false,
             sent: false,
@@ -462,6 +477,8 @@ export async function decideExecutiveDirective(input: CompanyDirectiveDecisionIn
           },
         });
       }
+
+      await activateCampaign001BusinessWork(tx, directive);
     }
 
     if (input.decision === "request_changes") {

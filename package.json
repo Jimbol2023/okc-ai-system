@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "node --import tsx --test lib/company-orchestrator.test.ts lib/company-activation.test.ts lib/department-intelligence.test.ts lib/marketing-platform-registry.test.ts lib/content-intelligence.test.ts lib/core-platform-registry.test.ts lib/executive-dashboard.test.ts lib/dashboard-navigation.test.ts",
+    "test": "node --import tsx --test lib/company-orchestrator.test.ts lib/company-activation.test.ts lib/business-activation.test.ts lib/department-intelligence.test.ts lib/marketing-platform-registry.test.ts lib/content-intelligence.test.ts lib/core-platform-registry.test.ts lib/executive-dashboard.test.ts lib/dashboard-navigation.test.ts",
     "lint": "eslint app components lib --ext .ts,.tsx",
     "test:e2e": "playwright test",
     "test:safety": "node --import tsx --test tests/safety/*.test.ts",

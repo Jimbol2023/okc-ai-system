@@ -859,6 +859,8 @@ model AiCompanyDraftQueueItem {
   ownerDepartment       String
   status                String   @default("draft_required")
   sourceLabel           String
+  workProduct           Json?
+  qualityChecklist      Json?
   approvalRequired      Boolean  @default(true)
   providerCalled        Boolean  @default(false)
   sent                  Boolean  @default(false)
@@ -875,6 +877,42 @@ model AiCompanyDraftQueueItem {
   @@index([ownerDepartment])
   @@index([status])
   @@index([approvalRequired])
+}
+
+model AiCompanyOpportunityQueueItem {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  source                String
+  sourceLabel           String
+  address               String?
+  addressMissingReason  String?
+  ownerName             String?
+  contactInfo           String?
+  leadScore             Int      @default(0)
+  confidence            Int      @default(0)
+  estimatedValue        String?
+  opportunityType       String
+  motivationSignal      String
+  recommendedAction     String
+  status                String   @default("manual_review")
+  assumptions           Json
+  safetyFlags           Json
+  providerCalled        Boolean  @default(false)
+  sent                  Boolean  @default(false)
+  published             Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([source])
+  @@index([sourceLabel])
+  @@index([status])
+  @@index([confidence])
+  @@index([leadScore])
+  @@index([providerCalled])
+  @@index([liveExecutionAllowed])
+  @@index([createdAt])
 }
 
 model AiCompanyDecisionLog {
