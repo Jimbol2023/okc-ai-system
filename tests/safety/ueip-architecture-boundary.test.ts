@@ -9,9 +9,13 @@ import { listUniversalConnectorManifests } from "@/lib/universal-enterprise-inte
 const root = process.cwd();
 const providerPattern = /https:\/\/(?:api\.openai|api\.twilio|api\.canva|oauth2\.googleapis|gmail\.googleapis|searchconsole\.googleapis|analyticsdata\.googleapis|businessprofileperformance\.googleapis|mybusiness\.googleapis|youtubeanalytics\.googleapis|www\.googleapis\.com\/(?:webmasters|calendar|drive|upload|youtube))|process\.env\.[A-Z0-9_]*(?:TOKEN|SECRET|API_KEY|ACCOUNT_SID)|(?:from|require\()[\s(]*["'](?:twilio|openai|googleapis|@google|@aws-sdk|stripe)/;
 
+function normalizeRepoPath(path: string) {
+  return path.replaceAll("\\", "/");
+}
+
 function sourceFiles(directory: string): string[] {
   return readdirSync(join(root, directory), { withFileTypes: true }).flatMap((entry) => {
-    const path = join(directory, entry.name);
+    const path = normalizeRepoPath(join(directory, entry.name));
     if (entry.isDirectory()) return sourceFiles(path);
     return /\.(ts|tsx)$/.test(entry.name) && !/\.test\./.test(entry.name) ? [path] : [];
   });
@@ -28,7 +32,7 @@ test("inventory records have unique ids and mandatory ownership and migration ev
   assert.equal(new Set(ueipProviderSurfaceInventory.map((record) => record.id)).size, ueipProviderSurfaceInventory.length);
   for (const record of ueipProviderSurfaceInventory) {
     assert.ok(record.owner && record.policyCoverage && record.auditCoverage && record.retirementDependency);
-    assert.equal(relative(root, join(root, record.path)), record.path);
+    assert.equal(normalizeRepoPath(relative(root, join(root, record.path))), record.path);
   }
 });
 

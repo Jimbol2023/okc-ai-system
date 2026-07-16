@@ -36,7 +36,7 @@ export const ueipProviderSurfaceInventory: ProviderSurfaceRecord[] = [
 ];
 
 export function getInventoriedProviderBoundaryPaths() {
-  return new Set(ueipProviderSurfaceInventory.map((record) => record.path));
+  return new Set(ueipProviderSurfaceInventory.map((record) => record.path.replaceAll("\\", "/")));
 }
 
 export function createUeipMigrationMatrix() {
