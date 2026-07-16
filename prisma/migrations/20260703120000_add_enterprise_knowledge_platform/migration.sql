@@ -1,0 +1,3 @@
+-- Compatibility marker for local development databases that previously
+-- recorded the Enterprise Knowledge Platform migration from the activation
+-- branch. Current main keeps the enterprise knowledge surface advisory-only.

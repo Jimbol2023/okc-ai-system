@@ -1,0 +1,2 @@
+-- Compatibility marker for an unnamed local activation migration recorded in
+-- the development database. No schema changes are required in this checkout.

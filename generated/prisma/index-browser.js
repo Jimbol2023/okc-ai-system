@@ -570,6 +570,80 @@ exports.Prisma.ConnectorTestResultScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.UeipGatewayAuditEventScalarFieldEnum = {
+  id: 'id',
+  traceId: 'traceId',
+  tenantId: 'tenantId',
+  installationId: 'installationId',
+  connectorId: 'connectorId',
+  capabilityKey: 'capabilityKey',
+  manifestVersion: 'manifestVersion',
+  policyVersion: 'policyVersion',
+  actorId: 'actorId',
+  environment: 'environment',
+  stage: 'stage',
+  decision: 'decision',
+  attemptNumber: 'attemptNumber',
+  endpointId: 'endpointId',
+  latencyMs: 'latencyMs',
+  providerAttempted: 'providerAttempted',
+  providerCalled: 'providerCalled',
+  auditComplete: 'auditComplete',
+  reasonCodes: 'reasonCodes',
+  safeMetadata: 'safeMetadata',
+  sequenceNumber: 'sequenceNumber',
+  previousEventDigest: 'previousEventDigest',
+  eventDigest: 'eventDigest',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.UeipEnvironmentIdentityScalarFieldEnum = {
+  id: 'id',
+  environmentId: 'environmentId',
+  environmentType: 'environmentType',
+  databaseFingerprint: 'databaseFingerprint',
+  productionProhibited: 'productionProhibited',
+  verifiedBy: 'verifiedBy',
+  verifiedAt: 'verifiedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UeipPilotAuthorizationScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  connectorId: 'connectorId',
+  capabilityKey: 'capabilityKey',
+  environment: 'environment',
+  approvingActorId: 'approvingActorId',
+  nonceHash: 'nonceHash',
+  status: 'status',
+  maximumProviderCalls: 'maximumProviderCalls',
+  providerCallCount: 'providerCallCount',
+  expiresAt: 'expiresAt',
+  consumedAt: 'consumedAt',
+  lockedAt: 'lockedAt',
+  traceId: 'traceId',
+  resultStatus: 'resultStatus',
+  auditReferenceId: 'auditReferenceId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.UeipPilotControlEventScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  connectorId: 'connectorId',
+  eventType: 'eventType',
+  actorId: 'actorId',
+  environment: 'environment',
+  decision: 'decision',
+  reasonCodes: 'reasonCodes',
+  safeMetadata: 'safeMetadata',
+  providerCalled: 'providerCalled',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.AiPermissionPolicyScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -631,23 +705,40 @@ exports.Prisma.UnifiedApprovalDecisionScalarFieldEnum = {
 exports.Prisma.AiCompanyExecutiveDirectiveScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
+  directiveKey: 'directiveKey',
   title: 'title',
+  summary: 'summary',
+  objective: 'objective',
   businessGoal: 'businessGoal',
   sourceDepartment: 'sourceDepartment',
   assignedDepartments: 'assignedDepartments',
   requestedOutputs: 'requestedOutputs',
   status: 'status',
+  approvalStatus: 'approvalStatus',
   workflowState: 'workflowState',
   riskLevel: 'riskLevel',
+  priority: 'priority',
+  decision: 'decision',
+  decisionNote: 'decisionNote',
+  decidedBy: 'decidedBy',
+  decidedAt: 'decidedAt',
+  deferReminderAt: 'deferReminderAt',
   expectedBusinessValue: 'expectedBusinessValue',
   governanceNotes: 'governanceNotes',
   revenuePriorityScore: 'revenuePriorityScore',
+  tags: 'tags',
+  source: 'source',
+  assumptions: 'assumptions',
+  safeMetadata: 'safeMetadata',
   reviewReminderAt: 'reviewReminderAt',
   approvedBy: 'approvedBy',
   approvedAt: 'approvedAt',
   providerCalled: 'providerCalled',
   sent: 'sent',
   published: 'published',
+  scraped: 'scraped',
+  outreachSent: 'outreachSent',
+  workflowStarted: 'workflowStarted',
   liveExecutionAllowed: 'liveExecutionAllowed',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -677,6 +768,21 @@ exports.Prisma.AiCompanyDraftQueueItemScalarFieldEnum = {
   directiveId: 'directiveId',
   output: 'output',
   ownerDepartment: 'ownerDepartment',
+  title: 'title',
+  body: 'body',
+  messaging: 'messaging',
+  cta: 'cta',
+  metadata: 'metadata',
+  priority: 'priority',
+  businessGoal: 'businessGoal',
+  executiveSummary: 'executiveSummary',
+  knowledgeTrace: 'knowledgeTrace',
+  assumptions: 'assumptions',
+  confidence: 'confidence',
+  approvalStatus: 'approvalStatus',
+  revisionCount: 'revisionCount',
+  lastModifiedBy: 'lastModifiedBy',
+  lastModifiedAt: 'lastModifiedAt',
   status: 'status',
   sourceLabel: 'sourceLabel',
   approvalRequired: 'approvalRequired',
@@ -686,6 +792,25 @@ exports.Prisma.AiCompanyDraftQueueItemScalarFieldEnum = {
   liveExecutionAllowed: 'liveExecutionAllowed',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AiCompanyDraftRevisionScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  draftQueueItemId: 'draftQueueItemId',
+  directiveId: 'directiveId',
+  action: 'action',
+  note: 'note',
+  reviewer: 'reviewer',
+  previousSnapshot: 'previousSnapshot',
+  nextSnapshot: 'nextSnapshot',
+  safetyFlags: 'safetyFlags',
+  providerCalled: 'providerCalled',
+  sent: 'sent',
+  published: 'published',
+  workflowStarted: 'workflowStarted',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.AiCompanyDecisionLogScalarFieldEnum = {
@@ -746,6 +871,39 @@ exports.Prisma.AiDepartmentIntelligenceSnapshotScalarFieldEnum = {
   providerCalled: 'providerCalled',
   sent: 'sent',
   published: 'published',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.BusinessDataSnapshotScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  version: 'version',
+  contractVersion: 'contractVersion',
+  evidenceHash: 'evidenceHash',
+  observationStart: 'observationStart',
+  observationEnd: 'observationEnd',
+  traceId: 'traceId',
+  reliability: 'reliability',
+  snapshotDate: 'snapshotDate',
+  provider: 'provider',
+  connectorId: 'connectorId',
+  category: 'category',
+  status: 'status',
+  sourceLabel: 'sourceLabel',
+  provenance: 'provenance',
+  freshness: 'freshness',
+  summary: 'summary',
+  metrics: 'metrics',
+  records: 'records',
+  dataGaps: 'dataGaps',
+  assumptions: 'assumptions',
+  safetyFlags: 'safetyFlags',
+  providerCalled: 'providerCalled',
+  sent: 'sent',
+  published: 'published',
+  crmMutated: 'crmMutated',
   liveExecutionAllowed: 'liveExecutionAllowed',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -1242,6 +1400,190 @@ exports.Prisma.KnowledgeSearchEmbeddingScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.EpcAssessmentRecordScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  professionalId: 'professionalId',
+  profileVersion: 'profileVersion',
+  competencyId: 'competencyId',
+  competencyVersion: 'competencyVersion',
+  assessmentMethod: 'assessmentMethod',
+  evidenceReferences: 'evidenceReferences',
+  result: 'result',
+  assessorId: 'assessorId',
+  idempotencyKey: 'idempotencyKey',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.EpcCertificationRecordScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  professionalId: 'professionalId',
+  profileVersion: 'profileVersion',
+  competencyId: 'competencyId',
+  competencyVersion: 'competencyVersion',
+  sopId: 'sopId',
+  sopVersion: 'sopVersion',
+  deliverableId: 'deliverableId',
+  deliverableVersion: 'deliverableVersion',
+  businessModule: 'businessModule',
+  state: 'state',
+  assessmentRecordIds: 'assessmentRecordIds',
+  reason: 'reason',
+  certifiedBy: 'certifiedBy',
+  effectiveAt: 'effectiveAt',
+  expiresAt: 'expiresAt',
+  idempotencyKey: 'idempotencyKey',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.EpcOutcomeEventScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  department: 'department',
+  professionalId: 'professionalId',
+  profileVersion: 'profileVersion',
+  deliverableId: 'deliverableId',
+  deliverableVersion: 'deliverableVersion',
+  payload: 'payload',
+  idempotencyKey: 'idempotencyKey',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.EpcGovernanceEventScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  actorId: 'actorId',
+  eventType: 'eventType',
+  subjectType: 'subjectType',
+  subjectId: 'subjectId',
+  reason: 'reason',
+  idempotencyKey: 'idempotencyKey',
+  sanitizedData: 'sanitizedData',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ProfessionalCaseScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  idempotencyKey: 'idempotencyKey',
+  version: 'version',
+  caseType: 'caseType',
+  title: 'title',
+  objective: 'objective',
+  sourceLabel: 'sourceLabel',
+  sourceReference: 'sourceReference',
+  status: 'status',
+  leadProfessionalId: 'leadProfessionalId',
+  independentReviewerId: 'independentReviewerId',
+  department: 'department',
+  businessModule: 'businessModule',
+  evidenceSnapshot: 'evidenceSnapshot',
+  limitations: 'limitations',
+  dueAt: 'dueAt',
+  outcomeDueAt: 'outcomeDueAt',
+  closedAt: 'closedAt',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ProfessionalAssignmentScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  caseId: 'caseId',
+  idempotencyKey: 'idempotencyKey',
+  version: 'version',
+  professionalId: 'professionalId',
+  department: 'department',
+  assignmentRole: 'assignmentRole',
+  dependencyType: 'dependencyType',
+  dependencyData: 'dependencyData',
+  status: 'status',
+  claimedBy: 'claimedBy',
+  claimedAt: 'claimedAt',
+  leaseExpiresAt: 'leaseExpiresAt',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ProfessionalContributionScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  caseId: 'caseId',
+  idempotencyKey: 'idempotencyKey',
+  version: 'version',
+  professionalId: 'professionalId',
+  department: 'department',
+  contributionType: 'contributionType',
+  sourceLabel: 'sourceLabel',
+  sourceReferences: 'sourceReferences',
+  content: 'content',
+  dataGap: 'dataGap',
+  limitations: 'limitations',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ProfessionalReviewScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  caseId: 'caseId',
+  idempotencyKey: 'idempotencyKey',
+  version: 'version',
+  deliverableId: 'deliverableId',
+  generatorId: 'generatorId',
+  reviewerId: 'reviewerId',
+  status: 'status',
+  rubricVersion: 'rubricVersion',
+  checks: 'checks',
+  blockingDefects: 'blockingDefects',
+  rationale: 'rationale',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ProfessionalDecisionScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  caseId: 'caseId',
+  idempotencyKey: 'idempotencyKey',
+  version: 'version',
+  actorId: 'actorId',
+  decision: 'decision',
+  rationale: 'rationale',
+  evidenceReferences: 'evidenceReferences',
+  executionAuthorized: 'executionAuthorized',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ProfessionalOutcomeScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  caseId: 'caseId',
+  idempotencyKey: 'idempotencyKey',
+  version: 'version',
+  recordedBy: 'recordedBy',
+  sourceLabel: 'sourceLabel',
+  evidenceReferences: 'evidenceReferences',
+  metrics: 'metrics',
+  verified: 'verified',
+  learningApplied: 'learningApplied',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ProfessionalCaseEventScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  caseId: 'caseId',
+  idempotencyKey: 'idempotencyKey',
+  version: 'version',
+  actorId: 'actorId',
+  eventType: 'eventType',
+  sourceLabel: 'sourceLabel',
+  sanitizedData: 'sanitizedData',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1325,15 +1667,21 @@ exports.Prisma.ModelName = {
   ConnectorInstallationState: 'ConnectorInstallationState',
   ConnectorCredentialReference: 'ConnectorCredentialReference',
   ConnectorTestResult: 'ConnectorTestResult',
+  UeipGatewayAuditEvent: 'UeipGatewayAuditEvent',
+  UeipEnvironmentIdentity: 'UeipEnvironmentIdentity',
+  UeipPilotAuthorization: 'UeipPilotAuthorization',
+  UeipPilotControlEvent: 'UeipPilotControlEvent',
   AiPermissionPolicy: 'AiPermissionPolicy',
   UnifiedApprovalItem: 'UnifiedApprovalItem',
   UnifiedApprovalDecision: 'UnifiedApprovalDecision',
   AiCompanyExecutiveDirective: 'AiCompanyExecutiveDirective',
   AiCompanyWorkAssignment: 'AiCompanyWorkAssignment',
   AiCompanyDraftQueueItem: 'AiCompanyDraftQueueItem',
+  AiCompanyDraftRevision: 'AiCompanyDraftRevision',
   AiCompanyDecisionLog: 'AiCompanyDecisionLog',
   AiDepartmentMemoryEvent: 'AiDepartmentMemoryEvent',
   AiDepartmentIntelligenceSnapshot: 'AiDepartmentIntelligenceSnapshot',
+  BusinessDataSnapshot: 'BusinessDataSnapshot',
   SocialContentSource: 'SocialContentSource',
   SocialContentDraft: 'SocialContentDraft',
   SocialContentVariant: 'SocialContentVariant',
@@ -1365,7 +1713,18 @@ exports.Prisma.ModelName = {
   SalesConversionAssist: 'SalesConversionAssist',
   FinanceEntry: 'FinanceEntry',
   KnowledgeItem: 'KnowledgeItem',
-  KnowledgeSearchEmbedding: 'KnowledgeSearchEmbedding'
+  KnowledgeSearchEmbedding: 'KnowledgeSearchEmbedding',
+  EpcAssessmentRecord: 'EpcAssessmentRecord',
+  EpcCertificationRecord: 'EpcCertificationRecord',
+  EpcOutcomeEvent: 'EpcOutcomeEvent',
+  EpcGovernanceEvent: 'EpcGovernanceEvent',
+  ProfessionalCase: 'ProfessionalCase',
+  ProfessionalAssignment: 'ProfessionalAssignment',
+  ProfessionalContribution: 'ProfessionalContribution',
+  ProfessionalReview: 'ProfessionalReview',
+  ProfessionalDecision: 'ProfessionalDecision',
+  ProfessionalOutcome: 'ProfessionalOutcome',
+  ProfessionalCaseEvent: 'ProfessionalCaseEvent'
 };
 
 /**

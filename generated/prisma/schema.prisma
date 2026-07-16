@@ -703,6 +703,110 @@ model ConnectorTestResult {
   @@index([createdAt])
 }
 
+model UeipGatewayAuditEvent {
+  id                  String   @id @default(uuid())
+  traceId             String
+  tenantId            String
+  installationId      String?
+  connectorId         String
+  capabilityKey       String
+  manifestVersion     String
+  policyVersion       String
+  actorId             String
+  environment         String
+  stage               String
+  decision            String
+  attemptNumber       Int      @default(0)
+  endpointId          String?
+  latencyMs           Int?
+  providerAttempted   Boolean  @default(false)
+  providerCalled      Boolean  @default(false)
+  auditComplete       Boolean  @default(true)
+  reasonCodes         Json
+  safeMetadata        Json?
+  sequenceNumber      Int      @default(1)
+  previousEventDigest String?
+  eventDigest         String
+  createdAt           DateTime @default(now())
+
+  @@unique([traceId, sequenceNumber])
+  @@index([tenantId])
+  @@index([traceId])
+  @@index([connectorId])
+  @@index([capabilityKey])
+  @@index([installationId])
+  @@index([actorId])
+  @@index([stage])
+  @@index([decision])
+  @@index([providerCalled])
+  @@index([createdAt])
+}
+
+model UeipEnvironmentIdentity {
+  id                   String   @id @default(uuid())
+  environmentId        String   @unique
+  environmentType      String
+  databaseFingerprint  String
+  productionProhibited Boolean  @default(true)
+  verifiedBy           String
+  verifiedAt           DateTime @default(now())
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@index([environmentType])
+  @@index([databaseFingerprint])
+  @@index([productionProhibited])
+}
+
+model UeipPilotAuthorization {
+  id                   String    @id @default(uuid())
+  tenantId             String
+  connectorId          String
+  capabilityKey        String
+  environment          String
+  approvingActorId     String
+  nonceHash            String    @unique
+  status               String    @default("approved")
+  maximumProviderCalls Int       @default(1)
+  providerCallCount    Int       @default(0)
+  expiresAt            DateTime
+  consumedAt           DateTime?
+  lockedAt             DateTime?
+  traceId              String?
+  resultStatus         String?
+  auditReferenceId     String?
+  createdAt            DateTime  @default(now())
+
+  @@index([tenantId])
+  @@index([connectorId])
+  @@index([capabilityKey])
+  @@index([environment])
+  @@index([status])
+  @@index([expiresAt])
+  @@index([traceId])
+}
+
+model UeipPilotControlEvent {
+  id                   String   @id @default(uuid())
+  tenantId             String
+  connectorId          String
+  eventType            String
+  actorId              String
+  environment          String
+  decision             String
+  reasonCodes          Json
+  safeMetadata         Json?
+  providerCalled       Boolean  @default(false)
+  liveExecutionAllowed Boolean  @default(false)
+  createdAt            DateTime @default(now())
+
+  @@index([tenantId])
+  @@index([connectorId])
+  @@index([eventType])
+  @@index([decision])
+  @@index([createdAt])
+}
+
 model AiPermissionPolicy {
   id                   String   @id @default(uuid())
   tenantId             String   @default("default")
@@ -791,23 +895,40 @@ model UnifiedApprovalDecision {
 model AiCompanyExecutiveDirective {
   id                    String    @id
   tenantId              String    @default("default")
+  directiveKey          String?
   title                 String
+  summary               String    @default("")
+  objective             String    @default("")
   businessGoal          String
   sourceDepartment      String
   assignedDepartments   Json
   requestedOutputs      Json
   status                String    @default("awaiting_ceo_approval")
+  approvalStatus        String    @default("awaiting_ceo_approval")
   workflowState         String    @default("awaiting_ceo_approval")
   riskLevel             String    @default("medium")
+  priority              String    @default("normal")
+  decision              String?
+  decisionNote          String?
+  decidedBy             String?
+  decidedAt             DateTime?
+  deferReminderAt       DateTime?
   expectedBusinessValue String
   governanceNotes       Json
   revenuePriorityScore  Json
+  tags                  Json      @default("[]")
+  source                String    @default("company_orchestrator_directive_registry")
+  assumptions           Json      @default("[]")
+  safeMetadata          Json?
   reviewReminderAt      DateTime?
   approvedBy            String?
   approvedAt            DateTime?
   providerCalled        Boolean   @default(false)
   sent                  Boolean   @default(false)
   published             Boolean   @default(false)
+  scraped               Boolean   @default(false)
+  outreachSent          Boolean   @default(false)
+  workflowStarted       Boolean   @default(false)
   liveExecutionAllowed  Boolean   @default(false)
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
@@ -816,10 +937,16 @@ model AiCompanyExecutiveDirective {
   draftItems  AiCompanyDraftQueueItem[]
   decisions   AiCompanyDecisionLog[]
 
+  @@unique([tenantId, directiveKey])
   @@index([tenantId])
+  @@index([directiveKey])
   @@index([status])
+  @@index([approvalStatus])
   @@index([workflowState])
   @@index([riskLevel])
+  @@index([priority])
+  @@index([decision])
+  @@index([deferReminderAt])
   @@index([providerCalled])
   @@index([liveExecutionAllowed])
 }
@@ -852,29 +979,75 @@ model AiCompanyWorkAssignment {
 }
 
 model AiCompanyDraftQueueItem {
-  id                   String   @id @default(uuid())
-  tenantId             String   @default("default")
+  id                   String    @id @default(uuid())
+  tenantId             String    @default("default")
   directiveId          String
   output               String
   ownerDepartment      String
-  status               String   @default("draft_required")
+  title                String    @default("")
+  body                 String    @default("")
+  messaging            String    @default("")
+  cta                  String    @default("")
+  metadata             Json      @default("{}")
+  priority             String    @default("normal")
+  businessGoal         String    @default("improve_executive_decisions")
+  executiveSummary     String    @default("")
+  knowledgeTrace       Json      @default("[]")
+  assumptions          Json      @default("[]")
+  confidence           Int       @default(72)
+  approvalStatus       String    @default("pending_ceo_review")
+  revisionCount        Int       @default(0)
+  lastModifiedBy       String?
+  lastModifiedAt       DateTime?
+  status               String    @default("draft_required")
   sourceLabel          String
-  approvalRequired     Boolean  @default(true)
-  providerCalled       Boolean  @default(false)
-  sent                 Boolean  @default(false)
-  published            Boolean  @default(false)
-  liveExecutionAllowed Boolean  @default(false)
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+  approvalRequired     Boolean   @default(true)
+  providerCalled       Boolean   @default(false)
+  sent                 Boolean   @default(false)
+  published            Boolean   @default(false)
+  liveExecutionAllowed Boolean   @default(false)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
 
   directive AiCompanyExecutiveDirective @relation(fields: [directiveId], references: [id], onDelete: Cascade)
+  revisions AiCompanyDraftRevision[]
 
   @@unique([directiveId, output])
   @@index([tenantId])
   @@index([directiveId])
   @@index([ownerDepartment])
   @@index([status])
+  @@index([approvalStatus])
   @@index([approvalRequired])
+}
+
+model AiCompanyDraftRevision {
+  id                   String   @id @default(uuid())
+  tenantId             String   @default("default")
+  draftQueueItemId     String
+  directiveId          String
+  action               String
+  note                 String?
+  reviewer             String?
+  previousSnapshot     Json
+  nextSnapshot         Json
+  safetyFlags          Json
+  providerCalled       Boolean  @default(false)
+  sent                 Boolean  @default(false)
+  published            Boolean  @default(false)
+  workflowStarted      Boolean  @default(false)
+  liveExecutionAllowed Boolean  @default(false)
+  createdAt            DateTime @default(now())
+
+  draftQueueItem AiCompanyDraftQueueItem @relation(fields: [draftQueueItemId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([draftQueueItemId])
+  @@index([directiveId])
+  @@index([action])
+  @@index([providerCalled])
+  @@index([liveExecutionAllowed])
+  @@index([createdAt])
 }
 
 model AiCompanyDecisionLog {
@@ -963,6 +1136,52 @@ model AiDepartmentIntelligenceSnapshot {
   @@index([department])
   @@index([memoryStatus])
   @@index([confidence])
+  @@index([providerCalled])
+  @@index([liveExecutionAllowed])
+  @@index([createdAt])
+}
+
+model BusinessDataSnapshot {
+  id                   String    @id @default(uuid())
+  tenantId             String    @default("default")
+  version              Int       @default(1)
+  contractVersion      String    @default("business-data-snapshot-v1")
+  evidenceHash         String?
+  observationStart     DateTime?
+  observationEnd       DateTime?
+  traceId              String?
+  reliability          Json?
+  snapshotDate         DateTime
+  provider             String
+  connectorId          String
+  category             String
+  status               String    @default("data_gap")
+  sourceLabel          String
+  provenance           String
+  freshness            String
+  summary              String
+  metrics              Json
+  records              Json
+  dataGaps             Json
+  assumptions          Json
+  safetyFlags          Json
+  providerCalled       Boolean   @default(false)
+  sent                 Boolean   @default(false)
+  published            Boolean   @default(false)
+  crmMutated           Boolean   @default(false)
+  liveExecutionAllowed Boolean   @default(false)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  @@unique([tenantId, snapshotDate, provider, category])
+  @@index([tenantId])
+  @@index([tenantId, connectorId, category, evidenceHash])
+  @@index([tenantId, traceId])
+  @@index([snapshotDate])
+  @@index([provider])
+  @@index([connectorId])
+  @@index([category])
+  @@index([status])
   @@index([providerCalled])
   @@index([liveExecutionAllowed])
   @@index([createdAt])
@@ -1744,4 +1963,247 @@ model KnowledgeSearchEmbedding {
   @@index([sourceId])
   @@index([model])
   @@index([createdAt])
+}
+
+model EpcAssessmentRecord {
+  id                 String   @id @default(uuid())
+  tenantId           String
+  professionalId     String
+  profileVersion     String
+  competencyId       String
+  competencyVersion  String
+  assessmentMethod   String
+  evidenceReferences Json
+  result             String
+  assessorId         String
+  idempotencyKey     String
+  createdAt          DateTime @default(now())
+
+  @@unique([tenantId, idempotencyKey])
+  @@index([tenantId, professionalId, competencyId])
+  @@index([createdAt])
+}
+
+model EpcCertificationRecord {
+  id                  String    @id @default(uuid())
+  tenantId            String
+  professionalId      String
+  profileVersion      String
+  competencyId        String
+  competencyVersion   String
+  sopId               String
+  sopVersion          String
+  deliverableId       String
+  deliverableVersion  String
+  businessModule      String
+  state               String
+  assessmentRecordIds Json
+  reason              String
+  certifiedBy         String?
+  effectiveAt         DateTime
+  expiresAt           DateTime?
+  idempotencyKey      String
+  createdAt           DateTime  @default(now())
+
+  @@unique([tenantId, idempotencyKey])
+  @@index([tenantId, professionalId, competencyId, createdAt])
+  @@index([state])
+}
+
+model EpcOutcomeEvent {
+  id                 String   @id @default(uuid())
+  tenantId           String
+  department         String
+  professionalId     String
+  profileVersion     String
+  deliverableId      String
+  deliverableVersion String
+  payload            Json
+  idempotencyKey     String
+  createdAt          DateTime @default(now())
+
+  @@unique([tenantId, idempotencyKey])
+  @@index([tenantId, department, createdAt])
+  @@index([professionalId])
+}
+
+model EpcGovernanceEvent {
+  id             String   @id @default(uuid())
+  tenantId       String
+  actorId        String
+  eventType      String
+  subjectType    String
+  subjectId      String
+  reason         String
+  idempotencyKey String
+  sanitizedData  Json
+  createdAt      DateTime @default(now())
+
+  @@unique([tenantId, idempotencyKey])
+  @@index([tenantId, eventType, createdAt])
+  @@index([subjectType, subjectId])
+}
+
+model ProfessionalCase {
+  id                    String                     @id @default(uuid())
+  tenantId              String
+  idempotencyKey        String
+  version               Int                        @default(1)
+  caseType              String
+  title                 String
+  objective             String
+  sourceLabel           String
+  sourceReference       String
+  status                String                     @default("intake")
+  leadProfessionalId    String
+  independentReviewerId String
+  department            String
+  businessModule        String                     @default("ai-core")
+  evidenceSnapshot      Json
+  limitations           Json
+  dueAt                 DateTime?
+  outcomeDueAt          DateTime?
+  closedAt              DateTime?
+  createdBy             String
+  createdAt             DateTime                   @default(now())
+  updatedAt             DateTime                   @updatedAt
+  assignments           ProfessionalAssignment[]
+  contributions         ProfessionalContribution[]
+  reviews               ProfessionalReview[]
+  decisions             ProfessionalDecision[]
+  outcomes              ProfessionalOutcome[]
+  events                ProfessionalCaseEvent[]
+
+  @@unique([tenantId, idempotencyKey])
+  @@unique([id, tenantId])
+  @@index([tenantId, status, createdAt])
+  @@index([tenantId, department, status])
+  @@index([tenantId, leadProfessionalId])
+}
+
+model ProfessionalAssignment {
+  id               String           @id @default(uuid())
+  tenantId         String
+  caseId           String
+  idempotencyKey   String
+  version          Int              @default(1)
+  professionalId   String
+  department       String
+  assignmentRole   String
+  dependencyType   String?
+  dependencyData   Json?
+  status           String           @default("assigned")
+  claimedBy        String?
+  claimedAt        DateTime?
+  leaseExpiresAt   DateTime?
+  completedAt      DateTime?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  professionalCase ProfessionalCase @relation(fields: [caseId, tenantId], references: [id, tenantId], onDelete: Cascade)
+
+  @@unique([tenantId, idempotencyKey])
+  @@index([tenantId, caseId, status])
+  @@index([tenantId, professionalId, status])
+  @@index([tenantId, status, leaseExpiresAt])
+}
+
+model ProfessionalContribution {
+  id               String           @id @default(uuid())
+  tenantId         String
+  caseId           String
+  idempotencyKey   String
+  version          Int              @default(1)
+  professionalId   String
+  department       String
+  contributionType String
+  sourceLabel      String
+  sourceReferences Json
+  content          Json
+  dataGap          Boolean          @default(false)
+  limitations      Json
+  createdAt        DateTime         @default(now())
+  professionalCase ProfessionalCase @relation(fields: [caseId, tenantId], references: [id, tenantId], onDelete: Cascade)
+
+  @@unique([tenantId, idempotencyKey])
+  @@index([tenantId, caseId, createdAt])
+  @@index([tenantId, professionalId, createdAt])
+}
+
+model ProfessionalReview {
+  id               String           @id @default(uuid())
+  tenantId         String
+  caseId           String
+  idempotencyKey   String
+  version          Int              @default(1)
+  deliverableId    String
+  generatorId      String
+  reviewerId       String
+  status           String
+  rubricVersion    String
+  checks           Json
+  blockingDefects  Json
+  rationale        String
+  createdAt        DateTime         @default(now())
+  professionalCase ProfessionalCase @relation(fields: [caseId, tenantId], references: [id, tenantId], onDelete: Cascade)
+
+  @@unique([tenantId, idempotencyKey])
+  @@index([tenantId, caseId, createdAt])
+  @@index([tenantId, reviewerId, createdAt])
+}
+
+model ProfessionalDecision {
+  id                  String           @id @default(uuid())
+  tenantId            String
+  caseId              String
+  idempotencyKey      String
+  version             Int              @default(1)
+  actorId             String
+  decision            String
+  rationale           String
+  evidenceReferences  Json
+  executionAuthorized Boolean          @default(false)
+  createdAt           DateTime         @default(now())
+  professionalCase    ProfessionalCase @relation(fields: [caseId, tenantId], references: [id, tenantId], onDelete: Cascade)
+
+  @@unique([tenantId, idempotencyKey])
+  @@index([tenantId, caseId, createdAt])
+  @@index([tenantId, actorId, createdAt])
+}
+
+model ProfessionalOutcome {
+  id                 String           @id @default(uuid())
+  tenantId           String
+  caseId             String
+  idempotencyKey     String
+  version            Int              @default(1)
+  recordedBy         String
+  sourceLabel        String
+  evidenceReferences Json
+  metrics            Json
+  verified           Boolean          @default(false)
+  learningApplied    Boolean          @default(false)
+  createdAt          DateTime         @default(now())
+  professionalCase   ProfessionalCase @relation(fields: [caseId, tenantId], references: [id, tenantId], onDelete: Cascade)
+
+  @@unique([tenantId, idempotencyKey])
+  @@index([tenantId, caseId, createdAt])
+  @@index([tenantId, verified, createdAt])
+}
+
+model ProfessionalCaseEvent {
+  id               String           @id @default(uuid())
+  tenantId         String
+  caseId           String
+  idempotencyKey   String
+  version          Int              @default(1)
+  actorId          String
+  eventType        String
+  sourceLabel      String
+  sanitizedData    Json
+  createdAt        DateTime         @default(now())
+  professionalCase ProfessionalCase @relation(fields: [caseId, tenantId], references: [id, tenantId], onDelete: Cascade)
+
+  @@unique([tenantId, idempotencyKey])
+  @@index([tenantId, caseId, createdAt])
+  @@index([tenantId, eventType, createdAt])
 }

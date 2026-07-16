@@ -1,0 +1,3 @@
+-- Compatibility marker for local development databases that previously
+-- recorded high-ROI knowledge intelligence migration history from the
+-- activation branch. No runtime authority or provider execution is granted.

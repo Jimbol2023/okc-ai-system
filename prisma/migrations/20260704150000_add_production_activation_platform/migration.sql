@@ -1,0 +1,3 @@
+-- Compatibility marker for local development databases that previously
+-- recorded production activation platform migration history. This checkout
+-- keeps activation internal-only and approval-gated.
