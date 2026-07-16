@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { getAuthenticatedAdmin, getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
 import { decideExecutiveDirective } from "@/lib/company-activation";
+import { clearServerCacheKey } from "@/lib/server-cache";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -57,6 +58,7 @@ export async function POST(request: Request) {
       reviewReminderAt: parsed.data.reviewReminderAt || undefined,
       decidedBy: admin?.email || "Moses Adebajo",
     });
+    clearServerCacheKey("executive-dashboard-report");
 
     return NextResponse.json({
       ...result,
