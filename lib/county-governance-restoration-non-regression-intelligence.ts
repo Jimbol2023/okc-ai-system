@@ -355,10 +355,6 @@ export function evaluateCountyGovernanceRestorationNonRegression(
   const recursiveRegressionDetected =
     recursiveRestorationExposureScore >= 72 ||
     (recursiveRestorationExposureScore >= 58 && restorationDriftScore >= 58);
-  const sustainabilityFailure =
-    restorationIntegrityScore < 35 ||
-    restorationDriftScore >= 88 ||
-    (rollbackStabilityScore < 45 && doctrineConsistencyScore < 55);
   const rollbackInstabilityDetected = rollbackStabilityScore < 55;
   const doctrineRegressionAccumulation = doctrineConsistencyScore < 65;
   const restorationDriftEscalation = restorationDriftScore >= 65;

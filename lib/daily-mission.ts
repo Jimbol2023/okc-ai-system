@@ -2,10 +2,12 @@ import { loadPartialData } from "@/lib/api-response";
 import { getCompanyActivationSnapshot, type CompanyActivationSnapshot } from "@/lib/company-activation";
 import type { ExecutiveDirective } from "@/lib/company-orchestrator";
 import { getCeoDraftWorkspaceReport, type CeoDraftWorkspaceReport } from "@/lib/company-draft-workspace";
+import { normalizeConnectorHealth } from "@/lib/connector-health-contract";
 import { getConnectorHealth } from "@/lib/connector-platform";
+import { createDfdOperatingReportFromInputs, type DfdOperatingReport } from "@/lib/dfd-operating-conductor";
 import { listDbLeads } from "@/lib/leads-db";
 import { createProviderReadinessReport, type ProviderReadinessReport, type ProviderReadinessStatus } from "@/lib/provider-readiness";
-import { getLatestLiveMorningBrief, type LiveMorningBrief } from "@/lib/read-only-business-connections";
+import { getLatestBusinessSnapshots, getLatestLiveMorningBrief, type BusinessDataSnapshotRecord, type LiveMorningBrief } from "@/lib/read-only-business-connections";
 import { createRevenueCommandCenter, type RevenueCommandCenterReport } from "@/lib/revenue-spine";
 
 export const dailyMissionSafetyFlags = {
@@ -30,6 +32,12 @@ export type DailyMissionStatus = "ready" | "watch" | "urgent" | "data_gap";
 export type DailyMissionConnectorHealth = {
   connectorId: string;
   displayName: string;
+  connected: boolean;
+  authenticated: boolean;
+  readOnly: true;
+  healthy: boolean;
+  lastFailure: string | null;
+  sourceLabel: string;
   unifiedStatus: "healthy" | "degraded" | "missing_credentials" | "readiness_only";
   registryStatus: string;
   providerReadinessStatus: ProviderReadinessStatus | "not_listed";
@@ -109,6 +117,7 @@ export type DailyMission = {
   revenuePriorities: DailyMissionRevenuePriority[];
   leadPriorities: DailyMissionLeadPriority[];
   connectorHealth: DailyMissionConnectorHealth[];
+  dfdOperating: DfdOperatingReport | null;
   dataGaps: string[];
   estimatedCeoTimeMinutes: number;
   sourceLabels: string[];
@@ -128,6 +137,8 @@ export type DailyMissionInputs = {
   revenueCommandCenter?: RevenueCommandCenterReport | null;
   connectorRegistryHealth?: ReturnType<typeof getConnectorHealth>;
   providerReadiness?: ProviderReadinessReport;
+  dfdOperating?: DfdOperatingReport | null;
+  businessSnapshots?: BusinessDataSnapshotRecord[];
   generatedAt?: string;
   dataGaps?: string[];
 };
@@ -157,12 +168,19 @@ function providerStatusForConnector(connectorId: string, displayName: string, pr
 }
 
 function createUnifiedConnectorHealth(input: DailyMissionInputs): DailyMissionConnectorHealth[] {
+  const normalizedById = new Map(
+    normalizeConnectorHealth({
+      morningBrief: input.morningBrief,
+      providerReadiness: input.providerReadiness,
+    }).map((connector) => [connector.connectorId, connector]),
+  );
   const liveById = new Map(input.morningBrief.connectorHealth.map((connector) => [connector.connectorId, connector]));
   const registry = input.connectorRegistryHealth ?? [];
 
-  return registry.map((connector) => {
+  const registryHealth = registry.map((connector) => {
     const live = liveById.get(connector.connectorId);
     const provider = providerStatusForConnector(connector.connectorId, connector.displayName, input.providerReadiness);
+    const normalized = normalizedById.get(connector.connectorId);
     const hasMissingCredentials = provider?.status === "missing" || Boolean(live?.lastDataGap);
     const hasSuccessfulRead = Boolean(live?.lastSuccessfulRead);
     const unifiedStatus: DailyMissionConnectorHealth["unifiedStatus"] = hasSuccessfulRead
@@ -176,18 +194,50 @@ function createUnifiedConnectorHealth(input: DailyMissionInputs): DailyMissionCo
     return {
       connectorId: connector.connectorId,
       displayName: connector.displayName,
+      connected: normalized?.connected ?? hasSuccessfulRead,
+      authenticated: normalized?.authenticated ?? provider?.status === "configured",
+      readOnly: true as const,
+      healthy: normalized?.healthy ?? unifiedStatus === "healthy",
+      lastFailure: normalized?.lastFailure ?? live?.lastDataGap ?? connector.lastFailedSync ?? null,
+      sourceLabel: normalized?.sourceLabel ?? `connector:${connector.connectorId}:health`,
       unifiedStatus,
       registryStatus: connector.healthStatus,
-      providerReadinessStatus: provider?.status ?? "not_listed",
+      providerReadinessStatus: (provider?.status ?? "not_listed") as DailyMissionConnectorHealth["providerReadinessStatus"],
       lastSuccessfulRead: live?.lastSuccessfulRead ?? null,
       lastDataGap: live?.lastDataGap ?? null,
-      authentication: provider?.connectionState === "not_required" ? "not_required" : provider?.status ?? "unknown",
+      authentication: (provider?.connectionState === "not_required" ? "not_required" : provider?.status ?? "unknown") as DailyMissionConnectorHealth["authentication"],
       permissions: provider?.permissionsRequired ?? [],
-      dataFreshness: live?.lastSuccessfulRead ?? (live?.lastDataGap ? "data_gap" : "not_synced"),
+      dataFreshness: normalized?.dataFreshness ?? live?.lastSuccessfulRead ?? (live?.lastDataGap ? "data_gap" : "not_synced"),
       readOnlyProviderCalled: live?.providerCalled ?? false,
-      liveExecutionAllowed: false,
+      liveExecutionAllowed: false as const,
     };
   });
+
+  const internalConnectors = [...normalizedById.values()].filter((connector) => !registry.some((item) => item.connectorId === connector.connectorId));
+
+  return [
+    ...registryHealth,
+    ...internalConnectors.map((connector) => ({
+      connectorId: connector.connectorId,
+      displayName: connector.displayName,
+      connected: connector.connected,
+      authenticated: connector.authenticated,
+      readOnly: true as const,
+      healthy: connector.healthy,
+      lastFailure: connector.lastFailure,
+      sourceLabel: connector.sourceLabel,
+      unifiedStatus: connector.healthy ? ("healthy" as const) : connector.authenticated ? ("degraded" as const) : ("missing_credentials" as const),
+      registryStatus: "internal_read_only",
+      providerReadinessStatus: "not_listed" as const,
+      lastSuccessfulRead: connector.lastSuccessfulRead,
+      lastDataGap: connector.lastFailure,
+      authentication: connector.authenticated ? ("configured" as const) : ("missing" as const),
+      permissions: connector.permissions,
+      dataFreshness: connector.dataFreshness,
+      readOnlyProviderCalled: connector.providerCalled,
+      liveExecutionAllowed: false as const,
+    })),
+  ];
 }
 
 function decisionFromDirective(directive: ExecutiveDirective): DailyMissionDecision {
@@ -264,6 +314,19 @@ function createRevenuePriorities(revenueCommandCenter?: RevenueCommandCenterRepo
   }));
 }
 
+function createDfdRevenuePriorities(dfdOperating?: DfdOperatingReport | null): DailyMissionRevenuePriority[] {
+  return (dfdOperating?.topPriorities ?? []).slice(0, 4).map((priority, index) => ({
+    id: `dfd-roi-priority-${index + 1}`,
+    title: priority.title,
+    detail: `${priority.nextInternalAction} ${priority.rationale}`,
+    sourceLabel: `dfd_operating_conductor:${priority.leadId}`,
+    confidence: Math.max(60, Math.min(94, priority.roiRank)),
+    approvalRequired: true as const,
+    providerCalled: false as const,
+    liveExecutionAllowed: false as const,
+  }));
+}
+
 function createLeadPriorities(revenueCommandCenter?: RevenueCommandCenterReport | null): DailyMissionLeadPriority[] {
   return (revenueCommandCenter?.inbox ?? []).slice(0, 5).map((item) => ({
     leadId: item.lead.id,
@@ -303,12 +366,14 @@ export function createDailyMissionFromInputs(input: DailyMissionInputs): DailyMi
   const generatedAt = input.generatedAt ?? new Date().toISOString();
   const decisions = createUrgentDecisions(input.activationSnapshot);
   const drafts = createDraftsReady(input.draftWorkspace);
-  const revenuePriorities = createRevenuePriorities(input.revenueCommandCenter);
+  const dfdOperating = input.dfdOperating ?? null;
+  const revenuePriorities = [...createDfdRevenuePriorities(dfdOperating), ...createRevenuePriorities(input.revenueCommandCenter)].slice(0, 6);
   const leadPriorities = createLeadPriorities(input.revenueCommandCenter);
   const connectorHealth = createUnifiedConnectorHealth(input);
   const dataGaps = [
     ...(input.dataGaps ?? []),
     ...input.morningBrief.dataGaps,
+    ...(dfdOperating?.dataGaps ?? []),
     ...connectorHealth.flatMap((connector) => (connector.lastDataGap ? [`${connector.displayName}: ${connector.lastDataGap}`] : [])),
   ];
   const uniqueDataGaps = [...new Set(dataGaps.filter(Boolean))];
@@ -345,6 +410,7 @@ export function createDailyMissionFromInputs(input: DailyMissionInputs): DailyMi
     revenuePriorities,
     leadPriorities,
     connectorHealth,
+    dfdOperating,
     dataGaps: uniqueDataGaps,
     estimatedCeoTimeMinutes: estimateCeoTimeMinutes({
       morningBrief: input.morningBrief,
@@ -366,14 +432,16 @@ export function createDailyMissionFromInputs(input: DailyMissionInputs): DailyMi
 }
 
 export async function getDailyMission(): Promise<DailyMission> {
-  const [morningBriefResult, activationResult, draftWorkspaceResult, leadsResult, providerReadiness] = await Promise.all([
+  const [morningBriefResult, activationResult, draftWorkspaceResult, leadsResult, snapshotsResult, providerReadiness] = await Promise.all([
     loadPartialData("Live Morning Brief", getLatestLiveMorningBrief, null),
     loadPartialData("Company activation", getCompanyActivationSnapshot, null),
     loadPartialData("CEO Draft Workspace", getCeoDraftWorkspaceReport, null),
     loadPartialData("Lead", listDbLeads, []),
+    loadPartialData("Business snapshots", () => getLatestBusinessSnapshots(40), []),
     Promise.resolve(createProviderReadinessReport()),
   ]);
   const revenueResult = await loadPartialData("Revenue Command Center", () => createRevenueCommandCenter(leadsResult.data), null);
+  const dfdOperating = createDfdOperatingReportFromInputs({ leads: leadsResult.data, snapshots: snapshotsResult.data });
 
   return createDailyMissionFromInputs({
     morningBrief: morningBriefResult.data ?? (await getLatestLiveMorningBrief()),
@@ -382,6 +450,8 @@ export async function getDailyMission(): Promise<DailyMission> {
     revenueCommandCenter: revenueResult.data,
     connectorRegistryHealth: getConnectorHealth(),
     providerReadiness,
-    dataGaps: [morningBriefResult.gap, activationResult.gap, draftWorkspaceResult.gap, leadsResult.gap, revenueResult.gap].filter(Boolean),
+    dfdOperating,
+    businessSnapshots: snapshotsResult.data,
+    dataGaps: [morningBriefResult.gap, activationResult.gap, draftWorkspaceResult.gap, leadsResult.gap, snapshotsResult.gap, revenueResult.gap].filter(Boolean),
   });
 }

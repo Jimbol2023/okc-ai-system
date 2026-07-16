@@ -33,6 +33,8 @@ export type CircuitBreakerState = "closed" | "open" | "half_open" | "not_applica
 
 export type ConnectorAction = {
   actionKey: string;
+  /** Canonical UEIP semantic capability. Falls back to actionKey derivation for legacy actions. */
+  capabilityKey?: string;
   label: string;
   type: "read" | "write" | "prepare" | "monitor";
   risk: ToolActionRisk;
@@ -186,7 +188,7 @@ export const enterpriseConnectors: EnterpriseConnector[] = [
     dependencies: ["tool_registry", "safe_auto_internal", "read_only_business_connections"],
     owner: "Marketing",
     credentialReference: "GOOGLE_BUSINESS_PROFILE_OAUTH_REFERENCE",
-    lifecycleState: "enabled",
+    lifecycleState: "available",
   },
   {
     connectorId: "gmail",
@@ -350,7 +352,28 @@ export const enterpriseConnectors: EnterpriseConnector[] = [
     supportedActions: [
       {
         actionKey: "read_search_console",
+        capabilityKey: "seo.page.performance.read",
         label: "Read Search Console performance and indexing",
+        type: "read",
+        risk: "low",
+        approvalRequired: false,
+        safeAutoEligible: true,
+        liveExecutionAllowed: false,
+      },
+      {
+        actionKey: "read_search_console_indexing",
+        capabilityKey: "seo.indexing.summary.read",
+        label: "Read Search Console indexing summary",
+        type: "read",
+        risk: "low",
+        approvalRequired: false,
+        safeAutoEligible: true,
+        liveExecutionAllowed: false,
+      },
+      {
+        actionKey: "read_search_console_queries",
+        capabilityKey: "seo.query.performance.read",
+        label: "Read bounded Search Console query performance",
         type: "read",
         risk: "low",
         approvalRequired: false,
@@ -359,7 +382,7 @@ export const enterpriseConnectors: EnterpriseConnector[] = [
       },
       blockedWriteAction,
     ],
-    readCapabilities: ["impressions", "clicks", "top pages", "index inspection"],
+    readCapabilities: ["impressions", "clicks", "bounded top queries", "top pages", "index inspection"],
     writeCapabilities: ["blocked sitemap submission, site mutation, and indexing writes"],
     humanApprovalRequirements: ["Search Console property approval", "Site URL verification"],
     safeAutoEligibility: "internal_only",
@@ -574,7 +597,7 @@ export const enterpriseConnectors: EnterpriseConnector[] = [
     dependencies: ["marketing_workflow", "tool_registry", "read_only_business_connections"],
     owner: "Marketing",
     credentialReference: "CANVA_OAUTH_REFERENCE",
-    lifecycleState: "enabled",
+    lifecycleState: "available",
   },
   {
     connectorId: "youtube",

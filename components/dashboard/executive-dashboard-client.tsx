@@ -135,6 +135,36 @@ type DailyMission = {
     unifiedStatus: "healthy" | "degraded" | "missing_credentials" | "readiness_only";
     lastDataGap: string | null;
   }>;
+  dfdOperating: {
+    summary: string;
+    totals: {
+      storedLeads: number;
+      propertyReviewPriorities: number;
+      governanceStops: number;
+      distressSignals: number;
+      acquisitionBottlenecks: number;
+    };
+    topPriorities: Array<{
+      id: string;
+      title: string;
+      category: string;
+      nextInternalAction: string;
+      assignedDepartment: string;
+      roiRank: number;
+    }>;
+    safetyFlags: {
+      readOnly: true;
+      providerCalled: false;
+      liveExecutionAllowed: false;
+      workflowStarted: false;
+      sent: false;
+      published: false;
+      outreachBlocked: true;
+      scrapingBlocked: true;
+      adsBlocked: true;
+      crmMutationBlocked: true;
+    };
+  } | null;
   dataGaps: string[];
   estimatedCeoTimeMinutes: number;
   safetyFlags: {
@@ -143,6 +173,132 @@ type DailyMission = {
     published: false;
     sent: false;
     workflowStarted: false;
+    outreachBlocked: true;
+    scrapingBlocked: true;
+    adsBlocked: true;
+  };
+};
+
+type ConnectorActivationReport = {
+  summary: string;
+  totals: {
+    connectors: number;
+    connected: number;
+    internalReady: number;
+    credentialsMissing: number;
+    dataGaps: number;
+    registryOnly: number;
+  };
+  connectors: Array<{
+    connectorId: string;
+    connectorName: string;
+    status: "connected" | "internal_ready" | "credentials_missing" | "data_gap" | "registry_only" | "incomplete";
+    implementationStatus: "implemented_read_adapter" | "internal_read_source" | "registry_only" | "umbrella";
+    roiPriority: 1 | 2 | 3 | 4;
+    revenueUseCase: string;
+    dealFlowImpact: "high" | "medium" | "low" | "readiness_only";
+    nextRevenueAction: string;
+    blockingRevenueData: string[];
+    readOnly: true;
+    credentialsPresent: boolean;
+    lastSuccessfulRead: string | null;
+    lastFailure: string | null;
+    businessUseCase: string;
+    departmentUsingIt: string;
+    nextRequiredAction: string;
+    sourceLabel: string;
+    sourceRecords: string[];
+    safetyFlags: {
+      readOnly: true;
+      providerCalled: false;
+      liveExecutionAllowed: false;
+      workflowStarted: false;
+      published: false;
+      sent: false;
+      outreachBlocked: true;
+      scrapingBlocked: true;
+      adsBlocked: true;
+    };
+  }>;
+  dataGaps: string[];
+  safetyFlags: {
+    readOnly: true;
+    providerCalled: false;
+    liveExecutionAllowed: false;
+    workflowStarted: false;
+    published: false;
+    sent: false;
+    outreachBlocked: true;
+    scrapingBlocked: true;
+    adsBlocked: true;
+  };
+};
+
+type ProductionDryRunReport = {
+  ok: true;
+  traceId: string;
+  generatedAt: string;
+  summary: string;
+  loopSteps: Array<{
+    sourceStep: string;
+    targetStep: string;
+    status: "prepared" | "completed" | "blocked" | "failed";
+    evidence: string;
+    auditRecorded: boolean;
+  }>;
+  businessWorkProduced: {
+    morningBriefItems: number;
+    dailyMissionRevenuePriorities: number;
+    dfdPropertyPriorities: number;
+    aiCooAssignments: number;
+    departmentWorkOrders: number;
+    draftWorkspaceItems: number;
+    approvalQueueItems: number;
+  };
+  ceoApprovalProof: {
+    draftsVisible: number;
+    approvalsVisible: number;
+    canApproveRejectDraftWork: boolean;
+    canReviewApprovalQueue: boolean;
+  };
+  approvedExecutionValidation: {
+    status: "blocked";
+    approvedExecutionEnabled: boolean;
+    productionSmokePassed: boolean;
+    externalActionsBlocked: true;
+    blockedReason: string;
+    providerCalled: false;
+    sent: false;
+    published: false;
+    liveExecutionAllowed: false;
+  };
+  auditProof: {
+    traceRecordsAttempted: number;
+    traceRecordsRecorded: number;
+    failedClosed: boolean;
+  };
+  memoryEligibility: {
+    eligible: boolean;
+    memoryWritten: false;
+    reason: string;
+  };
+  businessOutcomePlaceholder: {
+    status: "outcome_pending" | "blocked";
+    evidence: string[];
+  };
+  tomorrowRecommendations: Array<{
+    title: string;
+    reason: string;
+    sourceLabel: string;
+  }>;
+  remainingProductionBlockers: string[];
+  safetyFlags: {
+    readOnly: true;
+    providerCalled: false;
+    sent: false;
+    published: false;
+    workflowStarted: false;
+    liveExecutionAllowed: false;
     outreachBlocked: true;
     scrapingBlocked: true;
     adsBlocked: true;
@@ -543,6 +699,7 @@ type ExecutiveDashboardResponse = {
   departmentIntelligence?: DepartmentIntelligence | null;
   operatingCompany?: OperatingCompany;
   dailyMission?: DailyMission | null;
+  connectorActivation?: ConnectorActivationReport | null;
   morningBrief?: MorningBrief;
   todayPriorities?: ExecutiveWidget[];
   kpiInterpretations?: Record<string, string>;
@@ -798,6 +955,60 @@ type DirectiveDecisionResponse = {
   draftQueueItemsTotal?: number;
 };
 
+type InternalWorkRunResponse = {
+  ok: boolean;
+  error?: string;
+  assignmentsAdvanced?: number;
+  draftQueueItemsAdvanced?: number;
+  directivesAdvanced?: number;
+  completedInternalCount?: number;
+  providerCalled?: false;
+  sent?: false;
+  published?: false;
+  liveExecutionAllowed?: false;
+};
+
+type ApprovedExecutionActionType =
+  | "send_email"
+  | "publish_article"
+  | "schedule_post"
+  | "create_crm_task"
+  | "create_calendar_event"
+  | "create_drive_doc";
+
+type ApprovedExecutionPrepareResponse = {
+  ok: boolean;
+  error?: string;
+  approvalItem?: {
+    id: string;
+    title: string;
+    status: string;
+    connectorId: string | null;
+    actionType: ApprovedExecutionActionType;
+    sourceLabel: string;
+  };
+};
+
+type ApprovedExecutionRunResponse = {
+  ok: boolean;
+  error?: string;
+  auditLogged?: boolean;
+  memoryLogged?: boolean;
+  result?: {
+    status: string;
+    message: string;
+    blockedReason: string | null;
+    providerCalled: boolean;
+    sent: boolean;
+    published: boolean;
+    scheduled: boolean;
+    crmTaskCreated: boolean;
+    calendarEventCreated: boolean;
+    driveDocumentCreated: boolean;
+    externalReference: string | null;
+  };
+};
+
 function formatDecisionLabel(decision: DirectiveDecision) {
   if (decision === "request_changes") return "Request Changes";
 
@@ -819,15 +1030,287 @@ function missionStatusToMetric(status: DailyMission["status"]): MetricStatus {
   return "watch";
 }
 
+function countByStatus(items: Array<{ status: string }>, status: string) {
+  return items.filter((item) => item.status === status).length;
+}
+
+const approvedExecutionSamples: Record<ApprovedExecutionActionType, Record<string, unknown>> = {
+  create_crm_task: {
+    title: "Review approved Campaign 001 final package",
+    taskType: "approved_execution",
+    priority: "high",
+    recommendedAction: "Review final approval package and record next decision.",
+    reason: "CEO approved internal work and needs a visible CRM task.",
+  },
+  send_email: {
+    to: "recipient@example.com",
+    subject: "Approved J Capital follow-up",
+    body: "Approved email body goes here.",
+  },
+  publish_article: {
+    title: "Approved article title",
+    body: "Approved article body goes here.",
+    slug: "approved-article-slug",
+  },
+  schedule_post: {
+    platform: "linkedin",
+    copy: "Approved post copy goes here.",
+    scheduledFor: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+  },
+  create_calendar_event: {
+    summary: "Approved follow-up review",
+    start: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+    end: new Date(Date.now() + 25 * 60 * 60 * 1000).toISOString(),
+    description: "CEO-approved calendar event.",
+  },
+  create_drive_doc: {
+    name: "Approved execution notes",
+    body: "Approved document body goes here.",
+  },
+};
+
+function ApprovedExecutionLayerPanel({ onExecutionComplete }: { onExecutionComplete: () => Promise<void> }) {
+  const [actionType, setActionType] = useState<ApprovedExecutionActionType>("create_crm_task");
+  const [title, setTitle] = useState("Create approved CRM task");
+  const [sourceLabel, setSourceLabel] = useState("approved_execution_layer:dashboard");
+  const [payloadText, setPayloadText] = useState(JSON.stringify(approvedExecutionSamples.create_crm_task, null, 2));
+  const [approvalId, setApprovalId] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+
+  function changeAction(nextAction: ApprovedExecutionActionType) {
+    setActionType(nextAction);
+    setTitle(
+      nextAction === "send_email"
+        ? "Send approved email"
+        : nextAction === "publish_article"
+          ? "Publish approved article"
+          : nextAction === "schedule_post"
+            ? "Schedule approved post"
+            : nextAction === "create_calendar_event"
+              ? "Create approved calendar event"
+              : nextAction === "create_drive_doc"
+                ? "Create approved Drive doc"
+                : "Create approved CRM task",
+    );
+    setPayloadText(JSON.stringify(approvedExecutionSamples[nextAction], null, 2));
+    setApprovalId("");
+    setMessage("");
+    setError("");
+  }
+
+  async function prepareExecution() {
+    try {
+      setBusy(true);
+      setError("");
+      setMessage("");
+
+      const payload = JSON.parse(payloadText) as Record<string, unknown>;
+      const response = await fetch("/api/approved-execution/prepare", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          actionType,
+          title,
+          sourceLabel,
+          payload,
+        }),
+      });
+      const data = await readJsonResponse<ApprovedExecutionPrepareResponse>(response);
+
+      if (!response.ok || !data.ok || !data.approvalItem) {
+        throw new Error(data.error || "Unable to prepare approved execution.");
+      }
+
+      setApprovalId(data.approvalItem.id);
+      setMessage(`Prepared ${data.approvalItem.actionType} approval ${data.approvalItem.id}.`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to prepare approved execution.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function approveExecute() {
+    if (!approvalId) {
+      setError("Prepare an approved execution item first.");
+      return;
+    }
+
+    try {
+      setBusy(true);
+      setError("");
+      setMessage("");
+
+      const response = await fetch(`/api/approved-execution/${encodeURIComponent(approvalId)}/execute`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ note: "CEO approved exact one-time execution from dashboard." }),
+      });
+      const data = await readJsonResponse<ApprovedExecutionRunResponse>(response);
+
+      if (!response.ok || !data.ok || !data.result) {
+        throw new Error(data.error || "Unable to execute approved action.");
+      }
+
+      setMessage(
+        `${data.result.status}: ${data.result.message}${data.result.blockedReason ? ` ${data.result.blockedReason}` : ""} Audit:${String(data.auditLogged)} Memory:${String(data.memoryLogged)} Ref:${data.result.externalReference ?? "none"}`,
+      );
+      await onExecutionComplete();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to execute approved action.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <section aria-labelledby="approved-execution-heading" className="rounded-lg border border-border bg-surface p-5 md:p-6">
+      <div className="flex min-w-0 flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+        <div className="min-w-0">
+          <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-muted">Approved Execution Layer</p>
+          <h2 id="approved-execution-heading" className="mt-1 break-words text-2xl font-semibold text-primary">
+            Approve One Exact Action
+          </h2>
+          <p className="mt-2 max-w-4xl break-words text-sm leading-6 text-muted">
+            Draft, approve, execute once, log result, and update memory. CRM task creation is internal; provider actions require configured live credentials.
+          </p>
+        </div>
+        <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+          <SafetyBadge>exactAction:true</SafetyBadge>
+          <SafetyBadge>audit:true</SafetyBadge>
+          <SafetyBadge>memory:true</SafetyBadge>
+        </div>
+      </div>
+
+      <div className="mt-5 grid gap-4 xl:grid-cols-[0.85fr_1.15fr]">
+        <div className="space-y-3">
+          <label className="block text-xs font-bold uppercase tracking-[0.08em] text-muted" htmlFor="approved-execution-action">
+            Action
+          </label>
+          <select
+            id="approved-execution-action"
+            value={actionType}
+            onChange={(event) => changeAction(event.target.value as ApprovedExecutionActionType)}
+            className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-primary outline-none focus:border-primary/40"
+          >
+            <option value="create_crm_task">Create CRM task</option>
+            <option value="send_email">Send email</option>
+            <option value="publish_article">Publish article</option>
+            <option value="schedule_post">Schedule post</option>
+            <option value="create_calendar_event">Create calendar event</option>
+            <option value="create_drive_doc">Create Google Drive doc</option>
+          </select>
+
+          <label className="block text-xs font-bold uppercase tracking-[0.08em] text-muted" htmlFor="approved-execution-title">
+            Title
+          </label>
+          <input
+            id="approved-execution-title"
+            value={title}
+            onChange={(event) => setTitle(event.target.value)}
+            className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-primary outline-none focus:border-primary/40"
+          />
+
+          <label className="block text-xs font-bold uppercase tracking-[0.08em] text-muted" htmlFor="approved-execution-source">
+            Source
+          </label>
+          <input
+            id="approved-execution-source"
+            value={sourceLabel}
+            onChange={(event) => setSourceLabel(event.target.value)}
+            className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-primary outline-none focus:border-primary/40"
+          />
+        </div>
+
+        <div className="space-y-3">
+          <label className="block text-xs font-bold uppercase tracking-[0.08em] text-muted" htmlFor="approved-execution-payload">
+            Payload
+          </label>
+          <textarea
+            id="approved-execution-payload"
+            value={payloadText}
+            onChange={(event) => setPayloadText(event.target.value)}
+            className="min-h-48 w-full rounded-md border border-slate-200 bg-white px-3 py-2 font-mono text-xs leading-5 text-primary outline-none focus:border-primary/40"
+          />
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => void prepareExecution()}
+              className="rounded-md border border-slate-200 bg-white px-3 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-primary transition hover:border-primary/40 disabled:cursor-not-allowed disabled:text-muted"
+            >
+              Prepare Approval
+            </button>
+            <button
+              type="button"
+              disabled={busy || !approvalId}
+              onClick={() => void approveExecute()}
+              className="rounded-md bg-primary px-3 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-white transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500"
+            >
+              Approve Execute
+            </button>
+          </div>
+          {approvalId ? <p className="break-words text-xs font-semibold text-primary">Approval ID: {approvalId}</p> : null}
+          {message ? <p className="rounded-md border border-emerald-200 bg-emerald-50 p-3 text-xs font-semibold text-emerald-950">{message}</p> : null}
+          {error ? <p className="rounded-md border border-red-200 bg-red-50 p-3 text-xs font-semibold text-red-950">{error}</p> : null}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function DailyStartupPanel({ startup, onDecisionComplete }: { startup: DailyStartup; onDecisionComplete: () => Promise<void> }) {
   const [decisionNotes, setDecisionNotes] = useState<Record<string, string>>({});
   const [decisionReminders, setDecisionReminders] = useState<Record<string, string>>({});
   const [submittingDecision, setSubmittingDecision] = useState<string | null>(null);
+  const [runningInternalWork, setRunningInternalWork] = useState(false);
   const [decisionError, setDecisionError] = useState("");
   const [decisionSuccess, setDecisionSuccess] = useState("");
+  const [internalWorkSuccess, setInternalWorkSuccess] = useState("");
   const assignments = startup.activation_state?.assignments ?? [];
   const draftQueueItems = startup.activation_state?.draftQueueItems ?? [];
   const latestDecision = startup.activation_state?.latestDecision ?? null;
+  const completedAssignments = countByStatus(assignments, "completed_internal");
+  const pendingAssignments = countByStatus(assignments, "pending_internal_work");
+  const finalReviewDrafts = countByStatus(draftQueueItems, "ready_for_final_approval");
+  const completedDrafts = countByStatus(draftQueueItems, "completed_internal");
+
+  async function runInternalWork() {
+    try {
+      setRunningInternalWork(true);
+      setDecisionError("");
+      setInternalWorkSuccess("");
+
+      const response = await fetch("/api/company/internal-work/run", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+        },
+      });
+      const data = await readJsonResponse<InternalWorkRunResponse>(response);
+
+      if (!response.ok || !data.ok) {
+        throw new Error(data.error || "Unable to run internal company work.");
+      }
+
+      setInternalWorkSuccess(
+        `Internal work completed: ${data.assignmentsAdvanced ?? 0} assignment(s), ${data.draftQueueItemsAdvanced ?? 0} draft item(s), ${data.completedInternalCount ?? 0} completed package(s).`,
+      );
+      await onDecisionComplete();
+    } catch (err) {
+      setDecisionError(err instanceof Error ? err.message : "Unable to run internal company work.");
+    } finally {
+      setRunningInternalWork(false);
+    }
+  }
 
   async function submitDecision(item: DailyStartup["ceo_decision_agenda"][number], decision: DirectiveDecision) {
     const note = decisionNotes[item.directive_id]?.trim() ?? "";
@@ -846,6 +1329,7 @@ function DailyStartupPanel({ startup, onDecisionComplete }: { startup: DailyStar
       setSubmittingDecision(submissionId);
       setDecisionError("");
       setDecisionSuccess("");
+      setInternalWorkSuccess("");
 
       const response = await fetch(`/api/company/directives/${encodeURIComponent(item.directive_id)}/decision`, {
         method: "POST",
@@ -868,7 +1352,12 @@ function DailyStartupPanel({ startup, onDecisionComplete }: { startup: DailyStar
       setDecisionSuccess(
         `${item.title} moved to ${data.resultingStatus ?? decision}. Assignments: ${data.assignmentsTotal ?? 0}. Drafts: ${data.draftQueueItemsTotal ?? 0}.`,
       );
-      await onDecisionComplete();
+
+      if (decision === "approve") {
+        await runInternalWork();
+      } else {
+        await onDecisionComplete();
+      }
     } catch (err) {
       setDecisionError(err instanceof Error ? err.message : "Unable to save CEO decision.");
     } finally {
@@ -931,17 +1420,42 @@ function DailyStartupPanel({ startup, onDecisionComplete }: { startup: DailyStar
           </div>
 
           <div className="rounded-lg border border-emerald-100 bg-emerald-50 p-4">
-            <h3 className="break-words text-lg font-semibold text-emerald-950">AI COO Workflow</h3>
+            <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div className="min-w-0">
+                <h3 className="break-words text-lg font-semibold text-emerald-950">AI COO Workflow</h3>
+                <p className="mt-1 break-words text-xs leading-5 text-emerald-950">
+                  Approved CEO decisions now create internal department packages and move drafts to final review.
+                </p>
+              </div>
+              <button
+                type="button"
+                disabled={runningInternalWork || assignments.length === 0}
+                onClick={() => void runInternalWork()}
+                className="shrink-0 rounded-md bg-emerald-950 px-3 py-2 text-xs font-bold uppercase tracking-[0.08em] text-white transition hover:bg-emerald-900 disabled:cursor-not-allowed disabled:bg-emerald-200 disabled:text-emerald-700"
+                title="Runs internal preparation only. No provider calls, publishing, outreach, scraping, ads, CRM mutation, or live execution."
+              >
+                {runningInternalWork ? "Working..." : "Run Internal Work"}
+              </button>
+            </div>
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
               <div className="rounded-md bg-white p-3">
                 <p className="text-xs font-bold uppercase tracking-[0.08em] text-emerald-900">Assignments</p>
                 <p className="mt-2 text-3xl font-semibold text-emerald-950">{assignments.length}</p>
+                <p className="mt-2 break-words text-xs leading-5 text-emerald-900">
+                  {completedAssignments} completed internally, {pendingAssignments} pending.
+                </p>
               </div>
               <div className="rounded-md bg-white p-3">
                 <p className="text-xs font-bold uppercase tracking-[0.08em] text-emerald-900">Draft Queue</p>
                 <p className="mt-2 text-3xl font-semibold text-emerald-950">{draftQueueItems.length}</p>
+                <p className="mt-2 break-words text-xs leading-5 text-emerald-900">
+                  {finalReviewDrafts} ready for final approval, {completedDrafts} completed internally.
+                </p>
               </div>
             </div>
+            {internalWorkSuccess ? (
+              <p className="mt-3 rounded-md border border-emerald-200 bg-white p-3 text-xs font-semibold text-emerald-950">{internalWorkSuccess}</p>
+            ) : null}
             {latestDecision ? (
               <p className="mt-3 break-words text-xs leading-5 text-emerald-950">
                 Latest decision: {latestDecision.decision} moved workflow to {latestDecision.resultingStatus} at {formatTime(latestDecision.createdAt)}.
@@ -1445,6 +1959,7 @@ function ExecutiveWorkforcePanel({ workforce }: { workforce: ExecutiveWorkforce 
 
 function DailyMissionPanel({ mission }: { mission: DailyMission }) {
   const connectorGaps = mission.connectorHealth.filter((connector) => connector.unifiedStatus !== "healthy").slice(0, 4);
+  const dfdPriorities = mission.dfdOperating?.topPriorities.slice(0, 3) ?? [];
 
   return (
     <section aria-labelledby="daily-mission-heading" className="rounded-lg border border-border bg-surface p-5 md:p-6">
@@ -1526,6 +2041,25 @@ function DailyMissionPanel({ mission }: { mission: DailyMission }) {
             </ul>
           </div>
 
+          {mission.dfdOperating ? (
+            <div className="rounded-lg border border-violet-100 bg-violet-50 p-4">
+              <h2 className="break-words text-lg font-semibold text-violet-950">DFD AI Operating Conductor</h2>
+              <p className="mt-2 break-words text-sm leading-6 text-violet-950">{mission.dfdOperating.summary}</p>
+              <div className="mt-3 grid gap-2 text-xs leading-5 text-violet-950 sm:grid-cols-3">
+                <p>Priorities: <span className="font-semibold">{mission.dfdOperating.totals.propertyReviewPriorities}</span></p>
+                <p>Stops: <span className="font-semibold">{mission.dfdOperating.totals.governanceStops}</span></p>
+                <p>Bottlenecks: <span className="font-semibold">{mission.dfdOperating.totals.acquisitionBottlenecks}</span></p>
+              </div>
+              <ul className="mt-3 space-y-2 text-xs leading-5 text-violet-950">
+                {dfdPriorities.length > 0 ? dfdPriorities.map((priority) => (
+                  <li key={priority.id} className="break-words">
+                    {priority.title} · {priority.assignedDepartment} · ROI {priority.roiRank}
+                  </li>
+                )) : <li>No DFD property priorities are visible yet.</li>}
+              </ul>
+            </div>
+          ) : null}
+
           <div className="rounded-lg border border-amber-100 bg-amber-50 p-4">
             <h2 className="break-words text-lg font-semibold text-amber-950">Connector/Data Gaps</h2>
             <ul className="mt-3 space-y-2 text-xs leading-5 text-amber-950">
@@ -1541,6 +2075,226 @@ function DailyMissionPanel({ mission }: { mission: DailyMission }) {
   );
 }
 
+function connectorActivationStatus(status: ConnectorActivationReport["connectors"][number]["status"]): MetricStatus {
+  if (status === "connected" || status === "internal_ready") return "good";
+  if (status === "credentials_missing" || status === "data_gap") return "watch";
+  if (status === "registry_only") return "missing";
+
+  return "urgent";
+}
+
+function ConnectorActivationReportPanel({ report }: { report: ConnectorActivationReport }) {
+  const primaryRows = report.connectors
+    .filter((connector) =>
+      [
+        "google_workspace",
+        "gmail",
+        "google_calendar",
+        "google_drive",
+        "google_search_console",
+        "google_analytics",
+        "google_business_profile",
+        "youtube",
+        "canva",
+        "lead_database",
+        "crm",
+        "property_pipeline",
+      ].includes(connector.connectorId),
+    )
+    .slice(0, 12);
+
+  return (
+    <section aria-labelledby="connector-activation-heading" className="rounded-lg border border-border bg-surface p-5 md:p-6">
+      <div className="flex min-w-0 flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+        <div className="min-w-0">
+          <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-muted">Live Business Data Activation</p>
+          <h2 id="connector-activation-heading" className="mt-2 break-words text-2xl font-semibold text-primary">
+            Connector Activation Report
+          </h2>
+          <p className="mt-3 max-w-5xl break-words text-sm leading-6 text-muted">{report.summary}</p>
+        </div>
+        <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+          <SafetyBadge>readOnly:{String(report.safetyFlags.readOnly)}</SafetyBadge>
+          <SafetyBadge>providerCalled:{String(report.safetyFlags.providerCalled)}</SafetyBadge>
+          <SafetyBadge tone="urgent">liveExecution:{String(report.safetyFlags.liveExecutionAllowed)}</SafetyBadge>
+          <SafetyBadge>workflowStarted:{String(report.safetyFlags.workflowStarted)}</SafetyBadge>
+        </div>
+      </div>
+
+      <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+        <div className="rounded-lg border border-border bg-white p-4">
+          <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Connected reads</p>
+          <p className="mt-2 text-3xl font-semibold text-primary">{report.totals.connected}</p>
+        </div>
+        <div className="rounded-lg border border-border bg-white p-4">
+          <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Internal ready</p>
+          <p className="mt-2 text-3xl font-semibold text-primary">{report.totals.internalReady}</p>
+        </div>
+        <div className="rounded-lg border border-border bg-white p-4">
+          <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Credential gaps</p>
+          <p className="mt-2 text-3xl font-semibold text-primary">{report.totals.credentialsMissing}</p>
+        </div>
+        <div className="rounded-lg border border-border bg-white p-4">
+          <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Data gaps</p>
+          <p className="mt-2 text-3xl font-semibold text-primary">{report.totals.dataGaps}</p>
+        </div>
+        <div className="rounded-lg border border-border bg-white p-4">
+          <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Total connectors</p>
+          <p className="mt-2 text-3xl font-semibold text-primary">{report.totals.connectors}</p>
+        </div>
+      </div>
+
+      <div className="mt-5 grid gap-3 lg:grid-cols-2">
+        {primaryRows.map((connector) => (
+          <article key={connector.connectorId} className="rounded-lg border border-border bg-white p-4">
+            <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div className="min-w-0">
+                <h3 className="break-words text-sm font-semibold text-primary">{connector.connectorName}</h3>
+                <p className="mt-1 break-words text-xs leading-5 text-muted">{connector.businessUseCase}</p>
+              </div>
+              <StatusBadge status={connectorActivationStatus(connector.status)} label={connector.status.replaceAll("_", " ")} />
+            </div>
+            <div className="mt-3 grid gap-2 text-xs leading-5 text-muted sm:grid-cols-2">
+              <p className="break-words">ROI tier: <span className="font-semibold text-primary">{connector.roiPriority}</span></p>
+              <p className="break-words">Deal flow: <span className="font-semibold text-primary">{connector.dealFlowImpact}</span></p>
+              <p className="break-words">Department: <span className="font-semibold text-primary">{connector.departmentUsingIt}</span></p>
+              <p className="break-words">Credentials: <span className="font-semibold text-primary">{connector.credentialsPresent ? "present" : "missing"}</span></p>
+              <p className="break-words">Last read: <span className="font-semibold text-primary">{connector.lastSuccessfulRead ? formatTime(connector.lastSuccessfulRead) : "not yet"}</span></p>
+              <p className="break-words">Read-only: <span className="font-semibold text-primary">{String(connector.readOnly)}</span></p>
+            </div>
+            <p className="mt-3 break-words text-xs leading-5 text-primary">Revenue: {connector.revenueUseCase}</p>
+            {connector.sourceRecords.length > 0 ? (
+              <p className="mt-3 break-words text-xs leading-5 text-emerald-900">Proof: {connector.sourceRecords[0]}</p>
+            ) : null}
+            <p className="mt-3 break-words text-xs leading-5 text-muted">Next: {connector.lastFailure ?? connector.nextRevenueAction ?? connector.nextRequiredAction}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ProductionDryRunPanel() {
+  const [report, setReport] = useState<ProductionDryRunReport | null>(null);
+  const [running, setRunning] = useState(false);
+  const [error, setError] = useState("");
+
+  async function runDryRun() {
+    try {
+      setRunning(true);
+      setError("");
+      const response = await fetch("/api/company/production-dry-run", {
+        method: "POST",
+        cache: "no-store",
+        headers: { Accept: "application/json" },
+      });
+      const data = await readJsonResponse<ProductionDryRunReport & { error?: string }>(response);
+
+      if (!response.ok || !data.ok) {
+        throw new Error(data.error || "Unable to run production dry run.");
+      }
+
+      setReport(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to run production dry run.");
+    } finally {
+      setRunning(false);
+    }
+  }
+
+  return (
+    <section aria-labelledby="production-dry-run-heading" className="rounded-lg border border-border bg-surface p-5 md:p-6">
+      <div className="flex min-w-0 flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+        <div className="min-w-0">
+          <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-muted">Sprint 24 Production Dry Run</p>
+          <h2 id="production-dry-run-heading" className="mt-2 break-words text-2xl font-semibold text-primary">
+            Full-Day Operating Simulation
+          </h2>
+          <p className="mt-3 max-w-5xl break-words text-sm leading-6 text-muted">
+            Runs one internal business-day loop using stored data and read-only snapshots. It writes internal audit traces only and keeps external execution blocked.
+          </p>
+        </div>
+        <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+          <SafetyBadge>providerCalled:false</SafetyBadge>
+          <SafetyBadge>sent:false</SafetyBadge>
+          <SafetyBadge>published:false</SafetyBadge>
+          <SafetyBadge tone="urgent">liveExecution:false</SafetyBadge>
+        </div>
+      </div>
+
+      <div className="mt-5 flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          onClick={runDryRun}
+          disabled={running}
+          className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {running ? "Running dry run..." : "Run production dry run"}
+        </button>
+        {error ? <p className="break-words text-sm font-semibold text-red-700">{error}</p> : null}
+        {report ? <p className="break-words text-sm text-muted">Latest trace: {report.traceId}</p> : null}
+      </div>
+
+      {report ? (
+        <div className="mt-5 space-y-4">
+          <div className="rounded-lg border border-blue-100 bg-blue-50 p-4">
+            <h3 className="break-words text-lg font-semibold text-blue-950">{report.summary}</h3>
+            <div className="mt-3 grid gap-3 text-sm leading-6 text-blue-950 sm:grid-cols-2 xl:grid-cols-4">
+              <p>DFD priorities: <span className="font-semibold">{report.businessWorkProduced.dfdPropertyPriorities}</span></p>
+              <p>Work orders: <span className="font-semibold">{report.businessWorkProduced.departmentWorkOrders}</span></p>
+              <p>Drafts: <span className="font-semibold">{report.businessWorkProduced.draftWorkspaceItems}</span></p>
+              <p>Approvals: <span className="font-semibold">{report.businessWorkProduced.approvalQueueItems}</span></p>
+            </div>
+          </div>
+
+          <div className="grid gap-4 xl:grid-cols-2">
+            <div className="rounded-lg border border-border bg-white p-4">
+              <h3 className="break-words text-lg font-semibold text-primary">Loop Proof</h3>
+              <ul className="mt-3 space-y-2 text-xs leading-5 text-muted">
+                {report.loopSteps.map((step) => (
+                  <li key={`${step.sourceStep}-${step.targetStep}`} className="break-words">
+                    {step.sourceStep} {"->"} {step.targetStep}: {step.status}, audit:{String(step.auditRecorded)}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="rounded-lg border border-amber-100 bg-amber-50 p-4">
+              <h3 className="break-words text-lg font-semibold text-amber-950">Execution, Audit, Memory</h3>
+              <ul className="mt-3 space-y-2 text-sm leading-6 text-amber-950">
+                <li>Approved execution: {report.approvedExecutionValidation.blockedReason}</li>
+                <li>Audit traces: {report.auditProof.traceRecordsRecorded}/{report.auditProof.traceRecordsAttempted}</li>
+                <li>Memory eligibility: {String(report.memoryEligibility.eligible)}; written:{String(report.memoryEligibility.memoryWritten)}</li>
+                <li>Outcome placeholder: {report.businessOutcomePlaceholder.status}</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="grid gap-4 xl:grid-cols-2">
+            <div className="rounded-lg border border-emerald-100 bg-emerald-50 p-4">
+              <h3 className="break-words text-lg font-semibold text-emerald-950">Tomorrow Recommendations</h3>
+              <ul className="mt-3 space-y-2 text-sm leading-6 text-emerald-950">
+                {report.tomorrowRecommendations.slice(0, 5).map((item) => (
+                  <li key={`${item.sourceLabel}-${item.title}`} className="break-words">{item.title}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="rounded-lg border border-red-100 bg-red-50 p-4">
+              <h3 className="break-words text-lg font-semibold text-red-950">Production Blockers</h3>
+              <ul className="mt-3 space-y-2 text-sm leading-6 text-red-950">
+                {(report.remainingProductionBlockers.length > 0 ? report.remainingProductionBlockers : ["No dry-run blockers reported."]).slice(0, 6).map((item) => (
+                  <li key={item} className="break-words">{item}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
 export function ExecutiveDashboardClient() {
   const [dailyStartup, setDailyStartup] = useState<DailyStartup | null>(null);
   const [revenueCommandCenter, setRevenueCommandCenter] = useState<RevenueCommandCenter | null>(null);
@@ -1548,6 +2302,7 @@ export function ExecutiveDashboardClient() {
   const [departmentIntelligence, setDepartmentIntelligence] = useState<DepartmentIntelligence | null>(null);
   const [operatingCompany, setOperatingCompany] = useState<OperatingCompany | null>(null);
   const [dailyMission, setDailyMission] = useState<DailyMission | null>(null);
+  const [connectorActivation, setConnectorActivation] = useState<ConnectorActivationReport | null>(null);
   const [morningBrief, setMorningBrief] = useState<MorningBrief | null>(null);
   const [todayPriorities, setTodayPriorities] = useState<ExecutiveWidget[]>([]);
   const [kpiInterpretations, setKpiInterpretations] = useState<Record<string, string>>({});
@@ -1582,6 +2337,7 @@ export function ExecutiveDashboardClient() {
       setDepartmentIntelligence(data.departmentIntelligence ?? null);
       setOperatingCompany(data.operatingCompany ?? null);
       setDailyMission(data.dailyMission ?? null);
+      setConnectorActivation(data.connectorActivation ?? null);
       setMorningBrief(data.morningBrief ?? null);
       setTodayPriorities(
         data.todayPriorities ??
@@ -1613,7 +2369,10 @@ export function ExecutiveDashboardClient() {
       {error ? <ErrorState message={error} /> : null}
 
       {dailyMission ? <DailyMissionPanel mission={dailyMission} /> : null}
+      <ProductionDryRunPanel />
+      {connectorActivation ? <ConnectorActivationReportPanel report={connectorActivation} /> : null}
       {dailyStartup ? <DailyStartupPanel startup={dailyStartup} onDecisionComplete={loadDashboard} /> : null}
+      <ApprovedExecutionLayerPanel onExecutionComplete={loadDashboard} />
       {operatingCompany ? <OperatingCompanyPanel operatingCompany={operatingCompany} /> : null}
       {revenueCommandCenter ? <RevenueCommandCenterPanel commandCenter={revenueCommandCenter} /> : null}
       {executiveWorkforce ? <ExecutiveWorkforcePanel workforce={executiveWorkforce} /> : null}

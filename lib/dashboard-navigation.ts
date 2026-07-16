@@ -17,6 +17,8 @@ export const dashboardNavigationItems: DashboardNavigationItem[] = [
   { href: "/dashboard/marketing", label: "Marketing Hub", keywords: ["campaign", "draft", "content", "gbp"] },
   { href: "/dashboard/referrals", label: "Referrals", keywords: ["referral", "partner", "partnership", "attribution", "source"] },
   { href: "/dashboard/tools", label: "Tools", keywords: ["tool registry", "capability", "connector", "safe auto", "fallback"] },
+  { href: "/dashboard/professional-toolchains", label: "Professional Toolchains", keywords: ["professional", "certification", "expertise", "toolchain", "wave", "workforce", "connector intake"] },
+  { href: "/dashboard/search-intelligence", label: "Search Intelligence", keywords: ["search console", "seo", "query", "indexing", "market intelligence", "monday packet", "qa"] },
   { href: "/dashboard/enterprise-ai", label: "Enterprise AI", keywords: ["phase 2", "connector platform", "market intelligence", "executive ai", "safe autonomy"] },
   { href: "/dashboard/mobile-command", label: "Mobile Command", keywords: ["phase 3", "mobile", "command center", "approval center", "social operations"] },
   { href: "/dashboard/research", label: "Research", keywords: ["market", "analysis", "source"] },

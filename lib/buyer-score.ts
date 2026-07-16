@@ -1,8 +1,9 @@
 import { prisma } from "@/lib/prisma";
-import type { BuyerDemandSignals } from "@/lib/buyer-demand";
+import type { BuyerDemandSignals, BuyerTier } from "@/lib/buyer-demand-types";
+
+export type { BuyerTier } from "@/lib/buyer-demand-types";
 
 export type BuyerStatus = "active" | "warm" | "cold" | "dead";
-export type BuyerTier = "A" | "B" | "C" | "D";
 
 export type BuyerScore = {
   score: number;

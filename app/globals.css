@@ -11,6 +11,9 @@
   --primary-strong: #01172c;
   --accent: #d4a017;
   --success: #2d6a4f;
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-heading: "Segoe UI", Arial, Helvetica, sans-serif;
+  --font-brand: Georgia, "Times New Roman", serif;
 }
 
 @theme inline {

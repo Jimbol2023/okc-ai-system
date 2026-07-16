@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
 
 const adminEmail = process.env.ADMIN_EMAIL;
 const adminPassword = process.env.ADMIN_PASSWORD;
@@ -49,11 +50,14 @@ test.describe("authenticated dashboard smoke", () => {
   test("command palette opens with Ctrl+K and shows safety badges", async ({ page }) => {
     await signIn(page);
     await page.goto("/dashboard");
+    await expect(page.locator("main")).toBeVisible();
+    await page.waitForFunction(() => document.readyState === "complete");
     await page.keyboard.press("Control+K");
 
-    await expect(page.getByRole("dialog", { name: "Command palette" })).toBeVisible();
-    await expect(page.getByText("providerCalled:false")).toBeVisible();
-    await expect(page.getByText("generatedFacts:false")).toBeVisible();
+    const palette = page.getByRole("dialog", { name: "Command palette" });
+    await expect(palette).toBeVisible();
+    await expect(palette.getByText("providerCalled:false")).toBeVisible();
+    await expect(palette.getByText("generatedFacts:false")).toBeVisible();
   });
 
   test("workflow readiness page and API expose disabled execution flags", async ({ context, page }) => {
@@ -106,15 +110,15 @@ test.describe("authenticated dashboard smoke", () => {
     await page.goto("/dashboard/safety");
 
     await expect(page.getByRole("heading", { name: "Safety Center" })).toBeVisible();
-    await expect(page.getByText("Provider Readiness")).toBeVisible();
-    await expect(page.getByText("Workflow Orchestration")).toBeVisible();
-    await expect(page.getByText("AI Memory Governance")).toBeVisible();
-    await expect(page.getByText("OpenAI + Semantic Search Gates")).toBeVisible();
-    await expect(page.getByText("Twilio + SMS Boundary")).toBeVisible();
-    await expect(page.getByText("n8n Readiness")).toBeVisible();
-    await expect(page.getByText("providerCalled:false")).toBeVisible();
-    await expect(page.getByText("workflowTriggered:false")).toBeVisible();
-    await expect(page.getByText("generatedFacts:false")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Provider Readiness", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Workflow Orchestration", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "AI Memory Governance", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "OpenAI + Semantic Search Gates", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Twilio + SMS Boundary", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "n8n Readiness", exact: true })).toBeVisible();
+    await expect(page.getByText("providerCalled:false").first()).toBeVisible();
+    await expect(page.getByText("workflowTriggered:false").first()).toBeVisible();
+    await expect(page.getByText("generatedFacts:false").first()).toBeVisible();
   });
 
   test("Mobile command center renders PWA help and safety badges", async ({ page }) => {
@@ -124,10 +128,10 @@ test.describe("authenticated dashboard smoke", () => {
 
     await expect(page.getByRole("heading", { name: "Mobile Command Center" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Add this to your phone" })).toBeVisible();
-    await expect(page.getByText("providerCalled:false")).toBeVisible();
-    await expect(page.getByText("liveExecutionAllowed:false")).toBeVisible();
-    await expect(page.getByText("outreachSent:false")).toBeVisible();
-    await expect(page.getByText("approvalRequired:true")).toBeVisible();
+    await expect(page.getByText("providerCalled:false").first()).toBeVisible();
+    await expect(page.getByText("liveExecutionAllowed:false").first()).toBeVisible();
+    await expect(page.getByText("outreachSent:false").first()).toBeVisible();
+    await expect(page.getByText("approvalRequired:true").first()).toBeVisible();
   });
 
   test("Referral dashboard renders internal attribution review safely", async ({ page }) => {
@@ -139,5 +143,18 @@ test.describe("authenticated dashboard smoke", () => {
     await expect(page.getByText("outreachSent:false")).toBeVisible();
     await expect(page.getByText("published:false")).toBeVisible();
     await expect(page.getByText("liveExecutionAllowed:false")).toBeVisible();
+  });
+
+  test("Search Intelligence is mobile-safe, keyboard-readable, and has no detectable accessibility violations", async ({ page }) => {
+    await signIn(page);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/dashboard/search-intelligence");
+    await expect(page.getByRole("heading", { name: "Professional search decision workspace" })).toBeVisible();
+    await expect(page.getByText("providerCalled:false")).toBeVisible();
+    await expect(page.getByText("externalWrites:false")).toBeVisible();
+    await expect(page.getByText("liveExecution:false")).toBeVisible();
+    await page.keyboard.press("Tab");
+    const results = await new AxeBuilder({ page }).analyze();
+    expect(results.violations).toEqual([]);
   });
 });

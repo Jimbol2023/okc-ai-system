@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 
-import { getUnauthorizedApiResponse, isAdminRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse, isAdminRequest } from "@/lib/auth";
 import { runReadOnlyBusinessSync } from "@/lib/read-only-business-connections";
+import { createUeipExecutionContext } from "@/lib/ueip-runtime-gateway";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -13,13 +14,24 @@ function isCronRequest(request: Request) {
   return Boolean(configuredSecret) && authorization === `Bearer ${configuredSecret}`;
 }
 
+async function executionContextFor(request: Request) {
+  if (isCronRequest(request)) {
+    return createUeipExecutionContext({ tenantId: "default", actorId: "system:cron", businessModule: "ai_core", requestOrigin: "system_cron" });
+  }
+  const auth = await getAuthenticatedRequestContext(request);
+  if (!auth) return null;
+  return createUeipExecutionContext({ tenantId: auth.tenantId, actorId: auth.actorId, businessModule: "ai_core", requestOrigin: "authenticated_admin" });
+}
+
 export async function POST(request: Request) {
   try {
     if (!isCronRequest(request) && !(await isAdminRequest(request))) {
       return getUnauthorizedApiResponse();
     }
 
-    const report = await runReadOnlyBusinessSync();
+    const context = await executionContextFor(request);
+    if (!context) return getUnauthorizedApiResponse();
+    const report = await runReadOnlyBusinessSync(process.env, context);
 
     return NextResponse.json(report);
   } catch (error) {
@@ -43,7 +55,9 @@ export async function GET(request: Request) {
       return getUnauthorizedApiResponse();
     }
 
-    const report = await runReadOnlyBusinessSync();
+    const context = await executionContextFor(request);
+    if (!context) return getUnauthorizedApiResponse();
+    const report = await runReadOnlyBusinessSync(process.env, context);
 
     return NextResponse.json(report);
   } catch (error) {

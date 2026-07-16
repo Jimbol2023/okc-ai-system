@@ -684,7 +684,6 @@ export function evaluateCountyGovernanceEntropyDoctrineStewardshipContinuity(
     riskScores[input.boundedStewardshipReevaluationNeedLevel ?? "none"],
     reevaluationEvidenceCount < 1 && hasEvidence ? 50 : 0,
   );
-  const recursiveDependencyScore = riskScores[input.recursiveStewardshipDependencyLevel ?? "none"];
   const collapseExposureScore = riskScores[input.collapseExposureLevel ?? "none"];
   const oversightCompatibilityScore = compatibilityScores[input.oversightCompatibilityLevel ?? "unknown"];
   const maintenanceCompatibilityScore = compatibilityScores[input.maintenanceCompatibilityLevel ?? "unknown"];

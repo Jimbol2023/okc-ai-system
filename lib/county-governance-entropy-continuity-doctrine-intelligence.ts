@@ -262,15 +262,6 @@ const viabilityScore: Record<OperationalContinuityViabilityLevel, number> = {
   institutional: 96,
 };
 
-const resilienceLimitScore: Record<ContinuityDoctrineResilienceLimitLevel, number> = {
-  unknown: 0,
-  exceeded: 5,
-  strained: 45,
-  stable: 72,
-  durable: 88,
-  institutional: 96,
-};
-
 const average = (scores: readonly number[]): number =>
   Math.round(scores.reduce((sum, score) => sum + score, 0) / scores.length);
 

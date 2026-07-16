@@ -240,14 +240,6 @@ const infrastructureLoadRiskScore: Record<CountyGovernanceRecoveryInfrastructure
   overloaded: 100,
 };
 
-const reversibilityScore: Record<CountyGovernanceExhaustionReversibilityLevelS22, number> = {
-  unknown: 0,
-  recoverable: 86,
-  partially_recoverable: 62,
-  difficult: 30,
-  irreversible: 0,
-};
-
 const longHorizonScore: Record<CountyGovernanceLongHorizonResilienceLevelS22, number> = {
   unproven: 0,
   degrading: 20,

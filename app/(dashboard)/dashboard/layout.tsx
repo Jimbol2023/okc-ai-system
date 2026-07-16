@@ -22,6 +22,8 @@ const navIconByHref = {
   "/dashboard/marketing": Megaphone,
   "/dashboard/referrals": Handshake,
   "/dashboard/tools": Wrench,
+  "/dashboard/professional-toolchains": Briefcase,
+  "/dashboard/search-intelligence": Search,
   "/dashboard/enterprise-ai": ShieldCheck,
   "/dashboard/mobile-command": MonitorSmartphone,
   "/dashboard/research": Search,
@@ -89,9 +91,9 @@ export default async function DashboardLayout({
               })}
             </div>
           </aside>
-          <div className="min-w-0 rounded-2xl border border-border bg-surface-strong p-4 md:p-6 xl:p-7">
+          <main id="main-content" className="min-w-0 rounded-2xl border border-border bg-surface-strong p-4 md:p-6 xl:p-7">
             {children}
-          </div>
+          </main>
         </div>
       </div>
       <CommandPaletteClient />

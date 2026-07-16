@@ -8,9 +8,11 @@ import {
   runReadOnlyBusinessSync,
   setReadOnlyBusinessConnectionsDbForTest,
   setReadOnlyBusinessConnectionsFetchForTest,
+  setReadOnlyBusinessConnectionsLeadLoaderForTest,
   validateReadOnlyAdapterDefinitions,
   type BusinessDataSnapshotRecord,
 } from "./read-only-business-connections";
+import { setUeipRuntimeDependenciesForTest } from "./ueip-runtime-gateway";
 
 const restoreFns: Array<() => void> = [];
 
@@ -71,12 +73,22 @@ function jsonResponse(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json" } });
 }
 
+function createUeipTestDb(siteUrl: string) {
+  return {
+    connectorInstallationState: { async findUnique() { return { id: "search-installation", tenantId: "default", connectorId: "google_search_console", installationState: "enabled", configurationState: "configured", authenticationState: "authenticated", sandboxMode: true, enabled: true, enableApprovalStatus: "approved", credentialReferenceId: "search-credential", requiredScopes: ["https://www.googleapis.com/auth/webmasters.readonly"], grantedScopes: ["https://www.googleapis.com/auth/webmasters.readonly"], permissionValidation: { authorizedSiteUrls: [siteUrl] } }; } },
+    connectorCredentialReference: { async findFirst() { return { id: "search-credential", tenantId: "default", connectorId: "google_search_console", referenceKey: "search-console", secretStorageProvider: "environment", rawSecretStored: false, rawSecretRendered: false, expiresAt: null }; } },
+    ueipGatewayAuditEvent: { async create(args: unknown) { return { id: "audit", args }; } },
+    enterpriseConnectorHealthEvent: { async create(args: unknown) { return args; } },
+  };
+}
+
 describe("read-only business connections", () => {
   it("records data gaps without attempting provider calls when credentials are missing", async () => {
     const testDb = createTestDb();
     let calls = 0;
 
     restoreFns.push(setReadOnlyBusinessConnectionsDbForTest(testDb.db as never));
+    restoreFns.push(setReadOnlyBusinessConnectionsLeadLoaderForTest(async () => []));
     restoreFns.push(
       setReadOnlyBusinessConnectionsFetchForTest(async () => {
         calls += 1;
@@ -90,8 +102,9 @@ describe("read-only business connections", () => {
     assert.equal(calls, 0);
     assert.equal(report.providerCalled, false);
     assert.equal(report.liveExecutionAllowed, false);
-    assert.equal(report.snapshots.length, readOnlyAdapterDefinitions.length);
-    assert.ok(report.snapshots.every((snapshot) => snapshot.status === "data_gap"));
+    assert.equal(report.snapshots.length, readOnlyAdapterDefinitions.length + 3);
+    assert.ok(report.snapshots.filter((snapshot) => readOnlyAdapterDefinitions.some((definition) => definition.id === snapshot.category)).every((snapshot) => snapshot.status === "data_gap"));
+    assert.ok(report.snapshots.some((snapshot) => snapshot.category === "internal_lead_database"));
     assert.ok(report.dataGaps.some((gap) => gap.includes("Missing required read-only credential")));
   });
 
@@ -99,6 +112,7 @@ describe("read-only business connections", () => {
     const testDb = createTestDb();
     const calls: Array<{ url: string; method: string }> = [];
     const env = {
+      VERCEL_ENV: "preview",
       GOOGLE_OAUTH_CLIENT_ID: "google-client",
       GOOGLE_OAUTH_CLIENT_SECRET: "google-secret",
       GOOGLE_OAUTH_REFRESH_TOKEN: "google-refresh",
@@ -112,8 +126,8 @@ describe("read-only business connections", () => {
     };
 
     restoreFns.push(setReadOnlyBusinessConnectionsDbForTest(testDb.db as never));
-    restoreFns.push(
-      setReadOnlyBusinessConnectionsFetchForTest(async (input, init) => {
+    restoreFns.push(setReadOnlyBusinessConnectionsLeadLoaderForTest(async () => []));
+    const testFetch: typeof fetch = async (input, init) => {
         const url = String(input);
         const method = init?.method ?? "GET";
         calls.push({ url, method });
@@ -132,8 +146,9 @@ describe("read-only business connections", () => {
         if (url.includes("api.canva.com/rest/v1/designs")) return jsonResponse({ items: [{ id: "c1", title: "Seller checklist" }] });
 
         return jsonResponse({});
-      }),
-    );
+      };
+    restoreFns.push(setReadOnlyBusinessConnectionsFetchForTest(testFetch));
+    restoreFns.push(setUeipRuntimeDependenciesForTest({ db: createUeipTestDb(env.GOOGLE_SEARCH_CONSOLE_SITE_URL) as never, fetcher: testFetch, environment: "preview" }));
 
     const report = await runReadOnlyBusinessSync(env);
     const serialized = JSON.stringify(report);

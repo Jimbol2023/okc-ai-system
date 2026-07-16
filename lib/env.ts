@@ -23,6 +23,9 @@ export type EnvironmentValidationReport = {
   appUrl: string;
   coreReady: boolean;
   phase4LiveSmsReady: boolean;
+  approvedExecutionExternalEnabled: boolean;
+  approvedExecutionProductionSmokePassed: boolean;
+  approvedExecutionExternalReady: boolean;
   killSwitchActive: boolean;
   items: EnvironmentValidationItem[];
   blockers: string[];
@@ -128,6 +131,7 @@ export function validateProductionEnvironment(): EnvironmentValidationReport {
   const items: EnvironmentValidationItem[] = [];
   const phase4 = getPhase4LiveSmsConfig();
   const appUrl = getEnvValue("NEXT_PUBLIC_APP_URL") || getAppUrl();
+  const isProductionRuntime = process.env.NODE_ENV === "production" || process.env.VERCEL_ENV === "production";
 
   addValidationItem(items, {
     key: "DATABASE_URL",
@@ -224,11 +228,27 @@ export function validateProductionEnvironment(): EnvironmentValidationReport {
   });
   addValidationItem(items, {
     key: "TWILIO_WEBHOOK_AUTH_TOKEN",
-    required: process.env.NODE_ENV === "production",
+    required: isProductionRuntime,
     value: phase4.twilioWebhookAuthToken,
     validate: (value) => value.length >= 16,
     severity: "blocker",
     message: "Twilio webhook token is required in production.",
+  });
+  addValidationItem(items, {
+    key: "APPROVED_EXECUTION_ENABLED",
+    required: false,
+    value: getEnvValue("APPROVED_EXECUTION_ENABLED"),
+    validate: (value) => ["true", "false", "1", "0"].includes(value.toLowerCase()),
+    severity: getEnvValue("APPROVED_EXECUTION_ENABLED") === "true" ? "warning" : "info",
+    message: "External approved execution should stay false or unset for first production start.",
+  });
+  addValidationItem(items, {
+    key: "APPROVED_EXECUTION_PRODUCTION_SMOKE_PASSED",
+    required: getEnvValue("APPROVED_EXECUTION_ENABLED") === "true" && isProductionRuntime,
+    value: getEnvValue("APPROVED_EXECUTION_PRODUCTION_SMOKE_PASSED"),
+    validate: (value) => ["true", "false", "1", "0"].includes(value.toLowerCase()),
+    severity: "blocker",
+    message: "Production smoke approval must be explicit before external approved execution can run.",
   });
 
   const blockers = items
@@ -246,6 +266,9 @@ export function validateProductionEnvironment(): EnvironmentValidationReport {
     "TWILIO_AUTH_TOKEN",
     "TWILIO_FROM_NUMBER",
   ];
+  const approvedExecutionExternalEnabled = getEnvValue("APPROVED_EXECUTION_ENABLED") === "true";
+  const approvedExecutionProductionSmokePassed =
+    !isProductionRuntime || getEnvValue("APPROVED_EXECUTION_PRODUCTION_SMOKE_PASSED") === "true";
 
   return {
     ok: blockers.length === 0,
@@ -256,6 +279,9 @@ export function validateProductionEnvironment(): EnvironmentValidationReport {
       phase4.liveSmsEnabled &&
       !phase4.smsKillSwitchActive &&
       items.filter((item) => smsKeys.includes(item.key)).every((item) => item.valid),
+    approvedExecutionExternalEnabled,
+    approvedExecutionProductionSmokePassed,
+    approvedExecutionExternalReady: approvedExecutionExternalEnabled && approvedExecutionProductionSmokePassed,
     killSwitchActive: phase4.smsKillSwitchActive,
     items,
     blockers,

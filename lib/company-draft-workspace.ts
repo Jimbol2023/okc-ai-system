@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import type { AiDepartmentName } from "@/lib/company-orchestrator";
+import { createDepartmentArtifact, type DepartmentArtifactType } from "@/lib/department-artifact-engine";
+import { getLatestBusinessSnapshots, type BusinessDataSnapshotRecord } from "@/lib/read-only-business-connections";
 import type { CompanyDraftDecisionInput, CompanyDraftEditInput } from "@/lib/validations/company-drafts";
 
 const tenantId = "default";
@@ -27,6 +29,15 @@ export type DraftWorkspaceMetadata = {
   directiveId: string;
   output: string;
   workItemType: string;
+  department?: string;
+  artifactType?: DepartmentArtifactType | string;
+  sourceConnectors?: string[];
+  sourceRecords?: string[];
+  sourceSummaries?: string[];
+  dataGaps?: string[];
+  approvalRequired?: true;
+  providerCalled?: false;
+  liveExecutionAllowed?: false;
   rawMetadataNote?: string;
 };
 
@@ -218,11 +229,26 @@ export function createInitialDraftWorkspaceFields({
   const directiveTitle = directive?.title || "approved Executive Directive";
   const businessGoal = directive?.businessGoal || "improve_executive_decisions";
   const confidence = 72;
+  const artifact = createDepartmentArtifact({
+    output,
+    ownerDepartment,
+    directiveTitle,
+    businessGoal,
+    expectedBusinessValue: directive?.expectedBusinessValue,
+    sourceLabel,
+  });
   const metadata: DraftWorkspaceMetadata = {
     sourceLabel,
     directiveId: directive?.id || "",
     output,
     workItemType: classifyWorkItemType(output),
+    department: ownerDepartment,
+    artifactType: artifact.artifactType,
+    sourceConnectors: artifact.sourceConnectors,
+    sourceRecords: artifact.sourceRecords,
+    approvalRequired: true,
+    providerCalled: false,
+    liveExecutionAllowed: false,
   };
   const knowledgeTrace: DraftKnowledgeTraceEntry[] = [
     { type: "knowledge_pack", label: "Enterprise Knowledge Platform", confidence },
@@ -230,22 +256,21 @@ export function createInitialDraftWorkspaceFields({
     { type: "internal_standard", label: "AI Business Constitution v1", confidence },
   ];
   const assumptions = [
-    "Draft queue item was generated from an approved Executive Directive.",
-    "Draft approval is internal review only and does not authorize execution.",
+    ...artifact.assumptions,
   ];
 
   return {
-    title: output,
-    body: `${ownerDepartment} prepared this internal work item for ${directiveTitle}. Review, edit, and approve the draft before any separate manual execution process is considered.`,
-    messaging: directive?.objective || directive?.summary || directive?.expectedBusinessValue || "Internal CEO review is required before this work can move forward.",
-    cta: "CEO review required before any external action.",
+    title: artifact.title,
+    body: artifact.body,
+    messaging: artifact.messaging || directive?.objective || directive?.summary || directive?.expectedBusinessValue || "Internal CEO review is required before this work can move forward.",
+    cta: artifact.cta,
     metadata,
     priority: "normal",
     businessGoal,
-    executiveSummary: `${output} is ready for CEO review in the internal draft workspace. It remains blocked from publishing, outreach, provider calls, scraping, CRM mutation, and workflow execution.`,
+    executiveSummary: artifact.executiveSummary,
     knowledgeTrace,
     assumptions,
-    confidence,
+    confidence: artifact.confidence,
     approvalStatus: "pending_ceo_review",
     revisionCount: 0,
   };
@@ -272,6 +297,15 @@ function normalizeMetadata(value: unknown, fallback: DraftWorkspaceMetadata): Dr
     directiveId: typeof candidate.directiveId === "string" ? candidate.directiveId : fallback.directiveId,
     output: typeof candidate.output === "string" && candidate.output ? candidate.output : fallback.output,
     workItemType: typeof candidate.workItemType === "string" && candidate.workItemType ? candidate.workItemType : fallback.workItemType,
+    department: typeof candidate.department === "string" && candidate.department ? candidate.department : fallback.department,
+    artifactType: typeof candidate.artifactType === "string" && candidate.artifactType ? candidate.artifactType : fallback.artifactType,
+    sourceConnectors: asStringArray(candidate.sourceConnectors, fallback.sourceConnectors ?? []),
+    sourceRecords: asStringArray(candidate.sourceRecords, fallback.sourceRecords ?? []),
+    sourceSummaries: asStringArray(candidate.sourceSummaries, fallback.sourceSummaries ?? []),
+    dataGaps: asStringArray(candidate.dataGaps, fallback.dataGaps ?? []),
+    approvalRequired: true,
+    providerCalled: false,
+    liveExecutionAllowed: false,
     rawMetadataNote: typeof candidate.rawMetadataNote === "string" && candidate.rawMetadataNote ? candidate.rawMetadataNote : fallback.rawMetadataNote,
   };
 }
@@ -292,11 +326,35 @@ function snapshot(record: DraftRecord) {
   };
 }
 
-function toDraftWorkspaceItem(record: DraftRecord): DraftWorkspaceItem {
+function contextForDraft(record: DraftRecord, snapshots: BusinessDataSnapshotRecord[] = []) {
+  const fallback = getFallbackFields(record);
+  const metadata = normalizeMetadata(record.metadata, fallback.metadata);
+  const sourceConnectors = metadata.sourceConnectors ?? [];
+  const related = snapshots.filter((snapshot) => sourceConnectors.includes(snapshot.connectorId)).slice(0, 6);
+
+  return {
+    sourceSummaries: related.map((snapshot) => `${snapshot.provider} ${snapshot.category}: ${snapshot.summary}`),
+    sourceRecords: related.flatMap((snapshot) => [
+      `${snapshot.connectorId}:${snapshot.category}:${snapshot.status}`,
+      ...snapshot.records.slice(0, 2).map((item) => JSON.stringify(item).slice(0, 240)),
+    ]),
+    dataGaps: related.flatMap((snapshot) => snapshot.dataGaps.map((gap) => `${snapshot.provider} ${snapshot.category}: ${gap}`)),
+  };
+}
+
+function toDraftWorkspaceItem(record: DraftRecord, snapshots: BusinessDataSnapshotRecord[] = []): DraftWorkspaceItem {
   const fallback = getFallbackFields(record);
   const knowledgeTrace = asKnowledgeTrace(record.knowledgeTrace, fallback.knowledgeTrace);
   const sourceRegistryEntries = knowledgeTrace.filter((entry) => entry.type === "source_registry_entry").map((entry) => entry.label);
   const knowledgePacks = knowledgeTrace.filter((entry) => entry.type === "knowledge_pack").map((entry) => entry.label);
+  const baseMetadata = normalizeMetadata(record.metadata, fallback.metadata);
+  const snapshotContext = contextForDraft(record, snapshots);
+  const metadata: DraftWorkspaceMetadata = {
+    ...baseMetadata,
+    sourceRecords: [...new Set([...(baseMetadata.sourceRecords ?? []), ...snapshotContext.sourceRecords])].slice(0, 12),
+    sourceSummaries: [...new Set([...(baseMetadata.sourceSummaries ?? []), ...snapshotContext.sourceSummaries])].slice(0, 8),
+    dataGaps: [...new Set([...(baseMetadata.dataGaps ?? []), ...snapshotContext.dataGaps])].slice(0, 8),
+  };
 
   return {
     id: record.id,
@@ -305,7 +363,7 @@ function toDraftWorkspaceItem(record: DraftRecord): DraftWorkspaceItem {
     body: record.body?.trim() || fallback.body,
     messaging: record.messaging?.trim() || fallback.messaging,
     cta: record.cta?.trim() || fallback.cta,
-    metadata: normalizeMetadata(record.metadata, fallback.metadata),
+    metadata,
     department: (record.ownerDepartment || "Executive AI") as AiDepartmentName,
     output: record.output || fallback.metadata.output,
     status: record.status || "draft_required",
@@ -321,7 +379,11 @@ function toDraftWorkspaceItem(record: DraftRecord): DraftWorkspaceItem {
     knowledgePacks,
     sourceRegistryEntries,
     confidence: record.confidence ?? fallback.confidence,
-    assumptions: asStringArray(record.assumptions, fallback.assumptions),
+    assumptions: [
+      ...asStringArray(record.assumptions, fallback.assumptions),
+      ...(metadata.sourceSummaries?.map((summary) => `Live/internal source summary: ${summary}`) ?? []),
+      ...(metadata.dataGaps?.map((gap) => `Data gap: ${gap}`) ?? []),
+    ].slice(0, 12),
     executiveSummary: record.executiveSummary?.trim() || fallback.executiveSummary,
     safetyFlags: draftWorkspaceSafetyFlags,
     revisions: (record.revisions ?? []).map((revision) => ({
@@ -389,15 +451,18 @@ async function createRevision(tx: DraftWorkspaceDb, record: DraftRecord, action:
 }
 
 export async function getCeoDraftWorkspaceReport(): Promise<CeoDraftWorkspaceReport> {
-  const records = await db.aiCompanyDraftQueueItem.findMany({
-    where: { tenantId },
-    include: {
-      directive: true,
-      revisions: { orderBy: { createdAt: "desc" } },
-    },
-    orderBy: [{ ownerDepartment: "asc" }, { createdAt: "asc" }],
-  });
-  const drafts = records.map(toDraftWorkspaceItem);
+  const [records, snapshots] = await Promise.all([
+    db.aiCompanyDraftQueueItem.findMany({
+      where: { tenantId },
+      include: {
+        directive: true,
+        revisions: { orderBy: { createdAt: "desc" } },
+      },
+      orderBy: [{ ownerDepartment: "asc" }, { createdAt: "asc" }],
+    }),
+    getLatestBusinessSnapshots(40).catch(() => []),
+  ]);
+  const drafts = records.map((record) => toDraftWorkspaceItem(record, snapshots));
   const groups = groupDrafts(drafts);
 
   return {
@@ -421,11 +486,11 @@ export async function getCeoDraftWorkspaceReport(): Promise<CeoDraftWorkspaceRep
 }
 
 export async function previewCeoDraft(draftId: string) {
-  const record = await findDraftOrThrow(db, draftId);
+  const [record, snapshots] = await Promise.all([findDraftOrThrow(db, draftId), getLatestBusinessSnapshots(40).catch(() => [])]);
 
   return {
     ok: true,
-    draft: toDraftWorkspaceItem(record),
+    draft: toDraftWorkspaceItem(record, snapshots),
     previewMode: "internal_only" as const,
     safetyFlags: draftWorkspaceSafetyFlags,
   };

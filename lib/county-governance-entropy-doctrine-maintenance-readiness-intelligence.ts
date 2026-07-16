@@ -279,14 +279,6 @@ function clampCount(count: number | null | undefined): number {
   return Math.max(0, Math.floor(count as number));
 }
 
-function average(scores: number[]): number {
-  if (scores.length === 0) {
-    return 0;
-  }
-
-  return clampScore(scores.reduce((sum, score) => sum + score, 0) / scores.length);
-}
-
 function hasAnyInput(input: CountyGovernanceEntropyDoctrineMaintenanceReadinessInput): boolean {
   return Object.values(input).some((value) => value !== undefined && value !== null);
 }
@@ -295,16 +287,8 @@ function isHighRisk(level: MaintenanceRiskLevel | null | undefined): boolean {
   return level === "high" || level === "critical";
 }
 
-function isModerateOrHigherRisk(level: MaintenanceRiskLevel | null | undefined): boolean {
-  return level === "moderate" || level === "high" || level === "critical";
-}
-
 function isWeakFailClosed(level: FailClosedMaintenanceIntegrityLevel | null | undefined): boolean {
   return level === "absent" || level === "inconsistent" || level === "partial";
-}
-
-function isWeakExplainability(level: MaintenanceExplainabilityLevel | null | undefined): boolean {
-  return level === "opaque" || level === "partial";
 }
 
 function getReadinessClassification(params: {
@@ -613,7 +597,6 @@ export function evaluateCountyGovernanceEntropyDoctrineMaintenanceReadiness(
   );
   const survivabilityConflictScore = riskScores[input.survivabilityConflictLevel ?? "none"];
   const finalityConflictScore = riskScores[input.finalityConflictLevel ?? "none"];
-  const recursiveDependencyScore = riskScores[input.recursiveDependencyLevel ?? "none"];
   const collapseExposureScore = riskScores[input.collapseExposureLevel ?? "none"];
   const operationalSustainabilityScore =
     operationalSustainabilityScores[input.operationalSustainabilityLevel ?? "unknown"];

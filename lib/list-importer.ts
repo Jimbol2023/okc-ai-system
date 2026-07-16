@@ -1,5 +1,8 @@
 import { LEAD_SOURCE_TAGS, normalizeLeadSourceTag } from "@/lib/lead-source";
+import type { ImportedLeadDraft } from "@/lib/lead-import-types";
 import type { StoredLead } from "@/lib/leads-storage";
+
+export type { ImportedLeadDraft } from "@/lib/lead-import-types";
 
 const SUPPORTED_IMPORT_COLUMNS = [
   "firstName",
@@ -84,23 +87,6 @@ const IMPORT_COLUMN_ALIASES: Record<string, SupportedImportColumn> = {
   campaign: "source",
   campaignname: "source",
   sourcename: "source"
-};
-
-export type ImportedLeadDraft = {
-  firstName: string;
-  lastName: string;
-  ownerName: string;
-  phone: string;
-  email: string;
-  propertyAddress: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  mailingAddress: string;
-  county: string;
-  parcelId: string;
-  situationDetails: string;
-  source: string;
 };
 
 export type ImportedLeadSourceResolution =

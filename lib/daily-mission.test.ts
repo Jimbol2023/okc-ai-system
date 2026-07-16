@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
 import { createDailyMissionFromInputs, dailyMissionSafetyFlags, type DailyMissionInputs } from "./daily-mission";
+import { createDfdOperatingReportFromInputs } from "./dfd-operating-conductor";
 import { readOnlyBusinessSafetyFlags, type LiveMorningBrief } from "./read-only-business-connections";
 
 const morningBrief: LiveMorningBrief = {
@@ -310,7 +311,7 @@ describe("daily mission", () => {
     assert.equal(mission.draftsReady.length, 1);
     assert.equal(mission.revenuePriorities.length, 1);
     assert.equal(mission.leadPriorities.length, 1);
-    assert.equal(mission.connectorHealth.length, 2);
+    assert.ok(mission.connectorHealth.length >= 3);
     assert.ok(mission.sourceLabels.includes("gmail:inbox:readonly"));
     assert.ok(mission.sourceLabels.includes("lead:lead-1:revenue_spine"));
   });
@@ -333,11 +334,71 @@ describe("daily mission", () => {
     const mission = createDailyMissionFromInputs(baseInputs);
     const gmail = mission.connectorHealth.find((connector) => connector.connectorId === "gmail");
     const analytics = mission.connectorHealth.find((connector) => connector.connectorId === "google_analytics");
+    const leadDatabase = mission.connectorHealth.find((connector) => connector.connectorId === "lead_database");
 
     assert.equal(gmail?.unifiedStatus, "healthy");
     assert.equal(gmail?.readOnlyProviderCalled, true);
+    assert.equal(gmail?.readOnly, true);
+    assert.equal(gmail?.liveExecutionAllowed, false);
     assert.equal(analytics?.unifiedStatus, "missing_credentials");
     assert.equal(analytics?.providerReadinessStatus, "missing");
+    assert.equal(leadDatabase?.connected, true);
+    assert.equal(leadDatabase?.readOnly, true);
     assert.ok(mission.dataGaps.some((gap) => gap.includes("Google Analytics")));
+  });
+
+  it("prioritizes DFD operating conductor work in the daily mission", () => {
+    const dfdOperating = createDfdOperatingReportFromInputs({
+      leads: [
+        {
+          id: "dfd-lead-1",
+          timestamp: "2026-06-01T10:00:00.000Z",
+          firstName: "Moses",
+          lastName: "Seller",
+          email: "",
+          phone: "4055551212",
+          propertyAddress: "456 ROI Ave",
+          city: "Oklahoma City",
+          state: "OK",
+          zipCode: "73102",
+          ownerName: "Moses Seller",
+          mailingAddress: "PO Box 1, Oklahoma City, OK",
+          county: "Oklahoma",
+          parcelId: "parcel-1",
+          situationDetails: "Vacant property with repairs",
+          source: "d4d_manual",
+          status: "new",
+          notes: [],
+          followUps: [],
+          analyzer: { arv: "150000", estimatedRepairs: "25000", desiredProfit: "15000" },
+          distressFlags: {
+            taxDelinquent: false,
+            inheritedProperty: false,
+            vacantProperty: true,
+            foreclosureRisk: false,
+            majorRepairs: true,
+            tiredLandlord: false,
+            urgentTimeline: false,
+            outOfStateOwner: false,
+          },
+          opportunityScore: "High",
+          score: 86,
+          priority: "High",
+          scoreBreakdown: "High-priority DFD lead.",
+          approvalStatus: "pending_review",
+          doNotContact: false,
+          requiresHumanApproval: true,
+        },
+      ],
+      snapshots: [],
+      generatedAt: "2026-07-06T12:00:00.000Z",
+    });
+    const mission = createDailyMissionFromInputs({ ...baseInputs, dfdOperating });
+
+    assert.equal(mission.dfdOperating?.title, "DFD AI Operating Conductor");
+    assert.ok(mission.revenuePriorities[0]?.id.startsWith("dfd-roi-priority"));
+    assert.match(mission.revenuePriorities[0]?.title ?? "", /DFD|property|review|bottleneck|distress/i);
+    assert.equal(mission.safetyFlags.scrapingBlocked, true);
+    assert.equal(mission.dfdOperating?.liveExecutionAllowed, false);
   });
 });

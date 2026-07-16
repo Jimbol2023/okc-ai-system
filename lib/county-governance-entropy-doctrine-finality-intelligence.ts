@@ -268,10 +268,6 @@ function isWeakFailClosed(level: FailClosedFinalityIntegrityLevel | null | undef
   return level === "absent" || level === "inconsistent" || level === "partial";
 }
 
-function isWeakExplainability(level: FinalityExplainabilityLevel | null | undefined): boolean {
-  return level === "opaque" || level === "partial";
-}
-
 function getReadinessClassification(params: {
   hasEvidence: boolean;
   finalityBlocked: boolean;

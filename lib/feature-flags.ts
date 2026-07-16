@@ -25,7 +25,14 @@ export type FeatureFlagKey =
   | "phase4_production_readiness"
   | "phase4_operations_timeline"
   | "phase4_executive_assistant"
-  | "phase4_controlled_live_sms";
+  | "phase4_controlled_live_sms"
+  | "ueip_gateway_enforcement"
+  | "ueip_search_console_runtime"
+  | "ueip_search_console_rollback"
+  | "professional_case_runtime"
+  | "search_market_intelligence_runtime"
+  | "search_market_intelligence_scheduling"
+  | "search_console_query_performance";
 
 export type FeatureFlag = {
   key: FeatureFlagKey;
@@ -36,6 +43,55 @@ export type FeatureFlag = {
 };
 
 export const phase2FeatureFlags: FeatureFlag[] = [
+  {
+    key: "search_market_intelligence_runtime",
+    enabled: false,
+    category: "intelligence",
+    description: "Gates tenant-scoped Search and Market Intelligence case preparation from stored normalized evidence.",
+    requiresAdminApproval: true,
+  },
+  {
+    key: "search_market_intelligence_scheduling",
+    enabled: false,
+    category: "automation",
+    description: "Gates capped internal delta and Monday packet preparation; no provider or external actions are authorized.",
+    requiresAdminApproval: true,
+  },
+  {
+    key: "search_console_query_performance",
+    enabled: false,
+    category: "connector",
+    description: "Gates the bounded Preview-only Search Console query performance capability.",
+    requiresAdminApproval: true,
+  },
+  {
+    key: "professional_case_runtime",
+    enabled: false,
+    category: "automation",
+    description: "Gates additive writes to the durable professional case runtime while legacy consumers remain available.",
+    requiresAdminApproval: true,
+  },
+  {
+    key: "ueip_gateway_enforcement",
+    enabled: true,
+    category: "connector",
+    description: "Requires migrated provider capabilities to pass through the UEIP runtime gateway.",
+    requiresAdminApproval: true,
+  },
+  {
+    key: "ueip_search_console_runtime",
+    enabled: true,
+    category: "connector",
+    description: "Allows the certified Search Console adapter to run only after trusted Preview, tenant, installation, scope, health, and audit gates pass.",
+    requiresAdminApproval: true,
+  },
+  {
+    key: "ueip_search_console_rollback",
+    enabled: false,
+    category: "connector",
+    description: "Emergency rollback selector for the Search Console reference migration; it never authorizes Production or writes.",
+    requiresAdminApproval: true,
+  },
   {
     key: "connector_platform",
     enabled: true,

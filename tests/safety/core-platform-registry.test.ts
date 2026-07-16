@@ -53,15 +53,15 @@ test("Module Marketplace installs Real Estate and keeps future modules planning-
 test("Business modules declare connectors permissions and blocked external execution", () => {
   const report = createCorePlatformRegistryReport();
 
-  for (const module of report.businessModules) {
-    assert.ok(module.capabilities.length > 0);
-    assert.ok(module.requiredPermissions.length > 0);
-    assert.ok(module.extensionPoints.includes("capability"));
-    assert.ok(module.extensionPoints.includes("permission"));
-    assert.ok(module.extensionPoints.includes("audit_event"));
-    assert.equal(module.approvalRequiredForExternalActions, true);
-    assert.equal(module.providerCalled, false);
-    assert.equal(module.liveExecutionAllowed, false);
+  for (const businessModule of report.businessModules) {
+    assert.ok(businessModule.capabilities.length > 0);
+    assert.ok(businessModule.requiredPermissions.length > 0);
+    assert.ok(businessModule.extensionPoints.includes("capability"));
+    assert.ok(businessModule.extensionPoints.includes("permission"));
+    assert.ok(businessModule.extensionPoints.includes("audit_event"));
+    assert.equal(businessModule.approvalRequiredForExternalActions, true);
+    assert.equal(businessModule.providerCalled, false);
+    assert.equal(businessModule.liveExecutionAllowed, false);
   }
 });
 
