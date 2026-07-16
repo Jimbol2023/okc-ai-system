@@ -1,0 +1,520 @@
+# Sprint History
+
+This file records engineering sprint decisions and delivery summaries.
+
+## Sprint Decision Record Format
+
+Each sprint entry should include:
+
+- date
+- sprint name
+- requested approach
+- recommended approach
+- decision made
+- reason
+- business problem solved
+- department benefited
+- AI employees affected
+- revenue impact or cost reduction impact
+- files changed
+- tests executed
+- pass/fail results
+- deploy status
+- external provider call status
+- risks carried forward
+- technical debt discovered
+- next recommended sprint
+
+## Initial Entries
+
+### Sprint 0: AI Workforce Foundation
+
+- Decision: create a static TypeScript workforce model, readiness engine, read-only API, dashboard page, tests, and AI company playbook docs.
+- Reason: establish department, manager, employee, tool, KPI, blocker, and responsibility ownership before daily work orders.
+- External provider calls: none.
+- Deploy status: no Preview or Production deploy.
+- Risks carried forward: dirty worktree and missing/idle connectors.
+
+### Engineering Governance Documentation
+
+- Decision: create `/docs/engineering/` as repository operations governance.
+- Reason: convert the engineering charter into repeatable pre-sprint decision gates, debt tracking, and sprint reporting.
+- External provider calls: none.
+- Deploy status: documentation-only; no deploy.
+
+### Sprint 9: Preview-Only Google Drive Verification Gate
+
+- Date: 2026-07-10.
+- Sprint name: Sprint 9 Verification Gate - Preview-Only Google Drive Pilot Readiness.
+- Requested approach: close the Sprint 9 verification gate before Sprint 10 planning, preserve the existing enterprise architecture, and avoid any provider execution, deployment, OAuth activation, or Google Drive document creation.
+- Recommended approach: formalize the verification gate as a governance closeout, align readiness evidence with the real pilot executor gates, record no-execution proof, and carry shared provider adapter extraction forward as Sprint 10 technical debt.
+- Decision made: Sprint 9 is closed as a verification/readiness gate only. The Google Drive pilot remains code-path-only and blocked from Production. No controlled Preview pilot is authorized by this record.
+- Reason: the engineering constitution requires sprint closeout before additional feature work, and the provider policy requires explicit approval, audit, memory, kill switch, exact action, and environment gates before any external action.
+- Business problem solved: reduced provider-execution risk before adapter expansion by making the CEO approval boundary, Preview-only configuration, Production hard block, and no-execution evidence visible and testable.
+- Department benefited: Executive Office, AI COO, Revenue Operations, Engineering, Compliance/Governance, and future Provider Operations.
+- AI employees affected: AI COO, Engineering Director, Compliance Officer, Revenue Operations Manager, Connector Operations Manager, and future provider adapter employees.
+- Revenue impact or cost reduction impact: protects revenue operations from unsafe external writes while preparing a governed path toward future Google Workspace productivity leverage.
+- Files changed:
+  - `lib/controlled-execution-maturity.ts`: added `GOOGLE_DRIVE_DRAFT_PILOT_ENABLED` to the Drive pilot readiness gate and exposed pilot flag readiness.
+  - `components/dashboard/controlled-execution-maturity-dashboard.tsx`: added dashboard evidence for the pilot flag, Production hard-block proof, and no-provider-execution evidence.
+  - `tests/safety/google-drive-draft-pilot-readiness.test.ts`: added coverage for the exact Preview pilot flag used by the executor.
+  - `tests/safety/provider-execution-framework.test.ts`: aligned configured test env with the stricter readiness gate.
+  - `docs/engineering/sprint-9-preview-verification-checklist.md`: added the operator-facing Sprint 9 Preview verification checklist.
+  - `docs/engineering/08-sprint-history.md`: added this formal Sprint 9 closeout record.
+- Tests executed:
+  - `node --import tsx --test tests/safety/google-drive-draft-pilot.test.ts tests/safety/google-drive-draft-pilot-readiness.test.ts tests/safety/provider-execution-framework.test.ts tests/safety/external-execution-readiness-gate.test.ts`
+  - `npm run test:safety`
+  - `npm run build`
+  - Broad and focused ESLint attempts were run but stopped after hanging silently.
+- Pass/fail results:
+  - Targeted safety tests passed: 4 files, 4 passing.
+  - `npm run test:safety` passed: 33 tests, 33 passing.
+  - `npm run build` passed.
+  - ESLint inconclusive because broad and focused invocations hung silently and were stopped.
+  - Build warning: existing Turbopack tracing warning involving `next.config.ts`, Prisma, referrals, and `app/api/leads/route.ts`.
+- Deploy status: no Preview deploy and no Production deploy.
+- External provider call status: no Google API call, no OAuth exchange, no Google Drive document creation, no provider execution, no email, no SMS, no publishing, no scraping, no ads, and no workflow execution.
+- Risks carried forward:
+  - Current Sprint 9 files appear untracked in the dirty worktree and must be preserved.
+  - ESLint remains inconclusive until the local lint hang is diagnosed.
+  - Preview pilot remains blocked until CEO approval, Preview-only env configuration, test folder confirmation, kill switch confirmation, audit preflight, memory review, and exact confirmation phrase are all satisfied.
+- Technical debt discovered:
+  - Extract a shared provider adapter interface before adding Google Drive Adapter, Google Docs Drafts, Gmail Drafts, or Calendar Drafts.
+  - Keep `create_drive_doc` / `drive.files.create` blocked and separate from the safer `create_drive_doc_draft` pilot action.
+  - Investigate the existing Turbopack tracing warning separately from Sprint 9.
+- Next recommended sprint:
+  - Default path: open the Sprint 10 Engineering Brief for provider adapter expansion with no provider execution.
+  - Alternate path: prepare a separately approved controlled Preview-only Google Drive pilot packet; do not execute it without explicit CEO approval.
+
+### Sprint 10A: Shared Provider Adapter Contract And Dry-Run Registry Expansion
+
+- Date: 2026-07-10.
+- Sprint name: Sprint 10A - Shared Provider Adapter Contract And Dry-Run Registry Expansion.
+- Requested approach: complete Sprint 10 as a shared provider adapter contract and dry-run registry expansion only, with no provider execution, OAuth activation, Preview deployment, Production deployment, Google Drive pilot execution, Gmail sending, Calendar insertion, document upload, or background automation.
+- Recommended approach: introduce a reusable provider draft adapter contract, refactor the controlled execution framework to delegate to it, expand the registry to Google Drive/Docs, Gmail, and Calendar draft actions, and preserve the Sprint 9 live-write pilot path as isolated and separately approved.
+- Decision made: completed Sprint 10A as no-execution adapter infrastructure only. The system can now model four provider draft/planning actions through one shared adapter contract and redacted preview surface.
+- Reason: Sprint 10 needed reusable architecture before adding provider families, to avoid duplicating readiness, redaction, approval, and safety logic across Drive, Docs, Gmail, and Calendar.
+- Business problem solved: prepared future Google Workspace draft workflows for CEO review while preserving enterprise governance and preventing unsafe external writes.
+- Department benefited: Executive Office, AI COO, Revenue Operations, Engineering, Compliance/Governance, Marketing, and future Provider Operations.
+- AI employees affected: AI COO, Engineering Director, Compliance Officer, Connector Operations Manager, Revenue Operations Manager, Executive Assistant AI, and Marketing Manager AI.
+- Revenue impact or cost reduction impact: reduces future engineering duplication and prepares governed draft productivity workflows that can save CEO/operator time once later phases approve UI or controlled pilots.
+- Files changed:
+  - `lib/provider-draft-adapters.ts`: added the shared no-live-write provider draft adapter contract, four-action registry, redacted preview builder, and safety assertion.
+  - `lib/controlled-execution-maturity.ts`: refactored provider execution framework exports to use the shared adapter registry and preview contract while preserving Sprint 9 Drive readiness compatibility.
+  - `components/dashboard/controlled-execution-maturity-dashboard.tsx`: updated read-only dashboard copy and registry display for Drive, Docs, Gmail, and Calendar draft adapters.
+  - `tests/safety/provider-execution-framework.test.ts`: expanded existing framework tests to validate the four-action registry, Production block, Gmail/Calendar no-send/no-insert boundaries, and redaction.
+  - `tests/safety/provider-draft-adapters.test.ts`: added focused Sprint 10 adapter contract safety tests.
+  - `docs/engineering/08-sprint-history.md`: added this formal Sprint 10A closeout record.
+- Tests executed:
+  - `node --import tsx --test tests/safety/provider-execution-framework.test.ts tests/safety/google-drive-draft-pilot-readiness.test.ts tests/safety/provider-draft-adapters.test.ts`
+  - `npm run test:safety`
+  - `npm run build`
+  - `timeout 60s npx eslint lib/provider-draft-adapters.ts lib/controlled-execution-maturity.ts components/dashboard/controlled-execution-maturity-dashboard.tsx tests/safety/provider-execution-framework.test.ts tests/safety/provider-draft-adapters.test.ts`
+- Pass/fail results:
+  - Targeted Sprint 10 tests passed: 3 files, 3 passing.
+  - `npm run test:safety` passed: 34 tests, 34 passing.
+  - `npm run build` passed.
+  - Focused ESLint inconclusive: command hung silently and exited via timeout with code 124.
+  - Build warning carried forward: existing Turbopack tracing warning involving `next.config.ts`, Prisma, referrals, and `app/api/leads/route.ts`.
+- Deploy status: no Preview deploy and no Production deploy.
+- External provider call status: no Google API call, no OAuth exchange, no Google Drive document creation, no Google Docs creation, no Gmail draft creation or send, no Calendar event insertion, no provider execution, no publishing, no scraping, no ads, and no workflow execution.
+- Risks carried forward:
+  - ESLint remains inconclusive until the local lint hang is diagnosed.
+  - Sprint 9 controlled Preview Google Drive pilot remains isolated and unauthorized unless separately approved.
+  - Dirty worktree contains existing modified/untracked project work and must be preserved.
+- Technical debt discovered:
+  - Sprint 10B should expand adapter registry and provider capability metadata before UI readiness work.
+  - Future OAuth scope changes for Docs, Gmail compose, Calendar write, or Drive file write require separate CEO approval and governance review.
+  - Existing `create_drive_doc` / `drive.files.create` approved-execution naming remains blocked and separate from `create_drive_doc_draft`.
+  - Existing Turbopack tracing warning should be investigated outside provider adapter work.
+- Next recommended sprint:
+  - Sprint 10B - Adapter registry expansion and provider capability metadata, still no live provider writes.
+
+### Sprint 10B: Adapter Registry Expansion And Provider Capability Metadata
+
+- Date: 2026-07-10.
+- Sprint name: Sprint 10B - Adapter Registry Expansion And Provider Capability Metadata.
+- Requested approach: implement professional metadata additions for the provider draft adapter registry, including versioning, owner/department mapping, human review categories, blocked operation taxonomy, future sprint mapping, and the corrected Sprint 10 sequence.
+- Recommended approach: keep Sprint 10B metadata-only, derive capability summaries from the existing adapter registry, preserve Sprint 10A no-execution behavior, and leave payload validation for Sprint 10C.
+- Decision made: completed Sprint 10B as adapter registry metadata expansion only. Provider draft capabilities are now versioned and mapped to departments, AI employee owners, review categories, blocked operations, audit/memory readiness labels, fallback instructions, risk levels, and future sprint stages.
+- Reason: provider draft adapters need enterprise capability metadata before payload validation and preview integration can be safely layered on top.
+- Business problem solved: creates a governed metadata foundation for future Google Workspace draft workflows without introducing provider calls or duplicate capability definitions.
+- Department benefited: Executive Office, AI COO, Revenue Operations, Operations, Engineering, Compliance/Governance, and future Provider Operations.
+- AI employees affected: AI COO, Engineering Director, Compliance Officer, Connector Operations Manager, Revenue Operations Manager, Executive Assistant AI, and Marketing Manager AI.
+- Revenue impact or cost reduction impact: improves future draft workflow velocity and lowers engineering risk by centralizing capability ownership, review requirements, and blocked operation taxonomy before Sprint 10C/10D.
+- Files changed:
+  - `lib/provider-draft-adapters.ts`: added `sprint-10b-v1` capability metadata, blocked operation taxonomy, ownership mapping, human review categories, future sprint mapping, and `listProviderDraftCapabilities()`.
+  - `tests/safety/provider-draft-adapters.test.ts`: added metadata safety coverage for versioning, derived summaries, ownership, review categories, blocked operations, and redaction.
+  - `docs/engineering/08-sprint-history.md`: corrected Sprint 10A next-step language and added this Sprint 10B closeout record.
+  - `docs/engineering/sprint-10-provider-adapter-expansion-brief.md`: updated the Sprint 10 sequence and documented Sprint 10B metadata additions.
+- Tests executed:
+  - `node --import tsx --test tests/safety/provider-draft-adapters.test.ts tests/safety/provider-execution-framework.test.ts`
+  - `npm run test:safety`
+  - `npm run build`
+  - `timeout 60s npx eslint lib/provider-draft-adapters.ts tests/safety/provider-draft-adapters.test.ts docs/engineering/08-sprint-history.md docs/engineering/sprint-10-provider-adapter-expansion-brief.md`
+- Pass/fail results:
+  - Focused Sprint 10B tests passed: 2 files, 2 passing.
+  - `npm run test:safety` passed: 34 tests, 34 passing.
+  - `npm run build` passed.
+  - Focused ESLint inconclusive: command hung silently and exited via timeout with code 124.
+  - Build warning carried forward: existing Turbopack tracing warning involving `next.config.ts`, Prisma, referrals, and `app/api/leads/route.ts`.
+- Deploy status: no Preview deploy and no Production deploy.
+- External provider call status: no Google API call, no OAuth exchange, no Google Drive document creation, no Google Docs creation, no Gmail draft creation or send, no Calendar event insertion, no provider execution, no publishing, no scraping, no ads, and no workflow execution.
+- Risks carried forward:
+  - ESLint remains inconclusive until the local lint hang is diagnosed.
+  - Sprint 9 controlled Preview Google Drive pilot remains isolated and unauthorized unless separately approved.
+  - Dirty worktree contains existing modified/untracked project work and must be preserved.
+- Technical debt discovered:
+  - Sprint 10C should add draft payload validation and normalization using the 10B capability metadata as the source of truth.
+  - Sprint 10D should add Preview-only integration with governed draft adapters after payload validation exists.
+  - Future OAuth scope changes for Docs, Gmail compose, Calendar write, or Drive file write require separate CEO approval and governance review.
+  - Existing Turbopack tracing warning should be investigated outside provider adapter work.
+- Next recommended sprint:
+  - Sprint 10C - Draft payload validation and normalization, still no autonomous execution.
+
+### Sprint 10C: Draft Payload Validation And Normalization
+
+- Date: 2026-07-10.
+- Sprint name: Sprint 10C - Draft Payload Validation And Normalization.
+- Requested approach: complete Sprint 10C before Sprint 10D by adding shared payload validation and normalization for governed provider draft adapters.
+- Recommended approach: add validation inside the existing shared provider draft adapter module, derive action-specific requirements from the Sprint 10B registry metadata, and keep all output provider-call-free.
+- Decision made: completed Sprint 10C as validation and normalization only. No provider routes, OAuth changes, SDK clients, execution buttons, deployments, provider writes, sends, inserts, uploads, or autonomous execution were added.
+- Reason: draft payloads must be normalized and safety-checked before any governed preview integration can safely consume them.
+- Business problem solved: reduces duplicated validation logic across Drive, Docs, Gmail, and Calendar draft surfaces before adapter expansion continues.
+- Department benefited: Executive Office, Revenue Operations, Operations, Engineering, Compliance/Governance, and future Provider Operations.
+- AI employees affected: AI COO, Engineering Director, Compliance Officer, Connector Operations Manager, Revenue Operations Manager, and Executive Assistant AI.
+- Revenue impact or cost reduction impact: improves future draft workflow quality and lowers rework risk by centralizing payload cleanup, required-field checks, redaction, and no-execution safety guarantees.
+- Files changed:
+  - `lib/provider-draft-adapters.ts`: added `sprint-10c-v1` payload validation and normalized payload contract.
+  - `tests/safety/provider-draft-adapters.test.ts`: added validation, normalization, unsupported-action, required-field, and redaction coverage.
+  - `docs/engineering/sprint-10-provider-adapter-expansion-brief.md`: documented Sprint 10C validation rules.
+  - `docs/engineering/08-sprint-history.md`: added this closeout record.
+- Tests executed:
+  - `node --import tsx --test tests/safety/provider-draft-adapters.test.ts tests/safety/provider-execution-framework.test.ts tests/safety/google-drive-draft-pilot-readiness.test.ts`
+  - `npm run test:safety`
+  - `npm run build`
+  - `timeout 60s npx eslint lib/provider-draft-adapters.ts lib/controlled-execution-maturity.ts components/dashboard/controlled-execution-maturity-dashboard.tsx tests/safety/provider-draft-adapters.test.ts tests/safety/provider-execution-framework.test.ts docs/engineering/08-sprint-history.md docs/engineering/sprint-10-provider-adapter-expansion-brief.md`
+- Pass/fail results:
+  - Focused Sprint 10C/10D safety tests passed: 3 files, 3 passing.
+  - `npm run test:safety` passed: 34 tests, 34 passing.
+  - `npm run build` passed after one TypeScript status-mapping issue was corrected.
+  - Focused ESLint inconclusive: command hung silently and exited via timeout with code 124.
+  - Build warning carried forward: existing Turbopack tracing warning involving `next.config.ts`, Prisma, referrals, and `app/api/leads/route.ts`.
+- Deploy status: no Preview deploy and no Production deploy.
+- External provider call status: no Google API call, no OAuth exchange, no Google Drive document creation, no Google Docs creation, no Gmail draft creation or send, no Calendar event insertion, no provider execution, no publishing, no scraping, no ads, and no workflow execution.
+- Risks carried forward:
+  - ESLint remains inconclusive until the local lint hang is diagnosed.
+  - Sprint 9 controlled Preview Google Drive pilot remains isolated and unauthorized unless separately approved.
+  - Dirty worktree contains existing modified/untracked project work and must be preserved.
+- Technical debt discovered:
+  - Validation currently supports draft preview payloads only and must not be reused for live provider execution without a separate governed execution contract.
+  - Future UI or route layers must consume normalized payloads instead of rebuilding validation logic.
+- Next recommended sprint:
+  - Sprint 10D - Preview-only integration with governed draft adapters, still no autonomous execution.
+
+### Sprint 10D: Preview-Only Governed Draft Adapter Integration
+
+- Date: 2026-07-10.
+- Sprint name: Sprint 10D - Preview-Only Governed Draft Adapter Integration.
+- Requested approach: complete Sprint 10D after Sprint 10C by integrating governed preview packets with the existing adapter registry and dashboard visibility, without autonomous execution.
+- Recommended approach: consume only normalized Sprint 10C payloads, expose read-only governed preview evidence for Drive, Docs, Gmail, and Calendar, and preserve the protected Sprint 9 Google Drive pilot route unchanged.
+- Decision made: completed Sprint 10D as preview-only governed integration visibility. The controlled execution report and dashboard now show normalized preview integration evidence for all four governed provider draft actions.
+- Reason: operators need one governed preview integration surface before any future adapter readiness UI or separately approved pilot can be considered.
+- Business problem solved: creates an enterprise-safe bridge from validated payloads to redacted adapter previews while keeping external provider execution blocked.
+- Department benefited: Executive Office, Revenue Operations, Operations, Engineering, Compliance/Governance, and future Provider Operations.
+- AI employees affected: AI COO, Engineering Director, Compliance Officer, Connector Operations Manager, Revenue Operations Manager, Executive Assistant AI, and Department Managers.
+- Revenue impact or cost reduction impact: prepares faster CEO-reviewed draft workflows and reduces provider-adapter duplication while preventing premature external action.
+- Files changed:
+  - `lib/provider-draft-adapters.ts`: added `sprint-10d-v1` governed preview integration contract and safety assertions.
+  - `lib/controlled-execution-maturity.ts`: added read-only governed preview packets and payload validation policy to the controlled execution report.
+  - `components/dashboard/controlled-execution-maturity-dashboard.tsx`: added read-only Sprint 10C/10D governed preview evidence with no execution controls.
+  - `tests/safety/provider-draft-adapters.test.ts`: added governed preview integration safety coverage.
+  - `docs/engineering/sprint-10-provider-adapter-expansion-brief.md`: documented Sprint 10D integration boundaries.
+  - `docs/engineering/08-sprint-history.md`: added this closeout record.
+- Tests executed:
+  - `node --import tsx --test tests/safety/provider-draft-adapters.test.ts tests/safety/provider-execution-framework.test.ts tests/safety/google-drive-draft-pilot-readiness.test.ts`
+  - `npm run test:safety`
+  - `npm run build`
+  - `timeout 60s npx eslint lib/provider-draft-adapters.ts lib/controlled-execution-maturity.ts components/dashboard/controlled-execution-maturity-dashboard.tsx tests/safety/provider-draft-adapters.test.ts tests/safety/provider-execution-framework.test.ts docs/engineering/08-sprint-history.md docs/engineering/sprint-10-provider-adapter-expansion-brief.md`
+- Pass/fail results:
+  - Focused Sprint 10C/10D safety tests passed: 3 files, 3 passing.
+  - `npm run test:safety` passed: 34 tests, 34 passing.
+  - `npm run build` passed.
+  - Focused ESLint inconclusive: command hung silently and exited via timeout with code 124.
+  - Build warning carried forward: existing Turbopack tracing warning involving `next.config.ts`, Prisma, referrals, and `app/api/leads/route.ts`.
+- Deploy status: no Preview deploy and no Production deploy.
+- External provider call status: no Google API call, no OAuth exchange, no Google Drive document creation, no Google Docs creation, no Gmail draft creation or send, no Calendar event insertion, no provider execution, no publishing, no scraping, no ads, and no workflow execution.
+- Risks carried forward:
+  - Governed preview integration is visibility only; future routes or UI workflows require a new decision gate.
+  - OAuth scope changes for Docs, Gmail compose, Calendar write, or Drive file write remain unauthorized.
+  - ESLint remains inconclusive until the local lint hang is diagnosed.
+  - Existing Turbopack tracing warning should be investigated outside provider adapter work.
+- Technical debt discovered:
+  - Next provider work should define adapter readiness UI and operator evidence without adding live writes.
+  - Any future controlled Preview pilot must remain separately approved and must not reuse preview integration approval as execution approval.
+- Next recommended sprint:
+  - Sprint 10E - Market & Customer Intelligence Foundation, then Sprint 11 Department Operating System. No provider execution is implied by either path.
+
+### Sprint 10E: Market & Customer Intelligence Foundation
+
+- Date: 2026-07-10.
+- Sprint name: Sprint 10E - Market & Customer Intelligence Foundation.
+- Requested approach: create a governance checkpoint that fuses GA4, Search Console, Google Business Profile, CRM, internal operating data, market/demand intelligence, and internal knowledge into reusable department-ready intelligence packets.
+- Recommended approach: reuse connector signal normalization, read-only connector adapters, Phase 2 intelligence, daily revenue operating loop, and AI workforce routing rather than creating a parallel intelligence architecture.
+- Decision made: completed Sprint 10E as a read-only advisory intelligence foundation. It creates reusable intelligence objects, deterministic Sprint 11 department packets, source freshness maps, missing-data registers, and safe advisory recommendations.
+- Reason: the AI Operating Company should become smarter before it becomes more autonomous; Sprint 10E gives Sprint 11 departments daily intelligence inputs without provider execution or connector activation.
+- Business problem solved: prepares market/customer intelligence for department operating rhythm while preserving governance and avoiding duplicated intelligence logic.
+- Department benefited: CEO Office, AI COO, Lead Generation, Seller Acquisition, SEO, Marketing, Content, Operations, Knowledge / Memory, Approval / Safety, Engineering, and Compliance/Governance.
+- AI employees affected: CEO Executive Assistant AI, Daily Briefing Analyst AI, AI COO, Connector Health Monitor AI, Search Console Analyst AI, Marketing Director AI, Content Director AI, Revenue Operations Manager, Knowledge / Memory employees, and Approval / Safety employees.
+- Revenue impact or cost reduction impact: improves lead quality review, conversion awareness, content opportunity planning, local trust review, market trend monitoring, and department readiness while reducing future Sprint 11 rework.
+- Files changed:
+  - `lib/market-customer-intelligence-foundation.ts`: added Sprint 10E intelligence object contracts, scoring, source-priority model, department packet builder, missing-data register, advisory recommendations, and safety assertion.
+  - `app/api/company/market-customer-intelligence/route.ts`: added authenticated read-only API visibility using existing connector gate, read-only adapter, connector signal, workforce, and daily revenue loop architecture.
+  - `tests/safety/market-customer-intelligence-foundation.test.ts`: added Sprint 10E safety coverage for advisory-only outputs, data-gap handling, deterministic department routing, redaction, and no-execution guarantees.
+  - `docs/engineering/sprint-10e-market-customer-intelligence-brief.md`: added Sprint 10E engineering brief.
+  - `docs/engineering/08-sprint-history.md`: corrected Sprint 10D next step and added this closeout record.
+- Tests executed:
+  - `node --import tsx --test tests/safety/market-customer-intelligence-foundation.test.ts tests/safety/connector-signal-normalization.test.ts`
+  - `npm run test:safety`
+  - `npm run build`
+  - `timeout 60s npx eslint lib/market-customer-intelligence-foundation.ts app/api/company/market-customer-intelligence/route.ts tests/safety/market-customer-intelligence-foundation.test.ts docs/engineering/sprint-10e-market-customer-intelligence-brief.md docs/engineering/08-sprint-history.md`
+- Pass/fail results:
+  - Focused Sprint 10E safety tests passed: 2 files, 2 passing.
+  - `npm run test:safety` passed: 35 tests, 35 passing.
+  - `npm run build` passed.
+  - Focused ESLint inconclusive: command hung silently and exited via timeout with code 124.
+  - Build warning carried forward: existing Turbopack tracing warning involving `next.config.ts`, Prisma, referrals, and `app/api/leads/route.ts`.
+- Deploy status: no Preview deploy and no Production deploy.
+- External provider call status: no Google API call, no OAuth exchange, no connector activation, no GA4 live read, no Search Console live read, no Google Business Profile live read, no CRM mutation, no lead creation, no outreach, no publishing, no scraping, no memory/KPI persistence, no provider execution, no ads, and no workflow execution.
+- Risks carried forward:
+  - Sprint 10E uses existing read-only/simulated connector snapshots and manual/import-ready intelligence only; live connector reads remain unauthorized.
+  - The new API is visibility only and must not become an approval-as-execution path.
+  - ESLint remains inconclusive until the local lint hang is diagnosed.
+  - Existing Turbopack tracing warning should be investigated outside market/customer intelligence work.
+- Technical debt discovered:
+  - Sprint 11 should consume Sprint 10E packets instead of rebuilding intelligence objects.
+  - Future dashboard visualization should remain read-only and should not introduce connector activation or persistence controls.
+  - Live GA4, Search Console, Google Business Profile, CRM, or internal knowledge persistence requires a separate governed decision gate.
+- Next recommended sprint:
+  - Sprint 11 - Department Operating System, consuming Sprint 10E daily intelligence packets with no autonomous external execution.
+
+### Sprint 11: Department Operating System & Mission Orchestration
+
+- Date: 2026-07-10.
+- Sprint name: Sprint 11 - Department Operating System & Mission Orchestration.
+- Requested approach: build the operating layer that turns Sprint 10E department intelligence packets into governed department missions, queues, dependencies, CEO review packets, and telemetry.
+- Recommended approach: keep Sprint 11 read-only and advisory, consume Sprint 10E as the primary intelligence input, and reuse existing daily mission, daily revenue loop, and collaboration-engine patterns without adding autonomous execution.
+- Decision made: completed Sprint 11 as mission orchestration and operating visibility only. It adds the 11A department intelligence contract, 11B daily mission generator, 11C mission queue, 11D dependency engine, 11E executive mission review, and 11F performance telemetry.
+- Reason: departments need a governed operating rhythm before Sprint 12 Revenue Intelligence can safely prioritize opportunities and recommendations.
+- Business problem solved: converts intelligence into department-ready mission structure while preserving approval boundaries and no-execution governance.
+- Operating doctrine approved after closeout: Sprint 11 teaches departments how to interpret intelligence, prioritize internal work, coordinate dependencies, and present CEO-ready decisions. It does not authorize external execution or autonomous department action.
+- Department benefited: CEO Office, AI COO, Lead Generation, Seller Acquisition, SEO, Marketing, Content, Operations, Knowledge / Memory, Approval / Safety, Engineering, and Compliance/Governance.
+- AI employees affected: AI COO, CEO Executive Assistant AI, Daily Briefing Analyst AI, Connector Health Monitor AI, Search Console Analyst AI, Marketing Director AI, Content Director AI, Revenue Operations Manager, Knowledge / Memory employees, Approval / Safety employees, and department managers.
+- Revenue impact or cost reduction impact: improves daily department focus, mission prioritization, dependency visibility, CEO review quality, and telemetry for future revenue intelligence while avoiding unsafe execution drift.
+- Files changed:
+  - `lib/department-operating-system.ts`: added Sprint 11 mission input contracts, daily mission generation, mission queue, cross-department dependencies, executive mission review packets, performance telemetry, active debt backlog, and safety assertion.
+  - `app/api/company/department-operating-system/route.ts`: added authenticated read-only API visibility that consumes Sprint 10E intelligence.
+  - `tests/safety/department-operating-system.test.ts`: added Sprint 11 safety coverage for deterministic mission conversion, queue ordering, dependency safety, CEO review boundaries, telemetry, and blocked execution actions.
+  - `docs/engineering/sprint-11-department-operating-system-brief.md`: added Sprint 11 engineering brief.
+  - `docs/engineering/08-sprint-history.md`: added this closeout record.
+- Tests executed:
+  - `node --import tsx --test tests/safety/department-operating-system.test.ts tests/safety/market-customer-intelligence-foundation.test.ts`
+  - `npm run test:safety`
+  - `npm run build`
+  - `timeout 60s npx eslint lib/department-operating-system.ts app/api/company/department-operating-system/route.ts tests/safety/department-operating-system.test.ts docs/engineering/sprint-11-department-operating-system-brief.md docs/engineering/08-sprint-history.md`
+- Pass/fail results:
+  - Focused Sprint 11 safety tests passed: 2 files, 2 passing.
+  - `npm run test:safety` passed: 36 tests, 36 passing.
+  - `npm run build` passed.
+  - Focused ESLint inconclusive: command hung silently and exited via timeout with code 124.
+  - Build warning carried forward: existing Turbopack tracing warning involving `next.config.ts`, Prisma, referrals, and `app/api/leads/route.ts`.
+- Deploy status: no Preview deploy and no Production deploy.
+- External provider call status: no Google API call, no OAuth exchange, no connector activation, no CRM mutation, no lead creation, no outreach, no publishing, no scraping, no memory/KPI persistence, no provider execution, no ads, and no workflow execution.
+- Risks carried forward:
+  - Sprint 11 is mission orchestration only; future work must not treat mission review or CEO review as execution approval.
+  - Mission telemetry is read-only and non-persistent in this sprint.
+  - ESLint remains inconclusive until the local lint hang is diagnosed.
+  - Existing Turbopack tracing warning should be investigated outside mission orchestration work.
+- Technical debt discovered:
+  - High priority: ESLint silent timeout remains active infrastructure debt.
+  - Medium priority: Turbopack tracing warning remains active infrastructure debt.
+  - Sprint 12 should consume Sprint 11 telemetry and operating outputs instead of rebuilding mission orchestration.
+- Next recommended sprint:
+  - Sprint 12 - Revenue Intelligence, consuming Sprint 11 mission telemetry and department operating outputs. Sprint 12 should improve opportunity detection and recommendation quality, not execution authority, unless a separate governance gate approves otherwise.
+
+### Sprint 12: Revenue Intelligence & Opportunity Engine
+
+- Date: 2026-07-10.
+- Sprint name: Sprint 12 - Revenue Intelligence & Opportunity Engine.
+- Requested approach: implement a read-only advisory revenue intelligence layer that consumes Sprint 11 mission telemetry, Sprint 10E intelligence, CRM/revenue spine signals, and department operating outputs.
+- Recommended approach: build opportunity detection, transparent scoring, prioritization, executive revenue briefing, and advisory closed-loop learning without execution authority.
+- Decision made: completed Sprint 12 as revenue intelligence and recommendation-quality improvement only. It adds 12A opportunity detection, 12B opportunity scoring, 12C revenue prioritization, 12D executive revenue brief, and 12E closed-loop learning advisory output.
+- Doctrine: Sprint 12 improves opportunity detection, scoring, prioritization, and executive revenue recommendations. It does not create execution authority.
+- Reason: revenue leadership needs standardized opportunity records and explainable prioritization before any later customer journey or automation work can safely use revenue intelligence.
+- Business problem solved: transforms department missions, market/customer intelligence, CRM/revenue signals, and telemetry into ranked advisory revenue opportunities and CEO-ready revenue briefing.
+- Department benefited: CEO Office, AI COO, Lead Generation, Seller Acquisition, CRM, Marketing, SEO, Content, Operations, Knowledge / Memory, Approval / Safety, Engineering, and Compliance/Governance.
+- AI employees affected: CEO Executive Assistant AI, Daily Briefing Analyst AI, AI COO, Revenue Operations Manager, Lead Research Analyst AI, Source Quality Analyst AI, Marketing Director AI, SEO Director AI, Content Director AI, Connector Health Monitor AI, Knowledge / Memory employees, and Approval / Safety employees.
+- Revenue impact or cost reduction impact: improves opportunity visibility, scoring transparency, prioritization, bottleneck awareness, and executive revenue decisions while avoiding unsafe execution drift.
+- Files changed:
+  - `lib/revenue-intelligence-opportunity-engine.ts`: added Sprint 12 advisory opportunity records, transparent scoring, prioritization queue, executive revenue brief, closed-loop learning notes, technical debt backlog, and safety assertion.
+  - `app/api/company/revenue-intelligence/route.ts`: added authenticated read-only API visibility that consumes Sprint 10E, Sprint 11, and revenue command center reports.
+  - `tests/safety/revenue-intelligence-opportunity-engine.test.ts`: added Sprint 12 safety coverage for opportunity conversion, deterministic scoring, prioritization, executive brief coverage, advisory learning, and blocked execution actions.
+  - `docs/engineering/sprint-12-revenue-intelligence-opportunity-engine-brief.md`: added Sprint 12 engineering brief.
+  - `docs/engineering/08-sprint-history.md`: added this closeout record.
+- Tests executed:
+  - `node --import tsx --test tests/safety/revenue-intelligence-opportunity-engine.test.ts tests/safety/department-operating-system.test.ts tests/safety/market-customer-intelligence-foundation.test.ts`
+  - `npm run test:safety`
+  - `npm run build`
+  - `timeout 60s npx eslint lib/revenue-intelligence-opportunity-engine.ts app/api/company/revenue-intelligence/route.ts tests/safety/revenue-intelligence-opportunity-engine.test.ts docs/engineering/sprint-12-revenue-intelligence-opportunity-engine-brief.md docs/engineering/08-sprint-history.md`
+- Pass/fail results:
+  - Focused Sprint 12 safety tests passed: 3 files, 3 passing.
+  - `npm run test:safety` passed: 37 tests, 37 passing.
+  - `npm run build` passed.
+  - Focused ESLint inconclusive: command hung silently and exited via timeout with code 124.
+  - Build warning carried forward: existing Turbopack tracing warning now surfaced through `next.config.ts`, Prisma, `lib/revenue-spine.ts`, and `app/api/company/revenue-intelligence/route.ts`.
+- Deploy status: no Preview deploy and no Production deploy.
+- External provider call status: no Google API call, no OAuth exchange, no connector activation, no CRM mutation, no lead creation, no outreach, no publishing, no scraping, no memory/KPI persistence, no provider execution, no ads, and no workflow execution.
+- Risks carried forward:
+  - Sprint 12 is recommendation-quality only; future work must not treat opportunity priority or CEO brief output as execution authority.
+  - Closed-loop learning is advisory and non-persistent in this sprint.
+  - ESLint remains inconclusive until the local lint hang is diagnosed.
+  - Existing Turbopack tracing warning should be investigated, especially because the Sprint 12 route now imports revenue spine and surfaces that trace path.
+- Technical debt discovered:
+  - High priority: ESLint silent timeout remains active infrastructure debt and should be investigated before production readiness.
+  - Medium priority: Turbopack tracing warning remains active infrastructure debt and should be resolved when actionable.
+  - Sprint 13 should consume Sprint 12 opportunity intelligence as advisory input only unless a separate governance gate authorizes controlled execution.
+- Next recommended sprint:
+  - Sprint 13 - Customer Journey Automation, consuming Sprint 12 opportunity intelligence as advisory input with no autonomous external execution unless a separate governance gate approves it.
+
+### Sprint 12F: Enterprise Opportunity Contract
+
+- Date: 2026-07-10.
+- Sprint name: Sprint 12F - Enterprise Opportunity Contract.
+- Requested approach: add a shared Opportunity object that every AI department can produce and consume before Sprint 13.
+- Recommended approach: implement a reusable AI Core Enterprise Opportunity Contract, map existing Sprint 12 revenue opportunities into it, add lifecycle status and descriptive approval labels, and preserve the Sprint 12 no-execution doctrine.
+- Decision made: completed Sprint 12F as a governance refinement. It adds a shared opportunity schema, deterministic status assignment, descriptive required approvals, cross-department consumption fields, executive brief contract visibility, and safety tests.
+- Doctrine: an opportunity is what the company might do, a recommendation is what AI suggests internally, and an approval is what a human may authorize later through a separate governed workflow. The opportunity object never grants execution authority.
+- Reason: Sprint 13 Customer Journey Automation needs a stable opportunity language before it can safely consume revenue and department outputs.
+- Business problem solved: prevents departments from inventing incompatible opportunity formats and gives the AI Operating Company one advisory object for review, prioritization, ownership, status, and CEO decision visibility.
+- Department benefited: CEO Office, AI COO, Lead Generation, Seller Acquisition, CRM, Marketing, SEO, Content, Operations, Knowledge / Memory, Approval / Safety, Engineering, and Compliance/Governance.
+- AI employees affected: CEO Executive Assistant AI, Daily Briefing Analyst AI, AI COO, Revenue Operations Manager, Lead Research Analyst AI, Source Quality Analyst AI, Marketing Director AI, SEO Director AI, Content Director AI, Connector Health Monitor AI, Knowledge / Memory employees, and Approval / Safety employees.
+- Revenue impact or cost reduction impact: improves opportunity standardization, review handoffs, approval clarity, and Sprint 13 readiness while avoiding duplicate department-specific opportunity formats.
+- Files changed:
+  - `lib/enterprise-opportunity-contract.ts`: added the shared Enterprise Opportunity Contract, lifecycle statuses, governance flags, revenue-opportunity mapping, required approval labels, and safety assertion.
+  - `lib/revenue-intelligence-opportunity-engine.ts`: added `enterpriseOpportunities` to Sprint 12 output and added enterprise opportunity status/required approval visibility to the executive revenue brief.
+  - `tests/safety/enterprise-opportunity-contract.test.ts`: added Sprint 12F safety tests for mapping, deterministic status, cross-department consumption, descriptive approvals, and no-execution guarantees.
+  - `tests/safety/revenue-intelligence-opportunity-engine.test.ts`: added assertions for executive brief enterprise opportunity contract visibility.
+  - `docs/engineering/sprint-12f-enterprise-opportunity-contract-brief.md`: added Sprint 12F engineering brief.
+  - `docs/engineering/08-sprint-history.md`: added this closeout record.
+- Tests executed:
+  - `node --import tsx --test tests/safety/enterprise-opportunity-contract.test.ts tests/safety/revenue-intelligence-opportunity-engine.test.ts`
+  - `npm run test:safety`
+  - `npm run build`
+  - `timeout 60s npx eslint lib/enterprise-opportunity-contract.ts lib/revenue-intelligence-opportunity-engine.ts tests/safety/enterprise-opportunity-contract.test.ts tests/safety/revenue-intelligence-opportunity-engine.test.ts docs/engineering/sprint-12f-enterprise-opportunity-contract-brief.md docs/engineering/08-sprint-history.md`
+- Pass/fail results:
+  - Focused Sprint 12F and Sprint 12 safety tests passed: 2 files, 2 passing.
+  - `npm run test:safety` passed: 38 tests, 38 passing.
+  - `npm run build` passed.
+  - Focused ESLint inconclusive: command hung silently and exited via timeout with code 124.
+  - Build warning carried forward: existing Turbopack tracing warning surfaced through `next.config.ts`, Prisma, `lib/revenue-spine.ts`, and `app/api/company/revenue-intelligence/route.ts`.
+- Deploy status: no Preview deploy and no Production deploy.
+- External provider call status: no Google API call, no OAuth exchange, no connector activation, no CRM mutation, no lead creation, no outreach, no publishing, no scraping, no memory/KPI persistence, no provider execution, no ads, and no workflow execution.
+- Risks carried forward:
+  - Enterprise Opportunities are advisory contract objects only; future work must not treat status, priority, required approvals, or CEO brief visibility as execution authority.
+  - `approved_for_internal_work` is a lifecycle status in the contract, but Sprint 12F does not auto-assign it or create approval records.
+  - ESLint remains inconclusive until the local lint hang is diagnosed.
+  - Existing Turbopack tracing warning should be investigated outside Sprint 12F contract work.
+- Technical debt discovered:
+  - High priority: ESLint silent timeout remains active infrastructure debt and should be investigated before production readiness.
+  - Medium priority: Turbopack tracing warning remains active infrastructure debt and should be resolved when actionable.
+  - Sprint 13 should consume Enterprise Opportunities as advisory input and must keep customer journey automation separate from execution authority unless a new governance gate approves it.
+- Next recommended sprint:
+  - Sprint 13 - Customer Journey Automation, consuming the Enterprise Opportunity Contract as advisory input with no autonomous external execution unless a separate governance gate approves it.
+
+### Sprint 13: Customer Journey Operating Layer
+
+- Date: 2026-07-10.
+- Sprint name: Sprint 13 - Customer Journey Operating Layer.
+- Requested approach: convert `enterprise-opportunity-v1` records into governed customer journey visibility, stage intelligence, department ownership, advisory touchpoint recommendations, CEO review packets, and telemetry.
+- Recommended approach: consume the Sprint 12F Enterprise Opportunity Contract, add a read-only operating layer, and preserve the no-execution governance boundary.
+- Decision made: completed Sprint 13 as an advisory Customer Journey Operating Layer. It adds 13A intake gate, 13B customer journey contract, 13C journey state engine, 13D department responsibility matrix, 13E advisory touchpoint planner, 13F funnel and bottleneck intelligence, 13G executive customer journey brief, and 13H read-only telemetry.
+- Doctrine: every Enterprise Opportunity must map to a customer journey stage, be marked not customer-facing, or be recorded as a coverage gap. Customer journey intelligence may recommend internal review but must not contact people, mutate systems, activate providers, publish, scrape, persist, or execute work.
+- Reason: the AI Operating Company needs continuity from intelligence to opportunities to customer lifecycle before later customer journey automation can be safely considered.
+- Business problem solved: creates governed visibility into funnel progression, drop-off points, stalled journeys, bottlenecks, opportunity coverage, department ownership, and CEO attention needs.
+- Department benefited: CEO Office, AI COO, Lead Generation, Seller Acquisition, CRM, Marketing, Content, SEO, Operations, Knowledge / Memory, Approval / Safety, Engineering, and Compliance/Governance.
+- AI employees affected: CEO Executive Assistant AI, Daily Briefing Analyst AI, AI COO, Revenue Operations Manager, Lead Research Analyst AI, Source Quality Analyst AI, CRM Manager AI, Pipeline Coordinator AI, Marketing Director AI, Content Director AI, SEO Director AI, Knowledge / Memory employees, and Approval / Safety employees.
+- Revenue impact or cost reduction impact: improves customer journey coverage, stalled-journey detection, ownership clarity, review prioritization, and future automation readiness while avoiding unsafe execution drift.
+- Files changed:
+  - `lib/customer-journey-operating-layer.ts`: added Sprint 13 intake gate, journey contract, stage mapping, responsibility matrix, advisory touchpoints, funnel intelligence, executive brief, telemetry, and safety assertion.
+  - `app/api/company/customer-journey-operating-layer/route.ts`: added authenticated read-only API visibility that consumes Sprint 12F Enterprise Opportunities via the existing Sprint 10E, Sprint 11, Sprint 12, and revenue command center assembly path.
+  - `tests/safety/customer-journey-operating-layer.test.ts`: added Sprint 13 safety tests for intake blocking, stage mapping, deterministic journey states, department ownership, advisory touchpoints, funnel intelligence, executive brief, and non-persistent telemetry.
+  - `docs/engineering/sprint-13-customer-journey-operating-layer-brief.md`: added Sprint 13 engineering brief.
+  - `docs/engineering/08-sprint-history.md`: added this closeout record.
+- Tests executed:
+  - `node --import tsx --test tests/safety/customer-journey-operating-layer.test.ts tests/safety/enterprise-opportunity-contract.test.ts`
+  - `npm run test:safety`
+  - `npm run build`
+  - `timeout 60s npx eslint lib/customer-journey-operating-layer.ts app/api/company/customer-journey-operating-layer/route.ts tests/safety/customer-journey-operating-layer.test.ts docs/engineering/sprint-13-customer-journey-operating-layer-brief.md docs/engineering/08-sprint-history.md`
+- Pass/fail results:
+  - Focused Sprint 13 and Sprint 12F safety tests passed: 2 files, 2 passing.
+  - `npm run test:safety` passed: 39 tests, 39 passing.
+  - `npm run build` passed.
+  - Focused ESLint inconclusive: command hung silently and exited via timeout with code 124.
+  - Build warning carried forward: existing Turbopack tracing warning surfaced through `next.config.ts`, Prisma, `lib/revenue-spine.ts`, and `app/api/company/customer-journey-operating-layer/route.ts`.
+- Deploy status: no Preview deploy and no Production deploy.
+- External provider call status: no Google API call, no OAuth exchange, no connector activation, no CRM mutation, no lead creation, no outreach, no publishing, no scraping, no memory/KPI persistence, no provider execution, no ads, and no workflow execution.
+- Risks carried forward:
+  - Customer journey records, stages, touchpoints, funnel intelligence, executive briefs, and telemetry are advisory-only; future work must not treat them as execution authority.
+  - Touchpoint recommendations can mention call prep, draft intent, CRM task concepts, timing, and missing data, but they must not send, write, create, schedule, or execute.
+  - ESLint remains inconclusive until the local lint hang is diagnosed.
+  - Existing Turbopack tracing warning should be investigated outside Sprint 13 customer journey work.
+- Technical debt discovered:
+  - High priority: ESLint silent timeout remains active infrastructure debt and should be investigated before production readiness.
+  - Medium priority: Turbopack tracing warning remains active infrastructure debt and should be resolved when actionable.
+  - Future customer journey automation requires a separate governance gate before any contact, CRM write, provider write, persistence, or autonomous execution.
+- Next recommended sprint:
+  - Sprint 14 - Executive Intelligence, consuming Sprint 13 journey visibility and Sprint 12 opportunity intelligence as advisory inputs.
+
+### Sprint 14: Executive Intelligence Platform
+
+- Date: 2026-07-10.
+- Sprint name: Sprint 14 - Executive Intelligence Platform.
+- Requested approach: build the CEO-facing intelligence layer that answers, "CEO, what are today's highest-impact decisions?"
+- Recommended approach: aggregate Sprint 12 Revenue Intelligence, Sprint 12F Enterprise Opportunities, Sprint 13 Customer Journey Operating Layer, Sprint 11 Department Operating System, market/customer intelligence, daily revenue loop, and governance/safety signals into an advisory-only executive platform.
+- Decision made: completed Sprint 14 as a read-only Executive Intelligence Platform. It adds 14A executive intelligence intake, 14A.1 decision boundary gate, 14B connector capability intelligence, 14C CEO briefing contract, 14D executive KPI engine, 14E priority engine, 14F decision recommendation engine, 14G decision queue, 14H department directive drafts, 14I read-only API visibility, 14J executive daily brief, and 14K advisory telemetry.
+- Doctrine: Executive Intelligence may synthesize, prioritize, recommend internal review, and draft department guidance. It must not approve, execute, contact, mutate, publish, activate connectors, persist KPI/memory, or create work records.
+- Reason: the CEO needs one morning intelligence layer that ranks the highest-impact decisions while preserving governance and source traceability.
+- Business problem solved: consolidates revenue, opportunity, customer journey, department, market, connector, KPI, risk, and governance signals into one CEO-facing advisory decision platform.
+- Department benefited: CEO Office, AI COO, Lead Generation, Seller Acquisition, CRM, Marketing, Content, SEO, Operations, Finance, Knowledge / Memory, Approval / Safety, Engineering, and Compliance/Governance.
+- AI employees affected: CEO Executive Assistant AI, Daily Briefing Analyst AI, AI COO, Revenue Operations Manager, Lead Research Analyst AI, Source Quality Analyst AI, CRM Manager AI, Pipeline Coordinator AI, Marketing Director AI, Content Director AI, SEO Director AI, Connector Health Monitor AI, Knowledge / Memory employees, and Approval / Safety employees.
+- Revenue impact or cost reduction impact: improves CEO decision clarity, prioritization quality, connector data-gap visibility, department direction, and executive risk awareness while avoiding unsafe execution drift.
+- Files changed:
+  - `lib/executive-intelligence-platform.ts`: added Sprint 14 executive packet, decision boundary gate, connector capability intelligence, CEO briefing, KPI model, priority queue, decision recommendations, decision queue, directive drafts, daily brief, telemetry, and safety assertion.
+  - `app/api/company/executive-intelligence-platform/route.ts`: added authenticated read-only API visibility that assembles Sprint 10E, Sprint 11, Sprint 12, Sprint 12F, Sprint 13, revenue command center, and connector metadata inputs.
+  - `tests/safety/executive-intelligence-platform.test.ts`: added Sprint 14 safety tests for aggregation, decision boundaries, connector capability metadata, CEO briefing, deterministic priority ranking, advisory decision queue, directive drafts, visibility safety, and non-persistent telemetry.
+  - `docs/engineering/sprint-14-executive-intelligence-platform-brief.md`: added Sprint 14 engineering brief.
+  - `docs/engineering/08-sprint-history.md`: added this closeout record.
+- Tests executed:
+  - `node --import tsx --test tests/safety/executive-intelligence-platform.test.ts tests/safety/customer-journey-operating-layer.test.ts tests/safety/enterprise-opportunity-contract.test.ts`
+  - `npm run test:safety`
+  - `npm run build`
+  - `timeout 60s npx eslint lib/executive-intelligence-platform.ts app/api/company/executive-intelligence-platform/route.ts tests/safety/executive-intelligence-platform.test.ts docs/engineering/sprint-14-executive-intelligence-platform-brief.md docs/engineering/08-sprint-history.md`
+- Pass/fail results:
+  - Focused Sprint 14, Sprint 13, and Sprint 12F safety tests passed: 3 files, 3 passing.
+  - `npm run test:safety` passed: 40 tests, 40 passing.
+  - `npm run build` passed.
+  - Focused ESLint inconclusive: command hung silently and exited via timeout with code 124.
+  - Build warning carried forward: existing Turbopack tracing warning surfaced through `next.config.ts`, Prisma, `lib/revenue-spine.ts`, and `app/api/company/customer-journey-operating-layer/route.ts`.
+- Deploy status: no Preview deploy and no Production deploy.
+- External provider call status: no Google API call, no OAuth exchange, no connector activation, no CRM mutation, no lead creation, no outreach, no publishing, no scraping, no memory/KPI persistence, no provider execution, no ads, and no workflow execution.
+- Risks carried forward:
+  - Executive recommendations, decision queue records, KPI labels, connector capability intelligence, and directive drafts are advisory-only; future work must not treat them as approval or execution authority.
+  - Connector capability intelligence is metadata visibility only and must not become connector activation or live reads without a separate governance gate.
+  - ESLint remains inconclusive until the local lint hang is diagnosed.
+  - Existing Turbopack tracing warning should be investigated outside Sprint 14 executive intelligence work.
+- Technical debt discovered:
+  - High priority: ESLint silent timeout remains active infrastructure debt and should be investigated before production readiness.
+  - Medium priority: Turbopack tracing warning remains active infrastructure debt and should be resolved when actionable.
+  - Sprint 15 Learning & Memory Evolution must keep learning advisory until a separate governance gate authorizes memory/KPI persistence.
+- Next recommended sprint:
+  - Sprint 15 - Learning & Memory Evolution, consuming executive recommendation quality and outcome signals as advisory inputs.
