@@ -1,3 +1,4 @@
+import { AccessibilityToolbar } from "@/components/accessibility/accessibility-toolbar";
 import { Footer } from "@/components/public/Footer";
 import { ConsentGatedAnalytics } from "@/components/public/ConsentGatedAnalytics";
 import { CookieConsentBanner } from "@/components/public/CookieConsentBanner";
@@ -25,6 +26,7 @@ export default function PublicLayout({
         {children}
       </main>
       <Footer />
+      <AccessibilityToolbar />
       <ConsentGatedAnalytics />
       <CookieConsentBanner />
     </div>

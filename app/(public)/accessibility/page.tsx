@@ -7,7 +7,7 @@ export const metadata = createPublicPageMetadata({
   path: "/accessibility",
   title: "Website Accessibility",
   description:
-    "Accessibility information for the J Capital Property Group public website, including phone and email support for users who need help accessing information."
+    "Accessibility information for the J Capital Property Group public website, including optional display preferences, keyboard access, and support contact options."
 });
 
 export default function AccessibilityPage() {
@@ -42,6 +42,36 @@ export default function AccessibilityPage() {
             </article>
 
             <article className="border border-slate-200 bg-white p-6 shadow-sm md:p-8">
+              <h2 className="font-heading text-2xl font-bold text-[#02213D]">Optional Accessibility Toolbar</h2>
+              <p className="mt-4 text-base leading-8 text-[#1F2937]">
+                The floating accessibility toolbar on public pages lets visitors adjust local display preferences. It is
+                a first-party preference aid, not a third-party overlay, and it does not replace ongoing accessibility
+                work on the underlying website.
+              </p>
+              <ul className="mt-5 grid gap-3 text-base leading-8 text-[#1F2937] sm:grid-cols-2">
+                <li className="border-l-4 border-[#D4A017] bg-[#F2F4F7] px-4 py-3">Increase or decrease text size</li>
+                <li className="border-l-4 border-[#D4A017] bg-[#F2F4F7] px-4 py-3">High-contrast display</li>
+                <li className="border-l-4 border-[#D4A017] bg-[#F2F4F7] px-4 py-3">Reduced-motion preference</li>
+                <li className="border-l-4 border-[#D4A017] bg-[#F2F4F7] px-4 py-3">Underline links</li>
+                <li className="border-l-4 border-[#D4A017] bg-[#F2F4F7] px-4 py-3">Readable-font mode</li>
+                <li className="border-l-4 border-[#D4A017] bg-[#F2F4F7] px-4 py-3">Enhanced focus visibility</li>
+              </ul>
+              <p className="mt-5 text-base leading-8 text-[#1F2937]">
+                Preferences are stored only in your browser on this device. Resetting the toolbar removes those saved
+                preferences.
+              </p>
+            </article>
+
+            <article className="border border-slate-200 bg-[#F2F4F7] p-6 md:p-8">
+              <h2 className="font-heading text-2xl font-bold text-[#02213D]">Keyboard Access</h2>
+              <p className="mt-4 text-base leading-8 text-[#1F2937]">
+                The toolbar uses buttons with accessible names. You can reach it with the Tab key, open it with Enter or
+                Space, move through controls with Tab, and press Escape to close the panel. Focus returns to the toolbar
+                button after closing with Escape or reset.
+              </p>
+            </article>
+
+            <article className="border border-slate-200 bg-white p-6 shadow-sm md:p-8">
               <h2 className="font-heading text-2xl font-bold text-[#02213D]">Need Help Accessing Information?</h2>
               <p className="mt-4 text-base leading-8 text-[#1F2937]">
                 If you have trouble reading or using any part of this website, contact us directly. We can help provide
@@ -71,7 +101,8 @@ export default function AccessibilityPage() {
               <h2 className="font-heading text-2xl font-bold text-[#02213D]">Ongoing Improvements</h2>
               <p className="mt-4 text-base leading-8 text-[#1F2937]">
                 We review public pages for readable text, clear navigation, keyboard access, visible focus states, and
-                useful image descriptions. This website does not require a form submission to contact us.
+                useful image descriptions. The toolbar is one part of that work. This website does not require a form
+                submission to contact us.
               </p>
             </article>
           </div>
