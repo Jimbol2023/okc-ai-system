@@ -10,7 +10,7 @@ import {
   type DistressFlags
 } from "@/lib/distress-flags";
 import type { GeneratedLeadInput } from "@/lib/lead-generator";
-import type { ImportedLeadDraft } from "@/lib/list-importer";
+import type { ImportedLeadDraft } from "@/lib/lead-import-types";
 import type { LeadIntakeInput } from "@/lib/validations/lead";
 
 export const OKC_WHOLESALE_LEADS_KEY = "okcWholesaleLeads";

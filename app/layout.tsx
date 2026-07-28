@@ -1,25 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Cinzel, Inter, Montserrat } from "next/font/google";
 
 import "@/app/globals.css";
 import { brandConfig } from "@/lib/brand-config";
 import { getAppUrl } from "@/lib/env";
-
-const inter = Inter({
-  variable: "--font-sans",
-  subsets: ["latin"]
-});
-
-const montserrat = Montserrat({
-  variable: "--font-heading",
-  subsets: ["latin"]
-});
-
-const cinzel = Cinzel({
-  variable: "--font-brand",
-  subsets: ["latin"],
-  weight: ["400", "600", "700"]
-});
 
 export const metadata: Metadata = {
   title: {
@@ -62,9 +45,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${montserrat.variable} ${cinzel.variable} antialiased`}>
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

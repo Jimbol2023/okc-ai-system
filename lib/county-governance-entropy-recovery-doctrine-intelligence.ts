@@ -197,14 +197,6 @@ const reversibilityScore: Record<EntropyReversibilityLevel, number> = {
   reversible: 90,
 };
 
-const stabilityScore: Record<RecoveryStabilityLevel, number> = {
-  unknown: 0,
-  unstable: 18,
-  fragile: 42,
-  stable: 72,
-  durable: 90,
-};
-
 const doctrineCoherenceScore: Record<RecoveryDoctrineCoherenceLevel, number> = {
   fragmented: 10,
   partial: 45,

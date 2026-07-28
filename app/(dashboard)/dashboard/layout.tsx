@@ -1,7 +1,7 @@
 import type { Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { BarChart3, BookOpen, Briefcase, Building2, ClipboardCheck, DollarSign, Handshake, HousePlus, LayoutGrid, Lock, Megaphone, MonitorSmartphone, Search, ShieldCheck, Upload, Users, Wrench } from "lucide-react";
+import { BarChart3, BookOpen, Briefcase, Building2, ClipboardCheck, DollarSign, FileStack, Handshake, HousePlus, LayoutGrid, Lock, Megaphone, MonitorSmartphone, Search, ShieldCheck, Upload, Users, Wrench } from "lucide-react";
 
 import { CommandPaletteClient } from "@/components/dashboard/command-palette-client";
 import { getAuthenticatedAdmin } from "@/lib/auth";
@@ -18,9 +18,12 @@ const navIconByHref = {
   "/dashboard/knowledge": BookOpen,
   "/dashboard/leads": Users,
   "/dashboard/approvals": ClipboardCheck,
+  "/dashboard/drafts": FileStack,
   "/dashboard/marketing": Megaphone,
   "/dashboard/referrals": Handshake,
   "/dashboard/tools": Wrench,
+  "/dashboard/professional-toolchains": Briefcase,
+  "/dashboard/search-intelligence": Search,
   "/dashboard/enterprise-ai": ShieldCheck,
   "/dashboard/mobile-command": MonitorSmartphone,
   "/dashboard/research": Search,
@@ -88,9 +91,9 @@ export default async function DashboardLayout({
               })}
             </div>
           </aside>
-          <div className="min-w-0 rounded-2xl border border-border bg-surface-strong p-4 md:p-6 xl:p-7">
+          <main id="main-content" className="min-w-0 rounded-2xl border border-border bg-surface-strong p-4 md:p-6 xl:p-7">
             {children}
-          </div>
+          </main>
         </div>
       </div>
       <CommandPaletteClient />

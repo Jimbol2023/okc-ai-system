@@ -165,7 +165,7 @@ function getLeadQualitySections(leads: StoredLead[], metrics: R53ManualRevenueMe
       title: "Revenue risk visibility",
       count: revenueRiskCount,
       status: "Revenue risk should be reviewed manually.",
-      detail: "Revenue-risk visibility does not contact sellers or buyers, enrich data, activate provider systems, launch campaigns, or execute workflows.",
+      detail: `Revenue-risk visibility includes ${acquisitionGapCount} acquisition gap signal(s) and ${dispositionGapCount} disposition gap signal(s). It does not contact sellers or buyers, enrich data, activate provider systems, launch campaigns, or execute workflows.`,
     },
   ];
 }

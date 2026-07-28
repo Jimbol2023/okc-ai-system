@@ -715,7 +715,6 @@ export function evaluateCountyGovernanceEntropyDoctrineInstitutionalMemoryContin
     riskScores[input.boundedMemoryReevaluationNeedLevel ?? "none"],
     reevaluationEvidenceCount < 1 && hasEvidence ? 50 : 0,
   );
-  const recursiveDependencyScore = riskScores[input.recursiveMemoryDependencyLevel ?? "none"];
   const collapseExposureScore = riskScores[input.collapseExposureLevel ?? "none"];
   const stewardshipCompatibilityScore = compatibilityScores[input.stewardshipCompatibilityLevel ?? "unknown"];
   const oversightCompatibilityScore = compatibilityScores[input.oversightCompatibilityLevel ?? "unknown"];

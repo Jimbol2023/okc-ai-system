@@ -1,5 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const devServerCommand = process.platform === "win32" ? "npm.cmd run dev -- -p 3020" : "npm run dev -- -p 3020";
+
 export default defineConfig({
   testDir: "./tests/e2e",
   timeout: 30_000,
@@ -20,8 +22,8 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"] },
     },
   ],
-  webServer: {
-    command: "npm.cmd run dev -- -p 3020",
+  webServer: process.env.PLAYWRIGHT_EXTERNAL_SERVER === "true" ? undefined : {
+    command: devServerCommand,
     url: "http://127.0.0.1:3020",
     reuseExistingServer: true,
     timeout: 120_000,

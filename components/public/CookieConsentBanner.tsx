@@ -1,12 +1,48 @@
 "use client";
 
 import Link from "next/link";
-import { useSyncExternalStore } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 
 import { getStoredConsentChoice, saveConsentChoice, subscribeToConsentChanges } from "@/lib/analytics-consent";
 
+const cookieConsentOffsetProperty = "--cookie-consent-offset";
+
 export function CookieConsentBanner() {
   const choice = useSyncExternalStore(subscribeToConsentChanges, getStoredConsentChoice, () => "accepted");
+  const bannerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const banner = bannerRef.current;
+
+    if (choice || !banner) {
+      root.style.setProperty(cookieConsentOffsetProperty, "0px");
+      return () => root.style.setProperty(cookieConsentOffsetProperty, "0px");
+    }
+
+    const updateOffset = () => {
+      root.style.setProperty(cookieConsentOffsetProperty, `${banner.getBoundingClientRect().height}px`);
+    };
+
+    updateOffset();
+    window.addEventListener("resize", updateOffset);
+
+    let observer: ResizeObserver | MutationObserver;
+
+    if (typeof ResizeObserver === "function") {
+      observer = new ResizeObserver(updateOffset);
+      observer.observe(banner, { box: "border-box" });
+    } else {
+      observer = new MutationObserver(updateOffset);
+      observer.observe(banner, { attributes: true, childList: true, characterData: true, subtree: true });
+    }
+
+    return () => {
+      window.removeEventListener("resize", updateOffset);
+      observer.disconnect();
+      root.style.setProperty(cookieConsentOffsetProperty, "0px");
+    };
+  }, [choice]);
 
   if (choice) {
     return null;
@@ -14,6 +50,7 @@ export function CookieConsentBanner() {
 
   return (
     <section
+      ref={bannerRef}
       aria-label="Cookie notice"
       className="fixed inset-x-0 bottom-0 z-[90] border-t border-slate-200 bg-white px-4 py-4 shadow-[0_-18px_45px_rgba(2,33,61,0.14)]"
     >

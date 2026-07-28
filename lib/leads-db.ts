@@ -1,5 +1,3 @@
-import { Prisma } from "@/generated/prisma";
-
 import {
   dbLeadToStoredLead,
   generatedLeadToStoredLead,
@@ -24,7 +22,7 @@ type AutomationStoredLead = StoredLead & {
 };
 
 function isPrismaUniqueError(error: unknown) {
-  return error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002";
+  return Boolean(error && typeof error === "object" && "code" in error && error.code === "P2002");
 }
 
 function toDateOrNull(value: Date | string | null | undefined) {

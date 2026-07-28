@@ -25,7 +25,14 @@ export type FeatureFlagKey =
   | "phase4_production_readiness"
   | "phase4_operations_timeline"
   | "phase4_executive_assistant"
-  | "phase4_controlled_live_sms";
+  | "phase4_controlled_live_sms"
+  | "ueip_gateway_enforcement"
+  | "ueip_search_console_runtime"
+  | "ueip_search_console_rollback"
+  | "professional_case_runtime"
+  | "search_market_intelligence_runtime"
+  | "search_market_intelligence_scheduling"
+  | "search_console_query_performance";
 
 export type FeatureFlag = {
   key: FeatureFlagKey;
@@ -36,6 +43,55 @@ export type FeatureFlag = {
 };
 
 export const phase2FeatureFlags: FeatureFlag[] = [
+  {
+    key: "search_market_intelligence_runtime",
+    enabled: false,
+    category: "intelligence",
+    description: "Gates tenant-scoped Search and Market Intelligence case preparation from stored normalized evidence.",
+    requiresAdminApproval: true,
+  },
+  {
+    key: "search_market_intelligence_scheduling",
+    enabled: false,
+    category: "automation",
+    description: "Gates capped internal delta and Monday packet preparation; no provider or external actions are authorized.",
+    requiresAdminApproval: true,
+  },
+  {
+    key: "search_console_query_performance",
+    enabled: false,
+    category: "connector",
+    description: "Gates the bounded Preview-only Search Console query performance capability.",
+    requiresAdminApproval: true,
+  },
+  {
+    key: "professional_case_runtime",
+    enabled: false,
+    category: "automation",
+    description: "Gates additive writes to the durable professional case runtime while legacy consumers remain available.",
+    requiresAdminApproval: true,
+  },
+  {
+    key: "ueip_gateway_enforcement",
+    enabled: true,
+    category: "connector",
+    description: "Requires migrated provider capabilities to pass through the UEIP runtime gateway.",
+    requiresAdminApproval: true,
+  },
+  {
+    key: "ueip_search_console_runtime",
+    enabled: true,
+    category: "connector",
+    description: "Allows the certified Search Console adapter to run only after trusted Preview, tenant, installation, scope, health, and audit gates pass.",
+    requiresAdminApproval: true,
+  },
+  {
+    key: "ueip_search_console_rollback",
+    enabled: false,
+    category: "connector",
+    description: "Emergency rollback selector for the Search Console reference migration; it never authorizes Production or writes.",
+    requiresAdminApproval: true,
+  },
   {
     key: "connector_platform",
     enabled: true,
@@ -52,16 +108,16 @@ export const phase2FeatureFlags: FeatureFlag[] = [
   },
   {
     key: "connector_live_reads",
-    enabled: false,
+    enabled: true,
     category: "connector",
-    description: "Allows approved connector adapters to perform live read-only calls after governance review.",
+    description: "Allows Sprint 18 approved connector adapters to perform live read-only calls after governance review.",
     requiresAdminApproval: true,
   },
   {
     key: "connector_google",
-    enabled: false,
+    enabled: true,
     category: "connector",
-    description: "Enables Google connector family readiness beyond static registry visibility.",
+    description: "Enables governed Google connector family read-only telemetry.",
     requiresAdminApproval: true,
   },
   {
@@ -80,16 +136,16 @@ export const phase2FeatureFlags: FeatureFlag[] = [
   },
   {
     key: "connector_marketing",
-    enabled: false,
+    enabled: true,
     category: "connector",
-    description: "Enables marketing platform connector readiness beyond internal drafts.",
+    description: "Enables governed marketing platform read-only telemetry.",
     requiresAdminApproval: true,
   },
   {
     key: "connector_communication",
-    enabled: false,
+    enabled: true,
     category: "connector",
-    description: "Enables communication connector readiness beyond internal draft/task preparation.",
+    description: "Enables governed communication platform read-only telemetry.",
     requiresAdminApproval: true,
   },
   {
@@ -129,9 +185,9 @@ export const phase2FeatureFlags: FeatureFlag[] = [
   },
   {
     key: "executive_briefings",
-    enabled: false,
+    enabled: true,
     category: "intelligence",
-    description: "Enables daily, weekly, and monthly executive briefing generation.",
+    description: "Enables daily, weekly, and monthly executive briefing generation from approved read-only snapshots.",
     requiresAdminApproval: true,
   },
   {

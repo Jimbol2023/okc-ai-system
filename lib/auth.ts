@@ -7,6 +7,9 @@ const SESSION_DURATION_MS = 1000 * 60 * 60 * 24 * 7;
 
 type SessionPayload = {
   email: string;
+  tenantId?: string;
+  actorId?: string;
+  sessionVersion?: 1;
   exp: number;
 };
 
@@ -64,10 +67,13 @@ async function verifySignature(value: string, signature: string, secret: string)
   return expectedSignature === signature;
 }
 
-export async function createSessionToken(email: string) {
+export async function createSessionToken(email: string, options: { tenantId?: string; actorId?: string } = {}) {
   const { authSecret } = getAuthConfig();
   const payload: SessionPayload = {
     email,
+    tenantId: options.tenantId ?? "default",
+    actorId: options.actorId ?? email,
+    sessionVersion: 1,
     exp: Date.now() + SESSION_DURATION_MS
   };
   const encodedPayload = base64UrlEncode(JSON.stringify(payload));
@@ -101,7 +107,12 @@ export async function verifySessionToken(token: string | undefined) {
       return null;
     }
 
-    return payload;
+    return {
+      ...payload,
+      tenantId: payload.tenantId || "default",
+      actorId: payload.actorId || payload.email,
+      sessionVersion: payload.sessionVersion ?? 1,
+    };
   } catch {
     return null;
   }
@@ -152,6 +163,19 @@ export async function isAuthenticatedRequest(request: NextRequest | Request) {
   } catch {
     return false;
   }
+}
+
+export async function getAuthenticatedRequestContext(request: NextRequest | Request) {
+  const token = getRequestAuthToken(request);
+  const payload = await verifySessionToken(token);
+  if (!payload) return null;
+
+  return Object.freeze({
+    tenantId: payload.tenantId || "default",
+    actorId: payload.actorId || payload.email,
+    email: payload.email,
+    sessionVersion: payload.sessionVersion ?? 1,
+  });
 }
 
 function getRequestAuthToken(request: NextRequest | Request) {

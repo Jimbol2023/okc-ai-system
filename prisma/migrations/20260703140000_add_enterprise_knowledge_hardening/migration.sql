@@ -1,0 +1,3 @@
+-- Compatibility marker for local development databases that previously
+-- recorded Enterprise Knowledge hardening migration history from the
+-- activation branch. Safety behavior remains enforced in application code.

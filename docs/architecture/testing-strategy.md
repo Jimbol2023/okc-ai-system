@@ -42,9 +42,21 @@ Safety regression tests:
 - Desktop automation tests should assert `desktopAutomationAuthorized:false`.
 - Terminal and file-system readiness tests should assert no dashboard execution/write authority.
 
+Pressure testing:
+
+- `npm run test:activation-smoke` verifies the internal company loop against a development database: Executive Directive seed, Campaign 001 approval, department assignments, draft queue, decision memory, and Department Intelligence.
+- `npm run test:pressure` runs authenticated Playwright pressure checks for repeated Executive Dashboard reads, repeated and concurrent Campaign 001 decisions, and Department Intelligence refresh.
+- These tests are dev/staging-only. They must not run when `NODE_ENV=production` or `VERCEL_ENV=production`.
+- Mutating pressure tests require `ALLOW_MUTATING_DEV_DB_TESTS=true`.
+- Authenticated pressure tests require `ADMIN_EMAIL` and `ADMIN_PASSWORD`.
+- Pressure thresholds are intentionally conservative for remote Neon and can be tuned with `PRESSURE_DASHBOARD_P95_MS` and `PRESSURE_DECISION_MAX_MS`.
+- Pressure tests must preserve `providerCalled:false`, `sent:false`, `published:false`, `outreachSent:false`, `workflowStarted:false`, and `liveExecutionAllowed:false`.
+- Do not point load tools or pressure scripts at production unless a separate CEO-approved production load policy exists.
+
 Deferred testing:
 
 - Playwright visual screenshots for dashboard layout.
 - Accessibility scans.
 - Seeded test database flows.
 - n8n draft workflow export validation with triggers disabled.
+- Optional local/staging load tooling with `autocannon` or `k6`.

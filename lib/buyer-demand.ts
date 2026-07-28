@@ -1,17 +1,8 @@
 import { prisma } from "@/lib/prisma";
-import { getBuyerTierFromActivities, type BuyerTier } from "@/lib/buyer-score";
+import { getBuyerTierFromActivities } from "@/lib/buyer-score";
+import type { BuyerDemandSignals, BuyerTier, RankedSignal } from "@/lib/buyer-demand-types";
 
-type RankedSignal = {
-  label: string;
-  count: number;
-};
-
-export type BuyerDemandSignals = {
-  hotZips: RankedSignal[];
-  hotPriceRanges: RankedSignal[];
-  hotPropertyTypes: RankedSignal[];
-  byBuyerTier: Record<BuyerTier, number>;
-};
+export type { BuyerDemandSignals } from "@/lib/buyer-demand-types";
 
 function asStringArray(value: unknown) {
   if (!Array.isArray(value)) {

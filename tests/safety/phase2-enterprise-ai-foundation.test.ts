@@ -5,12 +5,15 @@ import { evaluateConnectorAction, evaluateConnectorLifecycle, getConnectorHealth
 import { getFeatureFlagSnapshot, isFeatureEnabled } from "@/lib/feature-flags";
 import { createDemandDiscoveryReport, createExecutiveBriefing, createMarketIntelligenceReport } from "@/lib/phase2-intelligence";
 
-test("Phase 2 feature flags keep live connector behavior disabled by default", () => {
+test("feature flags allow governed read-only connectors while keeping execution disabled", () => {
   const snapshot = getFeatureFlagSnapshot();
 
   assert.equal(isFeatureEnabled("connector_platform"), true);
   assert.equal(isFeatureEnabled("safe_auto_internal"), true);
-  assert.equal(isFeatureEnabled("connector_live_reads"), false);
+  assert.equal(isFeatureEnabled("connector_live_reads"), true);
+  assert.equal(isFeatureEnabled("connector_google"), true);
+  assert.equal(isFeatureEnabled("connector_marketing"), true);
+  assert.equal(isFeatureEnabled("connector_communication"), true);
   assert.equal(isFeatureEnabled("safe_auto_limited"), false);
   assert.equal(snapshot.providerCalled, false);
   assert.equal(snapshot.liveExecutionAllowed, false);

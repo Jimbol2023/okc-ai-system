@@ -1,5 +1,3 @@
-import { Prisma } from "@/generated/prisma";
-
 import { prisma } from "@/lib/prisma";
 import { logRevenueAuditEvent } from "@/lib/revenue-spine";
 import type { StoredLead } from "@/lib/leads-storage";
@@ -95,7 +93,7 @@ export function normalizePartnerType(value: string | null | undefined): Referral
 }
 
 function isKnownPrismaDuplicate(error: unknown) {
-  return error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002";
+  return Boolean(error && typeof error === "object" && "code" in error && error.code === "P2002");
 }
 
 export function getReferralDuplicateKey(input: Required<Pick<ReferralTrackingInput, "eventType">> & ReferralTrackingInput) {

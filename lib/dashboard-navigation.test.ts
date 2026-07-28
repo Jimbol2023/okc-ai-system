@@ -10,6 +10,8 @@ test("dashboard navigation includes core operating pages", () => {
   assert.ok(hrefs.includes("/dashboard/knowledge"));
   assert.ok(hrefs.includes("/dashboard/properties"));
   assert.ok(hrefs.includes("/dashboard/marketing"));
+  assert.ok(hrefs.includes("/dashboard/drafts"));
+  assert.ok(hrefs.includes("/dashboard/professional-toolchains"));
 });
 
 test("dashboard navigation consolidates security and safety labels", () => {
@@ -25,4 +27,13 @@ test("filterDashboardNavigationItems matches command palette keywords", () => {
   const results = filterDashboardNavigationItems("probate");
 
   assert.equal(results[0]?.href, "/dashboard/knowledge");
+});
+
+test("filterDashboardNavigationItems exposes the CEO Draft Workspace", () => {
+  assert.equal(filterDashboardNavigationItems("ceo review")[0]?.href, "/dashboard/drafts");
+  assert.equal(filterDashboardNavigationItems("workspace")[0]?.href, "/dashboard/drafts");
+});
+
+test("filterDashboardNavigationItems exposes professional toolchains", () => {
+  assert.equal(filterDashboardNavigationItems("certification wave")[0]?.href, "/dashboard/professional-toolchains");
 });

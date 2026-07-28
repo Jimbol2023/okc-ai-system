@@ -1,0 +1,44 @@
+export type ProviderSurfaceClassification = "internal" | "read_only" | "controlled_write" | "legacy" | "duplicated" | "prohibited";
+
+export type ProviderSurfaceRecord = {
+  id: string;
+  path: string;
+  provider: string;
+  capability: string;
+  classification: ProviderSurfaceClassification;
+  owner: string;
+  authentication: string;
+  tenantScope: string;
+  policyCoverage: string;
+  auditCoverage: string;
+  migrationStatus: "migrated" | "legacy_governed" | "consolidation_candidate" | "boundary_only";
+  retirementDependency: string;
+};
+
+export const ueipProviderSurfaceInventoryVersion = "ueip-provider-surface-inventory-v1";
+
+export const ueipProviderSurfaceInventory: ProviderSurfaceRecord[] = [
+  { id: "search-console-certified-adapter", path: "lib/ueip-search-console-adapter.ts", provider: "Google Search Console", capability: "SEO performance and indexing reads", classification: "read_only", owner: "Integration Platform Engineering", authentication: "UEIP credential broker / OAuth refresh", tenantScope: "ConnectorInstallationState tenant", policyCoverage: "UEIP runtime gateway", auditCoverage: "append-only gateway and health evidence", migrationStatus: "migrated", retirementDependency: "none" },
+  { id: "shared-read-adapters", path: "lib/read-only-business-connections.ts", provider: "Google Workspace, GA4, GBP, YouTube, Canva", capability: "read-only business snapshots", classification: "legacy", owner: "Integration Platform Engineering", authentication: "shared OAuth refresh", tenantScope: "default tenant", policyCoverage: "feature flags and adapter allowlist", auditCoverage: "snapshot and health metadata; incomplete gateway evidence", migrationStatus: "consolidation_candidate", retirementDependency: "migrate each remaining read capability through UEIP" },
+  { id: "approved-execution-provider-writes", path: "lib/approved-execution-layer.ts", provider: "Gmail, Google Calendar, Google Drive, approved webhooks", capability: "exact controlled external actions", classification: "controlled_write", owner: "Approval / Safety", authentication: "server environment credentials", tenantScope: "default tenant", policyCoverage: "approval and execution safety gates", auditCoverage: "revenue audit, memory, trace, and outcome", migrationStatus: "legacy_governed", retirementDependency: "future controlled-write UEIP migration" },
+  { id: "drive-draft-pilot", path: "lib/google-drive-draft-pilot.ts", provider: "Google Drive", capability: "approved draft document pilot", classification: "controlled_write", owner: "Approval / Safety", authentication: "Google OAuth refresh", tenantScope: "default tenant", policyCoverage: "pilot confirmation and environment gates", auditCoverage: "pilot evidence", migrationStatus: "legacy_governed", retirementDependency: "future controlled-write UEIP migration" },
+  { id: "twilio-automation", path: "lib/automation-agent.ts", provider: "Twilio", capability: "SMS send", classification: "controlled_write", owner: "Revenue Operations", authentication: "Twilio account credentials", tenantScope: "default tenant", policyCoverage: "automation and outreach gates", auditCoverage: "automation logs", migrationStatus: "legacy_governed", retirementDependency: "future communications UEIP migration" },
+  { id: "phase4-twilio-sdk", path: "lib/phase4-production.ts", provider: "Twilio", capability: "controlled live SMS runtime", classification: "controlled_write", owner: "Approval / Safety", authentication: "Twilio SDK credentials", tenantScope: "default tenant", policyCoverage: "Phase 4 approval, consent, environment, and kill-switch gates", auditCoverage: "revenue audit and operations timeline", migrationStatus: "legacy_governed", retirementDependency: "communications UEIP controlled-write migration" },
+  { id: "twilio-inbound-webhook", path: "app/api/twilio/inbound-sms/route.ts", provider: "Twilio", capability: "inbound SMS webhook", classification: "legacy", owner: "Revenue Operations", authentication: "webhook boundary", tenantScope: "default tenant", policyCoverage: "registered inbound route", auditCoverage: "message processing records", migrationStatus: "boundary_only", retirementDependency: "certified webhook boundary standard" },
+  { id: "gbp-discovery", path: "app/api/admin/google-business-profile-discovery/route.ts", provider: "Google Business Profile", capability: "account and location discovery", classification: "legacy", owner: "Marketing", authentication: "Google OAuth refresh", tenantScope: "default admin", policyCoverage: "admin and rate-limit gate", auditCoverage: "discovery response metadata", migrationStatus: "consolidation_candidate", retirementDependency: "GBP UEIP read adapter" },
+  { id: "oauth-infrastructure-health", path: "lib/infrastructure-health.ts", provider: "Google OAuth", capability: "credential readiness probe", classification: "legacy", owner: "Platform Operations", authentication: "Google OAuth refresh", tenantScope: "default tenant", policyCoverage: "provider-check opt-in", auditCoverage: "redacted infrastructure report", migrationStatus: "consolidation_candidate", retirementDependency: "UEIP credential health contract" },
+  { id: "openai-embeddings", path: "lib/openai-embeddings.ts", provider: "OpenAI", capability: "knowledge embeddings", classification: "legacy", owner: "Knowledge / Memory", authentication: "server API key", tenantScope: "default tenant", policyCoverage: "knowledge ingestion boundary", auditCoverage: "knowledge processing status", migrationStatus: "consolidation_candidate", retirementDependency: "AI provider UEIP adapter" },
+  { id: "ueip-credential-broker", path: "lib/ueip-runtime-gateway.ts", provider: "Google Search Console", capability: "tenant credential resolution and gateway", classification: "internal", owner: "Integration Platform Engineering", authentication: "allowlisted server environment mapping", tenantScope: "signed context and installation", policyCoverage: "UEIP policy", auditCoverage: "append-only gateway evidence", migrationStatus: "migrated", retirementDependency: "future external secret manager" },
+  { id: "central-environment-access", path: "lib/env.ts", provider: "Multiple", capability: "central server configuration access", classification: "internal", owner: "Platform Operations", authentication: "server environment", tenantScope: "application runtime", policyCoverage: "environment validation", auditCoverage: "redacted readiness only", migrationStatus: "boundary_only", retirementDependency: "tenant-aware secret manager" },
+  { id: "outreach-policy-gate", path: "lib/outreach-gating.ts", provider: "Twilio", capability: "outreach credential and runtime gate", classification: "legacy", owner: "Approval / Safety", authentication: "credential presence only", tenantScope: "default tenant", policyCoverage: "outreach eligibility gate", auditCoverage: "outreach decision", migrationStatus: "consolidation_candidate", retirementDependency: "communications UEIP policy migration" },
+  { id: "outreach-permission-gate", path: "lib/outreach-permissions.ts", provider: "Twilio", capability: "outreach permission and credential readiness", classification: "legacy", owner: "Approval / Safety", authentication: "credential presence only", tenantScope: "default tenant", policyCoverage: "outreach permission policy", auditCoverage: "outreach decision", migrationStatus: "consolidation_candidate", retirementDependency: "communications UEIP policy migration" },
+  { id: "read-only-sync-orchestrator", path: "app/api/operations/read-only-sync/route.ts", provider: "Multiple", capability: "authenticated and scheduled read orchestration", classification: "internal", owner: "Platform Operations", authentication: "signed admin session or cron secret", tenantScope: "signed tenant or pinned cron tenant", policyCoverage: "UEIP for migrated capabilities", auditCoverage: "gateway and snapshot evidence", migrationStatus: "boundary_only", retirementDependency: "all read adapters migrated to UEIP" },
+];
+
+export function getInventoriedProviderBoundaryPaths() {
+  return new Set(ueipProviderSurfaceInventory.map((record) => record.path.replaceAll("\\", "/")));
+}
+
+export function createUeipMigrationMatrix() {
+  return { version: ueipProviderSurfaceInventoryVersion, generatedFrom: "repository-static-inventory", records: ueipProviderSurfaceInventory, providerCalled: false, liveExecutionAllowed: false } as const;
+}

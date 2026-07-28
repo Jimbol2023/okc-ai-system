@@ -4,6 +4,10 @@ This project is J Capital AI OS: a production-ready, enterprise AI Business Oper
 
 The Oklahoma City wholesale real estate experience is the first business module, not the whole platform.
 
+Engineering constitution:
+- Follow `docs/architecture/ENGINEERING_CONSTITUTION.md` for implementation authority, source priority, PR verification, and stop conditions.
+- Engineering implements approved architecture safely; it does not redefine business priorities or replace governed architecture.
+
 Rules:
 - Never invent property facts
 - Label assumptions clearly

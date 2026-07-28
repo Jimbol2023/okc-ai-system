@@ -353,10 +353,6 @@ function isWeakFailClosed(level: FailClosedSurvivabilityIntegrityLevel | null | 
   return level === "absent" || level === "inconsistent" || level === "partial";
 }
 
-function isPoorCompatibility(level: RestorationSurvivabilityCompatibilityLevel | null | undefined): boolean {
-  return level === "poor" || level === "unknown";
-}
-
 function getReadinessClassification(params: {
   hasEvidence: boolean;
   blocked: boolean;

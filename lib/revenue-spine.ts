@@ -1,4 +1,4 @@
-import { Prisma } from "@/generated/prisma";
+import type { Prisma } from "@/generated/prisma";
 
 import { getActiveDistressFlags } from "@/lib/distress-flags";
 import type { LeadStatus, StoredLead } from "@/lib/leads-storage";
@@ -514,7 +514,8 @@ export function summarizeConnectorHealth(connectors: Array<Pick<RevenueCommandCe
 }
 
 export function isRevenueDecisionLogUnavailableError(error: unknown): boolean {
-  if (error instanceof Prisma.PrismaClientKnownRequestError && (error.code === "P2021" || error.code === "P2022")) return true;
+  const errorCode = error && typeof error === "object" && "code" in error ? error.code : null;
+  if (errorCode === "P2021" || errorCode === "P2022") return true;
 
   const message = error instanceof Error ? error.message : String(error);
 

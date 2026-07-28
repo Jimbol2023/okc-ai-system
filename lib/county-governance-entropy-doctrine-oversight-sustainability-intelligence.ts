@@ -336,10 +336,6 @@ function isWeakFailClosed(level: FailClosedOversightIntegrityLevel | null | unde
   return level === "absent" || level === "inconsistent" || level === "partial";
 }
 
-function isWeakExplainability(level: OversightExplainabilityLevel | null | undefined): boolean {
-  return level === "opaque" || level === "partial";
-}
-
 function isPoorCompatibility(level: DoctrineCompatibilityLevel | null | undefined): boolean {
   return level === "poor" || level === "unknown";
 }
@@ -684,7 +680,6 @@ export function evaluateCountyGovernanceEntropyDoctrineOversightSustainability(
     reevaluationEvidenceCount < 1 && hasEvidence ? 50 : 0,
   );
   const stewardshipCapacityScore = stewardshipScores[input.stewardshipCapacityLevel ?? "unknown"];
-  const recursiveDependencyScore = riskScores[input.recursiveOversightDependencyLevel ?? "none"];
   const collapseExposureScore = riskScores[input.collapseExposureLevel ?? "none"];
   const maintenanceCompatibilityScore = compatibilityScores[input.maintenanceCompatibilityLevel ?? "unknown"];
   const finalityCompatibilityScore = compatibilityScores[input.finalityCompatibilityLevel ?? "unknown"];

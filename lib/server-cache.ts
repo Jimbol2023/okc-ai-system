@@ -25,3 +25,7 @@ export async function getCachedValue<T>(key: string, ttlMs: number, loader: () =
 export function clearServerCacheForTests() {
   serverCache.clear();
 }
+
+export function clearServerCacheKey(key: string) {
+  serverCache.delete(key);
+}
