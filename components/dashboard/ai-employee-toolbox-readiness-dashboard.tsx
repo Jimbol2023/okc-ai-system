@@ -89,10 +89,13 @@ export function AiEmployeeToolboxReadinessDashboard({ report }: { report: AiEmpl
               <div key={connector.connectorId} className="rounded-lg border border-slate-200 bg-white p-3">
                 <div className="flex items-start justify-between gap-3">
                   <p className="break-words text-sm font-semibold text-primary">{connector.connector}</p>
-                  <Badge tone={statusTone(connector.status)}>{connector.status}</Badge>
+                  <div className="flex flex-wrap gap-2">
+                    <Badge tone={statusTone(connector.status)}>{connector.status}</Badge>
+                    {connector.connectorNeeded ? <Badge tone="danger">Connector Needed</Badge> : null}
+                  </div>
                 </div>
                 <p className="mt-2 break-words text-xs leading-5 text-muted">
-                  Unlocks {connector.unlocksEmployees} employee(s), {connector.unlocksDepartments} department(s). Mode: {connector.mode}.
+                  Enablement: {connector.enablementStatus}. Unlocks {connector.unlocksEmployees} employee(s), {connector.unlocksDepartments} department(s). Mode: {connector.mode}.
                 </p>
               </div>
             ))}
@@ -110,6 +113,7 @@ export function AiEmployeeToolboxReadinessDashboard({ report }: { report: AiEmpl
                 <th className="py-2 pr-4">Departments</th>
                 <th className="py-2 pr-4">Employees</th>
                 <th className="py-2 pr-4">Status</th>
+                <th className="py-2 pr-4">Enablement</th>
                 <th className="py-2 pr-4">Mode</th>
                 <th className="py-2 pr-4">Impact</th>
               </tr>
@@ -121,6 +125,13 @@ export function AiEmployeeToolboxReadinessDashboard({ report }: { report: AiEmpl
                   <td className="py-3 pr-4 text-muted">{connector.unlocksDepartments}</td>
                   <td className="py-3 pr-4 text-muted">{connector.unlocksEmployees}</td>
                   <td className="py-3 pr-4"><Badge tone={statusTone(connector.status)}>{connector.status}</Badge></td>
+                  <td className="py-3 pr-4">
+                    <div className="flex flex-wrap gap-2">
+                      <Badge tone={connector.enablementStatus === "enabled" ? "good" : "danger"}>{connector.enablementStatus}</Badge>
+                      {connector.connectorNeeded ? <Badge tone="danger">Connector Needed</Badge> : null}
+                    </div>
+                    <p className="mt-1 text-xs text-muted">internal fallback:{String(connector.safeInternalFallbackAvailable)}</p>
+                  </td>
                   <td className="py-3 pr-4 text-muted">{connector.mode}</td>
                   <td className="py-3 pr-4 text-muted">{connector.revenueImpact}</td>
                 </tr>
