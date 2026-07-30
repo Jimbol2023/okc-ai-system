@@ -90,6 +90,19 @@ test.describe("with a saved consent choice", () => {
   await expect(page.getByRole("button", { name: "Open accessibility preferences" })).toHaveAttribute("aria-expanded", "false");
 });
 
+  test("panel Close button restores focus to the toolbar trigger", async ({ page }) => {
+    await page.goto("/");
+
+    await page.getByRole("button", { name: "Open accessibility preferences" }).click();
+    const panel = page.getByRole("region", { name: "Accessibility preferences" });
+    await expect(panel).toBeVisible();
+
+    await panel.getByRole("button", { name: "Close accessibility preferences" }).click();
+
+    await expect(panel).toBeHidden();
+    await expect(page.getByRole("button", { name: "Open accessibility preferences" })).toBeFocused();
+  });
+
   test("accessibility preferences apply, persist, and reset", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Open accessibility preferences" }).click();
@@ -206,10 +219,22 @@ test("toolbar offset follows viewport and cookie notice height changes at mobile
 });
 
 test("MutationObserver fallback updates the toolbar offset when ResizeObserver is unavailable", async ({ page }) => {
-  await page.addInitScript(() => {
-    Object.defineProperty(window, "ResizeObserver", { configurable: true, value: undefined });
-  });
-  await showCookieNotice(page);
+  await page.addInitScript(
+    ({ consentKey }) => {
+      window.localStorage.setItem(consentKey, "accepted");
+    },
+    { consentKey: consentStorageKey }
+  );
+  await page.goto("/");
+  await page.evaluate(
+    ({ consentKey }) => {
+      Object.defineProperty(window, "ResizeObserver", { configurable: true, value: undefined });
+      window.localStorage.removeItem(consentKey);
+      window.dispatchEvent(new Event("jcapital-cookie-consent-change"));
+    },
+    { consentKey: consentStorageKey }
+  );
+  await expect(page.getByRole("region", { name: "Cookie notice" })).toBeVisible();
   await expectToolbarAboveCookieNotice(page);
 
   const initialOffset = (await getCookieToolbarLayout(page)).offset;
