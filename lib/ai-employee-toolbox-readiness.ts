@@ -71,6 +71,9 @@ export type CompanyConnectorMatrixItem = {
   departments: AiWorkforceDepartmentName[];
   employees: string[];
   status: ConnectorMatrixStatus;
+  enablementStatus: "enabled" | "blocked";
+  connectorNeeded: boolean;
+  safeInternalFallbackAvailable: boolean;
   mode: ConnectorMatrixMode;
   unlocksEmployees: number;
   unlocksDepartments: number;
@@ -404,13 +407,21 @@ function createConnectorMatrix(
       const modePriority: ConnectorMatrixMode[] = ["blocked", "read", "manual", "internal"];
       const modes = group.tools.map(modeForTool);
       const mode = modePriority.find((candidate) => modes.includes(candidate)) ?? "internal";
+      const status = matrixStatus(group.tools, connector);
+      const enablementStatus: CompanyConnectorMatrixItem["enablementStatus"] =
+        status === "ready" ? "enabled" : "blocked";
 
       return {
         connector: group.label,
         connectorId,
         departments: [...group.departments].sort((a, b) => a.localeCompare(b)),
         employees: [...group.employees].sort((a, b) => a.localeCompare(b)),
-        status: matrixStatus(group.tools, connector),
+        status,
+        enablementStatus,
+        connectorNeeded: connector?.status === "credentials_missing" || status === "needs_credentials" || status === "disconnected",
+        safeInternalFallbackAvailable: employees.some(
+          (employee) => group.employees.has(employee.name) && employee.toolbox.canProduceInternalWork,
+        ),
         mode,
         unlocksEmployees: group.employees.size,
         unlocksDepartments: group.departments.size,

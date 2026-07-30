@@ -45,12 +45,12 @@ export default async function DashboardProductionReadinessPage() {
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-muted">Deployment Gate</p>
           <h2 className="text-xl font-semibold text-primary">Blockers And Warnings</h2>
           <p className="max-w-4xl text-sm leading-6 text-[#40576b]">
-            Production builds fail on blockers. Preview and development builds surface warnings without exposing secret values.
+            Production builds fail only on platform-critical or safety blockers. Department connector gaps remain visible without blocking unrelated company deployment.
           </p>
         </div>
         <div className="mt-5 grid gap-4 lg:grid-cols-2">
-          <StatusList title="Blockers" items={infrastructureHealth.blockers} emptyText="No deployment blockers detected." tone="high" />
-          <StatusList title="Warnings" items={infrastructureHealth.warnings} emptyText="No infrastructure warnings detected." tone="medium" />
+          <StatusList title="Deployment Blockers" items={infrastructureHealth.blockers} emptyText="No company-wide deployment blockers detected." tone="high" />
+          <StatusList title="Department / Connector Blockers" items={infrastructureHealth.warnings} emptyText="No department connector blockers detected." tone="medium" />
         </div>
       </section>
 
@@ -142,10 +142,16 @@ export default async function DashboardProductionReadinessPage() {
                   <h3 className="text-base font-semibold text-primary">{connector.label}</h3>
                   <p className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-muted">{connector.connectorId}</p>
                 </div>
-                <Badge tone={connector.status === "ready" ? "low" : "medium"}>{connector.status}</Badge>
+                <div className="flex flex-wrap gap-2">
+                  <Badge tone={connector.status === "ready" ? "low" : "medium"}>{connector.status}</Badge>
+                  {connector.departmentEnablement === "blocked" ? <Badge tone="medium">Connector Needed</Badge> : null}
+                </div>
               </div>
               <p className="mt-3 text-sm leading-6 text-[#40576b]">
-                oauthReady:{String(connector.oauthReady)} providerCalled:{String(connector.providerCalled)} liveExecution:{String(connector.liveExecutionAllowed)}
+                scope:{connector.deploymentScope} enablement:{connector.departmentEnablement} oauthReady:{String(connector.oauthReady)} providerCalled:{String(connector.providerCalled)} liveExecution:{String(connector.liveExecutionAllowed)}
+              </p>
+              <p className="mt-2 break-words text-xs leading-5 text-muted">
+                affected:{connector.affectedDepartments.join(", ")} internalFallback:{String(connector.safeInternalFallbackAvailable)}
               </p>
               <p className="mt-2 break-words text-xs leading-5 text-muted">
                 missing:{connector.missingEnvKeys.length > 0 ? connector.missingEnvKeys.join(", ") : "none"}

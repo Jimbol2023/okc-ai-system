@@ -30,6 +30,10 @@ export type ConnectorReadiness = {
   connectorId: string;
   label: string;
   status: "ready" | "missing_configuration" | "oauth_blocked";
+  deploymentScope: "department";
+  affectedDepartments: string[];
+  departmentEnablement: "enabled" | "blocked";
+  safeInternalFallbackAvailable: true;
   requiredEnvKeys: string[];
   missingEnvKeys: string[];
   oauthRequired: boolean;
@@ -135,24 +139,28 @@ const connectorDefinitions = [
   {
     connectorId: "google_search_console",
     label: "Google Search Console",
+    affectedDepartments: ["Search Intelligence", "SEO", "Content"],
     requiredEnvKeys: [...googleCoreKeys, "GOOGLE_SEARCH_CONSOLE_SITE_URL"],
     oauthRequired: true,
   },
   {
     connectorId: "google_analytics",
     label: "Google Analytics",
+    affectedDepartments: ["Marketing Intelligence", "Marketing", "Lead Generation", "SEO"],
     requiredEnvKeys: [...googleCoreKeys, "GOOGLE_ANALYTICS_PROPERTY_ID"],
     oauthRequired: true,
   },
   {
     connectorId: "google_business_profile",
     label: "Google Business Profile",
+    affectedDepartments: ["Marketing Intelligence", "Marketing", "SEO"],
     requiredEnvKeys: [...googleCoreKeys, "GOOGLE_BUSINESS_PROFILE_LOCATION_ID"],
     oauthRequired: true,
   },
   {
     connectorId: "youtube",
     label: "YouTube",
+    affectedDepartments: ["Content", "Marketing"],
     requiredEnvKeys: [...googleCoreKeys, "YOUTUBE_CHANNEL_ID"],
     oauthRequired: true,
   },
@@ -321,6 +329,10 @@ export function evaluateConnectorReadiness(env: NodeJS.ProcessEnv, oauth: OAuthR
       connectorId: definition.connectorId,
       label: definition.label,
       status,
+      deploymentScope: "department",
+      affectedDepartments: [...definition.affectedDepartments],
+      departmentEnablement: status === "ready" ? "enabled" : "blocked",
+      safeInternalFallbackAvailable: true,
       requiredEnvKeys: [...definition.requiredEnvKeys],
       missingEnvKeys,
       oauthRequired: definition.oauthRequired,
@@ -385,12 +397,7 @@ export async function getInfrastructureHealth(options: InfrastructureHealthOptio
 
   missingCritical.forEach((item) => blockers.push(`${item.key}: ${item.message}`));
   missingConnector.forEach((item) => {
-    const message = `${item.key}: ${item.message}`;
-    if (runtime === "production") {
-      blockers.push(message);
-    } else {
-      warnings.push(message);
-    }
+    warnings.push(`${item.key}: ${item.message} The affected connector-backed department capability is blocked; company deployment remains allowed.`);
   });
 
   if (database.checked && !database.ok) {
@@ -401,8 +408,8 @@ export async function getInfrastructureHealth(options: InfrastructureHealthOptio
     blockers.push("APPROVED_EXECUTION_ENABLED is true before APPROVED_EXECUTION_PRODUCTION_SMOKE_PASSED is true.");
   }
 
-  if (runtime === "production" && options.includeOAuth && googleOAuth.attempted && !googleOAuth.ok) {
-    blockers.push("Google OAuth token exchange failed.");
+  if (options.includeOAuth && googleOAuth.attempted && !googleOAuth.ok) {
+    warnings.push("Google OAuth token exchange failed. Dependent Google connector capabilities remain blocked; company deployment remains allowed.");
   }
 
   const status: InfrastructureStatus = blockers.length > 0 ? "blocked" : warnings.length > 0 ? "warning" : "healthy";

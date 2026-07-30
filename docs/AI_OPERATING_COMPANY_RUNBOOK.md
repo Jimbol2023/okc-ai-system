@@ -62,6 +62,14 @@ Never use `vercel env pull` or `vercel env ls` as proof that sensitive secret va
 5. Use `vercel curl` for protected Preview diagnostics.
 6. Promote or deploy Production only after the runtime health gate is clean.
 
+### Two-Tier Production Gate
+
+- Company-wide deployment blockers are limited to platform-critical infrastructure, required authentication/security controls, build failures, and contradictory execution-safety settings.
+- Missing or unhealthy department connectors do not block Production deployment. They block only dependent connector-backed capabilities.
+- Connector gaps must remain visible in Runtime Operations and the Department Enablement Matrix with affected departments and a safe next action.
+- Example: missing `GOOGLE_SEARCH_CONSOLE_SITE_URL` allows deployment, marks Search Intelligence/SEO connector enablement blocked, preserves approved internal/manual fallback work, and requires `Connector Needed` executive visibility.
+- Deployment permission never authorizes connector use. Feature flags, connector health, approval, audit, AI permission, and Safe Auto Mode checks remain mandatory.
+
 ## Safety Gates
 
 External actions remain blocked unless an exact governed policy authorizes the exact action.
