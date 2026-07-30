@@ -175,7 +175,7 @@ export function AccessibilityToolbar() {
               <p className="accessibility-toolbar__eyebrow">Accessibility</p>
               <h2 className="accessibility-toolbar__title">Display preferences</h2>
             </div>
-            <button type="button" className="accessibility-toolbar__icon-button" onClick={() => closePanel({ restoreFocus: false })} aria-label="Close accessibility preferences">
+            <button type="button" className="accessibility-toolbar__icon-button" onClick={() => closePanel({ restoreFocus: true })} aria-label="Close accessibility preferences">
               <X aria-hidden="true" />
             </button>
           </div>
