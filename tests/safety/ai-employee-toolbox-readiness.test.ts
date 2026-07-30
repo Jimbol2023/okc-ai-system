@@ -5,11 +5,21 @@ import {
   createAiEmployeeToolboxReadinessFromInputs,
   type AiEmployeeCertificationLevel,
 } from "@/lib/ai-employee-toolbox-readiness";
+import { createConnectorActivationReportFromInputs } from "@/lib/connector-activation-report";
 import { createAiWorkforceReportFromInputs } from "@/lib/ai-workforce";
 
 function report() {
+  const connectorActivationReport = createConnectorActivationReportFromInputs({
+    snapshots: [],
+    leads: [],
+    env: {},
+  });
   return createAiEmployeeToolboxReadinessFromInputs({
-    workforce: createAiWorkforceReportFromInputs({ generatedAt: "2026-07-09T13:00:00.000Z" }),
+    workforce: createAiWorkforceReportFromInputs({
+      connectorActivationReport,
+      generatedAt: "2026-07-09T13:00:00.000Z",
+    }),
+    connectorActivationReport,
     generatedAt: "2026-07-09T13:00:00.000Z",
   });
 }
@@ -75,6 +85,19 @@ test("connector matrix groups employees and identifies missing high-value tools"
   assert.ok(readiness.connectorMatrix.length > 0);
   assert.ok(blockedExternal.length > 0);
   assert.ok(readiness.highestRoiConnectorsToActivateNext.length > 0);
+  assert.ok(readiness.connectorMatrix.every((connector) => connector.enablementStatus === "enabled" || connector.enablementStatus === "blocked"));
+});
+
+test("missing Search Console blocks connector enablement without blocking safe internal fallback", () => {
+  const readiness = report();
+  const searchConsole = readiness.connectorMatrix.find((connector) => connector.connectorId === "google_search_console");
+
+  assert.ok(searchConsole);
+  assert.equal(searchConsole.enablementStatus, "blocked");
+  assert.equal(searchConsole.connectorNeeded, true);
+  assert.ok(searchConsole.departments.includes("SEO"));
+  assert.equal(searchConsole.safeInternalFallbackAvailable, true);
+  assert.equal(readiness.safety.liveExecutionAllowed, false);
 });
 
 test("company operational readiness is calculated and external readiness remains constrained", () => {
