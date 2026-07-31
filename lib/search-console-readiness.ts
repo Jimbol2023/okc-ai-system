@@ -18,15 +18,10 @@ export type SearchConsoleReadinessPacket = {
 };
 
 const priorityPaths = [
-  "/",
-  "/resources",
-  "/resources/inherited-property-oklahoma",
-  "/oklahoma-city",
-  "/yukon",
-  "/moore",
-  "/norman",
+  "/resources/shared-inherited-property-oklahoma",
   "/edmond",
-  "/midwest-city"
+  "/midwest-city",
+  "/moore",
 ] as const;
 
 export function getSearchConsoleReadinessPacket(): SearchConsoleReadinessPacket {
@@ -37,7 +32,7 @@ export function getSearchConsoleReadinessPacket(): SearchConsoleReadinessPacket 
     siteUrl: publicSiteUrl,
     sitemapUrl,
     robotsUrl: `${publicSiteUrl}/robots.txt`,
-    targetUrls: priorityPaths.map((path) => (path === "/" ? `${publicSiteUrl}/` : `${publicSiteUrl}${path}`)),
+    targetUrls: priorityPaths.map((path) => `${publicSiteUrl}${path}`),
     manualActivationSteps: [
       "Verify the jcapitalpropertygroup.com property in Google Search Console.",
       `Submit ${sitemapUrl} in Google Search Console.`,

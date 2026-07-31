@@ -79,13 +79,13 @@ export const serviceAreas = {
   "/moore": {
     slug: "/moore",
     city: "Moore",
-    headline: "Moore Property Guidance for Owners",
+    headline: "Moore and Mustang Property Guidance for Owners",
     description:
-      "Professional property guidance for Moore owners with questions about inherited property, vacant homes, deferred maintenance, landlord needs, relocation, or private sale decisions.",
+      "Professional property guidance for Moore and nearby Mustang owners reviewing inherited property, vacant homes, deferred maintenance, landlord needs, relocation, or private sale decisions that may fit active buyer demand.",
     localIntro:
-      "J Capital Property Group helps Moore property owners talk through property decisions with professionalism, transparency, and practical next-step guidance.",
+      "J Capital Property Group helps Moore and Mustang-area property owners talk through condition, timing, access, and price-point questions with professionalism, transparency, and practical next-step guidance.",
     localTrust:
-      "Moore property conversations are handled with attention to timing, condition, and owner goals, while avoiding pressure or exaggerated promises."
+      "Moore and nearby Mustang property conversations are handled with attention to buyer-fit signals, owner goals, condition, and timing, while avoiding pressure or exaggerated market claims."
   },
   "/norman": {
     slug: "/norman",
@@ -103,22 +103,22 @@ export const serviceAreas = {
     city: "Edmond",
     headline: "Edmond Property Guidance for Owners",
     description:
-      "Professional property guidance for Edmond owners thinking through inherited property, vacant homes, deferred maintenance, landlord questions, relocation, or private sale decisions.",
+      "Professional property guidance for Edmond owners reviewing inherited property, vacant homes, deferred maintenance, landlord questions, relocation, or private sale decisions through the lens of buyer demand and practical deal fit.",
     localIntro:
-      "J Capital Property Group helps Edmond property owners discuss real estate situations with transparency, practical guidance, and room to decide.",
+      "J Capital Property Group helps Edmond property owners discuss real estate situations with transparency, including condition, timing, occupancy, and price-point questions that influence whether a property may be useful to active buyers.",
     localTrust:
-      "Edmond property owners can use the conversation to organize questions about timing, condition, ownership goals, and possible next steps."
+      "Edmond property owners can use the conversation to organize ownership goals, buyer-fit signals, local property details, and possible next steps without pressure or unsupported promises."
   },
   "/midwest-city": {
     slug: "/midwest-city",
     city: "Midwest City",
     headline: "Midwest City Property Guidance for Owners",
     description:
-      "No-pressure property guidance for Midwest City owners reviewing inherited property, vacant homes, repairs, landlord questions, relocation, or private sale decisions.",
+      "No-pressure property guidance for Midwest City owners reviewing inherited property, vacant homes, repairs, landlord questions, relocation, or private sale decisions that may align with buyer demand.",
     localIntro:
-      "J Capital Property Group helps Midwest City property owners think through real estate questions with professionalism, transparency, and practical guidance.",
+      "J Capital Property Group helps Midwest City property owners think through real estate questions with professionalism, including condition, access, repair scope, timing, and whether the property could match what buyers are actively reviewing.",
     localTrust:
-      "For Midwest City owners, the conversation stays focused on the property situation, timing, and owner preferences without pressure or unsupported claims."
+      "For Midwest City owners, the conversation stays focused on the property situation, buyer-fit considerations, timing, and owner preferences without pressure or unsupported claims."
   }
 } satisfies Record<PublicServiceArea["slug"], PublicServiceArea>;
 

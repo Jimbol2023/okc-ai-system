@@ -17,22 +17,19 @@ test("Search Console readiness packet stays manual and read-only", () => {
   assert.equal(packet.safety.bingSubmissionAutomated, false);
 });
 
-test("Search Console readiness packet covers priority public URLs", () => {
+test("Search Console readiness packet targets only the remaining manual submission URLs", () => {
   const packet = getSearchConsoleReadinessPacket();
 
-  for (const url of [
-    "https://jcapitalpropertygroup.com/",
-    "https://jcapitalpropertygroup.com/resources",
-    "https://jcapitalpropertygroup.com/resources/inherited-property-oklahoma",
-    "https://jcapitalpropertygroup.com/oklahoma-city",
-    "https://jcapitalpropertygroup.com/yukon",
-    "https://jcapitalpropertygroup.com/moore",
-    "https://jcapitalpropertygroup.com/norman",
+  assert.deepEqual(packet.targetUrls, [
+    "https://jcapitalpropertygroup.com/resources/shared-inherited-property-oklahoma",
     "https://jcapitalpropertygroup.com/edmond",
-    "https://jcapitalpropertygroup.com/midwest-city"
-  ]) {
-    assert.ok(packet.targetUrls.includes(url));
-  }
+    "https://jcapitalpropertygroup.com/midwest-city",
+    "https://jcapitalpropertygroup.com/moore",
+  ]);
+  assert.equal(packet.targetUrls.length, 4);
+  assert.ok(!packet.targetUrls.includes("https://jcapitalpropertygroup.com/"));
+  assert.ok(!packet.targetUrls.includes("https://jcapitalpropertygroup.com/resources"));
+  assert.ok(!packet.targetUrls.includes("https://jcapitalpropertygroup.com/oklahoma-city"));
 
   assert.ok(packet.manualActivationSteps.some((step) => /Google Search Console/i.test(step)));
   assert.ok(packet.manualActivationSteps.some((step) => /Bing Webmaster Tools/i.test(step)));

@@ -197,10 +197,10 @@ export const propertyResourcePages: PublicResourcePage[] = [
     eyebrow: "Shared Inherited Property",
     title: "Shared Inherited Property Questions for Oklahoma Families",
     description:
-      "Educational guidance for Oklahoma families thinking through shared inherited property, communication, decision authority, condition, and next steps.",
+      "Educational guidance for Oklahoma families thinking through shared inherited property, communication, decision authority, buyer-fit signals, condition, and next steps.",
     intro:
-      "Shared inherited property can involve family communication, documents, timing, condition, and different goals among heirs. This guide offers a calm starting point for organizing questions before decisions are made.",
-    sectionsHeading: "Shared inherited property questions to review",
+      "Shared inherited property can involve family communication, documents, timing, condition, access, and different goals among heirs. This guide offers a calm starting point for organizing the facts buyers typically need to review before any family decides what comes next.",
+    sectionsHeading: "Shared inherited property and buyer-fit questions to review",
     sections: [
       {
         title: "Understanding shared ownership questions",
@@ -220,17 +220,22 @@ export const propertyResourcePages: PublicResourcePage[] = [
       {
         title: "Property condition and carrying costs",
         body:
-          "Shared ownership can include questions about maintenance, insurance, utilities, access, repairs, and who is handling ongoing responsibilities while decisions are being discussed."
+          "Shared ownership can include questions about maintenance, insurance, utilities, access, repairs, and who is handling ongoing responsibilities while decisions are being discussed. These details also help determine whether a property is ready for investor review or needs more information first."
+      },
+      {
+        title: "Buyer-fit signals to organize",
+        body:
+          "Families can prepare a clearer property conversation by noting occupancy, known repair needs, access limits, preferred timing, and any price-point expectations. Those signals help compare whether a property may fit what active buyers are reviewing without making assumptions about value or outcome."
       },
       {
         title: "Avoiding assumptions and pressure",
         body:
-          "Inherited property decisions are often easier when everyone has time to understand the facts. Owners should avoid relying on assumptions about authority, value, timing, or another family member's goals."
+          "Inherited property decisions are often easier when everyone has time to understand the facts. Owners should avoid relying on assumptions about authority, value, timing, market demand, or another family member's goals."
       },
       {
         title: "Questions to discuss before deciding",
         body:
-          "Useful questions include who is involved, what documents exist, whether the property is occupied, what condition concerns are known, and what outcome would be practical for the family."
+          "Useful questions include who is involved, what documents exist, whether the property is occupied, what condition concerns are known, how quickly the family wants clarity, and what outcome would be practical for everyone involved."
       },
       {
         title: "Helpful Oklahoma resources",
@@ -241,11 +246,11 @@ export const propertyResourcePages: PublicResourcePage[] = [
     relatedQuestions: [
       {
         question: "Do you work with inherited properties?",
-        prompt: "The FAQ explains inherited property conversations."
+        prompt: "The FAQ explains inherited property conversations and how owners can start with known facts."
       },
       {
-        question: "Is there any obligation when I contact you?",
-        prompt: "The FAQ explains what happens when you ask questions."
+        question: "What information helps buyers review a shared inherited property?",
+        prompt: "Useful starting points include occupancy, access, known repairs, timing, documents, and decision authority."
       },
       {
         question: "How do I contact J Capital Property Group?",
@@ -261,7 +266,7 @@ export const propertyResourcePages: PublicResourcePage[] = [
       {
         href: "/resources/vacant-property-oklahoma",
         label: "Vacant Property Guide",
-        description: "Useful when a shared inherited property is currently vacant."
+        description: "Useful when a shared inherited property is vacant or needs access, upkeep, and condition review."
       }
     ]
   },
