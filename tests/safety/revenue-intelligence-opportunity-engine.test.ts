@@ -2,7 +2,9 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 
 import { createAiWorkforceReportFromInputs } from "@/lib/ai-workforce";
+import { createBuyerDemandOpportunityPrioritization } from "@/lib/buyer-demand-opportunity-prioritization";
 import { createConnectorSignalFoundationReportFromInputs } from "@/lib/connector-signal-normalization";
+import { createCrossConnectorCertificationPacket } from "@/lib/cross-connector-certification";
 import { createCrossConnectorIntelligenceReport } from "@/lib/cross-connector-intelligence";
 import { createDailyRevenueOperatingLoopFromInputs } from "@/lib/daily-revenue-operating-loop";
 import { createDepartmentOperatingSystemReportFromInputs } from "@/lib/department-operating-system";
@@ -101,11 +103,24 @@ function report() {
     snapshots,
     generatedAt,
   });
+  const certification = createCrossConnectorCertificationPacket({ tenantId: "tenant-a", intelligence: crossConnectorIntelligence, generatedAt });
+  const buyerDemandPrioritization = createBuyerDemandOpportunityPrioritization({
+    tenantId: "tenant-a",
+    certification,
+    generatedAt,
+    buyerDemandSignals: {
+      hotZips: [{ label: "73160", count: 8 }],
+      hotPriceRanges: [{ label: "$100,000 - $180,000", count: 6 }],
+      hotPropertyTypes: [{ label: "single family", count: 9 }],
+      byBuyerTier: { A: 2, B: 2, C: 0, D: 0 },
+    },
+  });
 
   return createRevenueIntelligenceOpportunityEngineReportFromInputs({
     departmentOperatingSystem,
     marketCustomerIntelligence,
     crossConnectorIntelligence,
+    buyerDemandPrioritization,
     generatedAt,
   });
 }
@@ -130,6 +145,15 @@ test("Revenue Intelligence consumes Sprint 26 cross-connector opportunities as a
   assert.ok(engine.opportunities.some((opportunity) => /visited pages|local discovery|search demand/i.test(opportunity.title)));
   assert.equal(engine.safety.providerCalled, false);
   assert.equal(engine.safety.crmMutationAllowed, false);
+  assert.equal(engine.safety.outreachAllowed, false);
+});
+
+test("Revenue Intelligence consumes Sprint 27 buyer-demand priorities as advisory context", () => {
+  const engine = report();
+  assert.ok(engine.opportunities.some((opportunity) => opportunity.sourceLabels.some((label) => label.startsWith("sprint-27:"))));
+  assert.ok(engine.opportunities.some((opportunity) => /buyer-demand|buyer-fit|local market/i.test(opportunity.title)));
+  assert.equal(engine.safety.providerCalled, false);
+  assert.equal(engine.safety.leadCreationAllowed, false);
   assert.equal(engine.safety.outreachAllowed, false);
 });
 

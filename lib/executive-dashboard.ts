@@ -1,9 +1,12 @@
 import { createBusinessIntelligenceReport, type BusinessIntelligenceReport, type DepartmentHealthCard, type TrendChart } from "@/lib/business-intelligence";
 import { loadPartialData } from "@/lib/api-response";
+import { getBuyerDemandSignals } from "@/lib/buyer-demand";
+import { createBuyerDemandOpportunityPrioritization, type BuyerDemandOpportunityPrioritizationV1 } from "@/lib/buyer-demand-opportunity-prioritization";
 import { getCompanyActivationSnapshot } from "@/lib/company-activation";
 import { createInheritedPropertyCampaignDirective, getCompanyDepartmentRegistry, runCompanyOrchestrator, startDailyCompanyOperatingSession, type AiDepartmentName, type CompanyOrchestratorReport, type DailyCompanyOperatingSession } from "@/lib/company-orchestrator";
 import { createConnectorActivationReport, type ConnectorActivationReport } from "@/lib/connector-activation-report";
 import { createContentIntelligenceReport, type ContentIntelligenceReport } from "@/lib/content-intelligence";
+import { createCrossConnectorCertificationPacket, type CrossConnectorCertificationPacketV1 } from "@/lib/cross-connector-certification";
 import { createCrossConnectorIntelligenceReport, type CrossConnectorIntelligenceReportV1 } from "@/lib/cross-connector-intelligence";
 import { getDailyMission, type DailyMission } from "@/lib/daily-mission";
 import { getDepartmentIntelligenceReport, type DepartmentIntelligenceReport } from "@/lib/department-intelligence";
@@ -1398,7 +1401,7 @@ export function createExecutiveWorkforceReport({
 }
 
 export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboardReport> {
-  const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, memoryEventsResult, referralResult, activationResult, departmentIntelligenceResult, liveMorningBriefResult, businessSnapshotsResult, dailyMissionResult, connectorActivationResult, systemHealth, recentSystemActivity] = await Promise.all([
+  const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, memoryEventsResult, referralResult, activationResult, departmentIntelligenceResult, liveMorningBriefResult, businessSnapshotsResult, buyerDemandResult, dailyMissionResult, connectorActivationResult, systemHealth, recentSystemActivity] = await Promise.all([
     loadPartialData("Lead", listDbLeads, [] as StoredLead[]),
     loadPartialData("Marketing workflow", listMarketingWorkflow, null),
     loadPartialData("Finance", listFinanceEntries, []),
@@ -1409,6 +1412,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
     loadPartialData("Department Intelligence", getDepartmentIntelligenceReport, null),
     loadPartialData("Live Morning Brief", getLatestLiveMorningBrief, null),
     loadPartialData("Business snapshots", () => getLatestBusinessSnapshots(40), []),
+    loadPartialData("Buyer demand", getBuyerDemandSignals, null),
     loadPartialData("Daily Mission", getDailyMission, null),
     loadPartialData("Connector activation", createConnectorActivationReport, null),
     getSystemHealth().catch(() => null),
@@ -1423,6 +1427,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
   const departmentIntelligence = departmentIntelligenceResult.data;
   const liveMorningBrief = liveMorningBriefResult.data;
   const businessSnapshots = businessSnapshotsResult.data;
+  const buyerDemandSignals = buyerDemandResult.data;
   const dailyMission = dailyMissionResult.data;
   const connectorActivation = connectorActivationResult.data;
   const today = startOfToday();
@@ -1527,6 +1532,21 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
   const crossConnectorSignalCount = crossConnectorReport
     ? crossConnectorReport.foundUsSignals.length + crossConnectorReport.visitedPageSignals.length + crossConnectorReport.engagementSignals.length + crossConnectorReport.exitOrDropoffSignals.length + crossConnectorReport.localTrustSignals.length
     : 0;
+  const crossConnectorCertification = (() => {
+    try {
+      return crossConnectorReport ? createCrossConnectorCertificationPacket({ tenantId: crossConnectorReport.tenantId, intelligence: crossConnectorReport, generatedAt: today.toISOString() }) : null;
+    } catch {
+      return null;
+    }
+  })() as CrossConnectorCertificationPacketV1 | null;
+  const buyerDemandPrioritization = (() => {
+    try {
+      return crossConnectorCertification ? createBuyerDemandOpportunityPrioritization({ tenantId: crossConnectorCertification.tenantId, certification: crossConnectorCertification, buyerDemandSignals, generatedAt: today.toISOString() }) : null;
+    } catch {
+      return null;
+    }
+  })() as BuyerDemandOpportunityPrioritizationV1 | null;
+  const topBuyerDemandPriority = buyerDemandPrioritization?.priorities[0] ?? null;
   const widgets: ExecutiveWidget[] = [
     {
         id: "new_leads_today",
@@ -1667,6 +1687,30 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
         status: crossConnectorReport ? (crossConnectorReport.dataGaps.length > 0 ? "watch" : "good") : "missing",
       },
       {
+        id: "cross_connector_certification",
+        label: "Connector certification",
+        value: crossConnectorCertification?.certificationStatus ?? "Missing",
+        detail: crossConnectorCertification ? `${crossConnectorCertification.evidenceHashCount} evidence hash(es), ${crossConnectorCertification.readinessFailures.length} readiness gap(s).` : "Sprint 26A certification is unavailable until cross-connector evidence is ready.",
+        href: "/dashboard/search-intelligence",
+        status: crossConnectorCertification ? (crossConnectorCertification.certificationStatus === "certified" ? "good" : "watch") : "missing",
+      },
+      {
+        id: "buyer_demand_priority",
+        label: "Buyer-demand priority",
+        value: topBuyerDemandPriority ? topBuyerDemandPriority.score : "Missing",
+        detail: topBuyerDemandPriority?.title ?? "Sprint 27 buyer-demand priority is unavailable until certification and internal demand evidence are ready.",
+        href: "/dashboard/property-intelligence",
+        status: topBuyerDemandPriority ? (topBuyerDemandPriority.missingBuyerDemandEvidence.length > 0 ? "watch" : "good") : "missing",
+      },
+      {
+        id: "buyer_demand_gaps",
+        label: "Buyer-demand gaps",
+        value: buyerDemandPrioritization ? buyerDemandPrioritization.dataGaps.length : "Missing",
+        detail: (buyerDemandPrioritization?.dataGaps[0] ?? buyerDemandResult.gap) || "Buyer-demand gaps are advisory review items only.",
+        href: "/dashboard/operations",
+        status: buyerDemandPrioritization ? (buyerDemandPrioritization.dataGaps.length > 0 ? "watch" : "good") : "missing",
+      },
+      {
         id: "finance_kpis",
         label: "Cash flow",
         value: formatFinanceDollars(financeKpis.cashFlowCents),
@@ -1684,7 +1728,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
       },
     ];
   const recommendedPriorities = createExecutiveRecommendationsFromBi(businessIntelligence);
-  const todayPriorityIds = new Set(["follow_ups_due", "revenue_pipeline", "offer_ready", "marketing_approval", "website_seo", "ga4_key_events", "gbp_local_visibility", "cross_connector_opportunity"]);
+  const todayPriorityIds = new Set(["follow_ups_due", "revenue_pipeline", "offer_ready", "marketing_approval", "website_seo", "ga4_key_events", "gbp_local_visibility", "cross_connector_opportunity", "buyer_demand_priority"]);
   const todayPriorities = widgets.filter((widget) => todayPriorityIds.has(widget.id));
   const kpiInterpretations = createKpiInterpretations(businessIntelligence);
   const localMorningBrief = createMorningBrief({
@@ -1784,6 +1828,8 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
       ...(gbpPerformanceSnapshot?.dataGaps ?? []),
       ...(gbpReviewsSnapshot?.dataGaps ?? []),
       ...(crossConnectorReport?.dataGaps ?? ["Cross-connector intelligence is unavailable until contracted Search Console, GA4, and GBP evidence is present."]),
+      ...(crossConnectorCertification?.readinessFailures ?? ["Sprint 26A cross-connector certification is not available."]),
+      ...(buyerDemandPrioritization?.dataGaps ?? [buyerDemandResult.gap, "Sprint 27 buyer-demand prioritization is not available."]),
       ...financeKpis.missingData,
       providerMissingCount > 0 ? `${providerMissingCount} provider readiness credential set(s) are missing.` : "",
     ].filter(Boolean))],

@@ -2,8 +2,11 @@ import { NextResponse } from "next/server";
 
 import { getAuthenticatedRequestContext, getUnauthorizedApiResponse } from "@/lib/auth";
 import { createAiWorkforceReport } from "@/lib/ai-workforce";
+import { getBuyerDemandSignals } from "@/lib/buyer-demand";
+import { createBuyerDemandOpportunityPrioritization } from "@/lib/buyer-demand-opportunity-prioritization";
 import { createConnectorActivationGate } from "@/lib/connector-activation-gate";
 import { createConnectorSignalFoundationReportFromInputs } from "@/lib/connector-signal-normalization";
+import { createCrossConnectorCertificationPacket } from "@/lib/cross-connector-certification";
 import { createCrossConnectorIntelligenceReport } from "@/lib/cross-connector-intelligence";
 import { createDailyRevenueOperatingLoop } from "@/lib/daily-revenue-operating-loop";
 import { createDepartmentOperatingSystemReportFromInputs } from "@/lib/department-operating-system";
@@ -54,11 +57,19 @@ export async function GET(request: Request) {
     const crossConnectorIntelligence = contractedSnapshots.length > 0
       ? createCrossConnectorIntelligenceReport({ tenantId: actor.tenantId, snapshots: contractedSnapshots, generatedAt: gate.generatedAt })
       : null;
+    const crossConnectorCertification = crossConnectorIntelligence
+      ? createCrossConnectorCertificationPacket({ tenantId: actor.tenantId, intelligence: crossConnectorIntelligence, generatedAt: gate.generatedAt })
+      : null;
+    const buyerDemandSignals = await getBuyerDemandSignals().catch(() => null);
+    const buyerDemandPrioritization = crossConnectorCertification
+      ? createBuyerDemandOpportunityPrioritization({ tenantId: actor.tenantId, certification: crossConnectorCertification, buyerDemandSignals, generatedAt: gate.generatedAt })
+      : null;
     const report = createRevenueIntelligenceOpportunityEngineReportFromInputs({
       departmentOperatingSystem,
       marketCustomerIntelligence,
       revenueCommandCenter,
       crossConnectorIntelligence,
+      buyerDemandPrioritization,
       generatedAt: gate.generatedAt,
     });
     assertRevenueIntelligenceOpportunityEngineSafety(report);
@@ -68,6 +79,8 @@ export async function GET(request: Request) {
       upstreamSprints: ["10E", "11"],
       connectorAdapterSafety: adapterReport.safety,
       crossConnectorIntelligence,
+      crossConnectorCertification,
+      buyerDemandPrioritization,
     });
   } catch (error) {
     console.error("GET /api/company/revenue-intelligence failed:", error);

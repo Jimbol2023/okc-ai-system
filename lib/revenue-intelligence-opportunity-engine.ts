@@ -1,6 +1,7 @@
 import type { AiWorkforceDepartmentName } from "@/lib/ai-workforce";
 import type { DepartmentMission, DepartmentOperatingSystemReport } from "@/lib/department-operating-system";
 import type { CrossConnectorIntelligenceReportV1 } from "@/lib/cross-connector-intelligence";
+import type { BuyerDemandOpportunityPrioritizationV1 } from "@/lib/buyer-demand-opportunity-prioritization";
 import {
   assertEnterpriseOpportunityContractSafety,
   createEnterpriseOpportunitiesFromRevenueEngine,
@@ -168,6 +169,7 @@ export type RevenueIntelligenceOpportunityEngineInput = {
   marketCustomerIntelligence: MarketCustomerIntelligenceFoundationReport;
   revenueCommandCenter?: RevenueCommandCenterReport | null;
   crossConnectorIntelligence?: CrossConnectorIntelligenceReportV1 | null;
+  buyerDemandPrioritization?: BuyerDemandOpportunityPrioritizationV1 | null;
   generatedAt?: string;
 };
 
@@ -369,6 +371,30 @@ function opportunitiesFromCrossConnectorIntelligence(report: CrossConnectorIntel
   }));
 }
 
+function opportunitiesFromBuyerDemandPrioritization(report: BuyerDemandOpportunityPrioritizationV1 | null | undefined, generatedAt: string): AdvisoryRevenueOpportunity[] {
+  if (!report) return [];
+
+  return report.priorities.slice(0, 4).map((priority) => createOpportunity({
+    generatedAt,
+    sourceLabels: [`sprint-27:${priority.id}`, ...priority.sourceReferences],
+    originatingDepartment: priority.recommendedOwner,
+    opportunityType: priority.category === "demand_data_gap_opportunity" ? "bottleneck_recovery_opportunity" : priority.category === "buyer_fit_opportunity" ? "acquisition_focus_opportunity" : "marketing_conversion_opportunity",
+    title: priority.title,
+    revenueHypothesis: priority.summary,
+    supportingEvidence: [priority.scoreExplanation, priority.safeNextReviewStep],
+    missingData: priority.missingBuyerDemandEvidence,
+    confidence: priority.demandAlignmentConfidence,
+    expectedValue: priority.score,
+    urgency: priority.category === "demand_data_gap_opportunity" ? 60 : 72,
+    estimatedEffort: priority.missingBuyerDemandEvidence.length > 0 ? 64 : 40,
+    dataCompleteness: priority.missingBuyerDemandEvidence.length > 0 ? Math.max(30, 76 - priority.missingBuyerDemandEvidence.length * 8) : 84,
+    governanceRisk: 34,
+    departmentReadiness: 68,
+    bottleneckSeverity: priority.missingBuyerDemandEvidence.length * 12,
+    safeNextAction: priority.safeNextReviewStep,
+  }));
+}
+
 function priorityFromScore(score: number): RevenueOpportunityPriority {
   if (score >= 82) return "critical";
   if (score >= 68) return "high";
@@ -488,6 +514,7 @@ export function createRevenueIntelligenceOpportunityEngineReportFromInputs(input
     ...opportunitiesFromRevenueCommandCenter(input.revenueCommandCenter, generatedAt),
     ...opportunitiesFromMarketIntelligence(input.marketCustomerIntelligence, generatedAt),
     ...opportunitiesFromCrossConnectorIntelligence(input.crossConnectorIntelligence, generatedAt),
+    ...opportunitiesFromBuyerDemandPrioritization(input.buyerDemandPrioritization, generatedAt),
   ];
   const prioritizedQueue = prioritize(opportunities);
   const enterpriseOpportunities = createEnterpriseOpportunitiesFromRevenueEngine({ opportunities, prioritizedQueue });
