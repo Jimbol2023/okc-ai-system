@@ -39,7 +39,6 @@ export function StructuredData() {
         email: brandConfig.primaryEmail,
         telephone: brandConfig.phone,
         description: "Professional real estate solutions for Oklahoma property owners.",
-        priceRange: "$$",
         areaServed: {
           "@type": "AdministrativeArea",
           name: "Oklahoma"
@@ -51,32 +50,6 @@ export function StructuredData() {
           "Landlord property decisions",
           "Relocation property decisions",
           "Oklahoma property owner education"
-        ],
-        makesOffer: [
-          {
-            "@type": "Offer",
-            itemOffered: {
-              "@type": "Service",
-              name: "Inherited property guidance",
-              areaServed: "Oklahoma"
-            }
-          },
-          {
-            "@type": "Offer",
-            itemOffered: {
-              "@type": "Service",
-              name: "Vacant property guidance",
-              areaServed: "Oklahoma"
-            }
-          },
-          {
-            "@type": "Offer",
-            itemOffered: {
-              "@type": "Service",
-              name: "Private property discussion",
-              areaServed: "Oklahoma"
-            }
-          }
         ]
       },
       {

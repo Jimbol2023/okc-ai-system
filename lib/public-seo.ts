@@ -46,6 +46,7 @@ export type PublicPath =
 export type BreadcrumbItem = {
   name: string;
   path: PublicPath;
+  href?: string;
 };
 
 type PublicPageMetadataInput = {
@@ -56,6 +57,14 @@ type PublicPageMetadataInput = {
 
 export function getPublicCanonicalUrl(path: PublicPath) {
   return path === "/" ? publicSiteUrl : `${publicSiteUrl}${path}`;
+}
+
+function getBreadcrumbItemUrl(item: BreadcrumbItem) {
+  if (!item.href) {
+    return getPublicCanonicalUrl(item.path);
+  }
+
+  return item.href.startsWith("http") ? item.href : `${publicSiteUrl}${item.href}`;
 }
 
 export function createPublicPageMetadata({ path, title, description }: PublicPageMetadataInput): Metadata {
@@ -99,7 +108,7 @@ export function createBreadcrumbListJsonLd(items: BreadcrumbItem[]) {
       "@type": "ListItem",
       position: index + 1,
       name: item.name,
-      item: getPublicCanonicalUrl(item.path)
+      item: getBreadcrumbItemUrl(item)
     }))
   };
 }

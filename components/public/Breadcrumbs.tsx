@@ -29,7 +29,7 @@ export function Breadcrumbs({ items, variant = "dark" }: BreadcrumbsProps) {
             {index === items.length - 1 ? (
               <span aria-current="page">{item.name}</span>
             ) : (
-              <Link href={item.path as Route} className={linkClass}>
+              <Link href={(item.href ?? item.path) as Route} className={linkClass}>
                 {item.name}
               </Link>
             )}
