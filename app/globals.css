@@ -147,7 +147,7 @@ html[data-jcapital-a11y-motion="reduce"] .public-site *::after {
 .accessibility-toolbar {
   position: fixed;
   right: max(1rem, env(safe-area-inset-right));
-  bottom: max(1rem, env(safe-area-inset-bottom));
+  bottom: calc(max(1rem, env(safe-area-inset-bottom)) + var(--cookie-consent-offset, 0px));
   z-index: 70;
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
@@ -360,7 +360,7 @@ html[data-jcapital-a11y-motion="reduce"] .public-site *::after {
 @media (max-width: 640px) {
   .accessibility-toolbar {
     right: max(0.75rem, env(safe-area-inset-right));
-    bottom: max(0.75rem, env(safe-area-inset-bottom));
+    bottom: calc(max(0.75rem, env(safe-area-inset-bottom)) + var(--cookie-consent-offset, 0px));
   }
 
   .accessibility-toolbar__panel {
