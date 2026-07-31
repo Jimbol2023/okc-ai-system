@@ -4,7 +4,7 @@ import { listDbLeads } from "@/lib/leads-db";
 import { prisma } from "@/lib/prisma";
 import { publicSiteUrl } from "@/lib/public-seo";
 import { getRevenuePipelineSummary } from "@/lib/revenue-pipeline";
-import { createUeipExecutionContext, runUeipGa4Gateway, runUeipSearchConsoleGateway, type UeipExecutionContext } from "@/lib/ueip-runtime-gateway";
+import { createUeipExecutionContext, runUeipGa4Gateway, runUeipGbpGateway, runUeipSearchConsoleGateway, type UeipExecutionContext } from "@/lib/ueip-runtime-gateway";
 
 const tenantId = "default";
 
@@ -588,40 +588,44 @@ async function ga4Traffic(context: AdapterContext) {
 }
 
 async function googleBusinessProfilePerformance(context: AdapterContext) {
-  const locationName = context.env.GOOGLE_BUSINESS_PROFILE_LOCATION_ID || "";
-  const normalizedLocation = locationName.startsWith("locations/") ? locationName : `locations/${locationName}`;
-  const url = new URL(`https://businessprofileperformance.googleapis.com/v1/${normalizedLocation}:fetchMultiDailyMetricsTimeSeries`);
-  for (const metric of ["BUSINESS_IMPRESSIONS_DESKTOP_SEARCH", "BUSINESS_IMPRESSIONS_MOBILE_SEARCH", "CALL_CLICKS", "BUSINESS_DIRECTION_REQUESTS"]) {
-    url.searchParams.append("dailyMetrics", metric);
-  }
-  url.searchParams.set("dailyRange.startDate.year", String(context.now.getUTCFullYear()));
-  url.searchParams.set("dailyRange.startDate.month", String(context.now.getUTCMonth() + 1));
-  url.searchParams.set("dailyRange.startDate.day", String(Math.max(1, context.now.getUTCDate() - 7)));
-  url.searchParams.set("dailyRange.endDate.year", String(context.now.getUTCFullYear()));
-  url.searchParams.set("dailyRange.endDate.month", String(context.now.getUTCMonth() + 1));
-  url.searchParams.set("dailyRange.endDate.day", String(context.now.getUTCDate()));
-  const response = await providerFetch(context, url.toString());
-  const json = await readJson(response);
-  const records = Array.isArray(json.multiDailyMetricTimeSeries) ? (json.multiDailyMetricTimeSeries as Array<Record<string, unknown>>) : [];
+  const locationName = context.env.GOOGLE_BUSINESS_PROFILE_LOCATION_ID?.trim() || "";
+  const endDate = daysAgo(2, context.now);
+  const startDate = daysAgo(9, context.now);
+  const gateway = await runUeipGbpGateway({
+    context: context.executionContext,
+    request: { connectorId: "google_business_profile", capabilityKey: "gbp.performance.read", capabilityVersion: "1.0.0", parameters: { locationName, startDate, endDate, rowLimit: 10 }, freshnessSeconds: 900, idempotencyKey: `gbp:performance:${locationName}:${startDate}:${endDate}` },
+    env: context.env,
+  });
+  const signals = gateway.ok ? gateway.result.signals : {};
+  const records = Array.isArray(signals.performance) ? signals.performance as Array<Record<string, unknown>> : [];
+  const impressions = typeof signals.impressions === "number" ? signals.impressions : 0;
+  const callClicks = typeof signals.callClicks === "number" ? signals.callClicks : 0;
+  const directionRequests = typeof signals.directionRequests === "number" ? signals.directionRequests : 0;
 
   return baseSnapshot({
     snapshotDate: context.snapshotDate,
     provider: "Google Business Profile",
     connectorId: "google_business_profile",
     category: "google_business_profile_performance",
-    status: response.ok ? "fresh" : "partial",
-    sourceLabel: "google_business_profile:performance:readonly",
-    provenance: "Google Business Profile Performance API fetchMultiDailyMetricsTimeSeries.",
-    summary: `Google Business Profile performance returned ${records.length} metric series.`,
-    metrics: { metricSeries: records.length },
+    status: gateway.ok && gateway.providerCalled ? "fresh" : gateway.ok ? "partial" : "data_gap",
+    sourceLabel: gateway.ok ? gateway.result.sourceLabel : "ueip:gbp:performance:data_gap",
+    provenance: gateway.ok ? gateway.result.provenance : "UEIP blocked the GBP provider read before a safe normalized result was available.",
+    freshness: gateway.ok ? gateway.result.freshness : context.now.toISOString(),
+    summary: `Google Business Profile performance returned ${records.length} metric series, ${callClicks} call click(s), and ${directionRequests} direction request(s).`,
+    metrics: { metricSeries: records.length, impressions, callClicks, directionRequests, traceId: gateway.traceId, reliability: gateway.ok ? gateway.result.reliability.status : gateway.healthStatus },
     records,
-    dataGaps: response.ok ? [] : [`GBP Performance API returned status ${response.status}.`],
-    providerCalled: true,
+    dataGaps: gateway.ok ? gateway.result.dataGaps : gateway.dataGaps,
+    assumptions: ["GBP performance evidence is local visibility context only and does not authorize profile edits, posts, review replies, or outreach."],
+    observationStart: gateway.ok ? gateway.result.observationWindow?.startDate ?? startDate : startDate,
+    observationEnd: gateway.ok ? gateway.result.observationWindow?.endDate ?? endDate : endDate,
+    traceId: gateway.traceId,
+    reliability: gateway.ok ? gateway.result.reliability : { status: gateway.healthStatus },
+    providerCalled: gateway.providerCalled,
   });
 }
 
 async function googleBusinessProfileReviews(context: AdapterContext) {
-  const locationName = context.env.GOOGLE_BUSINESS_PROFILE_LOCATION_ID || "";
+  const locationName = context.env.GOOGLE_BUSINESS_PROFILE_LOCATION_ID?.trim() || "";
   if (!locationName.startsWith("accounts/") || !locationName.includes("/locations/")) {
     return baseSnapshot({
       snapshotDate: context.snapshotDate,
@@ -635,28 +639,36 @@ async function googleBusinessProfileReviews(context: AdapterContext) {
       dataGaps: ["Set GOOGLE_BUSINESS_PROFILE_LOCATION_ID to accounts/{accountId}/locations/{locationId} to enable review reads."],
     });
   }
-  const response = await providerFetch(context, `https://mybusiness.googleapis.com/v4/${locationName}/reviews?pageSize=10&orderBy=updateTime%20desc`);
-  const json = await readJson(response);
-  const reviews = Array.isArray(json.reviews) ? json.reviews : [];
-  const records = reviews.map((review) => {
-    const item = review as { reviewId?: string; starRating?: string; updateTime?: string; comment?: string };
-
-    return { reviewId: item.reviewId, starRating: item.starRating, updateTime: item.updateTime, commentPreview: item.comment?.slice(0, 160) ?? "" };
+  const endDate = daysAgo(2, context.now);
+  const startDate = daysAgo(32, context.now);
+  const gateway = await runUeipGbpGateway({
+    context: context.executionContext,
+    request: { connectorId: "google_business_profile", capabilityKey: "gbp.reviews.read", capabilityVersion: "1.0.0", parameters: { locationName, startDate, endDate, rowLimit: 10 }, freshnessSeconds: 900, idempotencyKey: `gbp:reviews:${locationName}:${startDate}:${endDate}` },
+    env: context.env,
   });
+  const signals = gateway.ok ? gateway.result.signals : {};
+  const records = Array.isArray(signals.reviews) ? signals.reviews as Array<Record<string, unknown>> : [];
+  const reviews = records.length;
 
   return baseSnapshot({
     snapshotDate: context.snapshotDate,
     provider: "Google Business Profile",
     connectorId: "google_business_profile",
     category: "google_business_profile_reviews",
-    status: response.ok ? "fresh" : "partial",
-    sourceLabel: "google_business_profile:reviews:readonly",
-    provenance: "Google Business Profile reviews list endpoint, read-only.",
+    status: gateway.ok && gateway.providerCalled ? "fresh" : gateway.ok ? "partial" : "data_gap",
+    sourceLabel: gateway.ok ? gateway.result.sourceLabel : "ueip:gbp:reviews:data_gap",
+    provenance: gateway.ok ? gateway.result.provenance : "UEIP blocked the GBP review read before a safe normalized result was available.",
+    freshness: gateway.ok ? gateway.result.freshness : context.now.toISOString(),
     summary: `${records.length} recent Google review(s) visible.`,
-    metrics: { reviews: records.length },
+    metrics: { reviews, reviewRows: records.length, traceId: gateway.traceId, reliability: gateway.ok ? gateway.result.reliability.status : gateway.healthStatus },
     records,
-    dataGaps: response.ok ? [] : [`GBP reviews API returned status ${response.status}.`],
-    providerCalled: true,
+    dataGaps: gateway.ok ? gateway.result.dataGaps : gateway.dataGaps,
+    assumptions: ["GBP review evidence is read-only context; replies, profile changes, and outreach remain blocked."],
+    observationStart: gateway.ok ? gateway.result.observationWindow?.startDate ?? startDate : startDate,
+    observationEnd: gateway.ok ? gateway.result.observationWindow?.endDate ?? endDate : endDate,
+    traceId: gateway.traceId,
+    reliability: gateway.ok ? gateway.result.reliability : { status: gateway.healthStatus },
+    providerCalled: gateway.providerCalled,
   });
 }
 
@@ -728,8 +740,8 @@ export const readOnlyAdapterDefinitions: AdapterDefinition[] = [
   { id: "search_console_performance", provider: "Google Search Console", connectorId: "google_search_console", featureFlags: ["connector_live_reads", "connector_google", "executive_briefings", "ueip_gateway_enforcement", "ueip_search_console_runtime"], requiredEnv: ["GOOGLE_SEARCH_CONSOLE_SITE_URL"], oauthProvider: "google", approvedRequests: [{ method: "POST", urlIncludes: "www.googleapis.com/webmasters/v3/sites" }], ueipManaged: true, run: searchConsolePerformance },
   { id: "search_console_indexing", provider: "Google Search Console", connectorId: "google_search_console", featureFlags: ["connector_live_reads", "connector_google", "executive_briefings", "ueip_gateway_enforcement", "ueip_search_console_runtime"], requiredEnv: ["GOOGLE_SEARCH_CONSOLE_SITE_URL"], oauthProvider: "google", approvedRequests: [{ method: "POST", urlIncludes: "searchconsole.googleapis.com/v1/urlInspection/index:inspect" }], ueipManaged: true, run: searchConsoleIndexing },
   { id: "google_analytics_traffic", provider: "Google Analytics", connectorId: "google_analytics", featureFlags: ["connector_live_reads", "connector_google", "executive_briefings", "ueip_gateway_enforcement", "ueip_ga4_runtime"], requiredEnv: ["GOOGLE_ANALYTICS_PROPERTY_ID"], oauthProvider: "google", approvedRequests: [{ method: "POST", urlIncludes: "analyticsdata.googleapis.com/v1beta/properties" }], ueipManaged: true, run: ga4Traffic },
-  { id: "google_business_profile_performance", provider: "Google Business Profile", connectorId: "google_business_profile", featureFlags: ["connector_live_reads", "connector_google", "connector_marketing"], requiredEnv: ["GOOGLE_OAUTH_CLIENT_ID", "GOOGLE_OAUTH_CLIENT_SECRET", "GOOGLE_OAUTH_REFRESH_TOKEN", "GOOGLE_BUSINESS_PROFILE_LOCATION_ID"], oauthProvider: "google", approvedRequests: [{ method: "GET", urlIncludes: "businessprofileperformance.googleapis.com/v1/locations" }], run: googleBusinessProfilePerformance },
-  { id: "google_business_profile_reviews", provider: "Google Business Profile", connectorId: "google_business_profile", featureFlags: ["connector_live_reads", "connector_google", "connector_marketing"], requiredEnv: ["GOOGLE_OAUTH_CLIENT_ID", "GOOGLE_OAUTH_CLIENT_SECRET", "GOOGLE_OAUTH_REFRESH_TOKEN", "GOOGLE_BUSINESS_PROFILE_LOCATION_ID"], oauthProvider: "google", approvedRequests: [{ method: "GET", urlIncludes: "mybusiness.googleapis.com/v4/accounts" }], run: googleBusinessProfileReviews },
+  { id: "google_business_profile_performance", provider: "Google Business Profile", connectorId: "google_business_profile", featureFlags: ["connector_live_reads", "connector_google", "connector_marketing", "ueip_gateway_enforcement", "ueip_gbp_runtime"], requiredEnv: ["GOOGLE_BUSINESS_PROFILE_LOCATION_ID"], oauthProvider: "google", approvedRequests: [{ method: "GET", urlIncludes: "businessprofileperformance.googleapis.com/v1/locations" }], ueipManaged: true, run: googleBusinessProfilePerformance },
+  { id: "google_business_profile_reviews", provider: "Google Business Profile", connectorId: "google_business_profile", featureFlags: ["connector_live_reads", "connector_google", "connector_marketing", "ueip_gateway_enforcement", "ueip_gbp_runtime"], requiredEnv: ["GOOGLE_BUSINESS_PROFILE_LOCATION_ID"], oauthProvider: "google", approvedRequests: [{ method: "GET", urlIncludes: "mybusiness.googleapis.com/v4/accounts" }], ueipManaged: true, run: googleBusinessProfileReviews },
   { id: "youtube_channel", provider: "YouTube", connectorId: "youtube", featureFlags: ["connector_live_reads", "connector_google", "connector_marketing"], requiredEnv: ["GOOGLE_OAUTH_CLIENT_ID", "GOOGLE_OAUTH_CLIENT_SECRET", "GOOGLE_OAUTH_REFRESH_TOKEN", "YOUTUBE_CHANNEL_ID"], oauthProvider: "google", approvedRequests: [{ method: "GET", urlIncludes: "www.googleapis.com/youtube/v3/search" }, { method: "GET", urlIncludes: "youtubeanalytics.googleapis.com/v2/reports" }], run: youtubeChannel },
   { id: "canva_designs", provider: "Canva", connectorId: "canva", featureFlags: ["connector_live_reads", "connector_marketing"], requiredEnv: ["CANVA_OAUTH_CLIENT_ID", "CANVA_OAUTH_CLIENT_SECRET", "CANVA_OAUTH_REFRESH_TOKEN"], oauthProvider: "canva", approvedRequests: [{ method: "GET", urlIncludes: "api.canva.com/rest/v1/designs" }], run: canvaDesigns },
 ];

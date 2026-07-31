@@ -15,7 +15,7 @@ import type { StoredLead } from "@/lib/leads-storage";
 import { listMarketingWorkflow } from "@/lib/marketing-workflow";
 import { createMarketingPlatformRegistryReport, type MarketingPlatformRegistryReport } from "@/lib/marketing-platform-registry";
 import { createProviderReadinessReport } from "@/lib/provider-readiness";
-import { getLatestBusinessSnapshots, getLatestLiveMorningBrief } from "@/lib/read-only-business-connections";
+import { getLatestBusinessSnapshots, getLatestLiveMorningBrief, type BusinessDataSnapshotRecord } from "@/lib/read-only-business-connections";
 import { getReferralDashboard } from "@/lib/referrals";
 import { getRevenuePipelineSummary } from "@/lib/revenue-pipeline";
 import { getSystemHealth } from "@/lib/system-health";
@@ -1503,6 +1503,17 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
   const ga4KeyEvents = ga4Metric("keyEvents") || ga4Metric("conversions");
   const ga4TopPages = ga4Metric("topPages");
   const ga4DataGap = ga4Snapshot?.dataGaps[0] ?? null;
+  const gbpPerformanceSnapshot = businessSnapshots.find((snapshot) => snapshot.connectorId === "google_business_profile" && snapshot.category === "google_business_profile_performance");
+  const gbpReviewsSnapshot = businessSnapshots.find((snapshot) => snapshot.connectorId === "google_business_profile" && snapshot.category === "google_business_profile_reviews");
+  const gbpMetric = (snapshot: BusinessDataSnapshotRecord | undefined, key: string) => {
+    const value = snapshot?.metrics[key];
+    return typeof value === "number" && Number.isFinite(value) ? value : 0;
+  };
+  const gbpMetricSeries = gbpMetric(gbpPerformanceSnapshot, "metricSeries");
+  const gbpCallClicks = gbpMetric(gbpPerformanceSnapshot, "callClicks");
+  const gbpDirectionRequests = gbpMetric(gbpPerformanceSnapshot, "directionRequests");
+  const gbpReviewCount = gbpMetric(gbpReviewsSnapshot, "reviews");
+  const gbpDataGap = gbpPerformanceSnapshot?.dataGaps[0] ?? gbpReviewsSnapshot?.dataGaps[0] ?? null;
   const widgets: ExecutiveWidget[] = [
     {
         id: "new_leads_today",
@@ -1603,6 +1614,22 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
         status: ga4Snapshot ? (ga4KeyEvents > 0 ? "watch" : "missing") : "missing",
       },
       {
+        id: "gbp_local_visibility",
+        label: "GBP local visibility",
+        value: gbpPerformanceSnapshot ? gbpMetricSeries : "Missing",
+        detail: gbpPerformanceSnapshot ? `${gbpCallClicks} call click(s), ${gbpDirectionRequests} direction request(s). Read-only local visibility context only.` : "GBP governed evidence is not available yet.",
+        href: "/dashboard/search-intelligence",
+        status: gbpPerformanceSnapshot ? (gbpDataGap ? "watch" : "good") : "missing",
+      },
+      {
+        id: "gbp_reviews",
+        label: "GBP review readiness",
+        value: gbpReviewsSnapshot ? gbpReviewCount : "Missing",
+        detail: gbpDataGap ?? "Review evidence is read-only context; replies and profile edits remain blocked.",
+        href: "/dashboard/marketing",
+        status: gbpReviewsSnapshot ? (gbpReviewCount > 0 ? "watch" : "missing") : "missing",
+      },
+      {
         id: "finance_kpis",
         label: "Cash flow",
         value: formatFinanceDollars(financeKpis.cashFlowCents),
@@ -1620,7 +1647,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
       },
     ];
   const recommendedPriorities = createExecutiveRecommendationsFromBi(businessIntelligence);
-  const todayPriorityIds = new Set(["follow_ups_due", "revenue_pipeline", "offer_ready", "marketing_approval", "website_seo", "ga4_key_events"]);
+  const todayPriorityIds = new Set(["follow_ups_due", "revenue_pipeline", "offer_ready", "marketing_approval", "website_seo", "ga4_key_events", "gbp_local_visibility"]);
   const todayPriorities = widgets.filter((widget) => todayPriorityIds.has(widget.id));
   const kpiInterpretations = createKpiInterpretations(businessIntelligence);
   const localMorningBrief = createMorningBrief({
@@ -1717,6 +1744,8 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
       ...(connectorActivation?.dataGaps ?? []),
       ...(liveMorningBrief?.dataGaps ?? []),
       ...(ga4Snapshot?.dataGaps ?? []),
+      ...(gbpPerformanceSnapshot?.dataGaps ?? []),
+      ...(gbpReviewsSnapshot?.dataGaps ?? []),
       ...financeKpis.missingData,
       providerMissingCount > 0 ? `${providerMissingCount} provider readiness credential set(s) are missing.` : "",
     ].filter(Boolean))],

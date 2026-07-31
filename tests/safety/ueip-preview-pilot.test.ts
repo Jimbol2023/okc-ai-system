@@ -11,8 +11,18 @@ import {
   ga4PreviewProbeConfirmation,
   ga4PreviewReadConfirmation,
   ga4PreviewRollbackConfirmation,
+  authorizeGbpPreview,
+  configureGbpPreview,
+  gbpPreviewAuthorizationConfirmation,
+  gbpPreviewInstallConfirmation,
+  gbpPreviewProbeConfirmation,
+  gbpPreviewReadConfirmation,
+  gbpPreviewRollbackConfirmation,
   getGa4PreviewCloseout,
+  getGa4PreviewOperationsPacket,
   getGa4PreviewReadiness,
+  getGbpPreviewCloseout,
+  getGbpPreviewReadiness,
   getSearchConsolePreviewCloseout,
   getSearchConsolePreviewReadiness,
   previewAuthorizationConfirmation,
@@ -22,6 +32,8 @@ import {
   previewRollbackConfirmation,
   rollbackSearchConsolePreview,
   rollbackGa4Preview,
+  rollbackGbpPreview,
+  runGbpPreviewPilot,
   runGa4PreviewPilot,
   runSearchConsolePreviewPilot,
   setUeipPreviewPilotDbForTest,
@@ -31,6 +43,7 @@ import { setUeipRuntimeDependenciesForTest } from "@/lib/ueip-runtime-gateway";
 const actor = { tenantId: "default", actorId: "admin@example.com" };
 const siteUrl = "https://example.com/";
 const propertyId = "123456789";
+const gbpLocationName = "locations/123456789";
 const previewEnv = {
   VERCEL_ENV: "preview",
   UEIP_PREVIEW_ENVIRONMENT_ID: "preview-1",
@@ -44,6 +57,10 @@ const previewEnv = {
 const ga4PreviewEnv = {
   ...previewEnv,
   GOOGLE_ANALYTICS_PROPERTY_ID: propertyId,
+} as NodeJS.ProcessEnv;
+const gbpPreviewEnv = {
+  ...previewEnv,
+  GOOGLE_BUSINESS_PROFILE_LOCATION_ID: gbpLocationName,
 } as NodeJS.ProcessEnv;
 
 const restores: Array<() => void> = [];
@@ -123,6 +140,13 @@ async function configureAndDrillGa4() {
   await rollbackGa4Preview({ actor, confirmation: ga4PreviewRollbackConfirmation, action: "drill_disable", env: ga4PreviewEnv });
   await rollbackGa4Preview({ actor, confirmation: ga4PreviewRollbackConfirmation, action: "drill_restore", env: ga4PreviewEnv });
   assert.equal((await getGa4PreviewReadiness({ actor, env: ga4PreviewEnv })).status, "ready");
+}
+
+async function configureAndDrillGbp() {
+  await configureGbpPreview({ actor, confirmation: gbpPreviewInstallConfirmation, env: gbpPreviewEnv });
+  await rollbackGbpPreview({ actor, confirmation: gbpPreviewRollbackConfirmation, action: "drill_disable", env: gbpPreviewEnv });
+  await rollbackGbpPreview({ actor, confirmation: gbpPreviewRollbackConfirmation, action: "drill_restore", env: gbpPreviewEnv });
+  assert.equal((await getGbpPreviewReadiness({ actor, env: gbpPreviewEnv })).status, "ready");
 }
 
 test("Preview identity guard rejects Production and shared database fingerprints", async () => {
@@ -316,4 +340,85 @@ test("GA4 completion audit failure quarantines operational certification read", 
   assert.equal(result.status, "quarantined");
   assert.equal(providerRequests, 2);
   assert.equal(state.authorizations[0].providerCallCount, 1);
+});
+
+test("GA4 Preview operations packet exposes operator evidence without execution affordances", async () => {
+  const state = createDb();
+  install(state.db);
+  await configureAndDrillGa4();
+  const packet = await getGa4PreviewOperationsPacket({ actor, env: ga4PreviewEnv });
+  assert.equal(packet.packetVersion, "ga4-preview-operations-packet-v1");
+  assert.equal(packet.connectorId, "google_analytics");
+  assert.equal(packet.scopeVerified, true);
+  assert.equal(packet.credentialReferenceVerified, true);
+  assert.equal(packet.propertyAuthorized, true);
+  assert.equal(packet.safetyFlags.providerCalled, false);
+  assert.equal(packet.safetyFlags.crmMutated, false);
+  assert.equal(packet.safetyFlags.published, false);
+  assert.equal(packet.safetyFlags.outreachCreated, false);
+  assert.equal(packet.safetyFlags.automationCreated, false);
+  assert.equal(JSON.stringify(packet).includes("client-secret"), false);
+});
+
+test("GBP Preview identity install readiness and authorization mirror GA4", async () => {
+  const state = createDb();
+  install(state.db);
+  const production = await configureGbpPreview({ actor, confirmation: gbpPreviewInstallConfirmation, env: { ...gbpPreviewEnv, VERCEL_ENV: "production" } });
+  assert.equal(production.status, "blocked");
+  const missingLocation = await configureGbpPreview({ actor, confirmation: gbpPreviewInstallConfirmation, env: { ...previewEnv, GOOGLE_BUSINESS_PROFILE_LOCATION_ID: "" } });
+  assert.equal(missingLocation.status, "blocked");
+  assert.ok(missingLocation.reasonCodes.includes("gbp_location_missing_or_invalid"));
+  await configureGbpPreview({ actor, confirmation: gbpPreviewInstallConfirmation, env: gbpPreviewEnv });
+  await configureGbpPreview({ actor, confirmation: gbpPreviewInstallConfirmation, env: gbpPreviewEnv });
+  assert.equal(state.getInstallation()?.connectorId, "google_business_profile");
+  assert.equal(state.getInstallation()?.sandboxMode, true);
+  const blocked = await authorizeGbpPreview({ actor, confirmation: gbpPreviewAuthorizationConfirmation, env: gbpPreviewEnv });
+  assert.equal(blocked.status, "blocked");
+  await configureAndDrillGbp();
+  const authorized = await authorizeGbpPreview({ actor, confirmation: gbpPreviewAuthorizationConfirmation, env: gbpPreviewEnv });
+  assert.equal(authorized.status, "authorized");
+  assert.equal(JSON.stringify(state.authorizations).includes(authorized.status === "authorized" ? authorized.nonce : ""), false);
+});
+
+test("GBP readiness blocks without business.manage scope or authorized location", async () => {
+  const state = createDb();
+  install(state.db);
+  await configureAndDrillGbp();
+  const installation = state.getInstallation()!;
+  installation.grantedScopes = [];
+  installation.permissionValidation = { authorizedLocationNames: ["locations/777"] };
+  const readiness = await getGbpPreviewReadiness({ actor, env: gbpPreviewEnv });
+  assert.equal(readiness.status, "blocked");
+  assert.ok(readiness.reasonCodes.includes("business_manage_scope_missing"));
+  assert.ok(readiness.reasonCodes.includes("gbp_location_not_authorized"));
+});
+
+test("GBP one nonce one Preview read blocked probe and closeout certification", async () => {
+  const state = createDb();
+  let providerRequests = 0;
+  install(state.db, async (url) => {
+    providerRequests += 1;
+    if (String(url).includes("oauth2.googleapis.com")) return new Response(JSON.stringify({ access_token: "access" }), { status: 200, headers: { "content-type": "application/json" } });
+    return new Response(JSON.stringify({ multiDailyMetricTimeSeries: [{ dailyMetric: "CALL_CLICKS", timeSeries: { datedValues: [{ value: "3" }] } }] }), { status: 200, headers: { "content-type": "application/json" } });
+  });
+  await configureAndDrillGbp();
+  const probe = await runGbpPreviewPilot({ actor, confirmation: gbpPreviewProbeConfirmation, operation: "blocked_probe", env: gbpPreviewEnv, now: new Date("2026-07-15T12:00:00.000Z") });
+  assert.equal(probe.status, "completed");
+  assert.equal(probe.providerCalled, false);
+  const authorization = await authorizeGbpPreview({ actor, confirmation: gbpPreviewAuthorizationConfirmation, env: gbpPreviewEnv, now: new Date("2026-07-15T12:00:00.000Z") });
+  assert.equal(authorization.status, "authorized");
+  if (authorization.status !== "authorized") return;
+  const first = await runGbpPreviewPilot({ actor, confirmation: gbpPreviewReadConfirmation, operation: "read", nonce: authorization.nonce, env: gbpPreviewEnv, now: new Date("2026-07-15T12:00:00.000Z") });
+  const duplicate = await runGbpPreviewPilot({ actor, confirmation: gbpPreviewReadConfirmation, operation: "read", nonce: authorization.nonce, env: gbpPreviewEnv, now: new Date("2026-07-15T12:00:00.000Z") });
+  assert.equal(first.status, "completed");
+  assert.equal(duplicate.status, "locked");
+  assert.equal(providerRequests, 2);
+  assert.equal(state.getInstallation()?.enabled, false);
+  const closeout = await getGbpPreviewCloseout({ actor, env: gbpPreviewEnv });
+  assert.equal(closeout.status, "preview_pilot_verified");
+  assert.equal(closeout.providerCallCount, 1);
+  assert.equal(closeout.auditChainVerified, true);
+  assert.equal(closeout.normalizedContractVerified, true);
+  assert.equal(closeout.productionBlocked, true);
+  assert.equal(closeout.ceoApprovalRequired, true);
 });

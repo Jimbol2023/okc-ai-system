@@ -421,10 +421,34 @@ describe("daily startup", () => {
       crmMutated: false,
       liveExecutionAllowed: false,
     };
+    const gbpPerformanceSnapshot: BusinessDataSnapshotRecord = {
+      ...ga4Snapshot,
+      evidenceHash: "gbp-performance-dashboard-hash",
+      provider: "Google Business Profile",
+      connectorId: "google_business_profile",
+      category: "google_business_profile_performance",
+      sourceLabel: "ueip:gbp:gbp_performance_read:readonly",
+      provenance: "GBP performance dashboard fixture.",
+      summary: "GBP local visibility evidence is visible.",
+      metrics: { metricSeries: 2, callClicks: 5, directionRequests: 3 },
+      records: [{ metric: "CALL_CLICKS", total: 5 }],
+    };
+    const gbpReviewsSnapshot: BusinessDataSnapshotRecord = {
+      ...ga4Snapshot,
+      evidenceHash: "gbp-reviews-dashboard-hash",
+      provider: "Google Business Profile",
+      connectorId: "google_business_profile",
+      category: "google_business_profile_reviews",
+      sourceLabel: "ueip:gbp:gbp_reviews_read:readonly",
+      provenance: "GBP reviews dashboard fixture.",
+      summary: "GBP review readiness evidence is visible.",
+      metrics: { reviews: 6, reviewRows: 6 },
+      records: [{ reviewId: "r1", starRating: "FIVE" }],
+    };
     const restore = setReadOnlyBusinessConnectionsDbForTest({
       businessDataSnapshot: {
         async upsert() { return ga4Snapshot; },
-        async findMany() { return [ga4Snapshot]; },
+        async findMany() { return [ga4Snapshot, gbpPerformanceSnapshot, gbpReviewsSnapshot]; },
       },
       dailyBriefingSnapshot: {
         async create() { return {}; },
@@ -437,8 +461,12 @@ describe("daily startup", () => {
       assert.ok(widgetIds.includes("ga4_sessions"));
       assert.ok(widgetIds.includes("ga4_top_pages"));
       assert.ok(widgetIds.includes("ga4_key_events"));
+      assert.ok(widgetIds.includes("gbp_local_visibility"));
+      assert.ok(widgetIds.includes("gbp_reviews"));
       assert.equal(report.widgets.find((widget) => widget.id === "ga4_sessions")?.value, 42);
       assert.equal(report.widgets.find((widget) => widget.id === "ga4_key_events")?.value, 3);
+      assert.equal(report.widgets.find((widget) => widget.id === "gbp_local_visibility")?.value, 2);
+      assert.equal(report.widgets.find((widget) => widget.id === "gbp_reviews")?.value, 6);
       assert.equal(JSON.stringify(report.widgets).includes("provider_write"), false);
       assert.equal(report.safetyFlags.outreachSent, false);
       assert.equal(report.safetyFlags.adsCreated, false);

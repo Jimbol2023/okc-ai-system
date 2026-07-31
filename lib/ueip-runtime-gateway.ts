@@ -24,6 +24,14 @@ import {
   type Ga4Credential,
   type Ga4NormalizedResult,
 } from "@/lib/ueip-ga4-adapter";
+import {
+  executeGbpRead,
+  gbpCapabilities,
+  UeipGbpAdapterError,
+  type GbpAdapterInput,
+  type GbpCredential,
+  type GbpNormalizedResult,
+} from "@/lib/ueip-gbp-adapter";
 
 export type UeipTrustedEnvironment = "development" | "preview" | "production";
 export type UeipExecutionContext = Readonly<{
@@ -49,6 +57,13 @@ export type UeipCapabilityRequest = Readonly<{
   capabilityKey: (typeof ga4Capabilities)[number];
   capabilityVersion: "1.0.0";
   parameters: Omit<Ga4AdapterInput, "capability">;
+  freshnessSeconds: number;
+  idempotencyKey: string;
+}> | Readonly<{
+  connectorId: "google_business_profile";
+  capabilityKey: (typeof gbpCapabilities)[number];
+  capabilityVersion: "1.0.0";
+  parameters: Omit<GbpAdapterInput, "capability">;
   freshnessSeconds: number;
   idempotencyKey: string;
 }>;
@@ -92,7 +107,7 @@ export type UeipGatewayResult =
       ok: true;
       traceId: string;
       policy: UeipPolicyDecision;
-      result: SearchConsoleNormalizedResult | Ga4NormalizedResult;
+      result: SearchConsoleNormalizedResult | Ga4NormalizedResult | GbpNormalizedResult;
       auditStatus: "complete";
       providerAttempted: boolean;
       providerCalled: boolean;
@@ -116,6 +131,7 @@ export type UeipGatewayResult =
 const POLICY_VERSION = "ueip-runtime-policy-v1";
 const SEARCH_CONSOLE_REQUIRED_SCOPE = "https://www.googleapis.com/auth/webmasters.readonly";
 const GA4_REQUIRED_SCOPE = "https://www.googleapis.com/auth/analytics.readonly";
+const GBP_REQUIRED_SCOPE = "https://www.googleapis.com/auth/business.manage";
 const SECRET_FIELD_PATTERN = /(secret|token|password|credential|authorization|cookie|session|api[_-]?key|raw|payload|headers?)/i;
 const circuitByInstallation = new Map<string, { failures: number; openUntil: number }>();
 const rateByTenant = new Map<string, { windowStarted: number; count: number }>();
@@ -226,8 +242,30 @@ function ga4Manifest(tenantId: string): UniversalConnectorManifest | null {
   };
 }
 
+function gbpManifest(tenantId: string): UniversalConnectorManifest | null {
+  const connector = getEnterpriseConnector("google_business_profile");
+  if (!connector) return null;
+  const base = createUniversalConnectorManifest(connector, { supportedTenantIds: [tenantId], compatibleBusinessModules: ["ai_core", "real_estate"] });
+  return {
+    ...base,
+    lifecycleState: "read_only",
+    capabilities: gbpCapabilities.map((capabilityKey) => ({
+      capabilityKey,
+      providerActionKey: capabilityKey,
+      operation: "read" as const,
+      risk: capabilityKey === "gbp.reviews.read" ? "medium" as const : "low" as const,
+      requiredScopes: [GBP_REQUIRED_SCOPE],
+      approvalPolicy: "none" as const,
+      dataClassification: "internal" as const,
+      liveExecutionAllowed: false as const,
+    })),
+  };
+}
+
 function gatewayManifest(connectorId: UeipCapabilityRequest["connectorId"], tenantId: string) {
-  return connectorId === "google_search_console" ? searchConsoleManifest(tenantId) : ga4Manifest(tenantId);
+  if (connectorId === "google_search_console") return searchConsoleManifest(tenantId);
+  if (connectorId === "google_analytics") return ga4Manifest(tenantId);
+  return gbpManifest(tenantId);
 }
 
 async function appendAudit(input: {
@@ -369,6 +407,15 @@ function fixtureResult(request: Extract<UeipCapabilityRequest, { connectorId: "g
   };
 }
 
+function brokerGbpCredential(reference: CredentialReferenceRecord, env: NodeJS.ProcessEnv): GbpCredential | null {
+  if (reference.connectorId !== "google_business_profile" || reference.secretStorageProvider !== "environment") return null;
+  if (reference.rawSecretStored || reference.rawSecretRendered || (reference.expiresAt && reference.expiresAt.getTime() <= Date.now())) return null;
+  const clientId = env.GOOGLE_OAUTH_CLIENT_ID?.trim();
+  const clientSecret = env.GOOGLE_OAUTH_CLIENT_SECRET?.trim();
+  const refreshToken = env.GOOGLE_OAUTH_REFRESH_TOKEN?.trim();
+  return clientId && clientSecret && refreshToken ? { clientId, clientSecret, refreshToken } : null;
+}
+
 function ga4FixtureResult(request: UeipCapabilityRequest, now = new Date()): Ga4NormalizedResult {
   if (request.connectorId !== "google_analytics") throw new Error("ga4_fixture_requires_ga4_request");
   return {
@@ -387,6 +434,22 @@ function ga4FixtureResult(request: UeipCapabilityRequest, now = new Date()): Ga4
   };
 }
 
+function gbpFixtureResult(request: UeipCapabilityRequest, now = new Date()): GbpNormalizedResult {
+  if (request.connectorId !== "google_business_profile") throw new Error("gbp_fixture_requires_gbp_request");
+  return {
+    contractVersion: "ueip-gbp-result-v1",
+    capability: request.capabilityKey,
+    sourceLabel: "ueip:gbp:development_fixture",
+    provenance: "Deterministic development fixture; no provider was called.",
+    observationWindow: { startDate: request.parameters.startDate, endDate: request.parameters.endDate },
+    freshness: now.toISOString(),
+    confidence: 20,
+    signals: request.capabilityKey === "gbp.reviews.read" ? { reviews: [], reviewRows: 0 } : { performance: [], metricSeries: 0, impressions: 0, callClicks: 0, directionRequests: 0 },
+    dataGaps: ["Development fixture only; verify against governed Preview data before business use."],
+    reliability: { status: "partial", latencyMs: 0, attempts: 0, quotaRemaining: null },
+  };
+}
+
 async function executeGateway(context: UeipExecutionContext, request: UeipCapabilityRequest, env: NodeJS.ProcessEnv): Promise<UeipGatewayResult> {
   const installation = await gatewayDb.connectorInstallationState.findUnique({ where: { tenantId_connectorId: { tenantId: context.tenantId, connectorId: request.connectorId } } });
   if (!installation || installation.tenantId !== context.tenantId) {
@@ -398,20 +461,25 @@ async function executeGateway(context: UeipExecutionContext, request: UeipCapabi
   const permission = asRecord(installation.permissionValidation);
   const authorizedSites = asStrings(permission.authorizedSiteUrls);
   const authorizedPropertyIds = asStrings(permission.authorizedPropertyIds);
+  const authorizedLocationNames = asStrings(permission.authorizedLocationNames);
   const circuit = circuitByInstallation.get(installation.id);
   const grantedScopes = asStrings(installation.grantedScopes);
   const installationReady = installation.enabled && installation.installationState === "enabled" && installation.configurationState === "configured" && installation.authenticationState === "authenticated" && installation.enableApprovalStatus === "approved";
   const siteAuthorized = request.connectorId !== "google_search_console" || authorizedSites.includes(request.parameters.siteUrl);
   const propertyAuthorized = request.connectorId !== "google_analytics" || authorizedPropertyIds.includes(request.parameters.propertyId) || request.parameters.propertyId === env.GOOGLE_ANALYTICS_PROPERTY_ID;
+  const locationAuthorized = request.connectorId !== "google_business_profile" || authorizedLocationNames.includes(request.parameters.locationName) || request.parameters.locationName === env.GOOGLE_BUSINESS_PROFILE_LOCATION_ID;
   const flagsReady = request.connectorId === "google_search_console"
     ? isFeatureEnabled("ueip_gateway_enforcement") && isFeatureEnabled("ueip_search_console_runtime") && !isFeatureEnabled("ueip_search_console_rollback")
-    : isFeatureEnabled("ueip_gateway_enforcement") && isFeatureEnabled("ueip_ga4_runtime");
+    : request.connectorId === "google_analytics"
+      ? isFeatureEnabled("ueip_gateway_enforcement") && isFeatureEnabled("ueip_ga4_runtime")
+      : isFeatureEnabled("ueip_gateway_enforcement") && isFeatureEnabled("ueip_gbp_runtime");
   const manifest = gatewayManifest(request.connectorId, context.tenantId);
 
   let preflightReason: string | null = null;
   if (!installationReady) preflightReason = "installation_not_ready";
   else if (!siteAuthorized) preflightReason = "site_not_authorized";
   else if (!propertyAuthorized) preflightReason = "property_not_authorized";
+  else if (!locationAuthorized) preflightReason = "location_not_authorized";
   else if (circuit && circuit.openUntil > Date.now()) preflightReason = "circuit_open";
   else if (!rateAllowed(context.tenantId)) preflightReason = "tenant_rate_limited";
   else if (!flagsReady) preflightReason = "feature_flag_gate_closed";
@@ -453,7 +521,7 @@ async function executeGateway(context: UeipExecutionContext, request: UeipCapabi
   }
 
   if (context.environment === "development") {
-    const result = request.connectorId === "google_search_console" ? fixtureResult(request) : ga4FixtureResult(request);
+    const result = request.connectorId === "google_search_console" ? fixtureResult(request) : request.connectorId === "google_analytics" ? ga4FixtureResult(request) : gbpFixtureResult(request);
     try { await appendAudit({ context, request, installationId: installation.id, stage: "completed_fixture", decision: "completed", reasonCodes: ["development_fixture"], safeMetadata: { sourceLabel: result.sourceLabel } }); } catch { return failure({ context, policy, code: "completion_audit_failed", message: "Fixture result was quarantined because completion audit failed.", auditStatus: "failed" }); }
     return { ok: true, traceId: context.traceId, policy, result, auditStatus: "complete", providerAttempted: false, providerCalled: false, healthStatus: "healthy", liveExecutionAllowed: false };
   }
@@ -463,7 +531,9 @@ async function executeGateway(context: UeipExecutionContext, request: UeipCapabi
   const credential = reference
     ? request.connectorId === "google_search_console"
       ? brokerCredential(reference, env)
-      : brokerGa4Credential(reference, env)
+      : request.connectorId === "google_analytics"
+        ? brokerGa4Credential(reference, env)
+        : brokerGbpCredential(reference, env)
     : null;
   if (!reference || reference.tenantId !== context.tenantId || !credential) {
     await appendAudit({ context, request, installationId: installation.id, stage: "credential_blocked", decision: "blocked", reasonCodes: ["credential_unavailable"] }).catch(() => undefined);
@@ -473,9 +543,11 @@ async function executeGateway(context: UeipExecutionContext, request: UeipCapabi
     await appendAudit({ context, request, installationId: installation.id, stage: "credential_resolved", decision: "allowed", reasonCodes: ["credential_reference_verified"] });
     const result = request.connectorId === "google_search_console"
       ? await executeSearchConsoleRead({ request: { capability: request.capabilityKey, ...request.parameters }, credentials: credential as SearchConsoleCredential, fetcher: gatewayFetcher })
-      : await executeGa4Read({ request: { capability: request.capabilityKey, ...request.parameters }, credentials: credential as Ga4Credential, fetcher: gatewayFetcher });
+      : request.connectorId === "google_analytics"
+        ? await executeGa4Read({ request: { capability: request.capabilityKey, ...request.parameters }, credentials: credential as Ga4Credential, fetcher: gatewayFetcher })
+        : await executeGbpRead({ request: { capability: request.capabilityKey, ...request.parameters }, credentials: credential as GbpCredential, fetcher: gatewayFetcher });
     try {
-      await appendAudit({ context, request, installationId: installation.id, stage: "completed", decision: "completed", reasonCodes: ["normalized_result_valid"], attemptNumber: result.reliability.attempts, endpointId: request.connectorId === "google_analytics" ? "ga4_run_report" : request.capabilityKey === "seo.indexing.summary.read" ? "url_inspection" : "search_analytics", latencyMs: result.reliability.latencyMs, providerAttempted: true, providerCalled: true, safeMetadata: { contractVersion: result.contractVersion, sourceLabel: result.sourceLabel, confidence: result.confidence } });
+      await appendAudit({ context, request, installationId: installation.id, stage: "completed", decision: "completed", reasonCodes: ["normalized_result_valid"], attemptNumber: result.reliability.attempts, endpointId: request.connectorId === "google_business_profile" ? "gbp_read" : request.connectorId === "google_analytics" ? "ga4_run_report" : request.capabilityKey === "seo.indexing.summary.read" ? "url_inspection" : "search_analytics", latencyMs: result.reliability.latencyMs, providerAttempted: true, providerCalled: true, safeMetadata: { contractVersion: result.contractVersion, sourceLabel: result.sourceLabel, confidence: result.confidence } });
       await gatewayDb.enterpriseConnectorHealthEvent.create({ data: { tenantId: context.tenantId, connectorId: request.connectorId, healthStatus: "healthy", checkedAt: new Date(), latencyMs: result.reliability.latencyMs, circuitBreakerState: "closed", providerCalled: true, liveExecutionAllowed: false, safeMetadata: { traceId: context.traceId, capabilityKey: request.capabilityKey } } });
     } catch {
       circuitByInstallation.set(installation.id, { failures: 3, openUntil: Date.now() + 60_000 });
@@ -484,7 +556,7 @@ async function executeGateway(context: UeipExecutionContext, request: UeipCapabi
     circuitByInstallation.delete(installation.id);
     return { ok: true, traceId: context.traceId, policy, result, auditStatus: "complete", providerAttempted: true, providerCalled: true, healthStatus: "healthy", liveExecutionAllowed: false };
   } catch (error) {
-    const adapterError = error instanceof UeipSearchConsoleAdapterError || error instanceof UeipGa4AdapterError ? error : new UeipSearchConsoleAdapterError("provider_unavailable", "Provider read failed safely.", true);
+    const adapterError = error instanceof UeipSearchConsoleAdapterError || error instanceof UeipGa4AdapterError || error instanceof UeipGbpAdapterError ? error : new UeipSearchConsoleAdapterError("provider_unavailable", "Provider read failed safely.", true);
     const current = circuitByInstallation.get(installation.id) ?? { failures: 0, openUntil: 0 };
     const failures = current.failures + 1;
     circuitByInstallation.set(installation.id, { failures, openUntil: failures >= 3 ? Date.now() + 60_000 : 0 });
@@ -508,6 +580,10 @@ export async function runUeipSearchConsoleGateway(input: { context: UeipExecutio
 }
 
 export async function runUeipGa4Gateway(input: { context: UeipExecutionContext; request: Extract<UeipCapabilityRequest, { connectorId: "google_analytics" }>; env?: NodeJS.ProcessEnv }): Promise<UeipGatewayResult> {
+  return runUeipSearchConsoleGateway(input);
+}
+
+export async function runUeipGbpGateway(input: { context: UeipExecutionContext; request: Extract<UeipCapabilityRequest, { connectorId: "google_business_profile" }>; env?: NodeJS.ProcessEnv }): Promise<UeipGatewayResult> {
   return runUeipSearchConsoleGateway(input);
 }
 
@@ -558,5 +634,30 @@ export async function getUeipGa4PilotHealth(tenantId: string) {
     providerCalled: attempts.some((attempt) => attempt.providerCalled === true),
     liveExecutionAllowed: false,
     note: attempts.length === 0 ? "No GA4 pilot baseline is available; service targets remain uncommitted." : "GA4 pilot observations are evidence only and do not authorize Production.",
+  };
+}
+
+export async function getUeipGbpPilotHealth(tenantId: string) {
+  const attempts = gatewayDb.ueipGatewayAuditEvent.findMany
+    ? await gatewayDb.ueipGatewayAuditEvent.findMany({ where: { tenantId, connectorId: "google_business_profile" }, orderBy: { createdAt: "desc" }, take: 50, select: { traceId: true, capabilityKey: true, stage: true, decision: true, latencyMs: true, providerCalled: true, reasonCodes: true, sequenceNumber: true, previousEventDigest: true, eventDigest: true, safeMetadata: true, createdAt: true } })
+    : [];
+  const health = gatewayDb.enterpriseConnectorHealthEvent.findMany
+    ? await gatewayDb.enterpriseConnectorHealthEvent.findMany({ where: { tenantId, connectorId: "google_business_profile" }, orderBy: { checkedAt: "desc" }, take: 10, select: { healthStatus: true, latencyMs: true, rateLimitRemaining: true, circuitBreakerState: true, checkedAt: true, providerCalled: true } })
+    : [];
+  const completed = attempts.filter((attempt) => attempt.stage === "completed");
+  const blocked = attempts.filter((attempt) => attempt.stage === "blocked");
+  return {
+    tenantId,
+    connectorId: "google_business_profile",
+    sampleSize: attempts.length,
+    completedAttempts: completed.length,
+    blockedAttempts: blocked.length,
+    auditCompleteness: attempts.length === 0 ? null : 100,
+    averageProviderLatencyMs: completed.length === 0 ? null : Math.round(completed.reduce((sum, attempt) => sum + (typeof attempt.latencyMs === "number" ? attempt.latencyMs : 0), 0) / completed.length),
+    recentAttempts: attempts,
+    recentHealth: health,
+    providerCalled: attempts.some((attempt) => attempt.providerCalled === true),
+    liveExecutionAllowed: false,
+    note: attempts.length === 0 ? "No GBP pilot baseline is available; service targets remain uncommitted." : "GBP pilot observations are evidence only and do not authorize Production.",
   };
 }

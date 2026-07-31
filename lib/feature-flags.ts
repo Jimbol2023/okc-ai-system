@@ -30,6 +30,7 @@ export type FeatureFlagKey =
   | "ueip_search_console_runtime"
   | "ueip_search_console_rollback"
   | "ueip_ga4_runtime"
+  | "ueip_gbp_runtime"
   | "professional_case_runtime"
   | "search_market_intelligence_runtime"
   | "search_market_intelligence_scheduling"
@@ -91,6 +92,13 @@ export const phase2FeatureFlags: FeatureFlag[] = [
     enabled: true,
     category: "connector",
     description: "Allows the certified GA4 adapter to run only after trusted Preview, tenant, installation, scope, health, and audit gates pass.",
+    requiresAdminApproval: true,
+  },
+  {
+    key: "ueip_gbp_runtime",
+    enabled: true,
+    category: "connector",
+    description: "Allows the certified Google Business Profile adapter to run only after trusted Preview, tenant, installation, scope, location, health, and audit gates pass.",
     requiresAdminApproval: true,
   },
   {
