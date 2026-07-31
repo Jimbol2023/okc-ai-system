@@ -163,6 +163,7 @@ export function createBuyerDemandOpportunityPrioritization(input: {
   const buyerActivity = signals ? totalBuyerActivity(signals) : 0;
   const certificationConfidence = input.certification.evidenceChain.length ? Math.round(input.certification.evidenceChain.reduce((sum, stage) => sum + stage.confidence, 0) / input.certification.evidenceChain.length) : 0;
   const sourceReferences = [
+    `sprint-26a:cross-connector-certification:${input.certification.certificationStatus}`,
     ...input.certification.evidenceChain.flatMap((stage) => stage.sourceLabels),
     ...input.certification.evidenceChain.flatMap((stage) => stage.evidenceHashes.map((hash) => `evidence:${hash}`)),
     ...(signals?.hotZips.map((item) => `buyer-demand:zip:${item.label}`) ?? []),
