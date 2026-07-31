@@ -16,6 +16,11 @@ const generatedAt = "2026-07-09T16:00:00.000Z";
 function snapshot(connectorId: string, category: string, status: string, summary: string, dataGaps: string[] = []): BusinessDataSnapshotRecord {
   return {
     snapshotDate: generatedAt,
+    tenantId: "tenant-a",
+    contractVersion: "business-data-snapshot-v1",
+    evidenceHash: `${connectorId}-${category}-hash`,
+    observationStart: "2026-07-01T00:00:00.000Z",
+    observationEnd: "2026-07-10T00:00:00.000Z",
     provider: "Google",
     connectorId,
     category,
@@ -47,6 +52,8 @@ test("connector snapshots normalize into safe business signals with source label
   assert.equal(signals[0].signalType, "inbound_lead_signal");
   assert.equal(signals[0].freshness, "fresh");
   assert.equal(signals[0].rawPayloadIncluded, false);
+  assert.equal(signals[1].sourceEvidenceHash, "google_search_console-search_console_performance-hash");
+  assert.equal(signals[1].observationWindow.start, "2026-07-01T00:00:00.000Z");
   assert.equal(JSON.stringify(signals).includes("must not flow"), false);
 });
 
@@ -82,6 +89,8 @@ test("daily work orders receive connector context and memory/KPI readiness remai
   assert.ok(report.workOrderContexts.length > 0);
   assert.ok(report.memoryKpiReadiness.length > 0);
   assert.ok(report.memoryKpiReadiness.every((item) => item.persistenceAllowed === false));
+  assert.ok(report.memoryKpiReadiness.some((item) => item.recommendedMemoryEvent.metadata.evidenceHash));
+  assert.ok(report.memoryKpiReadiness.some((item) => item.recommendedMemoryEvent.metadata.recommendedReviewReason));
   assert.equal(report.safety.memoryWritesAllowed, false);
   assert.equal(report.safety.kpiWritesAllowed, false);
   assert.equal(report.providerCalled, false);

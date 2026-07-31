@@ -23,10 +23,12 @@ test("materiality requires state, cohort, or bounded metric movement", () => {
 
 test("packet assembly rejects cross-tenant evidence and performs no provider or external action", () => {
   assert.throws(() => createSearchMarketIntelligencePacket({ tenantId: "tenant-a", packetKind: "monday", snapshots: [snapshot({ tenantId: "tenant-b" })] }), /cross_tenant_search_evidence_blocked/);
-  const packet = createSearchMarketIntelligencePacket({ tenantId: "tenant-a", packetKind: "monday", snapshots: [snapshot()], now: new Date("2026-07-15T12:00:00.000Z") });
+  const packet = createSearchMarketIntelligencePacket({ tenantId: "tenant-a", packetKind: "monday", snapshots: [snapshot(), snapshot({ connectorId: "google_analytics", category: "google_analytics_traffic", sourceLabel: "ueip:ga4:test", summary: "GA4 sessions and key-event readiness are visible.", metrics: { sessions: 12, activeUsers: 8, keyEvents: 2 }, evidenceHash: "hash-ga4" })], now: new Date("2026-07-15T12:00:00.000Z") });
   assert.equal(packet.deliverables.length, 6);
-  assert.equal(packet.topCeoDecisions.length, 1);
-  assert.ok(packet.dataGaps.some((gap) => gap.includes("GA4")));
+  assert.equal(packet.topCeoDecisions.length, 2);
+  assert.ok(packet.deliverables.some((deliverable) => deliverable.sourceReferences.includes("ueip:ga4:test")));
+  assert.ok(packet.deliverables.some((deliverable) => deliverable.verifiedObservations.some((observation) => /GA4 read-only evidence/i.test(observation))));
+  assert.ok(!packet.dataGaps.some((gap) => gap.includes("GA4 evidence is unavailable")));
   assert.ok(packet.dataGaps.some((gap) => gap.includes("Business Profile")));
   assert.equal(packet.providerCalledByAssembly, false);
   assert.equal(packet.externalWritesAllowed, false);

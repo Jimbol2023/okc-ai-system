@@ -8,6 +8,7 @@ import type { BusinessIntelligenceReport } from "./business-intelligence";
 import { createInheritedPropertyCampaignDirective, runCompanyOrchestrator } from "./company-orchestrator";
 import { createContentIntelligenceReport } from "./content-intelligence";
 import { createMarketingPlatformRegistryReport } from "./marketing-platform-registry";
+import { readOnlyBusinessSafetyFlags, setReadOnlyBusinessConnectionsDbForTest, type BusinessDataSnapshotRecord } from "./read-only-business-connections";
 
 process.env.AUTH_SECRET ||= "test-auth-secret-for-json-route-coverage-12345";
 process.env.ADMIN_EMAIL ||= "moses@example.com";
@@ -391,5 +392,59 @@ describe("daily startup", () => {
     assert.ok(report.dailyStartup.ceo_decision_agenda.some((item) => item.title.includes("Inherited Property") && item.recommended_action === "approve"));
     assert.ok(report.dailyStartup.blocked_items.some((item) => /No department work starts/i.test(item)));
     assert.ok(report.dailyStartup.ceo_decision_agenda.every((item) => item.approval_required));
+  });
+
+  it("surfaces GA4 governed read-only metrics as dashboard widgets without execution controls", async () => {
+    const ga4Snapshot: BusinessDataSnapshotRecord = {
+      tenantId: "default",
+      contractVersion: "business-data-snapshot-v1",
+      evidenceHash: "ga4-dashboard-hash",
+      observationStart: "2026-07-01T00:00:00.000Z",
+      observationEnd: "2026-07-10T00:00:00.000Z",
+      snapshotDate: new Date("2026-07-11T00:00:00.000Z"),
+      provider: "Google Analytics",
+      connectorId: "google_analytics",
+      category: "google_analytics_traffic",
+      status: "fresh",
+      sourceLabel: "ueip:ga4:analytics_page_performance_read:readonly",
+      provenance: "GA4 dashboard fixture.",
+      freshness: "2026-07-11T00:00:00.000Z",
+      summary: "42 sessions, 20 active users, and 3 key events across top GA4 pages.",
+      metrics: { sessions: 42, activeUsers: 20, pageViews: 88, keyEvents: 3, topPages: 4 },
+      records: [{ dimension: "/moore", sessions: 12 }],
+      dataGaps: [],
+      assumptions: [],
+      safetyFlags: readOnlyBusinessSafetyFlags,
+      providerCalled: false,
+      sent: false,
+      published: false,
+      crmMutated: false,
+      liveExecutionAllowed: false,
+    };
+    const restore = setReadOnlyBusinessConnectionsDbForTest({
+      businessDataSnapshot: {
+        async upsert() { return ga4Snapshot; },
+        async findMany() { return [ga4Snapshot]; },
+      },
+      dailyBriefingSnapshot: {
+        async create() { return {}; },
+        async findFirst() { return null; },
+      },
+    } as never);
+    try {
+      const report = await createExecutiveDashboardReport();
+      const widgetIds = report.widgets.map((widget) => widget.id);
+      assert.ok(widgetIds.includes("ga4_sessions"));
+      assert.ok(widgetIds.includes("ga4_top_pages"));
+      assert.ok(widgetIds.includes("ga4_key_events"));
+      assert.equal(report.widgets.find((widget) => widget.id === "ga4_sessions")?.value, 42);
+      assert.equal(report.widgets.find((widget) => widget.id === "ga4_key_events")?.value, 3);
+      assert.equal(JSON.stringify(report.widgets).includes("provider_write"), false);
+      assert.equal(report.safetyFlags.outreachSent, false);
+      assert.equal(report.safetyFlags.adsCreated, false);
+      assert.equal(report.safetyFlags.scrapingStarted, false);
+    } finally {
+      restore();
+    }
   });
 });

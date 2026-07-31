@@ -2,8 +2,17 @@ import assert from "node:assert/strict";
 import { afterEach, test } from "node:test";
 
 import {
+  authorizeGa4Preview,
   authorizeSearchConsolePreview,
+  configureGa4Preview,
   configureSearchConsolePreview,
+  ga4PreviewAuthorizationConfirmation,
+  ga4PreviewInstallConfirmation,
+  ga4PreviewProbeConfirmation,
+  ga4PreviewReadConfirmation,
+  ga4PreviewRollbackConfirmation,
+  getGa4PreviewCloseout,
+  getGa4PreviewReadiness,
   getSearchConsolePreviewCloseout,
   getSearchConsolePreviewReadiness,
   previewAuthorizationConfirmation,
@@ -12,6 +21,8 @@ import {
   previewReadConfirmation,
   previewRollbackConfirmation,
   rollbackSearchConsolePreview,
+  rollbackGa4Preview,
+  runGa4PreviewPilot,
   runSearchConsolePreviewPilot,
   setUeipPreviewPilotDbForTest,
 } from "@/lib/ueip-preview-pilot";
@@ -19,6 +30,7 @@ import { setUeipRuntimeDependenciesForTest } from "@/lib/ueip-runtime-gateway";
 
 const actor = { tenantId: "default", actorId: "admin@example.com" };
 const siteUrl = "https://example.com/";
+const propertyId = "123456789";
 const previewEnv = {
   VERCEL_ENV: "preview",
   UEIP_PREVIEW_ENVIRONMENT_ID: "preview-1",
@@ -28,6 +40,10 @@ const previewEnv = {
   GOOGLE_OAUTH_CLIENT_ID: "client",
   GOOGLE_OAUTH_CLIENT_SECRET: "client-secret",
   GOOGLE_OAUTH_REFRESH_TOKEN: "refresh-secret",
+} as NodeJS.ProcessEnv;
+const ga4PreviewEnv = {
+  ...previewEnv,
+  GOOGLE_ANALYTICS_PROPERTY_ID: propertyId,
 } as NodeJS.ProcessEnv;
 
 const restores: Array<() => void> = [];
@@ -102,6 +118,13 @@ async function configureAndDrill() {
   assert.equal((await getSearchConsolePreviewReadiness({ actor, env: previewEnv })).status, "ready");
 }
 
+async function configureAndDrillGa4() {
+  await configureGa4Preview({ actor, confirmation: ga4PreviewInstallConfirmation, env: ga4PreviewEnv });
+  await rollbackGa4Preview({ actor, confirmation: ga4PreviewRollbackConfirmation, action: "drill_disable", env: ga4PreviewEnv });
+  await rollbackGa4Preview({ actor, confirmation: ga4PreviewRollbackConfirmation, action: "drill_restore", env: ga4PreviewEnv });
+  assert.equal((await getGa4PreviewReadiness({ actor, env: ga4PreviewEnv })).status, "ready");
+}
+
 test("Preview identity guard rejects Production and shared database fingerprints", async () => {
   const state = createDb();
   install(state.db);
@@ -164,4 +187,133 @@ test("blocked-site probe produces no provider access and supports closeout evide
   assert.ok(state.controls.some((event) => event.eventType === "blocked_site_probe" && event.decision === "passed"));
   const closeout = await getSearchConsolePreviewCloseout({ actor, env: previewEnv });
   assert.equal(closeout.status, "pilot_incomplete");
+});
+
+test("GA4 Preview identity guard rejects Production shared database fingerprints and missing property", async () => {
+  const state = createDb();
+  install(state.db);
+  const production = await configureGa4Preview({ actor, confirmation: ga4PreviewInstallConfirmation, env: { ...ga4PreviewEnv, VERCEL_ENV: "production" } });
+  assert.equal(production.status, "blocked");
+  const shared = await configureGa4Preview({ actor, confirmation: ga4PreviewInstallConfirmation, env: { ...ga4PreviewEnv, UEIP_PRODUCTION_DATABASE_FINGERPRINT: "preview-db" } });
+  assert.equal(shared.status, "blocked");
+  const missingProperty = await configureGa4Preview({ actor, confirmation: ga4PreviewInstallConfirmation, env: { ...previewEnv, GOOGLE_ANALYTICS_PROPERTY_ID: "" } });
+  assert.equal(missingProperty.status, "blocked");
+  assert.ok(missingProperty.reasonCodes.includes("ga4_property_missing_or_invalid"));
+  assert.equal(state.getInstallation(), null);
+});
+
+test("GA4 installation is idempotent Preview-only and authorization requires rollback drill", async () => {
+  const state = createDb();
+  install(state.db);
+  await configureGa4Preview({ actor, confirmation: ga4PreviewInstallConfirmation, env: ga4PreviewEnv });
+  await configureGa4Preview({ actor, confirmation: ga4PreviewInstallConfirmation, env: ga4PreviewEnv });
+  assert.equal(state.getInstallation()?.connectorId, "google_analytics");
+  assert.equal(state.getInstallation()?.sandboxMode, true);
+  const blocked = await authorizeGa4Preview({ actor, confirmation: ga4PreviewAuthorizationConfirmation, env: ga4PreviewEnv });
+  assert.equal(blocked.status, "blocked");
+  await configureAndDrillGa4();
+  const authorized = await authorizeGa4Preview({ actor, confirmation: ga4PreviewAuthorizationConfirmation, env: ga4PreviewEnv });
+  assert.equal(authorized.status, "authorized");
+  assert.ok("nonce" in authorized && authorized.nonce.length > 20);
+  assert.equal(JSON.stringify(state.authorizations).includes(authorized.nonce), false);
+});
+
+test("GA4 readiness blocks without readonly scope credential verification or authorized property", async () => {
+  const state = createDb();
+  install(state.db);
+  await configureGa4Preview({ actor, confirmation: ga4PreviewInstallConfirmation, env: ga4PreviewEnv });
+  await rollbackGa4Preview({ actor, confirmation: ga4PreviewRollbackConfirmation, action: "drill_disable", env: ga4PreviewEnv });
+  await rollbackGa4Preview({ actor, confirmation: ga4PreviewRollbackConfirmation, action: "drill_restore", env: ga4PreviewEnv });
+  const installation = state.getInstallation()!;
+  installation.grantedScopes = [];
+  installation.permissionValidation = { authorizedPropertyIds: ["7777777"] };
+  const readiness = await getGa4PreviewReadiness({ actor, env: ga4PreviewEnv });
+  assert.equal(readiness.status, "blocked");
+  assert.ok(readiness.reasonCodes.includes("analytics_readonly_scope_missing"));
+  assert.ok(readiness.reasonCodes.includes("ga4_property_not_authorized"));
+});
+
+test("GA4 one nonce permits exactly one Preview read and duplicate submission cannot call again", async () => {
+  const state = createDb();
+  let providerRequests = 0;
+  install(state.db, async (url) => {
+    providerRequests += 1;
+    if (String(url).includes("oauth2.googleapis.com")) return new Response(JSON.stringify({ access_token: "access" }), { status: 200, headers: { "content-type": "application/json" } });
+    return new Response(JSON.stringify({ rows: [{ dimensionValues: [{ value: "/edmond" }], metricValues: [{ value: "10" }, { value: "7" }, { value: "18" }, { value: "0.4" }, { value: "1" }] }] }), { status: 200, headers: { "content-type": "application/json" } });
+  });
+  await configureAndDrillGa4();
+  const authorization = await authorizeGa4Preview({ actor, confirmation: ga4PreviewAuthorizationConfirmation, env: ga4PreviewEnv });
+  assert.equal(authorization.status, "authorized");
+  if (authorization.status !== "authorized") return;
+  const first = await runGa4PreviewPilot({ actor, confirmation: ga4PreviewReadConfirmation, operation: "read", nonce: authorization.nonce, env: ga4PreviewEnv, now: new Date("2026-07-15T12:00:00.000Z") });
+  const duplicate = await runGa4PreviewPilot({ actor, confirmation: ga4PreviewReadConfirmation, operation: "read", nonce: authorization.nonce, env: ga4PreviewEnv, now: new Date("2026-07-15T12:00:00.000Z") });
+  assert.equal(first.status, "completed");
+  assert.equal(duplicate.status, "locked");
+  assert.equal(providerRequests, 2);
+  assert.equal(state.getInstallation()?.enabled, false);
+  assert.equal(state.authorizations[0].providerCallCount, 1);
+  assert.equal(JSON.stringify({ first, audits: state.audits }).includes("access"), false);
+});
+
+test("GA4 blocked property probe produces no provider access and closeout requires complete evidence", async () => {
+  const state = createDb();
+  let calls = 0;
+  install(state.db, async () => { calls += 1; return new Response("{}", { status: 500, headers: { "content-type": "application/json" } }); });
+  await configureAndDrillGa4();
+  const probe = await runGa4PreviewPilot({ actor, confirmation: ga4PreviewProbeConfirmation, operation: "blocked_probe", env: ga4PreviewEnv });
+  assert.equal(probe.status, "completed");
+  assert.equal(probe.providerCalled, false);
+  assert.equal(calls, 0);
+  const closeout = await getGa4PreviewCloseout({ actor, env: ga4PreviewEnv });
+  assert.equal(closeout.status, "pilot_incomplete");
+  assert.equal(closeout.blockedProbeRecorded, true);
+});
+
+test("GA4 closeout certifies one normalized read with audit chain secret scan and production block", async () => {
+  const state = createDb();
+  install(state.db, async (url) => {
+    if (String(url).includes("oauth2.googleapis.com")) return new Response(JSON.stringify({ access_token: "access" }), { status: 200, headers: { "content-type": "application/json" } });
+    return new Response(JSON.stringify({ rows: [{ dimensionValues: [{ value: "/moore" }], metricValues: [{ value: "12" }, { value: "8" }, { value: "20" }, { value: "0.5" }, { value: "2" }] }] }), { status: 200, headers: { "content-type": "application/json" } });
+  });
+  await configureAndDrillGa4();
+  await runGa4PreviewPilot({ actor, confirmation: ga4PreviewProbeConfirmation, operation: "blocked_probe", env: ga4PreviewEnv });
+  const authorization = await authorizeGa4Preview({ actor, confirmation: ga4PreviewAuthorizationConfirmation, env: ga4PreviewEnv, now: new Date("2026-07-15T12:00:00.000Z") });
+  assert.equal(authorization.status, "authorized");
+  if (authorization.status !== "authorized") return;
+  const read = await runGa4PreviewPilot({ actor, confirmation: ga4PreviewReadConfirmation, operation: "read", nonce: authorization.nonce, env: ga4PreviewEnv, now: new Date("2026-07-15T12:00:00.000Z") });
+  assert.equal(read.status, "completed");
+  const closeout = await getGa4PreviewCloseout({ actor, env: ga4PreviewEnv });
+  assert.equal(closeout.status, "preview_pilot_verified");
+  assert.equal(closeout.providerCallCount, 1);
+  assert.equal(closeout.auditChainVerified, true);
+  assert.equal(closeout.expectedStagesPresent, true);
+  assert.equal(closeout.secretScanPassed, true);
+  assert.equal(closeout.normalizedContractVerified, true);
+  assert.equal(closeout.productionBlocked, true);
+  assert.equal(closeout.ceoApprovalRequired, true);
+  assert.ok(closeout.evidenceHash);
+  assert.equal(JSON.stringify(closeout).includes("oauth2.googleapis.com"), false);
+});
+
+test("GA4 completion audit failure quarantines operational certification read", async () => {
+  const state = createDb();
+  let providerRequests = 0;
+  install(state.db, async (url) => {
+    providerRequests += 1;
+    if (String(url).includes("oauth2.googleapis.com")) return new Response(JSON.stringify({ access_token: "access" }), { status: 200, headers: { "content-type": "application/json" } });
+    return new Response(JSON.stringify({ rows: [{ dimensionValues: [{ value: "/midwest-city" }], metricValues: [{ value: "5" }, { value: "4" }, { value: "8" }, { value: "0.3" }, { value: "0" }] }] }), { status: 200, headers: { "content-type": "application/json" } });
+  });
+  const originalCreate = (state.db.ueipGatewayAuditEvent as { create(args: { data: Record<string, unknown> }): Promise<Record<string, unknown>> }).create;
+  (state.db.ueipGatewayAuditEvent as { create(args: { data: Record<string, unknown> }): Promise<Record<string, unknown>> }).create = async (args) => {
+    if (args.data.stage === "completed") throw new Error("audit unavailable");
+    return originalCreate(args);
+  };
+  await configureAndDrillGa4();
+  const authorization = await authorizeGa4Preview({ actor, confirmation: ga4PreviewAuthorizationConfirmation, env: ga4PreviewEnv });
+  assert.equal(authorization.status, "authorized");
+  if (authorization.status !== "authorized") return;
+  const result = await runGa4PreviewPilot({ actor, confirmation: ga4PreviewReadConfirmation, operation: "read", nonce: authorization.nonce, env: ga4PreviewEnv, now: new Date("2026-07-15T12:00:00.000Z") });
+  assert.equal(result.status, "quarantined");
+  assert.equal(providerRequests, 2);
+  assert.equal(state.authorizations[0].providerCallCount, 1);
 });

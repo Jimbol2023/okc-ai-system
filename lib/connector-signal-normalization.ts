@@ -23,6 +23,8 @@ export type ConnectorBusinessSignal = {
   confidence: number;
   missingData: string[];
   safeNextAction: string;
+  sourceEvidenceHash: string | null;
+  observationWindow: { start: string | null; end: string | null };
   rawPayloadIncluded: false;
   providerCalled: false;
   liveExecutionAllowed: false;
@@ -164,6 +166,11 @@ export function normalizeConnectorSnapshotsToSignals(snapshots: BusinessDataSnap
       confidence: confidenceForFreshness(freshness),
       missingData: snapshot.dataGaps.slice(0, 6),
       safeNextAction: safeNextAction(signalType, snapshot),
+      sourceEvidenceHash: typeof snapshot.evidenceHash === "string" ? snapshot.evidenceHash : null,
+      observationWindow: {
+        start: snapshot.observationStart ? new Date(snapshot.observationStart).toISOString() : null,
+        end: snapshot.observationEnd ? new Date(snapshot.observationEnd).toISOString() : null,
+      },
       rawPayloadIncluded: false,
       providerCalled: false,
       liveExecutionAllowed: false,
@@ -245,6 +252,10 @@ export function createConnectorMemoryKpiReadiness(routedSignals: RoutedConnector
           aiEmployee: signal.aiEmployee,
           confidence: signal.confidence,
           freshness: signal.freshness,
+          evidenceHash: signal.sourceEvidenceHash ?? "not_persisted",
+          observationWindowStart: signal.observationWindow.start ?? "not_available",
+          observationWindowEnd: signal.observationWindow.end ?? "not_available",
+          recommendedReviewReason: signal.safeNextAction,
           persistenceAllowed: false,
         },
       },

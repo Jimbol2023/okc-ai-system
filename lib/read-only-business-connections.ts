@@ -4,7 +4,7 @@ import { listDbLeads } from "@/lib/leads-db";
 import { prisma } from "@/lib/prisma";
 import { publicSiteUrl } from "@/lib/public-seo";
 import { getRevenuePipelineSummary } from "@/lib/revenue-pipeline";
-import { createUeipExecutionContext, runUeipSearchConsoleGateway, type UeipExecutionContext } from "@/lib/ueip-runtime-gateway";
+import { createUeipExecutionContext, runUeipGa4Gateway, runUeipSearchConsoleGateway, type UeipExecutionContext } from "@/lib/ueip-runtime-gateway";
 
 const tenantId = "default";
 
@@ -219,6 +219,10 @@ function baseSnapshot(input: {
   records?: Array<Record<string, unknown>>;
   dataGaps?: string[];
   assumptions?: string[];
+  observationStart?: Date | string | null;
+  observationEnd?: Date | string | null;
+  traceId?: string | null;
+  reliability?: Record<string, unknown> | null;
   providerCalled?: boolean;
 }): BusinessDataSnapshotRecord {
   return {
@@ -246,6 +250,10 @@ function baseSnapshot(input: {
     published: false,
     crmMutated: false,
     liveExecutionAllowed: false,
+    observationStart: input.observationStart ?? null,
+    observationEnd: input.observationEnd ?? null,
+    traceId: input.traceId ?? null,
+    reliability: input.reliability ?? null,
   };
 }
 
@@ -527,48 +535,55 @@ async function searchConsoleIndexing(context: AdapterContext) {
 
 async function ga4Traffic(context: AdapterContext) {
   const propertyId = context.env.GOOGLE_ANALYTICS_PROPERTY_ID || "";
-  const response = await providerFetch(context, `https://analyticsdata.googleapis.com/v1beta/properties/${encodeURIComponent(propertyId)}:runReport`, {
-    method: "POST",
-    body: JSON.stringify({
-      dateRanges: [{ startDate: "7daysAgo", endDate: "yesterday" }],
-      dimensions: [{ name: "pagePath" }],
-      metrics: [{ name: "sessions" }, { name: "activeUsers" }, { name: "screenPageViews" }, { name: "conversions" }],
-      limit: "10",
-      orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
-    }),
+  const startDate = daysAgo(9, context.now);
+  const endDate = daysAgo(2, context.now);
+  const gateway = await runUeipGa4Gateway({
+    context: context.executionContext,
+    request: {
+      connectorId: "google_analytics",
+      capabilityKey: "analytics.page.performance.read",
+      capabilityVersion: "1.0.0",
+      parameters: { propertyId, startDate, endDate, rowLimit: 10 },
+      freshnessSeconds: 300,
+      idempotencyKey: `ga4:page:${propertyId}:${startDate}:${endDate}`,
+    },
+    env: context.env,
   });
-  const json = await readJson(response);
-  const rows = Array.isArray(json.rows) ? json.rows : [];
-  const records = rows.map((row) => {
-    const item = row as { dimensionValues?: Array<{ value?: string }>; metricValues?: Array<{ value?: string }> };
-
-    return {
-      pagePath: item.dimensionValues?.[0]?.value,
-      sessions: Number(item.metricValues?.[0]?.value ?? 0),
-      activeUsers: Number(item.metricValues?.[1]?.value ?? 0),
-      pageViews: Number(item.metricValues?.[2]?.value ?? 0),
-      conversions: Number(item.metricValues?.[3]?.value ?? 0),
-    };
-  });
+  const signals = gateway.ok ? gateway.result.signals : {};
+  const records = Array.isArray(signals.pages) ? (signals.pages as Array<Record<string, unknown>>) : [];
+  const sessions = typeof signals.sessions === "number" ? signals.sessions : 0;
+  const activeUsers = typeof signals.activeUsers === "number" ? signals.activeUsers : 0;
+  const pageViews = typeof signals.pageViews === "number" ? signals.pageViews : 0;
+  const keyEvents = typeof signals.keyEvents === "number" ? signals.keyEvents : 0;
 
   return baseSnapshot({
     snapshotDate: context.snapshotDate,
     provider: "Google Analytics",
     connectorId: "google_analytics",
     category: "google_analytics_traffic",
-    status: response.ok ? "fresh" : "partial",
-    sourceLabel: "ga4:data_api:readonly",
-    provenance: "GA4 Data API properties.runReport for traffic, conversions, and top pages.",
-    summary: `${records.reduce((sum, row) => sum + row.sessions, 0)} session(s) across top GA4 pages.`,
+    status: gateway.ok && gateway.providerCalled ? "fresh" : gateway.ok ? "partial" : "data_gap",
+    sourceLabel: gateway.ok ? gateway.result.sourceLabel : "ueip:ga4:page_performance:data_gap",
+    provenance: gateway.ok ? gateway.result.provenance : "UEIP blocked the GA4 provider read before a safe normalized result was available.",
+    freshness: gateway.ok ? gateway.result.freshness : context.now.toISOString(),
+    summary: `${sessions} session(s), ${activeUsers} active user(s), and ${keyEvents} key event(s) across top GA4 pages.`,
     metrics: {
-      sessions: records.reduce((sum, row) => sum + row.sessions, 0),
-      activeUsers: records.reduce((sum, row) => sum + row.activeUsers, 0),
-      conversions: records.reduce((sum, row) => sum + row.conversions, 0),
+      sessions,
+      activeUsers,
+      pageViews,
+      keyEvents,
+      conversions: keyEvents,
       topPages: records.length,
+      traceId: gateway.traceId,
+      reliability: gateway.ok ? gateway.result.reliability.status : gateway.healthStatus,
     },
     records,
-    dataGaps: response.ok ? [] : [`GA4 Data API returned status ${response.status}.`],
-    providerCalled: true,
+    dataGaps: gateway.ok ? gateway.result.dataGaps : gateway.dataGaps,
+    assumptions: ["GA4 data is admitted only after UEIP tenant, policy, audit, adapter, and normalization gates.", "GA4 key events are treated as conversion-readiness context, not proof of closed revenue."],
+    observationStart: gateway.ok ? gateway.result.observationWindow?.startDate ?? startDate : startDate,
+    observationEnd: gateway.ok ? gateway.result.observationWindow?.endDate ?? endDate : endDate,
+    traceId: gateway.traceId,
+    reliability: gateway.ok ? gateway.result.reliability : { status: gateway.healthStatus },
+    providerCalled: gateway.providerCalled,
   });
 }
 
@@ -712,7 +727,7 @@ export const readOnlyAdapterDefinitions: AdapterDefinition[] = [
   { id: "google_drive_documents", provider: "Google Workspace", connectorId: "google_drive", featureFlags: ["connector_live_reads", "connector_google"], requiredEnv: ["GOOGLE_OAUTH_CLIENT_ID", "GOOGLE_OAUTH_CLIENT_SECRET", "GOOGLE_OAUTH_REFRESH_TOKEN"], oauthProvider: "google", approvedRequests: [{ method: "GET", urlIncludes: "www.googleapis.com/drive/v3/files" }], run: driveDocuments },
   { id: "search_console_performance", provider: "Google Search Console", connectorId: "google_search_console", featureFlags: ["connector_live_reads", "connector_google", "executive_briefings", "ueip_gateway_enforcement", "ueip_search_console_runtime"], requiredEnv: ["GOOGLE_SEARCH_CONSOLE_SITE_URL"], oauthProvider: "google", approvedRequests: [{ method: "POST", urlIncludes: "www.googleapis.com/webmasters/v3/sites" }], ueipManaged: true, run: searchConsolePerformance },
   { id: "search_console_indexing", provider: "Google Search Console", connectorId: "google_search_console", featureFlags: ["connector_live_reads", "connector_google", "executive_briefings", "ueip_gateway_enforcement", "ueip_search_console_runtime"], requiredEnv: ["GOOGLE_SEARCH_CONSOLE_SITE_URL"], oauthProvider: "google", approvedRequests: [{ method: "POST", urlIncludes: "searchconsole.googleapis.com/v1/urlInspection/index:inspect" }], ueipManaged: true, run: searchConsoleIndexing },
-  { id: "google_analytics_traffic", provider: "Google Analytics", connectorId: "google_analytics", featureFlags: ["connector_live_reads", "connector_google", "executive_briefings"], requiredEnv: ["GOOGLE_OAUTH_CLIENT_ID", "GOOGLE_OAUTH_CLIENT_SECRET", "GOOGLE_OAUTH_REFRESH_TOKEN", "GOOGLE_ANALYTICS_PROPERTY_ID"], oauthProvider: "google", approvedRequests: [{ method: "POST", urlIncludes: "analyticsdata.googleapis.com/v1beta/properties" }], run: ga4Traffic },
+  { id: "google_analytics_traffic", provider: "Google Analytics", connectorId: "google_analytics", featureFlags: ["connector_live_reads", "connector_google", "executive_briefings", "ueip_gateway_enforcement", "ueip_ga4_runtime"], requiredEnv: ["GOOGLE_ANALYTICS_PROPERTY_ID"], oauthProvider: "google", approvedRequests: [{ method: "POST", urlIncludes: "analyticsdata.googleapis.com/v1beta/properties" }], ueipManaged: true, run: ga4Traffic },
   { id: "google_business_profile_performance", provider: "Google Business Profile", connectorId: "google_business_profile", featureFlags: ["connector_live_reads", "connector_google", "connector_marketing"], requiredEnv: ["GOOGLE_OAUTH_CLIENT_ID", "GOOGLE_OAUTH_CLIENT_SECRET", "GOOGLE_OAUTH_REFRESH_TOKEN", "GOOGLE_BUSINESS_PROFILE_LOCATION_ID"], oauthProvider: "google", approvedRequests: [{ method: "GET", urlIncludes: "businessprofileperformance.googleapis.com/v1/locations" }], run: googleBusinessProfilePerformance },
   { id: "google_business_profile_reviews", provider: "Google Business Profile", connectorId: "google_business_profile", featureFlags: ["connector_live_reads", "connector_google", "connector_marketing"], requiredEnv: ["GOOGLE_OAUTH_CLIENT_ID", "GOOGLE_OAUTH_CLIENT_SECRET", "GOOGLE_OAUTH_REFRESH_TOKEN", "GOOGLE_BUSINESS_PROFILE_LOCATION_ID"], oauthProvider: "google", approvedRequests: [{ method: "GET", urlIncludes: "mybusiness.googleapis.com/v4/accounts" }], run: googleBusinessProfileReviews },
   { id: "youtube_channel", provider: "YouTube", connectorId: "youtube", featureFlags: ["connector_live_reads", "connector_google", "connector_marketing"], requiredEnv: ["GOOGLE_OAUTH_CLIENT_ID", "GOOGLE_OAUTH_CLIENT_SECRET", "GOOGLE_OAUTH_REFRESH_TOKEN", "YOUTUBE_CHANNEL_ID"], oauthProvider: "google", approvedRequests: [{ method: "GET", urlIncludes: "www.googleapis.com/youtube/v3/search" }, { method: "GET", urlIncludes: "youtubeanalytics.googleapis.com/v2/reports" }], run: youtubeChannel },

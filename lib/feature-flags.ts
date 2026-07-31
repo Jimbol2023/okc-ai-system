@@ -29,6 +29,7 @@ export type FeatureFlagKey =
   | "ueip_gateway_enforcement"
   | "ueip_search_console_runtime"
   | "ueip_search_console_rollback"
+  | "ueip_ga4_runtime"
   | "professional_case_runtime"
   | "search_market_intelligence_runtime"
   | "search_market_intelligence_scheduling"
@@ -83,6 +84,13 @@ export const phase2FeatureFlags: FeatureFlag[] = [
     enabled: true,
     category: "connector",
     description: "Allows the certified Search Console adapter to run only after trusted Preview, tenant, installation, scope, health, and audit gates pass.",
+    requiresAdminApproval: true,
+  },
+  {
+    key: "ueip_ga4_runtime",
+    enabled: true,
+    category: "connector",
+    description: "Allows the certified GA4 adapter to run only after trusted Preview, tenant, installation, scope, health, and audit gates pass.",
     requiresAdminApproval: true,
   },
   {

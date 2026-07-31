@@ -15,7 +15,7 @@ import type { StoredLead } from "@/lib/leads-storage";
 import { listMarketingWorkflow } from "@/lib/marketing-workflow";
 import { createMarketingPlatformRegistryReport, type MarketingPlatformRegistryReport } from "@/lib/marketing-platform-registry";
 import { createProviderReadinessReport } from "@/lib/provider-readiness";
-import { getLatestLiveMorningBrief } from "@/lib/read-only-business-connections";
+import { getLatestBusinessSnapshots, getLatestLiveMorningBrief } from "@/lib/read-only-business-connections";
 import { getReferralDashboard } from "@/lib/referrals";
 import { getRevenuePipelineSummary } from "@/lib/revenue-pipeline";
 import { getSystemHealth } from "@/lib/system-health";
@@ -1397,7 +1397,7 @@ export function createExecutiveWorkforceReport({
 }
 
 export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboardReport> {
-  const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, memoryEventsResult, referralResult, activationResult, departmentIntelligenceResult, liveMorningBriefResult, dailyMissionResult, connectorActivationResult, systemHealth, recentSystemActivity] = await Promise.all([
+  const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, memoryEventsResult, referralResult, activationResult, departmentIntelligenceResult, liveMorningBriefResult, businessSnapshotsResult, dailyMissionResult, connectorActivationResult, systemHealth, recentSystemActivity] = await Promise.all([
     loadPartialData("Lead", listDbLeads, [] as StoredLead[]),
     loadPartialData("Marketing workflow", listMarketingWorkflow, null),
     loadPartialData("Finance", listFinanceEntries, []),
@@ -1407,6 +1407,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
     loadPartialData("Company activation", getCompanyActivationSnapshot, null),
     loadPartialData("Department Intelligence", getDepartmentIntelligenceReport, null),
     loadPartialData("Live Morning Brief", getLatestLiveMorningBrief, null),
+    loadPartialData("Business snapshots", () => getLatestBusinessSnapshots(40), []),
     loadPartialData("Daily Mission", getDailyMission, null),
     loadPartialData("Connector activation", createConnectorActivationReport, null),
     getSystemHealth().catch(() => null),
@@ -1420,6 +1421,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
   const referralSummary = referralResult.data?.summary ?? null;
   const departmentIntelligence = departmentIntelligenceResult.data;
   const liveMorningBrief = liveMorningBriefResult.data;
+  const businessSnapshots = businessSnapshotsResult.data;
   const dailyMission = dailyMissionResult.data;
   const connectorActivation = connectorActivationResult.data;
   const today = startOfToday();
@@ -1490,6 +1492,17 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
         : "Daily Startup is preparing the CEO review agenda without external execution.",
     ],
   });
+  const ga4Snapshot = businessSnapshots.find((snapshot) => snapshot.connectorId === "google_analytics" && snapshot.category === "google_analytics_traffic");
+  const ga4Metric = (key: string) => {
+    const value = ga4Snapshot?.metrics[key];
+    return typeof value === "number" && Number.isFinite(value) ? value : 0;
+  };
+  const ga4Sessions = ga4Metric("sessions");
+  const ga4ActiveUsers = ga4Metric("activeUsers");
+  const ga4PageViews = ga4Metric("pageViews");
+  const ga4KeyEvents = ga4Metric("keyEvents") || ga4Metric("conversions");
+  const ga4TopPages = ga4Metric("topPages");
+  const ga4DataGap = ga4Snapshot?.dataGaps[0] ?? null;
   const widgets: ExecutiveWidget[] = [
     {
         id: "new_leads_today",
@@ -1566,6 +1579,30 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
         status: websiteSeoReady ? "good" : "watch",
       },
       {
+        id: "ga4_sessions",
+        label: "GA4 sessions",
+        value: ga4Snapshot ? ga4Sessions : "Missing",
+        detail: ga4Snapshot ? `${ga4ActiveUsers} active user(s), ${ga4PageViews} page view(s). Read-only analytics evidence only.` : "GA4 governed evidence is not available yet.",
+        href: "/dashboard/search-intelligence",
+        status: ga4Snapshot ? (ga4DataGap ? "watch" : "good") : "missing",
+      },
+      {
+        id: "ga4_top_pages",
+        label: "GA4 top pages",
+        value: ga4Snapshot ? ga4TopPages : "Missing",
+        detail: ga4Snapshot ? "Top-page evidence is advisory and cannot publish, edit the website, or create tasks." : "Run governed read-only business sync after GA4 readiness is approved.",
+        href: "/dashboard/search-intelligence",
+        status: ga4TopPages > 0 ? "good" : ga4Snapshot ? "watch" : "missing",
+      },
+      {
+        id: "ga4_key_events",
+        label: "GA4 key-event readiness",
+        value: ga4Snapshot ? ga4KeyEvents : "Missing",
+        detail: ga4DataGap ?? "Key events are conversion-readiness context only, not proof of closed revenue.",
+        href: "/dashboard/revenue",
+        status: ga4Snapshot ? (ga4KeyEvents > 0 ? "watch" : "missing") : "missing",
+      },
+      {
         id: "finance_kpis",
         label: "Cash flow",
         value: formatFinanceDollars(financeKpis.cashFlowCents),
@@ -1583,7 +1620,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
       },
     ];
   const recommendedPriorities = createExecutiveRecommendationsFromBi(businessIntelligence);
-  const todayPriorityIds = new Set(["follow_ups_due", "revenue_pipeline", "offer_ready", "marketing_approval", "website_seo"]);
+  const todayPriorityIds = new Set(["follow_ups_due", "revenue_pipeline", "offer_ready", "marketing_approval", "website_seo", "ga4_key_events"]);
   const todayPriorities = widgets.filter((widget) => todayPriorityIds.has(widget.id));
   const kpiInterpretations = createKpiInterpretations(businessIntelligence);
   const localMorningBrief = createMorningBrief({
@@ -1673,11 +1710,13 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
       ...businessIntelligence.dataGaps,
       departmentIntelligenceResult.gap,
       liveMorningBriefResult.gap,
+      businessSnapshotsResult.gap,
       dailyMissionResult.gap,
       connectorActivationResult.gap,
       ...(dailyMission?.dataGaps ?? []),
       ...(connectorActivation?.dataGaps ?? []),
       ...(liveMorningBrief?.dataGaps ?? []),
+      ...(ga4Snapshot?.dataGaps ?? []),
       ...financeKpis.missingData,
       providerMissingCount > 0 ? `${providerMissingCount} provider readiness credential set(s) are missing.` : "",
     ].filter(Boolean))],
