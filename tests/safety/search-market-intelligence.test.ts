@@ -23,13 +23,15 @@ test("materiality requires state, cohort, or bounded metric movement", () => {
 
 test("packet assembly rejects cross-tenant evidence and performs no provider or external action", () => {
   assert.throws(() => createSearchMarketIntelligencePacket({ tenantId: "tenant-a", packetKind: "monday", snapshots: [snapshot({ tenantId: "tenant-b" })] }), /cross_tenant_search_evidence_blocked/);
-  const packet = createSearchMarketIntelligencePacket({ tenantId: "tenant-a", packetKind: "monday", snapshots: [snapshot(), snapshot({ connectorId: "google_analytics", category: "google_analytics_traffic", sourceLabel: "ueip:ga4:test", summary: "GA4 sessions and key-event readiness are visible.", metrics: { sessions: 12, activeUsers: 8, keyEvents: 2 }, evidenceHash: "hash-ga4" }), snapshot({ connectorId: "google_business_profile", category: "google_business_profile_performance", sourceLabel: "ueip:gbp:test", summary: "GBP local visibility evidence is visible.", metrics: { metricSeries: 2, callClicks: 1 }, evidenceHash: "hash-gbp" })], now: new Date("2026-07-15T12:00:00.000Z") });
+  const packet = createSearchMarketIntelligencePacket({ tenantId: "tenant-a", packetKind: "monday", snapshots: [snapshot(), snapshot({ connectorId: "google_analytics", category: "google_analytics_traffic", sourceLabel: "ueip:ga4:test", summary: "GA4 sessions and key-event readiness are visible.", metrics: { sessions: 12, activeUsers: 8, keyEvents: 2 }, evidenceHash: "hash-ga4" }), snapshot({ connectorId: "google_business_profile", category: "google_business_profile_performance", sourceLabel: "ueip:gbp:test", summary: "GBP local visibility evidence is visible.", metrics: { metricSeries: 2, callClicks: 1 }, evidenceHash: "hash-gbp" }), snapshot({ connectorId: "google_business_profile", category: "google_business_profile_reviews", sourceLabel: "ueip:gbp:reviews:test", summary: "GBP review evidence is visible.", metrics: { reviews: 3 }, evidenceHash: "hash-gbp-reviews" })], now: new Date("2026-07-15T12:00:00.000Z") });
   assert.equal(packet.deliverables.length, 6);
-  assert.equal(packet.topCeoDecisions.length, 3);
+  assert.ok(packet.topCeoDecisions.length >= 3);
   assert.ok(packet.deliverables.some((deliverable) => deliverable.sourceReferences.includes("ueip:ga4:test")));
   assert.ok(packet.deliverables.some((deliverable) => deliverable.sourceReferences.includes("ueip:gbp:test")));
   assert.ok(packet.deliverables.some((deliverable) => deliverable.verifiedObservations.some((observation) => /GA4 read-only evidence/i.test(observation))));
   assert.ok(packet.deliverables.some((deliverable) => deliverable.verifiedObservations.some((observation) => /GBP read-only evidence/i.test(observation))));
+  assert.ok(packet.deliverables.some((deliverable) => deliverable.verifiedObservations.some((observation) => /Cross-connector visited-page signal/i.test(observation))));
+  assert.ok(packet.deliverables.some((deliverable) => deliverable.verifiedObservations.some((observation) => /Cross-connector local-trust signal/i.test(observation))));
   assert.ok(!packet.dataGaps.some((gap) => gap.includes("GA4 evidence is unavailable")));
   assert.ok(!packet.dataGaps.some((gap) => gap.includes("Business Profile")));
   assert.equal(packet.providerCalledByAssembly, false);

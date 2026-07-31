@@ -1,14 +1,16 @@
 import { NextResponse } from "next/server";
 
-import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse } from "@/lib/auth";
 import { createAiWorkforceReport } from "@/lib/ai-workforce";
 import { createConnectorActivationGate } from "@/lib/connector-activation-gate";
 import { createConnectorSignalFoundationReportFromInputs } from "@/lib/connector-signal-normalization";
+import { createCrossConnectorIntelligenceReport } from "@/lib/cross-connector-intelligence";
 import { createDailyRevenueOperatingLoop } from "@/lib/daily-revenue-operating-loop";
 import { createDepartmentOperatingSystemReportFromInputs } from "@/lib/department-operating-system";
 import { listDbLeads } from "@/lib/leads-db";
 import { createMarketCustomerIntelligenceFoundationReportFromInputs } from "@/lib/market-customer-intelligence-foundation";
 import { createReadOnlyConnectorAdapterReport } from "@/lib/read-only-connector-adapters";
+import { getLatestTenantBusinessSnapshots } from "@/lib/read-only-business-connections";
 import { createRevenueCommandCenter } from "@/lib/revenue-spine";
 import {
   assertRevenueIntelligenceOpportunityEngineSafety,
@@ -20,9 +22,8 @@ export const runtime = "nodejs";
 
 export async function GET(request: Request) {
   try {
-    if (!(await isAuthenticatedRequest(request))) {
-      return getUnauthorizedApiResponse();
-    }
+    const actor = await getAuthenticatedRequestContext(request);
+    if (!actor) return getUnauthorizedApiResponse();
 
     const [gate, workforce, dailyLoop, leads] = await Promise.all([
       createConnectorActivationGate(),
@@ -48,10 +49,16 @@ export async function GET(request: Request) {
       generatedAt: gate.generatedAt,
     });
     const revenueCommandCenter = await createRevenueCommandCenter(leads);
+    const contractedSnapshots = (await getLatestTenantBusinessSnapshots(actor.tenantId, 200))
+      .filter((snapshot) => snapshot.contractVersion === "business-data-snapshot-v1" && typeof snapshot.evidenceHash === "string" && snapshot.evidenceHash.length > 0);
+    const crossConnectorIntelligence = contractedSnapshots.length > 0
+      ? createCrossConnectorIntelligenceReport({ tenantId: actor.tenantId, snapshots: contractedSnapshots, generatedAt: gate.generatedAt })
+      : null;
     const report = createRevenueIntelligenceOpportunityEngineReportFromInputs({
       departmentOperatingSystem,
       marketCustomerIntelligence,
       revenueCommandCenter,
+      crossConnectorIntelligence,
       generatedAt: gate.generatedAt,
     });
     assertRevenueIntelligenceOpportunityEngineSafety(report);
@@ -60,6 +67,7 @@ export async function GET(request: Request) {
       ...report,
       upstreamSprints: ["10E", "11"],
       connectorAdapterSafety: adapterReport.safety,
+      crossConnectorIntelligence,
     });
   } catch (error) {
     console.error("GET /api/company/revenue-intelligence failed:", error);

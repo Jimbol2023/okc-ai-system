@@ -3,6 +3,7 @@ import { test } from "node:test";
 
 import { createAiWorkforceReportFromInputs } from "@/lib/ai-workforce";
 import { createConnectorSignalFoundationReportFromInputs } from "@/lib/connector-signal-normalization";
+import { createCrossConnectorIntelligenceReport } from "@/lib/cross-connector-intelligence";
 import { createDailyRevenueOperatingLoopFromInputs } from "@/lib/daily-revenue-operating-loop";
 import { createDepartmentOperatingSystemReportFromInputs } from "@/lib/department-operating-system";
 import { createMarketCustomerIntelligenceFoundationReportFromInputs } from "@/lib/market-customer-intelligence-foundation";
@@ -23,7 +24,11 @@ function snapshot(input: {
   dataGaps?: string[];
 }): BusinessDataSnapshotRecord {
   return {
+    tenantId: "tenant-a",
     snapshotDate: generatedAt,
+    version: 1,
+    contractVersion: "business-data-snapshot-v1",
+    evidenceHash: `hash-${input.connectorId}-${input.category}`,
     provider: "Google",
     connectorId: input.connectorId,
     category: input.category,
@@ -48,28 +53,35 @@ function snapshot(input: {
 function report() {
   const workforce = createAiWorkforceReportFromInputs({ generatedAt });
   const dailyLoop = createDailyRevenueOperatingLoopFromInputs({ workforce, generatedAt });
+  const snapshots = [
+    snapshot({
+      connectorId: "google_analytics",
+      category: "google_analytics_traffic",
+      status: "partial",
+      summary: "GA4 conversion trend is visible as read-only context.",
+    }),
+    snapshot({
+      connectorId: "google_search_console",
+      category: "search_console_performance",
+      status: "partial",
+      summary: "Search Console seller intent query group is visible as read-only context.",
+    }),
+    snapshot({
+      connectorId: "google_business_profile",
+      category: "google_business_profile_performance",
+      status: "data_gap",
+      summary: "GBP live performance remains unavailable.",
+      dataGaps: ["GBP live read is not approved."],
+    }),
+    snapshot({
+      connectorId: "google_business_profile",
+      category: "google_business_profile_reviews",
+      status: "partial",
+      summary: "GBP review readiness is visible as read-only context.",
+    }),
+  ];
   const connectorSignals = createConnectorSignalFoundationReportFromInputs({
-    snapshots: [
-      snapshot({
-        connectorId: "google_analytics",
-        category: "google_analytics_traffic",
-        status: "partial",
-        summary: "GA4 conversion trend is visible as read-only context.",
-      }),
-      snapshot({
-        connectorId: "google_search_console",
-        category: "search_console_performance",
-        status: "partial",
-        summary: "Search Console seller intent query group is visible as read-only context.",
-      }),
-      snapshot({
-        connectorId: "google_business_profile",
-        category: "google_business_profile_performance",
-        status: "data_gap",
-        summary: "GBP live performance remains unavailable.",
-        dataGaps: ["GBP live read is not approved."],
-      }),
-    ],
+    snapshots,
     workforce,
     dailyLoop,
     generatedAt,
@@ -84,10 +96,16 @@ function report() {
     intelligence: marketCustomerIntelligence,
     generatedAt,
   });
+  const crossConnectorIntelligence = createCrossConnectorIntelligenceReport({
+    tenantId: "tenant-a",
+    snapshots,
+    generatedAt,
+  });
 
   return createRevenueIntelligenceOpportunityEngineReportFromInputs({
     departmentOperatingSystem,
     marketCustomerIntelligence,
+    crossConnectorIntelligence,
     generatedAt,
   });
 }
@@ -104,6 +122,15 @@ test("Sprint 11 missions and telemetry convert into advisory revenue opportuniti
   assert.ok(engine.opportunities.every((opportunity) => opportunity.advisoryOnly));
   assert.ok(engine.opportunities.every((opportunity) => opportunity.providerCalled === false));
   assert.doesNotThrow(() => assertRevenueIntelligenceOpportunityEngineSafety(engine));
+});
+
+test("Revenue Intelligence consumes Sprint 26 cross-connector opportunities as advisory context", () => {
+  const engine = report();
+  assert.ok(engine.opportunities.some((opportunity) => opportunity.sourceLabels.some((label) => label.startsWith("sprint-26:"))));
+  assert.ok(engine.opportunities.some((opportunity) => /visited pages|local discovery|search demand/i.test(opportunity.title)));
+  assert.equal(engine.safety.providerCalled, false);
+  assert.equal(engine.safety.crmMutationAllowed, false);
+  assert.equal(engine.safety.outreachAllowed, false);
 });
 
 test("opportunity scoring is deterministic transparent and explainable", () => {

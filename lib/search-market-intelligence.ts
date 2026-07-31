@@ -1,4 +1,5 @@
 import type { BusinessDataSnapshotRecord } from "@/lib/read-only-business-connections";
+import { createCrossConnectorIntelligenceReport } from "@/lib/cross-connector-intelligence";
 
 export const searchMarketDeliverableIds = [
   "seo-growth-plan",
@@ -123,13 +124,17 @@ export function createSearchMarketIntelligencePacket(input: { tenantId: string; 
   const gsc = input.snapshots.filter((snapshot) => snapshot.connectorId === "google_search_console");
   const ga4 = input.snapshots.find((snapshot) => snapshot.connectorId === "google_analytics");
   const gbp = input.snapshots.find((snapshot) => snapshot.connectorId === "google_business_profile");
-  const sourceReferences = input.snapshots.map((snapshot) => snapshot.sourceLabel).filter(Boolean);
+  const crossConnector = createCrossConnectorIntelligenceReport({ tenantId: input.tenantId, snapshots: input.snapshots, generatedAt: evidenceCutoff });
+  const sourceReferences = [...new Set([...input.snapshots.map((snapshot) => snapshot.sourceLabel).filter(Boolean), ...crossConnector.evidenceReferences.map((reference) => reference.sourceLabel)])];
   const verifiedObservations = [
     ...gsc.filter((snapshot) => snapshot.status === "fresh" || snapshot.status === "partial").map((snapshot) => snapshot.summary),
     ...(ga4 && (ga4.status === "fresh" || ga4.status === "partial") ? [`GA4 read-only evidence: ${ga4.summary}`] : []),
     ...(gbp && (gbp.status === "fresh" || gbp.status === "partial") ? [`GBP read-only evidence: ${gbp.summary}`] : []),
+    ...crossConnector.foundUsSignals.map((signal) => `Cross-connector found-us signal: ${signal.summary}`),
+    ...crossConnector.visitedPageSignals.map((signal) => `Cross-connector visited-page signal: ${signal.summary}`),
+    ...crossConnector.localTrustSignals.map((signal) => `Cross-connector local-trust signal: ${signal.summary}`),
   ];
-  const dataGaps = [...new Set([...input.snapshots.flatMap((snapshot) => snapshot.dataGaps), ...(!ga4 ? ["GA4 evidence is unavailable; conversion and attribution conclusions are blocked."] : []), ...(!gbp ? ["Google Business Profile evidence is unavailable; local visibility conclusions are blocked."] : []), ...(gsc.length === 0 ? ["Search Console evidence is unavailable."] : [])])];
+  const dataGaps = [...new Set([...input.snapshots.flatMap((snapshot) => snapshot.dataGaps), ...crossConnector.dataGaps, ...(!ga4 ? ["GA4 evidence is unavailable; conversion and attribution conclusions are blocked."] : []), ...(!gbp ? ["Google Business Profile evidence is unavailable; local visibility conclusions are blocked."] : []), ...(gsc.length === 0 ? ["Search Console evidence is unavailable."] : [])])];
   const common = { schemaVersion: "search-market-deliverable-v1" as const, independentReviewerId: "marketing-quality-reviewer" as const, observationWindow: observationWindows, evidenceCutoff, sourceReferences, provenance: input.snapshots.map((snapshot) => snapshot.provenance), verifiedObservations, assumptions: ["No traffic, ranking, conversion, or revenue outcome is forecast.", "GA4 key-event evidence is conversion-readiness context only, not proof of closed revenue.", "GBP evidence is local visibility and review-readiness context only; it does not authorize profile changes or replies."], conflicts: [], missingData: dataGaps, qaStatus: "qa_required" as const, authorityLimitations: ["Internal advisory analysis only.", "No publishing, website changes, provider writes, CRM mutations, outreach, or workflow execution."], noActionFallback: "Retain the current state and request verified evidence; connector availability never creates a fact or authority." };
   const decisions = verifiedObservations.slice(0, 5).map((observation, index) => ({ priority: index + 1, title: `Review verified search observation ${index + 1}`, rationale: observation, evidenceReferences: sourceReferences, humanDecisionRequired: true as const }));
   const deliverables = searchMarketDeliverableIds.map((deliverableId) => ({ ...common, deliverableId, responsibleProfessionalId: ownerByDeliverable[deliverableId], recommendedManualDecision: decisions[0]?.title ?? "Request verified Search Console evidence before making a search decision." }));

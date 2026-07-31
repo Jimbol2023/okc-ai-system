@@ -1,5 +1,6 @@
 import type { AiWorkforceDepartmentName } from "@/lib/ai-workforce";
 import type { DepartmentMission, DepartmentOperatingSystemReport } from "@/lib/department-operating-system";
+import type { CrossConnectorIntelligenceReportV1 } from "@/lib/cross-connector-intelligence";
 import {
   assertEnterpriseOpportunityContractSafety,
   createEnterpriseOpportunitiesFromRevenueEngine,
@@ -166,6 +167,7 @@ export type RevenueIntelligenceOpportunityEngineInput = {
   departmentOperatingSystem: DepartmentOperatingSystemReport;
   marketCustomerIntelligence: MarketCustomerIntelligenceFoundationReport;
   revenueCommandCenter?: RevenueCommandCenterReport | null;
+  crossConnectorIntelligence?: CrossConnectorIntelligenceReportV1 | null;
   generatedAt?: string;
 };
 
@@ -343,6 +345,30 @@ function opportunitiesFromMarketIntelligence(report: MarketCustomerIntelligenceF
     }));
 }
 
+function opportunitiesFromCrossConnectorIntelligence(report: CrossConnectorIntelligenceReportV1 | null | undefined, generatedAt: string): AdvisoryRevenueOpportunity[] {
+  if (!report) return [];
+
+  return report.highestBusinessOpportunities.slice(0, 4).map((opportunity) => createOpportunity({
+    generatedAt,
+    sourceLabels: [`sprint-26:${opportunity.id}`, ...opportunity.evidenceReferences],
+    originatingDepartment: opportunity.opportunityType === "page_conversion_opportunity" ? "Marketing" : "SEO",
+    opportunityType: opportunity.opportunityType === "data_quality_opportunity" ? "bottleneck_recovery_opportunity" : "marketing_conversion_opportunity",
+    title: opportunity.title,
+    revenueHypothesis: opportunity.businessQuestion,
+    supportingEvidence: [opportunity.recommendedInternalReview, ...opportunity.supportingSignals],
+    missingData: opportunity.missingData,
+    confidence: opportunity.confidence,
+    expectedValue: opportunity.score,
+    urgency: opportunity.opportunityType === "data_quality_opportunity" ? 62 : 70,
+    estimatedEffort: opportunity.missingData.length > 0 ? 64 : 42,
+    dataCompleteness: opportunity.missingData.length > 0 ? Math.max(30, 78 - opportunity.missingData.length * 8) : 82,
+    governanceRisk: 35,
+    departmentReadiness: 68,
+    bottleneckSeverity: opportunity.missingData.length * 12,
+    safeNextAction: opportunity.recommendedInternalReview,
+  }));
+}
+
 function priorityFromScore(score: number): RevenueOpportunityPriority {
   if (score >= 82) return "critical";
   if (score >= 68) return "high";
@@ -461,6 +487,7 @@ export function createRevenueIntelligenceOpportunityEngineReportFromInputs(input
     ...opportunitiesFromMissions(input, generatedAt),
     ...opportunitiesFromRevenueCommandCenter(input.revenueCommandCenter, generatedAt),
     ...opportunitiesFromMarketIntelligence(input.marketCustomerIntelligence, generatedAt),
+    ...opportunitiesFromCrossConnectorIntelligence(input.crossConnectorIntelligence, generatedAt),
   ];
   const prioritizedQueue = prioritize(opportunities);
   const enterpriseOpportunities = createEnterpriseOpportunitiesFromRevenueEngine({ opportunities, prioritizedQueue });

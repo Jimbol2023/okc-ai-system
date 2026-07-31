@@ -445,10 +445,22 @@ describe("daily startup", () => {
       metrics: { reviews: 6, reviewRows: 6 },
       records: [{ reviewId: "r1", starRating: "FIVE" }],
     };
+    const searchSnapshot: BusinessDataSnapshotRecord = {
+      ...ga4Snapshot,
+      evidenceHash: "gsc-dashboard-hash",
+      provider: "Google Search Console",
+      connectorId: "google_search_console",
+      category: "search_console_performance",
+      sourceLabel: "ueip:gsc:search_analytics:readonly",
+      provenance: "Search Console dashboard fixture.",
+      summary: "Search Console found-us evidence is visible.",
+      metrics: { impressions: 120, clicks: 9 },
+      records: [{ query: "sell inherited house okc", clicks: 4 }],
+    };
     const restore = setReadOnlyBusinessConnectionsDbForTest({
       businessDataSnapshot: {
         async upsert() { return ga4Snapshot; },
-        async findMany() { return [ga4Snapshot, gbpPerformanceSnapshot, gbpReviewsSnapshot]; },
+        async findMany() { return [searchSnapshot, ga4Snapshot, gbpPerformanceSnapshot, gbpReviewsSnapshot]; },
       },
       dailyBriefingSnapshot: {
         async create() { return {}; },
@@ -463,10 +475,15 @@ describe("daily startup", () => {
       assert.ok(widgetIds.includes("ga4_key_events"));
       assert.ok(widgetIds.includes("gbp_local_visibility"));
       assert.ok(widgetIds.includes("gbp_reviews"));
+      assert.ok(widgetIds.includes("cross_connector_funnel"));
+      assert.ok(widgetIds.includes("cross_connector_opportunity"));
+      assert.ok(widgetIds.includes("cross_connector_gaps"));
       assert.equal(report.widgets.find((widget) => widget.id === "ga4_sessions")?.value, 42);
       assert.equal(report.widgets.find((widget) => widget.id === "ga4_key_events")?.value, 3);
       assert.equal(report.widgets.find((widget) => widget.id === "gbp_local_visibility")?.value, 2);
       assert.equal(report.widgets.find((widget) => widget.id === "gbp_reviews")?.value, 6);
+      assert.equal(report.widgets.find((widget) => widget.id === "cross_connector_funnel")?.value, 6);
+      assert.equal(report.widgets.find((widget) => widget.id === "cross_connector_gaps")?.value, 0);
       assert.equal(JSON.stringify(report.widgets).includes("provider_write"), false);
       assert.equal(report.safetyFlags.outreachSent, false);
       assert.equal(report.safetyFlags.adsCreated, false);

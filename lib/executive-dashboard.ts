@@ -4,6 +4,7 @@ import { getCompanyActivationSnapshot } from "@/lib/company-activation";
 import { createInheritedPropertyCampaignDirective, getCompanyDepartmentRegistry, runCompanyOrchestrator, startDailyCompanyOperatingSession, type AiDepartmentName, type CompanyOrchestratorReport, type DailyCompanyOperatingSession } from "@/lib/company-orchestrator";
 import { createConnectorActivationReport, type ConnectorActivationReport } from "@/lib/connector-activation-report";
 import { createContentIntelligenceReport, type ContentIntelligenceReport } from "@/lib/content-intelligence";
+import { createCrossConnectorIntelligenceReport, type CrossConnectorIntelligenceReportV1 } from "@/lib/cross-connector-intelligence";
 import { getDailyMission, type DailyMission } from "@/lib/daily-mission";
 import { getDepartmentIntelligenceReport, type DepartmentIntelligenceReport } from "@/lib/department-intelligence";
 import { createExecutiveLearningRecommendations, type ExecutiveLearningMemoryEvent, type ExecutiveLearningRecommendation } from "@/lib/executive-learning";
@@ -1514,6 +1515,18 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
   const gbpDirectionRequests = gbpMetric(gbpPerformanceSnapshot, "directionRequests");
   const gbpReviewCount = gbpMetric(gbpReviewsSnapshot, "reviews");
   const gbpDataGap = gbpPerformanceSnapshot?.dataGaps[0] ?? gbpReviewsSnapshot?.dataGaps[0] ?? null;
+  const crossConnectorReport = (() => {
+    const contracted = businessSnapshots.filter((snapshot) => snapshot.contractVersion === "business-data-snapshot-v1" && typeof snapshot.evidenceHash === "string" && snapshot.evidenceHash.length > 0);
+    try {
+      return contracted.length > 0 ? createCrossConnectorIntelligenceReport({ tenantId: contracted[0].tenantId, snapshots: contracted, generatedAt: today.toISOString() }) : null;
+    } catch {
+      return null;
+    }
+  })() as CrossConnectorIntelligenceReportV1 | null;
+  const topCrossConnectorOpportunity = crossConnectorReport?.highestBusinessOpportunities[0] ?? null;
+  const crossConnectorSignalCount = crossConnectorReport
+    ? crossConnectorReport.foundUsSignals.length + crossConnectorReport.visitedPageSignals.length + crossConnectorReport.engagementSignals.length + crossConnectorReport.exitOrDropoffSignals.length + crossConnectorReport.localTrustSignals.length
+    : 0;
   const widgets: ExecutiveWidget[] = [
     {
         id: "new_leads_today",
@@ -1630,6 +1643,30 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
         status: gbpReviewsSnapshot ? (gbpReviewCount > 0 ? "watch" : "missing") : "missing",
       },
       {
+        id: "cross_connector_funnel",
+        label: "Cross-connector funnel",
+        value: crossConnectorReport ? crossConnectorSignalCount : "Missing",
+        detail: crossConnectorReport ? "Found, visited, engagement, exit/drop-off, and local trust evidence assembled for review only." : "Cross-connector evidence is not ready yet.",
+        href: "/dashboard/search-intelligence",
+        status: crossConnectorReport ? (crossConnectorReport.dataGaps.length > 0 ? "watch" : "good") : "missing",
+      },
+      {
+        id: "cross_connector_opportunity",
+        label: "Top connector opportunity",
+        value: topCrossConnectorOpportunity ? topCrossConnectorOpportunity.score : "Missing",
+        detail: topCrossConnectorOpportunity?.title ?? "No cross-connector opportunity is ready for review yet.",
+        href: "/dashboard/revenue",
+        status: topCrossConnectorOpportunity ? (topCrossConnectorOpportunity.missingData.length > 0 ? "watch" : "good") : "missing",
+      },
+      {
+        id: "cross_connector_gaps",
+        label: "Connector story gaps",
+        value: crossConnectorReport ? crossConnectorReport.dataGaps.length : "Missing",
+        detail: crossConnectorReport?.dataGaps[0] ?? "Missing evidence remains a review gap, not permission to fetch or act.",
+        href: "/dashboard/operations",
+        status: crossConnectorReport ? (crossConnectorReport.dataGaps.length > 0 ? "watch" : "good") : "missing",
+      },
+      {
         id: "finance_kpis",
         label: "Cash flow",
         value: formatFinanceDollars(financeKpis.cashFlowCents),
@@ -1647,7 +1684,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
       },
     ];
   const recommendedPriorities = createExecutiveRecommendationsFromBi(businessIntelligence);
-  const todayPriorityIds = new Set(["follow_ups_due", "revenue_pipeline", "offer_ready", "marketing_approval", "website_seo", "ga4_key_events", "gbp_local_visibility"]);
+  const todayPriorityIds = new Set(["follow_ups_due", "revenue_pipeline", "offer_ready", "marketing_approval", "website_seo", "ga4_key_events", "gbp_local_visibility", "cross_connector_opportunity"]);
   const todayPriorities = widgets.filter((widget) => todayPriorityIds.has(widget.id));
   const kpiInterpretations = createKpiInterpretations(businessIntelligence);
   const localMorningBrief = createMorningBrief({
@@ -1746,6 +1783,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
       ...(ga4Snapshot?.dataGaps ?? []),
       ...(gbpPerformanceSnapshot?.dataGaps ?? []),
       ...(gbpReviewsSnapshot?.dataGaps ?? []),
+      ...(crossConnectorReport?.dataGaps ?? ["Cross-connector intelligence is unavailable until contracted Search Console, GA4, and GBP evidence is present."]),
       ...financeKpis.missingData,
       providerMissingCount > 0 ? `${providerMissingCount} provider readiness credential set(s) are missing.` : "",
     ].filter(Boolean))],
