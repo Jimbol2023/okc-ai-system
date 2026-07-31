@@ -1,6 +1,7 @@
 import { createBusinessIntelligenceReport, type BusinessIntelligenceReport, type DepartmentHealthCard, type TrendChart } from "@/lib/business-intelligence";
 import { loadPartialData } from "@/lib/api-response";
 import { getBuyerDemandSignals } from "@/lib/buyer-demand";
+import { createBuyerDemandCertificationPacket, type BuyerDemandCertificationPacketV1 } from "@/lib/buyer-demand-certification";
 import { createBuyerDemandOpportunityPrioritization, type BuyerDemandOpportunityPrioritizationV1 } from "@/lib/buyer-demand-opportunity-prioritization";
 import { getCompanyActivationSnapshot } from "@/lib/company-activation";
 import { createInheritedPropertyCampaignDirective, getCompanyDepartmentRegistry, runCompanyOrchestrator, startDailyCompanyOperatingSession, type AiDepartmentName, type CompanyOrchestratorReport, type DailyCompanyOperatingSession } from "@/lib/company-orchestrator";
@@ -1547,6 +1548,20 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
     }
   })() as BuyerDemandOpportunityPrioritizationV1 | null;
   const topBuyerDemandPriority = buyerDemandPrioritization?.priorities[0] ?? null;
+  const buyerDemandCertification = (() => {
+    try {
+      return buyerDemandPrioritization
+        ? createBuyerDemandCertificationPacket({ tenantId: buyerDemandPrioritization.tenantId, prioritization: buyerDemandPrioritization, generatedAt: today.toISOString() })
+        : createBuyerDemandCertificationPacket({
+            tenantId: crossConnectorCertification?.tenantId ?? "default",
+            prioritization: null,
+            generatedAt: today.toISOString(),
+            additionalDataGaps: [buyerDemandResult.gap, "Sprint 27 buyer-demand prioritization is not available."].filter(Boolean),
+          });
+    } catch {
+      return null;
+    }
+  })() as BuyerDemandCertificationPacketV1 | null;
   const widgets: ExecutiveWidget[] = [
     {
         id: "new_leads_today",
@@ -1711,6 +1726,30 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
         status: buyerDemandPrioritization ? (buyerDemandPrioritization.dataGaps.length > 0 ? "watch" : "good") : "missing",
       },
       {
+        id: "buyer_demand_certification",
+        label: "Buyer-demand certification",
+        value: buyerDemandCertification?.certificationStatus ?? "Missing",
+        detail: buyerDemandCertification ? `${buyerDemandCertification.priorityCount} review priorit(ies), ${buyerDemandCertification.readinessFailures.length} readiness gap(s).` : "Sprint 27A certification is unavailable until buyer-demand prioritization can be reviewed.",
+        href: "/dashboard/property-intelligence",
+        status: buyerDemandCertification ? (buyerDemandCertification.certificationStatus === "certified" ? "good" : buyerDemandCertification.certificationStatus === "partial" ? "watch" : "missing") : "missing",
+      },
+      {
+        id: "buyer_demand_certified_top_opportunity",
+        label: "Certified demand opportunity",
+        value: buyerDemandCertification?.topPriority ? buyerDemandCertification.topPriority.score : "Missing",
+        detail: buyerDemandCertification?.topPriority?.title ?? "No certified buyer-demand opportunity is ready for CEO review.",
+        href: "/dashboard/revenue",
+        status: buyerDemandCertification?.topPriority ? (buyerDemandCertification.certificationStatus === "certified" ? "good" : "watch") : "missing",
+      },
+      {
+        id: "buyer_demand_manual_review",
+        label: "Demand manual review",
+        value: buyerDemandCertification?.recommendedManualReviewPosture ?? "Missing",
+        detail: buyerDemandCertification?.ceoReviewNotes[0] ?? "Buyer-demand certification remains readiness-only and cannot execute actions.",
+        href: "/dashboard/operations",
+        status: buyerDemandCertification ? (buyerDemandCertification.certificationStatus === "blocked" ? "missing" : "watch") : "missing",
+      },
+      {
         id: "finance_kpis",
         label: "Cash flow",
         value: formatFinanceDollars(financeKpis.cashFlowCents),
@@ -1728,7 +1767,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
       },
     ];
   const recommendedPriorities = createExecutiveRecommendationsFromBi(businessIntelligence);
-  const todayPriorityIds = new Set(["follow_ups_due", "revenue_pipeline", "offer_ready", "marketing_approval", "website_seo", "ga4_key_events", "gbp_local_visibility", "cross_connector_opportunity", "buyer_demand_priority"]);
+  const todayPriorityIds = new Set(["follow_ups_due", "revenue_pipeline", "offer_ready", "marketing_approval", "website_seo", "ga4_key_events", "gbp_local_visibility", "cross_connector_opportunity", "buyer_demand_priority", "buyer_demand_certification"]);
   const todayPriorities = widgets.filter((widget) => todayPriorityIds.has(widget.id));
   const kpiInterpretations = createKpiInterpretations(businessIntelligence);
   const localMorningBrief = createMorningBrief({
@@ -1830,6 +1869,8 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
       ...(crossConnectorReport?.dataGaps ?? ["Cross-connector intelligence is unavailable until contracted Search Console, GA4, and GBP evidence is present."]),
       ...(crossConnectorCertification?.readinessFailures ?? ["Sprint 26A cross-connector certification is not available."]),
       ...(buyerDemandPrioritization?.dataGaps ?? [buyerDemandResult.gap, "Sprint 27 buyer-demand prioritization is not available."]),
+      ...(buyerDemandCertification?.readinessFailures ?? ["Sprint 27A buyer-demand certification is not available."]),
+      ...(buyerDemandCertification?.missingBuyerDemandEvidence ?? []),
       ...financeKpis.missingData,
       providerMissingCount > 0 ? `${providerMissingCount} provider readiness credential set(s) are missing.` : "",
     ].filter(Boolean))],

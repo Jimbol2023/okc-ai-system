@@ -481,6 +481,9 @@ describe("daily startup", () => {
       assert.ok(widgetIds.includes("cross_connector_certification"));
       assert.ok(widgetIds.includes("buyer_demand_priority"));
       assert.ok(widgetIds.includes("buyer_demand_gaps"));
+      assert.ok(widgetIds.includes("buyer_demand_certification"));
+      assert.ok(widgetIds.includes("buyer_demand_certified_top_opportunity"));
+      assert.ok(widgetIds.includes("buyer_demand_manual_review"));
       assert.equal(report.widgets.find((widget) => widget.id === "ga4_sessions")?.value, 42);
       assert.equal(report.widgets.find((widget) => widget.id === "ga4_key_events")?.value, 3);
       assert.equal(report.widgets.find((widget) => widget.id === "gbp_local_visibility")?.value, 2);
@@ -489,6 +492,9 @@ describe("daily startup", () => {
       assert.equal(report.widgets.find((widget) => widget.id === "cross_connector_gaps")?.value, 0);
       assert.equal(report.widgets.find((widget) => widget.id === "cross_connector_certification")?.value, "certified");
       assert.equal(typeof report.widgets.find((widget) => widget.id === "buyer_demand_priority")?.value, "number");
+      assert.equal(report.widgets.find((widget) => widget.id === "buyer_demand_certification")?.value, "partial");
+      assert.equal(typeof report.widgets.find((widget) => widget.id === "buyer_demand_certified_top_opportunity")?.value, "number");
+      assert.equal(report.widgets.find((widget) => widget.id === "buyer_demand_manual_review")?.value, "review_gaps_before_use");
       assert.equal(JSON.stringify(report.widgets).includes("provider_write"), false);
       assert.equal(JSON.stringify(report.widgets).includes("create_lead"), false);
       assert.equal(report.safetyFlags.outreachSent, false);
