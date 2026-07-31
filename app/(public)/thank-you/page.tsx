@@ -1,14 +1,21 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 
 import { brandConfig } from "@/lib/brand-config";
-import { createPublicPageMetadata } from "@/lib/public-seo";
+import { getPublicCanonicalUrl } from "@/lib/public-seo";
 
-export const metadata = createPublicPageMetadata({
-  path: "/thank-you",
+export const metadata: Metadata = {
   title: "Thank You",
   description:
-    "Thank you page for J Capital Property Group property discussion form submissions and next-step contact details."
-});
+    "Thank you page for J Capital Property Group property discussion form submissions and next-step contact details.",
+  alternates: {
+    canonical: getPublicCanonicalUrl("/thank-you")
+  },
+  robots: {
+    index: false,
+    follow: false
+  }
+};
 
 export default function ThankYouPage() {
   return (
