@@ -215,12 +215,13 @@ export type ProductionReadinessDepartmentKey =
   | "draft_workspace"
   | "production_dry_run"
   | "search_market_intelligence"
+  | "marketing_intelligence"
   | "revenue_intelligence"
   | "buyer_demand"
   | "cross_connector_certification"
   | "department_os_morning_brief";
 
-export type ProductionReadinessDepartmentStatus = "ready" | "watch" | "blocked";
+export type ProductionReadinessDepartmentStatus = "ready" | "read_only" | "degraded" | "blocked";
 
 export type ProductionReadinessDepartment = {
   id: ProductionReadinessDepartmentKey;
@@ -296,55 +297,71 @@ const departmentCompatibilityDefinitions: Array<{
   id: ProductionReadinessDepartmentKey;
   label: string;
   href: string;
-  schemaBlockedDetail: string;
+  schemaDriftStatus: ProductionReadinessDepartmentStatus;
+  schemaDriftDetail: string;
 }> = [
   {
     id: "ceo_dashboard",
     label: "CEO Dashboard",
     href: "/dashboard",
-    schemaBlockedDetail: "Executive snapshot widgets are degraded until BusinessDataSnapshot schema is aligned.",
+    schemaDriftStatus: "degraded",
+    schemaDriftDetail: "Executive snapshot widgets degrade to internal records and data gaps until BusinessDataSnapshot schema is aligned.",
   },
   {
     id: "draft_workspace",
     label: "Draft Workspace",
     href: "/dashboard/drafts",
-    schemaBlockedDetail: "Draft review remains internal, but evidence-linked readiness cannot be trusted until schema alignment is verified.",
+    schemaDriftStatus: "read_only",
+    schemaDriftDetail: "CEO can review drafts and record internal draft decisions; no publishing, provider action, or snapshot write is authorized.",
   },
   {
     id: "production_dry_run",
     label: "Production Dry Run",
     href: "/dashboard",
-    schemaBlockedDetail: "Dry-run should stay paused until the hardened snapshot columns are present.",
+    schemaDriftStatus: "blocked",
+    schemaDriftDetail: "Dry-run stays paused until hardened BusinessDataSnapshot columns are present and verified.",
   },
   {
     id: "search_market_intelligence",
     label: "Search/Market Intelligence",
     href: "/dashboard/search-intelligence",
-    schemaBlockedDetail: "Search and market evidence may be unavailable while snapshot reads fail.",
+    schemaDriftStatus: "degraded",
+    schemaDriftDetail: "CEO can review existing Search Console, GA4, GBP, and market-readiness context; missing snapshots become data gaps.",
+  },
+  {
+    id: "marketing_intelligence",
+    label: "Marketing Intelligence",
+    href: "/dashboard/marketing",
+    schemaDriftStatus: "degraded",
+    schemaDriftDetail: "Marketing review remains advisory from internal drafts, content, and readiness records; no publishing or provider read is authorized.",
   },
   {
     id: "revenue_intelligence",
     label: "Revenue Intelligence",
     href: "/dashboard/revenue",
-    schemaBlockedDetail: "Revenue opportunity context degrades to data gaps until normalized evidence is readable.",
+    schemaDriftStatus: "degraded",
+    schemaDriftDetail: "Revenue intelligence can review internal pipeline context; snapshot-backed opportunity evidence degrades to data gaps.",
   },
   {
     id: "buyer_demand",
     label: "Buyer-Demand Intelligence",
     href: "/dashboard/property-intelligence",
-    schemaBlockedDetail: "Buyer-demand prioritization cannot certify connector-backed context until snapshot evidence is readable.",
+    schemaDriftStatus: "degraded",
+    schemaDriftDetail: "Buyer-demand review can use internal demand signals; connector-backed certification waits for readable snapshot evidence.",
   },
   {
     id: "cross_connector_certification",
     label: "Cross-Connector Certification",
     href: "/dashboard/search-intelligence",
-    schemaBlockedDetail: "Found, visited, stayed/left, and local trust evidence cannot be certified while snapshot fields are missing.",
+    schemaDriftStatus: "degraded",
+    schemaDriftDetail: "Cross-connector review can show existing evidence gaps; formal snapshot-backed certification remains unavailable.",
   },
   {
     id: "department_os_morning_brief",
     label: "Department OS / Morning Brief",
     href: "/dashboard/operations",
-    schemaBlockedDetail: "Morning Brief and department handoffs degrade to safe gaps until schema proof is complete.",
+    schemaDriftStatus: "degraded",
+    schemaDriftDetail: "Morning Brief and department handoffs stay review-only with data gaps until schema proof is complete.",
   },
 ];
 
@@ -412,7 +429,7 @@ function statusForOpportunityCount(count: number): ExecutiveWidget["status"] {
   return "watch";
 }
 
-function createProductionReadinessCommand(input: {
+export function createProductionReadinessCommand(input: {
   schema: BusinessDataSnapshotSchemaReadiness;
   infrastructureBlockers: string[];
   dataGaps: string[];
@@ -431,8 +448,8 @@ function createProductionReadinessCommand(input: {
         id: department.id,
         label: department.label,
         href: department.href,
-        status: "blocked",
-        detail: department.schemaBlockedDetail,
+        status: department.schemaDriftStatus,
+        detail: department.schemaDriftDetail,
       };
     }
 
@@ -441,7 +458,7 @@ function createProductionReadinessCommand(input: {
         id: department.id,
         label: department.label,
         href: department.href,
-        status: "watch",
+        status: "degraded",
         detail: "Cross-connector evidence is missing or partial; keep output advisory and data-gap based.",
       };
     }
@@ -451,7 +468,7 @@ function createProductionReadinessCommand(input: {
         id: department.id,
         label: department.label,
         href: department.href,
-        status: "watch",
+        status: "degraded",
         detail: "Buyer-demand certification is not complete; review missing demand evidence before using priorities.",
       };
     }
@@ -461,7 +478,7 @@ function createProductionReadinessCommand(input: {
         id: department.id,
         label: department.label,
         href: department.href,
-        status: "watch",
+        status: "degraded",
         detail: "Daily Mission is unavailable; Department OS should use manual review and data-gap posture.",
       };
     }
@@ -471,7 +488,7 @@ function createProductionReadinessCommand(input: {
         id: department.id,
         label: department.label,
         href: department.href,
-        status: "watch",
+        status: "degraded",
         detail: input.businessSnapshotsLoadGap,
       };
     }
@@ -485,7 +502,7 @@ function createProductionReadinessCommand(input: {
     };
   });
   const nextSafeAction = schemaBlocked
-    ? `Complete approved production schema alignment for ${input.schema.requiredMigration}; keep dry-run paused until column verification passes.`
+    ? `Schema alignment required before dry-run and snapshot-backed certification for ${input.schema.requiredMigration}. CEO review and draft decisions remain available in read-only/internal mode.`
     : status === "watch"
       ? "Review listed data gaps and department warnings; do not fetch provider data or create external actions from this dashboard."
       : "Proceed with manual executive review; dry-run remains internal and approval-gated.";

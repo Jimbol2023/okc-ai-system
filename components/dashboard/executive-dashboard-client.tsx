@@ -308,7 +308,7 @@ type ProductionDryRunReport = {
 type ProductionReadinessDepartment = {
   id: string;
   label: string;
-  status: "ready" | "watch" | "blocked";
+  status: "ready" | "read_only" | "degraded" | "blocked";
   detail: string;
   href: string;
 };
@@ -2119,15 +2119,25 @@ function connectorActivationStatus(status: ConnectorActivationReport["connectors
 }
 
 function readinessStatusToMetric(status: ProductionReadinessCommand["status"] | ProductionReadinessDepartment["status"]): MetricStatus {
-  if (status === "ready") return "good";
+  if (status === "ready" || status === "read_only") return "good";
   if (status === "blocked") return "urgent";
 
   return "watch";
 }
 
+function readinessStatusLabel(status: ProductionReadinessCommand["status"] | ProductionReadinessDepartment["status"]) {
+  if (status === "ready") return "Ready";
+  if (status === "read_only") return "Read-only";
+  if (status === "degraded") return "Degraded";
+  if (status === "blocked") return "Blocked";
+
+  return "Watch";
+}
+
 function ProductionReadinessCommandPanel({ command }: { command: ProductionReadinessCommand }) {
   const blockedDepartments = command.departmentCompatibility.filter((department) => department.status === "blocked").length;
-  const watchDepartments = command.departmentCompatibility.filter((department) => department.status === "watch").length;
+  const degradedDepartments = command.departmentCompatibility.filter((department) => department.status === "degraded").length;
+  const readOnlyDepartments = command.departmentCompatibility.filter((department) => department.status === "read_only").length;
 
   return (
     <section aria-labelledby="production-readiness-command-heading" className="rounded-lg border border-border bg-surface p-5 md:p-6">
@@ -2140,7 +2150,7 @@ function ProductionReadinessCommandPanel({ command }: { command: ProductionReadi
           <p className="max-w-4xl break-words text-sm leading-6 text-muted">{command.nextSafeAction}</p>
         </div>
         <div className="flex max-w-full flex-wrap gap-2">
-          <StatusBadge status={readinessStatusToMetric(command.status)} label={command.status === "ready" ? "Ready" : command.status === "blocked" ? "Blocked" : "Watch"} />
+          <StatusBadge status={readinessStatusToMetric(command.status)} label={readinessStatusLabel(command.status)} />
           <SafetyBadge tone="good">providerCalled:false</SafetyBadge>
           <SafetyBadge tone="good">crmMutation:false</SafetyBadge>
           <SafetyBadge tone="good">automation:false</SafetyBadge>
@@ -2161,9 +2171,9 @@ function ProductionReadinessCommandPanel({ command }: { command: ProductionReadi
           <p className="mt-2 text-xs leading-5 text-muted">{command.dryRunAllowed ? "Dry-run preflight is clear." : "Dry-run is paused until schema verification passes."}</p>
         </DashboardCard>
         <DashboardCard className="bg-white">
-          <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Department readiness</p>
+          <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Operational review available</p>
           <p className="mt-2 text-3xl font-semibold text-primary">{command.departmentCompatibility.length - blockedDepartments}</p>
-          <p className="mt-2 text-xs leading-5 text-muted">{blockedDepartments} blocked, {watchDepartments} watch.</p>
+          <p className="mt-2 text-xs leading-5 text-muted">{readOnlyDepartments} read-only, {degradedDepartments} degraded, {blockedDepartments} blocked.</p>
         </DashboardCard>
         <DashboardCard className="bg-white">
           <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Data gaps</p>
@@ -2187,7 +2197,7 @@ function ProductionReadinessCommandPanel({ command }: { command: ProductionReadi
           <Link key={department.id} href={department.href as Route} className="min-w-0 rounded-lg border border-border bg-white p-4 transition hover:border-primary/30">
             <div className="flex min-w-0 items-start justify-between gap-3">
               <p className="break-words text-sm font-semibold text-primary">{department.label}</p>
-              <StatusBadge status={readinessStatusToMetric(department.status)} label={department.status === "ready" ? "Ready" : department.status === "blocked" ? "Blocked" : "Watch"} />
+              <StatusBadge status={readinessStatusToMetric(department.status)} label={readinessStatusLabel(department.status)} />
             </div>
             <p className="mt-2 break-words text-xs leading-5 text-muted">{department.detail}</p>
           </Link>
