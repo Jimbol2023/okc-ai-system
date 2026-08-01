@@ -377,6 +377,15 @@ describe("daily startup", () => {
   it("surfaces a CEO decision agenda without activation or provider execution", async () => {
     const report = await createExecutiveDashboardReport();
 
+    assert.equal(report.productionReadinessCommand.title, "Production Readiness Command");
+    assert.equal(report.productionReadinessCommand.safetyFlags.providerCalled, false);
+    assert.equal(report.productionReadinessCommand.safetyFlags.liveExecutionAllowed, false);
+    assert.equal(report.productionReadinessCommand.safetyFlags.crmMutationAllowed, false);
+    assert.equal(report.productionReadinessCommand.safetyFlags.outreachAllowed, false);
+    assert.equal(report.productionReadinessCommand.safetyFlags.automationAllowed, false);
+    assert.equal(report.productionReadinessCommand.departmentCompatibility.length, 8);
+    assert.ok(report.productionReadinessCommand.departmentCompatibility.some((department) => department.id === "ceo_dashboard"));
+    assert.ok(report.productionReadinessCommand.nextSafeAction.length > 0);
     assert.equal(report.dailyStartup.companyOperatingMode, "daily_startup_ready");
     assert.equal(report.dailyStartup.safety.providerCalled, false);
     assert.equal(report.dailyStartup.safety.liveExecutionAllowed, false);

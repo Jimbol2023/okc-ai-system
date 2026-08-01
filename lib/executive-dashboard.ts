@@ -23,6 +23,7 @@ import { createProviderReadinessReport } from "@/lib/provider-readiness";
 import { getLatestBusinessSnapshots, getLatestLiveMorningBrief, type BusinessDataSnapshotRecord } from "@/lib/read-only-business-connections";
 import { getReferralDashboard } from "@/lib/referrals";
 import { getRevenuePipelineSummary } from "@/lib/revenue-pipeline";
+import { getInfrastructureHealth, type BusinessDataSnapshotSchemaReadiness } from "@/lib/infrastructure-health";
 import { getSystemHealth } from "@/lib/system-health";
 import { publicSiteUrl } from "@/lib/public-seo";
 import { prisma } from "@/lib/prisma";
@@ -209,8 +210,55 @@ export type OperatingCompanyReport = {
   };
 };
 
+export type ProductionReadinessDepartmentKey =
+  | "ceo_dashboard"
+  | "draft_workspace"
+  | "production_dry_run"
+  | "search_market_intelligence"
+  | "revenue_intelligence"
+  | "buyer_demand"
+  | "cross_connector_certification"
+  | "department_os_morning_brief";
+
+export type ProductionReadinessDepartmentStatus = "ready" | "watch" | "blocked";
+
+export type ProductionReadinessDepartment = {
+  id: ProductionReadinessDepartmentKey;
+  label: string;
+  status: ProductionReadinessDepartmentStatus;
+  detail: string;
+  href: string;
+};
+
+export type ProductionReadinessCommand = {
+  title: "Production Readiness Command";
+  status: "ready" | "watch" | "blocked";
+  schemaStatus: BusinessDataSnapshotSchemaReadiness["status"];
+  requiredMigration: BusinessDataSnapshotSchemaReadiness["requiredMigration"];
+  migrationPath: BusinessDataSnapshotSchemaReadiness["migrationPath"];
+  missingColumns: string[];
+  pendingMigration: boolean;
+  blockerCount: number;
+  dataGapCount: number;
+  nextSafeAction: string;
+  dryRunAllowed: boolean;
+  departmentCompatibility: ProductionReadinessDepartment[];
+  safetyFlags: {
+    providerCalled: false;
+    liveExecutionAllowed: false;
+    crmMutationAllowed: false;
+    publishingAllowed: false;
+    outreachAllowed: false;
+    scrapingAllowed: false;
+    automationAllowed: false;
+    vercelMutationAllowed: false;
+    syntheticDataCreationAllowed: false;
+  };
+};
+
 export type ExecutiveDashboardReport = {
   ok: true;
+  productionReadinessCommand: ProductionReadinessCommand;
   widgets: ExecutiveWidget[];
   dailyStartup: DailyCompanyOperatingSession;
   revenueCommandCenter: RevenueCommandCenterReport;
@@ -243,6 +291,62 @@ export type ExecutiveDashboardReport = {
     knowledgeManualOnly: true;
   };
 };
+
+const departmentCompatibilityDefinitions: Array<{
+  id: ProductionReadinessDepartmentKey;
+  label: string;
+  href: string;
+  schemaBlockedDetail: string;
+}> = [
+  {
+    id: "ceo_dashboard",
+    label: "CEO Dashboard",
+    href: "/dashboard",
+    schemaBlockedDetail: "Executive snapshot widgets are degraded until BusinessDataSnapshot schema is aligned.",
+  },
+  {
+    id: "draft_workspace",
+    label: "Draft Workspace",
+    href: "/dashboard/drafts",
+    schemaBlockedDetail: "Draft review remains internal, but evidence-linked readiness cannot be trusted until schema alignment is verified.",
+  },
+  {
+    id: "production_dry_run",
+    label: "Production Dry Run",
+    href: "/dashboard",
+    schemaBlockedDetail: "Dry-run should stay paused until the hardened snapshot columns are present.",
+  },
+  {
+    id: "search_market_intelligence",
+    label: "Search/Market Intelligence",
+    href: "/dashboard/search-intelligence",
+    schemaBlockedDetail: "Search and market evidence may be unavailable while snapshot reads fail.",
+  },
+  {
+    id: "revenue_intelligence",
+    label: "Revenue Intelligence",
+    href: "/dashboard/revenue",
+    schemaBlockedDetail: "Revenue opportunity context degrades to data gaps until normalized evidence is readable.",
+  },
+  {
+    id: "buyer_demand",
+    label: "Buyer-Demand Intelligence",
+    href: "/dashboard/property-intelligence",
+    schemaBlockedDetail: "Buyer-demand prioritization cannot certify connector-backed context until snapshot evidence is readable.",
+  },
+  {
+    id: "cross_connector_certification",
+    label: "Cross-Connector Certification",
+    href: "/dashboard/search-intelligence",
+    schemaBlockedDetail: "Found, visited, stayed/left, and local trust evidence cannot be certified while snapshot fields are missing.",
+  },
+  {
+    id: "department_os_morning_brief",
+    label: "Department OS / Morning Brief",
+    href: "/dashboard/operations",
+    schemaBlockedDetail: "Morning Brief and department handoffs degrade to safe gaps until schema proof is complete.",
+  },
+];
 
 function startOfToday() {
   const now = new Date();
@@ -306,6 +410,111 @@ function statusForOpportunityCount(count: number): ExecutiveWidget["status"] {
   if (count >= 3) return "good";
 
   return "watch";
+}
+
+function createProductionReadinessCommand(input: {
+  schema: BusinessDataSnapshotSchemaReadiness;
+  infrastructureBlockers: string[];
+  dataGaps: string[];
+  businessSnapshotsLoadGap: string;
+  hasCrossConnectorReport: boolean;
+  hasBuyerDemandCertification: boolean;
+  hasDailyMission: boolean;
+}): ProductionReadinessCommand {
+  const schemaBlocked = input.schema.status === "schema_drift_detected" || input.schema.status === "database_unavailable";
+  const blockerCount = input.infrastructureBlockers.length + (schemaBlocked ? 1 : 0);
+  const dataGapCount = input.dataGaps.filter(Boolean).length;
+  const status: ProductionReadinessCommand["status"] = schemaBlocked || blockerCount > 0 ? "blocked" : dataGapCount > 0 ? "watch" : "ready";
+  const departmentCompatibility = departmentCompatibilityDefinitions.map<ProductionReadinessDepartment>((department) => {
+    if (schemaBlocked) {
+      return {
+        id: department.id,
+        label: department.label,
+        href: department.href,
+        status: "blocked",
+        detail: department.schemaBlockedDetail,
+      };
+    }
+
+    if (department.id === "cross_connector_certification" && !input.hasCrossConnectorReport) {
+      return {
+        id: department.id,
+        label: department.label,
+        href: department.href,
+        status: "watch",
+        detail: "Cross-connector evidence is missing or partial; keep output advisory and data-gap based.",
+      };
+    }
+
+    if (department.id === "buyer_demand" && !input.hasBuyerDemandCertification) {
+      return {
+        id: department.id,
+        label: department.label,
+        href: department.href,
+        status: "watch",
+        detail: "Buyer-demand certification is not complete; review missing demand evidence before using priorities.",
+      };
+    }
+
+    if (department.id === "department_os_morning_brief" && !input.hasDailyMission) {
+      return {
+        id: department.id,
+        label: department.label,
+        href: department.href,
+        status: "watch",
+        detail: "Daily Mission is unavailable; Department OS should use manual review and data-gap posture.",
+      };
+    }
+
+    if (input.businessSnapshotsLoadGap && ["search_market_intelligence", "revenue_intelligence", "production_dry_run"].includes(department.id)) {
+      return {
+        id: department.id,
+        label: department.label,
+        href: department.href,
+        status: "watch",
+        detail: input.businessSnapshotsLoadGap,
+      };
+    }
+
+    return {
+      id: department.id,
+      label: department.label,
+      href: department.href,
+      status: "ready",
+      detail: "Compatible with current read-only dashboard evidence; manual review remains required.",
+    };
+  });
+  const nextSafeAction = schemaBlocked
+    ? `Complete approved production schema alignment for ${input.schema.requiredMigration}; keep dry-run paused until column verification passes.`
+    : status === "watch"
+      ? "Review listed data gaps and department warnings; do not fetch provider data or create external actions from this dashboard."
+      : "Proceed with manual executive review; dry-run remains internal and approval-gated.";
+
+  return {
+    title: "Production Readiness Command",
+    status,
+    schemaStatus: input.schema.status,
+    requiredMigration: input.schema.requiredMigration,
+    migrationPath: input.schema.migrationPath,
+    missingColumns: input.schema.missingColumns,
+    pendingMigration: input.schema.pendingMigration,
+    blockerCount,
+    dataGapCount,
+    nextSafeAction,
+    dryRunAllowed: !schemaBlocked,
+    departmentCompatibility,
+    safetyFlags: {
+      providerCalled: false,
+      liveExecutionAllowed: false,
+      crmMutationAllowed: false,
+      publishingAllowed: false,
+      outreachAllowed: false,
+      scrapingAllowed: false,
+      automationAllowed: false,
+      vercelMutationAllowed: false,
+      syntheticDataCreationAllowed: false,
+    },
+  };
 }
 
 function createCommandItem(input: Omit<RevenueCommandCenterItem, "sourceLabel" | "assumption"> & {
@@ -1402,7 +1611,7 @@ export function createExecutiveWorkforceReport({
 }
 
 export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboardReport> {
-  const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, memoryEventsResult, referralResult, activationResult, departmentIntelligenceResult, liveMorningBriefResult, businessSnapshotsResult, buyerDemandResult, dailyMissionResult, connectorActivationResult, systemHealth, recentSystemActivity] = await Promise.all([
+  const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, memoryEventsResult, referralResult, activationResult, departmentIntelligenceResult, liveMorningBriefResult, businessSnapshotsResult, buyerDemandResult, dailyMissionResult, connectorActivationResult, infrastructureHealthResult, systemHealth, recentSystemActivity] = await Promise.all([
     loadPartialData("Lead", listDbLeads, [] as StoredLead[]),
     loadPartialData("Marketing workflow", listMarketingWorkflow, null),
     loadPartialData("Finance", listFinanceEntries, []),
@@ -1416,6 +1625,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
     loadPartialData("Buyer demand", getBuyerDemandSignals, null),
     loadPartialData("Daily Mission", getDailyMission, null),
     loadPartialData("Connector activation", createConnectorActivationReport, null),
+    loadPartialData("Infrastructure health", () => getInfrastructureHealth({ includeDatabase: true, includeOAuth: false }), null),
     getSystemHealth().catch(() => null),
     getRecentSystemActivity().catch(() => []),
   ]);
@@ -1431,6 +1641,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
   const buyerDemandSignals = buyerDemandResult.data;
   const dailyMission = dailyMissionResult.data;
   const connectorActivation = connectorActivationResult.data;
+  const infrastructureHealth = infrastructureHealthResult.data;
   const today = startOfToday();
   const revenuePipeline = getRevenuePipelineSummary(leads);
   const providerReadiness = createProviderReadinessReport();
@@ -1562,6 +1773,70 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
       return null;
     }
   })() as BuyerDemandCertificationPacketV1 | null;
+  const provisionalDataGaps = [
+    leadsResult.gap,
+    marketingResult.gap,
+    financeEntriesResult.gap,
+    knowledgeItemsResult.gap,
+    memoryEventsResult.gap,
+    ...businessIntelligence.dataGaps,
+    departmentIntelligenceResult.gap,
+    liveMorningBriefResult.gap,
+    businessSnapshotsResult.gap,
+    dailyMissionResult.gap,
+    connectorActivationResult.gap,
+    infrastructureHealthResult.gap,
+    ...(dailyMission?.dataGaps ?? []),
+    ...(connectorActivation?.dataGaps ?? []),
+    ...(liveMorningBrief?.dataGaps ?? []),
+    ...(ga4Snapshot?.dataGaps ?? []),
+    ...(gbpPerformanceSnapshot?.dataGaps ?? []),
+    ...(gbpReviewsSnapshot?.dataGaps ?? []),
+    ...(crossConnectorReport?.dataGaps ?? ["Cross-connector intelligence is unavailable until contracted Search Console, GA4, and GBP evidence is present."]),
+    ...(crossConnectorCertification?.readinessFailures ?? ["Sprint 26A cross-connector certification is not available."]),
+    ...(buyerDemandPrioritization?.dataGaps ?? [buyerDemandResult.gap, "Sprint 27 buyer-demand prioritization is not available."]),
+    ...(buyerDemandCertification?.readinessFailures ?? ["Sprint 27A buyer-demand certification is not available."]),
+    ...(buyerDemandCertification?.missingBuyerDemandEvidence ?? []),
+    ...financeKpis.missingData,
+    providerMissingCount > 0 ? `${providerMissingCount} provider readiness credential set(s) are missing.` : "",
+  ].filter(Boolean);
+  const dataGaps = [...new Set(provisionalDataGaps)];
+  const productionReadinessCommand = createProductionReadinessCommand({
+    schema: infrastructureHealth?.schemaReadiness.businessDataSnapshot ?? {
+      table: "BusinessDataSnapshot",
+      status: "not_checked",
+      requiredMigration: "20260716100000_harden_business_data_snapshots",
+      migrationPath: "prisma/migrations/20260716100000_harden_business_data_snapshots/migration.sql",
+      requiredColumns: [
+        "version",
+        "contractVersion",
+        "evidenceHash",
+        "observationStart",
+        "observationEnd",
+        "traceId",
+        "reliability",
+      ],
+      missingColumns: [],
+      pendingMigration: false,
+      message: "BusinessDataSnapshot schema readiness is not checked.",
+      operatorAction: "Run the approved read-only production schema readiness check before relying on snapshot-backed departments.",
+      safety: {
+        providerCalled: false,
+        liveExecutionAllowed: false,
+        externalWritesAllowed: false,
+        crmMutationAllowed: false,
+        outreachAllowed: false,
+        automationAllowed: false,
+        migrationApplied: false,
+      },
+    },
+    infrastructureBlockers: infrastructureHealth?.blockers ?? [],
+    dataGaps,
+    businessSnapshotsLoadGap: businessSnapshotsResult.gap,
+    hasCrossConnectorReport: Boolean(crossConnectorReport),
+    hasBuyerDemandCertification: Boolean(buyerDemandCertification && buyerDemandCertification.certificationStatus !== "blocked"),
+    hasDailyMission: Boolean(dailyMission),
+  });
   const widgets: ExecutiveWidget[] = [
     {
         id: "new_leads_today",
@@ -1832,6 +2107,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
 
   return {
     ok: true,
+    productionReadinessCommand,
     widgets,
     dailyStartup,
     dailyMission,
@@ -1848,32 +2124,7 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
     trendCharts: businessIntelligence.trendCharts,
     recommendedPriorities,
     executiveRecommendations,
-    dataGaps: [...new Set([
-      leadsResult.gap,
-      marketingResult.gap,
-      financeEntriesResult.gap,
-      knowledgeItemsResult.gap,
-      memoryEventsResult.gap,
-      ...businessIntelligence.dataGaps,
-      departmentIntelligenceResult.gap,
-      liveMorningBriefResult.gap,
-      businessSnapshotsResult.gap,
-      dailyMissionResult.gap,
-      connectorActivationResult.gap,
-      ...(dailyMission?.dataGaps ?? []),
-      ...(connectorActivation?.dataGaps ?? []),
-      ...(liveMorningBrief?.dataGaps ?? []),
-      ...(ga4Snapshot?.dataGaps ?? []),
-      ...(gbpPerformanceSnapshot?.dataGaps ?? []),
-      ...(gbpReviewsSnapshot?.dataGaps ?? []),
-      ...(crossConnectorReport?.dataGaps ?? ["Cross-connector intelligence is unavailable until contracted Search Console, GA4, and GBP evidence is present."]),
-      ...(crossConnectorCertification?.readinessFailures ?? ["Sprint 26A cross-connector certification is not available."]),
-      ...(buyerDemandPrioritization?.dataGaps ?? [buyerDemandResult.gap, "Sprint 27 buyer-demand prioritization is not available."]),
-      ...(buyerDemandCertification?.readinessFailures ?? ["Sprint 27A buyer-demand certification is not available."]),
-      ...(buyerDemandCertification?.missingBuyerDemandEvidence ?? []),
-      ...financeKpis.missingData,
-      providerMissingCount > 0 ? `${providerMissingCount} provider readiness credential set(s) are missing.` : "",
-    ].filter(Boolean))],
+    dataGaps,
     recentSystemActivity,
     safetyFlags: {
       readOnly: true,

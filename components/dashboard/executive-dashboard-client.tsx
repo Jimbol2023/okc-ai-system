@@ -305,6 +305,40 @@ type ProductionDryRunReport = {
   };
 };
 
+type ProductionReadinessDepartment = {
+  id: string;
+  label: string;
+  status: "ready" | "watch" | "blocked";
+  detail: string;
+  href: string;
+};
+
+type ProductionReadinessCommand = {
+  title: "Production Readiness Command";
+  status: "ready" | "watch" | "blocked";
+  schemaStatus: "ready" | "schema_drift_detected" | "database_unavailable" | "not_checked";
+  requiredMigration: string;
+  migrationPath: string;
+  missingColumns: string[];
+  pendingMigration: boolean;
+  blockerCount: number;
+  dataGapCount: number;
+  nextSafeAction: string;
+  dryRunAllowed: boolean;
+  departmentCompatibility: ProductionReadinessDepartment[];
+  safetyFlags: {
+    providerCalled: false;
+    liveExecutionAllowed: false;
+    crmMutationAllowed: false;
+    publishingAllowed: false;
+    outreachAllowed: false;
+    scrapingAllowed: false;
+    automationAllowed: false;
+    vercelMutationAllowed: false;
+    syntheticDataCreationAllowed: false;
+  };
+};
+
 type RevenueCommandCenterItem = {
   id: string;
   label: string;
@@ -692,6 +726,7 @@ type OperatingCompany = {
 
 type ExecutiveDashboardResponse = {
   ok: boolean;
+  productionReadinessCommand?: ProductionReadinessCommand;
   widgets?: ExecutiveWidget[];
   dailyStartup?: DailyStartup;
   revenueCommandCenter?: RevenueCommandCenter;
@@ -2083,6 +2118,85 @@ function connectorActivationStatus(status: ConnectorActivationReport["connectors
   return "urgent";
 }
 
+function readinessStatusToMetric(status: ProductionReadinessCommand["status"] | ProductionReadinessDepartment["status"]): MetricStatus {
+  if (status === "ready") return "good";
+  if (status === "blocked") return "urgent";
+
+  return "watch";
+}
+
+function ProductionReadinessCommandPanel({ command }: { command: ProductionReadinessCommand }) {
+  const blockedDepartments = command.departmentCompatibility.filter((department) => department.status === "blocked").length;
+  const watchDepartments = command.departmentCompatibility.filter((department) => department.status === "watch").length;
+
+  return (
+    <section aria-labelledby="production-readiness-command-heading" className="rounded-lg border border-border bg-surface p-5 md:p-6">
+      <div className="flex min-w-0 flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+        <div className="min-w-0 space-y-2">
+          <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-muted">Operator Go/No-Go</p>
+          <h1 id="production-readiness-command-heading" className="break-words text-3xl font-semibold text-primary md:text-4xl">
+            {command.title}
+          </h1>
+          <p className="max-w-4xl break-words text-sm leading-6 text-muted">{command.nextSafeAction}</p>
+        </div>
+        <div className="flex max-w-full flex-wrap gap-2">
+          <StatusBadge status={readinessStatusToMetric(command.status)} label={command.status === "ready" ? "Ready" : command.status === "blocked" ? "Blocked" : "Watch"} />
+          <SafetyBadge tone="good">providerCalled:false</SafetyBadge>
+          <SafetyBadge tone="good">crmMutation:false</SafetyBadge>
+          <SafetyBadge tone="good">automation:false</SafetyBadge>
+        </div>
+      </div>
+
+      <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <DashboardCard className="bg-white">
+          <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Schema alignment</p>
+          <p className="mt-2 break-words text-2xl font-semibold text-primary">{command.schemaStatus.replaceAll("_", " ")}</p>
+          <p className="mt-2 break-words text-xs leading-5 text-muted">
+            {command.pendingMigration ? `Pending migration ${command.requiredMigration}` : `Migration ${command.requiredMigration}`}
+          </p>
+        </DashboardCard>
+        <DashboardCard className="bg-white">
+          <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Production blockers</p>
+          <p className="mt-2 text-3xl font-semibold text-primary">{command.blockerCount}</p>
+          <p className="mt-2 text-xs leading-5 text-muted">{command.dryRunAllowed ? "Dry-run preflight is clear." : "Dry-run is paused until schema verification passes."}</p>
+        </DashboardCard>
+        <DashboardCard className="bg-white">
+          <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Department readiness</p>
+          <p className="mt-2 text-3xl font-semibold text-primary">{command.departmentCompatibility.length - blockedDepartments}</p>
+          <p className="mt-2 text-xs leading-5 text-muted">{blockedDepartments} blocked, {watchDepartments} watch.</p>
+        </DashboardCard>
+        <DashboardCard className="bg-white">
+          <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Data gaps</p>
+          <p className="mt-2 text-3xl font-semibold text-primary">{command.dataGapCount}</p>
+          <p className="mt-2 text-xs leading-5 text-muted">Gaps do not authorize provider reads, outreach, or automation.</p>
+        </DashboardCard>
+      </div>
+
+      {command.missingColumns.length > 0 ? (
+        <div className="mt-4 rounded-lg border border-red-100 bg-red-50 p-4">
+          <h2 className="break-words text-lg font-semibold text-red-950">Schema Blocker</h2>
+          <p className="mt-2 break-words text-sm leading-6 text-red-950">
+            Missing BusinessDataSnapshot column(s): {command.missingColumns.join(", ")}. Apply only the approved schema alignment path after operator verification.
+          </p>
+          <p className="mt-2 break-words text-xs font-semibold text-red-900">{command.migrationPath}</p>
+        </div>
+      ) : null}
+
+      <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {command.departmentCompatibility.map((department) => (
+          <Link key={department.id} href={department.href as Route} className="min-w-0 rounded-lg border border-border bg-white p-4 transition hover:border-primary/30">
+            <div className="flex min-w-0 items-start justify-between gap-3">
+              <p className="break-words text-sm font-semibold text-primary">{department.label}</p>
+              <StatusBadge status={readinessStatusToMetric(department.status)} label={department.status === "ready" ? "Ready" : department.status === "blocked" ? "Blocked" : "Watch"} />
+            </div>
+            <p className="mt-2 break-words text-xs leading-5 text-muted">{department.detail}</p>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function ConnectorActivationReportPanel({ report }: { report: ConnectorActivationReport }) {
   const primaryRows = report.connectors
     .filter((connector) =>
@@ -2174,12 +2288,18 @@ function ConnectorActivationReportPanel({ report }: { report: ConnectorActivatio
   );
 }
 
-function ProductionDryRunPanel() {
+function ProductionDryRunPanel({ readinessCommand }: { readinessCommand: ProductionReadinessCommand | null }) {
   const [report, setReport] = useState<ProductionDryRunReport | null>(null);
   const [running, setRunning] = useState(false);
   const [error, setError] = useState("");
+  const dryRunAllowed = readinessCommand?.dryRunAllowed ?? true;
 
   async function runDryRun() {
+    if (!dryRunAllowed) {
+      setError(readinessCommand?.nextSafeAction ?? "Production dry-run is paused until readiness verification passes.");
+      return;
+    }
+
     try {
       setRunning(true);
       setError("");
@@ -2213,6 +2333,11 @@ function ProductionDryRunPanel() {
           <p className="mt-3 max-w-5xl break-words text-sm leading-6 text-muted">
             Runs one internal business-day loop using stored data and read-only snapshots. It writes internal audit traces only and keeps external execution blocked.
           </p>
+          {!dryRunAllowed ? (
+            <p className="mt-2 break-words text-sm font-semibold text-red-700">
+              Dry-run is paused until Production schema alignment is verified.
+            </p>
+          ) : null}
         </div>
         <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
           <SafetyBadge>providerCalled:false</SafetyBadge>
@@ -2226,7 +2351,7 @@ function ProductionDryRunPanel() {
         <button
           type="button"
           onClick={runDryRun}
-          disabled={running}
+          disabled={running || !dryRunAllowed}
           className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
         >
           {running ? "Running dry run..." : "Run production dry run"}
@@ -2296,6 +2421,7 @@ function ProductionDryRunPanel() {
 }
 
 export function ExecutiveDashboardClient() {
+  const [productionReadinessCommand, setProductionReadinessCommand] = useState<ProductionReadinessCommand | null>(null);
   const [dailyStartup, setDailyStartup] = useState<DailyStartup | null>(null);
   const [revenueCommandCenter, setRevenueCommandCenter] = useState<RevenueCommandCenter | null>(null);
   const [executiveWorkforce, setExecutiveWorkforce] = useState<ExecutiveWorkforce | null>(null);
@@ -2331,6 +2457,7 @@ export function ExecutiveDashboardClient() {
         throw new Error(data.error || "Failed to load executive dashboard.");
       }
 
+      setProductionReadinessCommand(data.productionReadinessCommand ?? null);
       setDailyStartup(data.dailyStartup ?? null);
       setRevenueCommandCenter(data.revenueCommandCenter ?? null);
       setExecutiveWorkforce(data.executiveWorkforce ?? null);
@@ -2368,8 +2495,9 @@ export function ExecutiveDashboardClient() {
       {loading ? <LoadingState label="Loading executive dashboard..." /> : null}
       {error ? <ErrorState message={error} /> : null}
 
+      {productionReadinessCommand ? <ProductionReadinessCommandPanel command={productionReadinessCommand} /> : null}
       {dailyMission ? <DailyMissionPanel mission={dailyMission} /> : null}
-      <ProductionDryRunPanel />
+      <ProductionDryRunPanel readinessCommand={productionReadinessCommand} />
       {connectorActivation ? <ConnectorActivationReportPanel report={connectorActivation} /> : null}
       {dailyStartup ? <DailyStartupPanel startup={dailyStartup} onDecisionComplete={loadDashboard} /> : null}
       <ApprovedExecutionLayerPanel onExecutionComplete={loadDashboard} />

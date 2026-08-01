@@ -13,6 +13,17 @@ import {
 } from "@/lib/read-only-business-connections";
 
 const tenantId = "default";
+const hardenedBusinessDataSnapshotMigration = "20260716100000_harden_business_data_snapshots";
+const hardenedBusinessDataSnapshotMigrationPath = "prisma/migrations/20260716100000_harden_business_data_snapshots/migration.sql";
+const hardenedBusinessDataSnapshotColumns = [
+  "version",
+  "contractVersion",
+  "evidenceHash",
+  "observationStart",
+  "observationEnd",
+  "traceId",
+  "reliability",
+];
 
 export const productionDryRunSafetyFlags = {
   readOnly: true,
@@ -186,12 +197,26 @@ function unique(values: string[]) {
   return [...new Set(values.filter(Boolean))];
 }
 
+function normalizeLoadFailure(label: string, message: string) {
+  if (label === "BusinessDataSnapshot") {
+    const missingColumn = hardenedBusinessDataSnapshotColumns.find((column) =>
+      message.includes(`BusinessDataSnapshot.${column}`) || message.includes(`"${column}"`) || message.includes(`.${column}`),
+    );
+
+    if (missingColumn && message.toLowerCase().includes("does not exist")) {
+      return `BusinessDataSnapshot schema drift detected: missing column ${missingColumn}. Pending migration ${hardenedBusinessDataSnapshotMigration} at ${hardenedBusinessDataSnapshotMigrationPath}. Operator migration required; no provider read, CRM mutation, outreach, publishing, scraping, or automation is authorized.`;
+    }
+  }
+
+  return `${label}: ${message}`;
+}
+
 async function safeLoad<T>(label: string, load: () => Promise<T>, fallback: T, failures: string[]) {
   try {
     return await load();
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown load failure.";
-    failures.push(`${label}: ${message}`);
+    failures.push(normalizeLoadFailure(label, message));
 
     return fallback;
   }

@@ -1,8 +1,10 @@
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
 import { describe, it } from "node:test";
 
 import {
   checkGoogleOAuthReadiness,
+  evaluateBusinessDataSnapshotSchemaReadiness,
   evaluateEnvironmentHealth,
   getInfrastructureHealth,
 } from "./infrastructure-health";
@@ -29,6 +31,19 @@ function createBaseEnv(overrides: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv {
 }
 
 describe("infrastructure health", () => {
+  const hardenedBusinessDataSnapshotColumns = [
+    "id",
+    "tenantId",
+    "version",
+    "contractVersion",
+    "evidenceHash",
+    "observationStart",
+    "observationEnd",
+    "traceId",
+    "reliability",
+    "snapshotDate",
+  ];
+
   it("reports missing, empty, and placeholder env status without exposing values", () => {
     const env = createBaseEnv({
       GOOGLE_SEARCH_CONSOLE_SITE_URL: "",
@@ -44,6 +59,70 @@ describe("infrastructure health", () => {
     assert.ok(report.placeholders.includes("YOUTUBE_CHANNEL_ID"));
     assert.equal(serialized.includes("google-secret"), false);
     assert.equal(serialized.includes("google-refresh"), false);
+  });
+
+  it("confirms the hardened BusinessDataSnapshot schema when migration columns exist", () => {
+    const readiness = evaluateBusinessDataSnapshotSchemaReadiness(hardenedBusinessDataSnapshotColumns);
+
+    assert.equal(readiness.status, "ready");
+    assert.equal(readiness.pendingMigration, false);
+    assert.equal(readiness.missingColumns.length, 0);
+    assert.equal(readiness.requiredMigration, "20260716100000_harden_business_data_snapshots");
+    assert.equal(readiness.migrationPath, "prisma/migrations/20260716100000_harden_business_data_snapshots/migration.sql");
+    assert.equal(readiness.safety.providerCalled, false);
+    assert.equal(readiness.safety.liveExecutionAllowed, false);
+    assert.equal(readiness.safety.migrationApplied, false);
+  });
+
+  it("confirms the hardened BusinessDataSnapshot migration is present in the deployment path", () => {
+    const readiness = evaluateBusinessDataSnapshotSchemaReadiness(hardenedBusinessDataSnapshotColumns);
+
+    assert.equal(existsSync(readiness.migrationPath), true);
+  });
+
+  it("reports BusinessDataSnapshot schema drift as a pending migration, not a provider action", async () => {
+    const report = await getInfrastructureHealth({
+      env: createBaseEnv(),
+      includeDatabase: false,
+      includeSchemaReadiness: true,
+      includeOAuth: false,
+      businessDataSnapshotColumns: hardenedBusinessDataSnapshotColumns.filter((column) => column !== "version"),
+    });
+    const readiness = report.schemaReadiness.businessDataSnapshot;
+    const serialized = JSON.stringify(report);
+
+    assert.equal(report.ok, false);
+    assert.equal(report.status, "blocked");
+    assert.equal(readiness.status, "schema_drift_detected");
+    assert.equal(readiness.pendingMigration, true);
+    assert.deepEqual(readiness.missingColumns, ["version"]);
+    assert.ok(report.blockers.some((blocker) => blocker.includes("BusinessDataSnapshot schema drift")));
+    assert.ok(report.blockers.some((blocker) => blocker.includes("20260716100000_harden_business_data_snapshots")));
+    assert.ok(report.operatorActions.some((action) => action.includes("approved production deployment path")));
+    assert.equal(readiness.safety.providerCalled, false);
+    assert.equal(readiness.safety.externalWritesAllowed, false);
+    assert.equal(readiness.safety.crmMutationAllowed, false);
+    assert.equal(readiness.safety.outreachAllowed, false);
+    assert.equal(readiness.safety.automationAllowed, false);
+    assert.equal(readiness.safety.migrationApplied, false);
+    assert.equal(report.liveExecutionAllowed, false);
+    assert.equal(serialized.includes("provider action is authorized"), false);
+  });
+
+  it("keeps BusinessDataSnapshot schema readiness not checked when database diagnostics are disabled", async () => {
+    const report = await getInfrastructureHealth({
+      env: createBaseEnv(),
+      includeDatabase: false,
+      includeSchemaReadiness: false,
+      includeOAuth: false,
+    });
+    const readiness = report.schemaReadiness.businessDataSnapshot;
+
+    assert.equal(report.ok, true);
+    assert.equal(readiness.status, "not_checked");
+    assert.equal(readiness.pendingMigration, false);
+    assert.equal(readiness.safety.providerCalled, false);
+    assert.equal(readiness.safety.liveExecutionAllowed, false);
   });
 
   it("refreshes Google OAuth with a redacted success result", async () => {

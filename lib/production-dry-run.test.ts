@@ -376,4 +376,34 @@ describe("production dry run", () => {
     assert.equal(report.approvedExecutionValidation.published, false);
     assert.equal(report.approvedExecutionValidation.liveExecutionAllowed, false);
   });
+
+  it("reports hardened BusinessDataSnapshot schema drift as an operator migration blocker", async () => {
+    const report = await runProductionDryRun({
+      now: () => new Date("2026-07-07T12:00:00.000Z"),
+      env: { APPROVED_EXECUTION_ENABLED: "false", VERCEL_ENV: "production", APPROVED_EXECUTION_PRODUCTION_SMOKE_PASSED: "false" },
+      loadSnapshots: async () => {
+        throw new Error("BusinessDataSnapshot.version does not exist in the current database.");
+      },
+      loadMorningBrief: async () => morningBrief,
+      loadDailyMission: async () => dailyMission,
+      loadDfdOperating: async () => dfdOperating,
+      loadActivationSnapshot: async () => activationSnapshot,
+      loadInternalWorkQueue: async () => internalWorkQueue,
+      loadDraftWorkspace: async () => draftWorkspace,
+      loadApprovalQueue: async () => approvalQueue,
+      recordTrace: async () => null,
+    });
+    const serialized = JSON.stringify(report);
+
+    assert.ok(report.remainingProductionBlockers.some((blocker) => blocker.includes("BusinessDataSnapshot schema drift detected")));
+    assert.ok(report.remainingProductionBlockers.some((blocker) => blocker.includes("missing column version")));
+    assert.ok(report.remainingProductionBlockers.some((blocker) => blocker.includes("20260716100000_harden_business_data_snapshots")));
+    assert.ok(report.remainingProductionBlockers.some((blocker) => blocker.includes("Operator migration required")));
+    assert.equal(report.providerCalled, false);
+    assert.equal(report.liveExecutionAllowed, false);
+    assert.equal(report.safetyFlags.crmMutationBlocked, true);
+    assert.equal(report.safetyFlags.outreachBlocked, true);
+    assert.equal(report.safetyFlags.externalWritesBlocked, true);
+    assert.equal(serialized.includes("CRM mutation is authorized"), false);
+  });
 });

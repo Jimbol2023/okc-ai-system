@@ -5,6 +5,7 @@ export type InfrastructureStatus = "healthy" | "warning" | "blocked";
 export type EnvRequirementLevel = "critical" | "connector" | "optional";
 export type EnvKeyStatus = "present" | "empty" | "missing" | "placeholder";
 export type OAuthErrorType = "missing_configuration" | "provider_rejected" | "network_error";
+export type SchemaReadinessStatus = "ready" | "schema_drift_detected" | "database_unavailable" | "not_checked";
 
 export type EnvHealthItem = {
   key: string;
@@ -43,6 +44,27 @@ export type ConnectorReadiness = {
   liveExecutionAllowed: false;
 };
 
+export type BusinessDataSnapshotSchemaReadiness = {
+  table: "BusinessDataSnapshot";
+  status: SchemaReadinessStatus;
+  requiredMigration: "20260716100000_harden_business_data_snapshots";
+  migrationPath: "prisma/migrations/20260716100000_harden_business_data_snapshots/migration.sql";
+  requiredColumns: string[];
+  missingColumns: string[];
+  pendingMigration: boolean;
+  message: string;
+  operatorAction: string;
+  safety: {
+    providerCalled: false;
+    liveExecutionAllowed: false;
+    externalWritesAllowed: false;
+    crmMutationAllowed: false;
+    outreachAllowed: false;
+    automationAllowed: false;
+    migrationApplied: false;
+  };
+};
+
 export type InfrastructureHealthReport = {
   ok: boolean;
   status: InfrastructureStatus;
@@ -69,6 +91,9 @@ export type InfrastructureHealthReport = {
     google: OAuthReadiness;
   };
   connectors: ConnectorReadiness[];
+  schemaReadiness: {
+    businessDataSnapshot: BusinessDataSnapshotSchemaReadiness;
+  };
   auditTrail: {
     checked: boolean;
     status: "available" | "blocked" | "not_checked";
@@ -104,8 +129,10 @@ type EnvRequirement = {
 type InfrastructureHealthOptions = {
   env?: NodeJS.ProcessEnv;
   includeDatabase?: boolean;
+  includeSchemaReadiness?: boolean;
   includeOAuth?: boolean;
   fetcher?: typeof fetch;
+  businessDataSnapshotColumns?: string[];
 };
 
 const placeholderFragments = [
@@ -134,6 +161,17 @@ const envRequirements: EnvRequirement[] = [
 ];
 
 const googleCoreKeys = ["GOOGLE_OAUTH_CLIENT_ID", "GOOGLE_OAUTH_CLIENT_SECRET", "GOOGLE_OAUTH_REFRESH_TOKEN"];
+const businessDataSnapshotRequiredMigration = "20260716100000_harden_business_data_snapshots" as const;
+const businessDataSnapshotMigrationPath = "prisma/migrations/20260716100000_harden_business_data_snapshots/migration.sql" as const;
+const businessDataSnapshotRequiredColumns = [
+  "version",
+  "contractVersion",
+  "evidenceHash",
+  "observationStart",
+  "observationEnd",
+  "traceId",
+  "reliability",
+];
 
 const connectorDefinitions = [
   {
@@ -241,6 +279,91 @@ async function checkDatabase(includeDatabase: boolean) {
       ok: false,
       status: "error" as const,
     };
+  }
+}
+
+function createBusinessDataSnapshotSchemaReadiness(
+  status: SchemaReadinessStatus,
+  observedColumns: string[] | null,
+): BusinessDataSnapshotSchemaReadiness {
+  const observed = new Set((observedColumns ?? []).map((column) => column.trim()).filter(Boolean));
+  const missingColumns =
+    status === "schema_drift_detected"
+      ? businessDataSnapshotRequiredColumns.filter((column) => !observed.has(column))
+      : [];
+  const pendingMigration = status === "schema_drift_detected";
+  const operatorAction = pendingMigration
+    ? `Apply Prisma migration ${businessDataSnapshotRequiredMigration} through the approved deployment path; do not run providers, sync jobs, outreach, CRM actions, or external automation to resolve schema drift.`
+    : status === "ready"
+      ? "No BusinessDataSnapshot schema action is required."
+      : status === "database_unavailable"
+        ? "Restore database connectivity before checking BusinessDataSnapshot schema readiness; no provider action is authorized."
+        : "Enable database/schema readiness checks in operator diagnostics before production promotion.";
+  const message = pendingMigration
+    ? `BusinessDataSnapshot schema drift detected: missing column${missingColumns.length === 1 ? "" : "s"} ${missingColumns.join(", ")}. Pending migration: ${businessDataSnapshotRequiredMigration}.`
+    : status === "ready"
+      ? `BusinessDataSnapshot hardened schema is aligned with ${businessDataSnapshotRequiredMigration}.`
+      : status === "database_unavailable"
+        ? "BusinessDataSnapshot schema readiness could not be checked because database connectivity is unavailable."
+        : "BusinessDataSnapshot schema readiness was not checked in this diagnostic mode.";
+
+  return {
+    table: "BusinessDataSnapshot",
+    status,
+    requiredMigration: businessDataSnapshotRequiredMigration,
+    migrationPath: businessDataSnapshotMigrationPath,
+    requiredColumns: [...businessDataSnapshotRequiredColumns],
+    missingColumns,
+    pendingMigration,
+    message,
+    operatorAction,
+    safety: {
+      providerCalled: false,
+      liveExecutionAllowed: false,
+      externalWritesAllowed: false,
+      crmMutationAllowed: false,
+      outreachAllowed: false,
+      automationAllowed: false,
+      migrationApplied: false,
+    },
+  };
+}
+
+export function evaluateBusinessDataSnapshotSchemaReadiness(observedColumns: string[]): BusinessDataSnapshotSchemaReadiness {
+  const observed = new Set(observedColumns.map((column) => column.trim()).filter(Boolean));
+  const missingColumns = businessDataSnapshotRequiredColumns.filter((column) => !observed.has(column));
+
+  return createBusinessDataSnapshotSchemaReadiness(missingColumns.length > 0 ? "schema_drift_detected" : "ready", observedColumns);
+}
+
+async function checkBusinessDataSnapshotSchemaReadiness(
+  includeSchemaReadiness: boolean,
+  database: { checked: boolean; ok: boolean | null },
+  providedColumns?: string[],
+) {
+  if (!includeSchemaReadiness) {
+    return createBusinessDataSnapshotSchemaReadiness("not_checked", null);
+  }
+
+  if (providedColumns) {
+    return evaluateBusinessDataSnapshotSchemaReadiness(providedColumns);
+  }
+
+  if (!database.checked || !database.ok) {
+    return createBusinessDataSnapshotSchemaReadiness("database_unavailable", null);
+  }
+
+  try {
+    const rows = await prisma.$queryRaw<Array<{ column_name: string }>>`
+      SELECT column_name
+      FROM information_schema.columns
+      WHERE table_schema = current_schema()
+        AND table_name = 'BusinessDataSnapshot'
+    `;
+
+    return evaluateBusinessDataSnapshotSchemaReadiness(rows.map((row) => row.column_name));
+  } catch {
+    return createBusinessDataSnapshotSchemaReadiness("database_unavailable", null);
   }
 }
 
@@ -358,6 +481,9 @@ function createOperatorActions(blockers: string[], warnings: string[]) {
     if (message.includes("Database")) {
       actions.add("Verify database runtime credentials and connector health before promotion.");
     }
+    if (message.includes("BusinessDataSnapshot schema drift")) {
+      actions.add(`Apply Prisma migration ${businessDataSnapshotRequiredMigration} through the approved production deployment path; this is an operator migration action, not a provider or automation action.`);
+    }
     if (message.includes("APPROVED_EXECUTION")) {
       actions.add("Keep external execution disabled until the governed smoke approval is complete.");
     }
@@ -389,6 +515,11 @@ export async function getInfrastructureHealth(options: InfrastructureHealthOptio
       fetcher: options.fetcher,
     }),
   ]);
+  const businessDataSnapshotSchema = await checkBusinessDataSnapshotSchemaReadiness(
+    options.includeSchemaReadiness ?? options.includeDatabase ?? true,
+    database,
+    options.businessDataSnapshotColumns,
+  );
   const connectors = evaluateConnectorReadiness(env, googleOAuth);
   const blockers: string[] = [];
   const warnings: string[] = [];
@@ -402,6 +533,10 @@ export async function getInfrastructureHealth(options: InfrastructureHealthOptio
 
   if (database.checked && !database.ok) {
     blockers.push("Database connectivity check failed.");
+  }
+
+  if (businessDataSnapshotSchema.status === "schema_drift_detected") {
+    blockers.push(businessDataSnapshotSchema.message);
   }
 
   if (safetyGates.approvedExecutionEnabled && !safetyGates.approvedExecutionProductionSmokePassed) {
@@ -427,6 +562,9 @@ export async function getInfrastructureHealth(options: InfrastructureHealthOptio
       google: googleOAuth,
     },
     connectors,
+    schemaReadiness: {
+      businessDataSnapshot: businessDataSnapshotSchema,
+    },
     auditTrail: {
       checked: database.checked,
       status: database.checked ? database.ok ? "available" : "blocked" : "not_checked",
