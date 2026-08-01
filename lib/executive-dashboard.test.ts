@@ -3,7 +3,7 @@ import { describe, it } from "node:test";
 
 import { GET as knowledgeDecisionGet, POST as knowledgeDecisionPost } from "../app/(dashboard)/dashboard/knowledge/decision/route";
 import { AUTH_COOKIE_NAME, createSessionToken } from "./auth";
-import { createArchitectureImprovementBacklog, createExecutiveDashboardReport, createExecutiveRecommendations, createExecutiveWorkforceReport, createOperatingCompanyReport, createRevenueCommandCenter } from "./executive-dashboard";
+import { createArchitectureImprovementBacklog, createExecutiveDashboardReport, createExecutiveRecommendations, createExecutiveWorkforceReport, createOperatingCompanyReport, createProductionReadinessCommand, createRevenueCommandCenter } from "./executive-dashboard";
 import type { BusinessIntelligenceReport } from "./business-intelligence";
 import { createInheritedPropertyCampaignDirective, runCompanyOrchestrator } from "./company-orchestrator";
 import { createContentIntelligenceReport } from "./content-intelligence";
@@ -374,6 +374,55 @@ describe("knowledge page decision compatibility route", () => {
 });
 
 describe("daily startup", () => {
+  it("keeps schema-dependent execution blocked while safe dashboard modules stay read-only or degraded", () => {
+    const command = createProductionReadinessCommand({
+      schema: {
+        table: "BusinessDataSnapshot",
+        status: "schema_drift_detected",
+        requiredMigration: "20260716100000_harden_business_data_snapshots",
+        migrationPath: "prisma/migrations/20260716100000_harden_business_data_snapshots/migration.sql",
+        requiredColumns: ["version", "contractVersion", "evidenceHash", "observationStart", "observationEnd", "traceId", "reliability"],
+        missingColumns: ["version", "contractVersion", "evidenceHash", "observationStart", "observationEnd", "traceId", "reliability"],
+        pendingMigration: true,
+        message: "BusinessDataSnapshot schema drift detected.",
+        operatorAction: "Apply approved migration.",
+        safety: {
+          providerCalled: false,
+          liveExecutionAllowed: false,
+          externalWritesAllowed: false,
+          crmMutationAllowed: false,
+          outreachAllowed: false,
+          automationAllowed: false,
+          migrationApplied: false,
+        },
+      },
+      infrastructureBlockers: ["BusinessDataSnapshot schema drift detected."],
+      dataGaps: ["GA4 evidence unavailable.", "GBP evidence unavailable."],
+      businessSnapshotsLoadGap: "Business snapshots unavailable.",
+      hasCrossConnectorReport: false,
+      hasBuyerDemandCertification: false,
+      hasDailyMission: true,
+    });
+    const byId = new Map(command.departmentCompatibility.map((department) => [department.id, department]));
+
+    assert.equal(command.status, "blocked");
+    assert.equal(command.dryRunAllowed, false);
+    assert.equal(byId.get("production_dry_run")?.status, "blocked");
+    assert.equal(byId.get("ceo_dashboard")?.status, "degraded");
+    assert.equal(byId.get("draft_workspace")?.status, "read_only");
+    assert.equal(byId.get("search_market_intelligence")?.status, "degraded");
+    assert.equal(byId.get("marketing_intelligence")?.status, "degraded");
+    assert.equal(byId.get("revenue_intelligence")?.status, "degraded");
+    assert.equal(byId.get("buyer_demand")?.status, "degraded");
+    assert.equal(byId.get("cross_connector_certification")?.status, "degraded");
+    assert.equal(byId.get("department_os_morning_brief")?.status, "degraded");
+    assert.equal(command.departmentCompatibility.filter((department) => department.status === "blocked").length, 1);
+    assert.match(command.nextSafeAction, /CEO review and draft decisions remain available/i);
+    assert.equal(command.safetyFlags.providerCalled, false);
+    assert.equal(command.safetyFlags.crmMutationAllowed, false);
+    assert.equal(command.safetyFlags.automationAllowed, false);
+  });
+
   it("surfaces a CEO decision agenda without activation or provider execution", async () => {
     const report = await createExecutiveDashboardReport();
 
@@ -383,7 +432,7 @@ describe("daily startup", () => {
     assert.equal(report.productionReadinessCommand.safetyFlags.crmMutationAllowed, false);
     assert.equal(report.productionReadinessCommand.safetyFlags.outreachAllowed, false);
     assert.equal(report.productionReadinessCommand.safetyFlags.automationAllowed, false);
-    assert.equal(report.productionReadinessCommand.departmentCompatibility.length, 8);
+    assert.equal(report.productionReadinessCommand.departmentCompatibility.length, 9);
     assert.ok(report.productionReadinessCommand.departmentCompatibility.some((department) => department.id === "ceo_dashboard"));
     assert.ok(report.productionReadinessCommand.nextSafeAction.length > 0);
     assert.equal(report.dailyStartup.companyOperatingMode, "daily_startup_ready");
