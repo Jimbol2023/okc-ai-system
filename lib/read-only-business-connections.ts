@@ -33,6 +33,7 @@ export type BusinessDataCategory =
   | "google_business_profile_reviews"
   | "youtube_channel"
   | "canva_designs"
+  | "internal_website_lead_intake"
   | "internal_lead_database"
   | "internal_crm"
   | "internal_property_pipeline";
@@ -119,6 +120,10 @@ export type ReadOnlySyncReport = {
   safetyFlags: typeof readOnlyBusinessSafetyFlags;
 };
 
+export type ReadOnlySyncOptions = {
+  categories?: BusinessDataCategory[];
+};
+
 type SnapshotDb = typeof prisma & {
   businessDataSnapshot: {
     upsert(args: unknown): Promise<BusinessDataSnapshotRecord>;
@@ -139,6 +144,7 @@ export type AdapterDefinition = {
   connectorId: string;
   featureFlags: FeatureFlagKey[];
   requiredEnv: string[];
+  requiredScopes?: string[];
   oauthProvider: OAuthProvider;
   approvedRequests: Array<{ method: "GET" | "POST"; urlIncludes: string }>;
   ueipManaged?: boolean;
@@ -205,6 +211,21 @@ function envGap(keys: string[]) {
   return `Missing required read-only credential/configuration: ${keys.join(", ")}.`;
 }
 
+function hasRequiredScopeEvidence(env: NodeJS.ProcessEnv, requiredScopes: string[] = []) {
+  if (requiredScopes.length === 0) return true;
+  const grantedScopes = new Set(
+    `${env.GOOGLE_OAUTH_GRANTED_SCOPES ?? ""} ${env.GOOGLE_GRANTED_SCOPES ?? ""}`
+      .split(/[\s,]+/)
+      .map((scope) => scope.trim())
+      .filter(Boolean),
+  );
+  return requiredScopes.every((scope) => grantedScopes.has(scope));
+}
+
+function safeScopeLabels(requiredScopes: string[] = []) {
+  return requiredScopes.map((scope) => scope.split("/").pop() ?? "required_readonly_scope");
+}
+
 function baseSnapshot(input: {
   snapshotDate: Date;
   provider: string;
@@ -269,6 +290,20 @@ function dataGapSnapshot(definition: AdapterDefinition, snapshotDate: Date, data
     summary: `${definition.provider} ${definition.id.replaceAll("_", " ")} is not connected yet.`,
     dataGaps,
   });
+}
+
+function withExecutionEvidence(snapshot: BusinessDataSnapshotRecord, executionContext: UeipExecutionContext, now: Date) {
+  return {
+    ...snapshot,
+    observationStart: snapshot.observationStart ?? snapshot.snapshotDate,
+    observationEnd: snapshot.observationEnd ?? now,
+    traceId: snapshot.traceId ?? executionContext.traceId,
+    reliability: snapshot.reliability ?? {
+      status: snapshot.status === "fresh" ? "verified" : "advisory",
+      providerCalled: snapshot.providerCalled,
+      dataGapCount: snapshot.dataGaps.length,
+    },
+  } satisfies BusinessDataSnapshotRecord;
 }
 
 async function readJson(response: Response) {
@@ -463,8 +498,8 @@ async function driveDocuments(context: AdapterContext) {
 
 async function searchConsolePerformance(context: AdapterContext) {
   const siteUrl = context.env.GOOGLE_SEARCH_CONSOLE_SITE_URL || publicSiteUrl;
-  const startDate = daysAgo(8, context.now);
-  const endDate = daysAgo(1, context.now);
+  const endDate = daysAgo(3, context.now);
+  const startDate = daysAgo(7, new Date(`${endDate}T00:00:00.000Z`));
   const gateway = await runUeipSearchConsoleGateway({
     context: context.executionContext,
     request: {
@@ -734,12 +769,12 @@ async function canvaDesigns(context: AdapterContext) {
 }
 
 export const readOnlyAdapterDefinitions: AdapterDefinition[] = [
-  { id: "gmail_inbox", provider: "Google Workspace", connectorId: "gmail", featureFlags: ["connector_live_reads", "connector_google", "connector_communication"], requiredEnv: ["GOOGLE_OAUTH_CLIENT_ID", "GOOGLE_OAUTH_CLIENT_SECRET", "GOOGLE_OAUTH_REFRESH_TOKEN"], oauthProvider: "google", approvedRequests: [{ method: "GET", urlIncludes: "gmail.googleapis.com/gmail/v1/users/me/messages" }], run: gmailInbox },
-  { id: "google_calendar_events", provider: "Google Workspace", connectorId: "google_calendar", featureFlags: ["connector_live_reads", "connector_google"], requiredEnv: ["GOOGLE_OAUTH_CLIENT_ID", "GOOGLE_OAUTH_CLIENT_SECRET", "GOOGLE_OAUTH_REFRESH_TOKEN"], oauthProvider: "google", approvedRequests: [{ method: "GET", urlIncludes: "www.googleapis.com/calendar/v3/calendars/primary/events" }], run: calendarEvents },
-  { id: "google_drive_documents", provider: "Google Workspace", connectorId: "google_drive", featureFlags: ["connector_live_reads", "connector_google"], requiredEnv: ["GOOGLE_OAUTH_CLIENT_ID", "GOOGLE_OAUTH_CLIENT_SECRET", "GOOGLE_OAUTH_REFRESH_TOKEN"], oauthProvider: "google", approvedRequests: [{ method: "GET", urlIncludes: "www.googleapis.com/drive/v3/files" }], run: driveDocuments },
-  { id: "search_console_performance", provider: "Google Search Console", connectorId: "google_search_console", featureFlags: ["connector_live_reads", "connector_google", "executive_briefings", "ueip_gateway_enforcement", "ueip_search_console_runtime"], requiredEnv: ["GOOGLE_SEARCH_CONSOLE_SITE_URL"], oauthProvider: "google", approvedRequests: [{ method: "POST", urlIncludes: "www.googleapis.com/webmasters/v3/sites" }], ueipManaged: true, run: searchConsolePerformance },
-  { id: "search_console_indexing", provider: "Google Search Console", connectorId: "google_search_console", featureFlags: ["connector_live_reads", "connector_google", "executive_briefings", "ueip_gateway_enforcement", "ueip_search_console_runtime"], requiredEnv: ["GOOGLE_SEARCH_CONSOLE_SITE_URL"], oauthProvider: "google", approvedRequests: [{ method: "POST", urlIncludes: "searchconsole.googleapis.com/v1/urlInspection/index:inspect" }], ueipManaged: true, run: searchConsoleIndexing },
-  { id: "google_analytics_traffic", provider: "Google Analytics", connectorId: "google_analytics", featureFlags: ["connector_live_reads", "connector_google", "executive_briefings", "ueip_gateway_enforcement", "ueip_ga4_runtime"], requiredEnv: ["GOOGLE_ANALYTICS_PROPERTY_ID"], oauthProvider: "google", approvedRequests: [{ method: "POST", urlIncludes: "analyticsdata.googleapis.com/v1beta/properties" }], ueipManaged: true, run: ga4Traffic },
+  { id: "gmail_inbox", provider: "Google Workspace", connectorId: "gmail", featureFlags: ["connector_live_reads", "connector_google", "connector_communication"], requiredEnv: ["GOOGLE_OAUTH_CLIENT_ID", "GOOGLE_OAUTH_CLIENT_SECRET", "GOOGLE_OAUTH_REFRESH_TOKEN"], requiredScopes: ["https://www.googleapis.com/auth/gmail.readonly"], oauthProvider: "google", approvedRequests: [{ method: "GET", urlIncludes: "gmail.googleapis.com/gmail/v1/users/me/messages" }], run: gmailInbox },
+  { id: "google_calendar_events", provider: "Google Workspace", connectorId: "google_calendar", featureFlags: ["connector_live_reads", "connector_google"], requiredEnv: ["GOOGLE_OAUTH_CLIENT_ID", "GOOGLE_OAUTH_CLIENT_SECRET", "GOOGLE_OAUTH_REFRESH_TOKEN"], requiredScopes: ["https://www.googleapis.com/auth/calendar.events.readonly"], oauthProvider: "google", approvedRequests: [{ method: "GET", urlIncludes: "www.googleapis.com/calendar/v3/calendars/primary/events" }], run: calendarEvents },
+  { id: "google_drive_documents", provider: "Google Workspace", connectorId: "google_drive", featureFlags: ["connector_live_reads", "connector_google"], requiredEnv: ["GOOGLE_OAUTH_CLIENT_ID", "GOOGLE_OAUTH_CLIENT_SECRET", "GOOGLE_OAUTH_REFRESH_TOKEN"], requiredScopes: ["https://www.googleapis.com/auth/drive.metadata.readonly"], oauthProvider: "google", approvedRequests: [{ method: "GET", urlIncludes: "www.googleapis.com/drive/v3/files" }], run: driveDocuments },
+  { id: "search_console_performance", provider: "Google Search Console", connectorId: "google_search_console", featureFlags: ["connector_live_reads", "connector_google", "executive_briefings", "ueip_gateway_enforcement", "ueip_search_console_runtime"], requiredEnv: ["GOOGLE_SEARCH_CONSOLE_SITE_URL"], requiredScopes: ["https://www.googleapis.com/auth/webmasters.readonly"], oauthProvider: "google", approvedRequests: [{ method: "POST", urlIncludes: "www.googleapis.com/webmasters/v3/sites" }], ueipManaged: true, run: searchConsolePerformance },
+  { id: "search_console_indexing", provider: "Google Search Console", connectorId: "google_search_console", featureFlags: ["connector_live_reads", "connector_google", "executive_briefings", "ueip_gateway_enforcement", "ueip_search_console_runtime"], requiredEnv: ["GOOGLE_SEARCH_CONSOLE_SITE_URL"], requiredScopes: ["https://www.googleapis.com/auth/webmasters.readonly"], oauthProvider: "google", approvedRequests: [{ method: "POST", urlIncludes: "searchconsole.googleapis.com/v1/urlInspection/index:inspect" }], ueipManaged: true, run: searchConsoleIndexing },
+  { id: "google_analytics_traffic", provider: "Google Analytics", connectorId: "google_analytics", featureFlags: ["connector_live_reads", "connector_google", "executive_briefings", "ueip_gateway_enforcement", "ueip_ga4_runtime"], requiredEnv: ["GOOGLE_ANALYTICS_PROPERTY_ID"], requiredScopes: ["https://www.googleapis.com/auth/analytics.readonly"], oauthProvider: "google", approvedRequests: [{ method: "POST", urlIncludes: "analyticsdata.googleapis.com/v1beta/properties" }], ueipManaged: true, run: ga4Traffic },
   { id: "google_business_profile_performance", provider: "Google Business Profile", connectorId: "google_business_profile", featureFlags: ["connector_live_reads", "connector_google", "connector_marketing", "ueip_gateway_enforcement", "ueip_gbp_runtime"], requiredEnv: ["GOOGLE_BUSINESS_PROFILE_LOCATION_ID"], oauthProvider: "google", approvedRequests: [{ method: "GET", urlIncludes: "businessprofileperformance.googleapis.com/v1/locations" }], ueipManaged: true, run: googleBusinessProfilePerformance },
   { id: "google_business_profile_reviews", provider: "Google Business Profile", connectorId: "google_business_profile", featureFlags: ["connector_live_reads", "connector_google", "connector_marketing", "ueip_gateway_enforcement", "ueip_gbp_runtime"], requiredEnv: ["GOOGLE_BUSINESS_PROFILE_LOCATION_ID"], oauthProvider: "google", approvedRequests: [{ method: "GET", urlIncludes: "mybusiness.googleapis.com/v4/accounts" }], ueipManaged: true, run: googleBusinessProfileReviews },
   { id: "youtube_channel", provider: "YouTube", connectorId: "youtube", featureFlags: ["connector_live_reads", "connector_google", "connector_marketing"], requiredEnv: ["GOOGLE_OAUTH_CLIENT_ID", "GOOGLE_OAUTH_CLIENT_SECRET", "GOOGLE_OAUTH_REFRESH_TOKEN", "YOUTUBE_CHANNEL_ID"], oauthProvider: "google", approvedRequests: [{ method: "GET", urlIncludes: "www.googleapis.com/youtube/v3/search" }, { method: "GET", urlIncludes: "youtubeanalytics.googleapis.com/v2/reports" }], run: youtubeChannel },
@@ -753,6 +788,7 @@ export function listReadOnlyAdapterMetadata() {
     connectorId: definition.connectorId,
     featureFlags: definition.featureFlags,
     requiredEnv: definition.requiredEnv,
+    requiredScopes: definition.requiredScopes ?? [],
     oauthProvider: definition.oauthProvider,
     approvedRequests: definition.approvedRequests,
     readOnly: true as const,
@@ -774,22 +810,26 @@ export function validateReadOnlyAdapterDefinitions() {
 async function runAdapter(definition: AdapterDefinition, env: NodeJS.ProcessEnv, snapshotDate: Date, now: Date, executionContext: UeipExecutionContext) {
   const disabledFlags = definition.featureFlags.filter((flag) => !isFeatureEnabled(flag));
   if (disabledFlags.length > 0) {
-    return dataGapSnapshot(definition, snapshotDate, [`Feature flag(s) disabled: ${disabledFlags.join(", ")}.`]);
+    return withExecutionEvidence(dataGapSnapshot(definition, snapshotDate, [`Feature flag(s) disabled: ${disabledFlags.join(", ")}.`]), executionContext, now);
   }
 
   if (!hasEnv(env, definition.requiredEnv)) {
-    return dataGapSnapshot(definition, snapshotDate, [envGap(definition.requiredEnv)]);
+    return withExecutionEvidence(dataGapSnapshot(definition, snapshotDate, [envGap(definition.requiredEnv)]), executionContext, now);
+  }
+
+  if (!hasRequiredScopeEvidence(env, definition.requiredScopes)) {
+    return withExecutionEvidence(dataGapSnapshot(definition, snapshotDate, [`Missing required read-only OAuth scope evidence: ${safeScopeLabels(definition.requiredScopes).join(", ")}.`]), executionContext, now);
   }
 
   try {
     if (definition.ueipManaged) {
-      return definition.run({ accessToken: "", fetcher, snapshotDate, now, env, executionContext });
+      return withExecutionEvidence(await definition.run({ accessToken: "", fetcher, snapshotDate, now, env, executionContext }), executionContext, now);
     }
     const accessToken = await refreshAccessToken(definition.oauthProvider, env, fetcher);
 
-    return definition.run({ accessToken, fetcher, snapshotDate, now, env, executionContext });
+    return withExecutionEvidence(await definition.run({ accessToken, fetcher, snapshotDate, now, env, executionContext }), executionContext, now);
   } catch (error) {
-    return baseSnapshot({
+    return withExecutionEvidence(baseSnapshot({
       snapshotDate,
       provider: definition.provider,
       connectorId: definition.connectorId,
@@ -800,7 +840,7 @@ async function runAdapter(definition: AdapterDefinition, env: NodeJS.ProcessEnv,
       summary: `${definition.provider} ${definition.id.replaceAll("_", " ")} could not be refreshed.`,
       dataGaps: [error instanceof Error ? error.message : "Unknown read-only adapter error."],
       providerCalled: true,
-    });
+    }), executionContext, now);
   }
 }
 
@@ -877,6 +917,24 @@ async function createInternalBusinessSnapshots(snapshotDate: Date): Promise<Busi
   ].filter(Boolean);
 
   return [
+    baseSnapshot({
+      snapshotDate,
+      provider: "Website Lead Intake",
+      connectorId: "website_lead_intake",
+      category: "internal_website_lead_intake",
+      status: leads.length > 0 ? "fresh" : "data_gap",
+      sourceLabel: "website_lead_intake:persisted_leads:readonly",
+      provenance: "Website lead intake persistence evidence derived from stored leads; no provider call, outreach, or CRM mutation.",
+      summary: `${leads.length} persisted lead(s), ${leads.filter((lead) => Boolean(lead.source?.trim())).length} with source attribution, and ${leads.filter((lead) => lead.requiresHumanApproval !== false).length} approval-gated lead(s).`,
+      metrics: {
+        persistedLeads: leads.length,
+        sourceAttributedLeads: leads.filter((lead) => Boolean(lead.source?.trim())).length,
+        approvalGatedLeads: leads.filter((lead) => lead.requiresHumanApproval !== false).length,
+      },
+      records: leadRecords,
+      dataGaps: leads.length > 0 ? [] : ["No persisted website lead intake records are available yet."],
+      providerCalled: false,
+    }),
     baseSnapshot({
       snapshotDate,
       provider: "Internal Lead Database",
@@ -1066,19 +1124,26 @@ export async function getLatestLiveMorningBrief() {
 export async function runReadOnlyBusinessSync(
   env: NodeJS.ProcessEnv = process.env,
   executionContext: UeipExecutionContext = createUeipExecutionContext({ tenantId, actorId: "system:cron", businessModule: "ai_core", requestOrigin: "system_cron" }),
+  options: ReadOnlySyncOptions = {},
 ): Promise<ReadOnlySyncReport> {
   const now = new Date();
   const snapshotDate = dayStart(now);
   const snapshots: BusinessDataSnapshotRecord[] = [];
   const activeTenantId = executionContext.tenantId;
 
-  for (const definition of readOnlyAdapterDefinitions) {
+  const selectedCategories = options.categories ? new Set(options.categories) : null;
+  const selectedAdapters = selectedCategories
+    ? readOnlyAdapterDefinitions.filter((definition) => selectedCategories.has(definition.id))
+    : readOnlyAdapterDefinitions;
+
+  for (const definition of selectedAdapters) {
     const snapshot = await runAdapter(definition, env, snapshotDate, now, executionContext);
     snapshots.push(await persistSnapshot(snapshot, activeTenantId));
   }
 
-  for (const snapshot of activeTenantId === tenantId ? await createInternalBusinessSnapshots(snapshotDate) : []) {
-    snapshots.push(await persistSnapshot(snapshot, activeTenantId));
+  const internalSnapshots = activeTenantId === tenantId ? await createInternalBusinessSnapshots(snapshotDate) : [];
+  for (const snapshot of selectedCategories ? internalSnapshots.filter((item) => selectedCategories.has(item.category as BusinessDataCategory)) : internalSnapshots) {
+    snapshots.push(await persistSnapshot(withExecutionEvidence(snapshot, executionContext, now), activeTenantId));
   }
 
   const morningBrief = createMorningBriefFromSnapshots(snapshots, now.toISOString());
@@ -1103,7 +1168,7 @@ export async function runReadOnlyBusinessSync(
     generatedAt: now.toISOString(),
     snapshots,
     morningBrief,
-    integrationsCompleted: [...readOnlyAdapterDefinitions.map((definition) => definition.provider), "Internal Lead Database", "Internal CRM", "Internal Property Pipeline"],
+    integrationsCompleted: [...new Set(snapshots.map((snapshot) => snapshot.provider))],
     businessSystemsConnected: [...new Set(snapshots.filter((snapshot) => snapshot.providerCalled && snapshot.status !== "data_gap").map((snapshot) => snapshot.provider))],
     dataGaps: morningBrief.dataGaps,
     providerCalled: morningBrief.providerCalled,

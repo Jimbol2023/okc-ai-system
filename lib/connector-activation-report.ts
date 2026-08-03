@@ -102,6 +102,22 @@ type ConnectorPlan = {
 
 const connectorPlans: ConnectorPlan[] = [
   {
+    connectorId: "website_lead_intake",
+    connectorName: "Website Lead Intake",
+    businessUseCase: "Validated public seller inquiries persisted with source attribution and mandatory human review.",
+    departmentUsingIt: "Lead Intelligence",
+    implementationStatus: "internal_read_source",
+    adapterConnectorIds: ["website_lead_intake"],
+    internal: true,
+    requiredEnv: [],
+    featureFlags: [],
+    nextRequiredAction: "Keep every public intake source-attributed and approval-gated before outreach.",
+    roiPriority: 1,
+    revenueUseCase: "Captures inbound seller demand into the internal lead review workflow.",
+    dealFlowImpact: "high",
+    nextRevenueAction: "Review newly persisted inquiries and prepare approval-only follow-up recommendations.",
+  },
+  {
     connectorId: "google_workspace",
     connectorName: "Google Workspace",
     businessUseCase: "Umbrella OAuth for Gmail, Calendar, Drive, Search Console, GA4, GBP, and YouTube read-only snapshots.",
@@ -416,6 +432,7 @@ export function createConnectorActivationReportFromInputs({
       nextRevenueAction: "Keep readiness visible; do not rank ahead of deal-flow connectors.",
     }));
   const internalFacts = [
+    `website_lead_intake:${leads.length} persisted lead(s)`,
     `lead_database:${leads.length} stored lead(s)`,
     `crm:${pipeline.actionableLeads} actionable lead(s)`,
     `property_pipeline:${pipeline.workFirstLeads.length} work-first item(s)`,

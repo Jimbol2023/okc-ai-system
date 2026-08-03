@@ -51,6 +51,17 @@ test("Search Console query read validates dates before calling provider", async 
   assert.equal(called, false);
 });
 
+test("Search Console read rejects an incomplete observation window before token exchange", async () => {
+  let calls = 0;
+  await assert.rejects(() => executeSearchConsoleRead({
+    request: { capability: "seo.page.performance.read", siteUrl: "https://example.com/", startDate: "2026-07-07", endDate: "2026-07-14", rowLimit: 10 },
+    credentials: { clientId: "x", clientSecret: "y", refreshToken: "z" },
+    fetcher: async () => { calls += 1; return new Response(); },
+    now: new Date("2026-07-15T12:00:00.000Z"),
+  }), (error: unknown) => error instanceof UeipSearchConsoleAdapterError && error.category === "invalid_request" && !error.providerAttempted);
+  assert.equal(calls, 0);
+});
+
 test("Search Console query read returns bounded normalized query evidence", async () => {
   const responses = [new Response(JSON.stringify({ access_token: "token" }), { status: 200, headers: { "content-type": "application/json" } }), new Response(JSON.stringify({ rows: [{ keys: ["sell inherited house"], clicks: 3, impressions: 40, ctr: 0.075, position: 7 }] }), { status: 200, headers: { "content-type": "application/json" } })];
   const result = await executeSearchConsoleRead({ request: { capability: "seo.query.performance.read", siteUrl: "sc-domain:example.com", startDate: "2026-06-15", endDate: "2026-07-12", rowLimit: 10 }, credentials: { clientId: "x", clientSecret: "y", refreshToken: "z" }, fetcher: async () => responses.shift()!, now: new Date("2026-07-15T12:00:00.000Z") });
