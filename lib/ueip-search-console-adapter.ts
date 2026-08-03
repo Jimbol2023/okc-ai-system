@@ -219,9 +219,6 @@ export async function executeSearchConsoleRead(input: {
     throw new UeipSearchConsoleAdapterError("not_implemented", "Capability is registered but not implemented in UEIP Phase 2.", false);
   }
 
-  const fetcher = input.fetcher ?? fetch;
-  const timeoutMs = input.timeoutMs ?? 8_000;
-  const accessToken = await exchangeToken(input.credentials, fetcher, timeoutMs);
   const now = input.now ?? new Date();
   if (parsed.data.startDate && parsed.data.endDate) {
     const start = new Date(`${parsed.data.startDate}T00:00:00.000Z`);
@@ -230,6 +227,9 @@ export async function executeSearchConsoleRead(input: {
     latestComplete.setUTCDate(latestComplete.getUTCDate() - 3);
     if (start > end || end > latestComplete || (end.getTime() - start.getTime()) / 86_400_000 > 90) throw new UeipSearchConsoleAdapterError("invalid_request", "Search Console observation window is invalid.", false);
   }
+  const fetcher = input.fetcher ?? fetch;
+  const timeoutMs = input.timeoutMs ?? 8_000;
+  const accessToken = await exchangeToken(input.credentials, fetcher, timeoutMs);
   const headers = { Authorization: `Bearer ${accessToken}`, Accept: "application/json", "Content-Type": "application/json" };
 
   if (parsed.data.capability === "seo.page.performance.read" || parsed.data.capability === "seo.query.performance.read") {

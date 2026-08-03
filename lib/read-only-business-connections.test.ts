@@ -102,10 +102,70 @@ describe("read-only business connections", () => {
     assert.equal(calls, 0);
     assert.equal(report.providerCalled, false);
     assert.equal(report.liveExecutionAllowed, false);
-    assert.equal(report.snapshots.length, readOnlyAdapterDefinitions.length + 3);
+    assert.equal(report.snapshots.length, readOnlyAdapterDefinitions.length + 4);
     assert.ok(report.snapshots.filter((snapshot) => readOnlyAdapterDefinitions.some((definition) => definition.id === snapshot.category)).every((snapshot) => snapshot.status === "data_gap"));
     assert.ok(report.snapshots.some((snapshot) => snapshot.category === "internal_lead_database"));
+    assert.ok(report.snapshots.some((snapshot) => snapshot.category === "internal_website_lead_intake"));
     assert.ok(report.dataGaps.some((gap) => gap.includes("Missing required read-only credential")));
+  });
+
+  it("runs only explicitly selected snapshot categories", async () => {
+    const testDb = createTestDb();
+    const calls: string[] = [];
+    const env = {
+      GOOGLE_OAUTH_CLIENT_ID: "google-client",
+      GOOGLE_OAUTH_CLIENT_SECRET: "google-secret",
+      GOOGLE_OAUTH_REFRESH_TOKEN: "google-refresh",
+      GOOGLE_OAUTH_GRANTED_SCOPES: "https://www.googleapis.com/auth/gmail.readonly",
+    };
+
+    restoreFns.push(setReadOnlyBusinessConnectionsDbForTest(testDb.db as never));
+    restoreFns.push(setReadOnlyBusinessConnectionsLeadLoaderForTest(async () => []));
+    restoreFns.push(setReadOnlyBusinessConnectionsFetchForTest(async (input) => {
+      const url = String(input);
+      calls.push(url);
+      if (url.includes("oauth2.googleapis.com")) return jsonResponse({ access_token: "access-token" });
+      if (url.includes("gmail.googleapis.com")) return jsonResponse({ messages: [] });
+      return jsonResponse({});
+    }));
+
+    const report = await runReadOnlyBusinessSync(env, undefined, {
+      categories: ["gmail_inbox", "internal_website_lead_intake"],
+    });
+
+    assert.deepEqual(report.snapshots.map((snapshot) => snapshot.category), ["gmail_inbox", "internal_website_lead_intake"]);
+    assert.ok(calls.some((url) => url.includes("gmail.googleapis.com")));
+    assert.equal(calls.some((url) => url.includes("youtube")), false);
+    assert.equal(calls.some((url) => url.includes("canva")), false);
+    assert.deepEqual(report.integrationsCompleted.sort(), ["Google Workspace", "Website Lead Intake"]);
+  });
+
+  it("persists a data gap without a provider call when read-only scope evidence is missing", async () => {
+    const testDb = createTestDb();
+    let calls = 0;
+
+    restoreFns.push(setReadOnlyBusinessConnectionsDbForTest(testDb.db as never));
+    restoreFns.push(setReadOnlyBusinessConnectionsLeadLoaderForTest(async () => []));
+    restoreFns.push(setReadOnlyBusinessConnectionsFetchForTest(async () => {
+      calls += 1;
+      return jsonResponse({});
+    }));
+
+    const report = await runReadOnlyBusinessSync({
+      GOOGLE_OAUTH_CLIENT_ID: "google-client",
+      GOOGLE_OAUTH_CLIENT_SECRET: "google-secret",
+      GOOGLE_OAUTH_REFRESH_TOKEN: "google-refresh",
+      GOOGLE_OAUTH_GRANTED_SCOPES: "https://www.googleapis.com/auth/webmasters.readonly",
+    }, undefined, { categories: ["gmail_inbox"] });
+
+    assert.equal(calls, 0);
+    assert.equal(report.providerCalled, false);
+    assert.equal(report.snapshots[0]?.status, "data_gap");
+    assert.match(report.snapshots[0]?.dataGaps[0] ?? "", /gmail\.readonly/);
+    assert.ok(report.snapshots[0]?.observationStart);
+    assert.ok(report.snapshots[0]?.observationEnd);
+    assert.ok(report.snapshots[0]?.traceId);
+    assert.deepEqual(report.snapshots[0]?.reliability, { status: "advisory", providerCalled: false, dataGapCount: 1 });
   });
 
   it("refreshes OAuth tokens without returning secrets and persists read-only snapshots", async () => {
@@ -123,6 +183,13 @@ describe("read-only business connections", () => {
       CANVA_OAUTH_CLIENT_ID: "canva-client",
       CANVA_OAUTH_CLIENT_SECRET: "canva-secret",
       CANVA_OAUTH_REFRESH_TOKEN: "canva-refresh",
+      GOOGLE_OAUTH_GRANTED_SCOPES: [
+        "https://www.googleapis.com/auth/gmail.readonly",
+        "https://www.googleapis.com/auth/calendar.events.readonly",
+        "https://www.googleapis.com/auth/drive.metadata.readonly",
+        "https://www.googleapis.com/auth/webmasters.readonly",
+        "https://www.googleapis.com/auth/analytics.readonly",
+      ].join(" "),
     };
 
     restoreFns.push(setReadOnlyBusinessConnectionsDbForTest(testDb.db as never));
