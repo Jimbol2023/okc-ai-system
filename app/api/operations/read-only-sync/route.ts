@@ -1,21 +1,14 @@
 import { NextResponse } from "next/server";
 
-import { getAuthenticatedRequestContext, getUnauthorizedApiResponse, isAdminRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse, isAdminRequest, isCronAuthorizedRequest } from "@/lib/auth";
 import { runReadOnlyBusinessSync } from "@/lib/read-only-business-connections";
 import { createUeipExecutionContext } from "@/lib/ueip-runtime-gateway";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-function isCronRequest(request: Request) {
-  const configuredSecret = process.env.CRON_SECRET?.trim();
-  const authorization = request.headers.get("authorization") || "";
-
-  return Boolean(configuredSecret) && authorization === `Bearer ${configuredSecret}`;
-}
-
 async function executionContextFor(request: Request) {
-  if (isCronRequest(request)) {
+  if (await isCronAuthorizedRequest(request)) {
     return createUeipExecutionContext({ tenantId: "default", actorId: "system:cron", businessModule: "ai_core", requestOrigin: "system_cron" });
   }
   const auth = await getAuthenticatedRequestContext(request);
@@ -25,7 +18,7 @@ async function executionContextFor(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    if (!isCronRequest(request) && !(await isAdminRequest(request))) {
+    if (!(await isCronAuthorizedRequest(request)) && !(await isAdminRequest(request))) {
       return getUnauthorizedApiResponse();
     }
 
@@ -51,7 +44,7 @@ export async function POST(request: Request) {
 
 export async function GET(request: Request) {
   try {
-    if (!isCronRequest(request)) {
+    if (!(await isCronAuthorizedRequest(request))) {
       return getUnauthorizedApiResponse();
     }
 

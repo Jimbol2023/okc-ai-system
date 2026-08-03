@@ -761,6 +761,36 @@ type ExecutiveDashboardResponse = {
   error?: string;
 };
 
+type ExecutiveAutonomyLevel1Status = {
+  ok: boolean;
+  level: 1;
+  mode: "executive_autonomy_level_1_internal";
+  tenantId: string;
+  businessDate: string;
+  idempotencyKey: string;
+  lastRun: {
+    state: "completed" | "completed_with_exceptions" | "already_completed" | "started" | "not_started";
+    startedAt: string | null;
+    completedAt: string | null;
+    summary: string | null;
+    exceptions: string[];
+    confidence: number | null;
+  };
+  nextRunAt: string;
+  manualControls: Array<"run_daily_startup_now" | "retry_failed_internal_step" | "regenerate_morning_brief">;
+  safety: {
+    providerCalled: false;
+    sent: false;
+    published: false;
+    crmMutation: false;
+    outreach: false;
+    scraping: false;
+    externalExecutionAllowed: false;
+    liveExecutionAllowed: false;
+  };
+  error?: string;
+};
+
 function getStatusColor(status: MetricStatus) {
   return getDashboardStatusColor(status);
 }
@@ -1003,6 +1033,32 @@ type InternalWorkRunResponse = {
   liveExecutionAllowed?: false;
 };
 
+type ControlledInternalOperationAction =
+  | "start_company"
+  | "generate_morning_brief"
+  | "refresh_internal_intelligence"
+  | "record_executive_memory";
+
+type ControlledInternalOperationResponse = {
+  ok: boolean;
+  error?: string;
+  action?: ControlledInternalOperationAction;
+  createdRecordType?: string;
+  createdRecordId?: string | null;
+  recordsCreated?: number;
+  recordsUpdated?: number;
+  stateTransition?: "internal_operational" | "degraded_but_usable";
+  auditEntryCreated?: boolean;
+  providerCalled?: false;
+  sent?: false;
+  published?: false;
+  crmMutation?: false;
+  outreach?: false;
+  scraping?: false;
+  externalExecutionAllowed?: false;
+  liveExecutionAllowed?: false;
+};
+
 type ApprovedExecutionActionType =
   | "send_email"
   | "publish_article"
@@ -1067,6 +1123,286 @@ function missionStatusToMetric(status: DailyMission["status"]): MetricStatus {
 
 function countByStatus(items: Array<{ status: string }>, status: string) {
   return items.filter((item) => item.status === status).length;
+}
+
+function operationStatusClass(status: "internal" | "degraded" | "external_blocked" | "schema_blocked" | "configuration_blocked") {
+  if (status === "internal") return "border-emerald-200 bg-emerald-50 text-emerald-950";
+  if (status === "degraded") return "border-amber-200 bg-amber-50 text-amber-950";
+  if (status === "schema_blocked") return "border-red-200 bg-red-50 text-red-950";
+  if (status === "configuration_blocked") return "border-sky-200 bg-sky-50 text-sky-950";
+
+  return "border-slate-200 bg-slate-50 text-slate-950";
+}
+
+function OperationStatusPill({
+  status,
+  label,
+  detail,
+}: {
+  status: "internal" | "degraded" | "external_blocked" | "schema_blocked" | "configuration_blocked";
+  label: string;
+  detail: string;
+}) {
+  return (
+    <div className={`rounded-lg border p-3 ${operationStatusClass(status)}`}>
+      <p className="break-words text-[11px] font-bold uppercase tracking-[0.08em]">{label}</p>
+      <p className="mt-1 break-words text-xs leading-5">{detail}</p>
+    </div>
+  );
+}
+
+function ExecutiveAutonomyLevel1Panel({
+  status,
+  morningBrief,
+  dailyMission,
+  onRefresh,
+}: {
+  status: ExecutiveAutonomyLevel1Status | null;
+  morningBrief: MorningBrief | null;
+  dailyMission: DailyMission | null;
+  onRefresh: () => Promise<void>;
+}) {
+  const [running, setRunning] = useState(false);
+  const [retrying, setRetrying] = useState(false);
+  const [regenerating, setRegenerating] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+
+  async function runDailyStartup() {
+    try {
+      setRunning(true);
+      setError("");
+      setMessage("");
+      const response = await fetch("/api/company/executive-autonomy/daily-startup", {
+        method: "POST",
+        headers: { Accept: "application/json" },
+      });
+      const data = await readJsonResponse<{ ok: boolean; state?: string; morningBrief?: { summary: string }; error?: string }>(response);
+      if (!response.ok || !data.ok) throw new Error(data.error || "Unable to run Executive Autonomy Level 1.");
+      setMessage(`Daily Startup ${data.state ?? "completed"}: ${data.morningBrief?.summary ?? "Morning Brief prepared."}`);
+      await onRefresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to run Executive Autonomy Level 1.");
+    } finally {
+      setRunning(false);
+    }
+  }
+
+  async function retryInternalStep() {
+    try {
+      setRetrying(true);
+      setError("");
+      setMessage("");
+      const response = await fetch("/api/company/internal-operations", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ action: "refresh_internal_intelligence" }),
+      });
+      const data = await readJsonResponse<ControlledInternalOperationResponse>(response);
+      if (!response.ok || !data.ok) throw new Error(data.error || "Unable to retry internal evidence refresh.");
+      setMessage(`Internal step refreshed: ${data.stateTransition}; providerCalled:false; externalExecution:false.`);
+      await onRefresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to retry internal evidence refresh.");
+    } finally {
+      setRetrying(false);
+    }
+  }
+
+  async function regenerateMorningBrief() {
+    try {
+      setRegenerating(true);
+      setError("");
+      setMessage("");
+      const response = await fetch("/api/company/internal-operations", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ action: "generate_morning_brief" }),
+      });
+      const data = await readJsonResponse<ControlledInternalOperationResponse>(response);
+      if (!response.ok || !data.ok) throw new Error(data.error || "Unable to regenerate Morning Brief.");
+      setMessage(`Morning Brief regenerated: ${data.createdRecordType}; providerCalled:false; externalExecution:false.`);
+      await onRefresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to regenerate Morning Brief.");
+    } finally {
+      setRegenerating(false);
+    }
+  }
+
+  const lastRunState = status?.lastRun.state ?? "not_started";
+  const confidence = status?.lastRun.confidence ?? null;
+  const exceptions = status?.lastRun.exceptions ?? dailyMission?.urgentCeoDecisions.map((item) => item.title) ?? [];
+  const kpiChanges = morningBrief?.keySignals.slice(0, 4) ?? [];
+
+  return (
+    <section aria-labelledby="executive-autonomy-l1-heading" className="rounded-lg border border-emerald-200 bg-emerald-50 p-5 md:p-6">
+      <div className="flex min-w-0 flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+        <div className="min-w-0">
+          <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-emerald-900">Executive Autonomy Level 1</p>
+          <h1 id="executive-autonomy-l1-heading" className="mt-1 break-words text-3xl font-semibold text-emerald-950 md:text-4xl">
+            Daily Startup, Morning Brief, Exceptions
+          </h1>
+          <p className="mt-2 max-w-5xl break-words text-sm leading-6 text-emerald-950">
+            The AI company runs internal daily operations, prepares recommendations, records memory and audit proof, and surfaces only CEO decisions,
+            exceptions, KPI movement, and confidence levels.
+          </p>
+        </div>
+        <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+          <SafetyBadge>providerCalled:{String(status?.safety.providerCalled ?? false)}</SafetyBadge>
+          <SafetyBadge>sent:{String(status?.safety.sent ?? false)}</SafetyBadge>
+          <SafetyBadge>published:{String(status?.safety.published ?? false)}</SafetyBadge>
+          <SafetyBadge tone="urgent">externalExecution:{String(status?.safety.externalExecutionAllowed ?? false)}</SafetyBadge>
+        </div>
+      </div>
+
+      <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+        <OperationStatusPill
+          status={lastRunState === "completed" || lastRunState === "completed_with_exceptions" || lastRunState === "already_completed" ? "internal" : "degraded"}
+          label="Last Run"
+          detail={`${lastRunState.replaceAll("_", " ")}${status?.lastRun.completedAt ? ` at ${formatTime(status.lastRun.completedAt)}` : ""}`}
+        />
+        <OperationStatusPill status="internal" label="Next Run" detail={status?.nextRunAt ? formatTime(status.nextRunAt) : "Scheduled for 8:00 AM Central."} />
+        <OperationStatusPill status="internal" label="Morning Brief" detail={status?.lastRun.summary ?? morningBrief?.summary ?? "Ready to generate from internal records."} />
+        <OperationStatusPill
+          status={exceptions.length > 0 ? "degraded" : "internal"}
+          label="Exceptions"
+          detail={exceptions.length > 0 ? `${exceptions.length} exception(s) or CEO decision(s) visible.` : "No current exceptions reported."}
+        />
+        <OperationStatusPill
+          status={confidence === null || confidence >= 70 ? "internal" : "degraded"}
+          label="Data Confidence"
+          detail={confidence === null ? "Awaiting first Level 1 run." : `${confidence}% advisory confidence; internal operations remain enabled.`}
+        />
+      </div>
+
+      <div className="mt-5 grid gap-4 xl:grid-cols-[1fr_0.9fr]">
+        <div className="rounded-lg border border-emerald-100 bg-white p-4">
+          <h3 className="break-words text-lg font-semibold text-emerald-950">CEO Focus</h3>
+          <div className="mt-3 grid gap-3 sm:grid-cols-2">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.08em] text-emerald-900">Approval / Rejection Queue</p>
+              <ul className="mt-2 space-y-2 text-sm leading-5 text-emerald-950">
+                {(exceptions.length > 0 ? exceptions : ["No high-impact approval exception is currently reported."]).slice(0, 4).map((item) => (
+                  <li key={item} className="break-words">{item}</li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.08em] text-emerald-900">KPI Changes</p>
+              <ul className="mt-2 space-y-2 text-sm leading-5 text-emerald-950">
+                {(kpiChanges.length > 0 ? kpiChanges : [{ id: "pending", label: "KPI changes", value: "Pending", detail: "Run Daily Startup to refresh.", status: "watch" as MetricStatus }]).map((item) => (
+                  <li key={item.id} className="break-words">
+                    {item.label}: {item.value} - {item.detail}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-lg border border-emerald-100 bg-white p-4">
+          <h3 className="break-words text-lg font-semibold text-emerald-950">Secondary Controls</h3>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button
+              type="button"
+              disabled={running}
+              onClick={() => void runDailyStartup()}
+              className="rounded-md bg-emerald-950 px-3 py-2 text-xs font-bold uppercase tracking-[0.08em] text-white transition hover:bg-emerald-900 disabled:cursor-not-allowed disabled:bg-emerald-200 disabled:text-emerald-700"
+            >
+              {running ? "Running..." : "Run Daily Startup Now"}
+            </button>
+            <button
+              type="button"
+              disabled={retrying}
+              onClick={() => void retryInternalStep()}
+              className="rounded-md border border-emerald-200 bg-white px-3 py-2 text-xs font-bold uppercase tracking-[0.08em] text-emerald-950 transition hover:border-emerald-400 disabled:cursor-not-allowed disabled:text-emerald-700"
+            >
+              {retrying ? "Retrying..." : "Retry Failed Internal Step"}
+            </button>
+            <button
+              type="button"
+              disabled={regenerating}
+              onClick={() => void regenerateMorningBrief()}
+              className="rounded-md border border-emerald-200 bg-white px-3 py-2 text-xs font-bold uppercase tracking-[0.08em] text-emerald-950 transition hover:border-emerald-400 disabled:cursor-not-allowed disabled:text-emerald-700"
+            >
+              {regenerating ? "Regenerating..." : "Regenerate Morning Brief"}
+            </button>
+          </div>
+          {message ? <p className="mt-3 rounded-md border border-emerald-200 bg-emerald-50 p-3 text-xs font-semibold text-emerald-950">{message}</p> : null}
+          {error ? <p className="mt-3 rounded-md border border-red-200 bg-red-50 p-3 text-xs font-semibold text-red-950">{error}</p> : null}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ControlledInternalModeBanner({
+  dailyStartup,
+  productionReadinessCommand,
+}: {
+  dailyStartup: DailyStartup | null;
+  productionReadinessCommand: ProductionReadinessCommand | null;
+}) {
+  const internalReady = Boolean(dailyStartup);
+  const schemaBlocked = productionReadinessCommand?.schemaStatus === "schema_drift_detected";
+  const dryRunBlocked = productionReadinessCommand ? !productionReadinessCommand.dryRunAllowed : true;
+
+  return (
+    <section aria-labelledby="controlled-internal-mode-heading" className="rounded-lg border border-emerald-200 bg-emerald-50 p-5 md:p-6">
+      <div className="flex min-w-0 flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+        <div className="min-w-0">
+          <p className="break-words text-sm font-semibold uppercase tracking-[0.16em] text-emerald-900">Operating Mode</p>
+          <h1 id="controlled-internal-mode-heading" className="mt-1 break-words text-3xl font-semibold text-emerald-950 md:text-4xl">
+            Controlled Internal Operating Mode
+          </h1>
+          <p className="mt-2 max-w-5xl break-words text-sm leading-6 text-emerald-950">
+            Internal company work is available for approved dashboard actions. Production schema alignment, external execution, provider writes,
+            publishing, sending, CRM mutation, scraping, outreach, ads, and automation remain gated.
+          </p>
+        </div>
+        <div className="flex max-w-full flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.1em]">
+          <SafetyBadge tone={internalReady ? "good" : "watch"}>internalOperational:{String(internalReady)}</SafetyBadge>
+          <SafetyBadge tone="urgent">externalExecution:false</SafetyBadge>
+          <SafetyBadge tone={schemaBlocked ? "urgent" : "good"}>schemaBlocked:{String(schemaBlocked)}</SafetyBadge>
+          <SafetyBadge tone={dryRunBlocked ? "urgent" : "good"}>dryRunBlocked:{String(dryRunBlocked)}</SafetyBadge>
+        </div>
+      </div>
+
+      <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <OperationStatusPill
+          status={internalReady ? "internal" : "configuration_blocked"}
+          label={internalReady ? "Internal Operational" : "Configuration Blocked"}
+          detail={internalReady ? "Daily Startup, CEO decisions, internal assignments, drafts, memory, and audit records can run." : "Dashboard evidence has not loaded yet."}
+        />
+        <OperationStatusPill
+          status="external_blocked"
+          label="External Execution Blocked"
+          detail="No provider writes, sends, publishing, CRM mutation, scraping, outreach, ads, automation, or synthetic leads."
+        />
+        <OperationStatusPill
+          status={schemaBlocked ? "schema_blocked" : "internal"}
+          label={schemaBlocked ? "Schema Blocked" : "Schema Ready"}
+          detail={
+            schemaBlocked
+              ? "BusinessDataSnapshot hardening still blocks dry-run and snapshot-backed certification."
+              : "The readiness command is not reporting BusinessDataSnapshot schema drift."
+          }
+        />
+        <OperationStatusPill
+          status={dryRunBlocked ? "degraded" : "internal"}
+          label={dryRunBlocked ? "Dry Run Paused" : "Dry Run Available"}
+          detail={dryRunBlocked ? "Internal work may continue; dry-run waits for readiness gates." : "Dry-run gate reports ready for internal simulation."}
+        />
+      </div>
+    </section>
+  );
 }
 
 const approvedExecutionSamples: Record<ApprovedExecutionActionType, Record<string, unknown>> = {
@@ -1307,9 +1643,11 @@ function DailyStartupPanel({ startup, onDecisionComplete }: { startup: DailyStar
   const [decisionReminders, setDecisionReminders] = useState<Record<string, string>>({});
   const [submittingDecision, setSubmittingDecision] = useState<string | null>(null);
   const [runningInternalWork, setRunningInternalWork] = useState(false);
+  const [runningInternalOperation, setRunningInternalOperation] = useState<ControlledInternalOperationAction | null>(null);
   const [decisionError, setDecisionError] = useState("");
   const [decisionSuccess, setDecisionSuccess] = useState("");
   const [internalWorkSuccess, setInternalWorkSuccess] = useState("");
+  const [internalOperationSuccess, setInternalOperationSuccess] = useState("");
   const assignments = startup.activation_state?.assignments ?? [];
   const draftQueueItems = startup.activation_state?.draftQueueItems ?? [];
   const latestDecision = startup.activation_state?.latestDecision ?? null;
@@ -1317,6 +1655,40 @@ function DailyStartupPanel({ startup, onDecisionComplete }: { startup: DailyStar
   const pendingAssignments = countByStatus(assignments, "pending_internal_work");
   const finalReviewDrafts = countByStatus(draftQueueItems, "ready_for_final_approval");
   const completedDrafts = countByStatus(draftQueueItems, "completed_internal");
+  const safeInternalWorkReady = startup.ceo_decision_agenda.length > 0 || assignments.length > 0 || draftQueueItems.length > 0;
+  const visibleInternalGapCount = startup.provider_readiness.missing + startup.blocked_items.length;
+
+  async function runControlledInternalOperation(action: ControlledInternalOperationAction) {
+    try {
+      setRunningInternalOperation(action);
+      setDecisionError("");
+      setInternalOperationSuccess("");
+
+      const response = await fetch("/api/company/internal-operations", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ action }),
+      });
+      const data = await readJsonResponse<ControlledInternalOperationResponse>(response);
+
+      if (!response.ok || !data.ok) {
+        throw new Error(data.error || "Unable to run controlled internal operation.");
+      }
+
+      setInternalOperationSuccess(
+        `${action.replaceAll("_", " ")}: ${data.stateTransition ?? "internal_operational"}; ${data.createdRecordType ?? "record"} ` +
+          `${data.createdRecordId ? data.createdRecordId : "updated"}; audit:${String(data.auditEntryCreated)}; providerCalled:false; externalExecution:false.`,
+      );
+      await onDecisionComplete();
+    } catch (err) {
+      setDecisionError(err instanceof Error ? err.message : "Unable to run controlled internal operation.");
+    } finally {
+      setRunningInternalOperation(null);
+    }
+  }
 
   async function runInternalWork() {
     try {
@@ -1421,6 +1793,67 @@ function DailyStartupPanel({ startup, onDecisionComplete }: { startup: DailyStar
         </div>
       </div>
 
+      <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+        <OperationStatusPill
+          status="internal"
+          label="Internal Operational"
+          detail="Daily Startup, CEO decisions, internal assignments, drafts, memory, and audit records can run."
+        />
+        <OperationStatusPill
+          status={visibleInternalGapCount > 0 ? "degraded" : "internal"}
+          label={visibleInternalGapCount > 0 ? "Degraded But Usable" : "Evidence Current"}
+          detail={visibleInternalGapCount > 0 ? `${visibleInternalGapCount} visible blocker/gap item(s); internal review can continue.` : "No current Daily Startup blocker or provider gap is visible."}
+        />
+        <OperationStatusPill
+          status="external_blocked"
+          label="External Execution Blocked"
+          detail="Provider writes, sends, publishing, outreach, CRM mutation, scraping, ads, and automation remain off."
+        />
+        <OperationStatusPill
+          status={startup.draft_queue_summary.blocked > 0 ? "degraded" : "internal"}
+          label={startup.draft_queue_summary.blocked > 0 ? "Approval Gated" : "Draft Flow Ready"}
+          detail={startup.draft_queue_summary.summary}
+        />
+        <OperationStatusPill
+          status={safeInternalWorkReady ? "internal" : "configuration_blocked"}
+          label={safeInternalWorkReady ? "Workflow Evidence Ready" : "Configuration Blocked"}
+          detail={safeInternalWorkReady ? "Safe internal actions have existing agenda or queue evidence." : "No internal agenda or queue evidence is loaded."}
+        />
+      </div>
+
+      <div className="mt-5 rounded-lg border border-slate-200 bg-white p-4">
+        <div className="flex min-w-0 flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+          <div className="min-w-0">
+            <h3 className="break-words text-lg font-semibold text-primary">Controlled Internal Operations</h3>
+            <p className="mt-1 max-w-4xl break-words text-xs leading-5 text-muted">
+              These actions create or refresh internal records only. They do not call providers, send messages, publish, mutate CRM, scrape, or start external execution.
+            </p>
+          </div>
+          <div className="flex max-w-full flex-wrap gap-2">
+            {[
+              ["start_company", "Start the Company"],
+              ["generate_morning_brief", "Generate Morning Brief"],
+              ["refresh_internal_intelligence", "Refresh Internal Intelligence"],
+              ["record_executive_memory", "Record Executive Memory"],
+            ].map(([action, label]) => (
+              <button
+                key={action}
+                type="button"
+                disabled={Boolean(runningInternalOperation)}
+                onClick={() => void runControlledInternalOperation(action as ControlledInternalOperationAction)}
+                className="rounded-md border border-slate-200 bg-white px-3 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-primary transition hover:border-primary/40 disabled:cursor-not-allowed disabled:text-muted"
+                title="Internal records and audit evidence only. External execution remains blocked."
+              >
+                {runningInternalOperation === action ? "Working..." : label}
+              </button>
+            ))}
+          </div>
+        </div>
+        {internalOperationSuccess ? (
+          <p className="mt-3 rounded-md border border-emerald-200 bg-emerald-50 p-3 text-xs font-semibold text-emerald-950">{internalOperationSuccess}</p>
+        ) : null}
+      </div>
+
       <div className="mt-5 grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
         <div className="space-y-4">
           <div className="rounded-lg border border-blue-100 bg-blue-50 p-4">
@@ -1470,6 +1903,15 @@ function DailyStartupPanel({ startup, onDecisionComplete }: { startup: DailyStar
                 title="Runs internal preparation only. No provider calls, publishing, outreach, scraping, ads, CRM mutation, or live execution."
               >
                 {runningInternalWork ? "Working..." : "Run Internal Work"}
+              </button>
+              <button
+                type="button"
+                disabled={runningInternalWork || assignments.length === 0}
+                onClick={() => void runInternalWork()}
+                className="shrink-0 rounded-md border border-emerald-200 bg-white px-3 py-2 text-xs font-bold uppercase tracking-[0.08em] text-emerald-950 transition hover:border-emerald-400 disabled:cursor-not-allowed disabled:bg-emerald-100 disabled:text-emerald-700"
+                title="Creates or advances internal draft queue items only. Publishing and provider execution remain blocked."
+              >
+                Create Internal Drafts
               </button>
             </div>
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
@@ -1562,7 +2004,7 @@ function DailyStartupPanel({ startup, onDecisionComplete }: { startup: DailyStar
                         className="rounded-md border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-primary transition hover:border-primary/40 disabled:cursor-not-allowed disabled:text-muted"
                         title="Internal only. Does not publish, send, scrape, call providers, or execute external workflows."
                       >
-                        {submittingDecision === `${item.directive_id}:${decision}` ? "Saving..." : formatDecisionLabel(decision)}
+                        {submittingDecision === `${item.directive_id}:${decision}` ? "Processing CEO Decision..." : formatDecisionLabel(decision)}
                       </button>
                     ))}
                   </div>
@@ -2127,9 +2569,9 @@ function readinessStatusToMetric(status: ProductionReadinessCommand["status"] | 
 
 function readinessStatusLabel(status: ProductionReadinessCommand["status"] | ProductionReadinessDepartment["status"]) {
   if (status === "ready") return "Ready";
-  if (status === "read_only") return "Read-only";
-  if (status === "degraded") return "Degraded";
-  if (status === "blocked") return "Blocked";
+  if (status === "read_only") return "Internal Ready";
+  if (status === "degraded") return "Degraded Usable";
+  if (status === "blocked") return "Schema Blocked";
 
   return "Watch";
 }
@@ -2186,7 +2628,8 @@ function ProductionReadinessCommandPanel({ command }: { command: ProductionReadi
         <div className="mt-4 rounded-lg border border-red-100 bg-red-50 p-4">
           <h2 className="break-words text-lg font-semibold text-red-950">Schema Blocker</h2>
           <p className="mt-2 break-words text-sm leading-6 text-red-950">
-            Missing BusinessDataSnapshot column(s): {command.missingColumns.join(", ")}. Apply only the approved schema alignment path after operator verification.
+            Missing BusinessDataSnapshot column(s): {command.missingColumns.join(", ")}. This blocks snapshot-backed certification and dry-run only.
+            Controlled internal dashboard work remains available below. Apply only the approved schema alignment path after operator verification.
           </p>
           <p className="mt-2 break-words text-xs font-semibold text-red-900">{command.migrationPath}</p>
         </div>
@@ -2437,6 +2880,7 @@ export function ExecutiveDashboardClient() {
   const [executiveWorkforce, setExecutiveWorkforce] = useState<ExecutiveWorkforce | null>(null);
   const [departmentIntelligence, setDepartmentIntelligence] = useState<DepartmentIntelligence | null>(null);
   const [operatingCompany, setOperatingCompany] = useState<OperatingCompany | null>(null);
+  const [executiveAutonomyStatus, setExecutiveAutonomyStatus] = useState<ExecutiveAutonomyLevel1Status | null>(null);
   const [dailyMission, setDailyMission] = useState<DailyMission | null>(null);
   const [connectorActivation, setConnectorActivation] = useState<ConnectorActivationReport | null>(null);
   const [morningBrief, setMorningBrief] = useState<MorningBrief | null>(null);
@@ -2455,13 +2899,22 @@ export function ExecutiveDashboardClient() {
   const loadDashboard = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await fetch("/api/executive-dashboard", {
-        cache: "no-store",
-        headers: {
-          Accept: "application/json",
-        },
-      });
+      const [response, autonomyResponse] = await Promise.all([
+        fetch("/api/executive-dashboard", {
+          cache: "no-store",
+          headers: {
+            Accept: "application/json",
+          },
+        }),
+        fetch("/api/company/executive-autonomy/status", {
+          cache: "no-store",
+          headers: {
+            Accept: "application/json",
+          },
+        }),
+      ]);
       const data = await readJsonResponse<ExecutiveDashboardResponse>(response);
+      const autonomyData = await readJsonResponse<ExecutiveAutonomyLevel1Status>(autonomyResponse);
 
       if (!response.ok || !data.ok || !data.widgets) {
         throw new Error(data.error || "Failed to load executive dashboard.");
@@ -2473,6 +2926,7 @@ export function ExecutiveDashboardClient() {
       setExecutiveWorkforce(data.executiveWorkforce ?? null);
       setDepartmentIntelligence(data.departmentIntelligence ?? null);
       setOperatingCompany(data.operatingCompany ?? null);
+      setExecutiveAutonomyStatus(autonomyResponse.ok && autonomyData.ok ? autonomyData : null);
       setDailyMission(data.dailyMission ?? null);
       setConnectorActivation(data.connectorActivation ?? null);
       setMorningBrief(data.morningBrief ?? null);
@@ -2505,6 +2959,13 @@ export function ExecutiveDashboardClient() {
       {loading ? <LoadingState label="Loading executive dashboard..." /> : null}
       {error ? <ErrorState message={error} /> : null}
 
+      <ExecutiveAutonomyLevel1Panel
+        status={executiveAutonomyStatus}
+        morningBrief={morningBrief}
+        dailyMission={dailyMission}
+        onRefresh={loadDashboard}
+      />
+      <ControlledInternalModeBanner dailyStartup={dailyStartup} productionReadinessCommand={productionReadinessCommand} />
       {productionReadinessCommand ? <ProductionReadinessCommandPanel command={productionReadinessCommand} /> : null}
       {dailyMission ? <DailyMissionPanel mission={dailyMission} /> : null}
       <ProductionDryRunPanel readinessCommand={productionReadinessCommand} />

@@ -67,6 +67,32 @@ async function verifySignature(value: string, signature: string, secret: string)
   return expectedSignature === signature;
 }
 
+async function constantTimeEqual(left: string, right: string) {
+  const encoder = new TextEncoder();
+  const [leftDigest, rightDigest] = await Promise.all([
+    crypto.subtle.digest("SHA-256", encoder.encode(left)),
+    crypto.subtle.digest("SHA-256", encoder.encode(right)),
+  ]);
+  const leftBytes = new Uint8Array(leftDigest);
+  const rightBytes = new Uint8Array(rightDigest);
+  let difference = left.length ^ right.length;
+
+  for (let index = 0; index < leftBytes.length; index += 1) {
+    difference |= leftBytes[index] ^ rightBytes[index];
+  }
+
+  return difference === 0;
+}
+
+export async function isCronAuthorizedRequest(request: NextRequest | Request, env: NodeJS.ProcessEnv = process.env) {
+  const configuredSecret = env.CRON_SECRET?.trim();
+  const authorization = request.headers.get("authorization") ?? "";
+
+  if (!configuredSecret) return false;
+
+  return constantTimeEqual(authorization, `Bearer ${configuredSecret}`);
+}
+
 export async function createSessionToken(email: string, options: { tenantId?: string; actorId?: string } = {}) {
   const { authSecret } = getAuthConfig();
   const payload: SessionPayload = {

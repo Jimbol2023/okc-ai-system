@@ -5,10 +5,11 @@ import { join } from "node:path";
 export const productionSchemaAlignmentMigration = {
   migrationId: "20260716100000_harden_business_data_snapshots",
   relativePath: "prisma/migrations/20260716100000_harden_business_data_snapshots/migration.sql",
-  expectedSha256: "CB77DE1EBA483EA38E205A2A4081222873BE06FB6C21A30399803D1F19C8C890",
+  expectedSha256: "3F667C5DAE5C18063F673ADCE4C05ECE74747571AEDE6D67519FAA79B42D39C1",
   status: "pending_production_execution",
   requiredColumns: ["version", "contractVersion", "evidenceHash", "observationStart", "observationEnd", "traceId", "reliability"],
 } as const;
+export const productionSchemaAlignmentApprovalPhrase = "APPROVE_PRODUCTION_SCHEMA_ALIGNMENT_20260716100000";
 
 export type ProductionMigrationLedgerState = "absent" | "applied_successfully" | "failed" | "rolled_back" | "unknown";
 export type ProductionSchemaAlignmentReadinessState =
@@ -35,6 +36,7 @@ export type ProductionSchemaAlignmentOperatorEvidence = {
   targetRpo?: string;
   rollbackDecisionAuthority?: string;
   applicationRollbackPath?: string;
+  ceoApprovalPhrase?: string;
   postMigrationLedgerVerified?: boolean;
   readOnlySnapshotSelectVerified?: boolean;
   departmentVerification?: Partial<Record<ProductionSchemaAlignmentDepartmentKey, ProductionDepartmentVerificationState>>;
@@ -83,6 +85,7 @@ export type ProductionSchemaAlignmentReadinessProof = {
   departmentVerification: Record<ProductionSchemaAlignmentDepartmentKey, ProductionDepartmentVerificationState>;
   readOnlyOperatorCommands: string[];
   proposedExecutionCommand: string;
+  requiredCeoApprovalPhrase: typeof productionSchemaAlignmentApprovalPhrase;
   postMigrationVerificationCommands: string[];
   remainingBlockers: string[];
   safety: {
@@ -197,6 +200,9 @@ export function createProductionSchemaAlignmentReadinessProof(input: {
   if (!schemaInspected) remainingBlockers.push("Production information_schema columns have not been inspected.");
   if (schemaInspected && !columnsPresent) remainingBlockers.push("Production BusinessDataSnapshot schema is missing one or more required hardened columns.");
   if (!recoveryReady) remainingBlockers.push("PITR/backup, RTO/RPO, recovery owner, rollback authority, or application rollback path is not fully proven.");
+  if (evidence.ceoApprovalPhrase !== productionSchemaAlignmentApprovalPhrase) {
+    remainingBlockers.push("Exact CEO approval phrase for Production schema alignment has not been provided.");
+  }
   if (evidence.ledgerState === "applied_successfully" && (!evidence.postMigrationLedgerVerified || !evidence.readOnlySnapshotSelectVerified)) {
     remainingBlockers.push("Post-migration ledger and read-only BusinessDataSnapshot select verification are not complete.");
   }
@@ -248,6 +254,7 @@ export function createProductionSchemaAlignmentReadinessProof(input: {
     departmentVerification,
     readOnlyOperatorCommands,
     proposedExecutionCommand: "npm.cmd exec prisma migrate deploy --schema prisma/schema.prisma",
+    requiredCeoApprovalPhrase: productionSchemaAlignmentApprovalPhrase,
     postMigrationVerificationCommands,
     remainingBlockers,
     safety: {

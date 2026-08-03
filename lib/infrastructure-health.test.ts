@@ -176,12 +176,12 @@ describe("infrastructure health", () => {
 
     const businessProfile = production.connectors.find((connector) => connector.connectorId === "google_business_profile");
     assert.equal(businessProfile?.deploymentScope, "department");
-    assert.equal(businessProfile?.departmentEnablement, "blocked");
+    assert.equal(businessProfile?.departmentEnablement, "advisory");
     assert.equal(businessProfile?.safeInternalFallbackAvailable, true);
     assert.ok(businessProfile?.affectedDepartments.includes("Marketing Intelligence"));
   });
 
-  it("allows Production deployment when Search Console is missing and blocks only Search Intelligence", async () => {
+  it("allows Production deployment when Search Console is missing and marks Search Intelligence advisory", async () => {
     const report = await getInfrastructureHealth({
       env: createBaseEnv({ GOOGLE_SEARCH_CONSOLE_SITE_URL: "" }),
       includeDatabase: false,
@@ -193,7 +193,7 @@ describe("infrastructure health", () => {
     assert.equal(report.blockers.length, 0);
     assert.ok(report.warnings.some((warning) => warning.includes("GOOGLE_SEARCH_CONSOLE_SITE_URL")));
     assert.equal(searchConsole?.status, "missing_configuration");
-    assert.equal(searchConsole?.departmentEnablement, "blocked");
+    assert.equal(searchConsole?.departmentEnablement, "advisory");
     assert.ok(searchConsole?.affectedDepartments.includes("Search Intelligence"));
     assert.equal(searchConsole?.safeInternalFallbackAvailable, true);
     assert.equal(report.liveExecutionAllowed, false);
@@ -229,7 +229,7 @@ describe("infrastructure health", () => {
       assert.equal(report.ok, true);
       assert.equal(report.blockers.length, 0);
       assert.ok(report.warnings.some((warning) => warning.includes(testCase.envKey)));
-      assert.equal(connector?.departmentEnablement, "blocked");
+      assert.equal(connector?.departmentEnablement, "advisory");
       assert.ok(connector?.affectedDepartments.includes(testCase.affectedDepartment));
     }
   });
@@ -245,7 +245,7 @@ describe("infrastructure health", () => {
     assert.equal(report.ok, true);
     assert.equal(report.blockers.length, 0);
     assert.ok(report.warnings.some((warning) => warning.includes("GOOGLE_OAUTH_REFRESH_TOKEN")));
-    assert.ok(report.connectors.every((connector) => connector.departmentEnablement === "blocked"));
+    assert.ok(report.connectors.every((connector) => connector.departmentEnablement === "advisory"));
     assert.ok(affectedDepartments.has("Search Intelligence"));
     assert.ok(affectedDepartments.has("Marketing Intelligence"));
     assert.ok(affectedDepartments.has("Lead Generation"));
@@ -263,7 +263,7 @@ describe("infrastructure health", () => {
     assert.equal(report.ok, true);
     assert.equal(report.blockers.length, 0);
     assert.ok(report.warnings.some((warning) => warning.includes("Google OAuth token exchange failed")));
-    assert.ok(report.connectors.every((connector) => connector.departmentEnablement === "blocked"));
+    assert.ok(report.connectors.every((connector) => connector.departmentEnablement === "advisory"));
     assert.equal(JSON.stringify(report).includes("invalid_grant"), false);
     assert.equal(JSON.stringify(report).includes("leaked"), false);
   });

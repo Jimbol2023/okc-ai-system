@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 
 import {
   createProductionSchemaAlignmentReadinessProof,
+  productionSchemaAlignmentApprovalPhrase,
   productionSchemaAlignmentMigration,
   type ProductionSchemaAlignmentDepartmentKey,
 } from "./production-schema-alignment-readiness";
@@ -33,6 +34,7 @@ const backupEvidence = {
   targetRpo: "5 minutes",
   rollbackDecisionAuthority: "CEO",
   applicationRollbackPath: "Redeploy previous production build after PITR decision.",
+  ceoApprovalPhrase: productionSchemaAlignmentApprovalPhrase,
 };
 
 describe("production schema alignment readiness", () => {
@@ -88,6 +90,7 @@ describe("production schema alignment readiness", () => {
     assert.ok(proof.readOnlyOperatorCommands.some((command) => command.includes("information_schema.columns")));
     assert.ok(proof.postMigrationVerificationCommands.some((command) => command.includes("BusinessDataSnapshot")));
     assert.equal(proof.proposedExecutionCommand, "npm.cmd exec prisma migrate deploy --schema prisma/schema.prisma");
+    assert.equal(proof.requiredCeoApprovalPhrase, "APPROVE_PRODUCTION_SCHEMA_ALIGNMENT_20260716100000");
   });
 
   it("routes absent target migration to ready_to_execute when all preflight evidence is complete", () => {
@@ -189,6 +192,23 @@ describe("production schema alignment readiness", () => {
     assert.ok(missingBackup.remainingBlockers.some((blocker) => blocker.includes("PITR")));
     assert.equal(unexpectedChain.readinessState, "blocked");
     assert.ok(unexpectedChain.remainingBlockers.some((blocker) => blocker.includes("Pending migration chain")));
+  });
+
+  it("blocks Production schema execution without the exact CEO approval phrase", () => {
+    const proof = createProductionSchemaAlignmentReadinessProof({
+      actualSha256: productionSchemaAlignmentMigration.expectedSha256,
+      operatorEvidence: {
+        ledgerState: "absent",
+        pendingMigrationsInOrder: ["20260716100000_harden_business_data_snapshots"],
+        schemaColumns,
+        ...backupEvidence,
+        ceoApprovalPhrase: "",
+      },
+    });
+
+    assert.equal(proof.readinessState, "blocked");
+    assert.equal(proof.classification, "PRODUCTION_SCHEMA_ALIGNMENT_BLOCKED");
+    assert.ok(proof.remainingBlockers.some((blocker) => blocker.includes("Exact CEO approval phrase")));
   });
 
   it("marks applied schema alignment as review_required when department verification fails", () => {

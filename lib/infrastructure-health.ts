@@ -33,7 +33,7 @@ export type ConnectorReadiness = {
   status: "ready" | "missing_configuration" | "oauth_blocked";
   deploymentScope: "department";
   affectedDepartments: string[];
-  departmentEnablement: "enabled" | "blocked";
+  departmentEnablement: "enabled" | "advisory";
   safeInternalFallbackAvailable: true;
   requiredEnvKeys: string[];
   missingEnvKeys: string[];
@@ -454,7 +454,7 @@ export function evaluateConnectorReadiness(env: NodeJS.ProcessEnv, oauth: OAuthR
       status,
       deploymentScope: "department",
       affectedDepartments: [...definition.affectedDepartments],
-      departmentEnablement: status === "ready" ? "enabled" : "blocked",
+      departmentEnablement: status === "ready" ? "enabled" : "advisory",
       safeInternalFallbackAvailable: true,
       requiredEnvKeys: [...definition.requiredEnvKeys],
       missingEnvKeys,
@@ -528,7 +528,7 @@ export async function getInfrastructureHealth(options: InfrastructureHealthOptio
 
   missingCritical.forEach((item) => blockers.push(`${item.key}: ${item.message}`));
   missingConnector.forEach((item) => {
-    warnings.push(`${item.key}: ${item.message} The affected connector-backed department capability is blocked; company deployment remains allowed.`);
+    warnings.push(`${item.key}: ${item.message} The affected connector-backed evidence is advisory; internal department work and company deployment remain allowed.`);
   });
 
   if (database.checked && !database.ok) {
@@ -544,7 +544,7 @@ export async function getInfrastructureHealth(options: InfrastructureHealthOptio
   }
 
   if (options.includeOAuth && googleOAuth.attempted && !googleOAuth.ok) {
-    warnings.push("Google OAuth token exchange failed. Dependent Google connector capabilities remain blocked; company deployment remains allowed.");
+    warnings.push("Google OAuth token exchange failed. Dependent Google connector evidence is advisory until verified; company deployment and internal work remain allowed.");
   }
 
   const status: InfrastructureStatus = blockers.length > 0 ? "blocked" : warnings.length > 0 ? "warning" : "healthy";

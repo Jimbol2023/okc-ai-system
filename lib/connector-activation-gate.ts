@@ -324,7 +324,7 @@ export function createConnectorActivationGateFromInputs(input: ConnectorActivati
 
 export async function createConnectorActivationGate(): Promise<ConnectorActivationGateReport> {
   const toolbox = await createAiEmployeeToolboxReadiness();
-  const connectorActivationReport = await createConnectorActivationReport();
+  const connectorActivationReport = await createConnectorActivationReport().catch(() => null);
 
   return createConnectorActivationGateFromInputs({ toolbox, connectorActivationReport });
 }

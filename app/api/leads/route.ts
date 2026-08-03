@@ -3,7 +3,12 @@ import { NextResponse } from "next/server";
 import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
 import { createDbLead, listDbLeads, parseLeadIntakePayload } from "@/lib/leads-db";
 import { leadIntakeToStoredLead } from "@/lib/lead-record";
+import {
+  buildPublicLeadInternalFields,
+  createPublicLeadIntakeAuditMetadata
+} from "@/lib/public-lead-intake";
 import { attachReferralAttributionToLead } from "@/lib/referrals";
+import { logRevenueAuditEvent } from "@/lib/revenue-spine";
 import { storedLeadArraySchema, storedLeadSchema } from "@/lib/validations/stored-lead";
 
 export const dynamic = "force-dynamic";
@@ -66,7 +71,7 @@ export async function POST(request: Request) {
 
       const result = await createDbLead({
         ...storedLead,
-        ...buildInitialAutomationFields()
+        ...buildPublicLeadInternalFields()
       });
       await attachReferralAttributionToLead({
         lead: result.lead,
@@ -77,6 +82,19 @@ export async function POST(request: Request) {
           referralSource: parsedIntakeLead.data.referralSource,
           referralLandingPage: parsedIntakeLead.data.referralLandingPage
         }
+      });
+      await logRevenueAuditEvent({
+        action: result.created ? "public_intake_internal_lead_created" : "public_intake_internal_lead_deduped",
+        targetType: "lead",
+        targetId: result.lead.id,
+        source: "public_website_intake",
+        metadata: createPublicLeadIntakeAuditMetadata({
+          payload,
+          intake: parsedIntakeLead.data,
+          lead: result.lead,
+          created: result.created,
+          referer: request.headers.get("referer")
+        })
       });
 
       return NextResponse.json({

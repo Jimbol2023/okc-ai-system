@@ -105,6 +105,22 @@ function createMockDb() {
 
         return cloneDraft(drafts[index]);
       },
+      async updateMany(args: { where: { id: string; tenantId?: string; approvalStatus?: string }; data: Partial<MockDraft> }) {
+        const index = drafts.findIndex((item) => {
+          if (item.id !== args.where.id) return false;
+          if (args.where.tenantId && item.tenantId !== args.where.tenantId) return false;
+          if (args.where.approvalStatus && item.approvalStatus !== args.where.approvalStatus) return false;
+          return true;
+        });
+        if (index < 0) return { count: 0 };
+        drafts[index] = {
+          ...drafts[index],
+          ...args.data,
+          updatedAt: new Date("2026-07-06T12:00:00.000Z"),
+        };
+
+        return { count: 1 };
+      },
     },
     aiCompanyDraftRevision: {
       async create(args: { data: Omit<MockRevision, "id" | "createdAt"> }) {
@@ -248,10 +264,11 @@ describe("CEO Draft Workspace", () => {
     assert.equal(revisions[0].liveExecutionAllowed, false);
   });
 
-  it("records approve, reject, and request changes as internal decisions only", async () => {
+  it("records first approve, reject, and request changes as internal decisions only", async () => {
     const approved = await decideCeoDraft("draft-marketing", { decision: "approve" }, "ceo@example.com");
     const rejected = await decideCeoDraft("draft-seo", { decision: "reject", note: "Not aligned." }, "ceo@example.com");
-    const changes = await decideCeoDraft("draft-marketing", { decision: "request_changes", note: "Tighten claims." }, "ceo@example.com");
+    drafts.push(createDraft({ id: "draft-brand", ownerDepartment: "Brand", title: "Brand Review", output: "Brand Review" }));
+    const changes = await decideCeoDraft("draft-brand", { decision: "request_changes", note: "Tighten claims." }, "ceo@example.com");
 
     assert.equal(approved.draft.approvalStatus, "approved_internal");
     assert.equal(rejected.draft.approvalStatus, "rejected_internal");
@@ -259,6 +276,44 @@ describe("CEO Draft Workspace", () => {
     assert.deepEqual(revisions.map((revision) => revision.action), ["approved", "rejected", "changes_requested"]);
     assert.ok(revisions.every((revision) => revision.providerCalled === false));
     assert.ok(revisions.every((revision) => revision.liveExecutionAllowed === false));
+  });
+
+  it("returns the existing approved result without creating duplicate history", async () => {
+    const first = await decideCeoDraft("draft-marketing", { decision: "approve" }, "ceo@example.com");
+    const second = await decideCeoDraft("draft-marketing", { decision: "approve" }, "ceo@example.com");
+
+    assert.equal(first.draft.approvalStatus, "approved_internal");
+    assert.equal(second.draft.approvalStatus, "approved_internal");
+    assert.equal(second.idempotent, true);
+    assert.equal(revisions.length, 1);
+    assert.equal(revisions[0].action, "approved");
+    assert.equal(drafts.find((draft) => draft.id === "draft-marketing")?.revisionCount, 1);
+  });
+
+  it("concurrent approve requests create one transition record", async () => {
+    const results = await Promise.all([
+      decideCeoDraft("draft-marketing", { decision: "approve" }, "ceo@example.com"),
+      decideCeoDraft("draft-marketing", { decision: "approve" }, "ceo@example.com"),
+    ]);
+
+    assert.equal(results.every((result) => result.draft.approvalStatus === "approved_internal"), true);
+    assert.equal(results.filter((result) => result.idempotent).length, 1);
+    assert.equal(revisions.length, 1);
+    assert.equal(revisions[0].action, "approved");
+  });
+
+  it("terminal decisions block incompatible repeated actions", async () => {
+    await decideCeoDraft("draft-marketing", { decision: "approve" }, "ceo@example.com");
+
+    await assert.rejects(
+      () => decideCeoDraft("draft-marketing", { decision: "reject", note: "Changed mind." }, "ceo@example.com"),
+      /already terminal/i,
+    );
+    await assert.rejects(
+      () => decideCeoDraft("draft-marketing", { decision: "request_changes", note: "Need edits." }, "ceo@example.com"),
+      /already terminal/i,
+    );
+    assert.equal(revisions.length, 1);
   });
 
   it("requires notes for rejection and requested changes", async () => {

@@ -36,6 +36,12 @@ const safeInternalActions = new Set([
   "read_gbp_reviews",
   "read_youtube_channel",
   "read_canva_designs",
+  "prepare_adobe_express_brief",
+  "prepare_firefly_prompt",
+  "verify_firefly_credential",
+  "read_adobe_express_projects",
+  "read_adobe_asset_metadata",
+  "prepare_pdf_workflow",
 ]);
 
 const blockedActions = new Set(["publish", "send_sms", "send_message", "activate_connector", "scrape_source", "change_budget"]);

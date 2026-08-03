@@ -73,6 +73,18 @@ function responseError(data: WorkspaceResponse | PreviewResponse, fallback: stri
   return "error" in data && data.error ? data.error : fallback;
 }
 
+function isTerminalApprovalStatus(status: string) {
+  return status === "approved_internal" || status === "rejected_internal" || status === "changes_requested";
+}
+
+function terminalApprovalLabel(status: string) {
+  if (status === "approved_internal") return "Approved by CEO";
+  if (status === "rejected_internal") return "Rejected by CEO";
+  if (status === "changes_requested") return "Changes requested by CEO";
+
+  return "";
+}
+
 export function CeoDraftWorkspaceClient() {
   const [report, setReport] = useState<CeoDraftWorkspaceReport | null>(null);
   const [selectedDraftId, setSelectedDraftId] = useState<string | null>(null);
@@ -88,6 +100,7 @@ export function CeoDraftWorkspaceClient() {
     () => previewDraft ?? allDrafts.find((draft) => draft.id === selectedDraftId) ?? allDrafts[0] ?? null,
     [allDrafts, previewDraft, selectedDraftId],
   );
+  const selectedDraftIsTerminal = selectedDraft ? isTerminalApprovalStatus(selectedDraft.approvalStatus) : false;
 
   const hydrateForm = useCallback((draft: DraftWorkspaceItem) => {
     setForm({
@@ -309,6 +322,13 @@ export function CeoDraftWorkspaceClient() {
                 </ActionButton>
               </div>
 
+              {selectedDraftIsTerminal ? (
+                <div className="mt-5 rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm leading-6 text-emerald-950" role="status" aria-live="polite">
+                  <p className="font-semibold">{terminalApprovalLabel(selectedDraft.approvalStatus)}</p>
+                  <p className="mt-1">This draft is in a terminal internal review state. No provider, publishing, outreach, CRM, or automation action was started.</p>
+                </div>
+              ) : null}
+
               <div className="mt-5 grid gap-3 md:grid-cols-2">
                 <DashboardCard>
                   <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Department</p>
@@ -356,7 +376,7 @@ export function CeoDraftWorkspaceClient() {
                   <Pencil className="h-4 w-4 text-muted" aria-hidden="true" />
                   <h3 className="text-lg font-semibold text-primary">Edit Draft</h3>
                 </div>
-                <div className="mt-4 grid gap-3">
+                <fieldset className="mt-4 grid gap-3 disabled:opacity-70" disabled={selectedDraftIsTerminal}>
                   <label className="grid gap-1">
                     {fieldLabel("Title")}
                     <input className="rounded-lg border border-border px-3 py-2 text-sm" value={form.title} onChange={(event) => setForm((current) => ({ ...current, title: event.target.value }))} maxLength={180} required />
@@ -383,11 +403,11 @@ export function CeoDraftWorkspaceClient() {
                     {fieldLabel("Edit Note")}
                     <input className="rounded-lg border border-border px-3 py-2 text-sm" value={form.note} onChange={(event) => setForm((current) => ({ ...current, note: event.target.value }))} maxLength={1000} />
                   </label>
-                  <ActionButton type="button" onClick={saveDraft} disabled={busy || !form.title.trim() || !form.body.trim()}>
+                  <ActionButton type="button" onClick={saveDraft} disabled={busy || selectedDraftIsTerminal || !form.title.trim() || !form.body.trim()}>
                     <Save className="mr-2 h-4 w-4" aria-hidden="true" />
-                    Save Draft
+                    {selectedDraftIsTerminal ? "Draft Locked" : "Save Draft"}
                   </ActionButton>
-                </div>
+                </fieldset>
               </div>
 
               <div className="mt-5 rounded-lg border border-border bg-white p-4">
@@ -401,20 +421,26 @@ export function CeoDraftWorkspaceClient() {
                     maxLength={1000}
                   />
                 </label>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <ActionButton type="button" onClick={() => decideDraft("approve")} disabled={busy}>
-                    <CheckCircle2 className="mr-2 h-4 w-4" aria-hidden="true" />
-                    Approve Draft
-                  </ActionButton>
-                  <ActionButton type="button" onClick={() => decideDraft("request_changes")} disabled={busy} className="bg-amber-700 hover:bg-amber-800">
-                    <FileText className="mr-2 h-4 w-4" aria-hidden="true" />
-                    Request Changes
-                  </ActionButton>
-                  <ActionButton type="button" onClick={() => decideDraft("reject")} disabled={busy} className="bg-red-700 hover:bg-red-800">
-                    <XCircle className="mr-2 h-4 w-4" aria-hidden="true" />
-                    Reject Draft
-                  </ActionButton>
-                </div>
+                {selectedDraftIsTerminal ? (
+                  <div className="mt-3 rounded-lg border border-border bg-surface p-3 text-sm font-semibold text-muted">
+                    CEO decision is already recorded. Incompatible actions are disabled.
+                  </div>
+                ) : (
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <ActionButton type="button" onClick={() => decideDraft("approve")} disabled={busy}>
+                      <CheckCircle2 className="mr-2 h-4 w-4" aria-hidden="true" />
+                      {busy ? "Recording..." : "Approve Draft"}
+                    </ActionButton>
+                    <ActionButton type="button" onClick={() => decideDraft("request_changes")} disabled={busy} className="bg-amber-700 hover:bg-amber-800">
+                      <FileText className="mr-2 h-4 w-4" aria-hidden="true" />
+                      Request Changes
+                    </ActionButton>
+                    <ActionButton type="button" onClick={() => decideDraft("reject")} disabled={busy} className="bg-red-700 hover:bg-red-800">
+                      <XCircle className="mr-2 h-4 w-4" aria-hidden="true" />
+                      Reject Draft
+                    </ActionButton>
+                  </div>
+                )}
               </div>
 
               <div className="mt-5 rounded-lg border border-border bg-white p-4">

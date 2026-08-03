@@ -166,6 +166,7 @@ export type DraftWorkspaceDb = typeof prisma & {
     findMany(args?: unknown): Promise<DraftRecord[]>;
     findUnique(args: unknown): Promise<DraftRecord | null>;
     update(args: unknown): Promise<DraftRecord>;
+    updateMany(args: unknown): Promise<{ count: number }>;
   };
   aiCompanyDraftRevision: {
     create(args: unknown): Promise<RevisionRecord>;
@@ -450,6 +451,14 @@ async function createRevision(tx: DraftWorkspaceDb, record: DraftRecord, action:
   });
 }
 
+function isPendingDraftDecision(record: DraftRecord) {
+  return (record.approvalStatus || "pending_ceo_review") === "pending_ceo_review";
+}
+
+function isApprovedDraftDecision(record: DraftRecord) {
+  return record.approvalStatus === "approved_internal";
+}
+
 export async function getCeoDraftWorkspaceReport(): Promise<CeoDraftWorkspaceReport> {
   const [records, snapshots] = await Promise.all([
     db.aiCompanyDraftQueueItem.findMany({
@@ -549,9 +558,28 @@ export async function decideCeoDraft(draftId: string, input: CompanyDraftDecisio
     const action = input.decision === "approve" ? "approved" : input.decision === "reject" ? "rejected" : "changes_requested";
     const approvalStatus = input.decision === "approve" ? "approved_internal" : input.decision === "reject" ? "rejected_internal" : "changes_requested";
     const status = input.decision === "approve" ? "draft_approved_internal" : input.decision === "reject" ? "draft_rejected_internal" : "draft_changes_requested";
+
+    if (!isPendingDraftDecision(record)) {
+      if (input.decision === "approve" && isApprovedDraftDecision(record)) {
+        return {
+          ok: true,
+          draft: toDraftWorkspaceItem(record),
+          decision: input.decision,
+          idempotent: true,
+          safetyFlags: draftWorkspaceSafetyFlags,
+        };
+      }
+
+      throw new Error(`Draft decision is already terminal: ${record.approvalStatus || record.status || "unknown"}.`);
+    }
+
     const nextRevisionCount = (record.revisionCount ?? 0) + 1;
-    const updated = await tx.aiCompanyDraftQueueItem.update({
-      where: { id: draftId },
+    const transition = await tx.aiCompanyDraftQueueItem.updateMany({
+      where: {
+        id: draftId,
+        tenantId,
+        approvalStatus: "pending_ceo_review",
+      },
       data: {
         status,
         approvalStatus,
@@ -563,11 +591,24 @@ export async function decideCeoDraft(draftId: string, input: CompanyDraftDecisio
         published: false,
         liveExecutionAllowed: false,
       },
-      include: {
-        directive: true,
-        revisions: { orderBy: { createdAt: "desc" } },
-      },
     });
+
+    if (transition.count !== 1) {
+      const latest = await findDraftOrThrow(tx, draftId);
+      if (input.decision === "approve" && isApprovedDraftDecision(latest)) {
+        return {
+          ok: true,
+          draft: toDraftWorkspaceItem(latest),
+          decision: input.decision,
+          idempotent: true,
+          safetyFlags: draftWorkspaceSafetyFlags,
+        };
+      }
+
+      throw new Error(`Draft decision is already terminal: ${latest.approvalStatus || latest.status || "unknown"}.`);
+    }
+
+    const updated = await findDraftOrThrow(tx, draftId);
 
     await createRevision(tx, record, action, updated, input.note || `${action.replaceAll("_", " ")} by CEO.`, reviewer);
 
@@ -575,6 +616,7 @@ export async function decideCeoDraft(draftId: string, input: CompanyDraftDecisio
       ok: true,
       draft: toDraftWorkspaceItem(updated),
       decision: input.decision,
+      idempotent: false,
       safetyFlags: draftWorkspaceSafetyFlags,
     };
   }, transactionOptions);
