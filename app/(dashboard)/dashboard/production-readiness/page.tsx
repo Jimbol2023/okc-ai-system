@@ -144,7 +144,7 @@ export default async function DashboardProductionReadinessPage() {
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <Badge tone={connector.status === "ready" ? "low" : "medium"}>{connector.status}</Badge>
-                  {connector.departmentEnablement === "blocked" ? <Badge tone="medium">Connector Needed</Badge> : null}
+                  {connector.departmentEnablement === "advisory" ? <Badge tone="medium">Advisory</Badge> : null}
                 </div>
               </div>
               <p className="mt-3 text-sm leading-6 text-[#40576b]">

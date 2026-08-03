@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-import { isAuthenticatedRequest } from "@/lib/auth";
+import { isAuthenticatedRequest, isCronAuthorizedRequest } from "@/lib/auth";
 
 export async function proxy(request: NextRequest) {
   const isAuthenticated = await isAuthenticatedRequest(request);
@@ -17,6 +17,10 @@ export async function proxy(request: NextRequest) {
   const isPublicReferralTrackRoute = pathname === "/api/referrals/track" && method === "POST";
   const isPublicAuthRoute = pathname === "/api/auth/login" || pathname === "/api/auth/logout";
   const isPublicTwilioInboundRoute = pathname === "/api/twilio/inbound-sms" && method === "POST";
+  const isScheduledInternalRoute =
+    pathname === "/api/operations/read-only-sync" ||
+    pathname === "/api/company/executive-autonomy/daily-startup";
+  const isAuthorizedCronRequest = isScheduledInternalRoute && await isCronAuthorizedRequest(request);
 
   if (isGbpDiscoveryCallback) {
     console.info("GBP discovery callback proxy pass-through", {
@@ -30,7 +34,7 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (isAuthenticated || isPublicLeadIntakeRoute || isPublicReferralTrackRoute || isPublicAuthRoute || isPublicTwilioInboundRoute) {
+  if (isAuthenticated || isAuthorizedCronRequest || isPublicLeadIntakeRoute || isPublicReferralTrackRoute || isPublicAuthRoute || isPublicTwilioInboundRoute) {
     return NextResponse.next();
   }
 

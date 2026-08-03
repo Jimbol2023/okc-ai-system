@@ -139,7 +139,12 @@ export function storedLeadToDbData(lead: StoredLead) {
     score: lead.score,
     priority: lead.priority,
     notes: toSerializedNotes(lead.notes) || lead.situationDetails || null,
-    payload: JSON.stringify(lead)
+    payload: JSON.stringify(lead),
+    approvalStatus: lead.approvalStatus ?? undefined,
+    requiresHumanApproval: lead.requiresHumanApproval ?? undefined,
+    doNotContact: lead.doNotContact ?? undefined,
+    suggestedReply: lead.suggestedReply ?? undefined,
+    lastSellerReply: lead.lastSellerReply ?? undefined
   };
 }
 

@@ -2,6 +2,7 @@ export type FeatureFlagKey =
   | "connector_platform"
   | "connector_live_reads"
   | "connector_google"
+  | "connector_adobe"
   | "connector_microsoft"
   | "connector_meta"
   | "connector_marketing"
@@ -134,6 +135,13 @@ export const phase2FeatureFlags: FeatureFlag[] = [
     enabled: true,
     category: "connector",
     description: "Enables governed Google connector family read-only telemetry.",
+    requiresAdminApproval: true,
+  },
+  {
+    key: "connector_adobe",
+    enabled: false,
+    category: "connector",
+    description: "Enables Adobe Creative Cloud connector readiness beyond static registry visibility. Provider calls, publishing, paid actions, and asset creation remain separately gated.",
     requiresAdminApproval: true,
   },
   {
