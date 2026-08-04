@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse } from "@/lib/auth";
 import { createDbLead, listDbLeads, parseLeadIntakePayload } from "@/lib/leads-db";
 import { leadIntakeToStoredLead } from "@/lib/lead-record";
 import {
@@ -10,6 +10,7 @@ import {
 import { attachReferralAttributionToLead } from "@/lib/referrals";
 import { logRevenueAuditEvent } from "@/lib/revenue-spine";
 import { storedLeadArraySchema, storedLeadSchema } from "@/lib/validations/stored-lead";
+import { resolvePublicIntakeTenant } from "@/lib/tenant-context";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -36,13 +37,14 @@ export async function GET(request: Request) {
   let authenticated = false;
 
   try {
-    authenticated = await isAuthenticatedRequest(request);
+    const actor = await getAuthenticatedRequestContext(request);
+    authenticated = Boolean(actor);
 
     if (!authenticated) {
       return getUnauthorizedApiResponse();
     }
 
-    const leads = await listDbLeads();
+    const leads = await listDbLeads({ tenantId: actor!.tenantId });
 
     return NextResponse.json({
       ok: true,
@@ -67,13 +69,15 @@ export async function POST(request: Request) {
     const parsedIntakeLead = parseLeadIntakePayload(payload);
 
     if (parsedIntakeLead.success) {
+      const tenantId = resolvePublicIntakeTenant();
       const storedLead = leadIntakeToStoredLead(parsedIntakeLead.data);
 
-      const result = await createDbLead({
+      const result = await createDbLead({ tenantId }, {
         ...storedLead,
         ...buildPublicLeadInternalFields()
       });
       await attachReferralAttributionToLead({
+        tenantId,
         lead: result.lead,
         created: result.created,
         referral: {
@@ -84,6 +88,7 @@ export async function POST(request: Request) {
         }
       });
       await logRevenueAuditEvent({
+        tenantId,
         action: result.created ? "public_intake_internal_lead_created" : "public_intake_internal_lead_deduped",
         targetType: "lead",
         targetId: result.lead.id,
@@ -106,7 +111,8 @@ export async function POST(request: Request) {
     }
 
     // Everything else below this line is protected
-    if (!(await isAuthenticatedRequest(request))) {
+    const actor = await getAuthenticatedRequestContext(request);
+    if (!actor) {
       return getUnauthorizedApiResponse();
     }
 
@@ -125,7 +131,7 @@ export async function POST(request: Request) {
 
       const results = await Promise.all(
         parsedLeads.data.map((lead) =>
-          createDbLead({
+          createDbLead({ tenantId: actor.tenantId }, {
             ...lead,
             ...buildInitialAutomationFields(lead)
           })
@@ -134,6 +140,7 @@ export async function POST(request: Request) {
       await Promise.all(
         results.map((result, index) =>
           attachReferralAttributionToLead({
+            tenantId: actor.tenantId,
             lead: result.lead,
             created: result.created,
             referral: {
@@ -167,11 +174,12 @@ export async function POST(request: Request) {
       );
     }
 
-    const result = await createDbLead({
+    const result = await createDbLead({ tenantId: actor.tenantId }, {
       ...parsedLead.data,
       ...buildInitialAutomationFields(parsedLead.data)
     });
     await attachReferralAttributionToLead({
+      tenantId: actor.tenantId,
       lead: result.lead,
       created: result.created,
       referral: {

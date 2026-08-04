@@ -41,15 +41,18 @@ function createMockDb() {
         return Object.fromEntries(Object.keys(args.select).map((key) => [key, created[key]]));
       },
       async findFirst(args: { where: { sourceLabel?: string; status?: { in?: string[] }; payload?: { equals?: string } } }) {
+        const scoped = args.where as typeof args.where & { id?: string; tenantId?: string };
         return (
           approvalItems.find((item) => {
             const payload = item.payload as { preparedAction?: { actionType?: string } } | undefined;
             const status = typeof item.status === "string" ? item.status : "";
 
             return (
-              item.sourceLabel === args.where.sourceLabel &&
+              (!scoped.id || item.id === scoped.id) &&
+              (!scoped.tenantId || item.tenantId === scoped.tenantId) &&
+              (!args.where.sourceLabel || item.sourceLabel === args.where.sourceLabel) &&
               (args.where.status?.in?.includes(status) ?? true) &&
-              payload?.preparedAction?.actionType === args.where.payload?.equals
+              (!args.where.payload?.equals || payload?.preparedAction?.actionType === args.where.payload.equals)
             );
           }) ?? null
         );
@@ -121,6 +124,7 @@ describe("Sprint 7A controlled internal execution bridge", () => {
       memoryLogger: async () => ({ logged: true, eventId: "memory-1", reason: null }),
     });
     const prepared = await prepareApprovedExecution({
+      tenantId: "tenant-alpha",
       actionType: "create_crm_note",
       title: "Record internal seller follow-up note",
       sourceLabel: "daily-revenue-operating-loop:work-order-1:create_crm_note",
@@ -136,6 +140,7 @@ describe("Sprint 7A controlled internal execution bridge", () => {
     });
 
     const run = await approveAndExecuteApprovedAction({
+      tenantId: "tenant-alpha",
       approvalId: prepared.approvalItem.id,
       approvedBy: "CEO",
       note: "Record internal note only.",
@@ -172,6 +177,7 @@ describe("Sprint 7A controlled internal execution bridge", () => {
       memoryLogger: async () => ({ logged: true, eventId: "memory-1", reason: null }),
     });
     const prepared = await prepareApprovedExecution({
+      tenantId: "tenant-alpha",
       actionType: "create_crm_task",
       title: "Create follow-up task",
       sourceLabel: "daily-revenue-operating-loop:work-order-2:create_crm_task",
@@ -187,6 +193,7 @@ describe("Sprint 7A controlled internal execution bridge", () => {
     });
 
     const run = await approveAndExecuteApprovedAction({
+      tenantId: "tenant-alpha",
       approvalId: prepared.approvalItem.id,
       approvedBy: "CEO",
       note: "Approve one CRM task.",

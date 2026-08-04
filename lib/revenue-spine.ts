@@ -3,8 +3,8 @@ import type { Prisma } from "@/generated/prisma";
 import { getActiveDistressFlags } from "@/lib/distress-flags";
 import type { LeadStatus, StoredLead } from "@/lib/leads-storage";
 import { prisma } from "@/lib/prisma";
+import { requireTenantId } from "@/lib/tenant-context";
 
-const DEFAULT_TENANT_ID = "default";
 const SECRET_FIELD_PATTERN = /(secret|token|password|credential|api[_-]?key|auth|cookie|session|provider[_-]?response|raw[_-]?response|message[_-]?body|sms[_-]?body|email[_-]?body|phone|recipient)/i;
 
 export type RevenueScoreInput = Pick<
@@ -146,7 +146,7 @@ type AuditInput = {
   metadata?: Record<string, unknown>;
   actorId?: string | null;
   requestId?: string | null;
-  tenantId?: string;
+  tenantId: string;
 };
 
 type DecisionLogInput = {
@@ -166,7 +166,7 @@ type DecisionLogInput = {
   modifiedAction?: string | null;
   outcome?: "unknown" | "successful" | "unsuccessful" | "needs_follow_up";
   createdBy?: string | null;
-  tenantId?: string;
+  tenantId: string;
   metadata?: Record<string, unknown>;
 };
 
@@ -465,8 +465,9 @@ export function sanitizeAuditMetadata(metadata: Record<string, unknown> = {}): S
 }
 
 export function createRevenueDecisionLogData(input: DecisionLogInput): Prisma.RevenueDecisionLogUncheckedCreateInput {
+  const tenantId = requireTenantId(input.tenantId, "revenue_decision");
   return {
-    tenantId: input.tenantId ?? DEFAULT_TENANT_ID,
+    tenantId,
     leadId: input.leadId ?? null,
     taskId: input.taskId ?? null,
     auditEventId: input.auditEventId ?? null,
@@ -522,9 +523,10 @@ export function isRevenueDecisionLogUnavailableError(error: unknown): boolean {
   return /RevenueDecisionLog|revenue decision log|table .*does not exist|column .*does not exist/i.test(message);
 }
 
-async function listRevenueDecisionLogsSafe(): Promise<RevenueCommandCenterDecisionLog[]> {
+async function listRevenueDecisionLogsSafe(tenantId: string): Promise<RevenueCommandCenterDecisionLog[]> {
   try {
     return await prisma.revenueDecisionLog.findMany({
+      where: { tenantId: requireTenantId(tenantId, "revenue_decision_list") },
       orderBy: {
         createdAt: "desc",
       },
@@ -540,9 +542,10 @@ async function listRevenueDecisionLogsSafe(): Promise<RevenueCommandCenterDecisi
 }
 
 export async function logRevenueAuditEvent(input: AuditInput) {
+  const tenantId = requireTenantId(input.tenantId, "revenue_audit");
   return prisma.revenueAuditEvent.create({
     data: {
-      tenantId: input.tenantId ?? DEFAULT_TENANT_ID,
+      tenantId,
       actorId: input.actorId ?? null,
       action: input.action,
       targetType: input.targetType,
@@ -599,16 +602,19 @@ export async function ensureConnectorDefinitions() {
 }
 
 export async function syncLeadRevenueSpine({
+  tenantId: rawTenantId,
   lead,
   action,
   previousStatus,
   source = "revenue_spine",
 }: {
+  tenantId: string;
   lead: StoredLead;
   action: "lead_created" | "lead_imported" | "lead_updated" | "status_changed" | "score_refreshed";
   previousStatus?: LeadStatus;
   source?: string;
 }) {
+  const tenantId = requireTenantId(rawTenantId, "revenue_spine");
   const score = calculateRevenueLeadScore(lead);
   const sourceType = inferSourceType(lead.source);
   const sourceDetail = lead.source.trim() || "unknown_source";
@@ -627,7 +633,7 @@ export async function syncLeadRevenueSpine({
       verified: sourceType === "online_marketing" || sourceType === "referral",
     },
     create: {
-      tenantId: DEFAULT_TENANT_ID,
+      tenantId,
       leadId: lead.id,
       source: lead.source || "unknown",
       sourceType,
@@ -640,7 +646,7 @@ export async function syncLeadRevenueSpine({
 
   const scoreRecord = await prisma.revenueLeadScore.create({
     data: {
-      tenantId: DEFAULT_TENANT_ID,
+      tenantId,
       leadId: lead.id,
       score: score.score,
       confidence: score.confidence,
@@ -656,6 +662,7 @@ export async function syncLeadRevenueSpine({
   });
 
   await logRevenueDecision({
+    tenantId,
     recommendationType: "lead_scoring",
     recommendation: score.recommendedNextAction,
     confidence: score.confidence,
@@ -682,7 +689,7 @@ export async function syncLeadRevenueSpine({
   if (action === "lead_created" || action === "lead_imported") {
     await prisma.revenuePipelineEvent.create({
       data: {
-        tenantId: DEFAULT_TENANT_ID,
+        tenantId,
         leadId: lead.id,
         fromStage: null,
         toStage: lead.status,
@@ -695,7 +702,7 @@ export async function syncLeadRevenueSpine({
   if (action === "status_changed") {
     await prisma.revenuePipelineEvent.create({
       data: {
-        tenantId: DEFAULT_TENANT_ID,
+        tenantId,
         leadId: lead.id,
         fromStage: previousStatus ?? null,
         toStage: lead.status,
@@ -711,6 +718,7 @@ export async function syncLeadRevenueSpine({
   if (followUpFlags.length > 0 && !lead.doNotContact && lead.status !== "closed") {
     const existingOpenTask = await prisma.revenueTask.findFirst({
       where: {
+        tenantId,
         leadId: lead.id,
         taskType: "manual_follow_up_review",
         status: "open",
@@ -720,7 +728,7 @@ export async function syncLeadRevenueSpine({
     if (!existingOpenTask) {
       await prisma.revenueTask.create({
         data: {
-          tenantId: DEFAULT_TENANT_ID,
+          tenantId,
           leadId: lead.id,
           title: "Review revenue follow-up",
           taskType: "manual_follow_up_review",
@@ -736,6 +744,7 @@ export async function syncLeadRevenueSpine({
   }
 
   await logRevenueAuditEvent({
+    tenantId,
     action,
     targetType: "lead",
     targetId: lead.id,
@@ -757,9 +766,11 @@ export async function syncLeadRevenueSpine({
   return score;
 }
 
-export async function buildUnifiedLeadInbox(leads: StoredLead[]): Promise<RevenueInboxItem[]> {
+export async function buildUnifiedLeadInbox(tenantIdValue: string, leads: StoredLead[]): Promise<RevenueInboxItem[]> {
+  const tenantId = requireTenantId(tenantIdValue, "revenue_inbox");
   const latestScores = await prisma.revenueLeadScore.findMany({
     where: {
+      tenantId,
       leadId: {
         in: leads.map((lead) => lead.id),
       },
@@ -806,16 +817,19 @@ export async function buildUnifiedLeadInbox(leads: StoredLead[]): Promise<Revenu
     .sort((a, b) => (b.latestScore?.score ?? 0) - (a.latestScore?.score ?? 0) || (b.latestScore?.confidence ?? 0) - (a.latestScore?.confidence ?? 0));
 }
 
-export async function createRevenueCommandCenter(leads: StoredLead[]): Promise<RevenueCommandCenterReport> {
-  const inbox = await buildUnifiedLeadInbox(leads);
+export async function createRevenueCommandCenter(tenantIdValue: string, leads: StoredLead[]): Promise<RevenueCommandCenterReport> {
+  const tenantId = requireTenantId(tenantIdValue, "revenue_command_center");
+  const inbox = await buildUnifiedLeadInbox(tenantId, leads);
   const tasks = await prisma.revenueTask.findMany({
     where: {
+      tenantId,
       status: "open",
     },
     orderBy: [{ priority: "desc" }, { dueAt: "asc" }],
     take: 20,
   });
   const auditEvents = await prisma.revenueAuditEvent.findMany({
+    where: { tenantId },
     orderBy: {
       createdAt: "desc",
     },
@@ -824,8 +838,9 @@ export async function createRevenueCommandCenter(leads: StoredLead[]): Promise<R
   const connectors = await prisma.connectorDefinition.findMany({
     orderBy: [{ status: "asc" }, { label: "asc" }],
   });
-  const decisionLogs = await listRevenueDecisionLogsSafe();
+  const decisionLogs = await listRevenueDecisionLogsSafe(tenantId);
   const referralLinks = await prisma.referralLink.findMany({
+    where: { tenantId },
     orderBy: [{ leadCount: "desc" }, { clickCount: "desc" }],
     take: 10,
     include: {

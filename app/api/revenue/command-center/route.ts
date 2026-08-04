@@ -1,5 +1,5 @@
 import { apiError } from "@/lib/api-response";
-import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse } from "@/lib/auth";
 import { listDbLeads } from "@/lib/leads-db";
 import { createRevenueCommandCenter, ensureConnectorDefinitions } from "@/lib/revenue-spine";
 
@@ -8,13 +8,14 @@ export const runtime = "nodejs";
 
 export async function GET(request: Request) {
   try {
-    if (!(await isAuthenticatedRequest(request))) {
+    const actor = await getAuthenticatedRequestContext(request);
+    if (!actor) {
       return getUnauthorizedApiResponse();
     }
 
     await ensureConnectorDefinitions();
 
-    return Response.json(await createRevenueCommandCenter(await listDbLeads()));
+    return Response.json(await createRevenueCommandCenter(actor.tenantId, await listDbLeads(actor)));
   } catch (error) {
     console.error("GET /api/revenue/command-center failed:", error);
 

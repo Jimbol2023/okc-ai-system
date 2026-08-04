@@ -5,6 +5,7 @@ import { runExecutiveDailyStartup } from "@/lib/executive-autonomy-level-1";
 import { runReadOnlyBusinessSync, type BusinessDataCategory } from "@/lib/read-only-business-connections";
 import { clearServerCacheKey } from "@/lib/server-cache";
 import { createUeipExecutionContext } from "@/lib/ueip-runtime-gateway";
+import { requireTenantId } from "@/lib/tenant-context";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -43,7 +44,7 @@ async function runDailyStartupRequest(request: Request, allowAdminSession: boole
     }
 
     const auth = cron ? null : await getAuthenticatedRequestContext(request);
-    const tenantId = auth?.tenantId ?? "default";
+    const tenantId = requireTenantId(auth?.tenantId ?? process.env.CRON_TENANT_ID, cron ? "cron_configuration" : "admin_session");
     const executionContext = createUeipExecutionContext({
       tenantId,
       actorId: auth?.actorId ?? "system:cron",

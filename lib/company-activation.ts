@@ -780,6 +780,7 @@ export async function decideExecutiveDirective(input: CompanyDirectiveDecisionIn
           },
         });
         await recordOperatingLoopTraceFailClosed({
+          tenantId,
           traceId: `directive:${input.directiveId}`,
           sourceStep: "ceo_decision",
           targetStep: "ai_coo_assignment",
@@ -795,6 +796,7 @@ export async function decideExecutiveDirective(input: CompanyDirectiveDecisionIn
           },
         });
         await recordOperatingLoopTraceFailClosed({
+          tenantId,
           traceId: `directive:${input.directiveId}`,
           sourceStep: "ai_coo_assignment",
           targetStep: "department_work_order",
@@ -870,6 +872,7 @@ export async function decideExecutiveDirective(input: CompanyDirectiveDecisionIn
           },
         });
         await recordOperatingLoopTraceFailClosed({
+          tenantId,
           traceId: `directive:${input.directiveId}`,
           sourceStep: "department_work_order",
           targetStep: "draft_workspace",
@@ -943,6 +946,7 @@ export async function decideExecutiveDirective(input: CompanyDirectiveDecisionIn
       },
     });
     await recordOperatingLoopTraceFailClosed({
+      tenantId,
       traceId: `directive:${input.directiveId}`,
       sourceStep: "daily_mission",
       targetStep: "ceo_decision",

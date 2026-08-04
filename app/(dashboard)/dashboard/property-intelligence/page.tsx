@@ -2,13 +2,15 @@ import { AcquisitionDecisionBriefView } from "@/components/dashboard/acquisition
 import { getBuyerDemandSignals } from "@/lib/buyer-demand";
 import { createAcquisitionDecisionBrief, createProfessionalWorkforceReport } from "@/lib/enterprise-professional-workforce";
 import { getDbLeadById } from "@/lib/leads-db";
+import { requireAuthenticatedServerTenant } from "@/lib/server-tenant-context";
 
 export const dynamic = "force-dynamic";
 
 export default async function PropertyIntelligencePage({ searchParams }: { searchParams: Promise<{ leadId?: string }> }) {
   const { leadId } = await searchParams;
+  const actor = await requireAuthenticatedServerTenant();
   const workforce = createProfessionalWorkforceReport();
-  const lead = leadId ? await getDbLeadById(leadId) : null;
+  const lead = leadId ? await getDbLeadById(actor, leadId) : null;
   const buyerDemand = lead ? await getBuyerDemandSignals().catch(() => null) : null;
   const brief = lead ? createAcquisitionDecisionBrief({ lead, buyerDemand }) : null;
 

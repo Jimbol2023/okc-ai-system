@@ -1,5 +1,5 @@
 import { apiError } from "@/lib/api-response";
-import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse } from "@/lib/auth";
 import { listDbLeads } from "@/lib/leads-db";
 import { buildUnifiedLeadInbox } from "@/lib/revenue-spine";
 
@@ -8,7 +8,8 @@ export const runtime = "nodejs";
 
 export async function GET(request: Request) {
   try {
-    if (!(await isAuthenticatedRequest(request))) {
+    const actor = await getAuthenticatedRequestContext(request);
+    if (!actor) {
       return getUnauthorizedApiResponse();
     }
 
@@ -16,7 +17,7 @@ export async function GET(request: Request) {
       ok: true,
       providerCalled: false,
       outreachSent: false,
-      inbox: await buildUnifiedLeadInbox(await listDbLeads()),
+      inbox: await buildUnifiedLeadInbox(actor.tenantId, await listDbLeads(actor)),
     });
   } catch (error) {
     console.error("GET /api/revenue/inbox failed:", error);

@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { getAuthenticatedRequestContext, getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
 import { parseControlledInternalOperationAction, runControlledInternalOperation } from "@/lib/controlled-internal-operations";
 import { clearServerCacheKey } from "@/lib/server-cache";
+import { requireTenantId } from "@/lib/tenant-context";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -16,7 +17,7 @@ export async function POST(request: Request) {
     const payload = await request.json().catch(() => null);
     const action = parseControlledInternalOperationAction(payload?.action);
     const auth = await getAuthenticatedRequestContext(request);
-    const result = await runControlledInternalOperation(action, auth?.tenantId ?? "default");
+    const result = await runControlledInternalOperation(action, requireTenantId(auth?.tenantId, "internal_operation_session"));
     clearServerCacheKey("executive-dashboard-report");
 
     return NextResponse.json(result);

@@ -12,9 +12,13 @@ import {
   validateReadOnlyAdapterDefinitions,
   type BusinessDataSnapshotRecord,
 } from "./read-only-business-connections";
-import { setUeipRuntimeDependenciesForTest } from "./ueip-runtime-gateway";
+import { createUeipExecutionContext, setUeipRuntimeDependenciesForTest } from "./ueip-runtime-gateway";
 
 const restoreFns: Array<() => void> = [];
+
+function testContext(tenantId = "default") {
+  return createUeipExecutionContext({ tenantId, actorId: "test", businessModule: "ai_core", requestOrigin: "test" });
+}
 
 afterEach(() => {
   while (restoreFns.length) {
@@ -97,7 +101,7 @@ describe("read-only business connections", () => {
       }),
     );
 
-    const report = await runReadOnlyBusinessSync({});
+    const report = await runReadOnlyBusinessSync({}, testContext());
 
     assert.equal(calls, 0);
     assert.equal(report.providerCalled, false);
@@ -129,7 +133,7 @@ describe("read-only business connections", () => {
       return jsonResponse({});
     }));
 
-    const report = await runReadOnlyBusinessSync(env, undefined, {
+    const report = await runReadOnlyBusinessSync(env, testContext(), {
       categories: ["gmail_inbox", "internal_website_lead_intake"],
     });
 
@@ -145,7 +149,7 @@ describe("read-only business connections", () => {
     restoreFns.push(setReadOnlyBusinessConnectionsDbForTest(testDb.db as never));
     restoreFns.push(setReadOnlyBusinessConnectionsLeadLoaderForTest(async () => []));
 
-    await runReadOnlyBusinessSync({}, undefined, {
+    await runReadOnlyBusinessSync({}, testContext(), {
       categories: ["internal_lead_database"],
       persistDailyBriefing: false,
     });
@@ -170,7 +174,7 @@ describe("read-only business connections", () => {
       GOOGLE_OAUTH_CLIENT_SECRET: "google-secret",
       GOOGLE_OAUTH_REFRESH_TOKEN: "google-refresh",
       GOOGLE_OAUTH_GRANTED_SCOPES: "https://www.googleapis.com/auth/webmasters.readonly",
-    }, undefined, { categories: ["gmail_inbox"] });
+    }, testContext(), { categories: ["gmail_inbox"] });
 
     assert.equal(calls, 0);
     assert.equal(report.providerCalled, false);
@@ -231,7 +235,7 @@ describe("read-only business connections", () => {
     restoreFns.push(setReadOnlyBusinessConnectionsFetchForTest(testFetch));
     restoreFns.push(setUeipRuntimeDependenciesForTest({ db: createUeipTestDb(env.GOOGLE_SEARCH_CONSOLE_SITE_URL) as never, fetcher: testFetch, environment: "preview" }));
 
-    const report = await runReadOnlyBusinessSync(env);
+    const report = await runReadOnlyBusinessSync(env, testContext());
     const serialized = JSON.stringify(report);
 
     assert.equal(report.providerCalled, true);

@@ -94,6 +94,10 @@ function createMockDb() {
 
         return draft ? cloneDraft(draft) : null;
       },
+      async findFirst(args: { where: { id: string; tenantId: string } }) {
+        const draft = drafts.find((item) => item.id === args.where.id && item.tenantId === args.where.tenantId);
+        return draft ? cloneDraft(draft) : null;
+      },
       async update(args: { where: { id: string }; data: Partial<MockDraft> }) {
         const index = drafts.findIndex((item) => item.id === args.where.id);
         if (index < 0) throw new Error("Draft not found.");
@@ -208,7 +212,7 @@ afterEach(() => {
 
 describe("CEO Draft Workspace", () => {
   it("groups drafts by department with traceability and version metadata", async () => {
-    const report = await getCeoDraftWorkspaceReport();
+    const report = await getCeoDraftWorkspaceReport("default");
 
     assert.equal(report.title, "CEO Draft Workspace");
     assert.equal(report.totals.drafts, 2);
@@ -226,7 +230,7 @@ describe("CEO Draft Workspace", () => {
   });
 
   it("previews a draft without creating a revision", async () => {
-    const preview = await previewCeoDraft("draft-marketing");
+    const preview = await previewCeoDraft("default", "draft-marketing");
 
     assert.equal(preview.ok, true);
     assert.equal(preview.previewMode, "internal_only");
@@ -237,6 +241,7 @@ describe("CEO Draft Workspace", () => {
 
   it("edits a draft, creates version history, and preserves execution blocking flags", async () => {
     const result = await updateCeoDraft(
+      "default",
       "draft-marketing",
       {
         title: "Edited Facebook Post",
@@ -265,10 +270,10 @@ describe("CEO Draft Workspace", () => {
   });
 
   it("records first approve, reject, and request changes as internal decisions only", async () => {
-    const approved = await decideCeoDraft("draft-marketing", { decision: "approve" }, "ceo@example.com");
-    const rejected = await decideCeoDraft("draft-seo", { decision: "reject", note: "Not aligned." }, "ceo@example.com");
+    const approved = await decideCeoDraft("default", "draft-marketing", { decision: "approve" }, "ceo@example.com");
+    const rejected = await decideCeoDraft("default", "draft-seo", { decision: "reject", note: "Not aligned." }, "ceo@example.com");
     drafts.push(createDraft({ id: "draft-brand", ownerDepartment: "Brand", title: "Brand Review", output: "Brand Review" }));
-    const changes = await decideCeoDraft("draft-brand", { decision: "request_changes", note: "Tighten claims." }, "ceo@example.com");
+    const changes = await decideCeoDraft("default", "draft-brand", { decision: "request_changes", note: "Tighten claims." }, "ceo@example.com");
 
     assert.equal(approved.draft.approvalStatus, "approved_internal");
     assert.equal(rejected.draft.approvalStatus, "rejected_internal");
@@ -279,8 +284,8 @@ describe("CEO Draft Workspace", () => {
   });
 
   it("returns the existing approved result without creating duplicate history", async () => {
-    const first = await decideCeoDraft("draft-marketing", { decision: "approve" }, "ceo@example.com");
-    const second = await decideCeoDraft("draft-marketing", { decision: "approve" }, "ceo@example.com");
+    const first = await decideCeoDraft("default", "draft-marketing", { decision: "approve" }, "ceo@example.com");
+    const second = await decideCeoDraft("default", "draft-marketing", { decision: "approve" }, "ceo@example.com");
 
     assert.equal(first.draft.approvalStatus, "approved_internal");
     assert.equal(second.draft.approvalStatus, "approved_internal");
@@ -292,8 +297,8 @@ describe("CEO Draft Workspace", () => {
 
   it("concurrent approve requests create one transition record", async () => {
     const results = await Promise.all([
-      decideCeoDraft("draft-marketing", { decision: "approve" }, "ceo@example.com"),
-      decideCeoDraft("draft-marketing", { decision: "approve" }, "ceo@example.com"),
+      decideCeoDraft("default", "draft-marketing", { decision: "approve" }, "ceo@example.com"),
+      decideCeoDraft("default", "draft-marketing", { decision: "approve" }, "ceo@example.com"),
     ]);
 
     assert.equal(results.every((result) => result.draft.approvalStatus === "approved_internal"), true);
@@ -303,21 +308,21 @@ describe("CEO Draft Workspace", () => {
   });
 
   it("terminal decisions block incompatible repeated actions", async () => {
-    await decideCeoDraft("draft-marketing", { decision: "approve" }, "ceo@example.com");
+    await decideCeoDraft("default", "draft-marketing", { decision: "approve" }, "ceo@example.com");
 
     await assert.rejects(
-      () => decideCeoDraft("draft-marketing", { decision: "reject", note: "Changed mind." }, "ceo@example.com"),
+      () => decideCeoDraft("default", "draft-marketing", { decision: "reject", note: "Changed mind." }, "ceo@example.com"),
       /already terminal/i,
     );
     await assert.rejects(
-      () => decideCeoDraft("draft-marketing", { decision: "request_changes", note: "Need edits." }, "ceo@example.com"),
+      () => decideCeoDraft("default", "draft-marketing", { decision: "request_changes", note: "Need edits." }, "ceo@example.com"),
       /already terminal/i,
     );
     assert.equal(revisions.length, 1);
   });
 
   it("requires notes for rejection and requested changes", async () => {
-    await assert.rejects(() => decideCeoDraft("draft-marketing", { decision: "reject" }, "ceo@example.com"), /note is required/i);
-    await assert.rejects(() => decideCeoDraft("draft-marketing", { decision: "request_changes", note: " " }, "ceo@example.com"), /note is required/i);
+    await assert.rejects(() => decideCeoDraft("default", "draft-marketing", { decision: "reject" }, "ceo@example.com"), /note is required/i);
+    await assert.rejects(() => decideCeoDraft("default", "draft-marketing", { decision: "request_changes", note: " " }, "ceo@example.com"), /note is required/i);
   });
 });

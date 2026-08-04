@@ -52,6 +52,7 @@ function lead(overrides: Partial<StoredLead> = {}): StoredLead {
 
 function snapshot(): BusinessDataSnapshotRecord {
   return {
+    tenantId: "tenant-alpha",
     snapshotDate: new Date("2026-07-06T00:00:00.000Z"),
     provider: "Google Search Console",
     connectorId: "google_search_console",
@@ -88,6 +89,7 @@ function snapshot(): BusinessDataSnapshotRecord {
 describe("DFD operating conductor", () => {
   it("ranks governance stops ahead of distress and revenue signals", () => {
     const report = createDfdOperatingReportFromInputs({
+      tenantId: "tenant-alpha",
       leads: [
         lead({ id: "blocked", propertyAddress: "100 Stop St", doNotContact: true, score: 30, priority: "Low" }),
         lead({
@@ -110,7 +112,7 @@ describe("DFD operating conductor", () => {
   });
 
   it("keeps DFD operation internal and non-executing", () => {
-    const report = createDfdOperatingReportFromInputs({ leads: [lead()], snapshots: [snapshot()] });
+    const report = createDfdOperatingReportFromInputs({ tenantId: "tenant-alpha", leads: [lead()], snapshots: [snapshot()] });
 
     assert.deepEqual(report.safetyFlags, dfdOperatingSafetyFlags);
     assert.equal(report.providerCalled, false);
@@ -123,5 +125,16 @@ describe("DFD operating conductor", () => {
     assert.equal(report.safetyFlags.crmMutationBlocked, true);
     assert.ok(report.connectorEvidence.some((item) => item.includes("google_search_console")));
     assert.ok(report.draftWorkspaceProof.length > 0);
+  });
+
+  it("blocks cross-tenant snapshot evidence from DFD rankings", () => {
+    assert.throws(
+      () => createDfdOperatingReportFromInputs({
+        tenantId: "tenant-alpha",
+        leads: [lead()],
+        snapshots: [{ ...snapshot(), tenantId: "tenant-beta" }],
+      }),
+      /cross_tenant_dfd_snapshot_blocked/,
+    );
   });
 });

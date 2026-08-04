@@ -142,7 +142,8 @@ async function seedAcceptanceLead() {
 
   await prisma.lead.upsert({
     where: {
-      propertyAddress_phone: {
+      tenantId_propertyAddress_phone: {
+        tenantId,
         propertyAddress: payload.propertyAddress,
         phone: payload.phone,
       },
@@ -163,6 +164,7 @@ async function seedAcceptanceLead() {
     },
     create: {
       id: acceptanceLeadId,
+      tenantId,
       name: "Acceptance Seller",
       phone: payload.phone,
       propertyAddress: payload.propertyAddress,

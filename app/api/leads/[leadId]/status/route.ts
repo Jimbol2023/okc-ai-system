@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 
 import {
-  getUnauthorizedApiResponse,
-  isAuthenticatedRequest
+  getAuthenticatedRequestContext,
+  getUnauthorizedApiResponse
 } from "@/lib/auth";
 import { logDealOutcomeMemory, logAiMemoryEvent } from "@/lib/ai-memory-logger";
 import { getDbLeadById, updateDbLeadStatus } from "@/lib/leads-db";
@@ -26,13 +26,14 @@ const ALLOWED_STATUSES: readonly LeadStatus[] = [
 
 export async function PATCH(request: Request, context: RouteContext) {
   try {
-    if (!(await isAuthenticatedRequest(request))) {
+    const actor = await getAuthenticatedRequestContext(request);
+    if (!actor) {
       return getUnauthorizedApiResponse();
     }
 
     const { leadId } = await context.params;
 
-    const existingLead = await getDbLeadById(leadId);
+    const existingLead = await getDbLeadById(actor, leadId);
 
     if (!existingLead) {
       return NextResponse.json(
@@ -61,6 +62,7 @@ export async function PATCH(request: Request, context: RouteContext) {
     }
 
     const updatedLead = await updateDbLeadStatus(
+      actor,
       leadId,
       nextStatus as LeadStatus
     );

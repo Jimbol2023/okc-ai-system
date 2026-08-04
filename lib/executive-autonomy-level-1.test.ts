@@ -319,7 +319,7 @@ describe("Executive Autonomy Level 1", () => {
       }),
     );
 
-    const result = await runExecutiveDailyStartup({ date: now });
+    const result = await runExecutiveDailyStartup({ tenantId: "default", date: now });
 
     assert.equal(result.state, "already_running");
     assert.equal(result.completedAt, null);
@@ -399,7 +399,7 @@ describe("Executive Autonomy Level 1", () => {
       }),
     );
 
-    const result: ExecutiveAutonomyLevel1RunResult = await runExecutiveDailyStartup({ triggeredBy: "manual", date: now });
+    const result: ExecutiveAutonomyLevel1RunResult = await runExecutiveDailyStartup({ tenantId: "default", triggeredBy: "manual", date: now });
     const departmentPhase = result.phases.find((item) => item.id === "department_autonomy");
     const evidencePhase = result.phases.find((item) => item.id === "evidence_refresh");
 

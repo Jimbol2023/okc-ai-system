@@ -8,8 +8,8 @@ import { listDbLeads } from "@/lib/leads-db";
 import type { StoredLead } from "@/lib/leads-storage";
 import { prisma } from "@/lib/prisma";
 import { createRevenueCommandCenter, logRevenueAuditEvent, syncLeadRevenueSpine, type RevenueCommandCenterReport, type RevenueInboxItem } from "@/lib/revenue-spine";
+import { requireTenantId } from "@/lib/tenant-context";
 
-const DEFAULT_TENANT_ID = "default";
 const LEVEL = 1;
 const MODE = "executive_autonomy_level_1_internal";
 
@@ -213,8 +213,8 @@ function getNextRunAt(now: Date) {
   return nextCentralEight.toISOString();
 }
 
-export function createExecutiveAutonomyLevel1IdempotencyKey(tenantId = DEFAULT_TENANT_ID, businessDate = toBusinessDate(new Date())) {
-  return `executive-autonomy-l1:${tenantId}:${businessDate}`;
+export function createExecutiveAutonomyLevel1IdempotencyKey(tenantId: string, businessDate = toBusinessDate(new Date())) {
+  return `executive-autonomy-l1:${requireTenantId(tenantId, "executive_autonomy_idempotency")}:${businessDate}`;
 }
 
 function phase(input: Omit<ExecutiveAutonomyLevel1PhaseResult, "safety">): ExecutiveAutonomyLevel1PhaseResult {
@@ -420,13 +420,14 @@ async function processLeadPipeline(leads: StoredLead[], commandCenter: RevenueCo
   const leadIdsToScore = new Set(commandCenter.inbox.slice(0, 25).map((item) => item.lead.id));
   for (const lead of leads.filter((lead) => leadIdsToScore.has(lead.id))) {
     await deps.syncLead({
+      tenantId,
       lead,
       action: "score_refreshed",
       source: "executive_autonomy_l1",
     });
   }
 
-  const refreshedCommandCenter = await deps.createRevenueCommandCenter(leads);
+  const refreshedCommandCenter = await deps.createRevenueCommandCenter(tenantId, leads);
   for (const item of refreshedCommandCenter.inbox.slice(0, 10)) {
     const approvalItemId = await ensureApprovalItem(item, tenantId, idempotencyKey, businessDate);
     if (approvalItemId) approvalsCreated += 1;
@@ -515,14 +516,15 @@ async function recordFinalMemory(result: ExecutiveAutonomyLevel1RunResult, memor
 }
 
 export async function runExecutiveDailyStartup({
-  tenantId = DEFAULT_TENANT_ID,
+  tenantId,
   triggeredBy = "system",
   date = deps.now(),
 }: {
-  tenantId?: string;
+  tenantId: string;
   triggeredBy?: "cron" | "manual" | "system";
   date?: Date;
-} = {}): Promise<ExecutiveAutonomyLevel1RunResult> {
+}): Promise<ExecutiveAutonomyLevel1RunResult> {
+  tenantId = requireTenantId(tenantId, "executive_autonomy_startup");
   const businessDate = toBusinessDate(date);
   const idempotencyKey = createExecutiveAutonomyLevel1IdempotencyKey(tenantId, businessDate);
   const existing = await deps.db.aiDepartmentMemoryEvent.findFirst({
@@ -631,9 +633,9 @@ export async function runExecutiveDailyStartup({
     }),
   );
 
-  const leads = await deps.loadLeads();
-  await deps.createDailyRevenueOperatingLoop();
-  const commandCenter = await deps.createRevenueCommandCenter(leads);
+  const leads = await deps.loadLeads({ tenantId });
+  await deps.createDailyRevenueOperatingLoop(tenantId);
+  const commandCenter = await deps.createRevenueCommandCenter(tenantId, leads);
   const leadPipeline = await processLeadPipeline(leads, commandCenter, tenantId, idempotencyKey, businessDate);
   phases.push(
     phase({
@@ -648,7 +650,7 @@ export async function runExecutiveDailyStartup({
   );
 
   const briefOperation = await deps.runControlledInternalOperation("generate_morning_brief", tenantId);
-  const dashboard = await deps.loadDashboard();
+  const dashboard = await deps.loadDashboard(tenantId);
   const dataQuality = calculateDataQuality(dashboard);
   const morningBrief = buildMorningBrief({
     dashboard,
@@ -730,12 +732,13 @@ export async function runExecutiveDailyStartup({
 }
 
 export async function getExecutiveAutonomyLevel1Status({
-  tenantId = DEFAULT_TENANT_ID,
+  tenantId,
   date = deps.now(),
 }: {
-  tenantId?: string;
+  tenantId: string;
   date?: Date;
-} = {}): Promise<ExecutiveAutonomyLevel1Status> {
+}): Promise<ExecutiveAutonomyLevel1Status> {
+  tenantId = requireTenantId(tenantId, "executive_autonomy_status");
   const businessDate = toBusinessDate(date);
   const idempotencyKey = createExecutiveAutonomyLevel1IdempotencyKey(tenantId, businessDate);
   const record = await deps.db.aiDepartmentMemoryEvent.findFirst({

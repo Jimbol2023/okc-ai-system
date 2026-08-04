@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse } from "@/lib/auth";
 import { createAiWorkforceReport } from "@/lib/ai-workforce";
 import { createConnectorActivationGate } from "@/lib/connector-activation-gate";
 import { createConnectorSignalFoundationReportFromInputs } from "@/lib/connector-signal-normalization";
@@ -29,15 +29,16 @@ export const runtime = "nodejs";
 
 export async function GET(request: Request) {
   try {
-    if (!(await isAuthenticatedRequest(request))) {
+    const actor = await getAuthenticatedRequestContext(request);
+    if (!actor) {
       return getUnauthorizedApiResponse();
     }
 
     const [gate, workforce, dailyLoop, leads] = await Promise.all([
       createConnectorActivationGate(),
       createAiWorkforceReport(),
-      createDailyRevenueOperatingLoop(),
-      listDbLeads(),
+      createDailyRevenueOperatingLoop(actor.tenantId),
+      listDbLeads(actor),
     ]);
     const adapterReport = await createReadOnlyConnectorAdapterReport(gate);
     const connectorSignals = createConnectorSignalFoundationReportFromInputs({
@@ -56,7 +57,7 @@ export async function GET(request: Request) {
       intelligence: marketCustomerIntelligence,
       generatedAt: gate.generatedAt,
     });
-    const revenueCommandCenter = await createRevenueCommandCenter(leads);
+    const revenueCommandCenter = await createRevenueCommandCenter(actor.tenantId, leads);
     const revenueIntelligence = createRevenueIntelligenceOpportunityEngineReportFromInputs({
       departmentOperatingSystem,
       marketCustomerIntelligence,

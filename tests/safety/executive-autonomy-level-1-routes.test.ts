@@ -7,8 +7,11 @@ import { executiveAutonomyLevel1SafetyProof } from "@/lib/executive-autonomy-lev
 
 const restores: Array<() => void> = [];
 let previousCronSecret: string | undefined;
+let previousCronTenantId: string | undefined;
 
 beforeEach(() => {
+  previousCronTenantId = process.env.CRON_TENANT_ID;
+  process.env.CRON_TENANT_ID = "tenant-alpha";
   restores.push(
     setExecutiveAutonomyDailyStartupRouteDepsForTest({
       runInternalSync: async (_env, _context, options) => ({
@@ -31,6 +34,8 @@ afterEach(() => {
   } else {
     process.env.CRON_SECRET = previousCronSecret;
   }
+  if (previousCronTenantId === undefined) delete process.env.CRON_TENANT_ID;
+  else process.env.CRON_TENANT_ID = previousCronTenantId;
 });
 
 describe("Executive Autonomy Level 1 routes", () => {
@@ -54,7 +59,7 @@ describe("Executive Autonomy Level 1 routes", () => {
       setExecutiveAutonomyDailyStartupRouteDepsForTest({
         runInternalSync: async (_env, context, options) => {
           calls.push("sync");
-          assert.equal(context.tenantId, "default");
+          assert.equal(context.tenantId, "tenant-alpha");
           assert.equal(context.requestOrigin, "system_cron");
           assert.deepEqual(options.categories, dailyStartupInternalCategories);
           assert.equal(options.persistDailyBriefing, false);
@@ -73,9 +78,9 @@ describe("Executive Autonomy Level 1 routes", () => {
             level: 1,
             mode: "executive_autonomy_level_1_internal",
             state: "completed",
-            tenantId: "default",
+            tenantId: "tenant-alpha",
             businessDate: "2026-08-02",
-            idempotencyKey: "executive-autonomy-l1:default:2026-08-02",
+            idempotencyKey: "executive-autonomy-l1:tenant-alpha:2026-08-02",
             startedAt: "2026-08-02T13:00:00.000Z",
             completedAt: "2026-08-02T13:01:00.000Z",
             triggeredBy: "cron",

@@ -373,11 +373,11 @@ export function createAiWorkforceCommandCenterFromInputs(input: AiWorkforceComma
   return report;
 }
 
-export async function createAiWorkforceCommandCenter(): Promise<AiWorkforceCommandCenterReport> {
+export async function createAiWorkforceCommandCenter(tenantId: string): Promise<AiWorkforceCommandCenterReport> {
   const [workforce, toolbox, dailyRevenueOperatingLoop] = await Promise.all([
     createAiWorkforceReport(),
     createAiEmployeeToolboxReadiness(),
-    createDailyRevenueOperatingLoop(),
+    createDailyRevenueOperatingLoop(tenantId),
   ]);
 
   return createAiWorkforceCommandCenterFromInputs({

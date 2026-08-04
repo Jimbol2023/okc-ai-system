@@ -10,6 +10,7 @@ import { createOperatorConfirmationRuntimeDesign } from "@/lib/operator-confirma
 import { prisma } from "@/lib/prisma";
 import { logRevenueAuditEvent, sanitizeAuditMetadata } from "@/lib/revenue-spine";
 import { evaluateSafeAutomation } from "@/lib/safe-auto-mode";
+import { requireTenantId } from "@/lib/tenant-context";
 
 export type Phase4TimelineEventInput = {
   eventType: string;
@@ -25,10 +26,11 @@ export type Phase4TimelineEventInput = {
   sourceLabel: string;
   reasonCodes: string[];
   metadata?: Record<string, unknown>;
-  tenantId?: string;
+  tenantId: string;
 };
 
 export type ControlledLiveSmsInput = {
+  tenantId: string;
   leadId?: string;
   recipient: string;
   message: string;
@@ -106,7 +108,7 @@ export async function writeOperationsTimelineEvent(input: Phase4TimelineEventInp
 
   return client.operationsTimelineEvent.create({
     data: {
-      tenantId: input.tenantId ?? "default",
+      tenantId: requireTenantId(input.tenantId, "operations_timeline"),
       eventType: input.eventType,
       entityType: input.entityType,
       entityId: input.entityId ?? null,
@@ -311,6 +313,7 @@ export async function executeControlledLiveSms(input: ControlledLiveSmsInput): P
 
   if (!canCallTwilio) {
     await writeOperationsTimelineEvent({
+      tenantId: input.tenantId,
       eventType: "sms_blocked",
       entityType: "lead",
       entityId: input.leadId ?? null,
@@ -331,6 +334,7 @@ export async function executeControlledLiveSms(input: ControlledLiveSmsInput): P
   }
 
   const auditEvent = await logRevenueAuditEvent({
+    tenantId: input.tenantId,
     action: "controlled_live_sms_preflight",
     targetType: "lead",
     targetId: input.leadId ?? null,
@@ -355,6 +359,7 @@ export async function executeControlledLiveSms(input: ControlledLiveSmsInput): P
       body: input.message,
     });
     const timelineEvent = await writeOperationsTimelineEvent({
+      tenantId: input.tenantId,
       eventType: "sms_sent",
       entityType: "lead",
       entityId: input.leadId ?? null,
@@ -374,6 +379,7 @@ export async function executeControlledLiveSms(input: ControlledLiveSmsInput): P
     if (input.leadId) {
       await prisma.revenueCommunicationEvent.create({
         data: {
+          tenantId: input.tenantId,
           leadId: input.leadId,
           channel: "sms",
           direction: "outbound",
@@ -407,6 +413,7 @@ export async function executeControlledLiveSms(input: ControlledLiveSmsInput): P
     };
   } catch (error) {
     const timelineEvent = await writeOperationsTimelineEvent({
+      tenantId: input.tenantId,
       eventType: "sms_failed",
       entityType: "lead",
       entityId: input.leadId ?? null,

@@ -123,6 +123,7 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.LeadScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   name: 'name',
   phone: 'phone',
   propertyAddress: 'propertyAddress',
@@ -1103,6 +1104,7 @@ exports.Prisma.OperationsTimelineEventScalarFieldEnum = {
 
 exports.Prisma.ManualLeadIntakeScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   leadId: 'leadId',
   source: 'source',
   sourceLabel: 'sourceLabel',

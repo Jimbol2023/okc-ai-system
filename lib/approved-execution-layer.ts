@@ -3,8 +3,7 @@ import type { Prisma } from "@/generated/prisma";
 import { logAiMemoryEvent } from "@/lib/ai-memory-logger";
 import { recordOperatingLoopTraceFailClosed, setOperatingLoopTraceDbForTest } from "@/lib/operating-loop-trace";
 import { prisma } from "@/lib/prisma";
-
-const tenantId = "default";
+import { requireTenantId } from "@/lib/tenant-context";
 let approvedExecutionDb = prisma;
 let approvedExecutionMemoryLogger = logAiMemoryEvent;
 
@@ -21,6 +20,7 @@ export const approvedExecutionActionTypes = [
 export type ApprovedExecutionActionType = (typeof approvedExecutionActionTypes)[number];
 
 export type ApprovedExecutionInput = {
+  tenantId: string;
   actionType: ApprovedExecutionActionType;
   title: string;
   sourceLabel: string;
@@ -106,6 +106,7 @@ export type ApprovedExecutionRunResult = {
 
 type ApprovalRecord = {
   id: string;
+  tenantId: string;
   itemType?: string | null;
   title?: string | null;
   status?: string | null;
@@ -240,8 +241,9 @@ export function createApprovedExecutionPreparedAction(input: ApprovedExecutionIn
 }
 
 export async function prepareApprovedExecution(input: ApprovedExecutionInput): Promise<ApprovedExecutionPrepareResult> {
+  const tenantId = requireTenantId(input.tenantId, "approved_execution_prepare");
   const preparedAction = createApprovedExecutionPreparedAction(input);
-  const existingApproval = await findExistingPreparedApproval(input.sourceLabel, input.actionType);
+  const existingApproval = await findExistingPreparedApproval(tenantId, input.sourceLabel, input.actionType);
 
   if (existingApproval) {
     return {
@@ -312,7 +314,7 @@ export async function prepareApprovedExecution(input: ApprovedExecutionInput): P
   };
 }
 
-async function findExistingPreparedApproval(sourceLabel: string, actionType: ApprovedExecutionActionType): Promise<ApprovalRecord | null> {
+async function findExistingPreparedApproval(tenantId: string, sourceLabel: string, actionType: ApprovedExecutionActionType): Promise<ApprovalRecord | null> {
   const client = approvedExecutionDb.unifiedApprovalItem as unknown as {
     findFirst?: (args: unknown) => Promise<ApprovalRecord | null>;
   };
@@ -603,7 +605,7 @@ async function executeCrmTask(approvalId: string, preparedAction: ApprovedExecut
   const reason = cleanText(preparedAction.payload.reason, "Created from CEO-approved execution layer.");
   const task = await approvedExecutionDb.revenueTask.create({
     data: {
-      tenantId,
+      tenantId: preparedAction.tenantId,
       leadId: cleanOptionalText(preparedAction.leadId),
       title,
       taskType: cleanText(preparedAction.payload.taskType, "approved_execution"),
@@ -720,7 +722,7 @@ async function executePreparedAction(approvalId: string, preparedAction: Approve
 async function logExecutionAudit(approvalId: string, preparedAction: ApprovedExecutionPreparedAction, result: ApprovedExecutionResult) {
   const audit = await approvedExecutionDb.revenueAuditEvent.create({
     data: {
-      tenantId,
+      tenantId: preparedAction.tenantId,
       actorId: preparedAction.preparedBy ?? "ceo",
       action: `approved_execution.${preparedAction.actionType}`,
       targetType: "UnifiedApprovalItem",
@@ -760,12 +762,14 @@ async function logExecutionAudit(approvalId: string, preparedAction: ApprovedExe
 }
 
 export async function approveAndExecuteApprovedAction(input: {
+  tenantId: string;
   approvalId: string;
   approvedBy?: string;
   note?: string;
 }): Promise<ApprovedExecutionRunResult> {
-  const approval = await approvedExecutionDb.unifiedApprovalItem.findUnique({
-    where: { id: input.approvalId },
+  const tenantId = requireTenantId(input.tenantId, "approved_execution_run");
+  const approval = await approvedExecutionDb.unifiedApprovalItem.findFirst({
+    where: { id: input.approvalId, tenantId },
   });
 
   if (!approval) throw new Error("Approved execution item not found.");
@@ -795,6 +799,7 @@ export async function approveAndExecuteApprovedAction(input: {
   try {
     auditId = await logExecutionAudit(input.approvalId, preparedAction, result);
     await recordOperatingLoopTraceFailClosed({
+      tenantId: approval.tenantId,
       traceId: `approved_execution:${input.approvalId}`,
       sourceStep: "approved_execution",
       targetStep: "audit",
@@ -847,7 +852,8 @@ export async function approveAndExecuteApprovedAction(input: {
   if (!memory.logged && finalResult.status === "executed") {
     finalResult = failClosedResult(input.approvalId, preparedAction, `Executive memory write failed: ${memory.reason}`);
   }
-  await recordOperatingLoopTraceFailClosed({
+    await recordOperatingLoopTraceFailClosed({
+      tenantId: approval.tenantId,
     traceId: `approved_execution:${input.approvalId}`,
     sourceStep: "audit",
     targetStep: "memory",
@@ -901,7 +907,8 @@ export async function approveAndExecuteApprovedAction(input: {
       liveExecutionAllowed: finalResult.status === "executed",
     },
   });
-  await recordOperatingLoopTraceFailClosed({
+    await recordOperatingLoopTraceFailClosed({
+      tenantId: approval.tenantId,
     traceId: `approved_execution:${input.approvalId}`,
     sourceStep: "memory",
     targetStep: "business_outcome",
@@ -915,7 +922,8 @@ export async function approveAndExecuteApprovedAction(input: {
     published: finalResult.published,
     liveExecutionAllowed: finalResult.status === "executed",
   });
-  await recordOperatingLoopTraceFailClosed({
+    await recordOperatingLoopTraceFailClosed({
+      tenantId: approval.tenantId,
     traceId: `approved_execution:${input.approvalId}`,
     sourceStep: "ceo_approval",
     targetStep: "approved_execution",

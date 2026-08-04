@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { createSessionToken, isSecureRequest, isValidAdminLogin, setAuthCookie } from "@/lib/auth";
+import { requireTenantId } from "@/lib/tenant-context";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -22,7 +23,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const token = await createSessionToken(payload.email.trim().toLowerCase());
+    const tenantId = requireTenantId(process.env.ADMIN_TENANT_ID, "admin_login_configuration");
+    const token = await createSessionToken(payload.email.trim().toLowerCase(), { tenantId });
     const response = NextResponse.json({
       ok: true
     });

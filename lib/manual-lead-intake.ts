@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { createDbLead } from "@/lib/leads-db";
 import type { StoredLead } from "@/lib/leads-storage";
 import { manualLeadSourceLabels, manualLeadSources } from "@/lib/manual-lead-sources";
+import { requireTenantId } from "@/lib/tenant-context";
 
 export const manualLeadIntakeSchema = z.object({
   source: z.enum(manualLeadSources),
@@ -99,8 +100,10 @@ function canCreateLead(input: ManualLeadIntakeInput) {
   return Boolean(cleanOptional(input.propertyAddress) && cleanOptional(input.phone));
 }
 
-export async function listManualLeadIntakes() {
+export async function listManualLeadIntakes(tenantIdValue: string) {
+  const tenantId = requireTenantId(tenantIdValue, "manual_lead_intake_list");
   return prisma.manualLeadIntake.findMany({
+    where: { tenantId },
     orderBy: {
       createdAt: "desc",
     },
@@ -119,14 +122,15 @@ export async function listManualLeadIntakes() {
   });
 }
 
-export async function createManualLeadIntake(input: ManualLeadIntakeInput) {
+export async function createManualLeadIntake(tenantIdValue: string, input: ManualLeadIntakeInput) {
+  const tenantId = requireTenantId(tenantIdValue, "manual_lead_intake_create");
   const sourceLabel = manualLeadSourceLabels[input.source];
   let leadId: string | null = null;
   let leadCreated = false;
   let intakeStatus = "pending_review";
 
   if (input.createLead && canCreateLead(input)) {
-    const result = await createDbLead(createStoredLeadFromManualIntake(input));
+    const result = await createDbLead({ tenantId }, createStoredLeadFromManualIntake(input));
     leadId = result.lead.id;
     leadCreated = result.created;
     intakeStatus = result.created ? "lead_created" : "matched_existing_lead";
@@ -136,6 +140,7 @@ export async function createManualLeadIntake(input: ManualLeadIntakeInput) {
 
   const intake = await prisma.manualLeadIntake.create({
     data: {
+      tenantId,
       leadId,
       source: input.source,
       sourceLabel,

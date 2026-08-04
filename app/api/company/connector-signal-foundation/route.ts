@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse } from "@/lib/auth";
 import { createAiWorkforceReport } from "@/lib/ai-workforce";
 import { createConnectorActivationGate } from "@/lib/connector-activation-gate";
 import { assertConnectorSignalFoundationSafety, createConnectorSignalFoundationReportFromInputs } from "@/lib/connector-signal-normalization";
@@ -12,14 +12,15 @@ export const runtime = "nodejs";
 
 export async function GET(request: Request) {
   try {
-    if (!(await isAuthenticatedRequest(request))) {
+    const actor = await getAuthenticatedRequestContext(request);
+    if (!actor) {
       return getUnauthorizedApiResponse();
     }
 
     const [gate, workforce, dailyLoop] = await Promise.all([
       createConnectorActivationGate(),
       createAiWorkforceReport(),
-      createDailyRevenueOperatingLoop(),
+      createDailyRevenueOperatingLoop(actor.tenantId),
     ]);
     const adapterReport = await createReadOnlyConnectorAdapterReport(gate);
     const report = createConnectorSignalFoundationReportFromInputs({

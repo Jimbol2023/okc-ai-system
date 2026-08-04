@@ -10,6 +10,7 @@ import { logRevenueAuditEvent, syncLeadRevenueSpine } from "@/lib/revenue-spine"
 import type { GeneratedLeadInput } from "@/lib/lead-generator";
 import type { ImportedLeadDraft } from "@/lib/list-importer";
 import type { LeadStatus, StoredLead } from "@/lib/leads-storage";
+import { requireTenantId, type TenantIdentity } from "@/lib/tenant-context";
 import { leadIntakeSchema, type LeadIntakeInput } from "@/lib/validations/lead";
 
 type AutomationStoredLead = StoredLead & {
@@ -20,6 +21,25 @@ type AutomationStoredLead = StoredLead & {
   automationStatus?: string | null;
   isHot?: boolean;
 };
+
+let leadDb = prisma;
+let leadAudit = logRevenueAuditEvent;
+let leadRevenueSync = syncLeadRevenueSpine;
+
+export function setLeadDatabaseDependenciesForTest(input: {
+  db?: typeof prisma;
+  audit?: typeof logRevenueAuditEvent;
+  sync?: typeof syncLeadRevenueSpine;
+}) {
+  if (input.db) leadDb = input.db;
+  if (input.audit) leadAudit = input.audit;
+  if (input.sync) leadRevenueSync = input.sync;
+  return () => {
+    leadDb = prisma;
+    leadAudit = logRevenueAuditEvent;
+    leadRevenueSync = syncLeadRevenueSpine;
+  };
+}
 
 function isPrismaUniqueError(error: unknown) {
   return Boolean(error && typeof error === "object" && "code" in error && error.code === "P2002");
@@ -48,42 +68,48 @@ function getPropertyFirstPhoneKey(lead: Pick<StoredLead, "propertyAddress" | "so
     .replace(/\s+/g, "_");
 }
 
-async function findExistingLead(lead: Pick<StoredLead, "propertyAddress" | "phone" | "source" | "parcelId" | "county">) {
-  return prisma.lead.findUnique({
+async function findExistingLead(context: TenantIdentity, lead: Pick<StoredLead, "propertyAddress" | "phone" | "source" | "parcelId" | "county">) {
+  const tenantId = requireTenantId(context.tenantId, "lead_deduplication");
+  return leadDb.lead.findFirst({
     where: {
-      propertyAddress_phone: {
-        propertyAddress: lead.propertyAddress,
-        phone: lead.phone || getPropertyFirstPhoneKey(lead)
-      }
+      tenantId,
+      propertyAddress: lead.propertyAddress,
+      phone: lead.phone || getPropertyFirstPhoneKey(lead),
     }
   });
 }
 
-export async function listDbLeads() {
-  const leads = await prisma.lead.findMany({
+export async function listDbLeads(context: TenantIdentity) {
+  const tenantId = requireTenantId(context.tenantId, "lead_list");
+  const leads = await leadDb.lead.findMany({
+    where: { tenantId },
     orderBy: [{ score: "desc" }, { createdAt: "desc" }]
   });
 
   return leads.map(dbLeadToStoredLead);
 }
 
-export async function getDbLeadById(leadId: string) {
-  const lead = await prisma.lead.findUnique({
+export async function getDbLeadById(context: TenantIdentity, leadId: string) {
+  const tenantId = requireTenantId(context.tenantId, "lead_read");
+  const lead = await leadDb.lead.findFirst({
     where: {
-      id: leadId
+      id: leadId,
+      tenantId,
     }
   });
 
   return lead ? dbLeadToStoredLead(lead) : null;
 }
 
-export async function createDbLead(storedLead: StoredLead) {
-  const existingLead = await findExistingLead(storedLead);
+export async function createDbLead(context: TenantIdentity, storedLead: StoredLead) {
+  const tenantId = requireTenantId(context.tenantId, "lead_create");
+  const existingLead = await findExistingLead({ tenantId }, storedLead);
 
   if (existingLead) {
     const duplicateStoredLead = dbLeadToStoredLead(existingLead);
 
-    await logRevenueAuditEvent({
+    await leadAudit({
+      tenantId,
       action: "dedupe_warning",
       targetType: "lead",
       targetId: existingLead.id,
@@ -106,8 +132,9 @@ export async function createDbLead(storedLead: StoredLead) {
     const dbData = storedLeadToDbData(storedLead);
     const leadWithAutomation = storedLead as AutomationStoredLead;
 
-    const createdLead = await prisma.lead.create({
+    const createdLead = await leadDb.lead.create({
       data: {
+        tenantId,
         ...dbData,
 
         lastContactedAt: toDateOrNull(leadWithAutomation.lastContactedAt),
@@ -124,7 +151,8 @@ export async function createDbLead(storedLead: StoredLead) {
 
     const storedCreatedLead = dbLeadToStoredLead(createdLead);
 
-    await syncLeadRevenueSpine({
+    await leadRevenueSync({
+      tenantId,
       lead: storedCreatedLead,
       action: "lead_created",
       source: "lead_create"
@@ -139,9 +167,10 @@ export async function createDbLead(storedLead: StoredLead) {
       throw error;
     }
 
-    const duplicateLead = await findExistingLead(storedLead);
+    const duplicateLead = await findExistingLead({ tenantId }, storedLead);
 
-    await logRevenueAuditEvent({
+    await leadAudit({
+      tenantId,
       action: "dedupe_warning",
       targetType: "lead",
       targetId: duplicateLead?.id ?? storedLead.id,
@@ -161,36 +190,40 @@ export async function createDbLead(storedLead: StoredLead) {
   }
 }
 
-export async function createDbLeadFromIntake(leadIntake: LeadIntakeInput) {
-  return createDbLead(leadIntakeToStoredLead(leadIntake));
+export async function createDbLeadFromIntake(context: TenantIdentity, leadIntake: LeadIntakeInput) {
+  return createDbLead(context, leadIntakeToStoredLead(leadIntake));
 }
 
-export async function createDbLeadFromGenerated(lead: GeneratedLeadInput) {
-  return createDbLead(generatedLeadToStoredLead(lead));
+export async function createDbLeadFromGenerated(context: TenantIdentity, lead: GeneratedLeadInput) {
+  return createDbLead(context, generatedLeadToStoredLead(lead));
 }
 
-export async function createDbLeadFromImport(lead: ImportedLeadDraft) {
-  return createDbLead(importedLeadToStoredLead(lead));
+export async function createDbLeadFromImport(context: TenantIdentity, lead: ImportedLeadDraft) {
+  return createDbLead(context, importedLeadToStoredLead(lead));
 }
 
-export async function createManyDbLeads(leads: StoredLead[]) {
-  const results = await Promise.all(leads.map((lead) => createDbLead(lead)));
+export async function createManyDbLeads(context: TenantIdentity, leads: StoredLead[]) {
+  const tenantId = requireTenantId(context.tenantId, "lead_bulk_create");
+  const results = await Promise.all(leads.map((lead) => createDbLead({ tenantId }, lead)));
 
   return {
-    leads: await listDbLeads(),
+    leads: await listDbLeads({ tenantId }),
     addedLeads: results.filter((result) => result.created).map((result) => result.lead),
     addedCount: results.filter((result) => result.created).length,
     skippedCount: results.filter((result) => !result.created).length
   };
 }
 
-export async function updateDbLead(storedLead: StoredLead) {
+export async function updateDbLead(context: TenantIdentity, storedLead: StoredLead) {
+  const tenantId = requireTenantId(context.tenantId, "lead_update");
+  const ownedLead = await leadDb.lead.findFirst({ where: { id: storedLead.id, tenantId } });
+  if (!ownedLead) throw new Error("tenant_scoped_lead_not_found");
   const dbData = storedLeadToDbData(storedLead);
   const leadWithAutomation = storedLead as AutomationStoredLead;
 
-  const updatedLead = await prisma.lead.update({
+  const updatedLead = await leadDb.lead.update({
     where: {
-      id: storedLead.id
+      id_tenantId: { id: storedLead.id, tenantId }
     },
     data: {
       ...dbData,
@@ -206,7 +239,8 @@ export async function updateDbLead(storedLead: StoredLead) {
 
   const storedUpdatedLead = dbLeadToStoredLead(updatedLead);
 
-  await syncLeadRevenueSpine({
+    await leadRevenueSync({
+    tenantId,
     lead: storedUpdatedLead,
     action: "lead_updated",
     source: "lead_update"
@@ -215,7 +249,8 @@ export async function updateDbLead(storedLead: StoredLead) {
   return storedUpdatedLead;
 }
 
-export async function updateDbLeadStatus(leadId: string, status: LeadStatus) {
+export async function updateDbLeadStatus(context: TenantIdentity, leadId: string, status: LeadStatus) {
+  const tenantId = requireTenantId(context.tenantId, "lead_status_update");
   let nextFollowUpAt: Date | null = null;
   let automationStatus = "idle";
 
@@ -239,14 +274,16 @@ export async function updateDbLeadStatus(leadId: string, status: LeadStatus) {
     automationStatus = "idle";
   }
 
-  const currentLead = await prisma.lead.findUnique({
+  const currentLead = await leadDb.lead.findFirst({
     where: {
-      id: leadId
+      id: leadId,
+      tenantId,
     }
   });
-  const updatedLead = await prisma.lead.update({
+  if (!currentLead) throw new Error("tenant_scoped_lead_not_found");
+  const updatedLead = await leadDb.lead.update({
     where: {
-      id: leadId
+      id_tenantId: { id: leadId, tenantId }
     },
     data: {
       status,
@@ -261,7 +298,8 @@ export async function updateDbLeadStatus(leadId: string, status: LeadStatus) {
 
   const storedUpdatedLead = dbLeadToStoredLead(updatedLead);
 
-  await syncLeadRevenueSpine({
+  await leadRevenueSync({
+    tenantId,
     lead: storedUpdatedLead,
     action: "status_changed",
     previousStatus: currentLead?.status as LeadStatus | undefined,
@@ -271,14 +309,17 @@ export async function updateDbLeadStatus(leadId: string, status: LeadStatus) {
   return storedUpdatedLead;
 }
 
-export async function deleteDbLead(leadId: string) {
-  await prisma.lead.delete({
+export async function deleteDbLead(context: TenantIdentity, leadId: string) {
+  const tenantId = requireTenantId(context.tenantId, "lead_delete");
+  const ownedLead = await leadDb.lead.findFirst({ where: { id: leadId, tenantId }, select: { id: true } });
+  if (!ownedLead) throw new Error("tenant_scoped_lead_not_found");
+  await leadDb.lead.delete({
     where: {
-      id: leadId
+      id_tenantId: { id: leadId, tenantId }
     }
   });
 
-  return listDbLeads();
+  return listDbLeads({ tenantId });
 }
 
 export function parseLeadIntakePayload(payload: unknown) {

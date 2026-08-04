@@ -4,9 +4,8 @@ import { listDbLeads } from "@/lib/leads-db";
 import { prisma } from "@/lib/prisma";
 import { publicSiteUrl } from "@/lib/public-seo";
 import { getRevenuePipelineSummary } from "@/lib/revenue-pipeline";
-import { createUeipExecutionContext, runUeipGa4Gateway, runUeipGbpGateway, runUeipSearchConsoleGateway, type UeipExecutionContext } from "@/lib/ueip-runtime-gateway";
-
-const tenantId = "default";
+import { runUeipGa4Gateway, runUeipGbpGateway, runUeipSearchConsoleGateway, type UeipExecutionContext } from "@/lib/ueip-runtime-gateway";
+import { requireTenantId } from "@/lib/tenant-context";
 
 export const readOnlyBusinessSafetyFlags = {
   readOnly: true,
@@ -248,7 +247,7 @@ function baseSnapshot(input: {
   providerCalled?: boolean;
 }): BusinessDataSnapshotRecord {
   return {
-    tenantId,
+    tenantId: "unpersisted",
     snapshotDate: input.snapshotDate,
     provider: input.provider,
     connectorId: input.connectorId,
@@ -845,7 +844,8 @@ async function runAdapter(definition: AdapterDefinition, env: NodeJS.ProcessEnv,
   }
 }
 
-async function persistSnapshot(snapshot: BusinessDataSnapshotRecord, activeTenantId = tenantId) {
+async function persistSnapshot(snapshot: BusinessDataSnapshotRecord, activeTenantIdValue: string) {
+  const activeTenantId = requireTenantId(activeTenantIdValue, "business_snapshot_persist");
   const evidenceMaterial = JSON.stringify({ connectorId: snapshot.connectorId, category: snapshot.category, status: snapshot.status, sourceLabel: snapshot.sourceLabel, freshness: snapshot.freshness, metrics: snapshot.metrics, records: snapshot.records, dataGaps: snapshot.dataGaps, assumptions: snapshot.assumptions });
   const evidenceHash = Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(evidenceMaterial))), (byte) => byte.toString(16).padStart(2, "0")).join("");
   const tenantSnapshot = { ...snapshot, tenantId: activeTenantId, contractVersion: "business-data-snapshot-v1" as const, evidenceHash, traceId: snapshot.traceId ?? null, reliability: snapshot.reliability ?? null };
@@ -887,8 +887,9 @@ async function persistSnapshot(snapshot: BusinessDataSnapshotRecord, activeTenan
   }) as Promise<BusinessDataSnapshotRecord>;
 }
 
-async function createInternalBusinessSnapshots(snapshotDate: Date): Promise<BusinessDataSnapshotRecord[]> {
-  const leads = await internalLeadLoader();
+async function createInternalBusinessSnapshots(snapshotDate: Date, activeTenantId: string): Promise<BusinessDataSnapshotRecord[]> {
+  const tenantId = requireTenantId(activeTenantId, "internal_business_snapshot");
+  const leads = await internalLeadLoader({ tenantId });
   const pipeline = getRevenuePipelineSummary(leads);
   const leadRecords = leads.slice(0, 10).map((lead) => ({
     id: lead.id,
@@ -1092,7 +1093,8 @@ export function createMorningBriefFromSnapshots(snapshots: BusinessDataSnapshotR
   };
 }
 
-export async function getLatestBusinessSnapshots(limit = 20) {
+export async function getLatestBusinessSnapshots(tenantIdValue: string, limit = 20) {
+  const tenantId = requireTenantId(tenantIdValue, "business_snapshot_list");
   return db.businessDataSnapshot.findMany({
     where: { tenantId },
     orderBy: [{ snapshotDate: "desc" }, { updatedAt: "desc" }],
@@ -1101,16 +1103,17 @@ export async function getLatestBusinessSnapshots(limit = 20) {
 }
 
 export async function getLatestTenantBusinessSnapshots(activeTenantId: string, limit = 20) {
-  if (!activeTenantId.trim()) throw new Error("tenant_id_required");
+  const tenantId = requireTenantId(activeTenantId, "business_snapshot_list");
   return db.businessDataSnapshot.findMany({
-    where: { tenantId: activeTenantId },
+    where: { tenantId },
     orderBy: [{ snapshotDate: "desc" }, { updatedAt: "desc" }],
     take: Math.min(Math.max(limit, 1), 200),
   }) as Promise<BusinessDataSnapshotRecord[]>;
 }
 
-export async function getLatestLiveMorningBrief() {
-  const snapshots = await getLatestBusinessSnapshots(readOnlyAdapterDefinitions.length);
+export async function getLatestLiveMorningBrief(tenantIdValue: string) {
+  const tenantId = requireTenantId(tenantIdValue, "morning_brief");
+  const snapshots = await getLatestBusinessSnapshots(tenantId, readOnlyAdapterDefinitions.length);
 
   if (snapshots.length === 0) {
     const snapshotDate = dayStart();
@@ -1124,13 +1127,13 @@ export async function getLatestLiveMorningBrief() {
 
 export async function runReadOnlyBusinessSync(
   env: NodeJS.ProcessEnv = process.env,
-  executionContext: UeipExecutionContext = createUeipExecutionContext({ tenantId, actorId: "system:cron", businessModule: "ai_core", requestOrigin: "system_cron" }),
+  executionContext: UeipExecutionContext,
   options: ReadOnlySyncOptions = {},
 ): Promise<ReadOnlySyncReport> {
   const now = new Date();
   const snapshotDate = dayStart(now);
   const snapshots: BusinessDataSnapshotRecord[] = [];
-  const activeTenantId = executionContext.tenantId;
+  const activeTenantId = requireTenantId(executionContext?.tenantId, "business_sync_execution_context");
 
   const selectedCategories = options.categories ? new Set(options.categories) : null;
   const selectedAdapters = selectedCategories
@@ -1142,7 +1145,7 @@ export async function runReadOnlyBusinessSync(
     snapshots.push(await persistSnapshot(snapshot, activeTenantId));
   }
 
-  const internalSnapshots = activeTenantId === tenantId ? await createInternalBusinessSnapshots(snapshotDate) : [];
+  const internalSnapshots = await createInternalBusinessSnapshots(snapshotDate, activeTenantId);
   for (const snapshot of selectedCategories ? internalSnapshots.filter((item) => selectedCategories.has(item.category as BusinessDataCategory)) : internalSnapshots) {
     snapshots.push(await persistSnapshot(withExecutionEvidence(snapshot, executionContext, now), activeTenantId));
   }

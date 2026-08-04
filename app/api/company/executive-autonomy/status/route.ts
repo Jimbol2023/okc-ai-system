@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { getAuthenticatedRequestContext, getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
 import { getExecutiveAutonomyLevel1Status } from "@/lib/executive-autonomy-level-1";
+import { requireTenantId } from "@/lib/tenant-context";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -30,7 +31,7 @@ export async function GET(request: Request) {
     }
 
     const auth = await getAuthenticatedRequestContext(request);
-    const status = await routeDeps.getStatus({ tenantId: auth?.tenantId ?? "default" });
+    const status = await routeDeps.getStatus({ tenantId: requireTenantId(auth?.tenantId, "executive_autonomy_status") });
 
     return NextResponse.json(status);
   } catch (error) {

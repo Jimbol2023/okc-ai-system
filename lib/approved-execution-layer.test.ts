@@ -48,6 +48,12 @@ function createMockDb(options: { failAuditWrites?: boolean } = {}) {
       async findUnique(args: { where: { id: string } }) {
         return approvalItems.find((item) => item.id === args.where.id) ?? null;
       },
+      async findFirst(args: { where: { id?: string; tenantId?: string } }) {
+        return approvalItems.find((item) =>
+          (!args.where.id || item.id === args.where.id) &&
+          (!args.where.tenantId || item.tenantId === args.where.tenantId)
+        ) ?? null;
+      },
       async update(args: { where: { id: string }; data: MockRecord }) {
         const index = approvalItems.findIndex((item) => item.id === args.where.id);
         if (index < 0) throw new Error(`Approval item not found: ${args.where.id}`);
@@ -129,6 +135,7 @@ describe("approved execution layer", () => {
     restoreServices = setApprovedExecutionLayerServicesForTest({ db });
 
     const result = await prepareApprovedExecution({
+      tenantId: "tenant-alpha",
       actionType: "create_crm_task",
       title: "Create approved CRM task",
       sourceLabel: "approved_execution_layer:test",
@@ -153,6 +160,7 @@ describe("approved execution layer", () => {
       memoryLogger: async () => ({ logged: true, eventId: "memory-1", reason: null }),
     });
     const prepared = await prepareApprovedExecution({
+      tenantId: "tenant-alpha",
       actionType: "create_crm_task",
       title: "Create approved CRM task",
       sourceLabel: "approved_execution_layer:test",
@@ -167,6 +175,7 @@ describe("approved execution layer", () => {
     });
 
     const result = await approveAndExecuteApprovedAction({
+      tenantId: "tenant-alpha",
       approvalId: prepared.approvalItem.id,
       approvedBy: "ceo@example.com",
       note: "Approve one exact CRM task.",
@@ -199,6 +208,7 @@ describe("approved execution layer", () => {
     process.env.APPROVED_EXECUTION_PRODUCTION_SMOKE_PASSED = "false";
     process.env.VERCEL_ENV = "production";
     const prepared = await prepareApprovedExecution({
+      tenantId: "tenant-alpha",
       actionType: "send_email",
       title: "Send approved email",
       sourceLabel: "approved_execution_layer:test",
@@ -210,6 +220,7 @@ describe("approved execution layer", () => {
     });
 
     const result = await approveAndExecuteApprovedAction({
+      tenantId: "tenant-alpha",
       approvalId: prepared.approvalItem.id,
       approvedBy: "ceo@example.com",
       note: "Approve one exact email.",
@@ -235,6 +246,7 @@ describe("approved execution layer", () => {
       memoryLogger: async () => ({ logged: true, eventId: "memory-1", reason: null }),
     });
     const prepared = await prepareApprovedExecution({
+      tenantId: "tenant-alpha",
       actionType: "create_crm_task",
       title: "Create approved CRM task",
       sourceLabel: "approved_execution_layer:test",
@@ -242,6 +254,7 @@ describe("approved execution layer", () => {
     });
 
     const result = await approveAndExecuteApprovedAction({
+      tenantId: "tenant-alpha",
       approvalId: prepared.approvalItem.id,
       approvedBy: "ceo@example.com",
       note: "Approve one exact CRM task.",
@@ -263,6 +276,7 @@ describe("approved execution layer", () => {
       memoryLogger: async () => ({ logged: false, eventId: null, reason: "memory unavailable" }),
     });
     const prepared = await prepareApprovedExecution({
+      tenantId: "tenant-alpha",
       actionType: "create_crm_task",
       title: "Create approved CRM task",
       sourceLabel: "approved_execution_layer:test",
@@ -270,6 +284,7 @@ describe("approved execution layer", () => {
     });
 
     const result = await approveAndExecuteApprovedAction({
+      tenantId: "tenant-alpha",
       approvalId: prepared.approvalItem.id,
       approvedBy: "ceo@example.com",
       note: "Approve one exact CRM task.",

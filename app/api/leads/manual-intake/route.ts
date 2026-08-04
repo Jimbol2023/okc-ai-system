@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse } from "@/lib/auth";
 import { createManualLeadIntake, listManualLeadIntakes, manualLeadIntakeSchema } from "@/lib/manual-lead-intake";
 
 export const dynamic = "force-dynamic";
@@ -8,11 +8,12 @@ export const runtime = "nodejs";
 
 export async function GET(request: Request) {
   try {
-    if (!(await isAuthenticatedRequest(request))) {
+    const actor = await getAuthenticatedRequestContext(request);
+    if (!actor) {
       return getUnauthorizedApiResponse();
     }
 
-    const intakes = await listManualLeadIntakes();
+    const intakes = await listManualLeadIntakes(actor.tenantId);
 
     return NextResponse.json({
       success: true,
@@ -31,7 +32,8 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    if (!(await isAuthenticatedRequest(request))) {
+    const actor = await getAuthenticatedRequestContext(request);
+    if (!actor) {
       return getUnauthorizedApiResponse();
     }
 
@@ -48,7 +50,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const result = await createManualLeadIntake(parsed.data);
+    const result = await createManualLeadIntake(actor.tenantId, parsed.data);
 
     return NextResponse.json({
       success: true,

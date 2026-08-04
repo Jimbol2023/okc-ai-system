@@ -39,7 +39,9 @@ export async function POST(request: Request) {
       );
     }
 
-    const report = await createDailyRevenueOperatingLoop();
+    const admin = await getAuthenticatedAdmin();
+    if (!admin?.tenantId) return getUnauthorizedApiResponse();
+    const report = await createDailyRevenueOperatingLoop(admin.tenantId);
     const workOrder = findDailyWorkOrder(report, parsed.data.workOrderId);
 
     if (!workOrder) {
@@ -66,8 +68,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const admin = await getAuthenticatedAdmin();
-    const input = createCrmTaskApprovalInputFromWorkOrder(workOrder);
+    const input = createCrmTaskApprovalInputFromWorkOrder(admin.tenantId, workOrder);
     const result = await prepareApprovedExecution({
       ...input,
       preparedBy: admin?.email ?? input.preparedBy ?? workOrder.aiEmployee,

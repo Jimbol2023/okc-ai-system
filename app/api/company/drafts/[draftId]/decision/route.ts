@@ -37,7 +37,8 @@ export async function POST(request: Request, context: RouteContext) {
 
     const admin = await getAuthenticatedAdmin();
 
-    return NextResponse.json(await decideCeoDraft(draftId, parsed.data, admin?.email || "CEO"));
+    if (!admin?.tenantId) return getUnauthorizedApiResponse();
+    return NextResponse.json(await decideCeoDraft(admin.tenantId, draftId, parsed.data, admin.email || "CEO"));
   } catch (error) {
     console.error("POST /api/company/drafts/[draftId]/decision failed:", error);
 

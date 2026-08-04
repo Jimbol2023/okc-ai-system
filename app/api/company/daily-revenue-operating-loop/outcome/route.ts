@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse } from "@/lib/auth";
 import {
   createDailyRevenueOperatingLoop,
   dailyWorkOrderOutcomes,
@@ -26,7 +26,8 @@ const outcomeSchema = z.object({
 
 export async function POST(request: Request) {
   try {
-    if (!(await isAuthenticatedRequest(request))) {
+    const actor = await getAuthenticatedRequestContext(request);
+    if (!actor) {
       return getUnauthorizedApiResponse();
     }
 
@@ -46,7 +47,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const report = await createDailyRevenueOperatingLoop();
+    const report = await createDailyRevenueOperatingLoop(actor.tenantId);
     const workOrder = findDailyWorkOrder(report, parsed.data.workOrderId);
 
     if (!workOrder) {

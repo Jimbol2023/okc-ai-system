@@ -1,9 +1,11 @@
 import { DfdOperatingConductorPanel } from "@/components/dashboard/dfd-operating-conductor-panel";
 import { ManualD4dCaptureUiDraft } from "@/components/dashboard/manual-d4d-capture-ui-draft";
 import { createDfdOperatingReport } from "@/lib/dfd-operating-conductor";
+import { requireAuthenticatedServerTenant } from "@/lib/server-tenant-context";
 
 export default async function DashboardDrivingForDollarsPage() {
-  const dfdOperating = await createDfdOperatingReport();
+  const actor = await requireAuthenticatedServerTenant();
+  const dfdOperating = await createDfdOperatingReport(actor.tenantId);
 
   return (
     <div className="space-y-6">

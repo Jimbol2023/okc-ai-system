@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
 import { calculateFinanceKpis, createFinanceEntry, listFinanceEntries } from "@/lib/finance";
 import { listDbLeads } from "@/lib/leads-db";
 import { createFinanceEntrySchema } from "@/lib/validations/finance";
@@ -10,11 +10,12 @@ export const runtime = "nodejs";
 
 export async function GET(request: Request) {
   try {
-    if (!(await isAuthenticatedRequest(request))) {
+    const actor = await getAuthenticatedRequestContext(request);
+    if (!actor) {
       return getUnauthorizedApiResponse();
     }
 
-    const [entries, leads] = await Promise.all([listFinanceEntries(), listDbLeads()]);
+    const [entries, leads] = await Promise.all([listFinanceEntries(), listDbLeads(actor)]);
 
     return NextResponse.json({
       ok: true,
