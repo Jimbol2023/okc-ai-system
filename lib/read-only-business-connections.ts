@@ -122,6 +122,8 @@ export type ReadOnlySyncReport = {
 export type ReadOnlySyncOptions = {
   categories?: BusinessDataCategory[];
   persistDailyBriefing?: boolean;
+  syncMode?: "all_readonly" | "week1_level1_ordered";
+  allowProviderReads?: boolean;
 };
 
 type SnapshotDb = typeof prisma & {
@@ -159,6 +161,19 @@ type AdapterContext = {
   env: NodeJS.ProcessEnv;
   executionContext: UeipExecutionContext;
 };
+
+export const week1Level1ReadOnlyCategories = Object.freeze([
+  "internal_website_lead_intake",
+  "internal_lead_database",
+  "internal_crm",
+  "internal_property_pipeline",
+  "gmail_inbox",
+  "google_calendar_events",
+  "google_drive_documents",
+  "google_analytics_traffic",
+] satisfies BusinessDataCategory[]);
+
+const week1Level1ReadOnlyCategorySet = new Set<BusinessDataCategory>(week1Level1ReadOnlyCategories);
 
 let db = prisma as unknown as SnapshotDb;
 let fetcher: FetchLike = fetch;
@@ -844,6 +859,82 @@ async function runAdapter(definition: AdapterDefinition, env: NodeJS.ProcessEnv,
   }
 }
 
+function readinessOnlySnapshot(definition: AdapterDefinition, env: NodeJS.ProcessEnv, snapshotDate: Date) {
+  const dataGaps = ["Week 1 Level 1 certification is readiness-only for provider connectors; no provider call was attempted."];
+  if (!hasEnv(env, definition.requiredEnv)) dataGaps.push(envGap(definition.requiredEnv));
+  if (!hasRequiredScopeEvidence(env, definition.requiredScopes)) {
+    dataGaps.push(`Missing required read-only OAuth scope evidence: ${safeScopeLabels(definition.requiredScopes).join(", ")}.`);
+  }
+
+  return dataGapSnapshot(definition, snapshotDate, dataGaps);
+}
+
+export function validateWeek1Level1ReadOnlyCategories(categories: BusinessDataCategory[]) {
+  const forbidden = categories.filter((category) => !week1Level1ReadOnlyCategorySet.has(category));
+  if (forbidden.length > 0) {
+    throw new Error(`week1_level1_forbidden_readonly_category:${forbidden.join(",")}`);
+  }
+
+  return categories;
+}
+
+export type Week1Level1SnapshotVerification = {
+  ok: boolean;
+  freshCategories: BusinessDataCategory[];
+  advisoryExceptions: string[];
+  requiredFields: Array<keyof BusinessDataSnapshotRecord>;
+};
+
+export function verifyWeek1Level1Snapshots(tenantIdValue: string, snapshots: BusinessDataSnapshotRecord[]): Week1Level1SnapshotVerification {
+  const tenantId = requireTenantId(tenantIdValue, "week1_snapshot_verification");
+  const requiredFields: Array<keyof BusinessDataSnapshotRecord> = [
+    "tenantId",
+    "connectorId",
+    "category",
+    "observationStart",
+    "observationEnd",
+    "version",
+    "contractVersion",
+    "evidenceHash",
+    "traceId",
+    "reliability",
+    "freshness",
+  ];
+  const advisoryExceptions: string[] = [];
+  const freshCategories: BusinessDataCategory[] = [];
+
+  for (const category of week1Level1ReadOnlyCategories) {
+    const snapshot = snapshots.find((item) => item.category === category && item.tenantId === tenantId);
+    if (!snapshot) {
+      advisoryExceptions.push(`${category}: required Week 1 evidence is missing.`);
+      continue;
+    }
+
+    const missingFields = requiredFields.filter((field) => {
+      const value = snapshot[field];
+      return value === undefined || value === null || value === "";
+    });
+    if (missingFields.length > 0) {
+      advisoryExceptions.push(`${category}: evidence is advisory because required field(s) are missing: ${missingFields.join(", ")}.`);
+    }
+
+    if (snapshot.status === "fresh" && missingFields.length === 0) {
+      freshCategories.push(category);
+    } else if (snapshot.status === "fresh") {
+      advisoryExceptions.push(`${category}: fresh status ignored until complete evidence is present.`);
+    } else {
+      advisoryExceptions.push(`${category}: ${snapshot.status} snapshot is an advisory data gap, not fresh evidence.`);
+    }
+  }
+
+  return {
+    ok: advisoryExceptions.length === 0,
+    freshCategories,
+    advisoryExceptions,
+    requiredFields,
+  };
+}
+
 async function persistSnapshot(snapshot: BusinessDataSnapshotRecord, activeTenantIdValue: string) {
   const activeTenantId = requireTenantId(activeTenantIdValue, "business_snapshot_persist");
   const evidenceMaterial = JSON.stringify({ connectorId: snapshot.connectorId, category: snapshot.category, status: snapshot.status, sourceLabel: snapshot.sourceLabel, freshness: snapshot.freshness, metrics: snapshot.metrics, records: snapshot.records, dataGaps: snapshot.dataGaps, assumptions: snapshot.assumptions });
@@ -1135,19 +1226,42 @@ export async function runReadOnlyBusinessSync(
   const snapshots: BusinessDataSnapshotRecord[] = [];
   const activeTenantId = requireTenantId(executionContext?.tenantId, "business_sync_execution_context");
 
-  const selectedCategories = options.categories ? new Set(options.categories) : null;
-  const selectedAdapters = selectedCategories
-    ? readOnlyAdapterDefinitions.filter((definition) => selectedCategories.has(definition.id))
-    : readOnlyAdapterDefinitions;
-
-  for (const definition of selectedAdapters) {
-    const snapshot = await runAdapter(definition, env, snapshotDate, now, executionContext);
+  const requestedCategories = options.syncMode === "week1_level1_ordered"
+    ? validateWeek1Level1ReadOnlyCategories(options.categories ?? [...week1Level1ReadOnlyCategories])
+    : options.categories;
+  const selectedCategories = requestedCategories ? new Set(requestedCategories) : null;
+  const adapterByCategory = new Map(readOnlyAdapterDefinitions.map((definition) => [definition.id, definition]));
+  const persistAdapterSnapshot = async (definition: AdapterDefinition) => {
+    const snapshot = options.syncMode === "week1_level1_ordered" && options.allowProviderReads !== true
+      ? withExecutionEvidence(readinessOnlySnapshot(definition, env, snapshotDate), executionContext, now)
+      : await runAdapter(definition, env, snapshotDate, now, executionContext);
     snapshots.push(await persistSnapshot(snapshot, activeTenantId));
-  }
+  };
 
-  const internalSnapshots = await createInternalBusinessSnapshots(snapshotDate, activeTenantId);
-  for (const snapshot of selectedCategories ? internalSnapshots.filter((item) => selectedCategories.has(item.category as BusinessDataCategory)) : internalSnapshots) {
-    snapshots.push(await persistSnapshot(withExecutionEvidence(snapshot, executionContext, now), activeTenantId));
+  if (requestedCategories) {
+    const internalSnapshots = await createInternalBusinessSnapshots(snapshotDate, activeTenantId);
+    const internalByCategory = new Map(internalSnapshots.map((snapshot) => [snapshot.category as BusinessDataCategory, snapshot]));
+    for (const category of requestedCategories) {
+      const adapter = adapterByCategory.get(category);
+      if (adapter) {
+        await persistAdapterSnapshot(adapter);
+        continue;
+      }
+
+      const internalSnapshot = internalByCategory.get(category);
+      if (internalSnapshot) {
+        snapshots.push(await persistSnapshot(withExecutionEvidence(internalSnapshot, executionContext, now), activeTenantId));
+      }
+    }
+  } else {
+    for (const definition of readOnlyAdapterDefinitions) {
+      await persistAdapterSnapshot(definition);
+    }
+
+    const internalSnapshots = await createInternalBusinessSnapshots(snapshotDate, activeTenantId);
+    for (const snapshot of selectedCategories ? internalSnapshots.filter((item) => selectedCategories.has(item.category as BusinessDataCategory)) : internalSnapshots) {
+      snapshots.push(await persistSnapshot(withExecutionEvidence(snapshot, executionContext, now), activeTenantId));
+    }
   }
 
   const morningBrief = createMorningBriefFromSnapshots(snapshots, now.toISOString());

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { afterEach, beforeEach, describe, it } from "node:test";
 
-import { dailyStartupInternalCategories, GET as GET_DAILY_STARTUP, POST, setExecutiveAutonomyDailyStartupRouteDepsForTest } from "@/app/api/company/executive-autonomy/daily-startup/route";
+import { GET as GET_DAILY_STARTUP, POST, setExecutiveAutonomyDailyStartupRouteDepsForTest } from "@/app/api/company/executive-autonomy/daily-startup/route";
 import { GET, setExecutiveAutonomyStatusRouteDepsForTest } from "@/app/api/company/executive-autonomy/status/route";
 import { executiveAutonomyLevel1SafetyProof } from "@/lib/executive-autonomy-level-1";
 
@@ -12,17 +12,6 @@ let previousCronTenantId: string | undefined;
 beforeEach(() => {
   previousCronTenantId = process.env.CRON_TENANT_ID;
   process.env.CRON_TENANT_ID = "tenant-alpha";
-  restores.push(
-    setExecutiveAutonomyDailyStartupRouteDepsForTest({
-      runInternalSync: async (_env, _context, options) => ({
-        ok: true,
-        generatedAt: "2026-08-02T13:00:00.000Z",
-        snapshots: (options.categories ?? []).map((category) => ({ category })),
-        providerCalled: false,
-        liveExecutionAllowed: false,
-      }) as never,
-    }),
-  );
 });
 
 afterEach(() => {
@@ -57,22 +46,10 @@ describe("Executive Autonomy Level 1 routes", () => {
     const calls: string[] = [];
     restores.push(
       setExecutiveAutonomyDailyStartupRouteDepsForTest({
-        runInternalSync: async (_env, context, options) => {
-          calls.push("sync");
-          assert.equal(context.tenantId, "tenant-alpha");
-          assert.equal(context.requestOrigin, "system_cron");
-          assert.deepEqual(options.categories, dailyStartupInternalCategories);
-          assert.equal(options.persistDailyBriefing, false);
-          return {
-            ok: true,
-            generatedAt: "2026-08-02T13:00:00.000Z",
-            snapshots: options.categories?.map((category) => ({ category })) ?? [],
-            providerCalled: false,
-            liveExecutionAllowed: false,
-          } as never;
-        },
-        runDailyStartup: async () => {
+        runDailyStartup: async ({ tenantId, triggeredBy }) => {
           calls.push("autonomy");
+          assert.equal(tenantId, "tenant-alpha");
+          assert.equal(triggeredBy, "cron");
           return ({
             ok: true,
             level: 1,
@@ -80,7 +57,8 @@ describe("Executive Autonomy Level 1 routes", () => {
             state: "completed",
             tenantId: "tenant-alpha",
             businessDate: "2026-08-02",
-            idempotencyKey: "executive-autonomy-l1:tenant-alpha:2026-08-02",
+            idempotencyKey: "executive-autonomy-l1:tenant-alpha:2026-08-02:week1-level1-ordered-pipeline-v1",
+            pipelineVersion: "week1-level1-ordered-pipeline-v1",
             startedAt: "2026-08-02T13:00:00.000Z",
             completedAt: "2026-08-02T13:01:00.000Z",
             triggeredBy: "cron",
@@ -104,6 +82,37 @@ describe("Executive Autonomy Level 1 routes", () => {
               leadsScored: 0,
               recommendations: [],
               approvalsCreated: 0,
+            },
+            orderedSync: {
+              completed: true,
+              generatedAt: "2026-08-02T13:00:00.000Z",
+              categories: [],
+              providerCalled: false,
+              liveExecutionAllowed: false,
+            },
+            snapshotVerification: { ok: true, freshCategories: [], advisoryExceptions: [], requiredFields: [] },
+            dfdPrioritization: { prioritiesPresent: false, topPriorities: [] },
+            certificationEvidence: {
+              orderedSyncCompleted: true,
+              syncBeforeAutonomy: true,
+              tenantIsolationPassed: true,
+              startupCompleted: true,
+              startupIdempotent: true,
+              morningBriefPersisted: true,
+              dfdPrioritiesPresent: false,
+              approvalsPresent: false,
+              exceptionsPresent: false,
+              executiveMemoryPersisted: true,
+              auditTraceComplete: true,
+              duplicateBusinessActions: 0,
+              providerWrites: 0,
+              sent: false,
+              published: false,
+              crmMutation: false,
+              outreach: false,
+              scraping: false,
+              externalExecutionAllowed: false,
+              liveExecutionAllowed: false,
             },
             dataQuality: {
               status: "advisory",
@@ -131,35 +140,24 @@ describe("Executive Autonomy Level 1 routes", () => {
       ok: boolean;
       safety: typeof executiveAutonomyLevel1SafetyProof;
       state: string;
-      preflightSync: { categories: string[]; providerCalled: boolean; liveExecutionAllowed: boolean };
     };
 
     assert.equal(response.status, 200);
     assert.equal(body.ok, true);
     assert.equal(body.state, "completed");
     assert.deepEqual(body.safety, executiveAutonomyLevel1SafetyProof);
-    assert.deepEqual(calls, ["sync", "autonomy"]);
-    assert.deepEqual(body.preflightSync.categories, dailyStartupInternalCategories);
-    assert.equal(body.preflightSync.providerCalled, false);
-    assert.equal(body.preflightSync.liveExecutionAllowed, false);
+    assert.deepEqual(calls, ["autonomy"]);
   });
 
-  it("fails closed before autonomy when the internal sync crosses a provider boundary", async () => {
+  it("returns internal-only failure proof when the startup authority fails closed", async () => {
     previousCronSecret = process.env.CRON_SECRET;
     process.env.CRON_SECRET = "test-cron-secret";
     let autonomyCalled = false;
     restores.push(
       setExecutiveAutonomyDailyStartupRouteDepsForTest({
-        runInternalSync: async () => ({
-          ok: true,
-          generatedAt: "2026-08-02T13:00:00.000Z",
-          snapshots: [],
-          providerCalled: true,
-          liveExecutionAllowed: false,
-        }) as never,
         runDailyStartup: async () => {
           autonomyCalled = true;
-          throw new Error("must not run");
+          throw new Error("week1_level1_sync_provider_boundary_violation");
         },
       }),
     );
@@ -173,7 +171,7 @@ describe("Executive Autonomy Level 1 routes", () => {
     assert.equal(body.ok, false);
     assert.equal(body.providerCalled, false);
     assert.equal(body.externalExecutionAllowed, false);
-    assert.equal(autonomyCalled, false);
+    assert.equal(autonomyCalled, true);
   });
 
   it("allows Vercel Cron GET only with the exact CRON_SECRET bearer token", async () => {

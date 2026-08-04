@@ -8,6 +8,7 @@ import {
   setExecutiveAutonomyLevel1DepsForTest,
   type ExecutiveAutonomyLevel1RunResult,
 } from "@/lib/executive-autonomy-level-1";
+import { week1Level1ReadOnlyCategories } from "@/lib/read-only-business-connections";
 
 const restores: Array<() => void> = [];
 
@@ -103,6 +104,52 @@ function createFakeDb(now: Date) {
         },
       },
     },
+  };
+}
+
+function createOrderedSyncReport(now: Date, tenantId: string) {
+  const snapshots = week1Level1ReadOnlyCategories.map((category, index) => ({
+    id: `snapshot-${index + 1}`,
+    tenantId,
+    version: 1,
+    contractVersion: "business-data-snapshot-v1",
+    evidenceHash: `hash-${category}`,
+    observationStart: now,
+    observationEnd: now,
+    traceId: `trace-${category}`,
+    reliability: { status: category.startsWith("internal_") ? "verified" : "advisory", providerCalled: false, dataGapCount: category.startsWith("internal_") ? 0 : 1 },
+    snapshotDate: new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())),
+    provider: category.startsWith("internal_") ? "Internal Business System" : "Google Readiness",
+    connectorId: category.replace(/^internal_/, ""),
+    category,
+    status: category.startsWith("internal_") ? "fresh" : "data_gap",
+    sourceLabel: `${category}:test`,
+    provenance: "Test Week 1 ordered snapshot.",
+    freshness: now.toISOString(),
+    summary: `${category} evidence`,
+    metrics: category === "internal_property_pipeline" ? { workFirstLeads: 1 } : {},
+    records: [],
+    dataGaps: category.startsWith("internal_") ? [] : ["Readiness-only provider evidence."],
+    assumptions: [],
+    safetyFlags: {},
+    providerCalled: false,
+    sent: false,
+    published: false,
+    crmMutated: false,
+    liveExecutionAllowed: false,
+  }));
+
+  return {
+    ok: true,
+    generatedAt: now.toISOString(),
+    snapshots,
+    morningBrief: {},
+    integrationsCompleted: [],
+    businessSystemsConnected: [],
+    dataGaps: snapshots.flatMap((snapshot) => snapshot.dataGaps),
+    providerCalled: false,
+    liveExecutionAllowed: false,
+    safetyFlags: {},
   };
 }
 
@@ -262,6 +309,7 @@ describe("Executive Autonomy Level 1", () => {
           auditCount += 1;
           return { id: `audit-${auditCount}` } as never;
         },
+        runOrderedReadOnlySync: async () => createOrderedSyncReport(now, "tenant-okc") as never,
       }),
     );
 
@@ -396,6 +444,7 @@ describe("Executive Autonomy Level 1", () => {
             },
           }) as never,
         logAudit: async () => ({ id: "audit-1" }) as never,
+        runOrderedReadOnlySync: async () => createOrderedSyncReport(now, "default") as never,
       }),
     );
 

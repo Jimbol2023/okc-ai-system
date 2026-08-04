@@ -6,6 +6,9 @@ import {
   createMorningBriefFromSnapshots,
   readOnlyAdapterDefinitions,
   runReadOnlyBusinessSync,
+  validateWeek1Level1ReadOnlyCategories,
+  week1Level1ReadOnlyCategories,
+  verifyWeek1Level1Snapshots,
   setReadOnlyBusinessConnectionsDbForTest,
   setReadOnlyBusinessConnectionsFetchForTest,
   setReadOnlyBusinessConnectionsLeadLoaderForTest,
@@ -111,6 +114,49 @@ describe("read-only business connections", () => {
     assert.ok(report.snapshots.some((snapshot) => snapshot.category === "internal_lead_database"));
     assert.ok(report.snapshots.some((snapshot) => snapshot.category === "internal_website_lead_intake"));
     assert.ok(report.dataGaps.some((gap) => gap.includes("Missing required read-only credential")));
+  });
+
+
+  it("fails closed for forbidden Week 1 categories and avoids provider calls in readiness-only mode", async () => {
+    const testDb = createTestDb();
+    let calls = 0;
+
+    restoreFns.push(setReadOnlyBusinessConnectionsDbForTest(testDb.db as never));
+    restoreFns.push(setReadOnlyBusinessConnectionsLeadLoaderForTest(async () => []));
+    restoreFns.push(setReadOnlyBusinessConnectionsFetchForTest(async () => {
+      calls += 1;
+      return jsonResponse({});
+    }));
+
+    assert.throws(
+      () => validateWeek1Level1ReadOnlyCategories(["search_console_performance"]),
+      /week1_level1_forbidden_readonly_category/,
+    );
+
+    const report = await runReadOnlyBusinessSync({
+      GOOGLE_OAUTH_CLIENT_ID: "google-client",
+      GOOGLE_OAUTH_CLIENT_SECRET: "google-secret",
+      GOOGLE_OAUTH_REFRESH_TOKEN: "google-refresh",
+      GOOGLE_ANALYTICS_PROPERTY_ID: "12345",
+      GOOGLE_OAUTH_GRANTED_SCOPES: [
+        "https://www.googleapis.com/auth/gmail.readonly",
+        "https://www.googleapis.com/auth/calendar.events.readonly",
+        "https://www.googleapis.com/auth/drive.metadata.readonly",
+        "https://www.googleapis.com/auth/analytics.readonly",
+      ].join(" "),
+    }, testContext("tenant-week1"), {
+      categories: [...week1Level1ReadOnlyCategories],
+      syncMode: "week1_level1_ordered",
+      allowProviderReads: false,
+      persistDailyBriefing: false,
+    });
+    const verification = verifyWeek1Level1Snapshots("tenant-week1", report.snapshots);
+
+    assert.equal(calls, 0);
+    assert.equal(report.providerCalled, false);
+    assert.deepEqual(report.snapshots.map((snapshot) => snapshot.category), [...week1Level1ReadOnlyCategories]);
+    assert.ok(report.snapshots.filter((snapshot) => !String(snapshot.category).startsWith("internal_")).every((snapshot) => snapshot.status === "data_gap"));
+    assert.equal(verification.advisoryExceptions.some((exception) => exception.includes("not fresh evidence")), true);
   });
 
   it("runs only explicitly selected snapshot categories", async () => {
