@@ -122,6 +122,7 @@ export type ReadOnlySyncReport = {
 
 export type ReadOnlySyncOptions = {
   categories?: BusinessDataCategory[];
+  persistDailyBriefing?: boolean;
 };
 
 type SnapshotDb = typeof prisma & {
@@ -1148,20 +1149,22 @@ export async function runReadOnlyBusinessSync(
 
   const morningBrief = createMorningBriefFromSnapshots(snapshots, now.toISOString());
 
-  await db.dailyBriefingSnapshot.create({
-    data: {
-      tenantId: activeTenantId,
-      briefingDate: snapshotDate,
-      panels: morningBrief,
-      verticalSlice: { source: "sprint18_readonly_business_connections", providerCalled: morningBrief.providerCalled, liveExecutionAllowed: false },
-      approvalSummary: { recommendationsRequireApproval: true, externalActionsBlocked: true },
-      connectorSummary: { connectorHealth: morningBrief.connectorHealth, featureFlags: morningBrief.featureFlags },
-      providerCalled: morningBrief.providerCalled,
-      sent: false,
-      published: false,
-      liveExecutionAllowed: false,
-    },
-  });
+  if (options.persistDailyBriefing !== false) {
+    await db.dailyBriefingSnapshot.create({
+      data: {
+        tenantId: activeTenantId,
+        briefingDate: snapshotDate,
+        panels: morningBrief,
+        verticalSlice: { source: "sprint18_readonly_business_connections", providerCalled: morningBrief.providerCalled, liveExecutionAllowed: false },
+        approvalSummary: { recommendationsRequireApproval: true, externalActionsBlocked: true },
+        connectorSummary: { connectorHealth: morningBrief.connectorHealth, featureFlags: morningBrief.featureFlags },
+        providerCalled: morningBrief.providerCalled,
+        sent: false,
+        published: false,
+        liveExecutionAllowed: false,
+      },
+    });
+  }
 
   return {
     ok: true,

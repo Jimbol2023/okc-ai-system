@@ -140,6 +140,20 @@ describe("read-only business connections", () => {
     assert.deepEqual(report.integrationsCompleted.sort(), ["Google Workspace", "Website Lead Intake"]);
   });
 
+  it("can refresh idempotent snapshots without creating a duplicate briefing", async () => {
+    const testDb = createTestDb();
+    restoreFns.push(setReadOnlyBusinessConnectionsDbForTest(testDb.db as never));
+    restoreFns.push(setReadOnlyBusinessConnectionsLeadLoaderForTest(async () => []));
+
+    await runReadOnlyBusinessSync({}, undefined, {
+      categories: ["internal_lead_database"],
+      persistDailyBriefing: false,
+    });
+
+    assert.equal(testDb.snapshots.length, 1);
+    assert.equal(testDb.briefings.length, 0);
+  });
+
   it("persists a data gap without a provider call when read-only scope evidence is missing", async () => {
     const testDb = createTestDb();
     let calls = 0;
