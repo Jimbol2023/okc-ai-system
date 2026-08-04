@@ -31,6 +31,7 @@
     "test:pressure:professional-cases": "node --import tsx scripts/professional-case-pressure.ts",
     "test:pressure:professional-cases:isolated": "bash scripts/run-professional-case-pressure-isolated.sh",
     "test:safety": "node --import tsx --test tests/safety/*.test.ts",
+    "test:migrations": "node --import tsx --test tests/migrations/*.test.ts",
     "postinstall": "prisma generate",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",

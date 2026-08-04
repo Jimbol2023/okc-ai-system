@@ -1,5 +1,9 @@
 -- Tenant isolation is mandatory for lead, CRM, property-pipeline, and DFD workflows.
 -- Existing rows are assigned to the legacy tenant explicitly during migration.
+-- The explicit transaction prevents a missing prerequisite or later SQL error from
+-- leaving Lead partially tenant-scoped.
+BEGIN;
+
 ALTER TABLE "Lead" ADD COLUMN "tenantId" TEXT;
 UPDATE "Lead" SET "tenantId" = 'default' WHERE "tenantId" IS NULL;
 ALTER TABLE "Lead" ALTER COLUMN "tenantId" SET NOT NULL;
@@ -14,3 +18,5 @@ ALTER TABLE "ManualLeadIntake" ADD COLUMN "tenantId" TEXT;
 UPDATE "ManualLeadIntake" SET "tenantId" = 'default' WHERE "tenantId" IS NULL;
 ALTER TABLE "ManualLeadIntake" ALTER COLUMN "tenantId" SET NOT NULL;
 CREATE INDEX "ManualLeadIntake_tenantId_idx" ON "ManualLeadIntake"("tenantId");
+
+COMMIT;
