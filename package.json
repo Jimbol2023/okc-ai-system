@@ -26,6 +26,7 @@
     "verify:full:isolated": "bash scripts/verify-full-isolated.sh",
     "test:activation-smoke": "node --import tsx --test tests/activation/*.test.ts",
     "test:e2e": "playwright test",
+    "test:e2e:linux": "bash scripts/run-playwright-linux.sh",
     "acceptance:executive-autonomy-l1": "set PLAYWRIGHT_PORT=3031&& set PLAYWRIGHT_REUSE_SERVER=false&& playwright test tests/e2e/executive-autonomy-l1-acceptance.spec.ts --project=chromium --workers=1",
     "test:pressure": "playwright test tests/e2e/pressure.spec.ts",
     "test:pressure:professional-cases": "node --import tsx scripts/professional-case-pressure.ts",
