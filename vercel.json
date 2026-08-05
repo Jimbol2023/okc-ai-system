@@ -3,7 +3,7 @@
   "framework": "nextjs",
   "crons": [
     {
-      "path": "/api/operations/read-only-sync",
+      "path": "/api/company/executive-autonomy/daily-startup",
       "schedule": "0 13 * * *"
     }
   ]
