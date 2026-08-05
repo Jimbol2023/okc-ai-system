@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 
-import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse } from "@/lib/auth";
 import { generateOfferRecommendation } from "@/lib/offer-engine";
 import { getDbLeadById } from "@/lib/leads-db";
 
@@ -48,7 +48,8 @@ const offerEngineSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
-    if (!(await isAuthenticatedRequest(request))) {
+    const actor = await getAuthenticatedRequestContext(request);
+    if (!actor) {
       return getUnauthorizedApiResponse();
     }
 
@@ -66,7 +67,7 @@ export async function POST(request: NextRequest) {
     }
 
     const leadId = parsedInput.data.leadId ?? parsedInput.data.dealId;
-    const existingLead = leadId ? await getDbLeadById(leadId) : null;
+    const existingLead = leadId ? await getDbLeadById(actor, leadId) : null;
     const offerRecommendation = generateOfferRecommendation({
       ...parsedInput.data,
       lead: parsedInput.data.lead ?? existingLead ?? undefined,

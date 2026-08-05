@@ -45,6 +45,7 @@ describe("operating loop trace", () => {
     restoreDb = setOperatingLoopTraceDbForTest(db);
 
     const trace = await recordOperatingLoopTrace({
+      tenantId: "tenant-alpha",
       traceId: "trace-1",
       sourceStep: "daily_mission",
       targetStep: "ceo_decision",
@@ -68,6 +69,7 @@ describe("operating loop trace", () => {
     restoreDb = setOperatingLoopTraceDbForTest(db);
 
     const trace = await recordOperatingLoopTraceFailClosed({
+      tenantId: "tenant-alpha",
       sourceStep: "audit",
       targetStep: "memory",
       entityType: "RevenueAuditEvent",

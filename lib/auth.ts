@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 import { getAdminEmail, getAdminPassword, getAuthSecret } from "@/lib/env";
+import { requireTenantId } from "@/lib/tenant-context";
 
 const AUTH_COOKIE_NAME = "okcWholesaleAdminSession";
 const SESSION_DURATION_MS = 1000 * 60 * 60 * 24 * 7;
@@ -93,11 +94,11 @@ export async function isCronAuthorizedRequest(request: NextRequest | Request, en
   return constantTimeEqual(authorization, `Bearer ${configuredSecret}`);
 }
 
-export async function createSessionToken(email: string, options: { tenantId?: string; actorId?: string } = {}) {
+export async function createSessionToken(email: string, options: { tenantId: string; actorId?: string }) {
   const { authSecret } = getAuthConfig();
   const payload: SessionPayload = {
     email,
-    tenantId: options.tenantId ?? "default",
+    tenantId: requireTenantId(options.tenantId, "session_creation"),
     actorId: options.actorId ?? email,
     sessionVersion: 1,
     exp: Date.now() + SESSION_DURATION_MS
@@ -129,13 +130,13 @@ export async function verifySessionToken(token: string | undefined) {
 
     const payload = JSON.parse(base64UrlDecode(encodedPayload)) as SessionPayload;
 
-    if (!payload.email || payload.exp <= Date.now()) {
+    if (!payload.email || !payload.tenantId || payload.exp <= Date.now()) {
       return null;
     }
 
     return {
       ...payload,
-      tenantId: payload.tenantId || "default",
+      tenantId: requireTenantId(payload.tenantId, "session_payload"),
       actorId: payload.actorId || payload.email,
       sessionVersion: payload.sessionVersion ?? 1,
     };
@@ -197,7 +198,7 @@ export async function getAuthenticatedRequestContext(request: NextRequest | Requ
   if (!payload) return null;
 
   return Object.freeze({
-    tenantId: payload.tenantId || "default",
+    tenantId: requireTenantId(payload.tenantId, "authenticated_request"),
     actorId: payload.actorId || payload.email,
     email: payload.email,
     sessionVersion: payload.sessionVersion ?? 1,

@@ -41,6 +41,31 @@ npm run diagnose:connectors
 npm run infra:preflight
 ```
 
+## Engineering Worktree Location
+
+Create and keep long-lived Git worktrees in Linux-native WSL storage under:
+
+```bash
+/home/sabiu/worktrees
+```
+
+Do not place long-lived worktrees under `/tmp`. Temporary storage may be capacity-limited or cleared, which makes it unsuitable for dependency installation, certification, and other durable engineering work.
+
+Create the parent directory and add a worktree with an explicit path:
+
+```bash
+mkdir -p /home/sabiu/worktrees
+git worktree add /home/sabiu/worktrees/<worktree-name> <branch-or-commit>
+```
+
+Before starting verification, confirm the registered path, expected commit, and clean state:
+
+```bash
+git worktree list --porcelain
+git -C /home/sabiu/worktrees/<worktree-name> rev-parse HEAD
+git -C /home/sabiu/worktrees/<worktree-name> status --short
+```
+
 ## Runtime Diagnostics
 
 Use these diagnostics instead of ad hoc secret checks:

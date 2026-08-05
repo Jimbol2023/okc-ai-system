@@ -349,7 +349,7 @@ describe("knowledge page decision compatibility route", () => {
   });
 
   it("returns JSON for invalid authenticated decision payloads without provider or execution authority", async () => {
-    const token = await createSessionToken("moses@example.com");
+    const token = await createSessionToken("moses@example.com", { tenantId: "default" });
     const response = await knowledgeDecisionPost(
       new Request("https://jcapitalpropertygroup.com/dashboard/knowledge/decision", {
         method: "POST",
@@ -424,7 +424,7 @@ describe("daily startup", () => {
   });
 
   it("surfaces a CEO decision agenda without activation or provider execution", async () => {
-    const report = await createExecutiveDashboardReport();
+    const report = await createExecutiveDashboardReport("default");
 
     assert.equal(report.productionReadinessCommand.title, "Production Readiness Command");
     assert.equal(report.productionReadinessCommand.safetyFlags.providerCalled, false);
@@ -526,7 +526,7 @@ describe("daily startup", () => {
       },
     } as never);
     try {
-      const report = await createExecutiveDashboardReport();
+      const report = await createExecutiveDashboardReport("default");
       const widgetIds = report.widgets.map((widget) => widget.id);
       assert.ok(widgetIds.includes("ga4_sessions"));
       assert.ok(widgetIds.includes("ga4_top_pages"));

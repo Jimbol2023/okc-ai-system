@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse } from "@/lib/auth";
 import { createConnectorActivationReport } from "@/lib/connector-activation-report";
 
 export const dynamic = "force-dynamic";
@@ -8,11 +8,12 @@ export const runtime = "nodejs";
 
 export async function GET(request: Request) {
   try {
-    if (!(await isAuthenticatedRequest(request))) {
+    const actor = await getAuthenticatedRequestContext(request);
+    if (!actor) {
       return getUnauthorizedApiResponse();
     }
 
-    const report = await createConnectorActivationReport();
+    const report = await createConnectorActivationReport(actor.tenantId);
 
     return NextResponse.json(report);
   } catch (error) {

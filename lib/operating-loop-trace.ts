@@ -1,8 +1,7 @@
 import type { Prisma } from "@/generated/prisma";
 
 import { prisma } from "@/lib/prisma";
-
-const tenantId = "default";
+import { requireTenantId } from "@/lib/tenant-context";
 
 export const operatingLoopSteps = [
   "morning_brief",
@@ -22,6 +21,7 @@ export const operatingLoopSteps = [
 export type OperatingLoopStep = (typeof operatingLoopSteps)[number];
 
 export type OperatingLoopTraceInput = {
+  tenantId: string;
   traceId?: string;
   sourceStep: OperatingLoopStep;
   targetStep: OperatingLoopStep;
@@ -39,6 +39,7 @@ export type OperatingLoopTraceInput = {
 };
 
 export type OperatingLoopTraceRecord = {
+  tenantId: string;
   traceId: string;
   sourceStep: OperatingLoopStep;
   targetStep: OperatingLoopStep;
@@ -78,8 +79,10 @@ function toJson(value: unknown): Prisma.InputJsonValue {
 }
 
 export async function recordOperatingLoopTrace(input: OperatingLoopTraceInput): Promise<OperatingLoopTraceRecord> {
+  const tenantId = requireTenantId(input.tenantId, "operating_loop_trace");
   const createdAt = input.createdAt ?? new Date().toISOString();
   const trace: OperatingLoopTraceRecord = {
+    tenantId,
     traceId: stableTraceId(input),
     sourceStep: input.sourceStep,
     targetStep: input.targetStep,

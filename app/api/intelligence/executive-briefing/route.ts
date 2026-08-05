@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse } from "@/lib/auth";
 import { getDailyMission } from "@/lib/daily-mission";
 import { createExecutiveBriefing } from "@/lib/phase2-intelligence";
 
@@ -8,7 +8,8 @@ export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
-  if (!(await isAuthenticatedRequest(request))) {
+  const actor = await getAuthenticatedRequestContext(request);
+  if (!actor) {
     return getUnauthorizedApiResponse();
   }
 
@@ -17,7 +18,7 @@ export async function GET(request: Request) {
   const includeLegacy = searchParams.get("legacy") === "true";
 
   if (!includeLegacy && (!cadence || cadence === "daily")) {
-    const dailyMission = await getDailyMission();
+    const dailyMission = await getDailyMission(actor.tenantId);
     const morningBrief = dailyMission.morningBrief;
 
     return NextResponse.json({

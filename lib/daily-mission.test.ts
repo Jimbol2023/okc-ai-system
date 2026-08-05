@@ -349,6 +349,7 @@ describe("daily mission", () => {
 
   it("prioritizes DFD operating conductor work in the daily mission", () => {
     const dfdOperating = createDfdOperatingReportFromInputs({
+      tenantId: "default",
       leads: [
         {
           id: "dfd-lead-1",

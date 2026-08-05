@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { getAuthenticatedAdmin, getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
 import { approveAndExecuteApprovedAction } from "@/lib/approved-execution-layer";
 import { clearServerCacheKey } from "@/lib/server-cache";
+import { requireTenantId } from "@/lib/tenant-context";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -37,10 +38,11 @@ export async function POST(request: Request, { params }: { params: Promise<{ app
       );
     }
 
-    const admin = await getAuthenticatedAdmin();
+    const admin = await getAuthenticatedRequestContext(request);
     const result = await approveAndExecuteApprovedAction({
+      tenantId: requireTenantId(admin?.tenantId, "approved_execution_session"),
       approvalId,
-      approvedBy: admin?.email ?? "CEO",
+      approvedBy: admin?.actorId ?? "CEO",
       note: parsed.data.note,
     });
     clearServerCacheKey("executive-dashboard-report");

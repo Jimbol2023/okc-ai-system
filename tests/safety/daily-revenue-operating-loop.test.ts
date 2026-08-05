@@ -115,6 +115,7 @@ function revenueReport(): RevenueCommandCenterReport {
 
 function report(): DailyRevenueOperatingLoopReport {
   return createDailyRevenueOperatingLoopFromInputs({
+    tenantId: "tenant-alpha",
     workforce: createAiWorkforceReportFromInputs({ generatedAt: "2026-07-09T13:00:00.000Z" }),
     revenueCommandCenter: revenueReport(),
     generatedAt: "2026-07-09T13:00:00.000Z",
@@ -184,7 +185,7 @@ test("only create_crm_task is eligible for safe internal approval preparation", 
   assert.ok(crmOrder);
   assert.equal(crmOrder.allowedInternalAction, "create_crm_task");
 
-  const approvalInput = createCrmTaskApprovalInputFromWorkOrder(crmOrder);
+  const approvalInput = createCrmTaskApprovalInputFromWorkOrder("tenant-alpha", crmOrder);
   const prepared = createApprovedExecutionPreparedAction(approvalInput);
 
   assert.equal(approvalInput.actionType, "create_crm_task");

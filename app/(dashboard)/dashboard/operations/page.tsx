@@ -3,11 +3,13 @@ import type { Route } from "next";
 
 import { analyzeClosingReadiness } from "@/lib/closing-readiness";
 import { listDbLeads } from "@/lib/leads-db";
+import { requireAuthenticatedServerTenant } from "@/lib/server-tenant-context";
 
 export const dynamic = "force-dynamic";
 
 export default async function OperationsPage() {
-  const leads = await listDbLeads();
+  const actor = await requireAuthenticatedServerTenant();
+  const leads = await listDbLeads(actor);
   const closingLeads = leads
     .filter((lead) => lead.status === "under_contract" || lead.status === "closed")
     .map((lead) => ({ lead, closing: analyzeClosingReadiness(lead) }));

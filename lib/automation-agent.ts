@@ -282,7 +282,7 @@ async function processOverdueLeads() {
 // MAIN AUTOMATION CYCLE
 // =====================================================
 
-export async function runAutomationCycle(): Promise<AutomationCycleResult> {
+export async function runAutomationCycle(tenantId: string): Promise<AutomationCycleResult> {
   const generatedLeads = generateLeads();
   let externalLeads: ReturnType<typeof generateLeads> = [];
 
@@ -294,7 +294,7 @@ export async function runAutomationCycle(): Promise<AutomationCycleResult> {
 
   const allLeads = [...generatedLeads, ...externalLeads];
 
-  const results = await Promise.all(allLeads.map((lead) => createDbLeadFromGenerated(lead)));
+  const results = await Promise.all(allLeads.map((lead) => createDbLeadFromGenerated({ tenantId }, lead)));
 
   const addedLeads = results.filter((result) => result.created).map((result) => result.lead);
   const addedCount = results.filter((result) => result.created).length;

@@ -516,12 +516,12 @@ export function createCeoOperatingScorecardFromInputs(input: CeoOperatingScoreca
   return report;
 }
 
-export async function createCeoOperatingScorecard(): Promise<CeoOperatingScorecardReport> {
+export async function createCeoOperatingScorecard(tenantId: string): Promise<CeoOperatingScorecardReport> {
   const [dailyMission, workforceCommandCenter, dailyRevenueOperatingLoop, executiveDashboard, activationSnapshot, internalWorkQueue] = await Promise.all([
-    getDailyMission().catch(() => null),
-    createAiWorkforceCommandCenter(),
-    createDailyRevenueOperatingLoop(),
-    createExecutiveDashboardReport().catch(() => null),
+    getDailyMission(tenantId).catch(() => null),
+    createAiWorkforceCommandCenter(tenantId),
+    createDailyRevenueOperatingLoop(tenantId),
+    createExecutiveDashboardReport(tenantId).catch(() => null),
     getCompanyActivationSnapshot().catch(() => null),
     getInternalWorkQueue().catch(() => null),
   ]);

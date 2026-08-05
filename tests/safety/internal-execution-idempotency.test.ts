@@ -58,6 +58,7 @@ describe("Sprint 7B internal execution idempotency", () => {
     const sourceLabel = "internal-execution:work-order-3:create_crm_task";
 
     const first = await prepareApprovedExecution({
+      tenantId: "tenant-alpha",
       actionType: "create_crm_task",
       title: "Create internal task",
       sourceLabel,
@@ -67,6 +68,7 @@ describe("Sprint 7B internal execution idempotency", () => {
       },
     });
     const second = await prepareApprovedExecution({
+      tenantId: "tenant-alpha",
       actionType: "create_crm_task",
       title: "Create duplicate internal task",
       sourceLabel,
@@ -88,12 +90,14 @@ describe("Sprint 7B internal execution idempotency", () => {
     const sourceLabel = "internal-execution:work-order-4";
 
     const task = await prepareApprovedExecution({
+      tenantId: "tenant-alpha",
       actionType: "create_crm_task",
       title: "Create internal task",
       sourceLabel,
       payload: { title: "Create internal task", workOrderId: "work-order-4" },
     });
     const note = await prepareApprovedExecution({
+      tenantId: "tenant-alpha",
       actionType: "create_crm_note",
       title: "Create internal note",
       sourceLabel,

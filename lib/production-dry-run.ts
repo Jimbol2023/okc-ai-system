@@ -298,6 +298,7 @@ function fallbackDailyMission(morningBrief: LiveMorningBrief, generatedAt: strin
 function fallbackDfdOperating(generatedAt: string): DfdOperatingReport {
   return {
     ok: true,
+    tenantId: "tenant-preview-certification",
     title: "DFD AI Operating Conductor",
     summary: "DFD AI could not load stored lead/property data during the dry run.",
     generatedAt,
@@ -500,8 +501,9 @@ export async function runProductionDryRun(services: ProductionDryRunServices = {
   const traceId = `production-dry-run:${generatedAt.slice(0, 10)}`;
   const env = services.env ?? process.env;
   const loadFailures: string[] = [];
-  const snapshots = await safeLoad("BusinessDataSnapshot", services.loadSnapshots ?? (() => getLatestBusinessSnapshots(40)), [], loadFailures);
-  const morningBrief = await safeLoad("Morning Brief", services.loadMorningBrief ?? getLatestLiveMorningBrief, fallbackMorningBrief(generatedAt), loadFailures);
+  const tenantId = "tenant-preview-certification";
+  const snapshots = await safeLoad("BusinessDataSnapshot", services.loadSnapshots ?? (() => getLatestBusinessSnapshots(tenantId, 40)), [], loadFailures);
+  const morningBrief = await safeLoad("Morning Brief", services.loadMorningBrief ?? (() => getLatestLiveMorningBrief(tenantId)), fallbackMorningBrief(generatedAt), loadFailures);
   const [
     dailyMission,
     dfdOperating,
@@ -510,11 +512,11 @@ export async function runProductionDryRun(services: ProductionDryRunServices = {
     draftWorkspace,
     approvalQueue,
   ] = await Promise.all([
-    safeLoad("Daily Mission", services.loadDailyMission ?? getDailyMission, fallbackDailyMission(morningBrief, generatedAt), loadFailures),
-    safeLoad("DFD Operating Conductor", services.loadDfdOperating ?? createDfdOperatingReport, fallbackDfdOperating(generatedAt), loadFailures),
+    safeLoad("Daily Mission", services.loadDailyMission ?? (() => getDailyMission(tenantId)), fallbackDailyMission(morningBrief, generatedAt), loadFailures),
+    safeLoad("DFD Operating Conductor", services.loadDfdOperating ?? (() => createDfdOperatingReport(tenantId)), fallbackDfdOperating(generatedAt), loadFailures),
     safeLoad("Company Activation", services.loadActivationSnapshot ?? getCompanyActivationSnapshot, fallbackActivationSnapshot(), loadFailures),
     safeLoad("Internal Work Queue", services.loadInternalWorkQueue ?? getInternalWorkQueue, fallbackInternalWorkQueue(), loadFailures),
-    safeLoad("CEO Draft Workspace", services.loadDraftWorkspace ?? getCeoDraftWorkspaceReport, fallbackDraftWorkspace(), loadFailures),
+    safeLoad("CEO Draft Workspace", services.loadDraftWorkspace ?? (() => getCeoDraftWorkspaceReport(tenantId)), fallbackDraftWorkspace(), loadFailures),
     safeLoad("Unified Approval Queue", services.loadApprovalQueue ?? loadApprovalQueueFromDb, [], loadFailures),
   ]);
   const evidence = createEvidence({
@@ -531,6 +533,7 @@ export async function runProductionDryRun(services: ProductionDryRunServices = {
 
   for (const [sourceStep, targetStep] of loopTransitions) {
     const trace = await recordTrace({
+      tenantId,
       traceId,
       sourceStep,
       targetStep,

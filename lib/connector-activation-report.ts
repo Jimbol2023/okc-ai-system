@@ -8,6 +8,7 @@ import {
   type BusinessDataSnapshotRecord,
 } from "@/lib/read-only-business-connections";
 import { getRevenuePipelineSummary } from "@/lib/revenue-pipeline";
+import { requireTenantId } from "@/lib/tenant-context";
 
 export const connectorActivationSafetyFlags = {
   readOnly: true,
@@ -471,8 +472,9 @@ export function createConnectorActivationReportFromInputs({
   };
 }
 
-export async function createConnectorActivationReport(env: NodeJS.ProcessEnv = process.env): Promise<ConnectorActivationReport> {
-  const [snapshots, leads] = await Promise.all([getLatestBusinessSnapshots(40), listDbLeads()]);
+export async function createConnectorActivationReport(tenantIdValue?: string, env: NodeJS.ProcessEnv = process.env): Promise<ConnectorActivationReport> {
+  const tenantId = requireTenantId(tenantIdValue, "connector_activation_report");
+  const [snapshots, leads] = await Promise.all([getLatestBusinessSnapshots(tenantId, 40), listDbLeads({ tenantId })]);
 
   return createConnectorActivationReportFromInputs({ snapshots, leads, env });
 }

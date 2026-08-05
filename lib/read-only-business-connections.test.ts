@@ -6,15 +6,22 @@ import {
   createMorningBriefFromSnapshots,
   readOnlyAdapterDefinitions,
   runReadOnlyBusinessSync,
+  validateWeek1Level1ReadOnlyCategories,
+  week1Level1ReadOnlyCategories,
+  verifyWeek1Level1Snapshots,
   setReadOnlyBusinessConnectionsDbForTest,
   setReadOnlyBusinessConnectionsFetchForTest,
   setReadOnlyBusinessConnectionsLeadLoaderForTest,
   validateReadOnlyAdapterDefinitions,
   type BusinessDataSnapshotRecord,
 } from "./read-only-business-connections";
-import { setUeipRuntimeDependenciesForTest } from "./ueip-runtime-gateway";
+import { createUeipExecutionContext, setUeipRuntimeDependenciesForTest } from "./ueip-runtime-gateway";
 
 const restoreFns: Array<() => void> = [];
+
+function testContext(tenantId = "default") {
+  return createUeipExecutionContext({ tenantId, actorId: "test", businessModule: "ai_core", requestOrigin: "test" });
+}
 
 afterEach(() => {
   while (restoreFns.length) {
@@ -97,7 +104,7 @@ describe("read-only business connections", () => {
       }),
     );
 
-    const report = await runReadOnlyBusinessSync({});
+    const report = await runReadOnlyBusinessSync({}, testContext());
 
     assert.equal(calls, 0);
     assert.equal(report.providerCalled, false);
@@ -107,6 +114,49 @@ describe("read-only business connections", () => {
     assert.ok(report.snapshots.some((snapshot) => snapshot.category === "internal_lead_database"));
     assert.ok(report.snapshots.some((snapshot) => snapshot.category === "internal_website_lead_intake"));
     assert.ok(report.dataGaps.some((gap) => gap.includes("Missing required read-only credential")));
+  });
+
+
+  it("fails closed for forbidden Week 1 categories and avoids provider calls in readiness-only mode", async () => {
+    const testDb = createTestDb();
+    let calls = 0;
+
+    restoreFns.push(setReadOnlyBusinessConnectionsDbForTest(testDb.db as never));
+    restoreFns.push(setReadOnlyBusinessConnectionsLeadLoaderForTest(async () => []));
+    restoreFns.push(setReadOnlyBusinessConnectionsFetchForTest(async () => {
+      calls += 1;
+      return jsonResponse({});
+    }));
+
+    assert.throws(
+      () => validateWeek1Level1ReadOnlyCategories(["search_console_performance"]),
+      /week1_level1_forbidden_readonly_category/,
+    );
+
+    const report = await runReadOnlyBusinessSync({
+      GOOGLE_OAUTH_CLIENT_ID: "google-client",
+      GOOGLE_OAUTH_CLIENT_SECRET: "google-secret",
+      GOOGLE_OAUTH_REFRESH_TOKEN: "google-refresh",
+      GOOGLE_ANALYTICS_PROPERTY_ID: "12345",
+      GOOGLE_OAUTH_GRANTED_SCOPES: [
+        "https://www.googleapis.com/auth/gmail.readonly",
+        "https://www.googleapis.com/auth/calendar.events.readonly",
+        "https://www.googleapis.com/auth/drive.metadata.readonly",
+        "https://www.googleapis.com/auth/analytics.readonly",
+      ].join(" "),
+    }, testContext("tenant-week1"), {
+      categories: [...week1Level1ReadOnlyCategories],
+      syncMode: "week1_level1_ordered",
+      allowProviderReads: false,
+      persistDailyBriefing: false,
+    });
+    const verification = verifyWeek1Level1Snapshots("tenant-week1", report.snapshots);
+
+    assert.equal(calls, 0);
+    assert.equal(report.providerCalled, false);
+    assert.deepEqual(report.snapshots.map((snapshot) => snapshot.category), [...week1Level1ReadOnlyCategories]);
+    assert.ok(report.snapshots.filter((snapshot) => !String(snapshot.category).startsWith("internal_")).every((snapshot) => snapshot.status === "data_gap"));
+    assert.equal(verification.advisoryExceptions.some((exception) => exception.includes("not fresh evidence")), true);
   });
 
   it("runs only explicitly selected snapshot categories", async () => {
@@ -129,7 +179,7 @@ describe("read-only business connections", () => {
       return jsonResponse({});
     }));
 
-    const report = await runReadOnlyBusinessSync(env, undefined, {
+    const report = await runReadOnlyBusinessSync(env, testContext(), {
       categories: ["gmail_inbox", "internal_website_lead_intake"],
     });
 
@@ -138,6 +188,20 @@ describe("read-only business connections", () => {
     assert.equal(calls.some((url) => url.includes("youtube")), false);
     assert.equal(calls.some((url) => url.includes("canva")), false);
     assert.deepEqual(report.integrationsCompleted.sort(), ["Google Workspace", "Website Lead Intake"]);
+  });
+
+  it("can refresh idempotent snapshots without creating a duplicate briefing", async () => {
+    const testDb = createTestDb();
+    restoreFns.push(setReadOnlyBusinessConnectionsDbForTest(testDb.db as never));
+    restoreFns.push(setReadOnlyBusinessConnectionsLeadLoaderForTest(async () => []));
+
+    await runReadOnlyBusinessSync({}, testContext(), {
+      categories: ["internal_lead_database"],
+      persistDailyBriefing: false,
+    });
+
+    assert.equal(testDb.snapshots.length, 1);
+    assert.equal(testDb.briefings.length, 0);
   });
 
   it("persists a data gap without a provider call when read-only scope evidence is missing", async () => {
@@ -156,7 +220,7 @@ describe("read-only business connections", () => {
       GOOGLE_OAUTH_CLIENT_SECRET: "google-secret",
       GOOGLE_OAUTH_REFRESH_TOKEN: "google-refresh",
       GOOGLE_OAUTH_GRANTED_SCOPES: "https://www.googleapis.com/auth/webmasters.readonly",
-    }, undefined, { categories: ["gmail_inbox"] });
+    }, testContext(), { categories: ["gmail_inbox"] });
 
     assert.equal(calls, 0);
     assert.equal(report.providerCalled, false);
@@ -217,7 +281,7 @@ describe("read-only business connections", () => {
     restoreFns.push(setReadOnlyBusinessConnectionsFetchForTest(testFetch));
     restoreFns.push(setUeipRuntimeDependenciesForTest({ db: createUeipTestDb(env.GOOGLE_SEARCH_CONSOLE_SITE_URL) as never, fetcher: testFetch, environment: "preview" }));
 
-    const report = await runReadOnlyBusinessSync(env);
+    const report = await runReadOnlyBusinessSync(env, testContext());
     const serialized = JSON.stringify(report);
 
     assert.equal(report.providerCalled, true);

@@ -3,8 +3,7 @@ import type { AiDepartmentName } from "@/lib/company-orchestrator";
 import { createDepartmentArtifact, type DepartmentArtifactType } from "@/lib/department-artifact-engine";
 import { getLatestBusinessSnapshots, type BusinessDataSnapshotRecord } from "@/lib/read-only-business-connections";
 import type { CompanyDraftDecisionInput, CompanyDraftEditInput } from "@/lib/validations/company-drafts";
-
-const tenantId = "default";
+import { requireTenantId } from "@/lib/tenant-context";
 
 export const draftWorkspaceSafetyFlags = {
   providerCalled: false,
@@ -416,9 +415,9 @@ function groupDrafts(drafts: DraftWorkspaceItem[]): DraftWorkspaceDepartmentGrou
     }));
 }
 
-async function findDraftOrThrow(tx: DraftWorkspaceDb, draftId: string) {
-  const draft = await tx.aiCompanyDraftQueueItem.findUnique({
-    where: { id: draftId },
+async function findDraftOrThrow(tx: DraftWorkspaceDb, tenantId: string, draftId: string) {
+  const draft = await tx.aiCompanyDraftQueueItem.findFirst({
+    where: { id: draftId, tenantId },
     include: {
       directive: true,
       revisions: { orderBy: { createdAt: "desc" } },
@@ -430,7 +429,7 @@ async function findDraftOrThrow(tx: DraftWorkspaceDb, draftId: string) {
   return draft;
 }
 
-async function createRevision(tx: DraftWorkspaceDb, record: DraftRecord, action: DraftWorkspaceAction, nextRecord: DraftRecord, note?: string, reviewer?: string) {
+async function createRevision(tx: DraftWorkspaceDb, tenantId: string, record: DraftRecord, action: DraftWorkspaceAction, nextRecord: DraftRecord, note?: string, reviewer?: string) {
   await tx.aiCompanyDraftRevision.create({
     data: {
       tenantId,
@@ -459,7 +458,8 @@ function isApprovedDraftDecision(record: DraftRecord) {
   return record.approvalStatus === "approved_internal";
 }
 
-export async function getCeoDraftWorkspaceReport(): Promise<CeoDraftWorkspaceReport> {
+export async function getCeoDraftWorkspaceReport(tenantIdValue: string): Promise<CeoDraftWorkspaceReport> {
+  const tenantId = requireTenantId(tenantIdValue, "draft_workspace");
   const [records, snapshots] = await Promise.all([
     db.aiCompanyDraftQueueItem.findMany({
       where: { tenantId },
@@ -469,7 +469,7 @@ export async function getCeoDraftWorkspaceReport(): Promise<CeoDraftWorkspaceRep
       },
       orderBy: [{ ownerDepartment: "asc" }, { createdAt: "asc" }],
     }),
-    getLatestBusinessSnapshots(40).catch(() => []),
+    getLatestBusinessSnapshots(tenantId, 40).catch(() => []),
   ]);
   const drafts = records.map((record) => toDraftWorkspaceItem(record, snapshots));
   const groups = groupDrafts(drafts);
@@ -494,8 +494,9 @@ export async function getCeoDraftWorkspaceReport(): Promise<CeoDraftWorkspaceRep
   };
 }
 
-export async function previewCeoDraft(draftId: string) {
-  const [record, snapshots] = await Promise.all([findDraftOrThrow(db, draftId), getLatestBusinessSnapshots(40).catch(() => [])]);
+export async function previewCeoDraft(tenantIdValue: string, draftId: string) {
+  const tenantId = requireTenantId(tenantIdValue, "draft_preview");
+  const [record, snapshots] = await Promise.all([findDraftOrThrow(db, tenantId, draftId), getLatestBusinessSnapshots(tenantId, 40).catch(() => [])]);
 
   return {
     ok: true,
@@ -505,9 +506,10 @@ export async function previewCeoDraft(draftId: string) {
   };
 }
 
-export async function updateCeoDraft(draftId: string, input: CompanyDraftEditInput, reviewer = "CEO") {
+export async function updateCeoDraft(tenantIdValue: string, draftId: string, input: CompanyDraftEditInput, reviewer = "CEO") {
+  const tenantId = requireTenantId(tenantIdValue, "draft_update");
   return db.$transaction(async (tx) => {
-    const record = await findDraftOrThrow(tx, draftId);
+    const record = await findDraftOrThrow(tx, tenantId, draftId);
     const fallback = getFallbackFields(record);
     const metadata: DraftWorkspaceMetadata = {
       ...normalizeMetadata(record.metadata, fallback.metadata),
@@ -538,7 +540,7 @@ export async function updateCeoDraft(draftId: string, input: CompanyDraftEditInp
       },
     });
 
-    await createRevision(tx, record, "edited", updated, input.note || "CEO edited draft.", reviewer);
+    await createRevision(tx, tenantId, record, "edited", updated, input.note || "CEO edited draft.", reviewer);
 
     return {
       ok: true,
@@ -548,13 +550,14 @@ export async function updateCeoDraft(draftId: string, input: CompanyDraftEditInp
   }, transactionOptions);
 }
 
-export async function decideCeoDraft(draftId: string, input: CompanyDraftDecisionInput, reviewer = "CEO") {
+export async function decideCeoDraft(tenantIdValue: string, draftId: string, input: CompanyDraftDecisionInput, reviewer = "CEO") {
+  const tenantId = requireTenantId(tenantIdValue, "draft_decision");
   if ((input.decision === "reject" || input.decision === "request_changes") && !input.note?.trim()) {
     throw new Error("A note is required to reject a draft or request changes.");
   }
 
   return db.$transaction(async (tx) => {
-    const record = await findDraftOrThrow(tx, draftId);
+    const record = await findDraftOrThrow(tx, tenantId, draftId);
     const action = input.decision === "approve" ? "approved" : input.decision === "reject" ? "rejected" : "changes_requested";
     const approvalStatus = input.decision === "approve" ? "approved_internal" : input.decision === "reject" ? "rejected_internal" : "changes_requested";
     const status = input.decision === "approve" ? "draft_approved_internal" : input.decision === "reject" ? "draft_rejected_internal" : "draft_changes_requested";
@@ -594,7 +597,7 @@ export async function decideCeoDraft(draftId: string, input: CompanyDraftDecisio
     });
 
     if (transition.count !== 1) {
-      const latest = await findDraftOrThrow(tx, draftId);
+      const latest = await findDraftOrThrow(tx, tenantId, draftId);
       if (input.decision === "approve" && isApprovedDraftDecision(latest)) {
         return {
           ok: true,
@@ -608,9 +611,9 @@ export async function decideCeoDraft(draftId: string, input: CompanyDraftDecisio
       throw new Error(`Draft decision is already terminal: ${latest.approvalStatus || latest.status || "unknown"}.`);
     }
 
-    const updated = await findDraftOrThrow(tx, draftId);
+    const updated = await findDraftOrThrow(tx, tenantId, draftId);
 
-    await createRevision(tx, record, action, updated, input.note || `${action.replaceAll("_", " ")} by CEO.`, reviewer);
+    await createRevision(tx, tenantId, record, action, updated, input.note || `${action.replaceAll("_", " ")} by CEO.`, reviewer);
 
     return {
       ok: true,

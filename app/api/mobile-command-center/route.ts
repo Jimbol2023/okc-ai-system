@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse } from "@/lib/auth";
 import { getDailyMission } from "@/lib/daily-mission";
 import { createMobileCommandCenter, createVerticalSliceSimulation } from "@/lib/phase3-production-execution";
 
@@ -8,7 +8,8 @@ export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
-  if (!(await isAuthenticatedRequest(request))) {
+  const actor = await getAuthenticatedRequestContext(request);
+  if (!actor) {
     return getUnauthorizedApiResponse();
   }
 
@@ -19,7 +20,7 @@ export async function GET(request: Request) {
   }
 
   const commandCenter = createMobileCommandCenter();
-  const dailyMission = await getDailyMission();
+  const dailyMission = await getDailyMission(actor.tenantId);
 
   return NextResponse.json({
     ...commandCenter,

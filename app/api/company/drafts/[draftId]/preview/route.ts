@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse } from "@/lib/auth";
 import { draftWorkspaceSafetyFlags, previewCeoDraft } from "@/lib/company-draft-workspace";
 
 type RouteContext = {
@@ -14,13 +14,14 @@ export const runtime = "nodejs";
 
 export async function GET(request: Request, context: RouteContext) {
   try {
-    if (!(await isAuthenticatedRequest(request))) {
+    const actor = await getAuthenticatedRequestContext(request);
+    if (!actor) {
       return getUnauthorizedApiResponse();
     }
 
     const { draftId } = await context.params;
 
-    return NextResponse.json(await previewCeoDraft(draftId));
+    return NextResponse.json(await previewCeoDraft(actor.tenantId, draftId));
   } catch (error) {
     console.error("GET /api/company/drafts/[draftId]/preview failed:", error);
 

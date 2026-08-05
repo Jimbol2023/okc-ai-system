@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse } from "@/lib/auth";
 import { draftWorkspaceSafetyFlags, getCeoDraftWorkspaceReport } from "@/lib/company-draft-workspace";
 
 export const dynamic = "force-dynamic";
@@ -8,11 +8,12 @@ export const runtime = "nodejs";
 
 export async function GET(request: Request) {
   try {
-    if (!(await isAuthenticatedRequest(request))) {
+    const actor = await getAuthenticatedRequestContext(request);
+    if (!actor) {
       return getUnauthorizedApiResponse();
     }
 
-    return NextResponse.json(await getCeoDraftWorkspaceReport());
+    return NextResponse.json(await getCeoDraftWorkspaceReport(actor.tenantId));
   } catch (error) {
     console.error("GET /api/company/drafts failed:", error);
 

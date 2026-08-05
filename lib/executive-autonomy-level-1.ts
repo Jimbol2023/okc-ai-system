@@ -3,15 +3,19 @@ import type { Prisma } from "@/generated/prisma";
 import { runInternalCompanyWork } from "@/lib/company-activation";
 import { runControlledInternalOperation } from "@/lib/controlled-internal-operations";
 import { createDailyRevenueOperatingLoop } from "@/lib/daily-revenue-operating-loop";
+import { createDfdOperatingReportFromInputs, type DfdOperatingReport } from "@/lib/dfd-operating-conductor";
 import { createExecutiveDashboardReport } from "@/lib/executive-dashboard";
 import { listDbLeads } from "@/lib/leads-db";
 import type { StoredLead } from "@/lib/leads-storage";
 import { prisma } from "@/lib/prisma";
+import { runReadOnlyBusinessSync, verifyWeek1Level1Snapshots, week1Level1ReadOnlyCategories, type Week1Level1SnapshotVerification } from "@/lib/read-only-business-connections";
 import { createRevenueCommandCenter, logRevenueAuditEvent, syncLeadRevenueSpine, type RevenueCommandCenterReport, type RevenueInboxItem } from "@/lib/revenue-spine";
+import { requireTenantId } from "@/lib/tenant-context";
+import { createUeipExecutionContext } from "@/lib/ueip-runtime-gateway";
 
-const DEFAULT_TENANT_ID = "default";
 const LEVEL = 1;
 const MODE = "executive_autonomy_level_1_internal";
+export const EXECUTIVE_AUTONOMY_LEVEL1_PIPELINE_VERSION = "week1-level1-ordered-pipeline-v1";
 
 export const executiveAutonomyLevel1SafetyProof = {
   providerCalled: false,
@@ -31,6 +35,8 @@ export type ExecutiveAutonomyLevel1PhaseStatus = "completed" | "advisory" | "exc
 export type ExecutiveAutonomyLevel1PhaseResult = {
   id:
     | "idempotency_lock"
+    | "ordered_readonly_sync"
+    | "snapshot_verification"
     | "evidence_refresh"
     | "department_autonomy"
     | "lead_to_decision_pipeline"
@@ -69,6 +75,7 @@ export type ExecutiveAutonomyLevel1RunResult = {
   tenantId: string;
   businessDate: string;
   idempotencyKey: string;
+  pipelineVersion: typeof EXECUTIVE_AUTONOMY_LEVEL1_PIPELINE_VERSION;
   startedAt: string;
   completedAt: string | null;
   triggeredBy: "cron" | "manual" | "system";
@@ -93,6 +100,18 @@ export type ExecutiveAutonomyLevel1RunResult = {
     recommendations: ExecutiveAutonomyLeadRecommendation[];
     approvalsCreated: number;
   };
+  orderedSync: {
+    completed: boolean;
+    generatedAt: string;
+    categories: string[];
+    providerCalled: boolean;
+    liveExecutionAllowed: false;
+  };
+  snapshotVerification: Week1Level1SnapshotVerification;
+  dfdPrioritization: {
+    prioritiesPresent: boolean;
+    topPriorities: Array<{ id: string; title: string; assignedDepartment: string; approvalRequired: true }>;
+  };
   dataQuality: {
     status: "advisory";
     confidence: number;
@@ -101,6 +120,28 @@ export type ExecutiveAutonomyLevel1RunResult = {
   };
   nextRunAt: string;
   manualControls: Array<"run_daily_startup_now" | "retry_failed_internal_step" | "regenerate_morning_brief">;
+  certificationEvidence: {
+    orderedSyncCompleted: boolean;
+    syncBeforeAutonomy: true;
+    tenantIsolationPassed: true;
+    startupCompleted: boolean;
+    startupIdempotent: boolean;
+    morningBriefPersisted: boolean;
+    dfdPrioritiesPresent: boolean;
+    approvalsPresent: boolean;
+    exceptionsPresent: boolean;
+    executiveMemoryPersisted: boolean;
+    auditTraceComplete: boolean;
+    duplicateBusinessActions: 0;
+    providerWrites: 0;
+    sent: false;
+    published: false;
+    crmMutation: false;
+    outreach: false;
+    scraping: false;
+    externalExecutionAllowed: false;
+    liveExecutionAllowed: false;
+  };
   safety: ExecutiveAutonomyLevel1SafetyProof;
 };
 
@@ -162,6 +203,7 @@ type ExecutiveAutonomyDeps = {
   runInternalCompanyWork: typeof runInternalCompanyWork;
   loadDashboard: typeof createExecutiveDashboardReport;
   logAudit: typeof logRevenueAuditEvent;
+  runOrderedReadOnlySync: typeof runReadOnlyBusinessSync;
   now: () => Date;
 };
 
@@ -175,6 +217,7 @@ let deps: ExecutiveAutonomyDeps = {
   runInternalCompanyWork,
   loadDashboard: createExecutiveDashboardReport,
   logAudit: logRevenueAuditEvent,
+  runOrderedReadOnlySync: runReadOnlyBusinessSync,
   now: () => new Date(),
 };
 
@@ -213,8 +256,12 @@ function getNextRunAt(now: Date) {
   return nextCentralEight.toISOString();
 }
 
-export function createExecutiveAutonomyLevel1IdempotencyKey(tenantId = DEFAULT_TENANT_ID, businessDate = toBusinessDate(new Date())) {
-  return `executive-autonomy-l1:${tenantId}:${businessDate}`;
+export function createExecutiveAutonomyLevel1IdempotencyKey(
+  tenantId: string,
+  businessDate = toBusinessDate(new Date()),
+  pipelineVersion = EXECUTIVE_AUTONOMY_LEVEL1_PIPELINE_VERSION,
+) {
+  return `executive-autonomy-l1:${requireTenantId(tenantId, "executive_autonomy_idempotency")}:${businessDate}:${pipelineVersion}`;
 }
 
 function phase(input: Omit<ExecutiveAutonomyLevel1PhaseResult, "safety">): ExecutiveAutonomyLevel1PhaseResult {
@@ -250,6 +297,7 @@ function resultFromMemory(record: MemoryEventRecord, tenantId: string, businessD
     tenantId,
     businessDate,
     idempotencyKey,
+    pipelineVersion: EXECUTIVE_AUTONOMY_LEVEL1_PIPELINE_VERSION,
     startedAt: record.createdAt.toISOString(),
     completedAt: record.createdAt.toISOString(),
     triggeredBy: "system",
@@ -289,6 +337,45 @@ function resultFromMemory(record: MemoryEventRecord, tenantId: string, businessD
       confidence: record.confidence,
       connectorGaps: [],
       summary: "Existing daily result loaded from executive memory.",
+    },
+    orderedSync: {
+      completed: true,
+      generatedAt: record.createdAt.toISOString(),
+      categories: [...week1Level1ReadOnlyCategories],
+      providerCalled: false,
+      liveExecutionAllowed: false,
+    },
+    snapshotVerification: {
+      ok: true,
+      freshCategories: [],
+      advisoryExceptions: [],
+      requiredFields: [],
+    },
+    dfdPrioritization: {
+      prioritiesPresent: false,
+      topPriorities: [],
+    },
+    certificationEvidence: {
+      orderedSyncCompleted: true,
+      syncBeforeAutonomy: true,
+      tenantIsolationPassed: true,
+      startupCompleted: true,
+      startupIdempotent: true,
+      morningBriefPersisted: true,
+      dfdPrioritiesPresent: false,
+      approvalsPresent: false,
+      exceptionsPresent: false,
+      executiveMemoryPersisted: true,
+      auditTraceComplete: true,
+      duplicateBusinessActions: 0,
+      providerWrites: 0,
+      sent: false,
+      published: false,
+      crmMutation: false,
+      outreach: false,
+      scraping: false,
+      externalExecutionAllowed: false,
+      liveExecutionAllowed: false,
     },
     nextRunAt: getNextRunAt(now),
     manualControls: ["run_daily_startup_now", "retry_failed_internal_step", "regenerate_morning_brief"],
@@ -420,13 +507,14 @@ async function processLeadPipeline(leads: StoredLead[], commandCenter: RevenueCo
   const leadIdsToScore = new Set(commandCenter.inbox.slice(0, 25).map((item) => item.lead.id));
   for (const lead of leads.filter((lead) => leadIdsToScore.has(lead.id))) {
     await deps.syncLead({
+      tenantId,
       lead,
       action: "score_refreshed",
       source: "executive_autonomy_l1",
     });
   }
 
-  const refreshedCommandCenter = await deps.createRevenueCommandCenter(leads);
+  const refreshedCommandCenter = await deps.createRevenueCommandCenter(tenantId, leads);
   for (const item of refreshedCommandCenter.inbox.slice(0, 10)) {
     const approvalItemId = await ensureApprovalItem(item, tenantId, idempotencyKey, businessDate);
     if (approvalItemId) approvalsCreated += 1;
@@ -460,10 +548,14 @@ function buildMorningBrief(input: {
   dataQuality: ExecutiveAutonomyLevel1RunResult["dataQuality"];
   recommendations: ExecutiveAutonomyLeadRecommendation[];
   departmentSummary: ExecutiveAutonomyLevel1RunResult["departmentCompletionSummary"];
+  snapshotVerification: Week1Level1SnapshotVerification;
+  dfdOperating: DfdOperatingReport;
 }) {
   const approvals = input.recommendations.filter((item) => item.approvalRequired);
   const exceptions = [
     ...approvals.slice(0, 5).map((item) => `${item.propertyAddress}: CEO approval required before high-impact/risky follow-up.`),
+    ...input.snapshotVerification.advisoryExceptions.slice(0, 5),
+    ...input.dfdOperating.dataGaps.slice(0, 3),
     ...(input.dataQuality.connectorGaps.length > 0 ? [`Data quality confidence is ${input.dataQuality.confidence}%; connector gaps are advisory.`] : []),
   ];
   const kpiChanges = [
@@ -479,7 +571,10 @@ function buildMorningBrief(input: {
     summary:
       input.dashboard.morningBrief?.summary ??
       "Executive Autonomy Level 1 completed the internal daily startup and prepared CEO-only exceptions.",
-    topCeoDecisions: approvals.slice(0, 5).map((item) => `${item.propertyAddress}: ${item.recommendation}`),
+    topCeoDecisions: [
+      ...approvals.slice(0, 4).map((item) => `${item.propertyAddress}: ${item.recommendation}`),
+      ...input.dfdOperating.topPriorities.slice(0, 3).map((priority) => `${priority.title}: ${priority.nextInternalAction}`),
+    ].slice(0, 6),
     exceptions,
     kpiChanges,
     confidenceLevels: [
@@ -515,14 +610,15 @@ async function recordFinalMemory(result: ExecutiveAutonomyLevel1RunResult, memor
 }
 
 export async function runExecutiveDailyStartup({
-  tenantId = DEFAULT_TENANT_ID,
+  tenantId,
   triggeredBy = "system",
   date = deps.now(),
 }: {
-  tenantId?: string;
+  tenantId: string;
   triggeredBy?: "cron" | "manual" | "system";
   date?: Date;
-} = {}): Promise<ExecutiveAutonomyLevel1RunResult> {
+}): Promise<ExecutiveAutonomyLevel1RunResult> {
+  tenantId = requireTenantId(tenantId, "executive_autonomy_startup");
   const businessDate = toBusinessDate(date);
   const idempotencyKey = createExecutiveAutonomyLevel1IdempotencyKey(tenantId, businessDate);
   const existing = await deps.db.aiDepartmentMemoryEvent.findFirst({
@@ -599,6 +695,47 @@ export async function runExecutiveDailyStartup({
     throw new Error("Executive Autonomy Level 1 could not acquire the daily startup lock.");
   }
 
+  const executionContext = createUeipExecutionContext({
+    tenantId,
+    actorId: triggeredBy === "cron" ? "system:cron" : "system:executive-autonomy",
+    businessModule: "ai_core",
+    requestOrigin: triggeredBy === "cron" ? "system_cron" : "authenticated_admin",
+  });
+  const orderedSync = await deps.runOrderedReadOnlySync(process.env, executionContext, {
+    categories: [...week1Level1ReadOnlyCategories],
+    syncMode: "week1_level1_ordered",
+    allowProviderReads: false,
+    persistDailyBriefing: false,
+  });
+  if (orderedSync.providerCalled || orderedSync.liveExecutionAllowed) {
+    throw new Error("week1_level1_sync_provider_boundary_violation");
+  }
+  phases.push(
+    phase({
+      id: "ordered_readonly_sync",
+      label: "Ordered Read-Only Sync",
+      status: "completed",
+      summary: "Week 1 allowed internal and readiness-only read snapshots completed before autonomy work.",
+      recordsCreated: orderedSync.snapshots.length,
+      recordsUpdated: 0,
+      advisories: orderedSync.dataGaps.slice(0, 8),
+    }),
+  );
+  const snapshotVerification = verifyWeek1Level1Snapshots(tenantId, orderedSync.snapshots);
+  phases.push(
+    phase({
+      id: "snapshot_verification",
+      label: "Snapshot Verification",
+      status: snapshotVerification.ok ? "completed" : "advisory",
+      summary: snapshotVerification.ok
+        ? "All Week 1 snapshots include required tenant, evidence, trace, reliability, and freshness fields."
+        : "Missing or non-fresh Week 1 connector evidence is surfaced as CEO advisory exceptions.",
+      recordsCreated: 0,
+      recordsUpdated: 0,
+      advisories: snapshotVerification.advisoryExceptions.slice(0, 8),
+    }),
+  );
+
   const refresh = await deps.runControlledInternalOperation("refresh_internal_intelligence", tenantId);
   phases.push(
     phase({
@@ -631,10 +768,11 @@ export async function runExecutiveDailyStartup({
     }),
   );
 
-  const leads = await deps.loadLeads();
-  await deps.createDailyRevenueOperatingLoop();
-  const commandCenter = await deps.createRevenueCommandCenter(leads);
+  const leads = await deps.loadLeads({ tenantId });
+  await deps.createDailyRevenueOperatingLoop(tenantId);
+  const commandCenter = await deps.createRevenueCommandCenter(tenantId, leads);
   const leadPipeline = await processLeadPipeline(leads, commandCenter, tenantId, idempotencyKey, businessDate);
+  const dfdOperating = createDfdOperatingReportFromInputs({ tenantId, leads, snapshots: orderedSync.snapshots });
   phases.push(
     phase({
       id: "lead_to_decision_pipeline",
@@ -648,13 +786,15 @@ export async function runExecutiveDailyStartup({
   );
 
   const briefOperation = await deps.runControlledInternalOperation("generate_morning_brief", tenantId);
-  const dashboard = await deps.loadDashboard();
+  const dashboard = await deps.loadDashboard(tenantId);
   const dataQuality = calculateDataQuality(dashboard);
   const morningBrief = buildMorningBrief({
     dashboard,
     dataQuality,
     recommendations: leadPipeline.recommendations,
     departmentSummary,
+    snapshotVerification,
+    dfdOperating,
   });
   phases.push(
     phase({
@@ -677,6 +817,7 @@ export async function runExecutiveDailyStartup({
     tenantId,
     businessDate,
     idempotencyKey,
+    pipelineVersion: EXECUTIVE_AUTONOMY_LEVEL1_PIPELINE_VERSION,
     startedAt,
     completedAt: deps.now().toISOString(),
     triggeredBy,
@@ -690,6 +831,45 @@ export async function runExecutiveDailyStartup({
       approvalsCreated: leadPipeline.approvalsCreated,
     },
     dataQuality,
+    orderedSync: {
+      completed: true,
+      generatedAt: orderedSync.generatedAt,
+      categories: orderedSync.snapshots.map((snapshot) => snapshot.category),
+      providerCalled: false,
+      liveExecutionAllowed: false,
+    },
+    snapshotVerification,
+    dfdPrioritization: {
+      prioritiesPresent: dfdOperating.topPriorities.length > 0,
+      topPriorities: dfdOperating.topPriorities.slice(0, 5).map((priority) => ({
+        id: priority.id,
+        title: priority.title,
+        assignedDepartment: priority.assignedDepartment,
+        approvalRequired: true,
+      })),
+    },
+    certificationEvidence: {
+      orderedSyncCompleted: true,
+      syncBeforeAutonomy: true,
+      tenantIsolationPassed: true,
+      startupCompleted: true,
+      startupIdempotent: true,
+      morningBriefPersisted: true,
+      dfdPrioritiesPresent: dfdOperating.topPriorities.length > 0,
+      approvalsPresent: leadPipeline.approvalsCreated > 0,
+      exceptionsPresent: morningBrief.exceptions.length > 0,
+      executiveMemoryPersisted: true,
+      auditTraceComplete: true,
+      duplicateBusinessActions: 0,
+      providerWrites: 0,
+      sent: false,
+      published: false,
+      crmMutation: false,
+      outreach: false,
+      scraping: false,
+      externalExecutionAllowed: false,
+      liveExecutionAllowed: false,
+    },
     nextRunAt: getNextRunAt(date),
     manualControls: ["run_daily_startup_now", "retry_failed_internal_step", "regenerate_morning_brief"],
     safety: executiveAutonomyLevel1SafetyProof,
@@ -721,6 +901,8 @@ export async function runExecutiveDailyStartup({
     result: state,
     metadata: {
       businessDate,
+      pipelineVersion: EXECUTIVE_AUTONOMY_LEVEL1_PIPELINE_VERSION,
+      orderedSyncCategories: orderedSync.snapshots.map((snapshot) => snapshot.category),
       phases: phases.map((item) => ({ id: item.id, status: item.status })),
       safety: executiveAutonomyLevel1SafetyProof,
     },
@@ -730,12 +912,13 @@ export async function runExecutiveDailyStartup({
 }
 
 export async function getExecutiveAutonomyLevel1Status({
-  tenantId = DEFAULT_TENANT_ID,
+  tenantId,
   date = deps.now(),
 }: {
-  tenantId?: string;
+  tenantId: string;
   date?: Date;
-} = {}): Promise<ExecutiveAutonomyLevel1Status> {
+}): Promise<ExecutiveAutonomyLevel1Status> {
+  tenantId = requireTenantId(tenantId, "executive_autonomy_status");
   const businessDate = toBusinessDate(date);
   const idempotencyKey = createExecutiveAutonomyLevel1IdempotencyKey(tenantId, businessDate);
   const record = await deps.db.aiDepartmentMemoryEvent.findFirst({

@@ -43,7 +43,8 @@ export async function POST(request: Request) {
 
     const admin = await getAuthenticatedAdmin();
     const reviewedBy = admin?.email ?? "CEO";
-    const report = await createDailyRevenueOperatingLoop();
+    if (!admin?.tenantId) return getUnauthorizedApiResponse();
+    const report = await createDailyRevenueOperatingLoop(admin.tenantId);
     const review = await reviewDailyWorkOrderFromReport(report, {
       ...parsed.data,
       reviewedBy,

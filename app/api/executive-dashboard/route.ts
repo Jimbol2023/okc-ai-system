@@ -1,5 +1,5 @@
 import { apiError } from "@/lib/api-response";
-import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse } from "@/lib/auth";
 import { createExecutiveDashboardReport } from "@/lib/executive-dashboard";
 import { getCachedValue } from "@/lib/server-cache";
 
@@ -8,11 +8,12 @@ export const runtime = "nodejs";
 
 export async function GET(request: Request) {
   try {
-    if (!(await isAuthenticatedRequest(request))) {
+    const actor = await getAuthenticatedRequestContext(request);
+    if (!actor) {
       return getUnauthorizedApiResponse();
     }
 
-    return Response.json(await getCachedValue("executive-dashboard-report", 15_000, createExecutiveDashboardReport));
+    return Response.json(await getCachedValue(`executive-dashboard-report:${actor.tenantId}`, 15_000, () => createExecutiveDashboardReport(actor.tenantId)));
   } catch (error) {
     console.error("GET /api/executive-dashboard failed:", error);
 

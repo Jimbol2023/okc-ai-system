@@ -16,6 +16,7 @@ import { createExecutiveRecommendationsFromBi } from "@/lib/executive-recommenda
 import { listFinanceEntries, calculateFinanceKpis, formatFinanceDollars } from "@/lib/finance";
 import { listKnowledgeItems } from "@/lib/knowledge";
 import { listDbLeads } from "@/lib/leads-db";
+import { requireTenantId } from "@/lib/tenant-context";
 import type { StoredLead } from "@/lib/leads-storage";
 import { listMarketingWorkflow } from "@/lib/marketing-workflow";
 import { createMarketingPlatformRegistryReport, type MarketingPlatformRegistryReport } from "@/lib/marketing-platform-registry";
@@ -1627,9 +1628,10 @@ export function createExecutiveWorkforceReport({
   };
 }
 
-export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboardReport> {
+export async function createExecutiveDashboardReport(tenantIdValue: string): Promise<ExecutiveDashboardReport> {
+  const tenantId = requireTenantId(tenantIdValue, "executive_dashboard");
   const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, memoryEventsResult, referralResult, activationResult, departmentIntelligenceResult, liveMorningBriefResult, businessSnapshotsResult, buyerDemandResult, dailyMissionResult, connectorActivationResult, infrastructureHealthResult, systemHealth, recentSystemActivity] = await Promise.all([
-    loadPartialData("Lead", listDbLeads, [] as StoredLead[]),
+    loadPartialData("Lead", () => listDbLeads({ tenantId }), [] as StoredLead[]),
     loadPartialData("Marketing workflow", listMarketingWorkflow, null),
     loadPartialData("Finance", listFinanceEntries, []),
     loadPartialData("Knowledge", listKnowledgeItems, []),
@@ -1637,11 +1639,11 @@ export async function createExecutiveDashboardReport(): Promise<ExecutiveDashboa
     loadPartialData("Referral dashboard", getReferralDashboard, null),
     loadPartialData("Company activation", getCompanyActivationSnapshot, null),
     loadPartialData("Department Intelligence", getDepartmentIntelligenceReport, null),
-    loadPartialData("Live Morning Brief", getLatestLiveMorningBrief, null),
-    loadPartialData("Business snapshots", () => getLatestBusinessSnapshots(40), []),
+    loadPartialData("Live Morning Brief", () => getLatestLiveMorningBrief(tenantId), null),
+    loadPartialData("Business snapshots", () => getLatestBusinessSnapshots(tenantId, 40), []),
     loadPartialData("Buyer demand", getBuyerDemandSignals, null),
-    loadPartialData("Daily Mission", getDailyMission, null),
-    loadPartialData("Connector activation", createConnectorActivationReport, null),
+    loadPartialData("Daily Mission", () => getDailyMission(tenantId), null),
+    loadPartialData("Connector activation", () => createConnectorActivationReport(tenantId), null),
     loadPartialData("Infrastructure health", () => getInfrastructureHealth({ includeDatabase: true, includeOAuth: false }), null),
     getSystemHealth().catch(() => null),
     getRecentSystemActivity().catch(() => []),

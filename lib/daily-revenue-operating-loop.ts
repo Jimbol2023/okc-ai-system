@@ -10,6 +10,7 @@ import { logAiMemoryEvent, type AiMemoryLoggerResult } from "@/lib/ai-memory-log
 import { getDailyMission, type DailyMission } from "@/lib/daily-mission";
 import { listDbLeads } from "@/lib/leads-db";
 import { createRevenueCommandCenter, ensureConnectorDefinitions, type RevenueCommandCenterReport, type RevenueInboxItem } from "@/lib/revenue-spine";
+import { requireTenantId } from "@/lib/tenant-context";
 
 export const dailyWorkOrderOutcomes = [
   "pending",
@@ -90,6 +91,7 @@ export type DailyDepartmentQueue = {
 
 export type DailyRevenueOperatingLoopReport = {
   ok: true;
+  tenantId: string | null;
   company: "J Capital Property Group";
   missionDate: string;
   generatedAt: string;
@@ -123,6 +125,7 @@ export type DailyRevenueOperatingLoopReport = {
 };
 
 export type DailyRevenueOperatingLoopInputs = {
+  tenantId?: string;
   workforce: AiWorkforceReport;
   dailyMission?: DailyMission | null;
   revenueCommandCenter?: RevenueCommandCenterReport | null;
@@ -377,6 +380,7 @@ export function assertDailyRevenueOperatingLoopSafety(report: DailyRevenueOperat
 }
 
 export function createDailyRevenueOperatingLoopFromInputs(input: DailyRevenueOperatingLoopInputs): DailyRevenueOperatingLoopReport {
+  const tenantId = input.tenantId ? requireTenantId(input.tenantId, "daily_revenue_loop_inputs") : null;
   const generatedAt = input.generatedAt ?? input.dailyMission?.generatedAt ?? input.workforce.generatedAt ?? new Date().toISOString();
   const topLeadItems = input.revenueCommandCenter?.inbox.slice(0, 8) ?? [];
   const highestLeadItem = topLeadItems[0] ?? null;
@@ -394,6 +398,7 @@ export function createDailyRevenueOperatingLoopFromInputs(input: DailyRevenueOpe
   const departmentsWaiting = departmentQueues.filter((queue) => queue.employeesWaiting.length > 0).map((queue) => queue.department);
   const report: DailyRevenueOperatingLoopReport = {
     ok: true,
+    tenantId,
     company: "J Capital Property Group",
     missionDate: todayIso(generatedAt),
     generatedAt,
@@ -434,16 +439,18 @@ export function createDailyRevenueOperatingLoopFromInputs(input: DailyRevenueOpe
   return report;
 }
 
-export async function createDailyRevenueOperatingLoop(): Promise<DailyRevenueOperatingLoopReport> {
+export async function createDailyRevenueOperatingLoop(tenantIdValue: string): Promise<DailyRevenueOperatingLoopReport> {
+  const tenantId = requireTenantId(tenantIdValue, "daily_revenue_loop");
   const [workforce, dailyMission, leads] = await Promise.all([
     createAiWorkforceReport(),
-    getDailyMission().catch(() => null),
-    listDbLeads(),
+    getDailyMission(tenantId).catch(() => null),
+    listDbLeads({ tenantId }),
   ]);
   await ensureConnectorDefinitions();
-  const revenueCommandCenter = await createRevenueCommandCenter(leads);
+  const revenueCommandCenter = await createRevenueCommandCenter(tenantId, leads);
 
   return createDailyRevenueOperatingLoopFromInputs({
+    tenantId,
     workforce,
     dailyMission,
     revenueCommandCenter,
@@ -454,12 +461,14 @@ export function findDailyWorkOrder(report: DailyRevenueOperatingLoopReport, work
   return report.workOrders.find((order) => order.id === workOrderId) ?? null;
 }
 
-export function createCrmTaskApprovalInputFromWorkOrder(workOrder: DailyRevenueWorkOrder): ApprovedExecutionInput {
+export function createCrmTaskApprovalInputFromWorkOrder(tenantIdValue: string, workOrder: DailyRevenueWorkOrder): ApprovedExecutionInput {
+  const tenantId = requireTenantId(tenantIdValue, "crm_task_approval");
   if (!workOrder.canCreateCrmTask || workOrder.allowedInternalAction !== "create_crm_task") {
     throw new Error("This work order is not eligible for CRM task preparation.");
   }
 
   return {
+    tenantId,
     actionType: "create_crm_task",
     title: workOrder.recommendedAction.slice(0, 180),
     sourceLabel: `daily-revenue-operating-loop:${workOrder.id}`,
@@ -609,7 +618,7 @@ export async function reviewDailyWorkOrderFromReport(
       workOrderId: input.workOrderId,
       status: "approval_prepared",
       workOrder,
-      approvalInput: createCrmTaskApprovalInputFromWorkOrder(workOrder),
+      approvalInput: createCrmTaskApprovalInputFromWorkOrder(requireTenantId(report.tenantId, "daily_revenue_review"), workOrder),
       providerCalled: false,
       liveExecutionAllowed: false,
     };

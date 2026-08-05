@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { getAuthenticatedRequestContext, getUnauthorizedApiResponse, isAdminRequest, isCronAuthorizedRequest } from "@/lib/auth";
 import { readOnlyAdapterDefinitions, runReadOnlyBusinessSync, type BusinessDataCategory } from "@/lib/read-only-business-connections";
 import { createUeipExecutionContext } from "@/lib/ueip-runtime-gateway";
+import { requireTenantId } from "@/lib/tenant-context";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -29,7 +30,7 @@ async function selectedCategories(request: Request) {
 
 async function executionContextFor(request: Request) {
   if (await isCronAuthorizedRequest(request)) {
-    return createUeipExecutionContext({ tenantId: "default", actorId: "system:cron", businessModule: "ai_core", requestOrigin: "system_cron" });
+    return createUeipExecutionContext({ tenantId: requireTenantId(process.env.CRON_TENANT_ID, "cron_configuration"), actorId: "system:cron", businessModule: "ai_core", requestOrigin: "system_cron" });
   }
   const auth = await getAuthenticatedRequestContext(request);
   if (!auth) return null;

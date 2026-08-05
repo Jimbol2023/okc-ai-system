@@ -3,6 +3,7 @@ import type { Route } from "next";
 
 import { listDbLeads } from "@/lib/leads-db";
 import { getRevenuePipelineSummary } from "@/lib/revenue-pipeline";
+import { requireAuthenticatedServerTenant } from "@/lib/server-tenant-context";
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +18,8 @@ function Stat({ label, value, detail }: { label: string; value: string | number;
 }
 
 export default async function AcquisitionsPage() {
-  const leads = await listDbLeads();
+  const actor = await requireAuthenticatedServerTenant();
+  const leads = await listDbLeads(actor);
   const pipeline = getRevenuePipelineSummary(leads);
   const workFirst = pipeline.workFirstLeads.slice(0, 6);
 

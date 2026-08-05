@@ -1,8 +1,9 @@
 import { getActiveDistressFlags } from "@/lib/distress-flags";
 import { listDbLeads } from "@/lib/leads-db";
 import type { StoredLead } from "@/lib/leads-storage";
-import { getLatestBusinessSnapshots, type BusinessDataSnapshotRecord } from "@/lib/read-only-business-connections";
+import { getLatestTenantBusinessSnapshots, type BusinessDataSnapshotRecord } from "@/lib/read-only-business-connections";
 import { getRevenuePipelineSummary, type RevenuePipelineLead } from "@/lib/revenue-pipeline";
+import { requireTenantId } from "@/lib/tenant-context";
 
 export const dfdOperatingSafetyFlags = {
   readOnly: true,
@@ -63,6 +64,7 @@ export type DfdDepartmentWorkRoute = {
 
 export type DfdOperatingReport = {
   ok: true;
+  tenantId: string;
   title: "DFD AI Operating Conductor";
   summary: string;
   generatedAt: string;
@@ -246,14 +248,20 @@ function createRoutes(priorities: DfdOperatingPriority[], snapshots: BusinessDat
 }
 
 export function createDfdOperatingReportFromInputs({
+  tenantId: tenantIdValue,
   leads,
   snapshots,
   generatedAt = new Date().toISOString(),
 }: {
+  tenantId: string;
   leads: StoredLead[];
   snapshots: BusinessDataSnapshotRecord[];
   generatedAt?: string;
 }): DfdOperatingReport {
+  const tenantId = requireTenantId(tenantIdValue, "dfd_report");
+  if (snapshots.some((snapshot) => snapshot.tenantId !== tenantId)) {
+    throw new Error("cross_tenant_dfd_snapshot_blocked");
+  }
   const pipeline = getRevenuePipelineSummary(leads);
   const priorities = pipeline.rankedLeads
     .map((pipelineLead) => priorityFromPipelineLead(pipelineLead, leads))
@@ -278,6 +286,7 @@ export function createDfdOperatingReportFromInputs({
 
   return {
     ok: true,
+    tenantId,
     title: "DFD AI Operating Conductor",
     summary:
       priorities.length > 0
@@ -299,8 +308,12 @@ export function createDfdOperatingReportFromInputs({
   };
 }
 
-export async function createDfdOperatingReport(): Promise<DfdOperatingReport> {
-  const [leads, snapshots] = await Promise.all([listDbLeads(), getLatestBusinessSnapshots(40).catch(() => [])]);
+export async function createDfdOperatingReport(tenantIdValue: string): Promise<DfdOperatingReport> {
+  const tenantId = requireTenantId(tenantIdValue, "dfd_loader");
+  const [leads, snapshots] = await Promise.all([
+    listDbLeads({ tenantId }),
+    getLatestTenantBusinessSnapshots(tenantId, 40).catch(() => []),
+  ]);
 
-  return createDfdOperatingReportFromInputs({ leads, snapshots });
+  return createDfdOperatingReportFromInputs({ tenantId, leads, snapshots });
 }

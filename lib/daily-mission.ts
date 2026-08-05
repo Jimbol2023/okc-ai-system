@@ -9,6 +9,7 @@ import { listDbLeads } from "@/lib/leads-db";
 import { createProviderReadinessReport, type ProviderReadinessReport, type ProviderReadinessStatus } from "@/lib/provider-readiness";
 import { getLatestBusinessSnapshots, getLatestLiveMorningBrief, type BusinessDataSnapshotRecord, type LiveMorningBrief } from "@/lib/read-only-business-connections";
 import { createRevenueCommandCenter, type RevenueCommandCenterReport } from "@/lib/revenue-spine";
+import { requireTenantId } from "@/lib/tenant-context";
 
 export const dailyMissionSafetyFlags = {
   readOnly: true,
@@ -431,20 +432,21 @@ export function createDailyMissionFromInputs(input: DailyMissionInputs): DailyMi
   };
 }
 
-export async function getDailyMission(): Promise<DailyMission> {
+export async function getDailyMission(tenantIdValue: string): Promise<DailyMission> {
+  const tenantId = requireTenantId(tenantIdValue, "daily_mission");
   const [morningBriefResult, activationResult, draftWorkspaceResult, leadsResult, snapshotsResult, providerReadiness] = await Promise.all([
-    loadPartialData("Live Morning Brief", getLatestLiveMorningBrief, null),
+    loadPartialData("Live Morning Brief", () => getLatestLiveMorningBrief(tenantId), null),
     loadPartialData("Company activation", getCompanyActivationSnapshot, null),
-    loadPartialData("CEO Draft Workspace", getCeoDraftWorkspaceReport, null),
-    loadPartialData("Lead", listDbLeads, []),
-    loadPartialData("Business snapshots", () => getLatestBusinessSnapshots(40), []),
+    loadPartialData("CEO Draft Workspace", () => getCeoDraftWorkspaceReport(tenantId), null),
+    loadPartialData("Lead", () => listDbLeads({ tenantId }), []),
+    loadPartialData("Business snapshots", () => getLatestBusinessSnapshots(tenantId, 40), []),
     Promise.resolve(createProviderReadinessReport()),
   ]);
-  const revenueResult = await loadPartialData("Revenue Command Center", () => createRevenueCommandCenter(leadsResult.data), null);
-  const dfdOperating = createDfdOperatingReportFromInputs({ leads: leadsResult.data, snapshots: snapshotsResult.data });
+  const revenueResult = await loadPartialData("Revenue Command Center", () => createRevenueCommandCenter(tenantId, leadsResult.data), null);
+  const dfdOperating = createDfdOperatingReportFromInputs({ tenantId, leads: leadsResult.data, snapshots: snapshotsResult.data });
 
   return createDailyMissionFromInputs({
-    morningBrief: morningBriefResult.data ?? (await getLatestLiveMorningBrief()),
+    morningBrief: morningBriefResult.data ?? (await getLatestLiveMorningBrief(tenantId)),
     activationSnapshot: activationResult.data,
     draftWorkspace: draftWorkspaceResult.data,
     revenueCommandCenter: revenueResult.data,

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse } from "@/lib/auth";
 import { deleteDbLead, getDbLeadById, updateDbLead } from "@/lib/leads-db";
 import { prisma } from "@/lib/prisma";
 import { storedLeadSchema } from "@/lib/validations/stored-lead";
@@ -36,7 +36,8 @@ export async function GET(request: Request, context: RouteContext) {
     // AUTH CHECK
     // =====================================================
 
-    if (!(await isAuthenticatedRequest(request))) {
+    const actor = await getAuthenticatedRequestContext(request);
+    if (!actor) {
       return getUnauthorizedApiResponse();
     }
 
@@ -48,7 +49,7 @@ export async function GET(request: Request, context: RouteContext) {
     // This preserves your current dashboard/StoredLead shape.
     // =====================================================
 
-    const lead = await getDbLeadById(leadId);
+    const lead = await getDbLeadById(actor, leadId);
 
     if (!lead) {
       return NextResponse.json(
@@ -68,9 +69,10 @@ export async function GET(request: Request, context: RouteContext) {
     // detail UI receives them safely.
     // =====================================================
 
-    const dbLead = await prisma.lead.findUnique({
+    const dbLead = await prisma.lead.findFirst({
       where: {
         id: leadId,
+        tenantId: actor.tenantId,
       },
     });
 
@@ -137,7 +139,8 @@ export async function PATCH(request: Request, context: RouteContext) {
     // AUTH CHECK
     // =====================================================
 
-    if (!(await isAuthenticatedRequest(request))) {
+    const actor = await getAuthenticatedRequestContext(request);
+    if (!actor) {
       return getUnauthorizedApiResponse();
     }
 
@@ -172,7 +175,7 @@ export async function PATCH(request: Request, context: RouteContext) {
       );
     }
 
-    const updatedLead = await updateDbLead(parsedLead.data);
+    const updatedLead = await updateDbLead(actor, parsedLead.data);
 
     // =====================================================
     // PRESERVE AI FIELDS IF CLIENT SENDS THEM
@@ -195,17 +198,16 @@ export async function PATCH(request: Request, context: RouteContext) {
     }
 
     if (Object.keys(aiPatchData).length > 0) {
-      await prisma.lead.update({
-        where: {
-          id: leadId,
-        },
+      await prisma.lead.updateMany({
+        where: { id: leadId, tenantId: actor.tenantId },
         data: aiPatchData,
       });
     }
 
-    const dbLead = await prisma.lead.findUnique({
+    const dbLead = await prisma.lead.findFirst({
       where: {
         id: leadId,
+        tenantId: actor.tenantId,
       },
     });
 
@@ -254,12 +256,13 @@ export async function DELETE(request: Request, context: RouteContext) {
     // AUTH CHECK
     // =====================================================
 
-    if (!(await isAuthenticatedRequest(request))) {
+    const actor = await getAuthenticatedRequestContext(request);
+    if (!actor) {
       return getUnauthorizedApiResponse();
     }
 
     const { leadId } = await context.params;
-    const leads = await deleteDbLead(leadId);
+    const leads = await deleteDbLead(actor, leadId);
 
     return NextResponse.json({
       ok: true,

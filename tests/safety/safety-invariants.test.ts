@@ -232,6 +232,7 @@ test("Revenue agent governance remains advisory-only without scraping or provide
 
 test("Revenue decision log data is advisory-only and redacts sensitive metadata", () => {
   const decision = createRevenueDecisionLogData({
+    tenantId: "tenant-alpha",
     recommendationType: "lead_scoring",
     recommendation: "Review high-priority lead before any outreach.",
     confidence: 88,

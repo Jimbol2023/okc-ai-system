@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { logRevenueAuditEvent } from "@/lib/revenue-spine";
 import type { StoredLead } from "@/lib/leads-storage";
+import { requireTenantId } from "@/lib/tenant-context";
 
 const DEFAULT_TENANT_ID = "default";
 
@@ -327,10 +328,12 @@ export async function trackReferralEvent(input: ReferralTrackingInput) {
 }
 
 export async function attachReferralAttributionToLead(input: {
+  tenantId: string;
   lead: StoredLead;
   created: boolean;
   referral: ReferralLeadAttributionInput;
 }) {
+  const tenantId = requireTenantId(input.tenantId, "referral_attribution");
   const source = buildReferralLeadSource(input.referral);
 
   if (!source) {
@@ -342,16 +345,17 @@ export async function attachReferralAttributionToLead(input: {
     };
   }
 
-  const link = await prisma.referralLink.findUnique({
+  const link = await prisma.referralLink.findFirst({
     where: {
       referralCode: source.sourceDetail,
+      tenantId,
     },
   });
 
   const duplicateKey = `lead:${input.lead.id}:${source.sourceDetail}`;
   const event = await prisma.referralAttributionEvent.create({
     data: {
-      tenantId: DEFAULT_TENANT_ID,
+      tenantId,
       partnerId: link?.partnerId ?? null,
       referralLinkId: link?.id ?? null,
       leadId: input.lead.id,
@@ -377,6 +381,7 @@ export async function attachReferralAttributionToLead(input: {
 
   if (!event) {
     await logRevenueAuditEvent({
+      tenantId,
       action: "referral_duplicate_ignored",
       targetType: "lead",
       targetId: input.lead.id,
@@ -430,7 +435,7 @@ export async function attachReferralAttributionToLead(input: {
         verified: true,
       },
       create: {
-        tenantId: DEFAULT_TENANT_ID,
+        tenantId,
         leadId: input.lead.id,
         source: source.source,
         sourceType: source.sourceType,
@@ -446,6 +451,7 @@ export async function attachReferralAttributionToLead(input: {
   }
 
   await logRevenueAuditEvent({
+    tenantId,
     action: "referral_attribution_attached",
     targetType: "lead",
     targetId: input.lead.id,

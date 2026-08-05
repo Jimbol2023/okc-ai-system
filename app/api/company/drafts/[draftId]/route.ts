@@ -37,7 +37,8 @@ export async function PATCH(request: Request, context: RouteContext) {
 
     const admin = await getAuthenticatedAdmin();
 
-    return NextResponse.json(await updateCeoDraft(draftId, parsed.data, admin?.email || "CEO"));
+    if (!admin?.tenantId) return getUnauthorizedApiResponse();
+    return NextResponse.json(await updateCeoDraft(admin.tenantId, draftId, parsed.data, admin.email || "CEO"));
   } catch (error) {
     console.error("PATCH /api/company/drafts/[draftId] failed:", error);
 

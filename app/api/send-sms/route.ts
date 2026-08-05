@@ -4,7 +4,7 @@ import { createAuditPersistencePlanning } from "@/lib/audit-persistence-planning
 import { createLiveTestReadinessSummary } from "@/lib/live-test-readiness-summary-contract";
 import { createLiveTestRuntimeContractPreview } from "@/lib/live-test-runtime-contract-adapter";
 import { createOperatorConfirmationRuntimeDesign } from "@/lib/operator-confirmation-runtime-design";
-import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
 import type { ExecutionMode } from "@/lib/execution-policy";
 import type { LiveTestAllowlistMode } from "@/lib/live-test-allowlist-policy";
 import { executeControlledLiveSms } from "@/lib/phase4-production";
@@ -120,14 +120,17 @@ export async function POST(request: Request) {
       if (!(await isAuthenticatedRequest(request))) {
         return getUnauthorizedApiResponse();
       }
+      const actor = await getAuthenticatedRequestContext(request);
+      if (!actor) return getUnauthorizedApiResponse();
 
       if (!payload.dealId) {
         return invalidPayload("Lead/deal ID is required for controlled live SMS.");
       }
 
-      const lead = await prisma.lead.findUnique({
+      const lead = await prisma.lead.findFirst({
         where: {
           id: payload.dealId,
+          tenantId: actor.tenantId,
         },
         select: {
           id: true,
@@ -142,6 +145,7 @@ export async function POST(request: Request) {
       }
 
       const liveResult = await executeControlledLiveSms({
+        tenantId: actor.tenantId,
         leadId: lead.id,
         recipient: phoneNumbers[0],
         message,

@@ -31,8 +31,8 @@ export async function GET(request: Request) {
     const [gate, workforce, dailyLoop, leads] = await Promise.all([
       createConnectorActivationGate(),
       createAiWorkforceReport(),
-      createDailyRevenueOperatingLoop(),
-      listDbLeads(),
+      createDailyRevenueOperatingLoop(actor.tenantId),
+      listDbLeads(actor),
     ]);
     const adapterReport = await createReadOnlyConnectorAdapterReport(gate);
     const connectorSignals = createConnectorSignalFoundationReportFromInputs({
@@ -51,7 +51,7 @@ export async function GET(request: Request) {
       intelligence: marketCustomerIntelligence,
       generatedAt: gate.generatedAt,
     });
-    const revenueCommandCenter = await createRevenueCommandCenter(leads);
+    const revenueCommandCenter = await createRevenueCommandCenter(actor.tenantId, leads);
     const contractedSnapshots = (await getLatestTenantBusinessSnapshots(actor.tenantId, 200))
       .filter((snapshot) => snapshot.contractVersion === "business-data-snapshot-v1" && typeof snapshot.evidenceHash === "string" && snapshot.evidenceHash.length > 0);
     const crossConnectorIntelligence = contractedSnapshots.length > 0

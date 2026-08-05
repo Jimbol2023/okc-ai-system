@@ -5,7 +5,6 @@ import { prisma } from "@/lib/prisma";
 import { logRevenueAuditEvent } from "@/lib/revenue-spine";
 import { refreshDepartmentIntelligenceSnapshots } from "@/lib/department-intelligence";
 
-const DEFAULT_TENANT_ID = "default";
 
 type ControlledInternalOperationsDb = {
   dailyBriefingSnapshot: {
@@ -107,7 +106,7 @@ function summarizeDashboardForSnapshot(report: Awaited<ReturnType<typeof createE
 }
 
 async function recordBriefingSnapshot(action: ControlledInternalOperationAction, tenantId: string): Promise<ControlledInternalOperationResult> {
-  const report = await deps.loadDashboard();
+  const report = await deps.loadDashboard(tenantId);
   const snapshot = summarizeDashboardForSnapshot(report);
   const created = await deps.db.dailyBriefingSnapshot.create({
     data: {
@@ -296,7 +295,7 @@ async function refreshInternalIntelligence(tenantId: string): Promise<Controlled
 
 export async function runControlledInternalOperation(
   action: ControlledInternalOperationAction,
-  tenantId = DEFAULT_TENANT_ID,
+  tenantId: string,
 ): Promise<ControlledInternalOperationResult> {
   if (action === "refresh_internal_intelligence") return refreshInternalIntelligence(tenantId);
   if (action === "record_executive_memory") return recordExecutiveMemory(tenantId);
