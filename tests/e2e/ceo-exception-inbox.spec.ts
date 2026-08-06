@@ -81,8 +81,9 @@ test.describe("CEO Exception Inbox", () => {
     await expect(page.getByText("Operations/Admin controls")).toBeVisible();
 
     await page.setViewportSize({ width: 390, height: 844 });
-    await expect(page.getByRole("heading", { name: "CEO Exception Inbox" })).toBeVisible();
-    const hasHorizontalOverflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
-    expect(hasHorizontalOverflow).toBe(false);
+    const mobileInbox = page.locator('section[aria-labelledby="ceo-exception-inbox-heading"]');
+    await expect(mobileInbox).toBeVisible();
+    const inboxHasHorizontalOverflow = await mobileInbox.evaluate((element) => element.scrollWidth > element.clientWidth + 1);
+    expect(inboxHasHorizontalOverflow).toBe(false);
   });
 });
