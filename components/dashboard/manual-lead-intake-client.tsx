@@ -40,9 +40,16 @@ type ManualLeadIntakeForm = {
   notes: string;
   captureContext: string;
   createLead: boolean;
+  idempotencyKey: string;
+  consentStatus: "affirmed" | "not_granted" | "unknown";
+  contactPermission: "contact_requested" | "internal_review_only";
+  doNotContact: boolean;
+  optOutReason: string;
+  consentSource: string;
+  consentTimestamp: string | null;
 };
 
-const initialForm: ManualLeadIntakeForm = {
+function createInitialForm(): ManualLeadIntakeForm { return {
   source: "phone_call",
   sellerName: "",
   phone: "",
@@ -55,7 +62,14 @@ const initialForm: ManualLeadIntakeForm = {
   notes: "",
   captureContext: "",
   createLead: true,
-};
+  idempotencyKey: crypto.randomUUID(),
+  consentStatus: "unknown",
+  contactPermission: "internal_review_only",
+  doNotContact: false,
+  optOutReason: "",
+  consentSource: "authenticated_operator_intake",
+  consentTimestamp: null,
+}; }
 
 function formatStatus(value: string) {
   return value.replaceAll("_", " ");
@@ -68,7 +82,7 @@ function getStatusTone(status: string) {
 }
 
 export function ManualLeadIntakeClient() {
-  const [form, setForm] = useState<ManualLeadIntakeForm>(initialForm);
+  const [form, setForm] = useState<ManualLeadIntakeForm>(createInitialForm);
   const [intakes, setIntakes] = useState<ManualLeadIntakeRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -131,7 +145,7 @@ export function ManualLeadIntakeClient() {
       }
 
       setMessage(data.leadId ? "Manual source captured and linked to a lead for review." : "Manual source captured for review.");
-      setForm(initialForm);
+      setForm(createInitialForm());
       await loadIntakes();
     } catch (saveError) {
       setError(saveError instanceof Error ? saveError.message : "Unable to save manual lead intake.");
@@ -263,6 +277,21 @@ export function ManualLeadIntakeClient() {
               required
             />
           </label>
+          <fieldset className="mt-4 space-y-3 rounded-xl border border-border p-4">
+            <legend className="px-1 text-sm font-semibold text-primary">Contact posture</legend>
+            <label className="grid gap-2 text-sm font-semibold text-primary">Permission
+              <select value={form.contactPermission} onChange={(event) => updateForm("contactPermission", event.target.value as ManualLeadIntakeForm["contactPermission"])} className="rounded-xl border border-border bg-white px-3 py-2">
+                <option value="internal_review_only">Internal review only</option><option value="contact_requested">Seller requested contact</option>
+              </select>
+            </label>
+            <label className="grid gap-2 text-sm font-semibold text-primary">Consent status
+              <select value={form.consentStatus} onChange={(event) => setForm((current) => ({ ...current, consentStatus: event.target.value as ManualLeadIntakeForm["consentStatus"], consentTimestamp: event.target.value === "affirmed" ? new Date().toISOString() : null }))} className="rounded-xl border border-border bg-white px-3 py-2">
+                <option value="unknown">Unknown</option><option value="affirmed">Affirmed</option><option value="not_granted">Not granted</option>
+              </select>
+            </label>
+            <label className="flex items-center gap-2 text-sm font-semibold text-primary"><input type="checkbox" checked={form.doNotContact} onChange={(event) => setForm((current) => ({ ...current, doNotContact: event.target.checked, contactPermission: event.target.checked ? "internal_review_only" : current.contactPermission }))} />Do not contact / opted out</label>
+            {form.doNotContact ? <input aria-label="Opt-out reason" placeholder="Required opt-out reason" value={form.optOutReason} onChange={(event) => updateForm("optOutReason", event.target.value)} className="w-full rounded-xl border border-border px-3 py-2 text-sm" required /> : null}
+          </fieldset>
 
           <label className="mt-4 grid gap-2 text-sm font-semibold text-primary">
             Capture context

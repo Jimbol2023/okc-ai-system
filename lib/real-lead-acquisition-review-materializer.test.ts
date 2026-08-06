@@ -9,10 +9,12 @@ afterEach(() => { while (restores.length) restores.pop()?.(); });
 function fakeDb(overrides: { dnc?: boolean; id?: string; source?: string; sourceDetail?: string; auditFails?: boolean } = {}) {
   const tasks: Array<Record<string, unknown>> = [];
   const audits: Array<Record<string, unknown>> = [];
+  const approvals: Array<Record<string, unknown>> = [];
   const lead = {
     id: overrides.id ?? "real-lead-1", tenantId: "default", source: overrides.source ?? "website_form", propertyAddress: "123 Main Street",
     payload: null, notes: null, createdAt: new Date("2026-08-06T12:00:00Z"), status: "new", approvalStatus: "pending_review",
     doNotContact: overrides.dnc ?? false, optOutReason: overrides.dnc ? "Seller requested no contact" : null, priority: "High",
+    consentStatus: overrides.dnc ? "not_granted" : "affirmed", contactPermission: overrides.dnc ? "internal_review_only" : "contact_requested", consentSource: "public_seller_form", consentAt: new Date("2026-08-06T12:00:00Z"),
   };
   const tx = {
     lead: { findFirst: async (args: unknown) => { const where = (args as { where: { id: string; tenantId: string } }).where; return where.id === lead.id && where.tenantId === lead.tenantId ? lead : null; } },
@@ -23,15 +25,16 @@ function fakeDb(overrides: { dnc?: boolean; id?: string; source?: string; source
       create: async (args: unknown) => { const data = (args as { data: Record<string, unknown> }).data; const task = { id: `task-${tasks.length + 1}`, ...data }; tasks.push(task); return task; },
     },
     revenueAuditEvent: { create: async (args: unknown) => { const data = (args as { data: Record<string, unknown> }).data; if (overrides.auditFails) throw new Error("audit_failed"); audits.push(data); return data; } },
+    unifiedApprovalItem: { create: async (args: unknown) => { const data = (args as { data: Record<string, unknown> }).data; const item = { id: `approval-${approvals.length + 1}`, ...data }; approvals.push(item); return item; } },
   };
   const database = {
     revenueTask: tx.revenueTask,
     $transaction: async (work: (transaction: typeof tx) => Promise<unknown>) => {
-      const taskCount = tasks.length; const auditCount = audits.length;
-      try { return await work(tx); } catch (error) { tasks.splice(taskCount); audits.splice(auditCount); throw error; }
+      const taskCount = tasks.length; const auditCount = audits.length; const approvalCount = approvals.length;
+      try { return await work(tx); } catch (error) { tasks.splice(taskCount); audits.splice(auditCount); approvals.splice(approvalCount); throw error; }
     },
   };
-  return { database, tasks, audits };
+  return { database, tasks, audits, approvals };
 }
 
 describe("real lead acquisition review materializer", () => {
@@ -40,7 +43,7 @@ describe("real lead acquisition review materializer", () => {
     const first = await materializeRealLeadAcquisitionReview({ tenantId: "default", leadId: "real-lead-1" });
     const retry = await materializeRealLeadAcquisitionReview({ tenantId: "default", leadId: "real-lead-1" });
     assert.equal(first.status, "created"); assert.equal(first.taskType, "acquisition_review"); assert.equal(retry.status, "reused");
-    assert.equal(fake.tasks.length, 1); assert.equal(fake.audits.length, 1);
+    assert.equal(fake.tasks.length, 1); assert.equal(fake.audits.length, 1); assert.equal(fake.approvals.length, 1);
     for (const flag of ["providerCalled", "outreach", "sent", "published", "crmMutation", "externalExecutionAllowed", "liveExecutionAllowed"]) assert.equal(fake.tasks[0][flag], false);
   });
 
@@ -58,7 +61,7 @@ describe("real lead acquisition review materializer", () => {
     restores.pop()?.();
     const failing = fakeDb({ auditFails: true }); restores.push(setRealLeadMaterializerDbForTest(failing.database as never));
     await assert.rejects(materializeRealLeadAcquisitionReview({ tenantId: "default", leadId: "real-lead-1" }), /audit_failed/);
-    assert.equal(failing.tasks.length, 0); assert.equal(failing.audits.length, 0);
+    assert.equal(failing.tasks.length, 0); assert.equal(failing.audits.length, 0); assert.equal(failing.approvals.length, 0);
   });
 
   it("rejects missing tenant before database access", async () => {

@@ -165,6 +165,36 @@ export async function materializeRealLeadAcquisitionReview(input: {
           ...internalOnlySafetyProof,
         },
       });
+      const approvalIdempotencyKey = `acquisition-review-approval-v1:${tenantId}:${task.id}`;
+      const approval = await tx.unifiedApprovalItem.create({
+        data: {
+          tenantId,
+          itemType: "acquisition_review_packet",
+          sourceType: REAL_LEAD_MATERIALIZER_SOURCE,
+          sourceId: task.id,
+          idempotencyKey: approvalIdempotencyKey,
+          title: lead.doNotContact ? `CEO governance review: ${lead.propertyAddress}` : `CEO acquisition review: ${lead.propertyAddress}`,
+          sourceLabel: `${lead.source}:${lead.id}`,
+          status: "pending_review",
+          riskLevel: lead.doNotContact || allMissingEvidence.length > 0 ? "high" : "medium",
+          requiredApprovals: ["ceo_internal_acquisition_review"] as Prisma.InputJsonArray,
+          connectorId: null,
+          executionBlockedReason: "Internal evidence review only. Approval does not authorize provider calls, outreach, sending, publishing, scraping, CRM mutation, or external execution.",
+          payload: {
+            leadId: lead.id,
+            taskId: task.id,
+            provenance: task.sourceProvenance,
+            contactPosture: { consentStatus: lead.consentStatus, contactPermission: lead.contactPermission, consentSource: lead.consentSource, consentAt: lead.consentAt?.toISOString() ?? null, doNotContact: lead.doNotContact, optOutReason: lead.optOutReason },
+            missingEvidence: allMissingEvidence,
+            taskAuditRequestId: idempotencyKey,
+            providerCalled: false, outreach: false, sent: false, published: false, scraping: false, crmMutation: false, externalExecutionAllowed: false, liveExecutionAllowed: false,
+          },
+          providerCalled: false,
+          sent: false,
+          published: false,
+          liveExecutionAllowed: false,
+        },
+      });
       await tx.revenueAuditEvent.create({
         data: {
           tenantId,
@@ -175,7 +205,7 @@ export async function materializeRealLeadAcquisitionReview(input: {
           requestId: idempotencyKey,
           source: REAL_LEAD_MATERIALIZER_SOURCE,
           result: "success",
-          safeMetadata: { tenantId, leadId, taskId: task.id, taskType, source: lead.source, idempotencyKey, eligibilityDecision: lead.doNotContact ? "eligible_dnc_governance_only" : "eligible_internal_acquisition_review", missingEvidence: allMissingEvidence, ...internalOnlySafetyProof },
+          safeMetadata: { tenantId, leadId, taskId: task.id, approvalItemId: approval.id, taskType, source: lead.source, idempotencyKey, eligibilityDecision: lead.doNotContact ? "eligible_dnc_governance_only" : "eligible_internal_acquisition_review", missingEvidence: allMissingEvidence, scraping: false, ...internalOnlySafetyProof },
         },
       });
       return baseResult({ status: "created", eligibilityDecision: lead.doNotContact ? "eligible_dnc_governance_only" : "eligible_internal_acquisition_review", taskId: task.id, taskType, idempotencyKey, missingEvidence: allMissingEvidence });

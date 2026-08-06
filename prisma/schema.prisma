@@ -53,6 +53,10 @@ model Lead {
   doNotContact Boolean   @default(false)
   optOutReason String?
   optOutAt     DateTime?
+  consentStatus    String   @default("unknown")
+  contactPermission String  @default("internal_review_only")
+  consentSource     String?
+  consentAt         DateTime?
 
   // SYSTEM TIMESTAMPS
   createdAt DateTime @default(now())
@@ -872,6 +876,7 @@ model UnifiedApprovalItem {
   sent                   Boolean  @default(false)
   published              Boolean  @default(false)
   liveExecutionAllowed   Boolean  @default(false)
+  idempotencyKey         String?
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
 
@@ -885,6 +890,7 @@ model UnifiedApprovalItem {
   @@index([connectorId])
   @@index([providerCalled])
   @@index([liveExecutionAllowed])
+  @@unique([tenantId, idempotencyKey])
 }
 
 model UnifiedApprovalDecision {
@@ -1531,6 +1537,13 @@ model ManualLeadIntake {
   intakeStatus       String   @default("pending_review")
   manualReviewStatus String   @default("needs_manual_review")
   safetyFlags        Json
+  idempotencyKey     String?
+  consentStatus      String   @default("unknown")
+  contactPermission  String   @default("internal_review_only")
+  doNotContact       Boolean  @default(false)
+  optOutReason       String?
+  consentSource      String?
+  consentAt          DateTime?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 
@@ -1543,6 +1556,19 @@ model ManualLeadIntake {
   @@index([intakeStatus])
   @@index([manualReviewStatus])
   @@index([createdAt])
+  @@unique([tenantId, idempotencyKey])
+}
+
+model PublicIntakeRateLimit {
+  id          String   @id @default(uuid())
+  tenantId    String
+  fingerprint String
+  windowStart DateTime
+  attempts    Int      @default(1)
+  updatedAt   DateTime @updatedAt
+
+  @@unique([tenantId, fingerprint, windowStart])
+  @@index([tenantId, windowStart])
 }
 
 model SellerCallOutcome {

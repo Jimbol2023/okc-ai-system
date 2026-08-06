@@ -27,6 +27,13 @@ export const leadIntakeSchema = z.object({
   referralCampaign: z.string().trim().max(80, "Referral campaign must stay under 80 characters.").optional().or(z.literal("")),
   referralSource: z.string().trim().max(60, "Referral source must stay under 60 characters.").optional().or(z.literal("")),
   referralLandingPage: z.string().trim().max(220, "Referral landing page must stay under 220 characters.").optional().or(z.literal(""))
+  ,contactPermission: z.enum(["contact_requested", "internal_review_only"]),
+  consentStatus: z.enum(["affirmed", "not_granted"]),
+  consentSource: z.literal("public_seller_form"),
+  consentTimestamp: z.iso.datetime(),
+  doNotContact: z.boolean(),
+  optOutReason: z.string().trim().max(240).optional().or(z.literal("")),
+  website: z.string().max(0).optional().or(z.literal(""))
 });
 
 export type LeadIntakeInput = z.infer<typeof leadIntakeSchema>;

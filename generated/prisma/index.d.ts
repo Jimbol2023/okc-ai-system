@@ -274,6 +274,11 @@ export type OperationsTimelineEvent = $Result.DefaultSelection<Prisma.$Operation
  */
 export type ManualLeadIntake = $Result.DefaultSelection<Prisma.$ManualLeadIntakePayload>
 /**
+ * Model PublicIntakeRateLimit
+ * 
+ */
+export type PublicIntakeRateLimit = $Result.DefaultSelection<Prisma.$PublicIntakeRateLimitPayload>
+/**
  * Model SellerCallOutcome
  * 
  */
@@ -1118,6 +1123,16 @@ export class PrismaClient<
   get manualLeadIntake(): Prisma.ManualLeadIntakeDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.publicIntakeRateLimit`: Exposes CRUD operations for the **PublicIntakeRateLimit** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PublicIntakeRateLimits
+    * const publicIntakeRateLimits = await prisma.publicIntakeRateLimit.findMany()
+    * ```
+    */
+  get publicIntakeRateLimit(): Prisma.PublicIntakeRateLimitDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.sellerCallOutcome`: Exposes CRUD operations for the **SellerCallOutcome** model.
     * Example usage:
     * ```ts
@@ -1909,6 +1924,7 @@ export namespace Prisma {
     DailyBriefingSnapshot: 'DailyBriefingSnapshot',
     OperationsTimelineEvent: 'OperationsTimelineEvent',
     ManualLeadIntake: 'ManualLeadIntake',
+    PublicIntakeRateLimit: 'PublicIntakeRateLimit',
     SellerCallOutcome: 'SellerCallOutcome',
     AiPerformanceMetric: 'AiPerformanceMetric',
     AiJob: 'AiJob',
@@ -1957,7 +1973,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "lead" | "revenueAuditEvent" | "revenueLeadSource" | "referralPartner" | "referralLink" | "referralAttributionEvent" | "revenueLeadScore" | "revenueTask" | "revenuePipelineEvent" | "revenueCommunicationEvent" | "revenueDecisionLog" | "connectorDefinition" | "enterpriseConnectorRegistry" | "enterpriseConnectorHealthEvent" | "enterpriseConnectorLifecycleEvent" | "enterpriseConnectorExecutionDecision" | "featureFlagRecord" | "marketIntelligenceSignal" | "demandDiscoveryOpportunity" | "growthEngineDraft" | "executiveBriefingSnapshot" | "connectorInstallationState" | "connectorCredentialReference" | "connectorTestResult" | "ueipGatewayAuditEvent" | "ueipEnvironmentIdentity" | "ueipPilotAuthorization" | "ueipPilotControlEvent" | "aiPermissionPolicy" | "unifiedApprovalItem" | "unifiedApprovalDecision" | "aiCompanyExecutiveDirective" | "aiCompanyWorkAssignment" | "aiCompanyDraftQueueItem" | "aiCompanyDraftRevision" | "aiCompanyDecisionLog" | "aiDepartmentMemoryEvent" | "aiDepartmentIntelligenceSnapshot" | "businessDataSnapshot" | "socialContentSource" | "socialContentDraft" | "socialContentVariant" | "socialSchedulePlan" | "socialExecutionPlan" | "socialPerformanceSnapshot" | "automationPolicyRecord" | "automationRunRecord" | "notificationRecord" | "learningOutcomeEvent" | "dailyBriefingSnapshot" | "operationsTimelineEvent" | "manualLeadIntake" | "sellerCallOutcome" | "aiPerformanceMetric" | "aiJob" | "aiJobAction" | "aiJobLog" | "aiMemoryEvent" | "aiLearningRecommendation" | "buyer" | "buyerActivity" | "marketingDraft" | "marketingApproval" | "marketingAccountConnection" | "marketingPublishAssist" | "marketingCanvaAssetAssist" | "marketingSalesAttribution" | "salesConversionAssist" | "financeEntry" | "knowledgeItem" | "knowledgeSearchEmbedding" | "epcAssessmentRecord" | "epcCertificationRecord" | "epcOutcomeEvent" | "epcGovernanceEvent" | "professionalCase" | "professionalAssignment" | "professionalContribution" | "professionalReview" | "professionalDecision" | "professionalOutcome" | "professionalCaseEvent"
+      modelProps: "lead" | "revenueAuditEvent" | "revenueLeadSource" | "referralPartner" | "referralLink" | "referralAttributionEvent" | "revenueLeadScore" | "revenueTask" | "revenuePipelineEvent" | "revenueCommunicationEvent" | "revenueDecisionLog" | "connectorDefinition" | "enterpriseConnectorRegistry" | "enterpriseConnectorHealthEvent" | "enterpriseConnectorLifecycleEvent" | "enterpriseConnectorExecutionDecision" | "featureFlagRecord" | "marketIntelligenceSignal" | "demandDiscoveryOpportunity" | "growthEngineDraft" | "executiveBriefingSnapshot" | "connectorInstallationState" | "connectorCredentialReference" | "connectorTestResult" | "ueipGatewayAuditEvent" | "ueipEnvironmentIdentity" | "ueipPilotAuthorization" | "ueipPilotControlEvent" | "aiPermissionPolicy" | "unifiedApprovalItem" | "unifiedApprovalDecision" | "aiCompanyExecutiveDirective" | "aiCompanyWorkAssignment" | "aiCompanyDraftQueueItem" | "aiCompanyDraftRevision" | "aiCompanyDecisionLog" | "aiDepartmentMemoryEvent" | "aiDepartmentIntelligenceSnapshot" | "businessDataSnapshot" | "socialContentSource" | "socialContentDraft" | "socialContentVariant" | "socialSchedulePlan" | "socialExecutionPlan" | "socialPerformanceSnapshot" | "automationPolicyRecord" | "automationRunRecord" | "notificationRecord" | "learningOutcomeEvent" | "dailyBriefingSnapshot" | "operationsTimelineEvent" | "manualLeadIntake" | "publicIntakeRateLimit" | "sellerCallOutcome" | "aiPerformanceMetric" | "aiJob" | "aiJobAction" | "aiJobLog" | "aiMemoryEvent" | "aiLearningRecommendation" | "buyer" | "buyerActivity" | "marketingDraft" | "marketingApproval" | "marketingAccountConnection" | "marketingPublishAssist" | "marketingCanvaAssetAssist" | "marketingSalesAttribution" | "salesConversionAssist" | "financeEntry" | "knowledgeItem" | "knowledgeSearchEmbedding" | "epcAssessmentRecord" | "epcCertificationRecord" | "epcOutcomeEvent" | "epcGovernanceEvent" | "professionalCase" | "professionalAssignment" | "professionalContribution" | "professionalReview" | "professionalDecision" | "professionalOutcome" | "professionalCaseEvent"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -5809,6 +5825,80 @@ export namespace Prisma {
           }
         }
       }
+      PublicIntakeRateLimit: {
+        payload: Prisma.$PublicIntakeRateLimitPayload<ExtArgs>
+        fields: Prisma.PublicIntakeRateLimitFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PublicIntakeRateLimitFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicIntakeRateLimitPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PublicIntakeRateLimitFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicIntakeRateLimitPayload>
+          }
+          findFirst: {
+            args: Prisma.PublicIntakeRateLimitFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicIntakeRateLimitPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PublicIntakeRateLimitFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicIntakeRateLimitPayload>
+          }
+          findMany: {
+            args: Prisma.PublicIntakeRateLimitFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicIntakeRateLimitPayload>[]
+          }
+          create: {
+            args: Prisma.PublicIntakeRateLimitCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicIntakeRateLimitPayload>
+          }
+          createMany: {
+            args: Prisma.PublicIntakeRateLimitCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PublicIntakeRateLimitCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicIntakeRateLimitPayload>[]
+          }
+          delete: {
+            args: Prisma.PublicIntakeRateLimitDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicIntakeRateLimitPayload>
+          }
+          update: {
+            args: Prisma.PublicIntakeRateLimitUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicIntakeRateLimitPayload>
+          }
+          deleteMany: {
+            args: Prisma.PublicIntakeRateLimitDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PublicIntakeRateLimitUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PublicIntakeRateLimitUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicIntakeRateLimitPayload>[]
+          }
+          upsert: {
+            args: Prisma.PublicIntakeRateLimitUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PublicIntakeRateLimitPayload>
+          }
+          aggregate: {
+            args: Prisma.PublicIntakeRateLimitAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePublicIntakeRateLimit>
+          }
+          groupBy: {
+            args: Prisma.PublicIntakeRateLimitGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PublicIntakeRateLimitGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PublicIntakeRateLimitCountArgs<ExtArgs>
+            result: $Utils.Optional<PublicIntakeRateLimitCountAggregateOutputType> | number
+          }
+        }
+      }
       SellerCallOutcome: {
         payload: Prisma.$SellerCallOutcomePayload<ExtArgs>
         fields: Prisma.SellerCallOutcomeFieldRefs
@@ -8177,6 +8267,7 @@ export namespace Prisma {
     dailyBriefingSnapshot?: DailyBriefingSnapshotOmit
     operationsTimelineEvent?: OperationsTimelineEventOmit
     manualLeadIntake?: ManualLeadIntakeOmit
+    publicIntakeRateLimit?: PublicIntakeRateLimitOmit
     sellerCallOutcome?: SellerCallOutcomeOmit
     aiPerformanceMetric?: AiPerformanceMetricOmit
     aiJob?: AiJobOmit
@@ -9059,6 +9150,10 @@ export namespace Prisma {
     doNotContact: boolean | null
     optOutReason: string | null
     optOutAt: Date | null
+    consentStatus: string | null
+    contactPermission: string | null
+    consentSource: string | null
+    consentAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -9091,6 +9186,10 @@ export namespace Prisma {
     doNotContact: boolean | null
     optOutReason: string | null
     optOutAt: Date | null
+    consentStatus: string | null
+    contactPermission: string | null
+    consentSource: string | null
+    consentAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -9123,6 +9222,10 @@ export namespace Prisma {
     doNotContact: number
     optOutReason: number
     optOutAt: number
+    consentStatus: number
+    contactPermission: number
+    consentSource: number
+    consentAt: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -9169,6 +9272,10 @@ export namespace Prisma {
     doNotContact?: true
     optOutReason?: true
     optOutAt?: true
+    consentStatus?: true
+    contactPermission?: true
+    consentSource?: true
+    consentAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -9201,6 +9308,10 @@ export namespace Prisma {
     doNotContact?: true
     optOutReason?: true
     optOutAt?: true
+    consentStatus?: true
+    contactPermission?: true
+    consentSource?: true
+    consentAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -9233,6 +9344,10 @@ export namespace Prisma {
     doNotContact?: true
     optOutReason?: true
     optOutAt?: true
+    consentStatus?: true
+    contactPermission?: true
+    consentSource?: true
+    consentAt?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -9352,6 +9467,10 @@ export namespace Prisma {
     doNotContact: boolean
     optOutReason: string | null
     optOutAt: Date | null
+    consentStatus: string
+    contactPermission: string
+    consentSource: string | null
+    consentAt: Date | null
     createdAt: Date
     updatedAt: Date
     _count: LeadCountAggregateOutputType | null
@@ -9403,6 +9522,10 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: boolean
     optOutAt?: boolean
+    consentStatus?: boolean
+    contactPermission?: boolean
+    consentSource?: boolean
+    consentAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     marketingSalesAttributions?: boolean | Lead$marketingSalesAttributionsArgs<ExtArgs>
@@ -9445,6 +9568,10 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: boolean
     optOutAt?: boolean
+    consentStatus?: boolean
+    contactPermission?: boolean
+    consentSource?: boolean
+    consentAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["lead"]>
@@ -9477,6 +9604,10 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: boolean
     optOutAt?: boolean
+    consentStatus?: boolean
+    contactPermission?: boolean
+    consentSource?: boolean
+    consentAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["lead"]>
@@ -9509,11 +9640,15 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: boolean
     optOutAt?: boolean
+    consentStatus?: boolean
+    contactPermission?: boolean
+    consentSource?: boolean
+    consentAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type LeadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "name" | "phone" | "propertyAddress" | "source" | "status" | "score" | "priority" | "notes" | "payload" | "lastContactedAt" | "nextFollowUpAt" | "followUpCount" | "lastFollowUpMessage" | "automationStatus" | "approvalStatus" | "isHot" | "lastSellerReply" | "lastSellerReplyAt" | "lastSellerReplyIntent" | "lastSellerReplyConfidence" | "suggestedReply" | "requiresHumanApproval" | "doNotContact" | "optOutReason" | "optOutAt" | "createdAt" | "updatedAt", ExtArgs["result"]["lead"]>
+  export type LeadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "name" | "phone" | "propertyAddress" | "source" | "status" | "score" | "priority" | "notes" | "payload" | "lastContactedAt" | "nextFollowUpAt" | "followUpCount" | "lastFollowUpMessage" | "automationStatus" | "approvalStatus" | "isHot" | "lastSellerReply" | "lastSellerReplyAt" | "lastSellerReplyIntent" | "lastSellerReplyConfidence" | "suggestedReply" | "requiresHumanApproval" | "doNotContact" | "optOutReason" | "optOutAt" | "consentStatus" | "contactPermission" | "consentSource" | "consentAt" | "createdAt" | "updatedAt", ExtArgs["result"]["lead"]>
   export type LeadInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     marketingSalesAttributions?: boolean | Lead$marketingSalesAttributionsArgs<ExtArgs>
     salesConversionAssists?: boolean | Lead$salesConversionAssistsArgs<ExtArgs>
@@ -9570,6 +9705,10 @@ export namespace Prisma {
       doNotContact: boolean
       optOutReason: string | null
       optOutAt: Date | null
+      consentStatus: string
+      contactPermission: string
+      consentSource: string | null
+      consentAt: Date | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["lead"]>
@@ -10031,6 +10170,10 @@ export namespace Prisma {
     readonly doNotContact: FieldRef<"Lead", 'Boolean'>
     readonly optOutReason: FieldRef<"Lead", 'String'>
     readonly optOutAt: FieldRef<"Lead", 'DateTime'>
+    readonly consentStatus: FieldRef<"Lead", 'String'>
+    readonly contactPermission: FieldRef<"Lead", 'String'>
+    readonly consentSource: FieldRef<"Lead", 'String'>
+    readonly consentAt: FieldRef<"Lead", 'DateTime'>
     readonly createdAt: FieldRef<"Lead", 'DateTime'>
     readonly updatedAt: FieldRef<"Lead", 'DateTime'>
   }
@@ -43744,6 +43887,7 @@ export namespace Prisma {
     sent: boolean | null
     published: boolean | null
     liveExecutionAllowed: boolean | null
+    idempotencyKey: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -43764,6 +43908,7 @@ export namespace Prisma {
     sent: boolean | null
     published: boolean | null
     liveExecutionAllowed: boolean | null
+    idempotencyKey: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -43786,6 +43931,7 @@ export namespace Prisma {
     sent: number
     published: number
     liveExecutionAllowed: number
+    idempotencyKey: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -43808,6 +43954,7 @@ export namespace Prisma {
     sent?: true
     published?: true
     liveExecutionAllowed?: true
+    idempotencyKey?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -43828,6 +43975,7 @@ export namespace Prisma {
     sent?: true
     published?: true
     liveExecutionAllowed?: true
+    idempotencyKey?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -43850,6 +43998,7 @@ export namespace Prisma {
     sent?: true
     published?: true
     liveExecutionAllowed?: true
+    idempotencyKey?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -43945,6 +44094,7 @@ export namespace Prisma {
     sent: boolean
     published: boolean
     liveExecutionAllowed: boolean
+    idempotencyKey: string | null
     createdAt: Date
     updatedAt: Date
     _count: UnifiedApprovalItemCountAggregateOutputType | null
@@ -43984,6 +44134,7 @@ export namespace Prisma {
     sent?: boolean
     published?: boolean
     liveExecutionAllowed?: boolean
+    idempotencyKey?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     decisions?: boolean | UnifiedApprovalItem$decisionsArgs<ExtArgs>
@@ -44008,6 +44159,7 @@ export namespace Prisma {
     sent?: boolean
     published?: boolean
     liveExecutionAllowed?: boolean
+    idempotencyKey?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["unifiedApprovalItem"]>
@@ -44030,6 +44182,7 @@ export namespace Prisma {
     sent?: boolean
     published?: boolean
     liveExecutionAllowed?: boolean
+    idempotencyKey?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["unifiedApprovalItem"]>
@@ -44052,11 +44205,12 @@ export namespace Prisma {
     sent?: boolean
     published?: boolean
     liveExecutionAllowed?: boolean
+    idempotencyKey?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UnifiedApprovalItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "itemType" | "sourceType" | "sourceId" | "title" | "sourceLabel" | "status" | "riskLevel" | "requiredApprovals" | "connectorId" | "executionBlockedReason" | "payload" | "providerCalled" | "sent" | "published" | "liveExecutionAllowed" | "createdAt" | "updatedAt", ExtArgs["result"]["unifiedApprovalItem"]>
+  export type UnifiedApprovalItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "itemType" | "sourceType" | "sourceId" | "title" | "sourceLabel" | "status" | "riskLevel" | "requiredApprovals" | "connectorId" | "executionBlockedReason" | "payload" | "providerCalled" | "sent" | "published" | "liveExecutionAllowed" | "idempotencyKey" | "createdAt" | "updatedAt", ExtArgs["result"]["unifiedApprovalItem"]>
   export type UnifiedApprovalItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     decisions?: boolean | UnifiedApprovalItem$decisionsArgs<ExtArgs>
     _count?: boolean | UnifiedApprovalItemCountOutputTypeDefaultArgs<ExtArgs>
@@ -44087,6 +44241,7 @@ export namespace Prisma {
       sent: boolean
       published: boolean
       liveExecutionAllowed: boolean
+      idempotencyKey: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["unifiedApprovalItem"]>
@@ -44530,6 +44685,7 @@ export namespace Prisma {
     readonly sent: FieldRef<"UnifiedApprovalItem", 'Boolean'>
     readonly published: FieldRef<"UnifiedApprovalItem", 'Boolean'>
     readonly liveExecutionAllowed: FieldRef<"UnifiedApprovalItem", 'Boolean'>
+    readonly idempotencyKey: FieldRef<"UnifiedApprovalItem", 'String'>
     readonly createdAt: FieldRef<"UnifiedApprovalItem", 'DateTime'>
     readonly updatedAt: FieldRef<"UnifiedApprovalItem", 'DateTime'>
   }
@@ -70264,6 +70420,13 @@ export namespace Prisma {
     captureContext: string | null
     intakeStatus: string | null
     manualReviewStatus: string | null
+    idempotencyKey: string | null
+    consentStatus: string | null
+    contactPermission: string | null
+    doNotContact: boolean | null
+    optOutReason: string | null
+    consentSource: string | null
+    consentAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -70286,6 +70449,13 @@ export namespace Prisma {
     captureContext: string | null
     intakeStatus: string | null
     manualReviewStatus: string | null
+    idempotencyKey: string | null
+    consentStatus: string | null
+    contactPermission: string | null
+    doNotContact: boolean | null
+    optOutReason: string | null
+    consentSource: string | null
+    consentAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -70309,6 +70479,13 @@ export namespace Prisma {
     intakeStatus: number
     manualReviewStatus: number
     safetyFlags: number
+    idempotencyKey: number
+    consentStatus: number
+    contactPermission: number
+    doNotContact: number
+    optOutReason: number
+    consentSource: number
+    consentAt: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -70333,6 +70510,13 @@ export namespace Prisma {
     captureContext?: true
     intakeStatus?: true
     manualReviewStatus?: true
+    idempotencyKey?: true
+    consentStatus?: true
+    contactPermission?: true
+    doNotContact?: true
+    optOutReason?: true
+    consentSource?: true
+    consentAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -70355,6 +70539,13 @@ export namespace Prisma {
     captureContext?: true
     intakeStatus?: true
     manualReviewStatus?: true
+    idempotencyKey?: true
+    consentStatus?: true
+    contactPermission?: true
+    doNotContact?: true
+    optOutReason?: true
+    consentSource?: true
+    consentAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -70378,6 +70569,13 @@ export namespace Prisma {
     intakeStatus?: true
     manualReviewStatus?: true
     safetyFlags?: true
+    idempotencyKey?: true
+    consentStatus?: true
+    contactPermission?: true
+    doNotContact?: true
+    optOutReason?: true
+    consentSource?: true
+    consentAt?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -70474,6 +70672,13 @@ export namespace Prisma {
     intakeStatus: string
     manualReviewStatus: string
     safetyFlags: JsonValue
+    idempotencyKey: string | null
+    consentStatus: string
+    contactPermission: string
+    doNotContact: boolean
+    optOutReason: string | null
+    consentSource: string | null
+    consentAt: Date | null
     createdAt: Date
     updatedAt: Date
     _count: ManualLeadIntakeCountAggregateOutputType | null
@@ -70514,6 +70719,13 @@ export namespace Prisma {
     intakeStatus?: boolean
     manualReviewStatus?: boolean
     safetyFlags?: boolean
+    idempotencyKey?: boolean
+    consentStatus?: boolean
+    contactPermission?: boolean
+    doNotContact?: boolean
+    optOutReason?: boolean
+    consentSource?: boolean
+    consentAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     lead?: boolean | ManualLeadIntake$leadArgs<ExtArgs>
@@ -70538,6 +70750,13 @@ export namespace Prisma {
     intakeStatus?: boolean
     manualReviewStatus?: boolean
     safetyFlags?: boolean
+    idempotencyKey?: boolean
+    consentStatus?: boolean
+    contactPermission?: boolean
+    doNotContact?: boolean
+    optOutReason?: boolean
+    consentSource?: boolean
+    consentAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     lead?: boolean | ManualLeadIntake$leadArgs<ExtArgs>
@@ -70562,6 +70781,13 @@ export namespace Prisma {
     intakeStatus?: boolean
     manualReviewStatus?: boolean
     safetyFlags?: boolean
+    idempotencyKey?: boolean
+    consentStatus?: boolean
+    contactPermission?: boolean
+    doNotContact?: boolean
+    optOutReason?: boolean
+    consentSource?: boolean
+    consentAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     lead?: boolean | ManualLeadIntake$leadArgs<ExtArgs>
@@ -70586,11 +70812,18 @@ export namespace Prisma {
     intakeStatus?: boolean
     manualReviewStatus?: boolean
     safetyFlags?: boolean
+    idempotencyKey?: boolean
+    consentStatus?: boolean
+    contactPermission?: boolean
+    doNotContact?: boolean
+    optOutReason?: boolean
+    consentSource?: boolean
+    consentAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ManualLeadIntakeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "leadId" | "source" | "sourceLabel" | "sellerName" | "phone" | "email" | "socialHandle" | "propertyAddress" | "city" | "state" | "zipCode" | "notes" | "captureContext" | "intakeStatus" | "manualReviewStatus" | "safetyFlags" | "createdAt" | "updatedAt", ExtArgs["result"]["manualLeadIntake"]>
+  export type ManualLeadIntakeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "leadId" | "source" | "sourceLabel" | "sellerName" | "phone" | "email" | "socialHandle" | "propertyAddress" | "city" | "state" | "zipCode" | "notes" | "captureContext" | "intakeStatus" | "manualReviewStatus" | "safetyFlags" | "idempotencyKey" | "consentStatus" | "contactPermission" | "doNotContact" | "optOutReason" | "consentSource" | "consentAt" | "createdAt" | "updatedAt", ExtArgs["result"]["manualLeadIntake"]>
   export type ManualLeadIntakeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     lead?: boolean | ManualLeadIntake$leadArgs<ExtArgs>
   }
@@ -70625,6 +70858,13 @@ export namespace Prisma {
       intakeStatus: string
       manualReviewStatus: string
       safetyFlags: Prisma.JsonValue
+      idempotencyKey: string | null
+      consentStatus: string
+      contactPermission: string
+      doNotContact: boolean
+      optOutReason: string | null
+      consentSource: string | null
+      consentAt: Date | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["manualLeadIntake"]>
@@ -71069,6 +71309,13 @@ export namespace Prisma {
     readonly intakeStatus: FieldRef<"ManualLeadIntake", 'String'>
     readonly manualReviewStatus: FieldRef<"ManualLeadIntake", 'String'>
     readonly safetyFlags: FieldRef<"ManualLeadIntake", 'Json'>
+    readonly idempotencyKey: FieldRef<"ManualLeadIntake", 'String'>
+    readonly consentStatus: FieldRef<"ManualLeadIntake", 'String'>
+    readonly contactPermission: FieldRef<"ManualLeadIntake", 'String'>
+    readonly doNotContact: FieldRef<"ManualLeadIntake", 'Boolean'>
+    readonly optOutReason: FieldRef<"ManualLeadIntake", 'String'>
+    readonly consentSource: FieldRef<"ManualLeadIntake", 'String'>
+    readonly consentAt: FieldRef<"ManualLeadIntake", 'DateTime'>
     readonly createdAt: FieldRef<"ManualLeadIntake", 'DateTime'>
     readonly updatedAt: FieldRef<"ManualLeadIntake", 'DateTime'>
   }
@@ -71501,6 +71748,1048 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ManualLeadIntakeInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PublicIntakeRateLimit
+   */
+
+  export type AggregatePublicIntakeRateLimit = {
+    _count: PublicIntakeRateLimitCountAggregateOutputType | null
+    _avg: PublicIntakeRateLimitAvgAggregateOutputType | null
+    _sum: PublicIntakeRateLimitSumAggregateOutputType | null
+    _min: PublicIntakeRateLimitMinAggregateOutputType | null
+    _max: PublicIntakeRateLimitMaxAggregateOutputType | null
+  }
+
+  export type PublicIntakeRateLimitAvgAggregateOutputType = {
+    attempts: number | null
+  }
+
+  export type PublicIntakeRateLimitSumAggregateOutputType = {
+    attempts: number | null
+  }
+
+  export type PublicIntakeRateLimitMinAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    fingerprint: string | null
+    windowStart: Date | null
+    attempts: number | null
+    updatedAt: Date | null
+  }
+
+  export type PublicIntakeRateLimitMaxAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    fingerprint: string | null
+    windowStart: Date | null
+    attempts: number | null
+    updatedAt: Date | null
+  }
+
+  export type PublicIntakeRateLimitCountAggregateOutputType = {
+    id: number
+    tenantId: number
+    fingerprint: number
+    windowStart: number
+    attempts: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PublicIntakeRateLimitAvgAggregateInputType = {
+    attempts?: true
+  }
+
+  export type PublicIntakeRateLimitSumAggregateInputType = {
+    attempts?: true
+  }
+
+  export type PublicIntakeRateLimitMinAggregateInputType = {
+    id?: true
+    tenantId?: true
+    fingerprint?: true
+    windowStart?: true
+    attempts?: true
+    updatedAt?: true
+  }
+
+  export type PublicIntakeRateLimitMaxAggregateInputType = {
+    id?: true
+    tenantId?: true
+    fingerprint?: true
+    windowStart?: true
+    attempts?: true
+    updatedAt?: true
+  }
+
+  export type PublicIntakeRateLimitCountAggregateInputType = {
+    id?: true
+    tenantId?: true
+    fingerprint?: true
+    windowStart?: true
+    attempts?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PublicIntakeRateLimitAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PublicIntakeRateLimit to aggregate.
+     */
+    where?: PublicIntakeRateLimitWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PublicIntakeRateLimits to fetch.
+     */
+    orderBy?: PublicIntakeRateLimitOrderByWithRelationInput | PublicIntakeRateLimitOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PublicIntakeRateLimitWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PublicIntakeRateLimits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PublicIntakeRateLimits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PublicIntakeRateLimits
+    **/
+    _count?: true | PublicIntakeRateLimitCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PublicIntakeRateLimitAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PublicIntakeRateLimitSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PublicIntakeRateLimitMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PublicIntakeRateLimitMaxAggregateInputType
+  }
+
+  export type GetPublicIntakeRateLimitAggregateType<T extends PublicIntakeRateLimitAggregateArgs> = {
+        [P in keyof T & keyof AggregatePublicIntakeRateLimit]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePublicIntakeRateLimit[P]>
+      : GetScalarType<T[P], AggregatePublicIntakeRateLimit[P]>
+  }
+
+
+
+
+  export type PublicIntakeRateLimitGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PublicIntakeRateLimitWhereInput
+    orderBy?: PublicIntakeRateLimitOrderByWithAggregationInput | PublicIntakeRateLimitOrderByWithAggregationInput[]
+    by: PublicIntakeRateLimitScalarFieldEnum[] | PublicIntakeRateLimitScalarFieldEnum
+    having?: PublicIntakeRateLimitScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PublicIntakeRateLimitCountAggregateInputType | true
+    _avg?: PublicIntakeRateLimitAvgAggregateInputType
+    _sum?: PublicIntakeRateLimitSumAggregateInputType
+    _min?: PublicIntakeRateLimitMinAggregateInputType
+    _max?: PublicIntakeRateLimitMaxAggregateInputType
+  }
+
+  export type PublicIntakeRateLimitGroupByOutputType = {
+    id: string
+    tenantId: string
+    fingerprint: string
+    windowStart: Date
+    attempts: number
+    updatedAt: Date
+    _count: PublicIntakeRateLimitCountAggregateOutputType | null
+    _avg: PublicIntakeRateLimitAvgAggregateOutputType | null
+    _sum: PublicIntakeRateLimitSumAggregateOutputType | null
+    _min: PublicIntakeRateLimitMinAggregateOutputType | null
+    _max: PublicIntakeRateLimitMaxAggregateOutputType | null
+  }
+
+  type GetPublicIntakeRateLimitGroupByPayload<T extends PublicIntakeRateLimitGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PublicIntakeRateLimitGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PublicIntakeRateLimitGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PublicIntakeRateLimitGroupByOutputType[P]>
+            : GetScalarType<T[P], PublicIntakeRateLimitGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PublicIntakeRateLimitSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    fingerprint?: boolean
+    windowStart?: boolean
+    attempts?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["publicIntakeRateLimit"]>
+
+  export type PublicIntakeRateLimitSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    fingerprint?: boolean
+    windowStart?: boolean
+    attempts?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["publicIntakeRateLimit"]>
+
+  export type PublicIntakeRateLimitSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    fingerprint?: boolean
+    windowStart?: boolean
+    attempts?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["publicIntakeRateLimit"]>
+
+  export type PublicIntakeRateLimitSelectScalar = {
+    id?: boolean
+    tenantId?: boolean
+    fingerprint?: boolean
+    windowStart?: boolean
+    attempts?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PublicIntakeRateLimitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "fingerprint" | "windowStart" | "attempts" | "updatedAt", ExtArgs["result"]["publicIntakeRateLimit"]>
+
+  export type $PublicIntakeRateLimitPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PublicIntakeRateLimit"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenantId: string
+      fingerprint: string
+      windowStart: Date
+      attempts: number
+      updatedAt: Date
+    }, ExtArgs["result"]["publicIntakeRateLimit"]>
+    composites: {}
+  }
+
+  type PublicIntakeRateLimitGetPayload<S extends boolean | null | undefined | PublicIntakeRateLimitDefaultArgs> = $Result.GetResult<Prisma.$PublicIntakeRateLimitPayload, S>
+
+  type PublicIntakeRateLimitCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PublicIntakeRateLimitFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PublicIntakeRateLimitCountAggregateInputType | true
+    }
+
+  export interface PublicIntakeRateLimitDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PublicIntakeRateLimit'], meta: { name: 'PublicIntakeRateLimit' } }
+    /**
+     * Find zero or one PublicIntakeRateLimit that matches the filter.
+     * @param {PublicIntakeRateLimitFindUniqueArgs} args - Arguments to find a PublicIntakeRateLimit
+     * @example
+     * // Get one PublicIntakeRateLimit
+     * const publicIntakeRateLimit = await prisma.publicIntakeRateLimit.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PublicIntakeRateLimitFindUniqueArgs>(args: SelectSubset<T, PublicIntakeRateLimitFindUniqueArgs<ExtArgs>>): Prisma__PublicIntakeRateLimitClient<$Result.GetResult<Prisma.$PublicIntakeRateLimitPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PublicIntakeRateLimit that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PublicIntakeRateLimitFindUniqueOrThrowArgs} args - Arguments to find a PublicIntakeRateLimit
+     * @example
+     * // Get one PublicIntakeRateLimit
+     * const publicIntakeRateLimit = await prisma.publicIntakeRateLimit.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PublicIntakeRateLimitFindUniqueOrThrowArgs>(args: SelectSubset<T, PublicIntakeRateLimitFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PublicIntakeRateLimitClient<$Result.GetResult<Prisma.$PublicIntakeRateLimitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PublicIntakeRateLimit that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PublicIntakeRateLimitFindFirstArgs} args - Arguments to find a PublicIntakeRateLimit
+     * @example
+     * // Get one PublicIntakeRateLimit
+     * const publicIntakeRateLimit = await prisma.publicIntakeRateLimit.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PublicIntakeRateLimitFindFirstArgs>(args?: SelectSubset<T, PublicIntakeRateLimitFindFirstArgs<ExtArgs>>): Prisma__PublicIntakeRateLimitClient<$Result.GetResult<Prisma.$PublicIntakeRateLimitPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PublicIntakeRateLimit that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PublicIntakeRateLimitFindFirstOrThrowArgs} args - Arguments to find a PublicIntakeRateLimit
+     * @example
+     * // Get one PublicIntakeRateLimit
+     * const publicIntakeRateLimit = await prisma.publicIntakeRateLimit.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PublicIntakeRateLimitFindFirstOrThrowArgs>(args?: SelectSubset<T, PublicIntakeRateLimitFindFirstOrThrowArgs<ExtArgs>>): Prisma__PublicIntakeRateLimitClient<$Result.GetResult<Prisma.$PublicIntakeRateLimitPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PublicIntakeRateLimits that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PublicIntakeRateLimitFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PublicIntakeRateLimits
+     * const publicIntakeRateLimits = await prisma.publicIntakeRateLimit.findMany()
+     * 
+     * // Get first 10 PublicIntakeRateLimits
+     * const publicIntakeRateLimits = await prisma.publicIntakeRateLimit.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const publicIntakeRateLimitWithIdOnly = await prisma.publicIntakeRateLimit.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PublicIntakeRateLimitFindManyArgs>(args?: SelectSubset<T, PublicIntakeRateLimitFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PublicIntakeRateLimitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PublicIntakeRateLimit.
+     * @param {PublicIntakeRateLimitCreateArgs} args - Arguments to create a PublicIntakeRateLimit.
+     * @example
+     * // Create one PublicIntakeRateLimit
+     * const PublicIntakeRateLimit = await prisma.publicIntakeRateLimit.create({
+     *   data: {
+     *     // ... data to create a PublicIntakeRateLimit
+     *   }
+     * })
+     * 
+     */
+    create<T extends PublicIntakeRateLimitCreateArgs>(args: SelectSubset<T, PublicIntakeRateLimitCreateArgs<ExtArgs>>): Prisma__PublicIntakeRateLimitClient<$Result.GetResult<Prisma.$PublicIntakeRateLimitPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PublicIntakeRateLimits.
+     * @param {PublicIntakeRateLimitCreateManyArgs} args - Arguments to create many PublicIntakeRateLimits.
+     * @example
+     * // Create many PublicIntakeRateLimits
+     * const publicIntakeRateLimit = await prisma.publicIntakeRateLimit.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PublicIntakeRateLimitCreateManyArgs>(args?: SelectSubset<T, PublicIntakeRateLimitCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PublicIntakeRateLimits and returns the data saved in the database.
+     * @param {PublicIntakeRateLimitCreateManyAndReturnArgs} args - Arguments to create many PublicIntakeRateLimits.
+     * @example
+     * // Create many PublicIntakeRateLimits
+     * const publicIntakeRateLimit = await prisma.publicIntakeRateLimit.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PublicIntakeRateLimits and only return the `id`
+     * const publicIntakeRateLimitWithIdOnly = await prisma.publicIntakeRateLimit.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PublicIntakeRateLimitCreateManyAndReturnArgs>(args?: SelectSubset<T, PublicIntakeRateLimitCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PublicIntakeRateLimitPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PublicIntakeRateLimit.
+     * @param {PublicIntakeRateLimitDeleteArgs} args - Arguments to delete one PublicIntakeRateLimit.
+     * @example
+     * // Delete one PublicIntakeRateLimit
+     * const PublicIntakeRateLimit = await prisma.publicIntakeRateLimit.delete({
+     *   where: {
+     *     // ... filter to delete one PublicIntakeRateLimit
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PublicIntakeRateLimitDeleteArgs>(args: SelectSubset<T, PublicIntakeRateLimitDeleteArgs<ExtArgs>>): Prisma__PublicIntakeRateLimitClient<$Result.GetResult<Prisma.$PublicIntakeRateLimitPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PublicIntakeRateLimit.
+     * @param {PublicIntakeRateLimitUpdateArgs} args - Arguments to update one PublicIntakeRateLimit.
+     * @example
+     * // Update one PublicIntakeRateLimit
+     * const publicIntakeRateLimit = await prisma.publicIntakeRateLimit.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PublicIntakeRateLimitUpdateArgs>(args: SelectSubset<T, PublicIntakeRateLimitUpdateArgs<ExtArgs>>): Prisma__PublicIntakeRateLimitClient<$Result.GetResult<Prisma.$PublicIntakeRateLimitPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PublicIntakeRateLimits.
+     * @param {PublicIntakeRateLimitDeleteManyArgs} args - Arguments to filter PublicIntakeRateLimits to delete.
+     * @example
+     * // Delete a few PublicIntakeRateLimits
+     * const { count } = await prisma.publicIntakeRateLimit.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PublicIntakeRateLimitDeleteManyArgs>(args?: SelectSubset<T, PublicIntakeRateLimitDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PublicIntakeRateLimits.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PublicIntakeRateLimitUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PublicIntakeRateLimits
+     * const publicIntakeRateLimit = await prisma.publicIntakeRateLimit.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PublicIntakeRateLimitUpdateManyArgs>(args: SelectSubset<T, PublicIntakeRateLimitUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PublicIntakeRateLimits and returns the data updated in the database.
+     * @param {PublicIntakeRateLimitUpdateManyAndReturnArgs} args - Arguments to update many PublicIntakeRateLimits.
+     * @example
+     * // Update many PublicIntakeRateLimits
+     * const publicIntakeRateLimit = await prisma.publicIntakeRateLimit.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PublicIntakeRateLimits and only return the `id`
+     * const publicIntakeRateLimitWithIdOnly = await prisma.publicIntakeRateLimit.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PublicIntakeRateLimitUpdateManyAndReturnArgs>(args: SelectSubset<T, PublicIntakeRateLimitUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PublicIntakeRateLimitPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PublicIntakeRateLimit.
+     * @param {PublicIntakeRateLimitUpsertArgs} args - Arguments to update or create a PublicIntakeRateLimit.
+     * @example
+     * // Update or create a PublicIntakeRateLimit
+     * const publicIntakeRateLimit = await prisma.publicIntakeRateLimit.upsert({
+     *   create: {
+     *     // ... data to create a PublicIntakeRateLimit
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PublicIntakeRateLimit we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PublicIntakeRateLimitUpsertArgs>(args: SelectSubset<T, PublicIntakeRateLimitUpsertArgs<ExtArgs>>): Prisma__PublicIntakeRateLimitClient<$Result.GetResult<Prisma.$PublicIntakeRateLimitPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PublicIntakeRateLimits.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PublicIntakeRateLimitCountArgs} args - Arguments to filter PublicIntakeRateLimits to count.
+     * @example
+     * // Count the number of PublicIntakeRateLimits
+     * const count = await prisma.publicIntakeRateLimit.count({
+     *   where: {
+     *     // ... the filter for the PublicIntakeRateLimits we want to count
+     *   }
+     * })
+    **/
+    count<T extends PublicIntakeRateLimitCountArgs>(
+      args?: Subset<T, PublicIntakeRateLimitCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PublicIntakeRateLimitCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PublicIntakeRateLimit.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PublicIntakeRateLimitAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PublicIntakeRateLimitAggregateArgs>(args: Subset<T, PublicIntakeRateLimitAggregateArgs>): Prisma.PrismaPromise<GetPublicIntakeRateLimitAggregateType<T>>
+
+    /**
+     * Group by PublicIntakeRateLimit.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PublicIntakeRateLimitGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PublicIntakeRateLimitGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PublicIntakeRateLimitGroupByArgs['orderBy'] }
+        : { orderBy?: PublicIntakeRateLimitGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PublicIntakeRateLimitGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPublicIntakeRateLimitGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PublicIntakeRateLimit model
+   */
+  readonly fields: PublicIntakeRateLimitFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PublicIntakeRateLimit.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PublicIntakeRateLimitClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PublicIntakeRateLimit model
+   */
+  interface PublicIntakeRateLimitFieldRefs {
+    readonly id: FieldRef<"PublicIntakeRateLimit", 'String'>
+    readonly tenantId: FieldRef<"PublicIntakeRateLimit", 'String'>
+    readonly fingerprint: FieldRef<"PublicIntakeRateLimit", 'String'>
+    readonly windowStart: FieldRef<"PublicIntakeRateLimit", 'DateTime'>
+    readonly attempts: FieldRef<"PublicIntakeRateLimit", 'Int'>
+    readonly updatedAt: FieldRef<"PublicIntakeRateLimit", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PublicIntakeRateLimit findUnique
+   */
+  export type PublicIntakeRateLimitFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicIntakeRateLimit
+     */
+    select?: PublicIntakeRateLimitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicIntakeRateLimit
+     */
+    omit?: PublicIntakeRateLimitOmit<ExtArgs> | null
+    /**
+     * Filter, which PublicIntakeRateLimit to fetch.
+     */
+    where: PublicIntakeRateLimitWhereUniqueInput
+  }
+
+  /**
+   * PublicIntakeRateLimit findUniqueOrThrow
+   */
+  export type PublicIntakeRateLimitFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicIntakeRateLimit
+     */
+    select?: PublicIntakeRateLimitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicIntakeRateLimit
+     */
+    omit?: PublicIntakeRateLimitOmit<ExtArgs> | null
+    /**
+     * Filter, which PublicIntakeRateLimit to fetch.
+     */
+    where: PublicIntakeRateLimitWhereUniqueInput
+  }
+
+  /**
+   * PublicIntakeRateLimit findFirst
+   */
+  export type PublicIntakeRateLimitFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicIntakeRateLimit
+     */
+    select?: PublicIntakeRateLimitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicIntakeRateLimit
+     */
+    omit?: PublicIntakeRateLimitOmit<ExtArgs> | null
+    /**
+     * Filter, which PublicIntakeRateLimit to fetch.
+     */
+    where?: PublicIntakeRateLimitWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PublicIntakeRateLimits to fetch.
+     */
+    orderBy?: PublicIntakeRateLimitOrderByWithRelationInput | PublicIntakeRateLimitOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PublicIntakeRateLimits.
+     */
+    cursor?: PublicIntakeRateLimitWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PublicIntakeRateLimits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PublicIntakeRateLimits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PublicIntakeRateLimits.
+     */
+    distinct?: PublicIntakeRateLimitScalarFieldEnum | PublicIntakeRateLimitScalarFieldEnum[]
+  }
+
+  /**
+   * PublicIntakeRateLimit findFirstOrThrow
+   */
+  export type PublicIntakeRateLimitFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicIntakeRateLimit
+     */
+    select?: PublicIntakeRateLimitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicIntakeRateLimit
+     */
+    omit?: PublicIntakeRateLimitOmit<ExtArgs> | null
+    /**
+     * Filter, which PublicIntakeRateLimit to fetch.
+     */
+    where?: PublicIntakeRateLimitWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PublicIntakeRateLimits to fetch.
+     */
+    orderBy?: PublicIntakeRateLimitOrderByWithRelationInput | PublicIntakeRateLimitOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PublicIntakeRateLimits.
+     */
+    cursor?: PublicIntakeRateLimitWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PublicIntakeRateLimits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PublicIntakeRateLimits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PublicIntakeRateLimits.
+     */
+    distinct?: PublicIntakeRateLimitScalarFieldEnum | PublicIntakeRateLimitScalarFieldEnum[]
+  }
+
+  /**
+   * PublicIntakeRateLimit findMany
+   */
+  export type PublicIntakeRateLimitFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicIntakeRateLimit
+     */
+    select?: PublicIntakeRateLimitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicIntakeRateLimit
+     */
+    omit?: PublicIntakeRateLimitOmit<ExtArgs> | null
+    /**
+     * Filter, which PublicIntakeRateLimits to fetch.
+     */
+    where?: PublicIntakeRateLimitWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PublicIntakeRateLimits to fetch.
+     */
+    orderBy?: PublicIntakeRateLimitOrderByWithRelationInput | PublicIntakeRateLimitOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PublicIntakeRateLimits.
+     */
+    cursor?: PublicIntakeRateLimitWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PublicIntakeRateLimits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PublicIntakeRateLimits.
+     */
+    skip?: number
+    distinct?: PublicIntakeRateLimitScalarFieldEnum | PublicIntakeRateLimitScalarFieldEnum[]
+  }
+
+  /**
+   * PublicIntakeRateLimit create
+   */
+  export type PublicIntakeRateLimitCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicIntakeRateLimit
+     */
+    select?: PublicIntakeRateLimitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicIntakeRateLimit
+     */
+    omit?: PublicIntakeRateLimitOmit<ExtArgs> | null
+    /**
+     * The data needed to create a PublicIntakeRateLimit.
+     */
+    data: XOR<PublicIntakeRateLimitCreateInput, PublicIntakeRateLimitUncheckedCreateInput>
+  }
+
+  /**
+   * PublicIntakeRateLimit createMany
+   */
+  export type PublicIntakeRateLimitCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PublicIntakeRateLimits.
+     */
+    data: PublicIntakeRateLimitCreateManyInput | PublicIntakeRateLimitCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PublicIntakeRateLimit createManyAndReturn
+   */
+  export type PublicIntakeRateLimitCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicIntakeRateLimit
+     */
+    select?: PublicIntakeRateLimitSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicIntakeRateLimit
+     */
+    omit?: PublicIntakeRateLimitOmit<ExtArgs> | null
+    /**
+     * The data used to create many PublicIntakeRateLimits.
+     */
+    data: PublicIntakeRateLimitCreateManyInput | PublicIntakeRateLimitCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PublicIntakeRateLimit update
+   */
+  export type PublicIntakeRateLimitUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicIntakeRateLimit
+     */
+    select?: PublicIntakeRateLimitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicIntakeRateLimit
+     */
+    omit?: PublicIntakeRateLimitOmit<ExtArgs> | null
+    /**
+     * The data needed to update a PublicIntakeRateLimit.
+     */
+    data: XOR<PublicIntakeRateLimitUpdateInput, PublicIntakeRateLimitUncheckedUpdateInput>
+    /**
+     * Choose, which PublicIntakeRateLimit to update.
+     */
+    where: PublicIntakeRateLimitWhereUniqueInput
+  }
+
+  /**
+   * PublicIntakeRateLimit updateMany
+   */
+  export type PublicIntakeRateLimitUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PublicIntakeRateLimits.
+     */
+    data: XOR<PublicIntakeRateLimitUpdateManyMutationInput, PublicIntakeRateLimitUncheckedUpdateManyInput>
+    /**
+     * Filter which PublicIntakeRateLimits to update
+     */
+    where?: PublicIntakeRateLimitWhereInput
+    /**
+     * Limit how many PublicIntakeRateLimits to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PublicIntakeRateLimit updateManyAndReturn
+   */
+  export type PublicIntakeRateLimitUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicIntakeRateLimit
+     */
+    select?: PublicIntakeRateLimitSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicIntakeRateLimit
+     */
+    omit?: PublicIntakeRateLimitOmit<ExtArgs> | null
+    /**
+     * The data used to update PublicIntakeRateLimits.
+     */
+    data: XOR<PublicIntakeRateLimitUpdateManyMutationInput, PublicIntakeRateLimitUncheckedUpdateManyInput>
+    /**
+     * Filter which PublicIntakeRateLimits to update
+     */
+    where?: PublicIntakeRateLimitWhereInput
+    /**
+     * Limit how many PublicIntakeRateLimits to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PublicIntakeRateLimit upsert
+   */
+  export type PublicIntakeRateLimitUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicIntakeRateLimit
+     */
+    select?: PublicIntakeRateLimitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicIntakeRateLimit
+     */
+    omit?: PublicIntakeRateLimitOmit<ExtArgs> | null
+    /**
+     * The filter to search for the PublicIntakeRateLimit to update in case it exists.
+     */
+    where: PublicIntakeRateLimitWhereUniqueInput
+    /**
+     * In case the PublicIntakeRateLimit found by the `where` argument doesn't exist, create a new PublicIntakeRateLimit with this data.
+     */
+    create: XOR<PublicIntakeRateLimitCreateInput, PublicIntakeRateLimitUncheckedCreateInput>
+    /**
+     * In case the PublicIntakeRateLimit was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PublicIntakeRateLimitUpdateInput, PublicIntakeRateLimitUncheckedUpdateInput>
+  }
+
+  /**
+   * PublicIntakeRateLimit delete
+   */
+  export type PublicIntakeRateLimitDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicIntakeRateLimit
+     */
+    select?: PublicIntakeRateLimitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicIntakeRateLimit
+     */
+    omit?: PublicIntakeRateLimitOmit<ExtArgs> | null
+    /**
+     * Filter which PublicIntakeRateLimit to delete.
+     */
+    where: PublicIntakeRateLimitWhereUniqueInput
+  }
+
+  /**
+   * PublicIntakeRateLimit deleteMany
+   */
+  export type PublicIntakeRateLimitDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PublicIntakeRateLimits to delete
+     */
+    where?: PublicIntakeRateLimitWhereInput
+    /**
+     * Limit how many PublicIntakeRateLimits to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PublicIntakeRateLimit without action
+   */
+  export type PublicIntakeRateLimitDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PublicIntakeRateLimit
+     */
+    select?: PublicIntakeRateLimitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PublicIntakeRateLimit
+     */
+    omit?: PublicIntakeRateLimitOmit<ExtArgs> | null
   }
 
 
@@ -106244,6 +107533,10 @@ export namespace Prisma {
     doNotContact: 'doNotContact',
     optOutReason: 'optOutReason',
     optOutAt: 'optOutAt',
+    consentStatus: 'consentStatus',
+    contactPermission: 'contactPermission',
+    consentSource: 'consentSource',
+    consentAt: 'consentAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -106879,6 +108172,7 @@ export namespace Prisma {
     sent: 'sent',
     published: 'published',
     liveExecutionAllowed: 'liveExecutionAllowed',
+    idempotencyKey: 'idempotencyKey',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -107384,11 +108678,30 @@ export namespace Prisma {
     intakeStatus: 'intakeStatus',
     manualReviewStatus: 'manualReviewStatus',
     safetyFlags: 'safetyFlags',
+    idempotencyKey: 'idempotencyKey',
+    consentStatus: 'consentStatus',
+    contactPermission: 'contactPermission',
+    doNotContact: 'doNotContact',
+    optOutReason: 'optOutReason',
+    consentSource: 'consentSource',
+    consentAt: 'consentAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
   export type ManualLeadIntakeScalarFieldEnum = (typeof ManualLeadIntakeScalarFieldEnum)[keyof typeof ManualLeadIntakeScalarFieldEnum]
+
+
+  export const PublicIntakeRateLimitScalarFieldEnum: {
+    id: 'id',
+    tenantId: 'tenantId',
+    fingerprint: 'fingerprint',
+    windowStart: 'windowStart',
+    attempts: 'attempts',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PublicIntakeRateLimitScalarFieldEnum = (typeof PublicIntakeRateLimitScalarFieldEnum)[keyof typeof PublicIntakeRateLimitScalarFieldEnum]
 
 
   export const SellerCallOutcomeScalarFieldEnum: {
@@ -108148,6 +109461,10 @@ export namespace Prisma {
     doNotContact?: BoolFilter<"Lead"> | boolean
     optOutReason?: StringNullableFilter<"Lead"> | string | null
     optOutAt?: DateTimeNullableFilter<"Lead"> | Date | string | null
+    consentStatus?: StringFilter<"Lead"> | string
+    contactPermission?: StringFilter<"Lead"> | string
+    consentSource?: StringNullableFilter<"Lead"> | string | null
+    consentAt?: DateTimeNullableFilter<"Lead"> | Date | string | null
     createdAt?: DateTimeFilter<"Lead"> | Date | string
     updatedAt?: DateTimeFilter<"Lead"> | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionListRelationFilter
@@ -108189,6 +109506,10 @@ export namespace Prisma {
     doNotContact?: SortOrder
     optOutReason?: SortOrderInput | SortOrder
     optOutAt?: SortOrderInput | SortOrder
+    consentStatus?: SortOrder
+    contactPermission?: SortOrder
+    consentSource?: SortOrderInput | SortOrder
+    consentAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     marketingSalesAttributions?: MarketingSalesAttributionOrderByRelationAggregateInput
@@ -108235,6 +109556,10 @@ export namespace Prisma {
     doNotContact?: BoolFilter<"Lead"> | boolean
     optOutReason?: StringNullableFilter<"Lead"> | string | null
     optOutAt?: DateTimeNullableFilter<"Lead"> | Date | string | null
+    consentStatus?: StringFilter<"Lead"> | string
+    contactPermission?: StringFilter<"Lead"> | string
+    consentSource?: StringNullableFilter<"Lead"> | string | null
+    consentAt?: DateTimeNullableFilter<"Lead"> | Date | string | null
     createdAt?: DateTimeFilter<"Lead"> | Date | string
     updatedAt?: DateTimeFilter<"Lead"> | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionListRelationFilter
@@ -108276,6 +109601,10 @@ export namespace Prisma {
     doNotContact?: SortOrder
     optOutReason?: SortOrderInput | SortOrder
     optOutAt?: SortOrderInput | SortOrder
+    consentStatus?: SortOrder
+    contactPermission?: SortOrder
+    consentSource?: SortOrderInput | SortOrder
+    consentAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: LeadCountOrderByAggregateInput
@@ -108316,6 +109645,10 @@ export namespace Prisma {
     doNotContact?: BoolWithAggregatesFilter<"Lead"> | boolean
     optOutReason?: StringNullableWithAggregatesFilter<"Lead"> | string | null
     optOutAt?: DateTimeNullableWithAggregatesFilter<"Lead"> | Date | string | null
+    consentStatus?: StringWithAggregatesFilter<"Lead"> | string
+    contactPermission?: StringWithAggregatesFilter<"Lead"> | string
+    consentSource?: StringNullableWithAggregatesFilter<"Lead"> | string | null
+    consentAt?: DateTimeNullableWithAggregatesFilter<"Lead"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Lead"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Lead"> | Date | string
   }
@@ -111389,6 +112722,7 @@ export namespace Prisma {
     sent?: BoolFilter<"UnifiedApprovalItem"> | boolean
     published?: BoolFilter<"UnifiedApprovalItem"> | boolean
     liveExecutionAllowed?: BoolFilter<"UnifiedApprovalItem"> | boolean
+    idempotencyKey?: StringNullableFilter<"UnifiedApprovalItem"> | string | null
     createdAt?: DateTimeFilter<"UnifiedApprovalItem"> | Date | string
     updatedAt?: DateTimeFilter<"UnifiedApprovalItem"> | Date | string
     decisions?: UnifiedApprovalDecisionListRelationFilter
@@ -111412,6 +112746,7 @@ export namespace Prisma {
     sent?: SortOrder
     published?: SortOrder
     liveExecutionAllowed?: SortOrder
+    idempotencyKey?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     decisions?: UnifiedApprovalDecisionOrderByRelationAggregateInput
@@ -111419,6 +112754,7 @@ export namespace Prisma {
 
   export type UnifiedApprovalItemWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    tenantId_idempotencyKey?: UnifiedApprovalItemTenantIdIdempotencyKeyCompoundUniqueInput
     AND?: UnifiedApprovalItemWhereInput | UnifiedApprovalItemWhereInput[]
     OR?: UnifiedApprovalItemWhereInput[]
     NOT?: UnifiedApprovalItemWhereInput | UnifiedApprovalItemWhereInput[]
@@ -111438,10 +112774,11 @@ export namespace Prisma {
     sent?: BoolFilter<"UnifiedApprovalItem"> | boolean
     published?: BoolFilter<"UnifiedApprovalItem"> | boolean
     liveExecutionAllowed?: BoolFilter<"UnifiedApprovalItem"> | boolean
+    idempotencyKey?: StringNullableFilter<"UnifiedApprovalItem"> | string | null
     createdAt?: DateTimeFilter<"UnifiedApprovalItem"> | Date | string
     updatedAt?: DateTimeFilter<"UnifiedApprovalItem"> | Date | string
     decisions?: UnifiedApprovalDecisionListRelationFilter
-  }, "id">
+  }, "id" | "tenantId_idempotencyKey">
 
   export type UnifiedApprovalItemOrderByWithAggregationInput = {
     id?: SortOrder
@@ -111461,6 +112798,7 @@ export namespace Prisma {
     sent?: SortOrder
     published?: SortOrder
     liveExecutionAllowed?: SortOrder
+    idempotencyKey?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UnifiedApprovalItemCountOrderByAggregateInput
@@ -111489,6 +112827,7 @@ export namespace Prisma {
     sent?: BoolWithAggregatesFilter<"UnifiedApprovalItem"> | boolean
     published?: BoolWithAggregatesFilter<"UnifiedApprovalItem"> | boolean
     liveExecutionAllowed?: BoolWithAggregatesFilter<"UnifiedApprovalItem"> | boolean
+    idempotencyKey?: StringNullableWithAggregatesFilter<"UnifiedApprovalItem"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"UnifiedApprovalItem"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"UnifiedApprovalItem"> | Date | string
   }
@@ -113925,6 +115264,13 @@ export namespace Prisma {
     intakeStatus?: StringFilter<"ManualLeadIntake"> | string
     manualReviewStatus?: StringFilter<"ManualLeadIntake"> | string
     safetyFlags?: JsonFilter<"ManualLeadIntake">
+    idempotencyKey?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    consentStatus?: StringFilter<"ManualLeadIntake"> | string
+    contactPermission?: StringFilter<"ManualLeadIntake"> | string
+    doNotContact?: BoolFilter<"ManualLeadIntake"> | boolean
+    optOutReason?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    consentSource?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    consentAt?: DateTimeNullableFilter<"ManualLeadIntake"> | Date | string | null
     createdAt?: DateTimeFilter<"ManualLeadIntake"> | Date | string
     updatedAt?: DateTimeFilter<"ManualLeadIntake"> | Date | string
     lead?: XOR<LeadNullableScalarRelationFilter, LeadWhereInput> | null
@@ -113949,6 +115295,13 @@ export namespace Prisma {
     intakeStatus?: SortOrder
     manualReviewStatus?: SortOrder
     safetyFlags?: SortOrder
+    idempotencyKey?: SortOrderInput | SortOrder
+    consentStatus?: SortOrder
+    contactPermission?: SortOrder
+    doNotContact?: SortOrder
+    optOutReason?: SortOrderInput | SortOrder
+    consentSource?: SortOrderInput | SortOrder
+    consentAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     lead?: LeadOrderByWithRelationInput
@@ -113956,6 +115309,7 @@ export namespace Prisma {
 
   export type ManualLeadIntakeWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    tenantId_idempotencyKey?: ManualLeadIntakeTenantIdIdempotencyKeyCompoundUniqueInput
     AND?: ManualLeadIntakeWhereInput | ManualLeadIntakeWhereInput[]
     OR?: ManualLeadIntakeWhereInput[]
     NOT?: ManualLeadIntakeWhereInput | ManualLeadIntakeWhereInput[]
@@ -113976,10 +115330,17 @@ export namespace Prisma {
     intakeStatus?: StringFilter<"ManualLeadIntake"> | string
     manualReviewStatus?: StringFilter<"ManualLeadIntake"> | string
     safetyFlags?: JsonFilter<"ManualLeadIntake">
+    idempotencyKey?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    consentStatus?: StringFilter<"ManualLeadIntake"> | string
+    contactPermission?: StringFilter<"ManualLeadIntake"> | string
+    doNotContact?: BoolFilter<"ManualLeadIntake"> | boolean
+    optOutReason?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    consentSource?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    consentAt?: DateTimeNullableFilter<"ManualLeadIntake"> | Date | string | null
     createdAt?: DateTimeFilter<"ManualLeadIntake"> | Date | string
     updatedAt?: DateTimeFilter<"ManualLeadIntake"> | Date | string
     lead?: XOR<LeadNullableScalarRelationFilter, LeadWhereInput> | null
-  }, "id">
+  }, "id" | "tenantId_idempotencyKey">
 
   export type ManualLeadIntakeOrderByWithAggregationInput = {
     id?: SortOrder
@@ -114000,6 +115361,13 @@ export namespace Prisma {
     intakeStatus?: SortOrder
     manualReviewStatus?: SortOrder
     safetyFlags?: SortOrder
+    idempotencyKey?: SortOrderInput | SortOrder
+    consentStatus?: SortOrder
+    contactPermission?: SortOrder
+    doNotContact?: SortOrder
+    optOutReason?: SortOrderInput | SortOrder
+    consentSource?: SortOrderInput | SortOrder
+    consentAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ManualLeadIntakeCountOrderByAggregateInput
@@ -114029,8 +115397,75 @@ export namespace Prisma {
     intakeStatus?: StringWithAggregatesFilter<"ManualLeadIntake"> | string
     manualReviewStatus?: StringWithAggregatesFilter<"ManualLeadIntake"> | string
     safetyFlags?: JsonWithAggregatesFilter<"ManualLeadIntake">
+    idempotencyKey?: StringNullableWithAggregatesFilter<"ManualLeadIntake"> | string | null
+    consentStatus?: StringWithAggregatesFilter<"ManualLeadIntake"> | string
+    contactPermission?: StringWithAggregatesFilter<"ManualLeadIntake"> | string
+    doNotContact?: BoolWithAggregatesFilter<"ManualLeadIntake"> | boolean
+    optOutReason?: StringNullableWithAggregatesFilter<"ManualLeadIntake"> | string | null
+    consentSource?: StringNullableWithAggregatesFilter<"ManualLeadIntake"> | string | null
+    consentAt?: DateTimeNullableWithAggregatesFilter<"ManualLeadIntake"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"ManualLeadIntake"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ManualLeadIntake"> | Date | string
+  }
+
+  export type PublicIntakeRateLimitWhereInput = {
+    AND?: PublicIntakeRateLimitWhereInput | PublicIntakeRateLimitWhereInput[]
+    OR?: PublicIntakeRateLimitWhereInput[]
+    NOT?: PublicIntakeRateLimitWhereInput | PublicIntakeRateLimitWhereInput[]
+    id?: StringFilter<"PublicIntakeRateLimit"> | string
+    tenantId?: StringFilter<"PublicIntakeRateLimit"> | string
+    fingerprint?: StringFilter<"PublicIntakeRateLimit"> | string
+    windowStart?: DateTimeFilter<"PublicIntakeRateLimit"> | Date | string
+    attempts?: IntFilter<"PublicIntakeRateLimit"> | number
+    updatedAt?: DateTimeFilter<"PublicIntakeRateLimit"> | Date | string
+  }
+
+  export type PublicIntakeRateLimitOrderByWithRelationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    fingerprint?: SortOrder
+    windowStart?: SortOrder
+    attempts?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PublicIntakeRateLimitWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    tenantId_fingerprint_windowStart?: PublicIntakeRateLimitTenantIdFingerprintWindowStartCompoundUniqueInput
+    AND?: PublicIntakeRateLimitWhereInput | PublicIntakeRateLimitWhereInput[]
+    OR?: PublicIntakeRateLimitWhereInput[]
+    NOT?: PublicIntakeRateLimitWhereInput | PublicIntakeRateLimitWhereInput[]
+    tenantId?: StringFilter<"PublicIntakeRateLimit"> | string
+    fingerprint?: StringFilter<"PublicIntakeRateLimit"> | string
+    windowStart?: DateTimeFilter<"PublicIntakeRateLimit"> | Date | string
+    attempts?: IntFilter<"PublicIntakeRateLimit"> | number
+    updatedAt?: DateTimeFilter<"PublicIntakeRateLimit"> | Date | string
+  }, "id" | "tenantId_fingerprint_windowStart">
+
+  export type PublicIntakeRateLimitOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    fingerprint?: SortOrder
+    windowStart?: SortOrder
+    attempts?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PublicIntakeRateLimitCountOrderByAggregateInput
+    _avg?: PublicIntakeRateLimitAvgOrderByAggregateInput
+    _max?: PublicIntakeRateLimitMaxOrderByAggregateInput
+    _min?: PublicIntakeRateLimitMinOrderByAggregateInput
+    _sum?: PublicIntakeRateLimitSumOrderByAggregateInput
+  }
+
+  export type PublicIntakeRateLimitScalarWhereWithAggregatesInput = {
+    AND?: PublicIntakeRateLimitScalarWhereWithAggregatesInput | PublicIntakeRateLimitScalarWhereWithAggregatesInput[]
+    OR?: PublicIntakeRateLimitScalarWhereWithAggregatesInput[]
+    NOT?: PublicIntakeRateLimitScalarWhereWithAggregatesInput | PublicIntakeRateLimitScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PublicIntakeRateLimit"> | string
+    tenantId?: StringWithAggregatesFilter<"PublicIntakeRateLimit"> | string
+    fingerprint?: StringWithAggregatesFilter<"PublicIntakeRateLimit"> | string
+    windowStart?: DateTimeWithAggregatesFilter<"PublicIntakeRateLimit"> | Date | string
+    attempts?: IntWithAggregatesFilter<"PublicIntakeRateLimit"> | number
+    updatedAt?: DateTimeWithAggregatesFilter<"PublicIntakeRateLimit"> | Date | string
   }
 
   export type SellerCallOutcomeWhereInput = {
@@ -116863,6 +118298,10 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: string | null
     optOutAt?: Date | string | null
+    consentStatus?: string
+    contactPermission?: string
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutLeadInput
@@ -116904,6 +118343,10 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: string | null
     optOutAt?: Date | string | null
+    consentStatus?: string
+    contactPermission?: string
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput
@@ -116945,6 +118388,10 @@ export namespace Prisma {
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutLeadNestedInput
@@ -116986,6 +118433,10 @@ export namespace Prisma {
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput
@@ -117027,6 +118478,10 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: string | null
     optOutAt?: Date | string | null
+    consentStatus?: string
+    contactPermission?: string
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -117059,6 +118514,10 @@ export namespace Prisma {
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -117091,6 +118550,10 @@ export namespace Prisma {
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -120804,6 +122267,7 @@ export namespace Prisma {
     sent?: boolean
     published?: boolean
     liveExecutionAllowed?: boolean
+    idempotencyKey?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     decisions?: UnifiedApprovalDecisionCreateNestedManyWithoutApprovalItemInput
@@ -120827,6 +122291,7 @@ export namespace Prisma {
     sent?: boolean
     published?: boolean
     liveExecutionAllowed?: boolean
+    idempotencyKey?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     decisions?: UnifiedApprovalDecisionUncheckedCreateNestedManyWithoutApprovalItemInput
@@ -120850,6 +122315,7 @@ export namespace Prisma {
     sent?: BoolFieldUpdateOperationsInput | boolean
     published?: BoolFieldUpdateOperationsInput | boolean
     liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     decisions?: UnifiedApprovalDecisionUpdateManyWithoutApprovalItemNestedInput
@@ -120873,6 +122339,7 @@ export namespace Prisma {
     sent?: BoolFieldUpdateOperationsInput | boolean
     published?: BoolFieldUpdateOperationsInput | boolean
     liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     decisions?: UnifiedApprovalDecisionUncheckedUpdateManyWithoutApprovalItemNestedInput
@@ -120896,6 +122363,7 @@ export namespace Prisma {
     sent?: boolean
     published?: boolean
     liveExecutionAllowed?: boolean
+    idempotencyKey?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -120918,6 +122386,7 @@ export namespace Prisma {
     sent?: BoolFieldUpdateOperationsInput | boolean
     published?: BoolFieldUpdateOperationsInput | boolean
     liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -120940,6 +122409,7 @@ export namespace Prisma {
     sent?: BoolFieldUpdateOperationsInput | boolean
     published?: BoolFieldUpdateOperationsInput | boolean
     liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -123903,6 +125373,13 @@ export namespace Prisma {
     intakeStatus?: string
     manualReviewStatus?: string
     safetyFlags: JsonNullValueInput | InputJsonValue
+    idempotencyKey?: string | null
+    consentStatus?: string
+    contactPermission?: string
+    doNotContact?: boolean
+    optOutReason?: string | null
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     lead?: LeadCreateNestedOneWithoutManualLeadIntakesInput
@@ -123927,6 +125404,13 @@ export namespace Prisma {
     intakeStatus?: string
     manualReviewStatus?: string
     safetyFlags: JsonNullValueInput | InputJsonValue
+    idempotencyKey?: string | null
+    consentStatus?: string
+    contactPermission?: string
+    doNotContact?: boolean
+    optOutReason?: string | null
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -123949,6 +125433,13 @@ export namespace Prisma {
     intakeStatus?: StringFieldUpdateOperationsInput | string
     manualReviewStatus?: StringFieldUpdateOperationsInput | string
     safetyFlags?: JsonNullValueInput | InputJsonValue
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    doNotContact?: BoolFieldUpdateOperationsInput | boolean
+    optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lead?: LeadUpdateOneWithoutManualLeadIntakesNestedInput
@@ -123973,6 +125464,13 @@ export namespace Prisma {
     intakeStatus?: StringFieldUpdateOperationsInput | string
     manualReviewStatus?: StringFieldUpdateOperationsInput | string
     safetyFlags?: JsonNullValueInput | InputJsonValue
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    doNotContact?: BoolFieldUpdateOperationsInput | boolean
+    optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -123996,6 +125494,13 @@ export namespace Prisma {
     intakeStatus?: string
     manualReviewStatus?: string
     safetyFlags: JsonNullValueInput | InputJsonValue
+    idempotencyKey?: string | null
+    consentStatus?: string
+    contactPermission?: string
+    doNotContact?: boolean
+    optOutReason?: string | null
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -124018,6 +125523,13 @@ export namespace Prisma {
     intakeStatus?: StringFieldUpdateOperationsInput | string
     manualReviewStatus?: StringFieldUpdateOperationsInput | string
     safetyFlags?: JsonNullValueInput | InputJsonValue
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    doNotContact?: BoolFieldUpdateOperationsInput | boolean
+    optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -124041,7 +125553,77 @@ export namespace Prisma {
     intakeStatus?: StringFieldUpdateOperationsInput | string
     manualReviewStatus?: StringFieldUpdateOperationsInput | string
     safetyFlags?: JsonNullValueInput | InputJsonValue
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    doNotContact?: BoolFieldUpdateOperationsInput | boolean
+    optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PublicIntakeRateLimitCreateInput = {
+    id?: string
+    tenantId: string
+    fingerprint: string
+    windowStart: Date | string
+    attempts?: number
+    updatedAt?: Date | string
+  }
+
+  export type PublicIntakeRateLimitUncheckedCreateInput = {
+    id?: string
+    tenantId: string
+    fingerprint: string
+    windowStart: Date | string
+    attempts?: number
+    updatedAt?: Date | string
+  }
+
+  export type PublicIntakeRateLimitUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    fingerprint?: StringFieldUpdateOperationsInput | string
+    windowStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    attempts?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PublicIntakeRateLimitUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    fingerprint?: StringFieldUpdateOperationsInput | string
+    windowStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    attempts?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PublicIntakeRateLimitCreateManyInput = {
+    id?: string
+    tenantId: string
+    fingerprint: string
+    windowStart: Date | string
+    attempts?: number
+    updatedAt?: Date | string
+  }
+
+  export type PublicIntakeRateLimitUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    fingerprint?: StringFieldUpdateOperationsInput | string
+    windowStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    attempts?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PublicIntakeRateLimitUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    fingerprint?: StringFieldUpdateOperationsInput | string
+    windowStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    attempts?: IntFieldUpdateOperationsInput | number
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -127517,6 +129099,10 @@ export namespace Prisma {
     doNotContact?: SortOrder
     optOutReason?: SortOrder
     optOutAt?: SortOrder
+    consentStatus?: SortOrder
+    contactPermission?: SortOrder
+    consentSource?: SortOrder
+    consentAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -127555,6 +129141,10 @@ export namespace Prisma {
     doNotContact?: SortOrder
     optOutReason?: SortOrder
     optOutAt?: SortOrder
+    consentStatus?: SortOrder
+    contactPermission?: SortOrder
+    consentSource?: SortOrder
+    consentAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -127587,6 +129177,10 @@ export namespace Prisma {
     doNotContact?: SortOrder
     optOutReason?: SortOrder
     optOutAt?: SortOrder
+    consentStatus?: SortOrder
+    contactPermission?: SortOrder
+    consentSource?: SortOrder
+    consentAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -129543,6 +131137,11 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type UnifiedApprovalItemTenantIdIdempotencyKeyCompoundUniqueInput = {
+    tenantId: string
+    idempotencyKey: string
+  }
+
   export type UnifiedApprovalItemCountOrderByAggregateInput = {
     id?: SortOrder
     tenantId?: SortOrder
@@ -129561,6 +131160,7 @@ export namespace Prisma {
     sent?: SortOrder
     published?: SortOrder
     liveExecutionAllowed?: SortOrder
+    idempotencyKey?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -129581,6 +131181,7 @@ export namespace Prisma {
     sent?: SortOrder
     published?: SortOrder
     liveExecutionAllowed?: SortOrder
+    idempotencyKey?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -129601,6 +131202,7 @@ export namespace Prisma {
     sent?: SortOrder
     published?: SortOrder
     liveExecutionAllowed?: SortOrder
+    idempotencyKey?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -130975,6 +132577,11 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type ManualLeadIntakeTenantIdIdempotencyKeyCompoundUniqueInput = {
+    tenantId: string
+    idempotencyKey: string
+  }
+
   export type ManualLeadIntakeCountOrderByAggregateInput = {
     id?: SortOrder
     tenantId?: SortOrder
@@ -130994,6 +132601,13 @@ export namespace Prisma {
     intakeStatus?: SortOrder
     manualReviewStatus?: SortOrder
     safetyFlags?: SortOrder
+    idempotencyKey?: SortOrder
+    consentStatus?: SortOrder
+    contactPermission?: SortOrder
+    doNotContact?: SortOrder
+    optOutReason?: SortOrder
+    consentSource?: SortOrder
+    consentAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -131016,6 +132630,13 @@ export namespace Prisma {
     captureContext?: SortOrder
     intakeStatus?: SortOrder
     manualReviewStatus?: SortOrder
+    idempotencyKey?: SortOrder
+    consentStatus?: SortOrder
+    contactPermission?: SortOrder
+    doNotContact?: SortOrder
+    optOutReason?: SortOrder
+    consentSource?: SortOrder
+    consentAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -131038,8 +132659,56 @@ export namespace Prisma {
     captureContext?: SortOrder
     intakeStatus?: SortOrder
     manualReviewStatus?: SortOrder
+    idempotencyKey?: SortOrder
+    consentStatus?: SortOrder
+    contactPermission?: SortOrder
+    doNotContact?: SortOrder
+    optOutReason?: SortOrder
+    consentSource?: SortOrder
+    consentAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type PublicIntakeRateLimitTenantIdFingerprintWindowStartCompoundUniqueInput = {
+    tenantId: string
+    fingerprint: string
+    windowStart: Date | string
+  }
+
+  export type PublicIntakeRateLimitCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    fingerprint?: SortOrder
+    windowStart?: SortOrder
+    attempts?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PublicIntakeRateLimitAvgOrderByAggregateInput = {
+    attempts?: SortOrder
+  }
+
+  export type PublicIntakeRateLimitMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    fingerprint?: SortOrder
+    windowStart?: SortOrder
+    attempts?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PublicIntakeRateLimitMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    fingerprint?: SortOrder
+    windowStart?: SortOrder
+    attempts?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PublicIntakeRateLimitSumOrderByAggregateInput = {
+    attempts?: SortOrder
   }
 
   export type SellerCallOutcomeCountOrderByAggregateInput = {
@@ -135594,6 +137263,13 @@ export namespace Prisma {
     intakeStatus?: string
     manualReviewStatus?: string
     safetyFlags: JsonNullValueInput | InputJsonValue
+    idempotencyKey?: string | null
+    consentStatus?: string
+    contactPermission?: string
+    doNotContact?: boolean
+    optOutReason?: string | null
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -135616,6 +137292,13 @@ export namespace Prisma {
     intakeStatus?: string
     manualReviewStatus?: string
     safetyFlags: JsonNullValueInput | InputJsonValue
+    idempotencyKey?: string | null
+    consentStatus?: string
+    contactPermission?: string
+    doNotContact?: boolean
+    optOutReason?: string | null
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -136023,6 +137706,13 @@ export namespace Prisma {
     intakeStatus?: StringFilter<"ManualLeadIntake"> | string
     manualReviewStatus?: StringFilter<"ManualLeadIntake"> | string
     safetyFlags?: JsonFilter<"ManualLeadIntake">
+    idempotencyKey?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    consentStatus?: StringFilter<"ManualLeadIntake"> | string
+    contactPermission?: StringFilter<"ManualLeadIntake"> | string
+    doNotContact?: BoolFilter<"ManualLeadIntake"> | boolean
+    optOutReason?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    consentSource?: StringNullableFilter<"ManualLeadIntake"> | string | null
+    consentAt?: DateTimeNullableFilter<"ManualLeadIntake"> | Date | string | null
     createdAt?: DateTimeFilter<"ManualLeadIntake"> | Date | string
     updatedAt?: DateTimeFilter<"ManualLeadIntake"> | Date | string
   }
@@ -136288,6 +137978,10 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: string | null
     optOutAt?: Date | string | null
+    consentStatus?: string
+    contactPermission?: string
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutLeadInput
@@ -136328,6 +138022,10 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: string | null
     optOutAt?: Date | string | null
+    consentStatus?: string
+    contactPermission?: string
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput
@@ -136384,6 +138082,10 @@ export namespace Prisma {
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutLeadNestedInput
@@ -136424,6 +138126,10 @@ export namespace Prisma {
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput
@@ -136808,6 +138514,10 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: string | null
     optOutAt?: Date | string | null
+    consentStatus?: string
+    contactPermission?: string
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutLeadInput
@@ -136848,6 +138558,10 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: string | null
     optOutAt?: Date | string | null
+    consentStatus?: string
+    contactPermission?: string
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput
@@ -136984,6 +138698,10 @@ export namespace Prisma {
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutLeadNestedInput
@@ -137024,6 +138742,10 @@ export namespace Prisma {
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput
@@ -137064,6 +138786,10 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: string | null
     optOutAt?: Date | string | null
+    consentStatus?: string
+    contactPermission?: string
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutLeadInput
@@ -137104,6 +138830,10 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: string | null
     optOutAt?: Date | string | null
+    consentStatus?: string
+    contactPermission?: string
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput
@@ -137160,6 +138890,10 @@ export namespace Prisma {
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutLeadNestedInput
@@ -137200,6 +138934,10 @@ export namespace Prisma {
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput
@@ -137240,6 +138978,10 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: string | null
     optOutAt?: Date | string | null
+    consentStatus?: string
+    contactPermission?: string
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutLeadInput
@@ -137280,6 +139022,10 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: string | null
     optOutAt?: Date | string | null
+    consentStatus?: string
+    contactPermission?: string
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput
@@ -137336,6 +139082,10 @@ export namespace Prisma {
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutLeadNestedInput
@@ -137376,6 +139126,10 @@ export namespace Prisma {
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput
@@ -137416,6 +139170,10 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: string | null
     optOutAt?: Date | string | null
+    consentStatus?: string
+    contactPermission?: string
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutLeadInput
@@ -137456,6 +139214,10 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: string | null
     optOutAt?: Date | string | null
+    consentStatus?: string
+    contactPermission?: string
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput
@@ -137512,6 +139274,10 @@ export namespace Prisma {
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutLeadNestedInput
@@ -137552,6 +139318,10 @@ export namespace Prisma {
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput
@@ -137592,6 +139362,10 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: string | null
     optOutAt?: Date | string | null
+    consentStatus?: string
+    contactPermission?: string
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutLeadInput
@@ -137632,6 +139406,10 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: string | null
     optOutAt?: Date | string | null
+    consentStatus?: string
+    contactPermission?: string
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput
@@ -137688,6 +139466,10 @@ export namespace Prisma {
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutLeadNestedInput
@@ -137728,6 +139510,10 @@ export namespace Prisma {
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput
@@ -138628,6 +140414,7 @@ export namespace Prisma {
     sent?: boolean
     published?: boolean
     liveExecutionAllowed?: boolean
+    idempotencyKey?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -138650,6 +140437,7 @@ export namespace Prisma {
     sent?: boolean
     published?: boolean
     liveExecutionAllowed?: boolean
+    idempotencyKey?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -138688,6 +140476,7 @@ export namespace Prisma {
     sent?: BoolFieldUpdateOperationsInput | boolean
     published?: BoolFieldUpdateOperationsInput | boolean
     liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -138710,6 +140499,7 @@ export namespace Prisma {
     sent?: BoolFieldUpdateOperationsInput | boolean
     published?: BoolFieldUpdateOperationsInput | boolean
     liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -140860,6 +142650,10 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: string | null
     optOutAt?: Date | string | null
+    consentStatus?: string
+    contactPermission?: string
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutLeadInput
@@ -140900,6 +142694,10 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: string | null
     optOutAt?: Date | string | null
+    consentStatus?: string
+    contactPermission?: string
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput
@@ -140956,6 +142754,10 @@ export namespace Prisma {
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutLeadNestedInput
@@ -140996,6 +142798,10 @@ export namespace Prisma {
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput
@@ -142084,6 +143890,10 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: string | null
     optOutAt?: Date | string | null
+    consentStatus?: string
+    contactPermission?: string
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     salesConversionAssists?: SalesConversionAssistCreateNestedManyWithoutLeadInput
@@ -142124,6 +143934,10 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: string | null
     optOutAt?: Date | string | null
+    consentStatus?: string
+    contactPermission?: string
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     salesConversionAssists?: SalesConversionAssistUncheckedCreateNestedManyWithoutLeadInput
@@ -142289,6 +144103,10 @@ export namespace Prisma {
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     salesConversionAssists?: SalesConversionAssistUpdateManyWithoutLeadNestedInput
@@ -142329,6 +144147,10 @@ export namespace Prisma {
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     salesConversionAssists?: SalesConversionAssistUncheckedUpdateManyWithoutLeadNestedInput
@@ -142496,6 +144318,10 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: string | null
     optOutAt?: Date | string | null
+    consentStatus?: string
+    contactPermission?: string
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionCreateNestedManyWithoutLeadInput
@@ -142536,6 +144362,10 @@ export namespace Prisma {
     doNotContact?: boolean
     optOutReason?: string | null
     optOutAt?: Date | string | null
+    consentStatus?: string
+    contactPermission?: string
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedCreateNestedManyWithoutLeadInput
@@ -142592,6 +144422,10 @@ export namespace Prisma {
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUpdateManyWithoutLeadNestedInput
@@ -142632,6 +144466,10 @@ export namespace Prisma {
     doNotContact?: BoolFieldUpdateOperationsInput | boolean
     optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
     optOutAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     marketingSalesAttributions?: MarketingSalesAttributionUncheckedUpdateManyWithoutLeadNestedInput
@@ -143947,6 +145785,13 @@ export namespace Prisma {
     intakeStatus?: string
     manualReviewStatus?: string
     safetyFlags: JsonNullValueInput | InputJsonValue
+    idempotencyKey?: string | null
+    consentStatus?: string
+    contactPermission?: string
+    doNotContact?: boolean
+    optOutReason?: string | null
+    consentSource?: string | null
+    consentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -144174,6 +146019,13 @@ export namespace Prisma {
     intakeStatus?: StringFieldUpdateOperationsInput | string
     manualReviewStatus?: StringFieldUpdateOperationsInput | string
     safetyFlags?: JsonNullValueInput | InputJsonValue
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    doNotContact?: BoolFieldUpdateOperationsInput | boolean
+    optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -144196,6 +146048,13 @@ export namespace Prisma {
     intakeStatus?: StringFieldUpdateOperationsInput | string
     manualReviewStatus?: StringFieldUpdateOperationsInput | string
     safetyFlags?: JsonNullValueInput | InputJsonValue
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    doNotContact?: BoolFieldUpdateOperationsInput | boolean
+    optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -144218,6 +146077,13 @@ export namespace Prisma {
     intakeStatus?: StringFieldUpdateOperationsInput | string
     manualReviewStatus?: StringFieldUpdateOperationsInput | string
     safetyFlags?: JsonNullValueInput | InputJsonValue
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    consentStatus?: StringFieldUpdateOperationsInput | string
+    contactPermission?: StringFieldUpdateOperationsInput | string
+    doNotContact?: BoolFieldUpdateOperationsInput | boolean
+    optOutReason?: NullableStringFieldUpdateOperationsInput | string | null
+    consentSource?: NullableStringFieldUpdateOperationsInput | string | null
+    consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

@@ -17,7 +17,14 @@ const initialValues = {
   state: "OK",
   zipCode: "",
   message: "",
-  source: "website"
+  source: "website",
+  contactPermission: "internal_review_only",
+  consentStatus: "not_granted",
+  consentSource: "public_seller_form",
+  consentTimestamp: new Date(0).toISOString(),
+  doNotContact: false,
+  optOutReason: "",
+  website: ""
 } satisfies LeadIntakeInput;
 
 type LeadCaptureFormProps = {
@@ -105,7 +112,8 @@ export function LeadCaptureForm({ source }: LeadCaptureFormProps) {
     try {
       await createLeadFromIntake({
         ...parsed.data,
-        source: effectiveSource
+        source: effectiveSource,
+        consentTimestamp: new Date().toISOString()
       });
 
       setSubmitted(true);
@@ -221,6 +229,21 @@ export function LeadCaptureForm({ source }: LeadCaptureFormProps) {
       </div>
 
       <input type="hidden" name="source" value={effectiveSource} />
+      <div className="sr-only" aria-hidden="true">
+        <label>Website<input tabIndex={-1} autoComplete="off" value={values.website ?? ""} onChange={(event) => updateField("website", event.target.value)} /></label>
+      </div>
+
+      <fieldset className="mt-4 space-y-3 rounded-2xl border border-border bg-white p-4">
+        <legend className="px-1 text-sm font-semibold text-primary">Contact preference</legend>
+        <label className="flex items-start gap-3 text-sm leading-6 text-muted">
+          <input type="checkbox" checked={values.contactPermission === "contact_requested"} onChange={(event) => setValues((current) => ({ ...current, contactPermission: event.target.checked ? "contact_requested" : "internal_review_only", consentStatus: event.target.checked ? "affirmed" : "not_granted", doNotContact: false, optOutReason: "" }))} />
+          I request that J Capital contact me about this property. Submission does not authorize automated outreach.
+        </label>
+        <label className="flex items-start gap-3 text-sm leading-6 text-muted">
+          <input type="checkbox" checked={values.doNotContact} onChange={(event) => setValues((current) => ({ ...current, doNotContact: event.target.checked, optOutReason: event.target.checked ? "Seller selected do not contact on public intake." : "", contactPermission: event.target.checked ? "internal_review_only" : current.contactPermission, consentStatus: event.target.checked ? "not_granted" : current.consentStatus }))} />
+          Internal review only—do not contact me.
+        </label>
+      </fieldset>
 
       {formError ? <p className="mt-4 text-sm text-red-700">{formError}</p> : null}
       {submitted ? (

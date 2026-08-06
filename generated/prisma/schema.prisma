@@ -50,9 +50,13 @@ model Lead {
   requiresHumanApproval     Boolean   @default(false)
 
   // DNC / OPT-OUT PROTECTION
-  doNotContact Boolean   @default(false)
-  optOutReason String?
-  optOutAt     DateTime?
+  doNotContact      Boolean   @default(false)
+  optOutReason      String?
+  optOutAt          DateTime?
+  consentStatus     String    @default("unknown")
+  contactPermission String    @default("internal_review_only")
+  consentSource     String?
+  consentAt         DateTime?
 
   // SYSTEM TIMESTAMPS
   createdAt DateTime @default(now())
@@ -872,11 +876,13 @@ model UnifiedApprovalItem {
   sent                   Boolean  @default(false)
   published              Boolean  @default(false)
   liveExecutionAllowed   Boolean  @default(false)
+  idempotencyKey         String?
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
 
   decisions UnifiedApprovalDecision[]
 
+  @@unique([tenantId, idempotencyKey])
   @@index([tenantId])
   @@index([itemType])
   @@index([sourceType])
@@ -1513,7 +1519,7 @@ model OperationsTimelineEvent {
 }
 
 model ManualLeadIntake {
-  id                 String   @id @default(uuid())
+  id                 String    @id @default(uuid())
   tenantId           String
   leadId             String?
   source             String
@@ -1528,14 +1534,22 @@ model ManualLeadIntake {
   zipCode            String?
   notes              String
   captureContext     String
-  intakeStatus       String   @default("pending_review")
-  manualReviewStatus String   @default("needs_manual_review")
+  intakeStatus       String    @default("pending_review")
+  manualReviewStatus String    @default("needs_manual_review")
   safetyFlags        Json
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+  idempotencyKey     String?
+  consentStatus      String    @default("unknown")
+  contactPermission  String    @default("internal_review_only")
+  doNotContact       Boolean   @default(false)
+  optOutReason       String?
+  consentSource      String?
+  consentAt          DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
 
   lead Lead? @relation(fields: [leadId], references: [id], onDelete: SetNull)
 
+  @@unique([tenantId, idempotencyKey])
   @@index([leadId])
   @@index([tenantId])
   @@index([source])
@@ -1543,6 +1557,18 @@ model ManualLeadIntake {
   @@index([intakeStatus])
   @@index([manualReviewStatus])
   @@index([createdAt])
+}
+
+model PublicIntakeRateLimit {
+  id          String   @id @default(uuid())
+  tenantId    String
+  fingerprint String
+  windowStart DateTime
+  attempts    Int      @default(1)
+  updatedAt   DateTime @updatedAt
+
+  @@unique([tenantId, fingerprint, windowStart])
+  @@index([tenantId, windowStart])
 }
 
 model SellerCallOutcome {

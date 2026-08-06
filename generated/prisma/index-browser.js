@@ -149,6 +149,10 @@ exports.Prisma.LeadScalarFieldEnum = {
   doNotContact: 'doNotContact',
   optOutReason: 'optOutReason',
   optOutAt: 'optOutAt',
+  consentStatus: 'consentStatus',
+  contactPermission: 'contactPermission',
+  consentSource: 'consentSource',
+  consentAt: 'consentAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -697,6 +701,7 @@ exports.Prisma.UnifiedApprovalItemScalarFieldEnum = {
   sent: 'sent',
   published: 'published',
   liveExecutionAllowed: 'liveExecutionAllowed',
+  idempotencyKey: 'idempotencyKey',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -1136,7 +1141,23 @@ exports.Prisma.ManualLeadIntakeScalarFieldEnum = {
   intakeStatus: 'intakeStatus',
   manualReviewStatus: 'manualReviewStatus',
   safetyFlags: 'safetyFlags',
+  idempotencyKey: 'idempotencyKey',
+  consentStatus: 'consentStatus',
+  contactPermission: 'contactPermission',
+  doNotContact: 'doNotContact',
+  optOutReason: 'optOutReason',
+  consentSource: 'consentSource',
+  consentAt: 'consentAt',
   createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PublicIntakeRateLimitScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  fingerprint: 'fingerprint',
+  windowStart: 'windowStart',
+  attempts: 'attempts',
   updatedAt: 'updatedAt'
 };
 
@@ -1712,6 +1733,7 @@ exports.Prisma.ModelName = {
   DailyBriefingSnapshot: 'DailyBriefingSnapshot',
   OperationsTimelineEvent: 'OperationsTimelineEvent',
   ManualLeadIntake: 'ManualLeadIntake',
+  PublicIntakeRateLimit: 'PublicIntakeRateLimit',
   SellerCallOutcome: 'SellerCallOutcome',
   AiPerformanceMetric: 'AiPerformanceMetric',
   AiJob: 'AiJob',
