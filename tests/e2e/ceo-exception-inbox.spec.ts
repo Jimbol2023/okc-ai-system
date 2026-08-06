@@ -28,7 +28,7 @@ test.describe("CEO Exception Inbox", () => {
 
   test("renders active decisions and normally expands only the highest three", async ({ page }) => {
     await signIn(page);
-    const items = Array.from({ length: 4 }, (_, index) => ({
+    const items = Array.from({ length: 5 }, (_, index) => ({
       canonicalKey: `default:fresh_business_draft:draft-${index}:v1`,
       exceptionType: "fresh_business_draft",
       priority: index === 0 ? "high" : "normal",
@@ -51,12 +51,13 @@ test.describe("CEO Exception Inbox", () => {
         status: 200,
         contentType: "application/json",
         body: JSON.stringify({
+          ok: true,
           generatedAt: "2026-08-06T18:00:00.000Z",
           tenantId: "default",
           status: "action_required",
-          estimatedReviewMinutes: 4,
+          estimatedReviewMinutes: 5,
           items,
-          excludedCounts: { reviewBudgetDeferred: 0 },
+          excludedCounts: { reviewBudgetDeferred: 2 },
           safety: { readOnly: true, externalExecutionAllowed: false },
         }),
       });
@@ -64,13 +65,24 @@ test.describe("CEO Exception Inbox", () => {
     await page.goto("/dashboard");
     await expect(page.getByText("Review record-specific draft 1")).toBeVisible();
     await expect(page.getByText("verified property evidence")).toBeVisible();
-    await expect(page.getByText("External action authorized: false").first()).toBeVisible();
+    const safetyStatements = page.getByText("External action authorized: false", { exact: true });
+    await expect(safetyStatements).toHaveCount(items.length);
+    for (const statement of await safetyStatements.all()) await expect(statement).toBeVisible();
+    await expect(page.getByText(/Safety contract error|External action authorized: true/i)).toHaveCount(0);
+    await expect(page.getByText("5 minute review", { exact: true })).toBeVisible();
+    await expect(page.getByText("2 lower-priority decision(s) remain queued outside today's seven-minute budget.", { exact: true })).toBeVisible();
     const decisionDetails = page.locator("details").filter({ has: page.getByText(/Review record-specific draft/) });
-    await expect(decisionDetails).toHaveCount(4);
+    await expect(decisionDetails).toHaveCount(5);
     await expect(decisionDetails.nth(0)).toHaveAttribute("open", "");
     await expect(decisionDetails.nth(1)).toHaveAttribute("open", "");
     await expect(decisionDetails.nth(2)).toHaveAttribute("open", "");
     await expect(decisionDetails.nth(3)).not.toHaveAttribute("open", "");
+    await expect(decisionDetails.nth(4)).not.toHaveAttribute("open", "");
     await expect(page.getByText("Operations/Admin controls")).toBeVisible();
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await expect(page.getByRole("heading", { name: "CEO Exception Inbox" })).toBeVisible();
+    const hasHorizontalOverflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
+    expect(hasHorizontalOverflow).toBe(false);
   });
 });

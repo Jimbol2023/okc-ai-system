@@ -1228,6 +1228,11 @@ function CeoExceptionInboxPanel({ inbox }: { inbox: CeoExceptionInboxResponse })
                     <div className="flex flex-wrap gap-2 text-xs font-semibold">
                       <span className="rounded border border-amber-200 bg-amber-50 px-2 py-1 text-amber-950">{item.priority} priority</span>
                       <span className="rounded border border-border px-2 py-1 text-muted">{item.reviewMinutes} min</span>
+                      <span className={`rounded border px-2 py-1 ${item.externalActionAuthorized === false ? "border-emerald-200 bg-emerald-50 text-emerald-950" : "border-red-300 bg-red-50 text-red-950"}`}>
+                        {item.externalActionAuthorized === false
+                          ? "External action authorized: false"
+                          : "Safety contract error: external action authority is not false"}
+                      </span>
                     </div>
                   </div>
                 </summary>
