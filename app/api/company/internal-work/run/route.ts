@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 
-import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
 import { runInternalCompanyWork } from "@/lib/company-activation";
+import { requireTenantId } from "@/lib/tenant-context";
 import { clearServerCacheKey } from "@/lib/server-cache";
 
 export const dynamic = "force-dynamic";
@@ -13,7 +14,8 @@ export async function POST(request: Request) {
       return getUnauthorizedApiResponse();
     }
 
-    const result = await runInternalCompanyWork();
+    const auth = await getAuthenticatedRequestContext(request);
+    const result = await runInternalCompanyWork(requireTenantId(auth?.tenantId, "internal_work_session"));
     clearServerCacheKey("executive-dashboard-report");
 
     return NextResponse.json(result);

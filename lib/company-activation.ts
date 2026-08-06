@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { requireTenantId } from "@/lib/tenant-context";
 import { createInitialDraftWorkspaceFields } from "@/lib/company-draft-workspace";
 import { recordOperatingLoopTraceFailClosed, setOperatingLoopTraceDbForTest } from "@/lib/operating-loop-trace";
 import {
@@ -116,6 +117,9 @@ export type InternalWorkRunResult = {
   draftQueueItemsAdvanced: number;
   directivesAdvanced: number;
   completedInternalCount: number;
+  assignmentIdsAdvanced: string[];
+  draftQueueItemIdsAdvanced: string[];
+  departmentsAdvanced: AiDepartmentName[];
   queue: InternalWorkQueueReport;
   approvalRequired: true;
   providerCalled: false;
@@ -502,14 +506,17 @@ export async function getCompanyActivationSnapshot(): Promise<CompanyActivationS
   };
 }
 
-export async function getInternalWorkQueue(): Promise<InternalWorkQueueReport> {
+export async function getInternalWorkQueue(tenantIdValue = tenantId): Promise<InternalWorkQueueReport> {
+  const activeTenantId = requireTenantId(tenantIdValue, "internal_work_queue");
   await upsertInitialExecutiveDirectives();
 
   const [assignments, draftQueueItems] = await Promise.all([
     db.aiCompanyWorkAssignment.findMany({
+      where: { tenantId: activeTenantId },
       orderBy: [{ createdAt: "asc" }],
     }),
     db.aiCompanyDraftQueueItem.findMany({
+      where: { tenantId: activeTenantId },
       orderBy: [{ createdAt: "asc" }],
     }),
   ]);
@@ -568,13 +575,15 @@ function createInternalWorkPackage(record: ActivationRecord) {
   };
 }
 
-export async function runInternalCompanyWork(): Promise<InternalWorkRunResult> {
+export async function runInternalCompanyWork(tenantIdValue: string): Promise<InternalWorkRunResult> {
+  const activeTenantId = requireTenantId(tenantIdValue, "internal_company_work");
   await upsertInitialExecutiveDirectives();
 
   const ranAt = new Date().toISOString();
   const result = await db.$transaction(async (tx) => {
     const assignments = await tx.aiCompanyWorkAssignment.findMany({
       where: {
+        tenantId: activeTenantId,
         status: {
           notIn: ["completed_internal", "changes_requested"],
         },
@@ -583,6 +592,9 @@ export async function runInternalCompanyWork(): Promise<InternalWorkRunResult> {
     });
     let assignmentsAdvanced = 0;
     let draftQueueItemsAdvanced = 0;
+    const assignmentIdsAdvanced: string[] = [];
+    const draftQueueItemIdsAdvanced: string[] = [];
+    const departmentsAdvanced = new Set<AiDepartmentName>();
     const directiveIds = new Set<string>();
 
     for (const assignment of assignments) {
@@ -603,6 +615,8 @@ export async function runInternalCompanyWork(): Promise<InternalWorkRunResult> {
         },
       });
       assignmentsAdvanced += 1;
+      assignmentIdsAdvanced.push(record.id);
+      departmentsAdvanced.add((record.department ?? "Executive AI") as AiDepartmentName);
 
       await recordDepartmentMemoryEvents(tx, [
         {
@@ -630,6 +644,7 @@ export async function runInternalCompanyWork(): Promise<InternalWorkRunResult> {
 
     const draftItems = await tx.aiCompanyDraftQueueItem.findMany({
       where: {
+        tenantId: activeTenantId,
         directiveId: {
           in: [...directiveIds],
         },
@@ -656,6 +671,7 @@ export async function runInternalCompanyWork(): Promise<InternalWorkRunResult> {
         },
       });
       draftQueueItemsAdvanced += 1;
+      draftQueueItemIdsAdvanced.push(record.id);
     }
 
     let directivesAdvanced = 0;
@@ -678,6 +694,9 @@ export async function runInternalCompanyWork(): Promise<InternalWorkRunResult> {
       assignmentsAdvanced,
       draftQueueItemsAdvanced,
       directivesAdvanced,
+      assignmentIdsAdvanced,
+      draftQueueItemIdsAdvanced,
+      departmentsAdvanced: [...departmentsAdvanced],
     };
   }, activationTransactionOptions);
 
@@ -685,7 +704,7 @@ export async function runInternalCompanyWork(): Promise<InternalWorkRunResult> {
     console.error("Department Intelligence snapshot refresh failed closed:", error);
   });
 
-  const queue = await getInternalWorkQueue();
+  const queue = await getInternalWorkQueue(activeTenantId);
 
   return {
     ok: true,

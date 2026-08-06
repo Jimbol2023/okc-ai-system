@@ -240,26 +240,43 @@ model RevenueLeadScore {
 }
 
 model RevenueTask {
-  id                String    @id @default(uuid())
-  tenantId          String    @default("default")
-  leadId            String?
-  title             String
-  taskType          String
-  priority          String
-  status            String    @default("open")
-  recommendedAction String
-  reason            String
-  dueAt             DateTime?
-  assignedTo        String?
-  requiresApproval  Boolean   @default(true)
-  source            String
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  completedAt       DateTime?
+  id                       String    @id @default(uuid())
+  tenantId                 String    @default("default")
+  leadId                   String?
+  title                    String
+  taskType                 String
+  priority                 String
+  status                   String    @default("open")
+  recommendedAction        String
+  reason                   String
+  dueAt                    DateTime?
+  assignedTo               String?
+  requiresApproval         Boolean   @default(true)
+  source                   String
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
+  completedAt              DateTime?
+  idempotencyKey           String?
+  materializationVersion   String?
+  sourceProvenance         Json?
+  captureTimestamp         DateTime?
+  scoreEvidence            Json?
+  propertyEvidence         Json?
+  missingEvidence          Json?
+  contactPosture           Json?
+  providerCalled           Boolean   @default(false)
+  outreach                 Boolean   @default(false)
+  sent                     Boolean   @default(false)
+  published                Boolean   @default(false)
+  crmMutation              Boolean   @default(false)
+  externalExecutionAllowed Boolean   @default(false)
+  liveExecutionAllowed     Boolean   @default(false)
 
-  lead Lead? @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  lead Lead? @relation(fields: [leadId, tenantId], references: [id, tenantId], onDelete: Restrict)
 
+  @@unique([tenantId, idempotencyKey])
   @@index([tenantId])
+  @@index([tenantId, taskType, status])
   @@index([leadId])
   @@index([taskType])
   @@index([priority])

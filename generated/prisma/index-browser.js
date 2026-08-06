@@ -267,7 +267,22 @@ exports.Prisma.RevenueTaskScalarFieldEnum = {
   source: 'source',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  completedAt: 'completedAt'
+  completedAt: 'completedAt',
+  idempotencyKey: 'idempotencyKey',
+  materializationVersion: 'materializationVersion',
+  sourceProvenance: 'sourceProvenance',
+  captureTimestamp: 'captureTimestamp',
+  scoreEvidence: 'scoreEvidence',
+  propertyEvidence: 'propertyEvidence',
+  missingEvidence: 'missingEvidence',
+  contactPosture: 'contactPosture',
+  providerCalled: 'providerCalled',
+  outreach: 'outreach',
+  sent: 'sent',
+  published: 'published',
+  crmMutation: 'crmMutation',
+  externalExecutionAllowed: 'externalExecutionAllowed',
+  liveExecutionAllowed: 'liveExecutionAllowed'
 };
 
 exports.Prisma.RevenuePipelineEventScalarFieldEnum = {

@@ -247,6 +247,8 @@ describe("Executive Autonomy Level 1", () => {
         },
         createRevenueCommandCenter: async () => createCommandCenter(testLead) as never,
         createDailyRevenueOperatingLoop: async () => ({ ok: true }) as never,
+        materializeLead: async () => ({ status: "created", eligibilityDecision: "eligible_internal_acquisition_review", taskId: "task-1", taskType: "acquisition_review", idempotencyKey: "key-1", missingEvidence: [], safety: { providerCalled: false, outreach: false, sent: false, published: false, crmMutation: false, externalExecutionAllowed: false, liveExecutionAllowed: false } }),
+        loadWorkMetrics: async () => ({ cumulativeHistoricalTasks: 1, newDraftsCreatedThisRun: 0, existingDraftsAwaitingCeoReview: 18, externallyBlockedDrafts: 18 }),
         runControlledInternalOperation: async (_action, tenantId) => {
           controlledOperationTenants.push(tenantId ?? "default");
           return ({
@@ -276,6 +278,7 @@ describe("Executive Autonomy Level 1", () => {
             draftQueueItemsAdvanced: 2,
             directivesAdvanced: 1,
             completedInternalCount: 5,
+            departmentsAdvanced: ["Acquisitions AI", "Marketing AI"],
             queue: { totals: { completedInternal: 5 } },
             approvalRequired: true,
             providerCalled: false,
@@ -387,6 +390,8 @@ describe("Executive Autonomy Level 1", () => {
         syncLead: async () => undefined,
         createRevenueCommandCenter: async () => ({ ...createCommandCenter(lead()), inbox: [] }) as never,
         createDailyRevenueOperatingLoop: async () => ({ ok: true }) as never,
+        materializeLead: async () => ({ status: "blocked", eligibilityDecision: "none", taskId: null, taskType: null, idempotencyKey: null, missingEvidence: [], safety: { providerCalled: false, outreach: false, sent: false, published: false, crmMutation: false, externalExecutionAllowed: false, liveExecutionAllowed: false } }),
+        loadWorkMetrics: async () => ({ cumulativeHistoricalTasks: 0, newDraftsCreatedThisRun: 0, existingDraftsAwaitingCeoReview: 18, externallyBlockedDrafts: 18 }),
         runControlledInternalOperation: async () =>
           ({
             ok: true,
@@ -414,6 +419,7 @@ describe("Executive Autonomy Level 1", () => {
             draftQueueItemsAdvanced: 1,
             directivesAdvanced: 0,
             completedInternalCount: 2,
+            departmentsAdvanced: ["Acquisitions AI"],
             queue: { totals: { completedInternal: 2 } },
             approvalRequired: true,
             providerCalled: false,

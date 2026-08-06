@@ -17877,6 +17877,16 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     completedAt: Date | null
+    idempotencyKey: string | null
+    materializationVersion: string | null
+    captureTimestamp: Date | null
+    providerCalled: boolean | null
+    outreach: boolean | null
+    sent: boolean | null
+    published: boolean | null
+    crmMutation: boolean | null
+    externalExecutionAllowed: boolean | null
+    liveExecutionAllowed: boolean | null
   }
 
   export type RevenueTaskMaxAggregateOutputType = {
@@ -17896,6 +17906,16 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     completedAt: Date | null
+    idempotencyKey: string | null
+    materializationVersion: string | null
+    captureTimestamp: Date | null
+    providerCalled: boolean | null
+    outreach: boolean | null
+    sent: boolean | null
+    published: boolean | null
+    crmMutation: boolean | null
+    externalExecutionAllowed: boolean | null
+    liveExecutionAllowed: boolean | null
   }
 
   export type RevenueTaskCountAggregateOutputType = {
@@ -17915,6 +17935,21 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     completedAt: number
+    idempotencyKey: number
+    materializationVersion: number
+    sourceProvenance: number
+    captureTimestamp: number
+    scoreEvidence: number
+    propertyEvidence: number
+    missingEvidence: number
+    contactPosture: number
+    providerCalled: number
+    outreach: number
+    sent: number
+    published: number
+    crmMutation: number
+    externalExecutionAllowed: number
+    liveExecutionAllowed: number
     _all: number
   }
 
@@ -17936,6 +17971,16 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     completedAt?: true
+    idempotencyKey?: true
+    materializationVersion?: true
+    captureTimestamp?: true
+    providerCalled?: true
+    outreach?: true
+    sent?: true
+    published?: true
+    crmMutation?: true
+    externalExecutionAllowed?: true
+    liveExecutionAllowed?: true
   }
 
   export type RevenueTaskMaxAggregateInputType = {
@@ -17955,6 +18000,16 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     completedAt?: true
+    idempotencyKey?: true
+    materializationVersion?: true
+    captureTimestamp?: true
+    providerCalled?: true
+    outreach?: true
+    sent?: true
+    published?: true
+    crmMutation?: true
+    externalExecutionAllowed?: true
+    liveExecutionAllowed?: true
   }
 
   export type RevenueTaskCountAggregateInputType = {
@@ -17974,6 +18029,21 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     completedAt?: true
+    idempotencyKey?: true
+    materializationVersion?: true
+    sourceProvenance?: true
+    captureTimestamp?: true
+    scoreEvidence?: true
+    propertyEvidence?: true
+    missingEvidence?: true
+    contactPosture?: true
+    providerCalled?: true
+    outreach?: true
+    sent?: true
+    published?: true
+    crmMutation?: true
+    externalExecutionAllowed?: true
+    liveExecutionAllowed?: true
     _all?: true
   }
 
@@ -18066,6 +18136,21 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     completedAt: Date | null
+    idempotencyKey: string | null
+    materializationVersion: string | null
+    sourceProvenance: JsonValue | null
+    captureTimestamp: Date | null
+    scoreEvidence: JsonValue | null
+    propertyEvidence: JsonValue | null
+    missingEvidence: JsonValue | null
+    contactPosture: JsonValue | null
+    providerCalled: boolean
+    outreach: boolean
+    sent: boolean
+    published: boolean
+    crmMutation: boolean
+    externalExecutionAllowed: boolean
+    liveExecutionAllowed: boolean
     _count: RevenueTaskCountAggregateOutputType | null
     _min: RevenueTaskMinAggregateOutputType | null
     _max: RevenueTaskMaxAggregateOutputType | null
@@ -18102,6 +18187,21 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     completedAt?: boolean
+    idempotencyKey?: boolean
+    materializationVersion?: boolean
+    sourceProvenance?: boolean
+    captureTimestamp?: boolean
+    scoreEvidence?: boolean
+    propertyEvidence?: boolean
+    missingEvidence?: boolean
+    contactPosture?: boolean
+    providerCalled?: boolean
+    outreach?: boolean
+    sent?: boolean
+    published?: boolean
+    crmMutation?: boolean
+    externalExecutionAllowed?: boolean
+    liveExecutionAllowed?: boolean
     lead?: boolean | RevenueTask$leadArgs<ExtArgs>
   }, ExtArgs["result"]["revenueTask"]>
 
@@ -18122,6 +18222,21 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     completedAt?: boolean
+    idempotencyKey?: boolean
+    materializationVersion?: boolean
+    sourceProvenance?: boolean
+    captureTimestamp?: boolean
+    scoreEvidence?: boolean
+    propertyEvidence?: boolean
+    missingEvidence?: boolean
+    contactPosture?: boolean
+    providerCalled?: boolean
+    outreach?: boolean
+    sent?: boolean
+    published?: boolean
+    crmMutation?: boolean
+    externalExecutionAllowed?: boolean
+    liveExecutionAllowed?: boolean
     lead?: boolean | RevenueTask$leadArgs<ExtArgs>
   }, ExtArgs["result"]["revenueTask"]>
 
@@ -18142,6 +18257,21 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     completedAt?: boolean
+    idempotencyKey?: boolean
+    materializationVersion?: boolean
+    sourceProvenance?: boolean
+    captureTimestamp?: boolean
+    scoreEvidence?: boolean
+    propertyEvidence?: boolean
+    missingEvidence?: boolean
+    contactPosture?: boolean
+    providerCalled?: boolean
+    outreach?: boolean
+    sent?: boolean
+    published?: boolean
+    crmMutation?: boolean
+    externalExecutionAllowed?: boolean
+    liveExecutionAllowed?: boolean
     lead?: boolean | RevenueTask$leadArgs<ExtArgs>
   }, ExtArgs["result"]["revenueTask"]>
 
@@ -18162,9 +18292,24 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     completedAt?: boolean
+    idempotencyKey?: boolean
+    materializationVersion?: boolean
+    sourceProvenance?: boolean
+    captureTimestamp?: boolean
+    scoreEvidence?: boolean
+    propertyEvidence?: boolean
+    missingEvidence?: boolean
+    contactPosture?: boolean
+    providerCalled?: boolean
+    outreach?: boolean
+    sent?: boolean
+    published?: boolean
+    crmMutation?: boolean
+    externalExecutionAllowed?: boolean
+    liveExecutionAllowed?: boolean
   }
 
-  export type RevenueTaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "leadId" | "title" | "taskType" | "priority" | "status" | "recommendedAction" | "reason" | "dueAt" | "assignedTo" | "requiresApproval" | "source" | "createdAt" | "updatedAt" | "completedAt", ExtArgs["result"]["revenueTask"]>
+  export type RevenueTaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "leadId" | "title" | "taskType" | "priority" | "status" | "recommendedAction" | "reason" | "dueAt" | "assignedTo" | "requiresApproval" | "source" | "createdAt" | "updatedAt" | "completedAt" | "idempotencyKey" | "materializationVersion" | "sourceProvenance" | "captureTimestamp" | "scoreEvidence" | "propertyEvidence" | "missingEvidence" | "contactPosture" | "providerCalled" | "outreach" | "sent" | "published" | "crmMutation" | "externalExecutionAllowed" | "liveExecutionAllowed", ExtArgs["result"]["revenueTask"]>
   export type RevenueTaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     lead?: boolean | RevenueTask$leadArgs<ExtArgs>
   }
@@ -18197,6 +18342,21 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       completedAt: Date | null
+      idempotencyKey: string | null
+      materializationVersion: string | null
+      sourceProvenance: Prisma.JsonValue | null
+      captureTimestamp: Date | null
+      scoreEvidence: Prisma.JsonValue | null
+      propertyEvidence: Prisma.JsonValue | null
+      missingEvidence: Prisma.JsonValue | null
+      contactPosture: Prisma.JsonValue | null
+      providerCalled: boolean
+      outreach: boolean
+      sent: boolean
+      published: boolean
+      crmMutation: boolean
+      externalExecutionAllowed: boolean
+      liveExecutionAllowed: boolean
     }, ExtArgs["result"]["revenueTask"]>
     composites: {}
   }
@@ -18637,6 +18797,21 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"RevenueTask", 'DateTime'>
     readonly updatedAt: FieldRef<"RevenueTask", 'DateTime'>
     readonly completedAt: FieldRef<"RevenueTask", 'DateTime'>
+    readonly idempotencyKey: FieldRef<"RevenueTask", 'String'>
+    readonly materializationVersion: FieldRef<"RevenueTask", 'String'>
+    readonly sourceProvenance: FieldRef<"RevenueTask", 'Json'>
+    readonly captureTimestamp: FieldRef<"RevenueTask", 'DateTime'>
+    readonly scoreEvidence: FieldRef<"RevenueTask", 'Json'>
+    readonly propertyEvidence: FieldRef<"RevenueTask", 'Json'>
+    readonly missingEvidence: FieldRef<"RevenueTask", 'Json'>
+    readonly contactPosture: FieldRef<"RevenueTask", 'Json'>
+    readonly providerCalled: FieldRef<"RevenueTask", 'Boolean'>
+    readonly outreach: FieldRef<"RevenueTask", 'Boolean'>
+    readonly sent: FieldRef<"RevenueTask", 'Boolean'>
+    readonly published: FieldRef<"RevenueTask", 'Boolean'>
+    readonly crmMutation: FieldRef<"RevenueTask", 'Boolean'>
+    readonly externalExecutionAllowed: FieldRef<"RevenueTask", 'Boolean'>
+    readonly liveExecutionAllowed: FieldRef<"RevenueTask", 'Boolean'>
   }
     
 
@@ -106208,7 +106383,22 @@ export namespace Prisma {
     source: 'source',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    completedAt: 'completedAt'
+    completedAt: 'completedAt',
+    idempotencyKey: 'idempotencyKey',
+    materializationVersion: 'materializationVersion',
+    sourceProvenance: 'sourceProvenance',
+    captureTimestamp: 'captureTimestamp',
+    scoreEvidence: 'scoreEvidence',
+    propertyEvidence: 'propertyEvidence',
+    missingEvidence: 'missingEvidence',
+    contactPosture: 'contactPosture',
+    providerCalled: 'providerCalled',
+    outreach: 'outreach',
+    sent: 'sent',
+    published: 'published',
+    crmMutation: 'crmMutation',
+    externalExecutionAllowed: 'externalExecutionAllowed',
+    liveExecutionAllowed: 'liveExecutionAllowed'
   };
 
   export type RevenueTaskScalarFieldEnum = (typeof RevenueTaskScalarFieldEnum)[keyof typeof RevenueTaskScalarFieldEnum]
@@ -108746,6 +108936,21 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"RevenueTask"> | Date | string
     updatedAt?: DateTimeFilter<"RevenueTask"> | Date | string
     completedAt?: DateTimeNullableFilter<"RevenueTask"> | Date | string | null
+    idempotencyKey?: StringNullableFilter<"RevenueTask"> | string | null
+    materializationVersion?: StringNullableFilter<"RevenueTask"> | string | null
+    sourceProvenance?: JsonNullableFilter<"RevenueTask">
+    captureTimestamp?: DateTimeNullableFilter<"RevenueTask"> | Date | string | null
+    scoreEvidence?: JsonNullableFilter<"RevenueTask">
+    propertyEvidence?: JsonNullableFilter<"RevenueTask">
+    missingEvidence?: JsonNullableFilter<"RevenueTask">
+    contactPosture?: JsonNullableFilter<"RevenueTask">
+    providerCalled?: BoolFilter<"RevenueTask"> | boolean
+    outreach?: BoolFilter<"RevenueTask"> | boolean
+    sent?: BoolFilter<"RevenueTask"> | boolean
+    published?: BoolFilter<"RevenueTask"> | boolean
+    crmMutation?: BoolFilter<"RevenueTask"> | boolean
+    externalExecutionAllowed?: BoolFilter<"RevenueTask"> | boolean
+    liveExecutionAllowed?: BoolFilter<"RevenueTask"> | boolean
     lead?: XOR<LeadNullableScalarRelationFilter, LeadWhereInput> | null
   }
 
@@ -108766,11 +108971,27 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     completedAt?: SortOrderInput | SortOrder
+    idempotencyKey?: SortOrderInput | SortOrder
+    materializationVersion?: SortOrderInput | SortOrder
+    sourceProvenance?: SortOrderInput | SortOrder
+    captureTimestamp?: SortOrderInput | SortOrder
+    scoreEvidence?: SortOrderInput | SortOrder
+    propertyEvidence?: SortOrderInput | SortOrder
+    missingEvidence?: SortOrderInput | SortOrder
+    contactPosture?: SortOrderInput | SortOrder
+    providerCalled?: SortOrder
+    outreach?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    crmMutation?: SortOrder
+    externalExecutionAllowed?: SortOrder
+    liveExecutionAllowed?: SortOrder
     lead?: LeadOrderByWithRelationInput
   }
 
   export type RevenueTaskWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    tenantId_idempotencyKey?: RevenueTaskTenantIdIdempotencyKeyCompoundUniqueInput
     AND?: RevenueTaskWhereInput | RevenueTaskWhereInput[]
     OR?: RevenueTaskWhereInput[]
     NOT?: RevenueTaskWhereInput | RevenueTaskWhereInput[]
@@ -108789,8 +109010,23 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"RevenueTask"> | Date | string
     updatedAt?: DateTimeFilter<"RevenueTask"> | Date | string
     completedAt?: DateTimeNullableFilter<"RevenueTask"> | Date | string | null
+    idempotencyKey?: StringNullableFilter<"RevenueTask"> | string | null
+    materializationVersion?: StringNullableFilter<"RevenueTask"> | string | null
+    sourceProvenance?: JsonNullableFilter<"RevenueTask">
+    captureTimestamp?: DateTimeNullableFilter<"RevenueTask"> | Date | string | null
+    scoreEvidence?: JsonNullableFilter<"RevenueTask">
+    propertyEvidence?: JsonNullableFilter<"RevenueTask">
+    missingEvidence?: JsonNullableFilter<"RevenueTask">
+    contactPosture?: JsonNullableFilter<"RevenueTask">
+    providerCalled?: BoolFilter<"RevenueTask"> | boolean
+    outreach?: BoolFilter<"RevenueTask"> | boolean
+    sent?: BoolFilter<"RevenueTask"> | boolean
+    published?: BoolFilter<"RevenueTask"> | boolean
+    crmMutation?: BoolFilter<"RevenueTask"> | boolean
+    externalExecutionAllowed?: BoolFilter<"RevenueTask"> | boolean
+    liveExecutionAllowed?: BoolFilter<"RevenueTask"> | boolean
     lead?: XOR<LeadNullableScalarRelationFilter, LeadWhereInput> | null
-  }, "id">
+  }, "id" | "tenantId_idempotencyKey">
 
   export type RevenueTaskOrderByWithAggregationInput = {
     id?: SortOrder
@@ -108809,6 +109045,21 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     completedAt?: SortOrderInput | SortOrder
+    idempotencyKey?: SortOrderInput | SortOrder
+    materializationVersion?: SortOrderInput | SortOrder
+    sourceProvenance?: SortOrderInput | SortOrder
+    captureTimestamp?: SortOrderInput | SortOrder
+    scoreEvidence?: SortOrderInput | SortOrder
+    propertyEvidence?: SortOrderInput | SortOrder
+    missingEvidence?: SortOrderInput | SortOrder
+    contactPosture?: SortOrderInput | SortOrder
+    providerCalled?: SortOrder
+    outreach?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    crmMutation?: SortOrder
+    externalExecutionAllowed?: SortOrder
+    liveExecutionAllowed?: SortOrder
     _count?: RevenueTaskCountOrderByAggregateInput
     _max?: RevenueTaskMaxOrderByAggregateInput
     _min?: RevenueTaskMinOrderByAggregateInput
@@ -108834,6 +109085,21 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"RevenueTask"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"RevenueTask"> | Date | string
     completedAt?: DateTimeNullableWithAggregatesFilter<"RevenueTask"> | Date | string | null
+    idempotencyKey?: StringNullableWithAggregatesFilter<"RevenueTask"> | string | null
+    materializationVersion?: StringNullableWithAggregatesFilter<"RevenueTask"> | string | null
+    sourceProvenance?: JsonNullableWithAggregatesFilter<"RevenueTask">
+    captureTimestamp?: DateTimeNullableWithAggregatesFilter<"RevenueTask"> | Date | string | null
+    scoreEvidence?: JsonNullableWithAggregatesFilter<"RevenueTask">
+    propertyEvidence?: JsonNullableWithAggregatesFilter<"RevenueTask">
+    missingEvidence?: JsonNullableWithAggregatesFilter<"RevenueTask">
+    contactPosture?: JsonNullableWithAggregatesFilter<"RevenueTask">
+    providerCalled?: BoolWithAggregatesFilter<"RevenueTask"> | boolean
+    outreach?: BoolWithAggregatesFilter<"RevenueTask"> | boolean
+    sent?: BoolWithAggregatesFilter<"RevenueTask"> | boolean
+    published?: BoolWithAggregatesFilter<"RevenueTask"> | boolean
+    crmMutation?: BoolWithAggregatesFilter<"RevenueTask"> | boolean
+    externalExecutionAllowed?: BoolWithAggregatesFilter<"RevenueTask"> | boolean
+    liveExecutionAllowed?: BoolWithAggregatesFilter<"RevenueTask"> | boolean
   }
 
   export type RevenuePipelineEventWhereInput = {
@@ -117523,7 +117789,6 @@ export namespace Prisma {
 
   export type RevenueTaskCreateInput = {
     id?: string
-    tenantId?: string
     title: string
     taskType: string
     priority: string
@@ -117537,6 +117802,21 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     completedAt?: Date | string | null
+    idempotencyKey?: string | null
+    materializationVersion?: string | null
+    sourceProvenance?: NullableJsonNullValueInput | InputJsonValue
+    captureTimestamp?: Date | string | null
+    scoreEvidence?: NullableJsonNullValueInput | InputJsonValue
+    propertyEvidence?: NullableJsonNullValueInput | InputJsonValue
+    missingEvidence?: NullableJsonNullValueInput | InputJsonValue
+    contactPosture?: NullableJsonNullValueInput | InputJsonValue
+    providerCalled?: boolean
+    outreach?: boolean
+    sent?: boolean
+    published?: boolean
+    crmMutation?: boolean
+    externalExecutionAllowed?: boolean
+    liveExecutionAllowed?: boolean
     lead?: LeadCreateNestedOneWithoutRevenueTasksInput
   }
 
@@ -117557,11 +117837,25 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     completedAt?: Date | string | null
+    idempotencyKey?: string | null
+    materializationVersion?: string | null
+    sourceProvenance?: NullableJsonNullValueInput | InputJsonValue
+    captureTimestamp?: Date | string | null
+    scoreEvidence?: NullableJsonNullValueInput | InputJsonValue
+    propertyEvidence?: NullableJsonNullValueInput | InputJsonValue
+    missingEvidence?: NullableJsonNullValueInput | InputJsonValue
+    contactPosture?: NullableJsonNullValueInput | InputJsonValue
+    providerCalled?: boolean
+    outreach?: boolean
+    sent?: boolean
+    published?: boolean
+    crmMutation?: boolean
+    externalExecutionAllowed?: boolean
+    liveExecutionAllowed?: boolean
   }
 
   export type RevenueTaskUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    tenantId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     taskType?: StringFieldUpdateOperationsInput | string
     priority?: StringFieldUpdateOperationsInput | string
@@ -117575,6 +117869,21 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    materializationVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceProvenance?: NullableJsonNullValueInput | InputJsonValue
+    captureTimestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scoreEvidence?: NullableJsonNullValueInput | InputJsonValue
+    propertyEvidence?: NullableJsonNullValueInput | InputJsonValue
+    missingEvidence?: NullableJsonNullValueInput | InputJsonValue
+    contactPosture?: NullableJsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    outreach?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    crmMutation?: BoolFieldUpdateOperationsInput | boolean
+    externalExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
     lead?: LeadUpdateOneWithoutRevenueTasksNestedInput
   }
 
@@ -117595,6 +117904,21 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    materializationVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceProvenance?: NullableJsonNullValueInput | InputJsonValue
+    captureTimestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scoreEvidence?: NullableJsonNullValueInput | InputJsonValue
+    propertyEvidence?: NullableJsonNullValueInput | InputJsonValue
+    missingEvidence?: NullableJsonNullValueInput | InputJsonValue
+    contactPosture?: NullableJsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    outreach?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    crmMutation?: BoolFieldUpdateOperationsInput | boolean
+    externalExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type RevenueTaskCreateManyInput = {
@@ -117614,11 +117938,25 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     completedAt?: Date | string | null
+    idempotencyKey?: string | null
+    materializationVersion?: string | null
+    sourceProvenance?: NullableJsonNullValueInput | InputJsonValue
+    captureTimestamp?: Date | string | null
+    scoreEvidence?: NullableJsonNullValueInput | InputJsonValue
+    propertyEvidence?: NullableJsonNullValueInput | InputJsonValue
+    missingEvidence?: NullableJsonNullValueInput | InputJsonValue
+    contactPosture?: NullableJsonNullValueInput | InputJsonValue
+    providerCalled?: boolean
+    outreach?: boolean
+    sent?: boolean
+    published?: boolean
+    crmMutation?: boolean
+    externalExecutionAllowed?: boolean
+    liveExecutionAllowed?: boolean
   }
 
   export type RevenueTaskUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    tenantId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     taskType?: StringFieldUpdateOperationsInput | string
     priority?: StringFieldUpdateOperationsInput | string
@@ -117632,6 +117970,21 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    materializationVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceProvenance?: NullableJsonNullValueInput | InputJsonValue
+    captureTimestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scoreEvidence?: NullableJsonNullValueInput | InputJsonValue
+    propertyEvidence?: NullableJsonNullValueInput | InputJsonValue
+    missingEvidence?: NullableJsonNullValueInput | InputJsonValue
+    contactPosture?: NullableJsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    outreach?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    crmMutation?: BoolFieldUpdateOperationsInput | boolean
+    externalExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type RevenueTaskUncheckedUpdateManyInput = {
@@ -117651,6 +118004,21 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    materializationVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceProvenance?: NullableJsonNullValueInput | InputJsonValue
+    captureTimestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scoreEvidence?: NullableJsonNullValueInput | InputJsonValue
+    propertyEvidence?: NullableJsonNullValueInput | InputJsonValue
+    missingEvidence?: NullableJsonNullValueInput | InputJsonValue
+    contactPosture?: NullableJsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    outreach?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    crmMutation?: BoolFieldUpdateOperationsInput | boolean
+    externalExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type RevenuePipelineEventCreateInput = {
@@ -127820,6 +128188,11 @@ export namespace Prisma {
     _max?: NestedJsonFilter<$PrismaModel>
   }
 
+  export type RevenueTaskTenantIdIdempotencyKeyCompoundUniqueInput = {
+    tenantId: string
+    idempotencyKey: string
+  }
+
   export type RevenueTaskCountOrderByAggregateInput = {
     id?: SortOrder
     tenantId?: SortOrder
@@ -127837,6 +128210,21 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     completedAt?: SortOrder
+    idempotencyKey?: SortOrder
+    materializationVersion?: SortOrder
+    sourceProvenance?: SortOrder
+    captureTimestamp?: SortOrder
+    scoreEvidence?: SortOrder
+    propertyEvidence?: SortOrder
+    missingEvidence?: SortOrder
+    contactPosture?: SortOrder
+    providerCalled?: SortOrder
+    outreach?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    crmMutation?: SortOrder
+    externalExecutionAllowed?: SortOrder
+    liveExecutionAllowed?: SortOrder
   }
 
   export type RevenueTaskMaxOrderByAggregateInput = {
@@ -127856,6 +128244,16 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     completedAt?: SortOrder
+    idempotencyKey?: SortOrder
+    materializationVersion?: SortOrder
+    captureTimestamp?: SortOrder
+    providerCalled?: SortOrder
+    outreach?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    crmMutation?: SortOrder
+    externalExecutionAllowed?: SortOrder
+    liveExecutionAllowed?: SortOrder
   }
 
   export type RevenueTaskMinOrderByAggregateInput = {
@@ -127875,6 +128273,16 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     completedAt?: SortOrder
+    idempotencyKey?: SortOrder
+    materializationVersion?: SortOrder
+    captureTimestamp?: SortOrder
+    providerCalled?: SortOrder
+    outreach?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    crmMutation?: SortOrder
+    externalExecutionAllowed?: SortOrder
+    liveExecutionAllowed?: SortOrder
   }
 
   export type RevenuePipelineEventCountOrderByAggregateInput = {
@@ -135310,7 +135718,6 @@ export namespace Prisma {
 
   export type RevenueTaskCreateWithoutLeadInput = {
     id?: string
-    tenantId?: string
     title: string
     taskType: string
     priority: string
@@ -135324,11 +135731,25 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     completedAt?: Date | string | null
+    idempotencyKey?: string | null
+    materializationVersion?: string | null
+    sourceProvenance?: NullableJsonNullValueInput | InputJsonValue
+    captureTimestamp?: Date | string | null
+    scoreEvidence?: NullableJsonNullValueInput | InputJsonValue
+    propertyEvidence?: NullableJsonNullValueInput | InputJsonValue
+    missingEvidence?: NullableJsonNullValueInput | InputJsonValue
+    contactPosture?: NullableJsonNullValueInput | InputJsonValue
+    providerCalled?: boolean
+    outreach?: boolean
+    sent?: boolean
+    published?: boolean
+    crmMutation?: boolean
+    externalExecutionAllowed?: boolean
+    liveExecutionAllowed?: boolean
   }
 
   export type RevenueTaskUncheckedCreateWithoutLeadInput = {
     id?: string
-    tenantId?: string
     title: string
     taskType: string
     priority: string
@@ -135342,6 +135763,21 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     completedAt?: Date | string | null
+    idempotencyKey?: string | null
+    materializationVersion?: string | null
+    sourceProvenance?: NullableJsonNullValueInput | InputJsonValue
+    captureTimestamp?: Date | string | null
+    scoreEvidence?: NullableJsonNullValueInput | InputJsonValue
+    propertyEvidence?: NullableJsonNullValueInput | InputJsonValue
+    missingEvidence?: NullableJsonNullValueInput | InputJsonValue
+    contactPosture?: NullableJsonNullValueInput | InputJsonValue
+    providerCalled?: boolean
+    outreach?: boolean
+    sent?: boolean
+    published?: boolean
+    crmMutation?: boolean
+    externalExecutionAllowed?: boolean
+    liveExecutionAllowed?: boolean
   }
 
   export type RevenueTaskCreateOrConnectWithoutLeadInput = {
@@ -135700,6 +136136,21 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"RevenueTask"> | Date | string
     updatedAt?: DateTimeFilter<"RevenueTask"> | Date | string
     completedAt?: DateTimeNullableFilter<"RevenueTask"> | Date | string | null
+    idempotencyKey?: StringNullableFilter<"RevenueTask"> | string | null
+    materializationVersion?: StringNullableFilter<"RevenueTask"> | string | null
+    sourceProvenance?: JsonNullableFilter<"RevenueTask">
+    captureTimestamp?: DateTimeNullableFilter<"RevenueTask"> | Date | string | null
+    scoreEvidence?: JsonNullableFilter<"RevenueTask">
+    propertyEvidence?: JsonNullableFilter<"RevenueTask">
+    missingEvidence?: JsonNullableFilter<"RevenueTask">
+    contactPosture?: JsonNullableFilter<"RevenueTask">
+    providerCalled?: BoolFilter<"RevenueTask"> | boolean
+    outreach?: BoolFilter<"RevenueTask"> | boolean
+    sent?: BoolFilter<"RevenueTask"> | boolean
+    published?: BoolFilter<"RevenueTask"> | boolean
+    crmMutation?: BoolFilter<"RevenueTask"> | boolean
+    externalExecutionAllowed?: BoolFilter<"RevenueTask"> | boolean
+    liveExecutionAllowed?: BoolFilter<"RevenueTask"> | boolean
   }
 
   export type RevenuePipelineEventUpsertWithWhereUniqueWithoutLeadInput = {
@@ -143535,7 +143986,6 @@ export namespace Prisma {
 
   export type RevenueTaskCreateManyLeadInput = {
     id?: string
-    tenantId?: string
     title: string
     taskType: string
     priority: string
@@ -143549,6 +143999,21 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     completedAt?: Date | string | null
+    idempotencyKey?: string | null
+    materializationVersion?: string | null
+    sourceProvenance?: NullableJsonNullValueInput | InputJsonValue
+    captureTimestamp?: Date | string | null
+    scoreEvidence?: NullableJsonNullValueInput | InputJsonValue
+    propertyEvidence?: NullableJsonNullValueInput | InputJsonValue
+    missingEvidence?: NullableJsonNullValueInput | InputJsonValue
+    contactPosture?: NullableJsonNullValueInput | InputJsonValue
+    providerCalled?: boolean
+    outreach?: boolean
+    sent?: boolean
+    published?: boolean
+    crmMutation?: boolean
+    externalExecutionAllowed?: boolean
+    liveExecutionAllowed?: boolean
   }
 
   export type RevenuePipelineEventCreateManyLeadInput = {
@@ -143858,7 +144323,6 @@ export namespace Prisma {
 
   export type RevenueTaskUpdateWithoutLeadInput = {
     id?: StringFieldUpdateOperationsInput | string
-    tenantId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     taskType?: StringFieldUpdateOperationsInput | string
     priority?: StringFieldUpdateOperationsInput | string
@@ -143872,11 +144336,25 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    materializationVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceProvenance?: NullableJsonNullValueInput | InputJsonValue
+    captureTimestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scoreEvidence?: NullableJsonNullValueInput | InputJsonValue
+    propertyEvidence?: NullableJsonNullValueInput | InputJsonValue
+    missingEvidence?: NullableJsonNullValueInput | InputJsonValue
+    contactPosture?: NullableJsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    outreach?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    crmMutation?: BoolFieldUpdateOperationsInput | boolean
+    externalExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type RevenueTaskUncheckedUpdateWithoutLeadInput = {
     id?: StringFieldUpdateOperationsInput | string
-    tenantId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     taskType?: StringFieldUpdateOperationsInput | string
     priority?: StringFieldUpdateOperationsInput | string
@@ -143890,11 +144368,25 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    materializationVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceProvenance?: NullableJsonNullValueInput | InputJsonValue
+    captureTimestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scoreEvidence?: NullableJsonNullValueInput | InputJsonValue
+    propertyEvidence?: NullableJsonNullValueInput | InputJsonValue
+    missingEvidence?: NullableJsonNullValueInput | InputJsonValue
+    contactPosture?: NullableJsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    outreach?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    crmMutation?: BoolFieldUpdateOperationsInput | boolean
+    externalExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type RevenueTaskUncheckedUpdateManyWithoutLeadInput = {
     id?: StringFieldUpdateOperationsInput | string
-    tenantId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     taskType?: StringFieldUpdateOperationsInput | string
     priority?: StringFieldUpdateOperationsInput | string
@@ -143908,6 +144400,21 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null
+    materializationVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceProvenance?: NullableJsonNullValueInput | InputJsonValue
+    captureTimestamp?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scoreEvidence?: NullableJsonNullValueInput | InputJsonValue
+    propertyEvidence?: NullableJsonNullValueInput | InputJsonValue
+    missingEvidence?: NullableJsonNullValueInput | InputJsonValue
+    contactPosture?: NullableJsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    outreach?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    crmMutation?: BoolFieldUpdateOperationsInput | boolean
+    externalExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type RevenuePipelineEventUpdateWithoutLeadInput = {
