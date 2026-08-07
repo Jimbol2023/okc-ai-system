@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { getAuthenticatedRequestContext, getUnauthorizedApiResponse, isAdminRequest } from "@/lib/auth";
-import { authorizeGoogleReadOnlyPreview, configureGoogleReadOnlyPreview, getGoogleReadOnlyPreviewReadiness, runGoogleReadOnlyPreview, setGoogleReadOnlyPreviewEnabled } from "@/lib/ueip-google-readonly-preview";
+import { authorizeGoogleReadOnlyPreview, configureGoogleReadOnlyPreview, getGoogleReadOnlyPreviewReadiness, reconcileGoogleReadOnlyPreviewEvidence, runGoogleReadOnlyPreview, setGoogleReadOnlyPreviewEnabled } from "@/lib/ueip-google-readonly-preview";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -30,6 +30,7 @@ export async function POST(request: Request) {
     if (body.operation === "configure") return NextResponse.json(await configureGoogleReadOnlyPreview({ actor: authenticatedActor, confirmation: body.confirmation ?? "" }));
     if (body.operation === "authorize") return NextResponse.json(await authorizeGoogleReadOnlyPreview({ actor: authenticatedActor, confirmation: body.confirmation ?? "" }));
     if (body.operation === "read") return NextResponse.json(await runGoogleReadOnlyPreview({ actor: authenticatedActor, confirmation: body.confirmation ?? "", nonce: body.nonce }));
+    if (body.operation === "reconcile") return NextResponse.json(await reconcileGoogleReadOnlyPreviewEvidence({ actor: authenticatedActor, confirmation: body.confirmation ?? "" }));
     if (body.operation === "disable" || body.operation === "restore") return NextResponse.json(await setGoogleReadOnlyPreviewEnabled({ actor: authenticatedActor, confirmation: body.confirmation ?? "", action: body.operation }));
     return NextResponse.json({ status: "blocked", reasonCodes: ["operation_invalid"], providerCalled: false, liveExecutionAllowed: false }, { status: 400 });
   } catch {

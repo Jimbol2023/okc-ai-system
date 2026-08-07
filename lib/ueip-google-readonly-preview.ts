@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { diagnosePreviewDatabaseFingerprint } from "@/lib/preview-database-fingerprint-diagnosis";
 import { runReadOnlyBusinessSync, type BusinessDataCategory } from "@/lib/read-only-business-connections";
+import { getEnterpriseConnector } from "@/lib/connector-platform";
 import { createUeipExecutionContext, getTrustedUeipEnvironment } from "@/lib/ueip-runtime-gateway";
 import { requireTenantId } from "@/lib/tenant-context";
 
@@ -10,6 +11,7 @@ export const googleReadOnlyPreviewConfirmations = {
   read: "RUN_UEIP_GOOGLE_READONLY_PREVIEW_READS",
   disable: "DISABLE_UEIP_GOOGLE_READONLY_PREVIEW",
   restore: "RESTORE_UEIP_GOOGLE_READONLY_PREVIEW",
+  reconcile: "RECONCILE_UEIP_GOOGLE_READONLY_PREVIEW_EVIDENCE",
 } as const;
 
 const connectors = [
@@ -22,6 +24,7 @@ const connectors = [
 type Actor = { tenantId: string; actorId: string };
 let previewDb = prisma;
 let diagnosePreviewIdentity = diagnosePreviewDatabaseFingerprint;
+let businessSyncRunner = runReadOnlyBusinessSync;
 
 export function setGoogleReadOnlyPreviewDbForTest(db: typeof prisma) {
   previewDb = db;
@@ -33,6 +36,52 @@ export function setGoogleReadOnlyPreviewIdentityDiagnosisForTest(
 ) {
   diagnosePreviewIdentity = diagnosis;
   return () => { diagnosePreviewIdentity = diagnosePreviewDatabaseFingerprint; };
+}
+
+export function setGoogleReadOnlyPreviewBusinessSyncForTest(
+  runner: typeof runReadOnlyBusinessSync,
+) {
+  businessSyncRunner = runner;
+  return () => { businessSyncRunner = runReadOnlyBusinessSync; };
+}
+
+function connectorRegistryData(connectorId: string, tenantId: string) {
+  const connector = getEnterpriseConnector(connectorId);
+  if (!connector) throw new Error(`canonical_connector_missing:${connectorId}`);
+  return {
+    tenantId,
+    connectorId: connector.connectorId,
+    displayName: connector.displayName,
+    category: connector.category,
+    provider: connector.provider,
+    version: connector.version,
+    authenticationType: connector.authenticationType,
+    oauthSupported: connector.oauthSupported,
+    requiredPermissions: connector.requiredPermissions,
+    supportedActions: connector.supportedActions,
+    readCapabilities: connector.readCapabilities,
+    writeCapabilities: connector.writeCapabilities,
+    humanApprovalRequirements: connector.humanApprovalRequirements,
+    safeAutoEligibility: connector.safeAutoEligibility,
+    rateLimits: connector.rateLimits,
+    usageQuotas: connector.usageQuotas,
+    estimatedCost: connector.estimatedCost,
+    healthStatus: connector.healthStatus,
+    retryPolicy: connector.retryPolicy,
+    timeoutPolicy: connector.timeoutPolicy,
+    circuitBreakerState: connector.circuitBreakerState,
+    loggingConfiguration: connector.loggingConfiguration,
+    auditConfiguration: connector.auditConfiguration,
+    riskLevel: connector.riskLevel,
+    environmentSupport: connector.environmentSupport,
+    featureFlags: connector.featureFlags,
+    dependencies: connector.dependencies,
+    owner: connector.owner,
+    credentialReference: connector.credentialReference,
+    lifecycleState: connector.lifecycleState,
+    providerCallsAllowed: false,
+    liveExecutionAllowed: false,
+  };
 }
 
 function scopeEvidence(env: NodeJS.ProcessEnv) {
@@ -103,6 +152,14 @@ export async function configureGoogleReadOnlyPreview(input: { actor: Actor; conf
     });
     if (identity.databaseFingerprint !== checked.previewFingerprint || identity.environmentType !== "preview" || identity.productionProhibited !== true) throw new Error("Preview environment identity registration failed.");
     for (const connector of connectors) {
+      const registryData = connectorRegistryData(connector.connectorId, tenantId);
+      const { tenantId: _registryTenantId, ...registryUpdate } = registryData;
+      void _registryTenantId;
+      await tx.enterpriseConnectorRegistry.upsert({
+        where: { connectorId: connector.connectorId },
+        create: registryData,
+        update: registryUpdate,
+      });
       const credential = await tx.connectorCredentialReference.upsert({ where: { tenantId_referenceKey: { tenantId, referenceKey: `UEIP_${connector.connectorId.toUpperCase()}_PREVIEW_ENVIRONMENT` } }, create: { tenantId, connectorId: connector.connectorId, referenceKey: `UEIP_${connector.connectorId.toUpperCase()}_PREVIEW_ENVIRONMENT`, secretStorageProvider: "environment", secretPathReference: "server_allowlisted_google_oauth", rotationStatus: "operator_managed", rawSecretStored: false, rawSecretRendered: false, createdBy: input.actor.actorId }, update: { connectorId: connector.connectorId, secretStorageProvider: "environment", secretPathReference: "server_allowlisted_google_oauth", rawSecretStored: false, rawSecretRendered: false } });
       const permissionValidation = { quotaPerMinute: 20, circuitState: "closed", previewOnly: true, ...(connector.connectorId === "google_analytics" ? { authorizedPropertyIds: [env.GOOGLE_ANALYTICS_PROPERTY_ID!.trim()] } : {}) };
       const installation = await tx.connectorInstallationState.upsert({ where: { tenantId_connectorId: { tenantId, connectorId: connector.connectorId } }, create: { tenantId, connectorId: connector.connectorId, installationState: "enabled", configurationState: "configured", authenticationState: "authenticated", sandboxMode: true, enabled: true, enableApprovalStatus: "approved", credentialReferenceId: credential.id, requiredScopes: [connector.scope], grantedScopes: [connector.scope], permissionValidation, rollbackVersion: "ueip-google-readonly-v1", providerCalled: false, liveExecutionAllowed: false }, update: { installationState: "enabled", configurationState: "configured", authenticationState: "authenticated", sandboxMode: true, enabled: true, enableApprovalStatus: "approved", credentialReferenceId: credential.id, requiredScopes: [connector.scope], grantedScopes: [connector.scope], permissionValidation, rollbackVersion: "ueip-google-readonly-v1", providerCalled: false, liveExecutionAllowed: false } });
@@ -146,12 +203,143 @@ export async function authorizeGoogleReadOnlyPreview(input: { actor: Actor; conf
   return { status: "authorized" as const, authorizationIds, nonce: rawNonce, expiresAt: expiresAt.toISOString(), maximumProviderCallsPerConnector: 1, providerCalled: false, liveExecutionAllowed: false };
 }
 
+type ReconciledAuthorization = {
+  id: string;
+  tenantId: string;
+  connectorId: string;
+  createdAt: Date;
+};
+
+type ReconciliationOutcome = {
+  authorizationId: string;
+  connectorId: string;
+  status: "completed" | "quarantined" | "locked";
+  providerCalled: boolean;
+  providerCallCount: 0 | 1;
+  traceId: string | null;
+  snapshotId: string | null;
+  snapshotStatus: string;
+  evidenceHashPresent: boolean;
+  auditComplete: boolean;
+};
+
+async function reconcileAuthorizationEvidence(input: {
+  actor: Actor;
+  authorizations: ReconciledAuthorization[];
+}) {
+  const outcomes: ReconciliationOutcome[] = [];
+  for (const authorization of input.authorizations) {
+    const audits = await previewDb.ueipGatewayAuditEvent.findMany({
+      where: {
+        tenantId: input.actor.tenantId,
+        connectorId: authorization.connectorId,
+        environment: "preview",
+        createdAt: { gte: authorization.createdAt },
+      },
+      orderBy: { createdAt: "desc" },
+      take: 20,
+    });
+    const providerAudit = audits.find((audit) => audit.providerCalled === true) ?? null;
+    const completedAudit = audits.find((audit) => audit.providerCalled === true && audit.stage === "completed" && audit.decision === "completed") ?? providerAudit;
+    const traceId = completedAudit?.traceId ?? null;
+    const snapshot = traceId
+      ? await previewDb.businessDataSnapshot.findFirst({
+          where: { tenantId: input.actor.tenantId, connectorId: authorization.connectorId, traceId },
+          orderBy: { updatedAt: "desc" },
+        })
+      : null;
+    const providerCalled = Boolean(providerAudit);
+    const snapshotComplete = Boolean(snapshot?.providerCalled && snapshot.status === "fresh" && snapshot.evidenceHash && snapshot.traceId === traceId);
+    const status: ReconciliationOutcome["status"] = snapshotComplete ? "completed" : providerCalled ? "quarantined" : "locked";
+    const providerCallCount: ReconciliationOutcome["providerCallCount"] = providerCalled ? 1 : 0;
+    outcomes.push({
+      authorizationId: authorization.id,
+      connectorId: authorization.connectorId,
+      status,
+      providerCalled,
+      providerCallCount,
+      traceId,
+      snapshotId: snapshot?.id ?? null,
+      snapshotStatus: snapshot?.status ?? "missing",
+      evidenceHashPresent: Boolean(snapshot?.evidenceHash),
+      auditComplete: Boolean(completedAudit?.auditComplete),
+    });
+  }
+
+  await previewDb.$transaction(async (tx) => {
+    for (const outcome of outcomes) {
+      await tx.ueipPilotAuthorization.update({
+        where: { id: outcome.authorizationId },
+        data: {
+          status: outcome.status,
+          providerCallCount: outcome.providerCallCount,
+          traceId: outcome.traceId,
+          resultStatus: outcome.status,
+          lockedAt: new Date(),
+        },
+      });
+      await tx.connectorInstallationState.update({
+        where: { tenantId_connectorId: { tenantId: input.actor.tenantId, connectorId: outcome.connectorId } },
+        data: { enabled: false, installationState: "disabled", enableApprovalStatus: "pilot_locked", providerCalled: outcome.providerCalled, liveExecutionAllowed: false },
+      });
+      const eventType = `preview_pilot_reconciled:${outcome.authorizationId}`;
+      const existing = await tx.ueipPilotControlEvent.findFirst({ where: { tenantId: input.actor.tenantId, connectorId: outcome.connectorId, eventType } });
+      if (!existing) {
+        await tx.ueipPilotControlEvent.create({
+          data: {
+            tenantId: input.actor.tenantId,
+            connectorId: outcome.connectorId,
+            eventType,
+            actorId: input.actor.actorId,
+            environment: "preview",
+            decision: outcome.status,
+            reasonCodes: [outcome.status === "completed" ? "provider_read_and_snapshot_reconciled" : outcome.providerCalled ? "provider_read_quarantined_without_complete_snapshot" : "no_provider_call_proven"],
+            safeMetadata: { authorizationId: outcome.authorizationId, traceId: outcome.traceId, snapshotId: outcome.snapshotId },
+            providerCalled: outcome.providerCalled,
+            liveExecutionAllowed: false,
+          },
+        });
+      }
+    }
+  });
+
+  return outcomes;
+}
+
+export async function reconcileGoogleReadOnlyPreviewEvidence(input: { actor: Actor; confirmation: string; env?: NodeJS.ProcessEnv }) {
+  const env = input.env ?? process.env;
+  const tenantId = requireTenantId(input.actor.tenantId, "google_readonly_preview_reconcile");
+  const { checked } = await verifiedIdentity(env);
+  if (input.confirmation !== googleReadOnlyPreviewConfirmations.reconcile || !checked.ok) {
+    return { status: "blocked" as const, reasonCodes: input.confirmation !== googleReadOnlyPreviewConfirmations.reconcile ? ["confirmation_phrase_invalid"] : checked.reasons, providerCalled: false, liveExecutionAllowed: false };
+  }
+  const authorizations: ReconciledAuthorization[] = [];
+  for (const connector of connectors) {
+    const authorization = await previewDb.ueipPilotAuthorization.findFirst({
+      where: { tenantId, connectorId: connector.connectorId, environment: "preview", status: { in: ["consumed", "completed", "quarantined", "locked"] } },
+      orderBy: { createdAt: "desc" },
+    });
+    if (!authorization) return { status: "blocked" as const, reasonCodes: [`${connector.connectorId}_authorization_evidence_missing`], providerCalled: false, liveExecutionAllowed: false };
+    authorizations.push(authorization);
+  }
+  const outcomes = await reconcileAuthorizationEvidence({ actor: input.actor, authorizations });
+  return {
+    status: outcomes.every((outcome) => outcome.status === "completed") ? "completed" as const : "quarantined" as const,
+    outcomes,
+    providerCalled: outcomes.some((outcome) => outcome.providerCalled),
+    providerCallOccurredPreviously: outcomes.some((outcome) => outcome.providerCalled),
+    newProviderCallMade: false,
+    safety: { providerWrite: false, sent: false, published: false, scraping: false, crmMutation: false, outreach: false, externalExecutionAllowed: false, liveExecutionAllowed: false },
+    liveExecutionAllowed: false,
+  };
+}
+
 export async function runGoogleReadOnlyPreview(input: { actor: Actor; confirmation: string; nonce?: string; env?: NodeJS.ProcessEnv; now?: Date }) {
   const env = input.env ?? process.env;
   const tenantId = requireTenantId(input.actor.tenantId, "google_readonly_preview_read");
   if (input.confirmation !== googleReadOnlyPreviewConfirmations.read || !input.nonce) return { status: "blocked" as const, reasonCodes: [input.confirmation !== googleReadOnlyPreviewConfirmations.read ? "confirmation_phrase_invalid" : "authorization_nonce_missing"], providerCalled: false, liveExecutionAllowed: false };
   const now = input.now ?? new Date();
-  const authorizations: Array<{ id: string; connectorId: string }> = [];
+  const authorizations: ReconciledAuthorization[] = [];
   for (const connector of connectors) {
     const nonceHash = await digest(`${input.nonce}:${connector.connectorId}`);
     const authorization = await previewDb.ueipPilotAuthorization.findUnique({ where: { nonceHash } });
@@ -161,21 +349,23 @@ export async function runGoogleReadOnlyPreview(input: { actor: Actor; confirmati
   await previewDb.$transaction(authorizations.map((authorization) => previewDb.ueipPilotAuthorization.update({ where: { id: authorization.id }, data: { status: "consumed", consumedAt: now, lockedAt: now } })));
   const context = createUeipExecutionContext({ tenantId, actorId: input.actor.actorId, businessModule: "ai_core", requestOrigin: "authenticated_admin", now });
   const categories = connectors.map((item) => item.category) as BusinessDataCategory[];
-  const report = await runReadOnlyBusinessSync(env, context, { categories, allowProviderReads: true, persistDailyBriefing: true });
-  const outcomes = connectors.map((connector) => {
-    const snapshot = report.snapshots.find((item) => item.connectorId === connector.connectorId);
-    return { connectorId: connector.connectorId, category: connector.category, snapshotId: snapshot?.id ?? null, traceId: snapshot?.traceId ?? null, status: snapshot?.status ?? "missing", providerCalled: snapshot?.providerCalled === true, evidenceHash: snapshot?.evidenceHash ?? null };
-  });
-  await previewDb.$transaction(async (tx) => {
-    for (const authorization of authorizations) {
-      const outcome = outcomes.find((item) => item.connectorId === authorization.connectorId)!;
-      const status = outcome.providerCalled && outcome.status === "fresh" ? "completed" : outcome.providerCalled ? "quarantined" : "locked";
-      await tx.ueipPilotAuthorization.update({ where: { id: authorization.id }, data: { status, providerCallCount: outcome.providerCalled ? 1 : 0, traceId: outcome.traceId, resultStatus: status, lockedAt: new Date() } });
-      await tx.connectorInstallationState.update({ where: { tenantId_connectorId: { tenantId, connectorId: authorization.connectorId } }, data: { enabled: false, installationState: "disabled", enableApprovalStatus: "pilot_locked", providerCalled: outcome.providerCalled, liveExecutionAllowed: false } });
-      await tx.ueipPilotControlEvent.create({ data: { tenantId, connectorId: authorization.connectorId, eventType: "preview_pilot_locked", actorId: input.actor.actorId, environment: "preview", decision: status, reasonCodes: [status === "completed" ? "single_use_read_completed" : "single_use_read_not_certified"], safeMetadata: { authorizationId: authorization.id, traceId: outcome.traceId, snapshotId: outcome.snapshotId }, providerCalled: outcome.providerCalled, liveExecutionAllowed: false } });
-    }
-  });
-  const certified = outcomes.every((outcome) => outcome.providerCalled && outcome.status === "fresh" && Boolean(outcome.evidenceHash) && Boolean(outcome.traceId));
+  let report;
+  try {
+    report = await businessSyncRunner(env, context, { categories, allowProviderReads: true, persistDailyBriefing: true });
+  } catch {
+    const outcomes = await reconcileAuthorizationEvidence({ actor: input.actor, authorizations });
+    return {
+      status: "quarantined" as const,
+      reasonCodes: ["business_snapshot_or_brief_persistence_failed"],
+      outcomes,
+      providerCalled: outcomes.some((outcome) => outcome.providerCalled),
+      newProviderCallMade: outcomes.some((outcome) => outcome.providerCalled),
+      safety: { providerWrite: false, sent: false, published: false, scraping: false, crmMutation: false, outreach: false, externalExecutionAllowed: false, liveExecutionAllowed: false },
+      liveExecutionAllowed: false,
+    };
+  }
+  const outcomes = await reconcileAuthorizationEvidence({ actor: input.actor, authorizations });
+  const certified = outcomes.every((outcome) => outcome.status === "completed" && outcome.auditComplete && outcome.evidenceHashPresent && Boolean(outcome.traceId));
   return { status: certified ? "completed" as const : "quarantined" as const, outcomes, morningBrief: report.morningBrief, safety: { providerWrite: false, sent: false, published: false, scraping: false, crmMutation: false, outreach: false, externalExecutionAllowed: false, liveExecutionAllowed: false }, providerCalled: outcomes.some((item) => item.providerCalled), liveExecutionAllowed: false };
 }
 
