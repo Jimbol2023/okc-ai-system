@@ -113,7 +113,7 @@ export type PropertyProviderSourcePriorityReport = {
   exceptionInboxItems: PropertySourcePriorityException[];
   providerReadiness: PropertyProviderReadinessItem[];
   operatingDoctrine: string[];
-  exactRecommendedNextImplementation: "IMPLEMENT_COUNTY_RECORD_IMPORT_WORKBENCH_AND_PROVIDER_DECISION_GATE";
+  exactRecommendedNextImplementation: "IMPLEMENT_PREVIEW_ONLY_GEOCODE_PROVIDER_AUTHORIZATION_GATE_AND_WORKBENCH_API_CERTIFICATION";
   safetyFlags: typeof propertyOpportunitySafetyFlags;
   providerCalled: false;
   sent: false;
@@ -205,7 +205,7 @@ const providerReadiness: PropertyProviderReadinessItem[] = [
     source: "maps_geocoding",
     label: "Maps/geocoding provider",
     role: "Normalize addresses, map pins, and route planning inputs.",
-    bestUse: "Map discovery and route planning after persisted records need coordinates.",
+    bestUse: "Preview-only read geocode certification for one approved provider; Production, persistence, outreach, and CRM mutation remain blocked.",
     activationState: "ready_for_readonly_connector_planning",
     requiresSeparateApproval: true,
     prohibitedInV1: true,
@@ -486,10 +486,11 @@ export function createPropertyProviderSourcePriorityReport(input: SourcePriority
     operatingDoctrine: [
       "Local audit credentials are not the source of truth for Production opportunity evidence.",
       "Internal persisted evidence and county/public records outrank paid property providers.",
+      "Maps/geocoding has a separate Preview-only certification lane; it does not authorize Production geocoding, persistence, outreach, or CRM mutation.",
       "Provider readiness never authorizes provider calls, scraping, skip tracing, sending, direct mail, or CRM mutation.",
       "DealMachine is not integrated in V1; provider adapters remain future governed connectors.",
     ],
-    exactRecommendedNextImplementation: "IMPLEMENT_COUNTY_RECORD_IMPORT_WORKBENCH_AND_PROVIDER_DECISION_GATE",
+    exactRecommendedNextImplementation: "IMPLEMENT_PREVIEW_ONLY_GEOCODE_PROVIDER_AUTHORIZATION_GATE_AND_WORKBENCH_API_CERTIFICATION",
     safetyFlags: propertyOpportunitySafetyFlags,
     providerCalled: false,
     sent: false,
