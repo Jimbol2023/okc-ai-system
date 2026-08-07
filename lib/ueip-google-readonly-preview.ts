@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { diagnosePreviewDatabaseFingerprint } from "@/lib/preview-database-fingerprint-diagnosis";
 import { runReadOnlyBusinessSync, type BusinessDataCategory } from "@/lib/read-only-business-connections";
 import { createUeipExecutionContext, getTrustedUeipEnvironment } from "@/lib/ueip-runtime-gateway";
 import { requireTenantId } from "@/lib/tenant-context";
@@ -20,10 +21,18 @@ const connectors = [
 
 type Actor = { tenantId: string; actorId: string };
 let previewDb = prisma;
+let diagnosePreviewIdentity = diagnosePreviewDatabaseFingerprint;
 
 export function setGoogleReadOnlyPreviewDbForTest(db: typeof prisma) {
   previewDb = db;
   return () => { previewDb = prisma; };
+}
+
+export function setGoogleReadOnlyPreviewIdentityDiagnosisForTest(
+  diagnosis: typeof diagnosePreviewDatabaseFingerprint,
+) {
+  diagnosePreviewIdentity = diagnosis;
+  return () => { diagnosePreviewIdentity = diagnosePreviewDatabaseFingerprint; };
 }
 
 function scopeEvidence(env: NodeJS.ProcessEnv) {
@@ -32,8 +41,8 @@ function scopeEvidence(env: NodeJS.ProcessEnv) {
 
 function guard(env: NodeJS.ProcessEnv) {
   const environmentId = env.UEIP_PREVIEW_ENVIRONMENT_ID?.trim() ?? "";
-  const previewFingerprint = env.UEIP_PREVIEW_DATABASE_FINGERPRINT?.trim() ?? "";
-  const productionFingerprint = env.UEIP_PRODUCTION_DATABASE_FINGERPRINT?.trim() ?? "";
+  const previewFingerprint = env.UEIP_PREVIEW_DATABASE_FINGERPRINT_V2?.trim() || env.UEIP_PREVIEW_DATABASE_FINGERPRINT?.trim() || "";
+  const productionFingerprint = env.UEIP_PRODUCTION_DATABASE_FINGERPRINT_V2?.trim() || env.UEIP_PRODUCTION_DATABASE_FINGERPRINT?.trim() || "";
   const granted = scopeEvidence(env);
   const prohibitedScopePresent = [...granted].some((scope) => /gmail\.(?:send|compose|modify)|calendar(?!\.events\.readonly)|drive(?!\.metadata\.readonly)|analytics\.edit|webmasters|business\.manage|youtube|yt-analytics/i.test(scope));
   const reasons: string[] = [];
@@ -61,8 +70,16 @@ function nonce() {
 async function verifiedIdentity(env: NodeJS.ProcessEnv) {
   const checked = guard(env);
   if (!checked.ok) return { checked, identity: null };
-  const identity = await previewDb.ueipEnvironmentIdentity.findUnique({ where: { environmentId: checked.environmentId } });
-  if (!identity || identity.environmentType !== "preview" || identity.databaseFingerprint !== checked.previewFingerprint || identity.productionProhibited !== true) {
+  const [identity, diagnosis] = await Promise.all([
+    previewDb.ueipEnvironmentIdentity.findUnique({ where: { environmentId: checked.environmentId } }),
+    diagnosePreviewIdentity({ env }),
+  ]);
+  if (
+    diagnosis.classification !== "PREVIEW_DATABASE_IDENTITY_CERTIFIED" ||
+    !identity ||
+    identity.environmentType !== "preview" ||
+    identity.productionProhibited !== true
+  ) {
     checked.reasons.push("preview_identity_not_verified");
     checked.ok = false;
   }

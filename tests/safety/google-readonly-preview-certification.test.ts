@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { afterEach, test } from "node:test";
 
-import { authorizeGoogleReadOnlyPreview, configureGoogleReadOnlyPreview, getGoogleReadOnlyPreviewReadiness, googleReadOnlyPreviewConfirmations, setGoogleReadOnlyPreviewDbForTest, setGoogleReadOnlyPreviewEnabled } from "@/lib/ueip-google-readonly-preview";
+import { authorizeGoogleReadOnlyPreview, configureGoogleReadOnlyPreview, getGoogleReadOnlyPreviewReadiness, googleReadOnlyPreviewConfirmations, setGoogleReadOnlyPreviewDbForTest, setGoogleReadOnlyPreviewEnabled, setGoogleReadOnlyPreviewIdentityDiagnosisForTest } from "@/lib/ueip-google-readonly-preview";
 
 const actor = { tenantId: "tenant-alpha", actorId: "admin" };
 const env = {
@@ -45,7 +45,14 @@ function stateDb() {
   return { db, installations, authorizations, controls };
 }
 
+function useCertifiedIdentity() {
+  restores.push(setGoogleReadOnlyPreviewIdentityDiagnosisForTest(async () => ({
+    classification: "PREVIEW_DATABASE_IDENTITY_CERTIFIED",
+  } as never)));
+}
+
 test("Preview guard blocks Production, shared fingerprints, and missing scopes before writes", async () => {
+  useCertifiedIdentity();
   const state = stateDb();
   restores.push(setGoogleReadOnlyPreviewDbForTest(state.db as never));
   for (const invalidEnv of [{ ...env, VERCEL_ENV: "production" }, { ...env, UEIP_PRODUCTION_DATABASE_FINGERPRINT: "preview-fingerprint" }, { ...env, GOOGLE_OAUTH_GRANTED_SCOPES: "https://www.googleapis.com/auth/gmail.readonly" }]) {
@@ -56,6 +63,7 @@ test("Preview guard blocks Production, shared fingerprints, and missing scopes b
 });
 
 test("configuration is tenant scoped, additive, idempotent, and records rollback controls", async () => {
+  useCertifiedIdentity();
   const state = stateDb();
   restores.push(setGoogleReadOnlyPreviewDbForTest(state.db as never));
   await configureGoogleReadOnlyPreview({ actor, confirmation: googleReadOnlyPreviewConfirmations.configure, env });
@@ -67,6 +75,7 @@ test("configuration is tenant scoped, additive, idempotent, and records rollback
 });
 
 test("bundle authorization creates one single-use authorization per connector without storing the raw nonce", async () => {
+  useCertifiedIdentity();
   const state = stateDb();
   restores.push(setGoogleReadOnlyPreviewDbForTest(state.db as never));
   await configureGoogleReadOnlyPreview({ actor, confirmation: googleReadOnlyPreviewConfirmations.configure, env });
@@ -79,6 +88,7 @@ test("bundle authorization creates one single-use authorization per connector wi
 });
 
 test("disable and restore affect only the authenticated tenant installations", async () => {
+  useCertifiedIdentity();
   const state = stateDb();
   restores.push(setGoogleReadOnlyPreviewDbForTest(state.db as never));
   await configureGoogleReadOnlyPreview({ actor, confirmation: googleReadOnlyPreviewConfirmations.configure, env });
