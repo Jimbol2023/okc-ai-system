@@ -81,9 +81,17 @@ function jsonResponse(body: unknown, status = 200) {
 }
 
 function createUeipTestDb(siteUrl: string) {
+  const scopes: Record<string, string> = {
+    gmail: "https://www.googleapis.com/auth/gmail.readonly",
+    google_calendar: "https://www.googleapis.com/auth/calendar.events.readonly",
+    google_drive: "https://www.googleapis.com/auth/drive.metadata.readonly",
+    google_search_console: "https://www.googleapis.com/auth/webmasters.readonly",
+    google_analytics: "https://www.googleapis.com/auth/analytics.readonly",
+    google_business_profile: "https://www.googleapis.com/auth/business.manage",
+  };
   return {
-    connectorInstallationState: { async findUnique() { return { id: "search-installation", tenantId: "default", connectorId: "google_search_console", installationState: "enabled", configurationState: "configured", authenticationState: "authenticated", sandboxMode: true, enabled: true, enableApprovalStatus: "approved", credentialReferenceId: "search-credential", requiredScopes: ["https://www.googleapis.com/auth/webmasters.readonly"], grantedScopes: ["https://www.googleapis.com/auth/webmasters.readonly"], permissionValidation: { authorizedSiteUrls: [siteUrl] } }; } },
-    connectorCredentialReference: { async findFirst() { return { id: "search-credential", tenantId: "default", connectorId: "google_search_console", referenceKey: "search-console", secretStorageProvider: "environment", rawSecretStored: false, rawSecretRendered: false, expiresAt: null }; } },
+    connectorInstallationState: { async findUnique(args: unknown) { const key = (args as { where: { tenantId_connectorId: { tenantId: string; connectorId: string } } }).where.tenantId_connectorId; const scope = scopes[key.connectorId]; return scope ? { id: `${key.connectorId}-installation`, tenantId: key.tenantId, connectorId: key.connectorId, installationState: "enabled", configurationState: "configured", authenticationState: "authenticated", sandboxMode: true, enabled: true, enableApprovalStatus: "approved", credentialReferenceId: `${key.connectorId}-credential`, requiredScopes: [scope], grantedScopes: [scope], permissionValidation: { authorizedSiteUrls: [siteUrl], authorizedPropertyIds: ["12345"], authorizedLocationNames: ["locations/123"] } } : null; } },
+    connectorCredentialReference: { async findFirst(args: unknown) { const where = (args as { where: { tenantId: string; connectorId: string } }).where; return { id: `${where.connectorId}-credential`, tenantId: where.tenantId, connectorId: where.connectorId, referenceKey: where.connectorId, secretStorageProvider: "environment", rawSecretStored: false, rawSecretRendered: false, expiresAt: null }; } },
     ueipGatewayAuditEvent: { async create(args: unknown) { return { id: "audit", args }; } },
     enterpriseConnectorHealthEvent: { async create(args: unknown) { return args; } },
   };
@@ -178,6 +186,13 @@ describe("read-only business connections", () => {
       if (url.includes("gmail.googleapis.com")) return jsonResponse({ messages: [] });
       return jsonResponse({});
     }));
+    restoreFns.push(setUeipRuntimeDependenciesForTest({ db: createUeipTestDb("https://jcapitalpropertygroup.com/") as never, fetcher: async (input) => {
+      const url = String(input);
+      calls.push(url);
+      if (url.includes("oauth2.googleapis.com")) return jsonResponse({ access_token: "access-token" });
+      if (url.includes("gmail.googleapis.com")) return jsonResponse({ messages: [] });
+      return jsonResponse({});
+    }, environment: "preview" }));
 
     const report = await runReadOnlyBusinessSync(env, testContext(), {
       categories: ["gmail_inbox", "internal_website_lead_intake"],
@@ -313,6 +328,13 @@ describe("read-only business connections", () => {
       assumptions: [],
       safetyFlags: {
         readOnly: true,
+        providerWrite: false,
+        sent: false,
+        published: false,
+        scraping: false,
+        crmMutation: false,
+        outreach: false,
+        externalExecutionAllowed: false,
         liveExecutionAllowed: false,
         externalWritesBlocked: true,
         publishingBlocked: true,

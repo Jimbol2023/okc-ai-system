@@ -238,6 +238,13 @@ function fallbackMorningBrief(generatedAt: string): LiveMorningBrief {
     liveExecutionAllowed: false,
     safetyFlags: {
       readOnly: true,
+      providerWrite: false,
+      sent: false,
+      published: false,
+      scraping: false,
+      crmMutation: false,
+      outreach: false,
+      externalExecutionAllowed: false,
       liveExecutionAllowed: false,
       externalWritesBlocked: true,
       publishingBlocked: true,

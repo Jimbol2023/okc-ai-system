@@ -4,11 +4,18 @@ import { listDbLeads } from "@/lib/leads-db";
 import { prisma } from "@/lib/prisma";
 import { publicSiteUrl } from "@/lib/public-seo";
 import { getRevenuePipelineSummary } from "@/lib/revenue-pipeline";
-import { runUeipGa4Gateway, runUeipGbpGateway, runUeipSearchConsoleGateway, type UeipExecutionContext } from "@/lib/ueip-runtime-gateway";
+import { runUeipGa4Gateway, runUeipGbpGateway, runUeipGoogleWorkspaceGateway, runUeipSearchConsoleGateway, type UeipExecutionContext } from "@/lib/ueip-runtime-gateway";
 import { requireTenantId } from "@/lib/tenant-context";
 
 export const readOnlyBusinessSafetyFlags = {
   readOnly: true,
+  providerWrite: false,
+  sent: false,
+  published: false,
+  scraping: false,
+  crmMutation: false,
+  outreach: false,
+  externalExecutionAllowed: false,
   liveExecutionAllowed: false,
   externalWritesBlocked: true,
   publishingBlocked: true,
@@ -409,105 +416,83 @@ function rowsFromTable(json: Record<string, unknown>) {
 }
 
 async function gmailInbox(context: AdapterContext) {
-  const list = await providerFetch(context, "https://gmail.googleapis.com/gmail/v1/users/me/messages?labelIds=INBOX&maxResults=10&q=newer_than:2d");
-  const listJson = await readJson(list);
-  const messages = Array.isArray(listJson.messages) ? listJson.messages.slice(0, 5) : [];
-  const records: Array<Record<string, unknown>> = [];
-
-  for (const message of messages) {
-    const id = typeof (message as { id?: unknown }).id === "string" ? (message as { id: string }).id : "";
-    if (!id) continue;
-    const detail = await providerFetch(
-      context,
-      `https://gmail.googleapis.com/gmail/v1/users/me/messages/${encodeURIComponent(id)}?format=metadata&metadataHeaders=From&metadataHeaders=Subject&metadataHeaders=Date`,
-    );
-    const detailJson = await readJson(detail);
-    const headers = (((detailJson.payload as { headers?: unknown } | undefined)?.headers ?? []) as Array<{ name?: string; value?: string }>) || [];
-
-    records.push({
-      id,
-      threadId: detailJson.threadId,
-      snippet: typeof detailJson.snippet === "string" ? detailJson.snippet.slice(0, 160) : "",
-      from: headers.find((header) => header.name === "From")?.value ?? "",
-      subject: headers.find((header) => header.name === "Subject")?.value ?? "",
-      date: headers.find((header) => header.name === "Date")?.value ?? "",
-    });
-  }
+  const observationStart = new Date(context.now.getTime() - 48 * 60 * 60 * 1000).toISOString();
+  const observationEnd = context.now.toISOString();
+  const gateway = await runUeipGoogleWorkspaceGateway({ context: context.executionContext, request: { connectorId: "gmail", capabilityKey: "gmail.inbox.metadata.read", capabilityVersion: "1.0.0", parameters: { observationStart, observationEnd, rowLimit: 5 }, freshnessSeconds: 300, idempotencyKey: `gmail:inbox:${observationStart.slice(0, 10)}:${observationEnd.slice(0, 13)}` }, env: context.env });
+  const signals = gateway.ok ? gateway.result.signals : {};
+  const records = Array.isArray(signals.messages) ? signals.messages as Array<Record<string, unknown>> : [];
 
   return baseSnapshot({
     snapshotDate: context.snapshotDate,
     provider: "Google Workspace",
     connectorId: "gmail",
     category: "gmail_inbox",
-    status: list.ok ? "fresh" : "partial",
-    sourceLabel: "gmail:inbox:readonly",
-    provenance: "Gmail API users.messages list/get with metadata format and INBOX label only.",
+    status: gateway.ok && gateway.providerCalled ? "fresh" : gateway.ok ? "partial" : "data_gap",
+    sourceLabel: gateway.ok ? gateway.result.sourceLabel : "ueip:gmail:inbox:data_gap",
+    provenance: gateway.ok ? gateway.result.provenance : "UEIP blocked the Gmail read before a safe normalized result was available.",
     summary: `${records.length} recent inbox message(s) visible for CEO review.`,
-    metrics: { recentInboxMessages: records.length },
+    metrics: { recentInboxMessages: records.length, actionableMessageSignals: typeof signals.actionableMessageSignals === "number" ? signals.actionableMessageSignals : 0, traceId: gateway.traceId },
     records,
-    dataGaps: list.ok ? [] : [`Gmail API returned status ${list.status}.`],
-    providerCalled: true,
+    dataGaps: gateway.ok ? gateway.result.dataGaps : gateway.dataGaps,
+    observationStart: gateway.ok ? gateway.result.observationWindow?.startDate ?? observationStart : observationStart,
+    observationEnd: gateway.ok ? gateway.result.observationWindow?.endDate ?? observationEnd : observationEnd,
+    traceId: gateway.traceId,
+    reliability: gateway.ok ? gateway.result.reliability : { status: gateway.healthStatus },
+    providerCalled: gateway.providerCalled,
   });
 }
 
 async function calendarEvents(context: AdapterContext) {
   const timeMin = context.now.toISOString();
   const timeMax = new Date(context.now.getTime() + 36 * 60 * 60 * 1000).toISOString();
-  const url = new URL("https://www.googleapis.com/calendar/v3/calendars/primary/events");
-  url.searchParams.set("timeMin", timeMin);
-  url.searchParams.set("timeMax", timeMax);
-  url.searchParams.set("singleEvents", "true");
-  url.searchParams.set("orderBy", "startTime");
-  url.searchParams.set("maxResults", "10");
-  const response = await providerFetch(context, url.toString());
-  const json = await readJson(response);
-  const items = Array.isArray(json.items) ? json.items : [];
-  const records = items.map((item) => {
-    const event = item as { id?: string; summary?: string; start?: { dateTime?: string; date?: string }; end?: { dateTime?: string; date?: string } };
-
-    return { id: event.id, summary: event.summary, start: event.start?.dateTime ?? event.start?.date, end: event.end?.dateTime ?? event.end?.date };
-  });
+  const gateway = await runUeipGoogleWorkspaceGateway({ context: context.executionContext, request: { connectorId: "google_calendar", capabilityKey: "calendar.events.read", capabilityVersion: "1.0.0", parameters: { observationStart: timeMin, observationEnd: timeMax, rowLimit: 10 }, freshnessSeconds: 300, idempotencyKey: `calendar:events:${timeMin.slice(0, 13)}` }, env: context.env });
+  const signals = gateway.ok ? gateway.result.signals : {};
+  const records = Array.isArray(signals.events) ? signals.events as Array<Record<string, unknown>> : [];
 
   return baseSnapshot({
     snapshotDate: context.snapshotDate,
     provider: "Google Workspace",
     connectorId: "google_calendar",
     category: "google_calendar_events",
-    status: response.ok ? "fresh" : "partial",
-    sourceLabel: "google_calendar:events:readonly",
-    provenance: "Google Calendar API events.list for primary calendar with forward-looking time window.",
+    status: gateway.ok && gateway.providerCalled ? "fresh" : gateway.ok ? "partial" : "data_gap",
+    sourceLabel: gateway.ok ? gateway.result.sourceLabel : "ueip:google_calendar:events:data_gap",
+    provenance: gateway.ok ? gateway.result.provenance : "UEIP blocked the Calendar read before a safe normalized result was available.",
     summary: `${records.length} upcoming calendar event(s) found.`,
-    metrics: { upcomingEvents: records.length },
+    metrics: { upcomingEvents: records.length, schedulingConflicts: typeof signals.schedulingConflicts === "number" ? signals.schedulingConflicts : 0, traceId: gateway.traceId },
     records,
-    dataGaps: response.ok ? [] : [`Calendar API returned status ${response.status}.`],
-    providerCalled: true,
+    dataGaps: gateway.ok ? gateway.result.dataGaps : gateway.dataGaps,
+    observationStart: gateway.ok ? gateway.result.observationWindow?.startDate ?? timeMin : timeMin,
+    observationEnd: gateway.ok ? gateway.result.observationWindow?.endDate ?? timeMax : timeMax,
+    traceId: gateway.traceId,
+    reliability: gateway.ok ? gateway.result.reliability : { status: gateway.healthStatus },
+    providerCalled: gateway.providerCalled,
   });
 }
 
 async function driveDocuments(context: AdapterContext) {
-  const url = "https://www.googleapis.com/drive/v3/files?pageSize=10&orderBy=modifiedTime%20desc&fields=files(id%2Cname%2CmimeType%2CmodifiedTime%2CwebViewLink)";
-  const response = await providerFetch(context, url);
-  const json = await readJson(response);
-  const files = Array.isArray(json.files) ? json.files : [];
-  const records = files.map((file) => {
-    const item = file as { id?: string; name?: string; mimeType?: string; modifiedTime?: string; webViewLink?: string };
-
-    return { id: item.id, name: item.name, mimeType: item.mimeType, modifiedTime: item.modifiedTime, webViewLink: item.webViewLink };
-  });
+  const observationStart = new Date(context.now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
+  const observationEnd = context.now.toISOString();
+  const gateway = await runUeipGoogleWorkspaceGateway({ context: context.executionContext, request: { connectorId: "google_drive", capabilityKey: "drive.metadata.read", capabilityVersion: "1.0.0", parameters: { observationStart, observationEnd, rowLimit: 10 }, freshnessSeconds: 300, idempotencyKey: `drive:metadata:${observationStart.slice(0, 10)}:${observationEnd.slice(0, 13)}` }, env: context.env });
+  const signals = gateway.ok ? gateway.result.signals : {};
+  const records = Array.isArray(signals.documents) ? signals.documents as Array<Record<string, unknown>> : [];
 
   return baseSnapshot({
     snapshotDate: context.snapshotDate,
     provider: "Google Workspace",
     connectorId: "google_drive",
     category: "google_drive_documents",
-    status: response.ok ? "fresh" : "partial",
-    sourceLabel: "google_drive:files:metadata_readonly",
-    provenance: "Google Drive API files.list using metadata fields only.",
+    status: gateway.ok && gateway.providerCalled ? "fresh" : gateway.ok ? "partial" : "data_gap",
+    sourceLabel: gateway.ok ? gateway.result.sourceLabel : "ueip:google_drive:metadata:data_gap",
+    provenance: gateway.ok ? gateway.result.provenance : "UEIP blocked the Drive metadata read before a safe normalized result was available.",
     summary: `${records.length} recent Drive document(s) found.`,
-    metrics: { recentDocuments: records.length },
+    metrics: { recentDocuments: records.length, relevantDocumentActivity: typeof signals.relevantDocumentActivity === "number" ? signals.relevantDocumentActivity : 0, traceId: gateway.traceId },
     records,
-    dataGaps: response.ok ? [] : [`Drive API returned status ${response.status}.`],
-    providerCalled: true,
+    dataGaps: gateway.ok ? gateway.result.dataGaps : gateway.dataGaps,
+    observationStart: gateway.ok ? gateway.result.observationWindow?.startDate ?? observationStart : observationStart,
+    observationEnd: gateway.ok ? gateway.result.observationWindow?.endDate ?? observationEnd : observationEnd,
+    traceId: gateway.traceId,
+    reliability: gateway.ok ? gateway.result.reliability : { status: gateway.healthStatus },
+    providerCalled: gateway.providerCalled,
   });
 }
 
@@ -784,9 +769,9 @@ async function canvaDesigns(context: AdapterContext) {
 }
 
 export const readOnlyAdapterDefinitions: AdapterDefinition[] = [
-  { id: "gmail_inbox", provider: "Google Workspace", connectorId: "gmail", featureFlags: ["connector_live_reads", "connector_google", "connector_communication"], requiredEnv: ["GOOGLE_OAUTH_CLIENT_ID", "GOOGLE_OAUTH_CLIENT_SECRET", "GOOGLE_OAUTH_REFRESH_TOKEN"], requiredScopes: ["https://www.googleapis.com/auth/gmail.readonly"], oauthProvider: "google", approvedRequests: [{ method: "GET", urlIncludes: "gmail.googleapis.com/gmail/v1/users/me/messages" }], run: gmailInbox },
-  { id: "google_calendar_events", provider: "Google Workspace", connectorId: "google_calendar", featureFlags: ["connector_live_reads", "connector_google"], requiredEnv: ["GOOGLE_OAUTH_CLIENT_ID", "GOOGLE_OAUTH_CLIENT_SECRET", "GOOGLE_OAUTH_REFRESH_TOKEN"], requiredScopes: ["https://www.googleapis.com/auth/calendar.events.readonly"], oauthProvider: "google", approvedRequests: [{ method: "GET", urlIncludes: "www.googleapis.com/calendar/v3/calendars/primary/events" }], run: calendarEvents },
-  { id: "google_drive_documents", provider: "Google Workspace", connectorId: "google_drive", featureFlags: ["connector_live_reads", "connector_google"], requiredEnv: ["GOOGLE_OAUTH_CLIENT_ID", "GOOGLE_OAUTH_CLIENT_SECRET", "GOOGLE_OAUTH_REFRESH_TOKEN"], requiredScopes: ["https://www.googleapis.com/auth/drive.metadata.readonly"], oauthProvider: "google", approvedRequests: [{ method: "GET", urlIncludes: "www.googleapis.com/drive/v3/files" }], run: driveDocuments },
+  { id: "gmail_inbox", provider: "Google Workspace", connectorId: "gmail", featureFlags: ["connector_live_reads", "connector_google", "connector_communication", "ueip_gateway_enforcement"], requiredEnv: ["GOOGLE_OAUTH_CLIENT_ID", "GOOGLE_OAUTH_CLIENT_SECRET", "GOOGLE_OAUTH_REFRESH_TOKEN"], requiredScopes: ["https://www.googleapis.com/auth/gmail.readonly"], oauthProvider: "google", approvedRequests: [{ method: "GET", urlIncludes: "gmail.googleapis.com/gmail/v1/users/me/messages" }], ueipManaged: true, run: gmailInbox },
+  { id: "google_calendar_events", provider: "Google Workspace", connectorId: "google_calendar", featureFlags: ["connector_live_reads", "connector_google", "ueip_gateway_enforcement"], requiredEnv: ["GOOGLE_OAUTH_CLIENT_ID", "GOOGLE_OAUTH_CLIENT_SECRET", "GOOGLE_OAUTH_REFRESH_TOKEN"], requiredScopes: ["https://www.googleapis.com/auth/calendar.events.readonly"], oauthProvider: "google", approvedRequests: [{ method: "GET", urlIncludes: "www.googleapis.com/calendar/v3/calendars/primary/events" }], ueipManaged: true, run: calendarEvents },
+  { id: "google_drive_documents", provider: "Google Workspace", connectorId: "google_drive", featureFlags: ["connector_live_reads", "connector_google", "ueip_gateway_enforcement"], requiredEnv: ["GOOGLE_OAUTH_CLIENT_ID", "GOOGLE_OAUTH_CLIENT_SECRET", "GOOGLE_OAUTH_REFRESH_TOKEN"], requiredScopes: ["https://www.googleapis.com/auth/drive.metadata.readonly"], oauthProvider: "google", approvedRequests: [{ method: "GET", urlIncludes: "www.googleapis.com/drive/v3/files" }], ueipManaged: true, run: driveDocuments },
   { id: "search_console_performance", provider: "Google Search Console", connectorId: "google_search_console", featureFlags: ["connector_live_reads", "connector_google", "executive_briefings", "ueip_gateway_enforcement", "ueip_search_console_runtime"], requiredEnv: ["GOOGLE_SEARCH_CONSOLE_SITE_URL"], requiredScopes: ["https://www.googleapis.com/auth/webmasters.readonly"], oauthProvider: "google", approvedRequests: [{ method: "POST", urlIncludes: "www.googleapis.com/webmasters/v3/sites" }], ueipManaged: true, run: searchConsolePerformance },
   { id: "search_console_indexing", provider: "Google Search Console", connectorId: "google_search_console", featureFlags: ["connector_live_reads", "connector_google", "executive_briefings", "ueip_gateway_enforcement", "ueip_search_console_runtime"], requiredEnv: ["GOOGLE_SEARCH_CONSOLE_SITE_URL"], requiredScopes: ["https://www.googleapis.com/auth/webmasters.readonly"], oauthProvider: "google", approvedRequests: [{ method: "POST", urlIncludes: "searchconsole.googleapis.com/v1/urlInspection/index:inspect" }], ueipManaged: true, run: searchConsoleIndexing },
   { id: "google_analytics_traffic", provider: "Google Analytics", connectorId: "google_analytics", featureFlags: ["connector_live_reads", "connector_google", "executive_briefings", "ueip_gateway_enforcement", "ueip_ga4_runtime"], requiredEnv: ["GOOGLE_ANALYTICS_PROPERTY_ID"], requiredScopes: ["https://www.googleapis.com/auth/analytics.readonly"], oauthProvider: "google", approvedRequests: [{ method: "POST", urlIncludes: "analyticsdata.googleapis.com/v1beta/properties" }], ueipManaged: true, run: ga4Traffic },
@@ -1151,6 +1136,9 @@ export function createMorningBriefFromSnapshots(snapshots: BusinessDataSnapshotR
   const clicks = getMetric("search_console_performance", "clicks");
   const sessions = getMetric("google_analytics_traffic", "sessions");
   const inbox = getMetric("gmail_inbox", "recentInboxMessages");
+  const calendarEvents = getMetric("google_calendar_events", "upcomingEvents");
+  const schedulingConflicts = getMetric("google_calendar_events", "schedulingConflicts");
+  const driveActivity = getMetric("google_drive_documents", "relevantDocumentActivity");
   const reviews = getMetric("google_business_profile_reviews", "reviews");
   const designs = getMetric("canva_designs", "recentDesigns");
   const videos = getMetric("youtube_channel", "recentVideos");
@@ -1165,6 +1153,8 @@ export function createMorningBriefFromSnapshots(snapshots: BusinessDataSnapshotR
     generatedAt,
     overnightSummary: [
       `${inbox} new/recent Gmail inbox signal(s).`,
+      `${calendarEvents} upcoming Calendar commitment(s)${schedulingConflicts > 0 ? ` with ${schedulingConflicts} potential conflict(s)` : ""}.`,
+      `${driveActivity} relevant recent Drive metadata change(s).`,
       `${reviews} Google review(s) visible in the read-only review snapshot.`,
       `${sessions} GA4 session(s) across top pages.`,
       `${impressions} Search Console impression(s) and ${clicks} click(s).`,

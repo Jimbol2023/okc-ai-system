@@ -32,6 +32,15 @@ import {
   type GbpCredential,
   type GbpNormalizedResult,
 } from "@/lib/ueip-gbp-adapter";
+import {
+  connectorIdForWorkspaceCapability,
+  executeGoogleWorkspaceRead,
+  googleWorkspaceCapabilities,
+  UeipGoogleWorkspaceAdapterError,
+  type GoogleWorkspaceAdapterInput,
+  type GoogleWorkspaceCredential,
+  type GoogleWorkspaceNormalizedResult,
+} from "@/lib/ueip-google-workspace-adapter";
 
 export type UeipTrustedEnvironment = "development" | "preview" | "production";
 export type UeipExecutionContext = Readonly<{
@@ -64,6 +73,13 @@ export type UeipCapabilityRequest = Readonly<{
   capabilityKey: (typeof gbpCapabilities)[number];
   capabilityVersion: "1.0.0";
   parameters: Omit<GbpAdapterInput, "capability">;
+  freshnessSeconds: number;
+  idempotencyKey: string;
+}> | Readonly<{
+  connectorId: "gmail" | "google_calendar" | "google_drive";
+  capabilityKey: (typeof googleWorkspaceCapabilities)[number];
+  capabilityVersion: "1.0.0";
+  parameters: Omit<GoogleWorkspaceAdapterInput, "capability">;
   freshnessSeconds: number;
   idempotencyKey: string;
 }>;
@@ -107,7 +123,7 @@ export type UeipGatewayResult =
       ok: true;
       traceId: string;
       policy: UeipPolicyDecision;
-      result: SearchConsoleNormalizedResult | Ga4NormalizedResult | GbpNormalizedResult;
+      result: SearchConsoleNormalizedResult | Ga4NormalizedResult | GbpNormalizedResult | GoogleWorkspaceNormalizedResult;
       auditStatus: "complete";
       providerAttempted: boolean;
       providerCalled: boolean;
@@ -132,6 +148,11 @@ const POLICY_VERSION = "ueip-runtime-policy-v1";
 const SEARCH_CONSOLE_REQUIRED_SCOPE = "https://www.googleapis.com/auth/webmasters.readonly";
 const GA4_REQUIRED_SCOPE = "https://www.googleapis.com/auth/analytics.readonly";
 const GBP_REQUIRED_SCOPE = "https://www.googleapis.com/auth/business.manage";
+const WORKSPACE_REQUIRED_SCOPES = {
+  gmail: "https://www.googleapis.com/auth/gmail.readonly",
+  google_calendar: "https://www.googleapis.com/auth/calendar.events.readonly",
+  google_drive: "https://www.googleapis.com/auth/drive.metadata.readonly",
+} as const;
 const SECRET_FIELD_PATTERN = /(secret|token|password|credential|authorization|cookie|session|api[_-]?key|raw|payload|headers?)/i;
 const circuitByInstallation = new Map<string, { failures: number; openUntil: number }>();
 const rateByTenant = new Map<string, { windowStarted: number; count: number }>();
@@ -262,10 +283,32 @@ function gbpManifest(tenantId: string): UniversalConnectorManifest | null {
   };
 }
 
+function workspaceManifest(connectorId: "gmail" | "google_calendar" | "google_drive", tenantId: string): UniversalConnectorManifest | null {
+  const connector = getEnterpriseConnector(connectorId);
+  if (!connector) return null;
+  const base = createUniversalConnectorManifest(connector, { supportedTenantIds: [tenantId], compatibleBusinessModules: ["ai_core", "real_estate"] });
+  const capabilityKey = connectorId === "gmail" ? "gmail.inbox.metadata.read" : connectorId === "google_calendar" ? "calendar.events.read" : "drive.metadata.read";
+  return {
+    ...base,
+    lifecycleState: "read_only",
+    capabilities: [{
+      capabilityKey,
+      providerActionKey: capabilityKey,
+      operation: "read" as const,
+      risk: connectorId === "google_calendar" ? "low" as const : "medium" as const,
+      requiredScopes: [WORKSPACE_REQUIRED_SCOPES[connectorId]],
+      approvalPolicy: "none" as const,
+      dataClassification: "internal" as const,
+      liveExecutionAllowed: false as const,
+    }],
+  };
+}
+
 function gatewayManifest(connectorId: UeipCapabilityRequest["connectorId"], tenantId: string) {
   if (connectorId === "google_search_console") return searchConsoleManifest(tenantId);
   if (connectorId === "google_analytics") return ga4Manifest(tenantId);
-  return gbpManifest(tenantId);
+  if (connectorId === "google_business_profile") return gbpManifest(tenantId);
+  return workspaceManifest(connectorId, tenantId);
 }
 
 async function appendAudit(input: {
@@ -416,6 +459,15 @@ function brokerGbpCredential(reference: CredentialReferenceRecord, env: NodeJS.P
   return clientId && clientSecret && refreshToken ? { clientId, clientSecret, refreshToken } : null;
 }
 
+function brokerWorkspaceCredential(reference: CredentialReferenceRecord, env: NodeJS.ProcessEnv): GoogleWorkspaceCredential | null {
+  if (!["gmail", "google_calendar", "google_drive"].includes(reference.connectorId) || reference.secretStorageProvider !== "environment") return null;
+  if (reference.rawSecretStored || reference.rawSecretRendered || (reference.expiresAt && reference.expiresAt.getTime() <= Date.now())) return null;
+  const clientId = env.GOOGLE_OAUTH_CLIENT_ID?.trim();
+  const clientSecret = env.GOOGLE_OAUTH_CLIENT_SECRET?.trim();
+  const refreshToken = env.GOOGLE_OAUTH_REFRESH_TOKEN?.trim();
+  return clientId && clientSecret && refreshToken ? { clientId, clientSecret, refreshToken } : null;
+}
+
 function ga4FixtureResult(request: UeipCapabilityRequest, now = new Date()): Ga4NormalizedResult {
   if (request.connectorId !== "google_analytics") throw new Error("ga4_fixture_requires_ga4_request");
   return {
@@ -450,6 +502,21 @@ function gbpFixtureResult(request: UeipCapabilityRequest, now = new Date()): Gbp
   };
 }
 
+function workspaceFixtureResult(request: Extract<UeipCapabilityRequest, { connectorId: "gmail" | "google_calendar" | "google_drive" }>, now = new Date()): GoogleWorkspaceNormalizedResult {
+  return {
+    contractVersion: "ueip-google-workspace-result-v1",
+    capability: request.capabilityKey,
+    sourceLabel: `ueip:${request.connectorId}:development_fixture`,
+    provenance: "Deterministic development fixture; no provider was called.",
+    observationWindow: { startDate: request.parameters.observationStart, endDate: request.parameters.observationEnd },
+    freshness: now.toISOString(),
+    confidence: 20,
+    signals: request.connectorId === "gmail" ? { messages: [], recentInboxMessages: 0, actionableMessageSignals: 0 } : request.connectorId === "google_calendar" ? { events: [], upcomingEvents: 0, schedulingConflicts: 0 } : { documents: [], recentDocuments: 0, relevantDocumentActivity: 0 },
+    dataGaps: ["Development fixture only; verify against governed Preview data before business use."],
+    reliability: { status: "partial", latencyMs: 0, attempts: 0, quotaRemaining: null },
+  };
+}
+
 async function executeGateway(context: UeipExecutionContext, request: UeipCapabilityRequest, env: NodeJS.ProcessEnv): Promise<UeipGatewayResult> {
   const installation = await gatewayDb.connectorInstallationState.findUnique({ where: { tenantId_connectorId: { tenantId: context.tenantId, connectorId: request.connectorId } } });
   if (!installation || installation.tenantId !== context.tenantId) {
@@ -472,7 +539,9 @@ async function executeGateway(context: UeipExecutionContext, request: UeipCapabi
     ? isFeatureEnabled("ueip_gateway_enforcement") && isFeatureEnabled("ueip_search_console_runtime") && !isFeatureEnabled("ueip_search_console_rollback")
     : request.connectorId === "google_analytics"
       ? isFeatureEnabled("ueip_gateway_enforcement") && isFeatureEnabled("ueip_ga4_runtime")
-      : isFeatureEnabled("ueip_gateway_enforcement") && isFeatureEnabled("ueip_gbp_runtime");
+      : request.connectorId === "google_business_profile"
+        ? isFeatureEnabled("ueip_gateway_enforcement") && isFeatureEnabled("ueip_gbp_runtime")
+        : isFeatureEnabled("ueip_gateway_enforcement") && isFeatureEnabled("connector_live_reads") && isFeatureEnabled("connector_google") && (request.connectorId !== "gmail" || isFeatureEnabled("connector_communication"));
   const manifest = gatewayManifest(request.connectorId, context.tenantId);
 
   let preflightReason: string | null = null;
@@ -521,7 +590,13 @@ async function executeGateway(context: UeipExecutionContext, request: UeipCapabi
   }
 
   if (context.environment === "development") {
-    const result = request.connectorId === "google_search_console" ? fixtureResult(request) : request.connectorId === "google_analytics" ? ga4FixtureResult(request) : gbpFixtureResult(request);
+    const result = request.connectorId === "google_search_console"
+      ? fixtureResult(request)
+      : request.connectorId === "google_analytics"
+        ? ga4FixtureResult(request)
+        : request.connectorId === "google_business_profile"
+          ? gbpFixtureResult(request)
+          : workspaceFixtureResult(request);
     try { await appendAudit({ context, request, installationId: installation.id, stage: "completed_fixture", decision: "completed", reasonCodes: ["development_fixture"], safeMetadata: { sourceLabel: result.sourceLabel } }); } catch { return failure({ context, policy, code: "completion_audit_failed", message: "Fixture result was quarantined because completion audit failed.", auditStatus: "failed" }); }
     return { ok: true, traceId: context.traceId, policy, result, auditStatus: "complete", providerAttempted: false, providerCalled: false, healthStatus: "healthy", liveExecutionAllowed: false };
   }
@@ -533,7 +608,9 @@ async function executeGateway(context: UeipExecutionContext, request: UeipCapabi
       ? brokerCredential(reference, env)
       : request.connectorId === "google_analytics"
         ? brokerGa4Credential(reference, env)
-        : brokerGbpCredential(reference, env)
+        : request.connectorId === "google_business_profile"
+          ? brokerGbpCredential(reference, env)
+          : brokerWorkspaceCredential(reference, env)
     : null;
   if (!reference || reference.tenantId !== context.tenantId || !credential) {
     await appendAudit({ context, request, installationId: installation.id, stage: "credential_blocked", decision: "blocked", reasonCodes: ["credential_unavailable"] }).catch(() => undefined);
@@ -545,9 +622,11 @@ async function executeGateway(context: UeipExecutionContext, request: UeipCapabi
       ? await executeSearchConsoleRead({ request: { capability: request.capabilityKey, ...request.parameters }, credentials: credential as SearchConsoleCredential, fetcher: gatewayFetcher })
       : request.connectorId === "google_analytics"
         ? await executeGa4Read({ request: { capability: request.capabilityKey, ...request.parameters }, credentials: credential as Ga4Credential, fetcher: gatewayFetcher })
-        : await executeGbpRead({ request: { capability: request.capabilityKey, ...request.parameters }, credentials: credential as GbpCredential, fetcher: gatewayFetcher });
+        : request.connectorId === "google_business_profile"
+          ? await executeGbpRead({ request: { capability: request.capabilityKey, ...request.parameters }, credentials: credential as GbpCredential, fetcher: gatewayFetcher })
+          : await executeGoogleWorkspaceRead({ request: { capability: request.capabilityKey, ...request.parameters }, credentials: credential as GoogleWorkspaceCredential, fetcher: gatewayFetcher });
     try {
-      await appendAudit({ context, request, installationId: installation.id, stage: "completed", decision: "completed", reasonCodes: ["normalized_result_valid"], attemptNumber: result.reliability.attempts, endpointId: request.connectorId === "google_business_profile" ? "gbp_read" : request.connectorId === "google_analytics" ? "ga4_run_report" : request.capabilityKey === "seo.indexing.summary.read" ? "url_inspection" : "search_analytics", latencyMs: result.reliability.latencyMs, providerAttempted: true, providerCalled: true, safeMetadata: { contractVersion: result.contractVersion, sourceLabel: result.sourceLabel, confidence: result.confidence } });
+      await appendAudit({ context, request, installationId: installation.id, stage: "completed", decision: "completed", reasonCodes: ["normalized_result_valid"], attemptNumber: result.reliability.attempts, endpointId: request.connectorId === "google_business_profile" ? "gbp_read" : request.connectorId === "google_analytics" ? "ga4_run_report" : request.connectorId === "gmail" ? "gmail_metadata_read" : request.connectorId === "google_calendar" ? "calendar_events_read" : request.connectorId === "google_drive" ? "drive_metadata_read" : request.capabilityKey === "seo.indexing.summary.read" ? "url_inspection" : "search_analytics", latencyMs: result.reliability.latencyMs, providerAttempted: true, providerCalled: true, safeMetadata: { contractVersion: result.contractVersion, sourceLabel: result.sourceLabel, confidence: result.confidence } });
       await gatewayDb.enterpriseConnectorHealthEvent.create({ data: { tenantId: context.tenantId, connectorId: request.connectorId, healthStatus: "healthy", checkedAt: new Date(), latencyMs: result.reliability.latencyMs, circuitBreakerState: "closed", providerCalled: true, liveExecutionAllowed: false, safeMetadata: { traceId: context.traceId, capabilityKey: request.capabilityKey } } });
     } catch {
       circuitByInstallation.set(installation.id, { failures: 3, openUntil: Date.now() + 60_000 });
@@ -556,7 +635,7 @@ async function executeGateway(context: UeipExecutionContext, request: UeipCapabi
     circuitByInstallation.delete(installation.id);
     return { ok: true, traceId: context.traceId, policy, result, auditStatus: "complete", providerAttempted: true, providerCalled: true, healthStatus: "healthy", liveExecutionAllowed: false };
   } catch (error) {
-    const adapterError = error instanceof UeipSearchConsoleAdapterError || error instanceof UeipGa4AdapterError || error instanceof UeipGbpAdapterError ? error : new UeipSearchConsoleAdapterError("provider_unavailable", "Provider read failed safely.", true);
+    const adapterError = error instanceof UeipSearchConsoleAdapterError || error instanceof UeipGa4AdapterError || error instanceof UeipGbpAdapterError || error instanceof UeipGoogleWorkspaceAdapterError ? error : new UeipSearchConsoleAdapterError("provider_unavailable", "Provider read failed safely.", true);
     const current = circuitByInstallation.get(installation.id) ?? { failures: 0, openUntil: 0 };
     const failures = current.failures + 1;
     circuitByInstallation.set(installation.id, { failures, openUntil: failures >= 3 ? Date.now() + 60_000 : 0 });
@@ -584,6 +663,13 @@ export async function runUeipGa4Gateway(input: { context: UeipExecutionContext; 
 }
 
 export async function runUeipGbpGateway(input: { context: UeipExecutionContext; request: Extract<UeipCapabilityRequest, { connectorId: "google_business_profile" }>; env?: NodeJS.ProcessEnv }): Promise<UeipGatewayResult> {
+  return runUeipSearchConsoleGateway(input);
+}
+
+export async function runUeipGoogleWorkspaceGateway(input: { context: UeipExecutionContext; request: Extract<UeipCapabilityRequest, { connectorId: "gmail" | "google_calendar" | "google_drive" }>; env?: NodeJS.ProcessEnv }): Promise<UeipGatewayResult> {
+  if (connectorIdForWorkspaceCapability(input.request.capabilityKey) !== input.request.connectorId) {
+    return failure({ context: input.context, code: "capability_connector_mismatch", message: "Workspace capability does not belong to the requested connector." });
+  }
   return runUeipSearchConsoleGateway(input);
 }
 
