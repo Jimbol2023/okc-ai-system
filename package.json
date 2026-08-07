@@ -21,8 +21,6 @@
     "verify:predeploy": "node --import tsx scripts/diagnose.ts predeploy",
     "lint": "eslint app components lib scripts tests --ext .ts,.tsx --max-warnings=0",
     "test:unit:all": "node --import tsx scripts/run-all-lib-tests.ts",
-    "storybook": "storybook dev -p 6006",
-    "build:storybook": "storybook build",
     "verify:full:isolated": "bash scripts/verify-full-isolated.sh",
     "test:activation-smoke": "node --import tsx --test tests/activation/*.test.ts",
     "test:e2e": "playwright test",
@@ -32,7 +30,7 @@
     "test:pressure:professional-cases:isolated": "bash scripts/run-professional-case-pressure-isolated.sh",
     "test:safety": "node --import tsx --test tests/safety/*.test.ts",
     "test:migrations": "node --import tsx --test tests/migrations/*.test.ts",
-    "postinstall": "prisma generate",
+    "postinstall": "node scripts/prisma-generate-if-missing.mjs",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio"
@@ -49,11 +47,12 @@
     "twilio": "^6.0.0",
     "zod": "^4.1.5"
   },
+  "overrides": {
+    "nanoid": "^3.3.17"
+  },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
     "@playwright/test": "^1.61.1",
-    "@storybook/addon-a11y": "^10.5.0",
-    "@storybook/nextjs-vite": "^10.5.0",
     "@tailwindcss/postcss": "^4.1.13",
     "@types/node": "^24.3.0",
     "@types/react": "19.2.18",
@@ -62,7 +61,6 @@
     "eslint-config-next": "16.3.0",
     "lighthouse": "^13.4.1",
     "prisma": "^6.15.0",
-    "storybook": "^10.5.0",
     "tailwindcss": "^4.1.13",
     "tsx": "^4.22.4",
     "typescript": "^5.9.2",

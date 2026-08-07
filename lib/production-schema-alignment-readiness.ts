@@ -5,7 +5,7 @@ import { join } from "node:path";
 export const productionSchemaAlignmentMigration = {
   migrationId: "20260716100000_harden_business_data_snapshots",
   relativePath: "prisma/migrations/20260716100000_harden_business_data_snapshots/migration.sql",
-  expectedSha256: "3F667C5DAE5C18063F673ADCE4C05ECE74747571AEDE6D67519FAA79B42D39C1",
+  expectedSha256: "CB77DE1EBA483EA38E205A2A4081222873BE06FB6C21A30399803D1F19C8C890",
   status: "pending_production_execution",
   requiredColumns: ["version", "contractVersion", "evidenceHash", "observationStart", "observationEnd", "traceId", "reliability"],
 } as const;
