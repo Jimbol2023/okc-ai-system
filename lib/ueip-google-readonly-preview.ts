@@ -67,20 +67,23 @@ function nonce() {
   return Array.from(crypto.getRandomValues(new Uint8Array(32)), (byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
-async function verifiedIdentity(env: NodeJS.ProcessEnv) {
+async function certifiedIdentity(env: NodeJS.ProcessEnv) {
   const checked = guard(env);
   if (!checked.ok) return { checked, identity: null };
-  const [identity, diagnosis] = await Promise.all([
-    previewDb.ueipEnvironmentIdentity.findUnique({ where: { environmentId: checked.environmentId } }),
-    diagnosePreviewIdentity({ env }),
-  ]);
-  if (
-    diagnosis.classification !== "PREVIEW_DATABASE_IDENTITY_CERTIFIED" ||
-    !identity ||
-    identity.environmentType !== "preview" ||
-    identity.productionProhibited !== true
-  ) {
+  const diagnosis = await diagnosePreviewIdentity({ env });
+  if (diagnosis.classification !== "PREVIEW_DATABASE_IDENTITY_CERTIFIED") {
     checked.reasons.push("preview_identity_not_verified");
+    checked.ok = false;
+  }
+  return { checked, identity: null };
+}
+
+async function verifiedIdentity(env: NodeJS.ProcessEnv) {
+  const { checked } = await certifiedIdentity(env);
+  if (!checked.ok) return { checked, identity: null };
+  const identity = await previewDb.ueipEnvironmentIdentity.findUnique({ where: { environmentId: checked.environmentId } });
+  if (!identity || identity.environmentType !== "preview" || identity.databaseFingerprint !== checked.previewFingerprint || identity.productionProhibited !== true) {
+    checked.reasons.push("preview_identity_not_registered");
     checked.ok = false;
   }
   return { checked, identity };
@@ -89,10 +92,16 @@ async function verifiedIdentity(env: NodeJS.ProcessEnv) {
 export async function configureGoogleReadOnlyPreview(input: { actor: Actor; confirmation: string; env?: NodeJS.ProcessEnv }) {
   const env = input.env ?? process.env;
   const tenantId = requireTenantId(input.actor.tenantId, "google_readonly_preview_configure");
-  const { checked } = await verifiedIdentity(env);
+  const { checked } = await certifiedIdentity(env);
   if (input.confirmation !== googleReadOnlyPreviewConfirmations.configure || !checked.ok) return { status: "blocked" as const, reasonCodes: input.confirmation !== googleReadOnlyPreviewConfirmations.configure ? ["confirmation_phrase_invalid"] : checked.reasons, providerCalled: false, liveExecutionAllowed: false };
   const installationIds = await previewDb.$transaction(async (tx) => {
     const ids: Record<string, string> = {};
+    const identity = await tx.ueipEnvironmentIdentity.upsert({
+      where: { environmentId: checked.environmentId },
+      create: { environmentId: checked.environmentId, environmentType: "preview", databaseFingerprint: checked.previewFingerprint, productionProhibited: true, verifiedBy: input.actor.actorId },
+      update: { environmentType: "preview", databaseFingerprint: checked.previewFingerprint, productionProhibited: true, verifiedBy: input.actor.actorId, verifiedAt: new Date() },
+    });
+    if (identity.databaseFingerprint !== checked.previewFingerprint || identity.environmentType !== "preview" || identity.productionProhibited !== true) throw new Error("Preview environment identity registration failed.");
     for (const connector of connectors) {
       const credential = await tx.connectorCredentialReference.upsert({ where: { tenantId_referenceKey: { tenantId, referenceKey: `UEIP_${connector.connectorId.toUpperCase()}_PREVIEW_ENVIRONMENT` } }, create: { tenantId, connectorId: connector.connectorId, referenceKey: `UEIP_${connector.connectorId.toUpperCase()}_PREVIEW_ENVIRONMENT`, secretStorageProvider: "environment", secretPathReference: "server_allowlisted_google_oauth", rotationStatus: "operator_managed", rawSecretStored: false, rawSecretRendered: false, createdBy: input.actor.actorId }, update: { connectorId: connector.connectorId, secretStorageProvider: "environment", secretPathReference: "server_allowlisted_google_oauth", rawSecretStored: false, rawSecretRendered: false } });
       const permissionValidation = { quotaPerMinute: 20, circuitState: "closed", previewOnly: true, ...(connector.connectorId === "google_analytics" ? { authorizedPropertyIds: [env.GOOGLE_ANALYTICS_PROPERTY_ID!.trim()] } : {}) };

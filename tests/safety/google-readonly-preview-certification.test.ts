@@ -25,6 +25,7 @@ const restores: Array<() => void> = [];
 afterEach(() => { while (restores.length) restores.pop()?.(); });
 
 function stateDb() {
+  let identity = { environmentId: "preview-certified", environmentType: "preview", databaseFingerprint: "preview-fingerprint", productionProhibited: true };
   const installations: Array<Record<string, unknown>> = [];
   const credentials: Array<Record<string, unknown>> = [];
   const authorizations: Array<Record<string, unknown>> = [];
@@ -32,7 +33,10 @@ function stateDb() {
   const db: Record<string, unknown> = {};
   Object.assign(db, {
     async $transaction(input: unknown) { return Array.isArray(input) ? Promise.all(input) : (input as (tx: unknown) => Promise<unknown>)(db); },
-    ueipEnvironmentIdentity: { async findUnique() { return { environmentId: "preview-certified", environmentType: "preview", databaseFingerprint: "preview-fingerprint", productionProhibited: true }; } },
+    ueipEnvironmentIdentity: {
+      async findUnique() { return identity; },
+      async upsert(args: { create: typeof identity; update: Partial<typeof identity> }) { identity = { ...identity, ...args.create, ...args.update }; return identity; },
+    },
     connectorCredentialReference: { async upsert(args: { create: Record<string, unknown> }) { const existing = credentials.find((item) => item.referenceKey === args.create.referenceKey); if (existing) return existing; const item = { id: `credential-${credentials.length + 1}`, ...args.create }; credentials.push(item); return item; } },
     connectorInstallationState: {
       async upsert(args: { create: Record<string, unknown>; update: Record<string, unknown> }) { const existing = installations.find((item) => item.connectorId === args.create.connectorId && item.tenantId === args.create.tenantId); if (existing) { Object.assign(existing, args.update); return existing; } const item = { id: `installation-${installations.length + 1}`, ...args.create }; installations.push(item); return item; },
