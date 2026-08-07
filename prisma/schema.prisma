@@ -268,6 +268,84 @@ model RevenueTask {
   @@index([createdAt])
 }
 
+model PropertyOpportunity {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  canonicalAddress      String
+  propertyAddress       String
+  city                  String?
+  state                 String?
+  zipCode               String?
+  county                String?
+  parcelId              String?
+  ownerName             String?
+  mailingAddress        String?
+  source                String
+  sourceDetail          String?
+  evidence              Json
+  distressIndicators    Json
+  observations          Json
+  photoMetadata         Json
+  opportunityScore      Int
+  opportunityPriority   String
+  confidence            Int
+  duplicateKey          String
+  duplicateRisk         Boolean  @default(false)
+  missingEvidence       Json
+  recommendedAction     String
+  safetyFlags           Json
+  providerCalled        Boolean  @default(false)
+  sent                  Boolean  @default(false)
+  published             Boolean  @default(false)
+  crmMutated            Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdBy             String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@unique([tenantId, duplicateKey])
+  @@index([tenantId])
+  @@index([canonicalAddress])
+  @@index([parcelId])
+  @@index([source])
+  @@index([opportunityScore])
+  @@index([opportunityPriority])
+  @@index([duplicateRisk])
+  @@index([providerCalled])
+  @@index([sent])
+  @@index([published])
+  @@index([crmMutated])
+  @@index([liveExecutionAllowed])
+  @@index([createdAt])
+}
+
+model PropertyOpportunitySavedFilter {
+  id                  String   @id @default(uuid())
+  tenantId            String   @default("default")
+  name                String
+  filterKey           String
+  criteria            Json
+  safetyFlags         Json
+  providerCalled      Boolean  @default(false)
+  sent                Boolean  @default(false)
+  published           Boolean  @default(false)
+  crmMutated          Boolean  @default(false)
+  liveExecutionAllowed Boolean @default(false)
+  createdBy           String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@unique([tenantId, filterKey])
+  @@index([tenantId])
+  @@index([filterKey])
+  @@index([providerCalled])
+  @@index([sent])
+  @@index([published])
+  @@index([crmMutated])
+  @@index([liveExecutionAllowed])
+  @@index([createdAt])
+}
+
 model RevenuePipelineEvent {
   id             String   @id @default(uuid())
   tenantId       String   @default("default")
