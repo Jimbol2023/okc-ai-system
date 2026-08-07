@@ -117,7 +117,7 @@ export type PropertyListBuilderSegment = {
 export type ProviderDecisionGateItem = {
   source: string;
   allowedNow: boolean;
-  decision: "use_internal_now" | "manual_research_allowed" | "separate_approval_required" | "blocked_until_qualified";
+  decision: "use_internal_now" | "manual_research_allowed" | "preview_certification_available" | "separate_approval_required" | "blocked_until_qualified";
   reason: string;
   providerCalled: false;
   liveExecutionAllowed: false;
@@ -621,10 +621,14 @@ function createProviderDecisionGate(sourcePriority: PropertyProviderSourcePriori
         ? "use_internal_now"
         : item.activationState === "ready_for_manual_research"
           ? "manual_research_allowed"
+          : item.source === "maps_geocoding"
+            ? "preview_certification_available"
           : item.activationState === "blocked_until_property_qualified"
             ? "blocked_until_qualified"
             : "separate_approval_required",
-    reason: item.bestUse,
+    reason: item.source === "maps_geocoding"
+      ? `${item.bestUse} Production geocoding, persistence, outreach, and CRM mutation remain blocked.`
+      : item.bestUse,
     providerCalled: false,
     liveExecutionAllowed: false,
   }));
