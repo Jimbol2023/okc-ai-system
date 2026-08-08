@@ -26,6 +26,7 @@ export const dashboardNavigationItems: DashboardNavigationItem[] = [
   { href: "/dashboard/production-readiness", label: "Hardening", keywords: ["readiness", "deployment", "provider", "security", "governance", "hardening"] },
   { href: "/dashboard/importer", label: "Importer", keywords: ["tax list", "csv", "import"] },
   { href: "/dashboard/properties", label: "Properties", keywords: ["property", "review", "source"] },
+  { href: "/dashboard/property-opportunity-workbench", label: "Opportunity Workbench", keywords: ["property", "opportunity", "county", "dfd", "map", "csv", "lead source"] },
   { href: "/dashboard/analyzer", label: "Analyzer", keywords: ["arv", "repair", "offer", "deal analyzer"] },
   { href: "/dashboard/driving-for-dollars", label: "D4D", keywords: ["driving for dollars", "field", "property"] },
 ];
