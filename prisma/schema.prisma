@@ -53,6 +53,10 @@ model Lead {
   doNotContact Boolean   @default(false)
   optOutReason String?
   optOutAt     DateTime?
+  consentStatus    String   @default("unknown")
+  contactPermission String  @default("internal_review_only")
+  consentSource     String?
+  consentAt         DateTime?
 
   // SYSTEM TIMESTAMPS
   createdAt DateTime @default(now())
@@ -256,10 +260,27 @@ model RevenueTask {
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
   completedAt       DateTime?
+  idempotencyKey          String?
+  materializationVersion  String?
+  sourceProvenance        Json?
+  captureTimestamp        DateTime?
+  scoreEvidence           Json?
+  propertyEvidence        Json?
+  missingEvidence         Json?
+  contactPosture          Json?
+  providerCalled          Boolean   @default(false)
+  outreach                Boolean   @default(false)
+  sent                    Boolean   @default(false)
+  published               Boolean   @default(false)
+  crmMutation             Boolean   @default(false)
+  externalExecutionAllowed Boolean  @default(false)
+  liveExecutionAllowed    Boolean   @default(false)
 
-  lead Lead? @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  lead Lead? @relation(fields: [leadId, tenantId], references: [id, tenantId], onDelete: Restrict)
 
+  @@unique([tenantId, idempotencyKey])
   @@index([tenantId])
+  @@index([tenantId, taskType, status])
   @@index([leadId])
   @@index([taskType])
   @@index([priority])
@@ -855,6 +876,7 @@ model UnifiedApprovalItem {
   sent                   Boolean  @default(false)
   published              Boolean  @default(false)
   liveExecutionAllowed   Boolean  @default(false)
+  idempotencyKey         String?
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
 
@@ -868,6 +890,7 @@ model UnifiedApprovalItem {
   @@index([connectorId])
   @@index([providerCalled])
   @@index([liveExecutionAllowed])
+  @@unique([tenantId, idempotencyKey])
 }
 
 model UnifiedApprovalDecision {
@@ -1514,6 +1537,13 @@ model ManualLeadIntake {
   intakeStatus       String   @default("pending_review")
   manualReviewStatus String   @default("needs_manual_review")
   safetyFlags        Json
+  idempotencyKey     String?
+  consentStatus      String   @default("unknown")
+  contactPermission  String   @default("internal_review_only")
+  doNotContact       Boolean  @default(false)
+  optOutReason       String?
+  consentSource      String?
+  consentAt          DateTime?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 
@@ -1526,6 +1556,19 @@ model ManualLeadIntake {
   @@index([intakeStatus])
   @@index([manualReviewStatus])
   @@index([createdAt])
+  @@unique([tenantId, idempotencyKey])
+}
+
+model PublicIntakeRateLimit {
+  id          String   @id @default(uuid())
+  tenantId    String
+  fingerprint String
+  windowStart DateTime
+  attempts    Int      @default(1)
+  updatedAt   DateTime @updatedAt
+
+  @@unique([tenantId, fingerprint, windowStart])
+  @@index([tenantId, windowStart])
 }
 
 model SellerCallOutcome {

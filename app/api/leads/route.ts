@@ -11,6 +11,7 @@ import { attachReferralAttributionToLead } from "@/lib/referrals";
 import { logRevenueAuditEvent } from "@/lib/revenue-spine";
 import { storedLeadArraySchema, storedLeadSchema } from "@/lib/validations/stored-lead";
 import { resolvePublicIntakeTenant } from "@/lib/tenant-context";
+import { classifyPublicIntakeSpam, consumePublicIntakeRateLimit, normalizePublicIntakeSource, publicIntakeFingerprint } from "@/lib/governed-lead-intake";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -70,7 +71,12 @@ export async function POST(request: Request) {
 
     if (parsedIntakeLead.success) {
       const tenantId = resolvePublicIntakeTenant();
-      const storedLead = leadIntakeToStoredLead(parsedIntakeLead.data);
+      const rateLimit = await consumePublicIntakeRateLimit(tenantId, publicIntakeFingerprint(request));
+      if (!rateLimit.allowed) return NextResponse.json({ ok: false, error: "Too many submissions. Please try again later." }, { status: 429 });
+      const spam = classifyPublicIntakeSpam({ honeypot: parsedIntakeLead.data.website, text: JSON.stringify(parsedIntakeLead.data) });
+      if (!spam.accepted) return NextResponse.json({ ok: false, error: "Submission could not be accepted." }, { status: 400 });
+      const serverSource = normalizePublicIntakeSource(parsedIntakeLead.data);
+      const storedLead = leadIntakeToStoredLead({ ...parsedIntakeLead.data, source: serverSource });
 
       const result = await createDbLead({ tenantId }, {
         ...storedLead,

@@ -65,6 +65,11 @@ export function dbLeadToStoredLead(record: PrismaLead): StoredLead {
     suggestedReply: record.suggestedReply,
     approvalStatus: record.approvalStatus,
     doNotContact: record.doNotContact,
+    optOutReason: record.optOutReason,
+    consentStatus: record.consentStatus,
+    contactPermission: record.contactPermission,
+    consentSource: record.consentSource,
+    consentAt: record.consentAt,
     requiresHumanApproval: record.requiresHumanApproval,
     lastSellerReply: record.lastSellerReply
   };
@@ -143,6 +148,12 @@ export function storedLeadToDbData(lead: StoredLead) {
     approvalStatus: lead.approvalStatus ?? undefined,
     requiresHumanApproval: lead.requiresHumanApproval ?? undefined,
     doNotContact: lead.doNotContact ?? undefined,
+    optOutReason: lead.optOutReason ?? undefined,
+    optOutAt: lead.doNotContact ? new Date() : undefined,
+    consentStatus: lead.consentStatus ?? undefined,
+    contactPermission: lead.contactPermission ?? undefined,
+    consentSource: lead.consentSource ?? undefined,
+    consentAt: lead.consentAt ? new Date(lead.consentAt) : undefined,
     suggestedReply: lead.suggestedReply ?? undefined,
     lastSellerReply: lead.lastSellerReply ?? undefined
   };
@@ -179,6 +190,12 @@ export function leadIntakeToStoredLead(lead: LeadIntakeInput): StoredLead {
     score: 0,
     priority: "Low",
     scoreBreakdown: "",
+    doNotContact: lead.doNotContact,
+    optOutReason: lead.optOutReason || null,
+    consentStatus: lead.consentStatus,
+    contactPermission: lead.contactPermission,
+    consentSource: lead.consentSource,
+    consentAt: lead.consentTimestamp,
     referralCode: lead.referralCode || null,
     referralCampaign: lead.referralCampaign || null,
     referralSource: lead.referralSource || null,

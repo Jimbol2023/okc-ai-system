@@ -295,7 +295,7 @@ describe("AI company activation", () => {
       decidedBy: "ceo@example.com",
     });
 
-    const run = await runInternalCompanyWork();
+    const run = await runInternalCompanyWork("default");
 
     assert.equal(run.ok, true);
     assert.ok(run.assignmentsAdvanced > 0);

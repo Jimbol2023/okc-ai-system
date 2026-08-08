@@ -85,6 +85,7 @@ export type StoredLead = {
   parcelId: string;
   situationDetails: string;
   source: string;
+  sourceDetail?: string | null;
   status: LeadStatus;
   notes: LeadNote[];
   followUps: LeadFollowUp[];
@@ -102,6 +103,11 @@ export type StoredLead = {
   automationStatus?: string | null;
   approvalStatus?: "pending_review" | "approved_for_outreach" | "rejected" | "needs_human_review" | "follow_up_only" | string | null;
   doNotContact?: boolean | null;
+  optOutReason?: string | null;
+  consentStatus?: "affirmed" | "not_granted" | "unknown" | string;
+  contactPermission?: "contact_requested" | "internal_review_only" | string;
+  consentSource?: string | null;
+  consentAt?: Date | string | null;
   requiresHumanApproval?: boolean | null;
   lastSellerReply?: string | null;
   isHot?: boolean | null;

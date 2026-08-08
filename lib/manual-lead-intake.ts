@@ -24,6 +24,13 @@ export const manualLeadIntakeSchema = z.object({
   notes: z.string().trim().min(5, "Manual context notes are required.").max(1500),
   captureContext: z.string().trim().max(500).optional().or(z.literal("")),
   createLead: z.boolean().optional().default(false),
+  idempotencyKey: z.uuid(),
+  consentStatus: z.enum(["affirmed", "not_granted", "unknown"]),
+  contactPermission: z.enum(["contact_requested", "internal_review_only"]),
+  doNotContact: z.boolean(),
+  optOutReason: z.string().trim().max(240).optional().or(z.literal("")),
+  consentSource: z.string().trim().min(2).max(120),
+  consentTimestamp: z.iso.datetime().nullable(),
 });
 
 export type ManualLeadIntakeInput = z.infer<typeof manualLeadIntakeSchema>;
@@ -61,6 +68,7 @@ function createStoredLeadFromManualIntake(input: ManualLeadIntakeInput): StoredL
     parcelId: "",
     situationDetails: input.notes,
     source: input.source,
+    sourceDetail: `${manualLeadSourceLabels[input.source]} | ${cleanOptional(input.captureContext) ?? "Manual operator source capture."}`,
     status: "new",
     notes: [
       {
@@ -93,6 +101,12 @@ function createStoredLeadFromManualIntake(input: ManualLeadIntakeInput): StoredL
     approvalStatus: "needs_human_review",
     automationStatus: "idle",
     nextFollowUpAt: null,
+    doNotContact: input.doNotContact,
+    optOutReason: input.doNotContact ? cleanOptional(input.optOutReason) ?? "Operator recorded do not contact." : null,
+    consentStatus: input.consentStatus,
+    contactPermission: input.doNotContact ? "internal_review_only" : input.contactPermission,
+    consentSource: input.consentSource,
+    consentAt: input.consentTimestamp,
   };
 }
 
@@ -124,6 +138,8 @@ export async function listManualLeadIntakes(tenantIdValue: string) {
 
 export async function createManualLeadIntake(tenantIdValue: string, input: ManualLeadIntakeInput) {
   const tenantId = requireTenantId(tenantIdValue, "manual_lead_intake_create");
+  const existing = await prisma.manualLeadIntake.findUnique({ where: { tenantId_idempotencyKey: { tenantId, idempotencyKey: input.idempotencyKey } }, include: { lead: true } });
+  if (existing) return { intake: existing, leadCreated: false, leadId: existing.leadId, canCreateLead: canCreateLead(input), reused: true };
   const sourceLabel = manualLeadSourceLabels[input.source];
   let leadId: string | null = null;
   let leadCreated = false;
@@ -138,7 +154,9 @@ export async function createManualLeadIntake(tenantIdValue: string, input: Manua
     intakeStatus = "needs_required_lead_fields";
   }
 
-  const intake = await prisma.manualLeadIntake.create({
+  let intake;
+  try {
+    intake = await prisma.manualLeadIntake.create({
     data: {
       tenantId,
       leadId,
@@ -165,6 +183,13 @@ export async function createManualLeadIntake(tenantIdValue: string, input: Manua
         sourceCaptured: true,
         propertyFactsInvented: false,
       },
+      idempotencyKey: input.idempotencyKey,
+      consentStatus: input.consentStatus,
+      contactPermission: input.doNotContact ? "internal_review_only" : input.contactPermission,
+      doNotContact: input.doNotContact,
+      optOutReason: input.doNotContact ? cleanOptional(input.optOutReason) ?? "Operator recorded do not contact." : null,
+      consentSource: input.consentSource,
+      consentAt: input.consentTimestamp ? new Date(input.consentTimestamp) : null,
     },
     include: {
       lead: {
@@ -177,12 +202,19 @@ export async function createManualLeadIntake(tenantIdValue: string, input: Manua
         },
       },
     },
-  });
+    });
+  } catch (error) {
+    if (!(error && typeof error === "object" && "code" in error && error.code === "P2002")) throw error;
+    const winner = await prisma.manualLeadIntake.findUnique({ where: { tenantId_idempotencyKey: { tenantId, idempotencyKey: input.idempotencyKey } }, include: { lead: true } });
+    if (!winner) throw error;
+    return { intake: winner, leadCreated: false, leadId: winner.leadId, canCreateLead: canCreateLead(input), reused: true };
+  }
 
   return {
     intake,
     leadCreated,
     leadId,
     canCreateLead: canCreateLead(input),
+    reused: false,
   };
 }

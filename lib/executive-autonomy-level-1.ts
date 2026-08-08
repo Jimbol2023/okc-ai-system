@@ -11,6 +11,7 @@ import { prisma } from "@/lib/prisma";
 import { runReadOnlyBusinessSync, verifyWeek1Level1Snapshots, week1Level1ReadOnlyCategories, type Week1Level1SnapshotVerification } from "@/lib/read-only-business-connections";
 import { createRevenueCommandCenter, logRevenueAuditEvent, syncLeadRevenueSpine, type RevenueCommandCenterReport, type RevenueInboxItem } from "@/lib/revenue-spine";
 import { requireTenantId } from "@/lib/tenant-context";
+import { hasSyntheticOrTestMarkers, materializeRealLeadAcquisitionReview, type MaterializationResult } from "@/lib/real-lead-acquisition-review-materializer";
 import { createUeipExecutionContext } from "@/lib/ueip-runtime-gateway";
 
 const LEVEL = 1;
@@ -40,6 +41,7 @@ export type ExecutiveAutonomyLevel1PhaseResult = {
     | "evidence_refresh"
     | "department_autonomy"
     | "lead_to_decision_pipeline"
+    | "real_business_work_activation"
     | "morning_brief"
     | "memory_and_audit";
   label: string;
@@ -93,6 +95,25 @@ export type ExecutiveAutonomyLevel1RunResult = {
     assignmentsAdvanced: number;
     draftQueueItemsAdvanced: number;
     completedInternalCount: number;
+    cumulativeCompletedAssignments: number;
+  };
+  leadWorkActivation: {
+    realLeadInventoryCount: number;
+    realLeadsEvaluated: number;
+    realLeadsDeferredByDailyLimit: number;
+    syntheticLeadsExcluded: number;
+    acquisitionReviewTasksCreated: number;
+    acquisitionReviewTasksReused: number;
+    dncGovernanceReviewTasksCreated: number;
+    dncGovernanceReviewTasksReused: number;
+    cumulativeHistoricalTasks: number;
+    revenueMovingWorkItemsCreatedThisRun: number;
+  };
+  draftActivity: {
+    newDraftsCreatedThisRun: number;
+    existingDraftsAwaitingCeoReview: number;
+    externallyBlockedDrafts: number;
+    noEligibleDraftWork: boolean;
   };
   leadPipeline: {
     leadsReviewed: number;
@@ -201,6 +222,8 @@ type ExecutiveAutonomyDeps = {
   createDailyRevenueOperatingLoop: typeof createDailyRevenueOperatingLoop;
   runControlledInternalOperation: typeof runControlledInternalOperation;
   runInternalCompanyWork: typeof runInternalCompanyWork;
+  materializeLead: typeof materializeRealLeadAcquisitionReview;
+  loadWorkMetrics: (tenantId: string, startedAt: Date) => Promise<{ cumulativeHistoricalTasks: number; newDraftsCreatedThisRun: number; existingDraftsAwaitingCeoReview: number; externallyBlockedDrafts: number }>;
   loadDashboard: typeof createExecutiveDashboardReport;
   logAudit: typeof logRevenueAuditEvent;
   runOrderedReadOnlySync: typeof runReadOnlyBusinessSync;
@@ -215,6 +238,16 @@ let deps: ExecutiveAutonomyDeps = {
   createDailyRevenueOperatingLoop,
   runControlledInternalOperation,
   runInternalCompanyWork,
+  materializeLead: materializeRealLeadAcquisitionReview,
+  loadWorkMetrics: async (tenantId, startedAt) => {
+    const [cumulativeHistoricalTasks, newDraftsCreatedThisRun, existingDraftsAwaitingCeoReview, externallyBlockedDrafts] = await Promise.all([
+      prisma.revenueTask.count({ where: { tenantId, taskType: { in: ["acquisition_review", "acquisition_governance_review"] } } }),
+      prisma.aiCompanyDraftQueueItem.count({ where: { tenantId, createdAt: { gte: startedAt } } }),
+      prisma.aiCompanyDraftQueueItem.count({ where: { tenantId, status: "ready_for_final_approval", approvalStatus: "pending_ceo_review" } }),
+      prisma.aiCompanyDraftQueueItem.count({ where: { tenantId, status: "ready_for_final_approval", approvalRequired: true } }),
+    ]);
+    return { cumulativeHistoricalTasks, newDraftsCreatedThisRun, existingDraftsAwaitingCeoReview, externallyBlockedDrafts };
+  },
   loadDashboard: createExecutiveDashboardReport,
   logAudit: logRevenueAuditEvent,
   runOrderedReadOnlySync: runReadOnlyBusinessSync,
@@ -279,12 +312,27 @@ function metricsObject(record: MemoryEventRecord | null): Record<string, unknown
   return record?.metrics && typeof record.metrics === "object" && !Array.isArray(record.metrics) ? (record.metrics as Record<string, unknown>) : {};
 }
 
+function emptyLeadWorkActivation(): ExecutiveAutonomyLevel1RunResult["leadWorkActivation"] {
+  return { realLeadInventoryCount: 0, realLeadsEvaluated: 0, realLeadsDeferredByDailyLimit: 0, syntheticLeadsExcluded: 0, acquisitionReviewTasksCreated: 0, acquisitionReviewTasksReused: 0, dncGovernanceReviewTasksCreated: 0, dncGovernanceReviewTasksReused: 0, cumulativeHistoricalTasks: 0, revenueMovingWorkItemsCreatedThisRun: 0 };
+}
+
+function emptyDraftActivity(): ExecutiveAutonomyLevel1RunResult["draftActivity"] {
+  return { newDraftsCreatedThisRun: 0, existingDraftsAwaitingCeoReview: 0, externallyBlockedDrafts: 0, noEligibleDraftWork: true };
+}
+
 function resultFromMemory(record: MemoryEventRecord, tenantId: string, businessDate: string, idempotencyKey: string, now: Date): ExecutiveAutonomyLevel1RunResult {
   const metrics = metricsObject(record);
   const cachedResult = metrics.result;
   if (cachedResult && typeof cachedResult === "object") {
+    const previous = cachedResult as ExecutiveAutonomyLevel1RunResult;
     return {
-      ...(cachedResult as ExecutiveAutonomyLevel1RunResult),
+      ...previous,
+      departmentCompletionSummary: {
+        ...previous.departmentCompletionSummary,
+        cumulativeCompletedAssignments: previous.departmentCompletionSummary?.cumulativeCompletedAssignments ?? previous.departmentCompletionSummary?.completedInternalCount ?? 0,
+      },
+      leadWorkActivation: previous.leadWorkActivation ?? emptyLeadWorkActivation(),
+      draftActivity: previous.draftActivity ?? emptyDraftActivity(),
       state: "already_completed",
     };
   }
@@ -325,7 +373,10 @@ function resultFromMemory(record: MemoryEventRecord, tenantId: string, businessD
       assignmentsAdvanced: 0,
       draftQueueItemsAdvanced: 0,
       completedInternalCount: 0,
+      cumulativeCompletedAssignments: 0,
     },
+    leadWorkActivation: emptyLeadWorkActivation(),
+    draftActivity: emptyDraftActivity(),
     leadPipeline: {
       leadsReviewed: 0,
       leadsScored: 0,
@@ -550,6 +601,8 @@ function buildMorningBrief(input: {
   departmentSummary: ExecutiveAutonomyLevel1RunResult["departmentCompletionSummary"];
   snapshotVerification: Week1Level1SnapshotVerification;
   dfdOperating: DfdOperatingReport;
+  leadWorkActivation: ExecutiveAutonomyLevel1RunResult["leadWorkActivation"];
+  draftActivity: ExecutiveAutonomyLevel1RunResult["draftActivity"];
 }) {
   const approvals = input.recommendations.filter((item) => item.approvalRequired);
   const exceptions = [
@@ -563,6 +616,9 @@ function buildMorningBrief(input: {
     `High-impact approvals: ${approvals.length}`,
     `Internal assignments advanced: ${input.departmentSummary.assignmentsAdvanced}`,
     `Draft queue advanced: ${input.departmentSummary.draftQueueItemsAdvanced}`,
+    `Revenue-moving work items created this run: ${input.leadWorkActivation.revenueMovingWorkItemsCreatedThisRun}`,
+    `Existing drafts awaiting CEO review: ${input.draftActivity.existingDraftsAwaitingCeoReview}`,
+    `Externally blocked drafts: ${input.draftActivity.externallyBlockedDrafts}`,
     `Data confidence: ${input.dataQuality.confidence}%`,
   ];
 
@@ -749,12 +805,13 @@ export async function runExecutiveDailyStartup({
     }),
   );
 
-  const internalWork = await deps.runInternalCompanyWork();
+  const internalWork = await deps.runInternalCompanyWork(tenantId);
   const departmentSummary = {
-    departmentsRun: internalWork.completedInternalCount,
+    departmentsRun: internalWork.departmentsAdvanced?.length ?? 0,
     assignmentsAdvanced: internalWork.assignmentsAdvanced,
     draftQueueItemsAdvanced: internalWork.draftQueueItemsAdvanced,
     completedInternalCount: internalWork.completedInternalCount,
+    cumulativeCompletedAssignments: internalWork.completedInternalCount,
   };
   phases.push(
     phase({
@@ -785,6 +842,33 @@ export async function runExecutiveDailyStartup({
     }),
   );
 
+  const realInventory = leads.filter((lead) => !hasSyntheticOrTestMarkers({ id: lead.id, source: lead.source, parcelId: lead.parcelId, propertyAddress: lead.propertyAddress, notes: lead.notes })).length;
+  const candidates = commandCenter.inbox.slice(0, 25);
+  const activationResults: MaterializationResult[] = [];
+  for (const candidate of candidates) {
+    activationResults.push(await deps.materializeLead({ tenantId, leadId: candidate.lead.id }));
+  }
+  const workMetrics = await deps.loadWorkMetrics(tenantId, new Date(startedAt));
+  const leadWorkActivation: ExecutiveAutonomyLevel1RunResult["leadWorkActivation"] = {
+    realLeadInventoryCount: realInventory,
+    realLeadsEvaluated: activationResults.filter((item) => item.status !== "excluded").length,
+    realLeadsDeferredByDailyLimit: Math.max(0, realInventory - candidates.length),
+    syntheticLeadsExcluded: activationResults.filter((item) => item.status === "excluded").length,
+    acquisitionReviewTasksCreated: activationResults.filter((item) => item.status === "created" && item.taskType === "acquisition_review").length,
+    acquisitionReviewTasksReused: activationResults.filter((item) => item.status === "reused" && item.taskType === "acquisition_review").length,
+    dncGovernanceReviewTasksCreated: activationResults.filter((item) => item.status === "created" && item.taskType === "acquisition_governance_review").length,
+    dncGovernanceReviewTasksReused: activationResults.filter((item) => item.status === "reused" && item.taskType === "acquisition_governance_review").length,
+    cumulativeHistoricalTasks: workMetrics.cumulativeHistoricalTasks,
+    revenueMovingWorkItemsCreatedThisRun: activationResults.filter((item) => item.status === "created" && item.taskType === "acquisition_review").length,
+  };
+  const draftActivity: ExecutiveAutonomyLevel1RunResult["draftActivity"] = {
+    newDraftsCreatedThisRun: workMetrics.newDraftsCreatedThisRun,
+    existingDraftsAwaitingCeoReview: workMetrics.existingDraftsAwaitingCeoReview,
+    externallyBlockedDrafts: workMetrics.externallyBlockedDrafts,
+    noEligibleDraftWork: internalWork.draftQueueItemsAdvanced === 0,
+  };
+  phases.push(phase({ id: "real_business_work_activation", label: "Real Business Work Activation", status: "completed", summary: `${leadWorkActivation.revenueMovingWorkItemsCreatedThisRun} new revenue-moving internal work item(s) created; synthetic records excluded.`, recordsCreated: leadWorkActivation.acquisitionReviewTasksCreated + leadWorkActivation.dncGovernanceReviewTasksCreated, recordsUpdated: 0, advisories: [] }));
+
   const briefOperation = await deps.runControlledInternalOperation("generate_morning_brief", tenantId);
   const dashboard = await deps.loadDashboard(tenantId);
   const dataQuality = calculateDataQuality(dashboard);
@@ -795,6 +879,8 @@ export async function runExecutiveDailyStartup({
     departmentSummary,
     snapshotVerification,
     dfdOperating,
+    leadWorkActivation,
+    draftActivity,
   });
   phases.push(
     phase({
@@ -824,6 +910,8 @@ export async function runExecutiveDailyStartup({
     phases,
     morningBrief,
     departmentCompletionSummary: departmentSummary,
+    leadWorkActivation,
+    draftActivity,
     leadPipeline: {
       leadsReviewed: leads.length,
       leadsScored: leadPipeline.leadsScored,

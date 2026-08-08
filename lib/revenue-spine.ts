@@ -617,7 +617,7 @@ export async function syncLeadRevenueSpine({
   const tenantId = requireTenantId(rawTenantId, "revenue_spine");
   const score = calculateRevenueLeadScore(lead);
   const sourceType = inferSourceType(lead.source);
-  const sourceDetail = lead.source.trim() || "unknown_source";
+  const sourceDetail = lead.sourceDetail?.trim() || lead.source.trim() || "unknown_source";
 
   await prisma.revenueLeadSource.upsert({
     where: {
