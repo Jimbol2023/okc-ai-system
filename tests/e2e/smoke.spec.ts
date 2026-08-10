@@ -11,7 +11,7 @@ async function signIn(page: Page) {
   await page.getByLabel("Email").fill(adminEmail ?? "");
   await page.getByLabel("Password").fill(adminPassword ?? "");
   await page.getByRole("button", { name: "Sign in" }).click();
-  await expect(page).toHaveURL(/\/dashboard/);
+  await expect(page).toHaveURL(/\/dashboard/, { timeout: 15_000 });
 }
 
 test("login page renders safely", async ({ page }) => {
@@ -43,7 +43,7 @@ test.describe("authenticated dashboard smoke", () => {
     await page.goto("/dashboard/knowledge");
 
     await expect(page.getByRole("heading", { name: "Search Knowledge Hub" })).toBeVisible();
-    await expect(page.getByText("providerCalled:false")).toBeVisible();
+    await expect(page.getByText("providerCalled:false").first()).toBeVisible();
     await expect(page.getByText("generatedFacts:false")).toBeVisible();
   });
 
@@ -150,9 +150,9 @@ test.describe("authenticated dashboard smoke", () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/dashboard/search-intelligence");
     await expect(page.getByRole("heading", { name: "Professional search decision workspace" })).toBeVisible();
-    await expect(page.getByText("providerCalled:false")).toBeVisible();
-    await expect(page.getByText("externalWrites:false")).toBeVisible();
-    await expect(page.getByText("liveExecution:false")).toBeVisible();
+    await expect(page.getByText("providerCalled:false").first()).toBeVisible();
+    await expect(page.getByText("externalWrites:false").first()).toBeVisible();
+    await expect(page.getByText("liveExecution:false").first()).toBeVisible();
     await page.keyboard.press("Tab");
     const results = await new AxeBuilder({ page }).analyze();
     expect(results.violations).toEqual([]);

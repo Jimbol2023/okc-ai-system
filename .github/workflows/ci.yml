@@ -20,6 +20,7 @@ env:
   NEXTAUTH_SECRET: "ci-build-only-nextauth-secret"
   ADMIN_EMAIL: "ci-admin@jcapital.test"
   ADMIN_PASSWORD: "ci-password-not-a-secret"
+  ADMIN_TENANT_ID: "default"
   NEXT_PUBLIC_APP_URL: "http://127.0.0.1:3020"
   PLAYWRIGHT_BASE_URL: "http://127.0.0.1:3020"
   OPENAI_EMBEDDINGS_ENABLED: "false"

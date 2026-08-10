@@ -17,6 +17,7 @@ function createBaseEnv(overrides: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv {
     AUTH_SECRET: "production-auth-secret-at-least-32-chars",
     ADMIN_EMAIL: "admin@jcapital.test",
     ADMIN_PASSWORD: "production-password",
+    ADMIN_TENANT_ID: "default",
     GOOGLE_OAUTH_CLIENT_ID: "google-client",
     GOOGLE_OAUTH_CLIENT_SECRET: "google-secret",
     GOOGLE_OAUTH_REFRESH_TOKEN: "google-refresh",
@@ -53,12 +54,16 @@ describe("infrastructure health", () => {
       AUTH_SECRET: "ci-build-only-auth-secret-not-for-runtime",
       ADMIN_EMAIL: "ci-admin@jcapital.test",
       ADMIN_PASSWORD: "ci-password-not-a-secret",
+      ADMIN_TENANT_ID: "default",
     });
 
     const fixtureHealth = evaluateEnvironmentHealth(ciEnv, "development");
     const report = await getInfrastructureHealth({ env: ciEnv, includeDatabase: false, includeOAuth: false });
 
     assert.equal(fixtureHealth.items.find((item) => item.key === "ADMIN_EMAIL")?.status, "present");
+    assert.equal(ciEnv.ADMIN_EMAIL, "ci-admin@jcapital.test");
+    assert.equal(ciEnv.ADMIN_PASSWORD, "ci-password-not-a-secret");
+    assert.equal(ciEnv.ADMIN_TENANT_ID, "default");
     assert.deepEqual(fixtureHealth.placeholders, []);
     assert.deepEqual(report.blockers, []);
 
