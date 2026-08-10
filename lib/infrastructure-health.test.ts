@@ -44,6 +44,28 @@ describe("infrastructure health", () => {
     "snapshotDate",
   ];
 
+  it("accepts the synthetic CI admin fixture without weakening placeholder rejection", async () => {
+    const ciEnv = createBaseEnv({
+      CI: "true",
+      VERCEL_ENV: "development",
+      DATABASE_URL: "postgresql://ci:ci@localhost:5432/okc_wholesale_ci?schema=public",
+      DIRECT_URL: "postgresql://ci:ci@localhost:5432/okc_wholesale_ci?schema=public",
+      AUTH_SECRET: "ci-build-only-auth-secret-not-for-runtime",
+      ADMIN_EMAIL: "ci-admin@jcapital.test",
+      ADMIN_PASSWORD: "ci-password-not-a-secret",
+    });
+
+    const fixtureHealth = evaluateEnvironmentHealth(ciEnv, "development");
+    const report = await getInfrastructureHealth({ env: ciEnv, includeDatabase: false, includeOAuth: false });
+
+    assert.equal(fixtureHealth.items.find((item) => item.key === "ADMIN_EMAIL")?.status, "present");
+    assert.deepEqual(fixtureHealth.placeholders, []);
+    assert.deepEqual(report.blockers, []);
+
+    const rejected = evaluateEnvironmentHealth({ ...ciEnv, ADMIN_EMAIL: "ci-admin@example.test" }, "development");
+    assert.ok(rejected.placeholders.includes("ADMIN_EMAIL"));
+  });
+
   it("reports missing, empty, and placeholder env status without exposing values", () => {
     const env = createBaseEnv({
       GOOGLE_SEARCH_CONSOLE_SITE_URL: "",

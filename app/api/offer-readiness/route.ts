@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse } from "@/lib/auth";
 import { getOfferReadinessWorkspace } from "@/lib/offer-readiness";
 import { offerReadinessSafetyFlags } from "@/lib/offer-readiness-core";
 
@@ -9,11 +9,12 @@ export const runtime = "nodejs";
 
 export async function GET(request: Request) {
   try {
-    if (!(await isAuthenticatedRequest(request))) {
+    const actor = await getAuthenticatedRequestContext(request);
+    if (!actor) {
       return getUnauthorizedApiResponse();
     }
 
-    const workspace = await getOfferReadinessWorkspace();
+    const workspace = await getOfferReadinessWorkspace(actor.tenantId);
 
     return NextResponse.json({
       success: true,

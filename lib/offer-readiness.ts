@@ -35,23 +35,28 @@ function summarizeBySource(queue: Array<{ source: string }>) {
   }, {});
 }
 
-export async function getOfferReadinessWorkspace() {
-  const [leads, outcomes, assists, attributions] = await Promise.all([
-    prisma.lead.findMany({
-      orderBy: [{ score: "desc" }, { createdAt: "desc" }],
-      take: 100,
-    }),
+export async function getOfferReadinessWorkspace(tenantId: string) {
+  const leads = await prisma.lead.findMany({
+    where: { tenantId },
+    orderBy: [{ score: "desc" }, { createdAt: "desc" }],
+    take: 100,
+  });
+  const tenantLeadIds = leads.map((lead) => lead.id);
+  const [outcomes, assists, attributions] = await Promise.all([
     prisma.sellerCallOutcome.findMany({
+      where: { leadId: { in: tenantLeadIds } },
       orderBy: [{ callCompletedAt: "desc" }, { createdAt: "desc" }],
       take: 200,
     }),
     prisma.salesConversionAssist.findMany({
+      where: { tenantId },
       orderBy: {
         createdAt: "desc",
       },
       take: 100,
     }),
     prisma.marketingSalesAttribution.findMany({
+      where: { tenantId },
       orderBy: {
         createdAt: "desc",
       },

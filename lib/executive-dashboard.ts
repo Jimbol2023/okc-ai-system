@@ -1633,7 +1633,7 @@ export async function createExecutiveDashboardReport(tenantIdValue: string): Pro
   const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, memoryEventsResult, referralResult, activationResult, departmentIntelligenceResult, liveMorningBriefResult, businessSnapshotsResult, buyerDemandResult, dailyMissionResult, connectorActivationResult, infrastructureHealthResult, systemHealth, recentSystemActivity] = await Promise.all([
     loadPartialData("Lead", () => listDbLeads({ tenantId }), [] as StoredLead[]),
     loadPartialData("Marketing workflow", listMarketingWorkflow, null),
-    loadPartialData("Finance", listFinanceEntries, []),
+    loadPartialData("Finance", () => listFinanceEntries(tenantId), []),
     loadPartialData("Knowledge", listKnowledgeItems, []),
     loadPartialData("AI memory", loadExecutiveLearningMemoryEvents, [] as ExecutiveLearningMemoryEvent[]),
     loadPartialData("Referral dashboard", getReferralDashboard, null),

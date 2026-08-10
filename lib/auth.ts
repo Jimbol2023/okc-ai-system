@@ -1,112 +1,27 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-import { getAdminEmail, getAdminPassword, getAuthSecret } from "@/lib/env";
+import { getAdminEmail, getAdminPassword } from "@/lib/env";
+import {
+  AUTH_COOKIE_NAME,
+  SESSION_DURATION_MS,
+  constantTimeEqual,
+  createSignedSessionToken,
+  getRequestAuthToken,
+  isCronAuthorizedRequest,
+  verifySessionTokenClaims,
+} from "@/lib/auth-token";
 import { requireTenantId } from "@/lib/tenant-context";
-
-const AUTH_COOKIE_NAME = "okcWholesaleAdminSession";
-const SESSION_DURATION_MS = 1000 * 60 * 60 * 24 * 7;
-
-type SessionPayload = {
-  email: string;
-  tenantId?: string;
-  actorId?: string;
-  sessionVersion?: 1;
-  exp: number;
-};
-
-function toBase64Url(bytes: Uint8Array) {
-  let binary = "";
-
-  bytes.forEach((byte) => {
-    binary += String.fromCharCode(byte);
-  });
-
-  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
-}
-
-function fromBase64Url(value: string) {
-  const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
-  const padded = normalized + "=".repeat((4 - (normalized.length % 4 || 4)) % 4);
-  const binary = atob(padded);
-
-  return Uint8Array.from(binary, (character) => character.charCodeAt(0));
-}
-
-function base64UrlEncode(value: string) {
-  return toBase64Url(new TextEncoder().encode(value));
-}
-
-function base64UrlDecode(value: string) {
-  return new TextDecoder().decode(fromBase64Url(value));
-}
+import { isSessionRevoked, revokeSession } from "@/lib/security-controls";
 
 function getAuthConfig() {
   return {
     adminEmail: getAdminEmail(),
-    adminPassword: getAdminPassword(),
-    authSecret: getAuthSecret()
+    adminPassword: getAdminPassword()
   };
-}
-
-async function signValue(value: string, secret: string) {
-  const encoder = new TextEncoder();
-  const key = await crypto.subtle.importKey(
-    "raw",
-    encoder.encode(secret),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"]
-  );
-  const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(value));
-
-  return toBase64Url(new Uint8Array(signature));
-}
-
-async function verifySignature(value: string, signature: string, secret: string) {
-  const expectedSignature = await signValue(value, secret);
-
-  return expectedSignature === signature;
-}
-
-async function constantTimeEqual(left: string, right: string) {
-  const encoder = new TextEncoder();
-  const [leftDigest, rightDigest] = await Promise.all([
-    crypto.subtle.digest("SHA-256", encoder.encode(left)),
-    crypto.subtle.digest("SHA-256", encoder.encode(right)),
-  ]);
-  const leftBytes = new Uint8Array(leftDigest);
-  const rightBytes = new Uint8Array(rightDigest);
-  let difference = left.length ^ right.length;
-
-  for (let index = 0; index < leftBytes.length; index += 1) {
-    difference |= leftBytes[index] ^ rightBytes[index];
-  }
-
-  return difference === 0;
-}
-
-export async function isCronAuthorizedRequest(request: NextRequest | Request, env: NodeJS.ProcessEnv = process.env) {
-  const configuredSecret = env.CRON_SECRET?.trim();
-  const authorization = request.headers.get("authorization") ?? "";
-
-  if (!configuredSecret) return false;
-
-  return constantTimeEqual(authorization, `Bearer ${configuredSecret}`);
 }
 
 export async function createSessionToken(email: string, options: { tenantId: string; actorId?: string }) {
-  const { authSecret } = getAuthConfig();
-  const payload: SessionPayload = {
-    email,
-    tenantId: requireTenantId(options.tenantId, "session_creation"),
-    actorId: options.actorId ?? email,
-    sessionVersion: 1,
-    exp: Date.now() + SESSION_DURATION_MS
-  };
-  const encodedPayload = base64UrlEncode(JSON.stringify(payload));
-  const signature = await signValue(encodedPayload, authSecret);
-
-  return `${encodedPayload}.${signature}`;
+  return createSignedSessionToken(email, options);
 }
 
 export async function verifySessionToken(token: string | undefined) {
@@ -115,24 +30,10 @@ export async function verifySessionToken(token: string | undefined) {
   }
 
   try {
-    const { authSecret } = getAuthConfig();
-    const [encodedPayload, signature] = token.split(".");
+    const payload = await verifySessionTokenClaims(token);
+    if (!payload) return null;
 
-    if (!encodedPayload || !signature) {
-      return null;
-    }
-
-    const isValid = await verifySignature(encodedPayload, signature, authSecret);
-
-    if (!isValid) {
-      return null;
-    }
-
-    const payload = JSON.parse(base64UrlDecode(encodedPayload)) as SessionPayload;
-
-    if (!payload.email || !payload.tenantId || payload.exp <= Date.now()) {
-      return null;
-    }
+    if (await isSessionRevoked(payload.tenantId, payload.sessionId)) return null;
 
     return {
       ...payload,
@@ -145,10 +46,11 @@ export async function verifySessionToken(token: string | undefined) {
   }
 }
 
-export function isValidAdminLogin(email: string, password: string) {
+export async function isValidAdminLogin(email: string, password: string) {
   const { adminEmail, adminPassword } = getAuthConfig();
-
-  return email.trim().toLowerCase() === adminEmail && password === adminPassword;
+  const emailMatches = await constantTimeEqual(email.trim().toLowerCase(), adminEmail);
+  const passwordMatches = await constantTimeEqual(password, adminPassword);
+  return emailMatches && passwordMatches;
 }
 
 export function isSecureRequest(request: NextRequest | Request) {
@@ -205,17 +107,11 @@ export async function getAuthenticatedRequestContext(request: NextRequest | Requ
   });
 }
 
-function getRequestAuthToken(request: NextRequest | Request) {
-  return "cookies" in request && typeof request.cookies.get === "function"
-    ? request.cookies.get(AUTH_COOKIE_NAME)?.value
-    : request.headers
-        .get("cookie")
-        ?.split(";")
-        .map((cookie) => cookie.trim())
-        .find((cookie) => cookie.startsWith(`${AUTH_COOKIE_NAME}=`))
-        ?.split("=")
-        .slice(1)
-        .join("=");
+export async function revokeRequestSession(request: NextRequest | Request) {
+  const payload = await verifySessionToken(getRequestAuthToken(request));
+  if (!payload) return false;
+  await revokeSession(payload.tenantId, payload.sessionId);
+  return true;
 }
 
 export async function isAdminRequest(request: NextRequest | Request) {
@@ -257,4 +153,4 @@ export function getUnauthorizedApiResponse() {
   );
 }
 
-export { AUTH_COOKIE_NAME };
+export { AUTH_COOKIE_NAME, getRequestAuthToken, isCronAuthorizedRequest };

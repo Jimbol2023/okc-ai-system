@@ -64,6 +64,7 @@ model Lead {
 
   marketingSalesAttributions MarketingSalesAttribution[]
   salesConversionAssists     SalesConversionAssist[]
+  financeEntries             FinanceEntry[]
   manualLeadIntakes          ManualLeadIntake[]
   revenueLeadSources         RevenueLeadSource[]
   revenueLeadScores          RevenueLeadScore[]
@@ -1982,6 +1983,7 @@ model MarketingCanvaAssetAssist {
 
 model MarketingSalesAttribution {
   id                 String   @id @default(uuid())
+  tenantId           String
   leadId             String
   marketingDraftId   String?
   canvaAssetAssistId String?
@@ -1995,12 +1997,13 @@ model MarketingSalesAttribution {
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 
-  lead             Lead                       @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  lead             Lead                       @relation(fields: [leadId, tenantId], references: [id, tenantId], onDelete: Cascade)
   marketingDraft   MarketingDraft?            @relation(fields: [marketingDraftId], references: [id], onDelete: SetNull)
   canvaAssetAssist MarketingCanvaAssetAssist? @relation(fields: [canvaAssetAssistId], references: [id], onDelete: SetNull)
   publishAssist    MarketingPublishAssist?    @relation(fields: [publishAssistId], references: [id], onDelete: SetNull)
 
-  @@index([leadId])
+  @@index([tenantId])
+  @@index([tenantId, leadId])
   @@index([marketingDraftId])
   @@index([canvaAssetAssistId])
   @@index([publishAssistId])
@@ -2012,6 +2015,7 @@ model MarketingSalesAttribution {
 
 model SalesConversionAssist {
   id                   String   @id @default(uuid())
+  tenantId             String
   leadId               String
   assistType           String   @default("manual_sales_conversion")
   nextSalesAction      String
@@ -2026,9 +2030,10 @@ model SalesConversionAssist {
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
 
-  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  lead Lead @relation(fields: [leadId, tenantId], references: [id, tenantId], onDelete: Cascade)
 
-  @@index([leadId])
+  @@index([tenantId])
+  @@index([tenantId, leadId])
   @@index([assistType])
   @@index([manualApprovalStatus])
   @@index([createdAt])
@@ -2036,6 +2041,7 @@ model SalesConversionAssist {
 
 model FinanceEntry {
   id            String   @id @default(uuid())
+  tenantId      String
   entryType     String
   category      String
   source        String
@@ -2048,6 +2054,10 @@ model FinanceEntry {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
+  lead Lead? @relation(fields: [leadId, tenantId], references: [id, tenantId], onDelete: Restrict)
+
+  @@index([tenantId])
+  @@index([tenantId, entryDate])
   @@index([entryType])
   @@index([category])
   @@index([source])
@@ -2332,4 +2342,49 @@ model ProfessionalCaseEvent {
   @@unique([tenantId, idempotencyKey])
   @@index([tenantId, caseId, createdAt])
   @@index([tenantId, eventType, createdAt])
+}
+
+model SecurityRateBucket {
+  id              String    @id @default(uuid())
+  tenantId        String
+  purpose         String
+  identifierHash  String
+  count           Int       @default(0)
+  windowStartedAt DateTime
+  blockedUntil    DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@unique([tenantId, purpose, identifierHash])
+  @@index([tenantId, purpose, blockedUntil])
+  @@index([updatedAt])
+}
+
+model SecurityEvent {
+  id             String   @id @default(uuid())
+  tenantId       String
+  eventType      String
+  outcome        String
+  identifierHash String?
+  requestId      String?
+  reasonCodes    Json
+  createdAt      DateTime @default(now())
+
+  @@index([tenantId, eventType, createdAt])
+  @@index([tenantId, eventType, identifierHash])
+  @@index([createdAt])
+}
+
+model WebhookReceipt {
+  id            String    @id @default(uuid())
+  tenantId      String
+  provider      String
+  messageIdHash String
+  status        String    @default("received")
+  receivedAt    DateTime  @default(now())
+  processedAt   DateTime?
+
+  @@unique([tenantId, provider, messageIdHash])
+  @@index([tenantId, provider, receivedAt])
+  @@index([receivedAt])
 }

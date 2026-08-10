@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getAuthenticatedRequestContext, getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse } from "@/lib/auth";
 import { calculateFinanceKpis, createFinanceEntry, listFinanceEntries } from "@/lib/finance";
 import { listDbLeads } from "@/lib/leads-db";
 import { createFinanceEntrySchema } from "@/lib/validations/finance";
@@ -15,7 +15,7 @@ export async function GET(request: Request) {
       return getUnauthorizedApiResponse();
     }
 
-    const [entries, leads] = await Promise.all([listFinanceEntries(), listDbLeads(actor)]);
+    const [entries, leads] = await Promise.all([listFinanceEntries(actor.tenantId), listDbLeads(actor)]);
 
     return NextResponse.json({
       ok: true,
@@ -33,7 +33,8 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    if (!(await isAuthenticatedRequest(request))) {
+    const actor = await getAuthenticatedRequestContext(request);
+    if (!actor) {
       return getUnauthorizedApiResponse();
     }
 
@@ -44,7 +45,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ ok: false, errors: parsed.error.flatten(), providerCalled: false }, { status: 400 });
     }
 
-    const entry = await createFinanceEntry(parsed.data);
+    const entry = await createFinanceEntry(actor.tenantId, parsed.data);
 
     return NextResponse.json({
       ok: true,

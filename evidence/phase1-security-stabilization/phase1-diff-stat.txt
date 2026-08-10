@@ -1,0 +1,3 @@
+Phase 1 security-only replay from 5c8c51ef3b4d4a57f3b53a52f42123061d5f66fa.
+Generated Prisma clients and Windows engine binaries are excluded.
+See phase1-files-changed.txt for the authoritative path allowlist.

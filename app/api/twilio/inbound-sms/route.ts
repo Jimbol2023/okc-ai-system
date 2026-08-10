@@ -3,6 +3,9 @@ import { NextResponse } from "next/server";
 import { classifySellerReply } from "@/lib/ai/seller-reply-brain";
 import { detectOptOut } from "@/lib/opt-out-detector";
 import { prisma } from "@/lib/prisma";
+import { claimWebhookReceipt, completeWebhookReceipt, releaseWebhookReceipt } from "@/lib/security-controls";
+import { securityLog } from "@/lib/security-log";
+import { verifyTwilioWebhookRequest } from "@/lib/twilio-webhook-security";
 import { normalizePhone } from "@/lib/utils";
 
 export const runtime = "nodejs";
@@ -22,22 +25,26 @@ export async function POST(request: Request) {
   const twimlResponse = `<?xml version="1.0" encoding="UTF-8"?>
 <Response></Response>`;
 
+  const verified = await verifyTwilioWebhookRequest(request);
+  if (!verified.ok) {
+    securityLog("warn", "twilio.webhook.rejected", { reason: verified.reason, status: verified.status });
+    return NextResponse.json({ ok: false, error: "Webhook request rejected." }, { status: verified.status });
+  }
+
+  const { payload, tenantId } = verified;
+  const receipt = await claimWebhookReceipt({ tenantId, provider: "twilio", messageId: payload.MessageSid });
+  if (!receipt.claimed) {
+    securityLog("info", "twilio.webhook.duplicate", { tenantId, messageIdHash: receipt.messageIdHash });
+    return new NextResponse(twimlResponse, { status: 200, headers: { "Content-Type": "text/xml" } });
+  }
+
   try {
-    const formData = await request.formData();
-
-    const rawPhone = String(formData.get("From") ?? "").trim();
+    const rawPhone = payload.From;
     const fromPhone = normalizePhone(rawPhone);
-    const messageBody = String(formData.get("Body") ?? "").trim();
-
-    console.log("Incoming SMS:", {
-      rawPhone,
-      normalizedPhone: fromPhone,
-      messageBody,
-    });
+    const messageBody = payload.Body;
 
     if (!fromPhone || !messageBody) {
-      console.log("Inbound SMS missing phone or message body.");
-
+      await completeWebhookReceipt(receipt);
       return new NextResponse(twimlResponse, {
         status: 200,
         headers: {
@@ -49,6 +56,7 @@ export async function POST(request: Request) {
     // Find newest matching lead only.
     const lead = await prisma.lead.findFirst({
       where: {
+        tenantId,
         phone: fromPhone,
       },
       orderBy: {
@@ -57,8 +65,8 @@ export async function POST(request: Request) {
     });
 
     if (!lead) {
-      console.log("No matching lead found for inbound SMS:", fromPhone);
-
+      securityLog("info", "twilio.webhook.lead_not_found", { tenantId, messageIdHash: receipt.messageIdHash });
+      await completeWebhookReceipt(receipt);
       return new NextResponse(twimlResponse, {
         status: 200,
         headers: {
@@ -71,11 +79,6 @@ export async function POST(request: Request) {
     const optOutResult = detectOptOut(messageBody);
 
     if (optOutResult.isOptOut) {
-      console.log("Opt-out detected:", {
-        leadId: lead.id,
-        reason: optOutResult.reason,
-      });
-
       await prisma.lead.update({
         where: {
           id: lead.id,
@@ -100,6 +103,9 @@ export async function POST(request: Request) {
         },
       });
 
+      securityLog("info", "twilio.webhook.opt_out_recorded", { tenantId, leadId: lead.id, reason: optOutResult.reason });
+      await completeWebhookReceipt(receipt);
+
       return new NextResponse(twimlResponse, {
         status: 200,
         headers: {
@@ -110,11 +116,8 @@ export async function POST(request: Request) {
 
     // Never reactivate a DNC lead.
     if (lead.doNotContact) {
-      console.log("Lead is already do-not-contact. No AI processing:", {
-        leadId: lead.id,
-        fromPhone,
-      });
-
+      securityLog("info", "twilio.webhook.dnc_ignored", { tenantId, leadId: lead.id });
+      await completeWebhookReceipt(receipt);
       return new NextResponse(twimlResponse, {
         status: 200,
         headers: {
@@ -125,14 +128,6 @@ export async function POST(request: Request) {
 
     // AI Reply Brain classification only. No auto-send.
     const replyBrain = classifySellerReply(messageBody);
-
-    console.log("Seller Reply Brain:", {
-      leadId: lead.id,
-      intent: replyBrain.intent,
-      confidence: replyBrain.confidence,
-      reason: replyBrain.reason,
-      requiresHumanApproval: replyBrain.requiresHumanApproval,
-    });
 
     await prisma.lead.update({
       where: {
@@ -162,14 +157,13 @@ export async function POST(request: Request) {
       },
     });
 
-    return new NextResponse(twimlResponse, {
-      status: 200,
-      headers: {
-        "Content-Type": "text/xml",
-      },
+    securityLog("info", "twilio.webhook.reply_classified", {
+      tenantId,
+      leadId: lead.id,
+      intent: replyBrain.intent,
+      requiresHumanApproval: replyBrain.requiresHumanApproval,
     });
-  } catch (error) {
-    console.error("Inbound SMS webhook failed:", error);
+    await completeWebhookReceipt(receipt);
 
     return new NextResponse(twimlResponse, {
       status: 200,
@@ -177,5 +171,10 @@ export async function POST(request: Request) {
         "Content-Type": "text/xml",
       },
     });
+  } catch (error) {
+    await releaseWebhookReceipt(receipt).catch(() => undefined);
+    securityLog("error", "twilio.webhook.processing_failed", { tenantId, error });
+
+    return NextResponse.json({ ok: false, error: "Webhook processing failed." }, { status: 500 });
   }
 }

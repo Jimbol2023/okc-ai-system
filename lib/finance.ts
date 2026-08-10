@@ -3,6 +3,7 @@ import type { CreateFinanceEntryInput } from "@/lib/validations/finance";
 
 export type FinanceEntryRecord = {
   id: string;
+  tenantId: string;
   entryType: string;
   category: string;
   source: string;
@@ -112,15 +113,22 @@ export function calculateFinanceKpis({
   };
 }
 
-export async function listFinanceEntries() {
+export async function listFinanceEntries(tenantId: string) {
   return getFinanceEntryDelegate().findMany({
+    where: { tenantId },
     orderBy: [{ entryDate: "desc" }, { createdAt: "desc" }],
   });
 }
 
-export async function createFinanceEntry(input: CreateFinanceEntryInput) {
+export async function createFinanceEntry(tenantId: string, input: CreateFinanceEntryInput) {
+  if (input.leadId) {
+    const lead = await prisma.lead.findUnique({ where: { id_tenantId: { id: input.leadId, tenantId } } });
+    if (!lead) throw new Error("Lead not found for authenticated tenant.");
+  }
+
   return getFinanceEntryDelegate().create({
     data: {
+      tenantId,
       entryType: input.entryType,
       category: input.category,
       source: input.source,

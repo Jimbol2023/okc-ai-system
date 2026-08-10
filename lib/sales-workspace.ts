@@ -73,29 +73,35 @@ function summarizeByStatus(leads: LeadForSalesWorkspace[]) {
   }, {});
 }
 
-export async function getSalesWorkspace() {
-  const [leads, outcomes, assists, attributions, manualIntakes] = await Promise.all([
-    prisma.lead.findMany({
-      orderBy: [{ score: "desc" }, { createdAt: "desc" }],
-      take: 100,
-    }),
+export async function getSalesWorkspace(tenantId: string) {
+  const leads = await prisma.lead.findMany({
+    where: { tenantId },
+    orderBy: [{ score: "desc" }, { createdAt: "desc" }],
+    take: 100,
+  });
+  const tenantLeadIds = leads.map((lead) => lead.id);
+  const [outcomes, assists, attributions, manualIntakes] = await Promise.all([
     prisma.sellerCallOutcome.findMany({
+      where: { leadId: { in: tenantLeadIds } },
       orderBy: [{ callCompletedAt: "desc" }, { createdAt: "desc" }],
       take: 200,
     }),
     prisma.salesConversionAssist.findMany({
+      where: { tenantId },
       orderBy: {
         createdAt: "desc",
       },
       take: 100,
     }),
     prisma.marketingSalesAttribution.findMany({
+      where: { tenantId },
       orderBy: {
         createdAt: "desc",
       },
       take: 200,
     }),
     prisma.manualLeadIntake.findMany({
+      where: { tenantId },
       orderBy: {
         createdAt: "desc",
       },

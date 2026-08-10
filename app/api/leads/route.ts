@@ -9,9 +9,12 @@ import {
 } from "@/lib/public-lead-intake";
 import { attachReferralAttributionToLead } from "@/lib/referrals";
 import { logRevenueAuditEvent } from "@/lib/revenue-spine";
+import { getRequestIp, readBoundedJsonBody } from "@/lib/request-security";
+import { consumeSecurityRateLimit } from "@/lib/security-controls";
+import { securityLog } from "@/lib/security-log";
 import { storedLeadArraySchema, storedLeadSchema } from "@/lib/validations/stored-lead";
 import { resolvePublicIntakeTenant } from "@/lib/tenant-context";
-import { classifyPublicIntakeSpam, consumePublicIntakeRateLimit, normalizePublicIntakeSource, publicIntakeFingerprint } from "@/lib/governed-lead-intake";
+import { classifyPublicIntakeSpam, normalizePublicIntakeSource } from "@/lib/governed-lead-intake";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -64,15 +67,36 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const payload = await request.json();
+    const body = await readBoundedJsonBody(request, 32 * 1024);
+    if (!body.ok) return NextResponse.json({ ok: false, error: "Invalid request." }, { status: body.status });
+    const payload = body.value;
 
     // Public intake should be allowed without auth
     const parsedIntakeLead = parseLeadIntakePayload(payload);
 
     if (parsedIntakeLead.success) {
       const tenantId = resolvePublicIntakeTenant();
-      const rateLimit = await consumePublicIntakeRateLimit(tenantId, publicIntakeFingerprint(request));
-      if (!rateLimit.allowed) return NextResponse.json({ ok: false, error: "Too many submissions. Please try again later." }, { status: 429 });
+      const ipLimit = await consumeSecurityRateLimit({
+        tenantId,
+        purpose: "public_lead_ip",
+        identifier: getRequestIp(request),
+        limit: 5,
+        windowMs: 10 * 60 * 1000,
+      });
+      const duplicateLimit = await consumeSecurityRateLimit({
+        tenantId,
+        purpose: "public_lead_duplicate",
+        identifier: `${parsedIntakeLead.data.phone}:${parsedIntakeLead.data.propertyAddress}`,
+        limit: 3,
+        windowMs: 24 * 60 * 60 * 1000,
+      });
+      if (!ipLimit.allowed || !duplicateLimit.allowed) {
+        securityLog("warn", "public_lead.rate_limited", { tenantId, reason: ipLimit.allowed ? "duplicate" : "velocity" });
+        return NextResponse.json(
+          { ok: false, error: "Too many submissions. Please try again later." },
+          { status: 429, headers: { "Retry-After": String(Math.max(ipLimit.retryAfterSeconds, duplicateLimit.retryAfterSeconds)) } },
+        );
+      }
       const spam = classifyPublicIntakeSpam({ honeypot: parsedIntakeLead.data.website, text: JSON.stringify(parsedIntakeLead.data) });
       if (!spam.accepted) return NextResponse.json({ ok: false, error: "Submission could not be accepted." }, { status: 400 });
       const serverSource = normalizePublicIntakeSource(parsedIntakeLead.data);
@@ -100,7 +124,7 @@ export async function POST(request: Request) {
         targetId: result.lead.id,
         source: "public_website_intake",
         metadata: createPublicLeadIntakeAuditMetadata({
-          payload,
+          payload: payload as Record<string, unknown>,
           intake: parsedIntakeLead.data,
           lead: result.lead,
           created: result.created,
@@ -110,7 +134,6 @@ export async function POST(request: Request) {
 
       return NextResponse.json({
         ok: true,
-        lead: result.lead,
         leadId: result.lead.id,
         created: result.created
       });
@@ -203,7 +226,7 @@ export async function POST(request: Request) {
       created: result.created
     });
   } catch (error) {
-    console.error("Lead POST error:", error);
+    securityLog("error", "public_lead.processing_failed", { error });
 
     return NextResponse.json(
       {

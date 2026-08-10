@@ -175,38 +175,43 @@ function getSalesQueueRank(lead: {
   return rank;
 }
 
-export async function getSalesConversionDashboard() {
-  const [leads, attributions, assists, sellerCallOutcomes] = await Promise.all([
-    prisma.lead.findMany({
-      orderBy: [{ score: "desc" }, { createdAt: "desc" }],
-      include: {
-        marketingSalesAttributions: {
-          orderBy: {
-            createdAt: "desc",
-          },
-          take: 3,
+export async function getSalesConversionDashboard(tenantId: string) {
+  const leads = await prisma.lead.findMany({
+    where: { tenantId },
+    orderBy: [{ score: "desc" }, { createdAt: "desc" }],
+    include: {
+      marketingSalesAttributions: {
+        orderBy: {
+          createdAt: "desc",
         },
-        salesConversionAssists: {
-          orderBy: {
-            createdAt: "desc",
-          },
-          take: 2,
-        },
+        take: 3,
       },
-    }),
+      salesConversionAssists: {
+        orderBy: {
+          createdAt: "desc",
+        },
+        take: 2,
+      },
+    },
+  });
+  const tenantLeadIds = leads.map((lead) => lead.id);
+  const [attributions, assists, sellerCallOutcomes] = await Promise.all([
     prisma.marketingSalesAttribution.findMany({
+      where: { tenantId },
       orderBy: {
         createdAt: "desc",
       },
       take: 100,
     }),
     prisma.salesConversionAssist.findMany({
+      where: { tenantId },
       orderBy: {
         createdAt: "desc",
       },
       take: 50,
     }),
     prisma.sellerCallOutcome.findMany({
+      where: { leadId: { in: tenantLeadIds } },
       orderBy: [{ callCompletedAt: "desc" }, { createdAt: "desc" }],
       take: 200,
     }),
@@ -258,10 +263,10 @@ export async function getSalesConversionDashboard() {
   };
 }
 
-export async function createSalesAttribution(input: SalesAttributionInput) {
+export async function createSalesAttribution(tenantId: string, input: SalesAttributionInput) {
   const lead = await prisma.lead.findUnique({
     where: {
-      id: input.leadId,
+      id_tenantId: { id: input.leadId, tenantId },
     },
   });
 
@@ -269,6 +274,7 @@ export async function createSalesAttribution(input: SalesAttributionInput) {
 
   return prisma.marketingSalesAttribution.create({
     data: {
+      tenantId,
       leadId: input.leadId,
       marketingDraftId: input.marketingDraftId || null,
       canvaAssetAssistId: input.canvaAssetAssistId || null,
@@ -283,10 +289,10 @@ export async function createSalesAttribution(input: SalesAttributionInput) {
   });
 }
 
-export async function createSalesConversionAssist(input: SalesAssistRequestInput) {
+export async function createSalesConversionAssist(tenantId: string, input: SalesAssistRequestInput) {
   const lead = await prisma.lead.findUnique({
     where: {
-      id: input.leadId,
+      id_tenantId: { id: input.leadId, tenantId },
     },
   });
 
@@ -296,6 +302,7 @@ export async function createSalesConversionAssist(input: SalesAssistRequestInput
 
   return prisma.salesConversionAssist.create({
     data: {
+      tenantId,
       leadId: input.leadId,
       nextSalesAction: assist.nextSalesAction,
       callOpener: assist.callOpener,
