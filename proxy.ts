@@ -1,11 +1,26 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-import { isAuthenticatedRequest, isCronAuthorizedRequest } from "@/lib/auth";
+import { getRequestAuthToken, isCronAuthorizedRequest, verifySessionTokenClaims } from "@/lib/auth-token";
+import { isSameOriginBrowserRequest } from "@/lib/request-security";
+
+async function hasActiveSession(request: NextRequest) {
+  if (!(await verifySessionTokenClaims(getRequestAuthToken(request)))) return false;
+  try {
+    const response = await fetch(new URL("/api/auth/session/validate", request.url), {
+      headers: { cookie: request.headers.get("cookie") ?? "" },
+      cache: "no-store",
+    });
+    return response.status === 204;
+  } catch {
+    return false;
+  }
+}
 
 export async function proxy(request: NextRequest) {
-  const isAuthenticated = await isAuthenticatedRequest(request);
   const { pathname, search } = request.nextUrl;
   const method = request.method.toUpperCase();
+  if (pathname === "/api/auth/session/validate") return NextResponse.next();
+  const isAuthenticated = await hasActiveSession(request);
   const isGbpDiscoveryCallback =
     pathname === "/api/admin/google-business-profile-discovery" &&
     method === "GET" &&
@@ -21,6 +36,7 @@ export async function proxy(request: NextRequest) {
     pathname === "/api/operations/read-only-sync" ||
     pathname === "/api/company/executive-autonomy/daily-startup";
   const isAuthorizedCronRequest = isScheduledInternalRoute && await isCronAuthorizedRequest(request);
+  const isUnsafeMethod = !["GET", "HEAD", "OPTIONS"].includes(method);
 
   if (isGbpDiscoveryCallback) {
     console.info("GBP discovery callback proxy pass-through", {
@@ -32,6 +48,10 @@ export async function proxy(request: NextRequest) {
     });
 
     return NextResponse.next();
+  }
+
+  if (isAuthenticated && isUnsafeMethod && !isSameOriginBrowserRequest(request)) {
+    return NextResponse.json({ ok: false, error: "Invalid request origin." }, { status: 403 });
   }
 
   if (isAuthenticated || isAuthorizedCronRequest || isPublicLeadIntakeRoute || isPublicReferralTrackRoute || isPublicAuthRoute || isPublicTwilioInboundRoute) {

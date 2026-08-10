@@ -29,6 +29,20 @@ jobs:
   safety-gates:
     name: TypeScript, Lint, Build, Smoke List, Safety Tests
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: ci
+          POSTGRES_PASSWORD: ci
+          POSTGRES_DB: okc_wholesale_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ci -d okc_wholesale_ci"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout
@@ -46,17 +60,29 @@ jobs:
       - name: Generate Prisma client
         run: npm run prisma:generate
 
+      - name: Apply migrations to ephemeral PostgreSQL
+        run: npx prisma migrate deploy
+
       - name: TypeScript check
         run: npx tsc --noEmit
 
       - name: Lint
         run: npm run lint
 
+      - name: Repository integrity
+        run: npm run test:repo-integrity
+
+      - name: Maintained unit tests
+        run: npm test
+
       - name: Build
         run: npm run build
 
-      - name: List Playwright smoke tests
-        run: npm run test:e2e -- --list
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Execute Playwright smoke tests
+        run: npm run test:e2e -- tests/e2e/smoke.spec.ts --project=chromium --workers=1
 
       - name: Safety invariant tests
         run: npm run test:safety

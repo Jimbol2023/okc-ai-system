@@ -2333,3 +2333,48 @@ model ProfessionalCaseEvent {
   @@index([tenantId, caseId, createdAt])
   @@index([tenantId, eventType, createdAt])
 }
+
+model SecurityRateBucket {
+  id              String    @id @default(uuid())
+  tenantId        String
+  purpose         String
+  identifierHash  String
+  count           Int       @default(0)
+  windowStartedAt DateTime
+  blockedUntil    DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@unique([tenantId, purpose, identifierHash])
+  @@index([tenantId, purpose, blockedUntil])
+  @@index([updatedAt])
+}
+
+model SecurityEvent {
+  id             String   @id @default(uuid())
+  tenantId       String
+  eventType      String
+  outcome        String
+  identifierHash String?
+  requestId      String?
+  reasonCodes    Json
+  createdAt      DateTime @default(now())
+
+  @@index([tenantId, eventType, createdAt])
+  @@index([tenantId, eventType, identifierHash])
+  @@index([createdAt])
+}
+
+model WebhookReceipt {
+  id            String    @id @default(uuid())
+  tenantId      String
+  provider      String
+  messageIdHash String
+  status        String    @default("received")
+  receivedAt    DateTime  @default(now())
+  processedAt   DateTime?
+
+  @@unique([tenantId, provider, messageIdHash])
+  @@index([tenantId, provider, receivedAt])
+  @@index([receivedAt])
+}

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "baseSha": "5c8c51ef3b4d4a57f3b53a52f42123061d5f66fa",
+  "policy": "Phase 1 security-only; no generated clients, Windows binaries, unrelated migrations, provider execution, or Phase 2 implementation",
+  "groups": [
+    {"classification":"ai_core","paths":["app/api/auth/session/validate/route.ts","lib/auth-token.ts","lib/auth.ts","lib/request-security.ts","lib/request-security.test.ts","lib/security-controls.ts","lib/security-log.ts","lib/security-log.test.ts","lib/security-headers.test.ts","proxy.ts","next.config.ts","tests/safety/ueip-runtime-gateway.test.ts"],"controls":["bounded requests","same-origin","durable throttling","session rotation/revocation","middleware-safe durable validation","redaction","headers"],"expectedTests":["maintained","safety","Playwright"],"reviewerRisk":"high"},
+    {"classification":"connector_plugin","paths":["lib/twilio-webhook-security.ts","lib/twilio-webhook-security.test.ts","app/api/twilio/inbound-sms/route.ts","tests/safety/twilio-webhook-boundary.test.ts","lib/ueip-provider-surface-inventory.ts"],"controls":["signature","body bound","trusted tenant","durable replay claim"],"expectedTests":["Twilio","safety"],"reviewerRisk":"high"},
+    {"classification":"business_module","paths":["app/api/leads/route.ts"],"controls":["intake bounds","tenant-safe throttling","minimal response"],"expectedTests":["lead intake","PostgreSQL integration"],"reviewerRisk":"high"},
+    {"classification":"migration","paths":["prisma/schema.prisma","prisma/migrations/20260808180000_add_security_stabilization_controls/migration.sql"],"controls":["rate buckets","security events","webhook receipts","tenant/provider identity","revocation index"],"expectedTests":["empty migration chain","migration","integration"],"reviewerRisk":"high"},
+    {"classification":"ci","paths":[".github/workflows/ci.yml","package.json","playwright.config.ts","scripts/build-with-lock.mjs","scripts/check-repository-integrity.sh","scripts/infrastructure-preflight.ts","scripts/validate-test-classification.ts","tests/e2e/playwright-global-setup.ts","tests/e2e/security-authenticated.spec.ts","tests/integration/security-controls-postgres.test.ts","tests/test-classification.json"],"controls":["classification","lock ownership","fail-closed preflight","acceptance","artifact checks"],"expectedTests":["classification","integrity","TypeScript","ESLint","build"],"reviewerRisk":"medium"},
+    {"classification":"data_environment","paths":[".env.example",".gitignore","AGENTS.md","dev.db"],"controls":["typed inputs","database exclusion","dev.db removal","Next.js agent guidance"],"expectedTests":["environment","integrity"],"reviewerRisk":"medium"},
+    {"classification":"evidence","paths":["evidence/phase1-security-stabilization"],"controls":["redacted reproducibility record"],"expectedTests":["diff check","manifest review"],"reviewerRisk":"low"}
+  ],
+  "excluded": ["generated/prisma/**","query_engine-windows*.node","unrelated feature migrations","unrelated dashboard/architecture work","Phase 2/3 implementation"]
+}

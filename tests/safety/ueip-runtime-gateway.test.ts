@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import { afterEach, test } from "node:test";
 
-import { createSessionToken, verifySessionToken } from "@/lib/auth";
+import { createSessionToken } from "@/lib/auth";
+import { verifySessionTokenClaims } from "@/lib/auth-token";
 import {
   createUeipExecutionContext,
   runUeipSearchConsoleGateway,
@@ -84,7 +85,7 @@ const env = { VERCEL_ENV: "preview", GOOGLE_OAUTH_CLIENT_ID: "client", GOOGLE_OA
 
 test("signed sessions carry tenant and actor identity while legacy defaults remain safe", async () => {
   const token = await createSessionToken("admin@example.com", { tenantId: "tenant-a", actorId: "actor-a" });
-  const session = await verifySessionToken(token);
+  const session = await verifySessionTokenClaims(token);
   assert.equal(session?.tenantId, "tenant-a");
   assert.equal(session?.actorId, "actor-a");
   assert.equal(session?.sessionVersion, 1);

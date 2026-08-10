@@ -19,7 +19,7 @@ async function main() {
 
   console.log(JSON.stringify(summary, null, 2));
 
-  if (report.environment === "production" && report.blockers.length > 0) {
+  if (report.blockers.length > 0) {
     process.exitCode = 1;
   }
 }
