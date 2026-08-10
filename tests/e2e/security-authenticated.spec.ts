@@ -23,7 +23,7 @@ async function loginThroughBrowser(page: import("@playwright/test").Page) {
 test("login rotates a session and permits protected dashboard and API access", async ({ context, page }) => {
   await loginThroughBrowser(page);
   const firstSession = (await context.cookies()).find((cookie) => cookie.name === "okcWholesaleAdminSession");
-  await context.clearCookies();
+  await context.clearCookies({ name: "okcWholesaleAdminSession" });
   await loginThroughBrowser(page);
   const session = (await context.cookies()).find((cookie) => cookie.name === "okcWholesaleAdminSession");
   expect(session?.httpOnly).toBe(true);
