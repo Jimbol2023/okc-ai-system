@@ -88,6 +88,15 @@ function summarizeDashboardForSnapshot(report: Awaited<ReturnType<typeof createE
       priorities: report.todayPriorities?.slice(0, 5).map((item) => item.label) ?? [],
       recommendedWorkOrder: report.morningBrief?.recommendedWorkOrder?.slice(0, 5) ?? [],
       dataGaps: report.dataGaps?.slice(0, 12) ?? [],
+      qualifiedPropertyOpportunities: report.propertyOpportunitySummary?.morningBriefSignals
+        .filter((signal) => signal.priority === "High")
+        .slice(0, 5)
+        .map((signal) => ({
+          propertyOpportunityId: signal.propertyOpportunityId,
+          title: signal.title,
+          opportunityScore: signal.opportunityScore,
+          recommendedAction: signal.recommendedAction,
+        })) ?? [],
     },
     approvalSummary: {
       pending: report.dailyStartup?.approval_queue_summary.awaiting_ceo_approval ?? 0,
