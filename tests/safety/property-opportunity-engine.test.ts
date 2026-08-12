@@ -6,6 +6,7 @@ import {
   assertPropertyOpportunityEngineSafety,
   classifyLeadProvenance,
   createExistingLeadEligibilityReport,
+  createExistingLeadAdaptationDryRun,
   createPropertyOpportunityAcquisitionReviewTask,
   createPropertyOpportunityDuplicateKey,
   createPropertyOpportunitySummary,
@@ -436,6 +437,36 @@ test("existing lead provenance gate fails closed and never adapts synthetic or a
   assert.equal((db.opportunities[0]?.evidence as { leadId?: string }).leadId, "real");
   assert.equal(report.providerCalled, false);
   assert.equal(report.liveExecutionAllowed, false);
+});
+
+test("aggregate adaptation dry run projects create, reuse, threshold, and task counts without writes", () => {
+  const real = storedLead({ id: "real-a", source: "website_form", parcelId: "P-NEW" });
+  const duplicate = storedLead({ id: "real-b", source: "referral", parcelId: "P-NEW" });
+  const existingLead = storedLead({ id: "real-existing", source: "manual", parcelId: "P-EXISTING" });
+  const existing = {
+    ...createMockDb().opportunities[0],
+    id: "opportunity-existing",
+    tenantId: "default",
+    duplicateKey: "parcel:oklahoma:p-existing",
+    evidence: { leadId: "prior-lead" },
+    opportunityScore: 80,
+  } as PropertyOpportunityRecord;
+
+  const report = createExistingLeadAdaptationDryRun({
+    leads: [real, duplicate, existingLead, storedLead({ id: "synthetic", sourceDetail: "synthetic record" })],
+    existingOpportunities: [existing],
+    existingTasks: [{ source: "property_opportunity:opportunity-existing", status: "open" }],
+  });
+
+  assert.equal(report.totalLeads, 4);
+  assert.equal(report.legitimateRealLeads, 3);
+  assert.equal(report.eligibleForAdaptation, 3);
+  assert.equal(report.duplicatePropertyIdentities, 1);
+  assert.equal(report.wouldCreateOpportunity, 1);
+  assert.equal(report.wouldReuseOrUpdateOpportunity, 2);
+  assert.equal(report.opportunitiesAlreadyLinkedToLeads, 1);
+  assert.equal(report.providerCalled, false);
+  assert.equal(report.externalExecutionAllowed, false);
 });
 
 test("existing lead adapter is idempotent and does not create false duplicate conflicts on rerun", async () => {
