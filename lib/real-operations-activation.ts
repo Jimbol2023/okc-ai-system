@@ -2,6 +2,7 @@ import type { PrismaClient } from "@/generated/prisma";
 import type { StoredLead } from "@/lib/leads-storage";
 import {
   createExistingLeadEligibilityReport,
+  createExistingLeadAdaptationDryRun,
   propertyOpportunitySafetyFlags,
   type PropertyOpportunityLeadAdapterReport,
 } from "@/lib/property-opportunity-engine";
@@ -37,7 +38,11 @@ export function parseRealOperationsActivationRequest(body: unknown) {
 }
 
 type ReadinessPrisma = Pick<PrismaClient, "$queryRawUnsafe"> & {
-  propertyOpportunity?: { count(args: unknown): Promise<number> };
+  propertyOpportunity?: {
+    count(args: unknown): Promise<number>;
+    findMany(args: unknown): Promise<unknown[]>;
+  };
+  revenueTask?: { findMany(args: unknown): Promise<Array<{ source?: string | null; status?: string | null }>> };
 };
 
 type TableRow = { table_name: string };
@@ -117,6 +122,23 @@ export async function createRealOperationsReadinessReport(input: {
   const existingOpportunityMatches = persistence.schemaReady && eligibleDuplicateKeys.length > 0 && input.db.propertyOpportunity
     ? await input.db.propertyOpportunity.count({ where: { tenantId: input.tenantId, duplicateKey: { in: eligibleDuplicateKeys } } }).catch(() => 0)
     : 0;
+  const existingOpportunities = persistence.schemaReady && input.db.propertyOpportunity
+    ? await input.db.propertyOpportunity.findMany({
+        where: { tenantId: input.tenantId },
+        select: { id: true, tenantId: true, duplicateKey: true, evidence: true, opportunityScore: true },
+      }).catch(() => [])
+    : [];
+  const existingTasks = persistence.schemaReady && input.db.revenueTask
+    ? await input.db.revenueTask.findMany({
+        where: { tenantId: input.tenantId, taskType: "property_opportunity_acquisition_review" },
+        select: { source: true, status: true },
+      }).catch(() => [])
+    : [];
+  const dryRun = createExistingLeadAdaptationDryRun({
+    leads: input.leads,
+    existingOpportunities: existingOpportunities as Parameters<typeof createExistingLeadAdaptationDryRun>[0]["existingOpportunities"],
+    existingTasks,
+  });
   const readyForProductionAuthorization =
     input.tenantId === "default" && persistence.schemaReady && eligibility.eligiblePropertyLeads > 0;
 
@@ -137,6 +159,7 @@ export async function createRealOperationsReadinessReport(input: {
       provenanceCounts: eligibility.provenanceCounts,
       reasonCounts: eligibility.reasonCounts,
     },
+    dryRun,
     readyForProductionAuthorization,
     exactApprovalPhrase: readyForProductionAuthorization ? realOperationsProductionApprovalPhrase : null,
     ...realOperationsSafety,

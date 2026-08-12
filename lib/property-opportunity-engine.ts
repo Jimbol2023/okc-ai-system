@@ -215,6 +215,32 @@ export type LeadOpportunityEligibility = {
   duplicateKey: string | null;
 };
 
+export type ExistingLeadAdaptationDryRun = {
+  totalLeads: number;
+  legitimateRealLeads: number;
+  missingPropertyIdentity: number;
+  eligibleForAdaptation: number;
+  blockedByConsentOrDnc: number;
+  blockedByInsufficientEvidence: number;
+  duplicatePropertyIdentities: number;
+  existingPropertyOpportunities: number;
+  opportunitiesAlreadyLinkedToLeads: number;
+  existingAcquisitionReviewTasks: number;
+  eligibleOpportunitiesAtOrAbove72: number;
+  opportunitiesBelowThreshold: number;
+  wouldCreateOpportunity: number;
+  wouldReuseOrUpdateOpportunity: number;
+  wouldCreateAcquisitionReviewTask: number;
+  wouldReuseAcquisitionReviewTask: number;
+  providerCalled: false;
+  sent: false;
+  outreach: false;
+  published: false;
+  crmMutation: false;
+  externalExecutionAllowed: false;
+  liveExecutionAllowed: false;
+};
+
 const realLeadSourcePattern = /(?:^|[_\s-])(website|website_form|referral|manual|manual_dfd|driving_for_dollars|county|county_list|public_record|assessor|treasurer|clerk|crm|inbound|phone_call|google_business_profile|facebook_message|instagram_dm|tiktok|linkedin|offline|door_knocking_offline)(?:$|[_\s-])/i;
 
 export function classifyLeadProvenance(lead: Pick<StoredLead, "id" | "source" | "sourceDetail" | "propertyAddress" | "city" | "state" | "zipCode" | "parcelId" | "county">): LeadOpportunityEligibility {
@@ -784,6 +810,82 @@ function createPropertyOpportunityInputFromLead(lead: StoredLead): ManualDfdProp
     },
     unsafeEnrichmentRequested: false,
   });
+}
+
+export function createExistingLeadAdaptationDryRun(input: {
+  leads: StoredLead[];
+  existingOpportunities: PropertyOpportunityRecord[];
+  existingTasks: Array<{ source?: string | null; status?: string | null }>;
+}): ExistingLeadAdaptationDryRun {
+  const eligibility = createExistingLeadEligibilityReport(input.leads);
+  const eligibleLeads = input.leads.filter((lead) => eligibility.records.find((record) => record.leadId === lead.id)?.eligible);
+  const grouped = new Map<string, Array<{ score: number }>>();
+
+  for (const lead of eligibleLeads) {
+    const opportunityInput = createPropertyOpportunityInputFromLead(lead);
+    const duplicateKey = createPropertyOpportunityDuplicateKey(opportunityInput);
+    const score = scorePropertyOpportunity(opportunityInput).opportunityScore;
+    grouped.set(duplicateKey, [...(grouped.get(duplicateKey) ?? []), { score }]);
+  }
+
+  const existingByDuplicateKey = new Map(input.existingOpportunities.map((opportunity) => [opportunity.duplicateKey, opportunity]));
+  const openTaskSources = new Set(input.existingTasks.filter((task) => task.status === "open").map((task) => task.source).filter((source): source is string => Boolean(source)));
+  let wouldCreateOpportunity = 0;
+  let wouldReuseOrUpdateOpportunity = 0;
+  let eligibleOpportunitiesAtOrAbove72 = 0;
+  let opportunitiesBelowThreshold = 0;
+  let wouldCreateAcquisitionReviewTask = 0;
+  let wouldReuseAcquisitionReviewTask = 0;
+
+  for (const [duplicateKey, candidates] of grouped) {
+    const existing = existingByDuplicateKey.get(duplicateKey);
+    if (existing) wouldReuseOrUpdateOpportunity += candidates.length;
+    else {
+      wouldCreateOpportunity += 1;
+      wouldReuseOrUpdateOpportunity += Math.max(0, candidates.length - 1);
+    }
+
+    const duplicateConflict = candidates.length > 1;
+    const projectedScore = candidates.at(-1)?.score ?? existing?.opportunityScore ?? 0;
+    if (projectedScore >= 72) {
+      eligibleOpportunitiesAtOrAbove72 += 1;
+      if (!duplicateConflict) {
+        if (existing && openTaskSources.has(`property_opportunity:${existing.id}`)) wouldReuseAcquisitionReviewTask += 1;
+        else wouldCreateAcquisitionReviewTask += 1;
+      }
+    } else opportunitiesBelowThreshold += 1;
+  }
+
+  const realLeads = input.leads.filter((lead) => classifyLeadProvenance(lead).classification === "real");
+  return {
+    totalLeads: input.leads.length,
+    legitimateRealLeads: realLeads.length,
+    missingPropertyIdentity: eligibility.reasonCounts.property_address_missing ?? 0,
+    eligibleForAdaptation: eligibleLeads.length,
+    // Internal property analysis performs no contact, so consent/DNC restrictions are preserved but do not block adaptation.
+    blockedByConsentOrDnc: 0,
+    blockedByInsufficientEvidence: opportunitiesBelowThreshold,
+    duplicatePropertyIdentities: [...grouped.values()].filter((records) => records.length > 1).length,
+    existingPropertyOpportunities: input.existingOpportunities.length,
+    opportunitiesAlreadyLinkedToLeads: input.existingOpportunities.filter((opportunity) => {
+      const evidence = opportunity.evidence as Record<string, unknown> | null;
+      return typeof evidence?.leadId === "string" && evidence.leadId.length > 0;
+    }).length,
+    existingAcquisitionReviewTasks: input.existingTasks.length,
+    eligibleOpportunitiesAtOrAbove72,
+    opportunitiesBelowThreshold,
+    wouldCreateOpportunity,
+    wouldReuseOrUpdateOpportunity,
+    wouldCreateAcquisitionReviewTask,
+    wouldReuseAcquisitionReviewTask,
+    providerCalled: false,
+    sent: false,
+    outreach: false,
+    published: false,
+    crmMutation: false,
+    externalExecutionAllowed: false,
+    liveExecutionAllowed: false,
+  };
 }
 
 export async function adaptExistingLeadsToPropertyOpportunities(

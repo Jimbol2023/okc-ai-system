@@ -16,14 +16,40 @@ const lead = {
   city: "Oklahoma City",
   state: "OK",
   zipCode: "73102",
+  ownerName: "",
+  mailingAddress: "",
   parcelId: "",
   county: "Oklahoma",
+  timestamp: "2026-08-12T12:00:00.000Z",
+  situationDetails: "Seller submitted the property for internal review.",
+  status: "new",
+  notes: [],
+  followUps: [],
+  analyzer: { arv: "", estimatedRepairs: "", desiredProfit: "" },
+  distressFlags: {
+    taxDelinquent: false,
+    inheritedProperty: false,
+    vacantProperty: false,
+    foreclosureRisk: false,
+    majorRepairs: false,
+    tiredLandlord: false,
+    urgentTimeline: false,
+    outOfStateOwner: false,
+  },
+  opportunityScore: "Low",
+  score: 0,
+  priority: "Low",
+  scoreBreakdown: "",
 } as StoredLead;
 
 function readinessDb(options: { migration?: boolean; tables?: boolean } = {}) {
   const { migration = true, tables = true } = options;
   return {
-    propertyOpportunity: { async count() { return 0; } },
+    propertyOpportunity: {
+      async count() { return 0; },
+      async findMany() { return []; },
+    },
+    revenueTask: { async findMany() { return []; } },
     async $queryRawUnsafe(query: string, tenantId?: string) {
       if (query.includes("information_schema.tables")) {
         return tables
@@ -43,6 +69,12 @@ test("aggregate readiness certifies only the authenticated canonical tenant with
   assert.equal(report.readyForProductionAuthorization, true);
   assert.equal(report.exactApprovalPhrase, realOperationsProductionApprovalPhrase);
   assert.equal(report.inventory.eligiblePropertyLeads, 1);
+  assert.equal(report.dryRun.totalLeads, 1);
+  assert.equal(report.dryRun.legitimateRealLeads, 1);
+  assert.equal(report.dryRun.eligibleForAdaptation, 1);
+  assert.equal(report.dryRun.wouldCreateOpportunity, 1);
+  assert.equal(report.dryRun.providerCalled, false);
+  assert.equal(report.dryRun.crmMutation, false);
   assert.equal(report.providerCalled, false);
   assert.equal(report.externalExecutionAllowed, false);
 });
