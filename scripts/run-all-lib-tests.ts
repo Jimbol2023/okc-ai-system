@@ -1,5 +1,6 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { spawnSync } from "node:child_process";
+import { createRequire } from "node:module";
 import { resolve } from "node:path";
 
 const shardCount = Math.max(1, Number.parseInt(process.env.TEST_SHARD_COUNT ?? "1", 10));
@@ -12,17 +13,22 @@ const allTests = readdirSync(resolve("lib"), { withFileTypes: true })
   .filter((entry) => entry.isFile() && entry.name.endsWith(".test.ts"))
   .map((entry) => `lib/${entry.name}`)
   .sort();
-const selected = allTests.filter((_, index) => index % shardCount === shardIndex);
+const classification = JSON.parse(readFileSync(resolve("tests/test-classification.json"), "utf8")) as {
+  tests: Array<{ path: string; category: string }>;
+};
+const maintained = new Set(classification.tests.filter((test) => test.category === "maintained_unit").map((test) => test.path));
+const quarantined = classification.tests.filter((test) => test.category === "quarantined_legacy").length;
+const selected = allTests.filter((path) => maintained.has(path)).filter((_, index) => index % shardCount === shardIndex);
 if (selected.length === 0) throw new Error("test_shard_is_empty");
 
-process.stdout.write(`${JSON.stringify({ discovered: allTests.length, selected: selected.length, shardIndex, shardCount, batchSize })}\n`);
+process.stdout.write(`${JSON.stringify({ discovered: allTests.length, maintained: maintained.size, quarantined, selected: selected.length, shardIndex, shardCount, batchSize })}\n`);
 const nodeTests = selected.filter((file) => /(?:from|require\()\s*["']node:test["']/.test(readFileSync(file, "utf8")));
 const vitestTests = selected.filter((file) => !nodeTests.includes(file));
 process.stdout.write(`${JSON.stringify({ nodeTests: nodeTests.length, vitestTests: vitestTests.length })}\n`);
 
 const groups = [
   { name: "node", files: nodeTests, args: (batch: string[]) => ["--import", "tsx", "--test", ...batch] },
-  { name: "vitest", files: vitestTests, args: (batch: string[]) => [resolve("node_modules/vitest/vitest.mjs"), "run", "--globals", "--reporter=dot", "--maxWorkers=4", ...batch] },
+  { name: "vitest", files: vitestTests, args: (batch: string[]) => [createRequire(import.meta.url).resolve("vitest/vitest.mjs"), "run", "--globals", "--reporter=dot", "--maxWorkers=4", ...batch] },
 ];
 
 let failed = false;

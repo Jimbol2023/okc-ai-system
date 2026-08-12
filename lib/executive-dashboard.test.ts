@@ -9,6 +9,7 @@ import { createInheritedPropertyCampaignDirective, runCompanyOrchestrator } from
 import { createContentIntelligenceReport } from "./content-intelligence";
 import { createMarketingPlatformRegistryReport } from "./marketing-platform-registry";
 import { readOnlyBusinessSafetyFlags, setReadOnlyBusinessConnectionsDbForTest, type BusinessDataSnapshotRecord } from "./read-only-business-connections";
+import { setSessionRevocationLookupForTest } from "./security-controls";
 
 process.env.AUTH_SECRET ||= "test-auth-secret-for-json-route-coverage-12345";
 process.env.ADMIN_EMAIL ||= "moses@example.com";
@@ -349,27 +350,32 @@ describe("knowledge page decision compatibility route", () => {
   });
 
   it("returns JSON for invalid authenticated decision payloads without provider or execution authority", async () => {
+    const restoreSessionRevocationLookup = setSessionRevocationLookupForTest(async () => false);
     const token = await createSessionToken("moses@example.com", { tenantId: "default" });
-    const response = await knowledgeDecisionPost(
-      new Request("https://jcapitalpropertygroup.com/dashboard/knowledge/decision", {
-        method: "POST",
-        headers: {
-          cookie: `${AUTH_COOKIE_NAME}=${token}`,
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ decision: "approve 001" }),
-      }),
-    );
-    const data = await response.json();
+    try {
+      const response = await knowledgeDecisionPost(
+        new Request("https://jcapitalpropertygroup.com/dashboard/knowledge/decision", {
+          method: "POST",
+          headers: {
+            cookie: `${AUTH_COOKIE_NAME}=${token}`,
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({ decision: "approve 001" }),
+        }),
+      );
+      const data = await response.json();
 
-    assert.equal(response.status, 400);
-    assert.match(response.headers.get("content-type") ?? "", /application\/json/);
-    assert.equal(data.ok, false);
-    assert.equal(data.providerCalled, false);
-    assert.equal(data.sent, false);
-    assert.equal(data.published, false);
-    assert.equal(data.liveExecutionAllowed, false);
-    assert.equal(data.externalExecutionAllowed, false);
+      assert.equal(response.status, 400);
+      assert.match(response.headers.get("content-type") ?? "", /application\/json/);
+      assert.equal(data.ok, false);
+      assert.equal(data.providerCalled, false);
+      assert.equal(data.sent, false);
+      assert.equal(data.published, false);
+      assert.equal(data.liveExecutionAllowed, false);
+      assert.equal(data.externalExecutionAllowed, false);
+    } finally {
+      restoreSessionRevocationLookup();
+    }
   });
 });
 

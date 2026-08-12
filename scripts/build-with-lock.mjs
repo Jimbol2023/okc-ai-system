@@ -1,6 +1,7 @@
 import { constants, existsSync, readFileSync } from "node:fs";
 import { open, readFile, unlink } from "node:fs/promises";
 import { spawn } from "node:child_process";
+import { createRequire } from "node:module";
 import { resolve } from "node:path";
 
 const lockPath = resolve(".next-build-owner.json");
@@ -46,7 +47,7 @@ async function acquire() {
 
 await acquire();
 try {
-  const child = spawn(process.execPath, [resolve("node_modules/next/dist/bin/next"), "build"], { stdio: "inherit", env: process.env });
+  const child = spawn(process.execPath, [createRequire(import.meta.url).resolve("next/dist/bin/next"), "build"], { stdio: "inherit", env: process.env });
   const signalHandlers = ["SIGINT", "SIGTERM"].map((signal) => {
     const handler = () => child.kill(signal);
     process.on(signal, handler);

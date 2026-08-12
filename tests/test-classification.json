@@ -3,7 +3,7 @@
   "generatedFrom": "clean Phase 1 source",
   "historicalAuditCount": 735,
   "supersededPlanCount": 739,
-  "discovered": 741,
+  "discovered": 743,
   "quarantined": 713,
   "categories": [
     "maintained_unit",
@@ -4472,6 +4472,17 @@
         "recoveryPlan": "AI Core Engineering must reconcile the test with current canonical architecture, remove stale phase assumptions, make it deterministic, and promote it into a maintained suite.",
         "dependencies": "Current canonical implementation and owning subsystem architecture review."
       }
+    },
+    {
+      "path": "lib/phase1-real-operations-restack.test.ts",
+      "category": "maintained_unit",
+      "framework": "node:test",
+      "owner": "AI Core Engineering",
+      "execution": "npm run test:unit:all",
+      "databaseRequirement": "none",
+      "providerRequirement": "provider calls forbidden; source inspection only",
+      "mutationPolicy": "repository and external systems read-only",
+      "timeoutClass": "standard"
     },
     {
       "path": "lib/phase1-elite-business-foundation-planning.test.ts",
@@ -10001,6 +10012,17 @@
       }
     },
     {
+      "path": "lib/real-operations-activation.test.ts",
+      "category": "maintained_unit",
+      "framework": "node:test",
+      "owner": "Real Estate Business Module",
+      "execution": "npm run test:unit:all",
+      "databaseRequirement": "mocked",
+      "providerRequirement": "provider calls forbidden; mocks/fixtures only",
+      "mutationPolicy": "repository and external systems read-only",
+      "timeoutClass": "standard"
+    },
+    {
       "path": "lib/request-security.test.ts",
       "category": "safety",
       "framework": "node:test",
@@ -13159,5 +13181,5 @@
       }
     }
   ],
-  "maintained": 28
+  "maintained": 25
 }

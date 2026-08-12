@@ -125,8 +125,9 @@ export async function revokeSession(tenantId: string, sessionId: string) {
   });
 }
 
-export async function isSessionRevoked(tenantId: string, sessionId: string) {
-  return Boolean(await prisma.securityEvent.findFirst({
+type SessionRevocationLookup = (tenantId: string, sessionId: string) => Promise<boolean>;
+
+const persistedSessionRevocationLookup: SessionRevocationLookup = async (tenantId, sessionId) => Boolean(await prisma.securityEvent.findFirst({
     where: {
       tenantId,
       eventType: "session_revocation",
@@ -134,4 +135,16 @@ export async function isSessionRevoked(tenantId: string, sessionId: string) {
     },
     select: { id: true },
   }));
+
+let sessionRevocationLookup = persistedSessionRevocationLookup;
+
+export function setSessionRevocationLookupForTest(lookup: SessionRevocationLookup) {
+  sessionRevocationLookup = lookup;
+  return () => {
+    sessionRevocationLookup = persistedSessionRevocationLookup;
+  };
+}
+
+export async function isSessionRevoked(tenantId: string, sessionId: string) {
+  return sessionRevocationLookup(tenantId, sessionId);
 }
