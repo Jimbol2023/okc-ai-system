@@ -1,0 +1,52 @@
+{
+  "evidenceType": "migration_artifact_identity_recovery",
+  "evidenceTimestamp": "2026-08-12T19:10:23Z",
+  "certifiedPhase1Sha": "45bee235b5ce0156ff90ccc92c434e799656e6f0",
+  "restackSha": "a99b299abedf2e5ffb631e1ba6bfa0576e196c27",
+  "previewDatabaseIdentity": {
+    "classification": "PREVIEW_DATABASE_IDENTITY_CERTIFIED",
+    "provider": "neon",
+    "projectId": "summer-star-72148368",
+    "branchName": "vercel-preview",
+    "activeFingerprintV2Prefix": "81026424",
+    "previewBranchDiffersFromProduction": true,
+    "previewEndpointDiffersFromProduction": true,
+    "productionDatabaseUrlPresent": false
+  },
+  "checksumSemantics": {
+    "algorithm": "sha256",
+    "representation": "lowercase hexadecimal digest of exact migration.sql bytes",
+    "secondaryVerification": "Prisma migrate status reported 48 migrations and Database schema is up to date"
+  },
+  "migrations": [
+    {
+      "migrationName": "20260808180000_add_security_stabilization_controls",
+      "certifiedPhase1SourceSha256": "eb0670911a32c5619cb4a82224bfdbf2a82571d99309b846d18bdc0626c07a22",
+      "restackSourceSha256": "eb0670911a32c5619cb4a82224bfdbf2a82571d99309b846d18bdc0626c07a22",
+      "previewPrismaChecksum": "eb0670911a32c5619cb4a82224bfdbf2a82571d99309b846d18bdc0626c07a22",
+      "startedAt": "2026-08-10T17:14:49.344Z",
+      "finishedAt": "2026-08-10T17:14:49.713Z",
+      "rolledBackAt": null,
+      "appliedStepsCount": 1,
+      "semanticDiff": "NO_DIFFERENCE",
+      "result": "CERTIFIED"
+    },
+    {
+      "migrationName": "20260810190000_tenant_scope_finance_sales_conversion",
+      "certifiedPhase1SourceSha256": "199fbba6dc6523047a9b7b1b19c7b6c22d443e544c2207ae560ca9638f10e54e",
+      "restackSourceSha256": "199fbba6dc6523047a9b7b1b19c7b6c22d443e544c2207ae560ca9638f10e54e",
+      "previewPrismaChecksum": "199fbba6dc6523047a9b7b1b19c7b6c22d443e544c2207ae560ca9638f10e54e",
+      "startedAt": "2026-08-10T21:29:48.093Z",
+      "finishedAt": "2026-08-10T21:29:48.479Z",
+      "rolledBackAt": null,
+      "appliedStepsCount": 1,
+      "semanticDiff": "NO_DIFFERENCE",
+      "result": "CERTIFIED"
+    }
+  ],
+  "productionAccessed": false,
+  "migrationExecuted": false,
+  "migrationSqlModified": false,
+  "providerCalled": false,
+  "result": "MIGRATION_ARTIFACT_IDENTITY_CERTIFIED"
+}
