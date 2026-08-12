@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import type { Prisma } from "@/generated/prisma";
 import { requireTenantId } from "@/lib/tenant-context";
 import { executeTwilioDiagnosticRead, twilioDiagnosticCapabilities, TwilioDiagnosticError, type TwilioDiagnosticCapability, type TwilioDiagnosticCredential } from "@/lib/twilio-diagnostic-adapter";
 
@@ -87,7 +88,7 @@ async function audit(input: { traceId: string; actor: Actor; capability: string;
   const sequenceNumber = (prior?.sequenceNumber ?? 0) + 1;
   const previousEventDigest = prior?.eventDigest ?? null;
   const eventDigest = await digest(JSON.stringify({ traceId: input.traceId, sequenceNumber, previousEventDigest, stage: input.stage, decision: input.decision, reasonCodes: input.reasonCodes, providerCalled: input.providerCalled ?? false, safeMetadata: input.safeMetadata ?? {} }));
-  return db.ueipGatewayAuditEvent.create({ data: { traceId: input.traceId, tenantId: input.actor.tenantId, connectorId: "twilio", capabilityKey: input.capability, manifestVersion: "twilio-diagnostic-manifest-v1", policyVersion: "twilio-diagnostic-policy-v1", actorId: input.actor.actorId, environment: "preview", stage: input.stage, decision: input.decision, providerAttempted: input.providerCalled ?? false, providerCalled: input.providerCalled ?? false, auditComplete: true, reasonCodes: input.reasonCodes, safeMetadata: input.safeMetadata ?? {}, sequenceNumber, previousEventDigest, eventDigest } });
+  return db.ueipGatewayAuditEvent.create({ data: { traceId: input.traceId, tenantId: input.actor.tenantId, connectorId: "twilio", capabilityKey: input.capability, manifestVersion: "twilio-diagnostic-manifest-v1", policyVersion: "twilio-diagnostic-policy-v1", actorId: input.actor.actorId, environment: "preview", stage: input.stage, decision: input.decision, providerAttempted: input.providerCalled ?? false, providerCalled: input.providerCalled ?? false, auditComplete: true, reasonCodes: input.reasonCodes, safeMetadata: (input.safeMetadata ?? {}) as Prisma.InputJsonValue, sequenceNumber, previousEventDigest, eventDigest } });
 }
 
 export async function runTwilioDiagnosticPreviewRead(input: { actor: Actor; capability: TwilioDiagnosticCapability; confirmation: string; nonce?: string; phoneNumberSid?: string; env?: NodeJS.ProcessEnv; now?: Date }) {
