@@ -4,6 +4,8 @@ import { test } from "node:test";
 import {
   adaptExistingLeadsToPropertyOpportunities,
   assertPropertyOpportunityEngineSafety,
+  classifyLeadProvenance,
+  createExistingLeadEligibilityReport,
   createPropertyOpportunityAcquisitionReviewTask,
   createPropertyOpportunityDuplicateKey,
   createPropertyOpportunitySummary,
@@ -409,6 +411,31 @@ test("existing lead adapter converts property leads into opportunity records wit
   assert.equal(db.opportunities.length, 2);
   assert.ok(report.streamAudit.sourceHealth.some((source) => source.channel === "tax_county"));
   assert.ok(report.streamAudit.sourceHealth.some((source) => source.channel === "manual_dfd"));
+});
+
+test("existing lead provenance gate fails closed and never adapts synthetic or ambiguous records", async () => {
+  const db = createMockDb();
+  const leads = [
+    storedLead({ id: "real", source: "website_form", sourceDetail: "seller intake" }),
+    storedLead({ id: "synthetic", source: "county_list", sourceDetail: "synthetic pressure harness" }),
+    storedLead({ id: "test", source: "referral", sourceDetail: "acceptance fixture" }),
+    storedLead({ id: "demo", source: "manual", sourceDetail: "demo record" }),
+    storedLead({ id: "certification", source: "website", sourceDetail: "certification record" }),
+    storedLead({ id: "ambiguous", source: "unknown_import", sourceDetail: "unverified" }),
+  ];
+
+  assert.equal(classifyLeadProvenance(leads[0]).classification, "real");
+  const eligibility = createExistingLeadEligibilityReport(leads);
+  assert.equal(eligibility.eligiblePropertyLeads, 1);
+  assert.equal(eligibility.excludedLeads, 5);
+  assert.deepEqual(eligibility.provenanceCounts, { real: 1, synthetic: 1, test: 1, demo: 1, certification: 1, ambiguous: 1 });
+
+  const report = await adaptExistingLeadsToPropertyOpportunities(db, leads, { tenantId: "default" });
+  assert.equal(report.createdOpportunities, 1);
+  assert.equal(report.excludedLeads, 5);
+  assert.equal((db.opportunities[0]?.evidence as { leadId?: string }).leadId, "real");
+  assert.equal(report.providerCalled, false);
+  assert.equal(report.liveExecutionAllowed, false);
 });
 
 test("existing lead adapter is idempotent and does not create false duplicate conflicts on rerun", async () => {

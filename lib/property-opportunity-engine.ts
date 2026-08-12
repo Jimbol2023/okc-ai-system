@@ -185,10 +185,16 @@ export type PropertyOpportunityTaskResult = {
 export type PropertyOpportunityLeadAdapterReport = {
   scannedLeads: number;
   eligiblePropertyLeads: number;
+  realLeads: number;
+  excludedLeads: number;
+  ambiguousLeads: number;
   createdOpportunities: number;
   updatedOpportunities: number;
+  acquisitionReviewTasksCreated: number;
+  acquisitionReviewTasksReused: number;
   skippedMissingPropertyAddress: number;
   adaptedOpportunityIds: string[];
+  provenanceCounts: Record<LeadProvenanceClassification, number>;
   streamAudit: PropertyOpportunityStreamAudit;
   safetyFlags: typeof propertyOpportunitySafetyFlags;
   providerCalled: false;
@@ -197,6 +203,72 @@ export type PropertyOpportunityLeadAdapterReport = {
   crmMutated: false;
   liveExecutionAllowed: false;
 };
+
+export const leadProvenanceClassifications = ["real", "synthetic", "test", "demo", "certification", "ambiguous"] as const;
+export type LeadProvenanceClassification = (typeof leadProvenanceClassifications)[number];
+
+export type LeadOpportunityEligibility = {
+  leadId: string;
+  classification: LeadProvenanceClassification;
+  eligible: boolean;
+  reasonCodes: string[];
+  duplicateKey: string | null;
+};
+
+const realLeadSourcePattern = /(?:^|[_\s-])(website|website_form|referral|manual|manual_dfd|driving_for_dollars|county|county_list|public_record|assessor|treasurer|clerk|crm|inbound|phone_call|google_business_profile|facebook_message|instagram_dm|tiktok|linkedin|offline|door_knocking_offline)(?:$|[_\s-])/i;
+
+export function classifyLeadProvenance(lead: Pick<StoredLead, "id" | "source" | "sourceDetail" | "propertyAddress" | "city" | "state" | "zipCode" | "parcelId" | "county">): LeadOpportunityEligibility {
+  const provenance = `${lead.source} ${lead.sourceDetail ?? ""}`.trim().toLowerCase();
+  let classification: LeadProvenanceClassification = "ambiguous";
+
+  if (/\bsynthetic\b|pressure[_\s-]?harness/.test(provenance)) classification = "synthetic";
+  else if (/\b(?:test|fixture|acceptance)\b/.test(provenance)) classification = "test";
+  else if (/\bdemo\b/.test(provenance)) classification = "demo";
+  else if (/\bcertification\b|cert[_\s-]?record/.test(provenance)) classification = "certification";
+  else if (realLeadSourcePattern.test(` ${provenance} `)) classification = "real";
+
+  const reasonCodes = [
+    classification !== "real" ? `provenance_${classification}` : "",
+    !lead.propertyAddress.trim() ? "property_address_missing" : "",
+  ].filter(Boolean);
+  const duplicateKey = lead.propertyAddress.trim()
+    ? createPropertyOpportunityDuplicateKey({
+        propertyAddress: lead.propertyAddress,
+        city: lead.city,
+        state: lead.state,
+        zipCode: lead.zipCode,
+        parcelId: lead.parcelId,
+        county: lead.county,
+      })
+    : null;
+
+  return { leadId: lead.id, classification, eligible: classification === "real" && reasonCodes.length === 0, reasonCodes, duplicateKey };
+}
+
+export function createExistingLeadEligibilityReport(leads: StoredLead[]) {
+  const records = leads.map(classifyLeadProvenance);
+  const duplicateCounts = new Map<string, number>();
+  records.forEach((record) => {
+    if (record.duplicateKey) duplicateCounts.set(record.duplicateKey, (duplicateCounts.get(record.duplicateKey) ?? 0) + 1);
+  });
+  const provenanceCounts = Object.fromEntries(leadProvenanceClassifications.map((classification) => [classification, records.filter((record) => record.classification === classification).length])) as Record<LeadProvenanceClassification, number>;
+
+  return {
+    scannedLeads: records.length,
+    eligiblePropertyLeads: records.filter((record) => record.eligible).length,
+    excludedLeads: records.filter((record) => !record.eligible).length,
+    ambiguousLeads: provenanceCounts.ambiguous,
+    duplicateCandidates: records.filter((record) => record.duplicateKey && (duplicateCounts.get(record.duplicateKey) ?? 0) > 1).length,
+    provenanceCounts,
+    reasonCounts: records.flatMap((record) => record.reasonCodes).reduce<Record<string, number>>((counts, reason) => ({ ...counts, [reason]: (counts[reason] ?? 0) + 1 }), {}),
+    records,
+    providerCalled: false as const,
+    sent: false as const,
+    published: false as const,
+    crmMutated: false as const,
+    liveExecutionAllowed: false as const,
+  };
+}
 
 export type PropertyOpportunityDb = {
   propertyOpportunity: {
@@ -691,7 +763,10 @@ function createPropertyOpportunityInputFromLead(lead: StoredLead): ManualDfdProp
     evidence: {
       sourceLabel: "existing_lead_adapter",
       leadId: lead.id,
+      provenanceClassification: classifyLeadProvenance(lead).classification,
       originalSource: lead.source,
+      originalSourceDetail: lead.sourceDetail ?? null,
+      leadCreatedAt: lead.timestamp,
       normalizedSource: source,
       propertyRecordSignals: signals,
       reviewLane,
@@ -700,6 +775,11 @@ function createPropertyOpportunityInputFromLead(lead: StoredLead): ManualDfdProp
       leadPriority: lead.priority,
       leadScore: lead.score,
       doNotContact: Boolean(lead.doNotContact),
+      optOutReason: lead.optOutReason ?? null,
+      consentStatus: lead.consentStatus ?? "unknown",
+      contactPermission: lead.contactPermission ?? "internal_review_only",
+      consentSource: lead.consentSource ?? null,
+      consentAt: lead.consentAt ?? null,
       requiresHumanApproval: Boolean(lead.requiresHumanApproval),
     },
     unsafeEnrichmentRequested: false,
@@ -711,10 +791,13 @@ export async function adaptExistingLeadsToPropertyOpportunities(
   leads: StoredLead[],
   context: { tenantId?: string; actorId?: string; generatedAt?: string } = {},
 ): Promise<PropertyOpportunityLeadAdapterReport> {
-  const eligibleLeads = leads.filter((lead) => lead.propertyAddress.trim().length > 0);
+  const eligibility = createExistingLeadEligibilityReport(leads);
+  const eligibilityByLead = new Map(eligibility.records.map((record) => [record.leadId, record]));
+  const eligibleLeads = leads.filter((lead) => eligibilityByLead.get(lead.id)?.eligible === true);
   const duplicateKeyCounts = new Map<string, number>();
   const adaptedInputs = eligibleLeads.map((lead) => createPropertyOpportunityInputFromLead(lead));
   const results = [];
+  const taskResults: PropertyOpportunityTaskResult[] = [];
 
   adaptedInputs.forEach((input) => {
     const duplicateKey = createPropertyOpportunityDuplicateKey(input);
@@ -722,10 +805,19 @@ export async function adaptExistingLeadsToPropertyOpportunities(
   });
 
   for (const input of adaptedInputs) {
-    results.push(await upsertManualDfdPropertyOpportunity(db, input, {
+    const result = await upsertManualDfdPropertyOpportunity(db, input, {
       ...context,
       duplicateRiskOverride: (duplicateKeyCounts.get(createPropertyOpportunityDuplicateKey(input)) ?? 0) > 1,
-    }));
+    });
+    results.push(result);
+    if (
+      result.opportunity.opportunityScore >= 72 &&
+      result.opportunity.canonicalAddress.length > 0 &&
+      !result.opportunity.duplicateRisk &&
+      result.opportunity.safetyFlags === propertyOpportunitySafetyFlags
+    ) {
+      taskResults.push(await createPropertyOpportunityAcquisitionReviewTask(db, result.opportunity.id, context));
+    }
   }
 
   const opportunities = (await db.propertyOpportunity.findMany({
@@ -736,10 +828,16 @@ export async function adaptExistingLeadsToPropertyOpportunities(
   const report = {
     scannedLeads: leads.length,
     eligiblePropertyLeads: eligibleLeads.length,
+    realLeads: eligibility.provenanceCounts.real,
+    excludedLeads: eligibility.excludedLeads,
+    ambiguousLeads: eligibility.ambiguousLeads,
     createdOpportunities: results.filter((result) => result.created).length,
     updatedOpportunities: results.filter((result) => !result.created).length,
-    skippedMissingPropertyAddress: leads.length - eligibleLeads.length,
+    acquisitionReviewTasksCreated: taskResults.filter((result) => result.created).length,
+    acquisitionReviewTasksReused: taskResults.filter((result) => !result.created).length,
+    skippedMissingPropertyAddress: eligibility.reasonCounts.property_address_missing ?? 0,
     adaptedOpportunityIds: results.map((result) => result.opportunity.id),
+    provenanceCounts: eligibility.provenanceCounts,
     streamAudit,
     safetyFlags: propertyOpportunitySafetyFlags,
     providerCalled: false as const,

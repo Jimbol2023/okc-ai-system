@@ -28,6 +28,8 @@ import { getInfrastructureHealth, type BusinessDataSnapshotSchemaReadiness } fro
 import { getSystemHealth } from "@/lib/system-health";
 import { publicSiteUrl } from "@/lib/public-seo";
 import { prisma } from "@/lib/prisma";
+import { createPrismaPropertyOpportunityDb } from "@/lib/property-opportunity-db";
+import { listPropertyOpportunities, type PropertyOpportunitySummary } from "@/lib/property-opportunity-engine";
 
 export type ExecutiveWidget = {
   id: string;
@@ -278,6 +280,7 @@ export type ExecutiveDashboardReport = {
   recommendedPriorities: string[];
   executiveRecommendations: ExecutiveLearningRecommendation[];
   dataGaps: string[];
+  propertyOpportunitySummary: PropertyOpportunitySummary | null;
   recentSystemActivity: Array<{
     label: string;
     detail: string;
@@ -1630,7 +1633,7 @@ export function createExecutiveWorkforceReport({
 
 export async function createExecutiveDashboardReport(tenantIdValue: string): Promise<ExecutiveDashboardReport> {
   const tenantId = requireTenantId(tenantIdValue, "executive_dashboard");
-  const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, memoryEventsResult, referralResult, activationResult, departmentIntelligenceResult, liveMorningBriefResult, businessSnapshotsResult, buyerDemandResult, dailyMissionResult, connectorActivationResult, infrastructureHealthResult, systemHealth, recentSystemActivity] = await Promise.all([
+  const [leadsResult, marketingResult, financeEntriesResult, knowledgeItemsResult, memoryEventsResult, referralResult, activationResult, departmentIntelligenceResult, liveMorningBriefResult, businessSnapshotsResult, buyerDemandResult, dailyMissionResult, connectorActivationResult, infrastructureHealthResult, propertyOpportunityResult, systemHealth, recentSystemActivity] = await Promise.all([
     loadPartialData("Lead", () => listDbLeads({ tenantId }), [] as StoredLead[]),
     loadPartialData("Marketing workflow", listMarketingWorkflow, null),
     loadPartialData("Finance", listFinanceEntries, []),
@@ -1645,6 +1648,7 @@ export async function createExecutiveDashboardReport(tenantIdValue: string): Pro
     loadPartialData("Daily Mission", () => getDailyMission(tenantId), null),
     loadPartialData("Connector activation", () => createConnectorActivationReport(tenantId), null),
     loadPartialData("Infrastructure health", () => getInfrastructureHealth({ includeDatabase: true, includeOAuth: false }), null),
+    loadPartialData("Property opportunities", () => listPropertyOpportunities(createPrismaPropertyOpportunityDb(prisma), tenantId), null),
     getSystemHealth().catch(() => null),
     getRecentSystemActivity().catch(() => []),
   ]);
@@ -1661,6 +1665,7 @@ export async function createExecutiveDashboardReport(tenantIdValue: string): Pro
   const dailyMission = dailyMissionResult.data;
   const connectorActivation = connectorActivationResult.data;
   const infrastructureHealth = infrastructureHealthResult.data;
+  const propertyOpportunitySummary = propertyOpportunityResult.data?.summary ?? null;
   const today = startOfToday();
   const revenuePipeline = getRevenuePipelineSummary(leads);
   const providerReadiness = createProviderReadinessReport();
@@ -2144,6 +2149,7 @@ export async function createExecutiveDashboardReport(tenantIdValue: string): Pro
     recommendedPriorities,
     executiveRecommendations,
     dataGaps,
+    propertyOpportunitySummary,
     recentSystemActivity,
     safetyFlags: {
       readOnly: true,
