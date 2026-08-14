@@ -8,6 +8,7 @@ import {
 const expectedPreviewNeonProject = "summer-star-72148368";
 const expectedPreviewBranch = "vercel-preview";
 const expectedPreviewNeonEndpoint = "ep-shiny-glitter-at7sr22n";
+const expectedVercelProjectId = "prj_3ziP3WSM9DQUHVDnIZukaHGaq2oV";
 
 type ActorContext = {
   tenantId: string;
@@ -26,6 +27,7 @@ type RuntimePreflightOptions = {
   databaseIdentityResult?: DatabaseIdentityResult;
   auditEvidenceResult?: AuditEvidenceResult;
   databaseIdentityQuery?: () => Promise<DatabaseIdentityQueryResult>;
+  controlPlaneDeploymentProof?: ControlPlaneDeploymentProof;
 };
 
 type DatabaseIdentityResult = {
@@ -61,6 +63,15 @@ type DatabaseIdentityQueryResult = {
   observedBranchIdentity: string | null;
 };
 
+type ControlPlaneDeploymentProof = {
+  deploymentId: string | null;
+  projectId: string | null;
+  gitCommitSha: string | null;
+  gitCommitRef: string | null;
+  target: string | null;
+  aliases: string[];
+};
+
 type DatabaseIdentityDiagnostics = {
   configuredProjectId: string | null;
   configuredEndpointId: string | null;
@@ -93,8 +104,15 @@ export type RuntimePreflightCertification = {
     deploymentUrlPresent: boolean;
     productionUrlPresent: boolean;
     previewEndpointDiffersFromProduction: boolean;
+    projectId: string | null;
+    expectedProjectId: typeof expectedVercelProjectId;
+    projectIdMatches: boolean;
+    deploymentId: string | null;
+    deploymentIdPresent: boolean;
     commitShaPresent: boolean;
+    commitShaSource: "runtime" | "control_plane" | null;
     commitRef: string | null;
+    controlPlaneShaProof: "not_supplied" | "verified" | "blocked";
     expectedPreviewBranch: typeof expectedPreviewBranch;
   };
   secrets: {
@@ -131,7 +149,7 @@ export function setRuntimePreflightTestOverridesForTest(overrides: RuntimePrefli
   };
 }
 
-function hasValue(value: string | undefined) {
+function hasValue(value: string | null | undefined) {
   return Boolean(value?.trim());
 }
 
@@ -482,6 +500,13 @@ export async function runRuntimePreflightCertification(options: RuntimePreflight
     activeOverrides.auditEvidenceResult ??
     await checkAuditEvidenceAvailability(report.database.ok === true);
   const blockers = [...report.blockers];
+  const runtimeProjectId = env.VERCEL_PROJECT_ID ?? null;
+  const runtimeDeploymentId = env.VERCEL_DEPLOYMENT_ID ?? null;
+  const runtimeCommitSha = env.VERCEL_GIT_COMMIT_SHA ?? null;
+  const runtimeCommitRef = env.VERCEL_GIT_COMMIT_REF ?? null;
+  const projectIdMatches = runtimeProjectId === expectedVercelProjectId;
+  const proof = options.controlPlaneDeploymentProof ?? activeOverrides.controlPlaneDeploymentProof;
+  let controlPlaneShaProof: RuntimePreflightCertification["vercel"]["controlPlaneShaProof"] = "not_supplied";
 
   if (options.requirePreview && env.VERCEL_ENV !== "preview") {
     blockers.push("VERCEL_ENV must be preview for the runtime-preflight certification endpoint.");
@@ -489,8 +514,42 @@ export async function runRuntimePreflightCertification(options: RuntimePreflight
   if (options.requirePreview && env.VERCEL !== "1") {
     blockers.push("Preview runtime-preflight must run inside Vercel.");
   }
-  if (options.requirePreview && !hasValue(env.VERCEL_GIT_COMMIT_SHA)) {
-    blockers.push("Preview runtime-preflight requires an immutable Vercel Git commit SHA.");
+  if (options.requirePreview && !hasValue(runtimeDeploymentId)) {
+    blockers.push("Preview runtime-preflight requires a Vercel deployment ID.");
+  }
+  if (options.requirePreview && !projectIdMatches) {
+    blockers.push("Preview runtime-preflight must run in the authoritative Vercel project.");
+  }
+  if (proof) {
+    controlPlaneShaProof = "verified";
+    if (!hasValue(proof.deploymentId) || proof.deploymentId !== runtimeDeploymentId) {
+      controlPlaneShaProof = "blocked";
+      blockers.push("Control-plane deployment ID proof does not match runtime deployment ID.");
+    }
+    if (proof.projectId !== expectedVercelProjectId || proof.projectId !== runtimeProjectId) {
+      controlPlaneShaProof = "blocked";
+      blockers.push("Control-plane project proof does not match the authoritative Vercel project.");
+    }
+    if (!hasValue(proof.gitCommitSha)) {
+      controlPlaneShaProof = "blocked";
+      blockers.push("Control-plane deployment proof is missing an immutable Git SHA.");
+    }
+    if (runtimeCommitSha && proof.gitCommitSha && runtimeCommitSha !== proof.gitCommitSha) {
+      controlPlaneShaProof = "blocked";
+      blockers.push("Runtime Git SHA and control-plane Git SHA disagree.");
+    }
+    if (proof.gitCommitRef && runtimeCommitRef && proof.gitCommitRef !== runtimeCommitRef) {
+      controlPlaneShaProof = "blocked";
+      blockers.push("Runtime Git ref and control-plane Git ref disagree.");
+    }
+    if (proof.target && proof.target !== "preview") {
+      controlPlaneShaProof = "blocked";
+      blockers.push("Control-plane deployment proof must target Preview.");
+    }
+    if (proof.aliases.length > 0) {
+      controlPlaneShaProof = "blocked";
+      blockers.push("Control-plane deployment proof must not include Production aliases.");
+    }
   }
   if (!databaseIdentity.certified) {
     blockers.push(...databaseIdentity.reasons.map((reason) => `Preview database identity: ${reason}.`));
@@ -518,8 +577,15 @@ export async function runRuntimePreflightCertification(options: RuntimePreflight
       deploymentUrlPresent: hasValue(env.VERCEL_URL),
       productionUrlPresent: hasValue(env.VERCEL_PROJECT_PRODUCTION_URL),
       previewEndpointDiffersFromProduction,
-      commitShaPresent: hasValue(env.VERCEL_GIT_COMMIT_SHA),
-      commitRef: env.VERCEL_GIT_COMMIT_REF ?? null,
+      projectId: runtimeProjectId,
+      expectedProjectId: expectedVercelProjectId,
+      projectIdMatches,
+      deploymentId: runtimeDeploymentId,
+      deploymentIdPresent: hasValue(runtimeDeploymentId),
+      commitShaPresent: hasValue(runtimeCommitSha),
+      commitShaSource: runtimeCommitSha ? "runtime" : proof?.gitCommitSha ? "control_plane" : null,
+      commitRef: runtimeCommitRef,
+      controlPlaneShaProof,
       expectedPreviewBranch,
     },
     secrets: {

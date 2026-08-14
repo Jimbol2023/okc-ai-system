@@ -24,8 +24,9 @@ const previewEnv: NodeJS.ProcessEnv = {
   VERCEL_ENV: "preview",
   VERCEL_URL: "jcapital-preview-git-vercel-preview-jcapital.vercel.app",
   VERCEL_PROJECT_PRODUCTION_URL: "jcapitalpropertygroup.com",
+  VERCEL_PROJECT_ID: "prj_3ziP3WSM9DQUHVDnIZukaHGaq2oV",
+  VERCEL_DEPLOYMENT_ID: "dpl_preview_runtime_123456",
   VERCEL_GIT_COMMIT_REF: "agent/runtime-consistency-repair",
-  VERCEL_GIT_COMMIT_SHA: "abc123runtimepreflight",
   DATABASE_URL: "postgresql://preview_user:preview_password@ep-shiny-glitter-at7sr22n-pooler.us-east-2.aws.neon.tech/jcapital_preview",
   DIRECT_URL: "postgresql://preview_user:preview_password@ep-shiny-glitter-at7sr22n.us-east-2.aws.neon.tech/jcapital_preview",
   UEIP_PREVIEW_NEON_PROJECT_ID: "summer-star-72148368",
@@ -186,11 +187,19 @@ describe("admin runtime preflight endpoint", () => {
     assert.equal(credentialValues.some((value) => serialized.includes(value)), false);
   });
 
-  it("accepts exact-SHA Preview deployments from governed feature branches when Neon Preview identity agrees", async () => {
+  it("accepts CLI exact-SHA Preview deployments from governed feature branches with control-plane SHA proof", async () => {
     restorePreflight = setRuntimePreflightTestOverridesForTest({
       infrastructureReport: await createReport(process.env),
       databaseIdentityQuery: async () => observedEndpointIdentity(),
       auditEvidenceResult: { available: true, status: "available", requiredTablesPresent: true },
+      controlPlaneDeploymentProof: {
+        deploymentId: "dpl_preview_runtime_123456",
+        projectId: "prj_3ziP3WSM9DQUHVDnIZukaHGaq2oV",
+        gitCommitSha: "abc123runtimepreflight",
+        gitCommitRef: "agent/runtime-consistency-repair",
+        target: "preview",
+        aliases: [],
+      },
     });
 
     const response = await GET(await adminRequest());
@@ -223,12 +232,28 @@ describe("admin runtime preflight endpoint", () => {
       };
       providerCalled: boolean;
       liveExecutionAllowed: boolean;
-      vercel: { commitRef: string };
+      vercel: {
+        projectId: string;
+        projectIdMatches: boolean;
+        deploymentId: string;
+        deploymentIdPresent: boolean;
+        commitShaPresent: boolean;
+        commitShaSource: string;
+        commitRef: string;
+        controlPlaneShaProof: string;
+      };
     };
 
     assert.equal(response.status, 200);
     assert.equal(body.readinessState, "RUNTIME_READY");
+    assert.equal(body.vercel.projectId, "prj_3ziP3WSM9DQUHVDnIZukaHGaq2oV");
+    assert.equal(body.vercel.projectIdMatches, true);
+    assert.equal(body.vercel.deploymentId, "dpl_preview_runtime_123456");
+    assert.equal(body.vercel.deploymentIdPresent, true);
+    assert.equal(body.vercel.commitShaPresent, false);
+    assert.equal(body.vercel.commitShaSource, "control_plane");
     assert.equal(body.vercel.commitRef, "agent/runtime-consistency-repair");
+    assert.equal(body.vercel.controlPlaneShaProof, "verified");
     assert.equal(body.databaseIdentity.status, "PREVIEW_DATABASE_IDENTITY_CERTIFIED");
     assert.equal(body.databaseIdentity.expectedNeonProjectMatched, true);
     assert.equal(body.databaseIdentity.databaseNameMatches, true);
@@ -259,6 +284,98 @@ describe("admin runtime preflight endpoint", () => {
     assert.equal(body.liveExecutionAllowed, false);
   });
 
+  it("accepts Preview when runtime SHA is present and matches control-plane proof", async () => {
+    replaceEnv({
+      ...previewEnv,
+      VERCEL_GIT_COMMIT_SHA: "abc123runtimepreflight",
+    });
+    restorePreflight = setRuntimePreflightTestOverridesForTest({
+      infrastructureReport: await createReport(process.env),
+      databaseIdentityQuery: async () => observedEndpointIdentity(),
+      auditEvidenceResult: { available: true, status: "available", requiredTablesPresent: true },
+      controlPlaneDeploymentProof: {
+        deploymentId: "dpl_preview_runtime_123456",
+        projectId: "prj_3ziP3WSM9DQUHVDnIZukaHGaq2oV",
+        gitCommitSha: "abc123runtimepreflight",
+        gitCommitRef: "agent/runtime-consistency-repair",
+        target: "preview",
+        aliases: [],
+      },
+    });
+
+    const response = await GET(await adminRequest());
+    const body = await response.json() as {
+      readinessState: string;
+      vercel: { commitShaPresent: boolean; commitShaSource: string; controlPlaneShaProof: string };
+    };
+
+    assert.equal(response.status, 200);
+    assert.equal(body.readinessState, "RUNTIME_READY");
+    assert.equal(body.vercel.commitShaPresent, true);
+    assert.equal(body.vercel.commitShaSource, "runtime");
+    assert.equal(body.vercel.controlPlaneShaProof, "verified");
+  });
+
+  it("rejects runtime and control-plane SHA disagreement", async () => {
+    replaceEnv({
+      ...previewEnv,
+      VERCEL_GIT_COMMIT_SHA: "runtime-sha",
+    });
+    restorePreflight = setRuntimePreflightTestOverridesForTest({
+      infrastructureReport: await createReport(process.env),
+      databaseIdentityQuery: async () => observedEndpointIdentity(),
+      auditEvidenceResult: { available: true, status: "available", requiredTablesPresent: true },
+      controlPlaneDeploymentProof: {
+        deploymentId: "dpl_preview_runtime_123456",
+        projectId: "prj_3ziP3WSM9DQUHVDnIZukaHGaq2oV",
+        gitCommitSha: "control-plane-sha",
+        gitCommitRef: "agent/runtime-consistency-repair",
+        target: "preview",
+        aliases: [],
+      },
+    });
+
+    const response = await GET(await adminRequest());
+    const body = await response.json() as {
+      readinessState: string;
+      blockers: string[];
+      vercel: { controlPlaneShaProof: string };
+    };
+
+    assert.equal(response.status, 200);
+    assert.equal(body.readinessState, "RUNTIME_BLOCKED");
+    assert.equal(body.vercel.controlPlaneShaProof, "blocked");
+    assert.ok(body.blockers.some((blocker) => blocker.includes("Runtime Git SHA and control-plane Git SHA disagree")));
+  });
+
+  it("rejects missing control-plane SHA evidence when proof is supplied", async () => {
+    restorePreflight = setRuntimePreflightTestOverridesForTest({
+      infrastructureReport: await createReport(process.env),
+      databaseIdentityQuery: async () => observedEndpointIdentity(),
+      auditEvidenceResult: { available: true, status: "available", requiredTablesPresent: true },
+      controlPlaneDeploymentProof: {
+        deploymentId: "dpl_preview_runtime_123456",
+        projectId: "prj_3ziP3WSM9DQUHVDnIZukaHGaq2oV",
+        gitCommitSha: null,
+        gitCommitRef: "agent/runtime-consistency-repair",
+        target: "preview",
+        aliases: [],
+      },
+    });
+
+    const response = await GET(await adminRequest());
+    const body = await response.json() as {
+      readinessState: string;
+      blockers: string[];
+      vercel: { controlPlaneShaProof: string };
+    };
+
+    assert.equal(response.status, 200);
+    assert.equal(body.readinessState, "RUNTIME_BLOCKED");
+    assert.equal(body.vercel.controlPlaneShaProof, "blocked");
+    assert.ok(body.blockers.some((blocker) => blocker.includes("missing an immutable Git SHA")));
+  });
+
   it("rejects a Preview deployment that is aliased as Production", async () => {
     replaceEnv({
       ...previewEnv,
@@ -284,10 +401,10 @@ describe("admin runtime preflight endpoint", () => {
     assert.ok(body.blockers.some((blocker) => blocker.includes("Preview endpoint must differ from Production endpoint")));
   });
 
-  it("rejects unknown deployment identity without an immutable SHA", async () => {
-    const envWithoutSha = { ...previewEnv };
-    delete envWithoutSha.VERCEL_GIT_COMMIT_SHA;
-    replaceEnv(envWithoutSha);
+  it("rejects unknown deployment identity without a runtime deployment ID", async () => {
+    const envWithoutDeploymentId = { ...previewEnv };
+    delete envWithoutDeploymentId.VERCEL_DEPLOYMENT_ID;
+    replaceEnv(envWithoutDeploymentId);
     restorePreflight = setRuntimePreflightTestOverridesForTest({
       infrastructureReport: await createReport(process.env),
       databaseIdentityQuery: async () => observedEndpointIdentity(),
@@ -298,13 +415,37 @@ describe("admin runtime preflight endpoint", () => {
     const body = await response.json() as {
       readinessState: string;
       blockers: string[];
-      vercel: { commitShaPresent: boolean };
+      vercel: { deploymentIdPresent: boolean };
     };
 
     assert.equal(response.status, 200);
     assert.equal(body.readinessState, "RUNTIME_BLOCKED");
-    assert.equal(body.vercel.commitShaPresent, false);
-    assert.ok(body.blockers.some((blocker) => blocker.includes("immutable Vercel Git commit SHA")));
+    assert.equal(body.vercel.deploymentIdPresent, false);
+    assert.ok(body.blockers.some((blocker) => blocker.includes("Vercel deployment ID")));
+  });
+
+  it("rejects a wrong authoritative Vercel project", async () => {
+    replaceEnv({
+      ...previewEnv,
+      VERCEL_PROJECT_ID: "prj_wrong_project",
+    });
+    restorePreflight = setRuntimePreflightTestOverridesForTest({
+      infrastructureReport: await createReport(process.env),
+      databaseIdentityQuery: async () => observedEndpointIdentity(),
+      auditEvidenceResult: { available: true, status: "available", requiredTablesPresent: true },
+    });
+
+    const response = await GET(await adminRequest());
+    const body = await response.json() as {
+      readinessState: string;
+      blockers: string[];
+      vercel: { projectIdMatches: boolean };
+    };
+
+    assert.equal(response.status, 200);
+    assert.equal(body.readinessState, "RUNTIME_BLOCKED");
+    assert.equal(body.vercel.projectIdMatches, false);
+    assert.ok(body.blockers.some((blocker) => blocker.includes("authoritative Vercel project")));
   });
 
   it("rejects when endpoint ID would only pass by being synthesized from the project ID", async () => {
