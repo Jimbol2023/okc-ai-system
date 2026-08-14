@@ -20,7 +20,7 @@ function getAuthConfig() {
   };
 }
 
-export async function createSessionToken(email: string, options: { tenantId: string; actorId?: string }) {
+export async function createSessionToken(email: string, options: { tenantId?: string; actorId?: string } = {}) {
   return createSignedSessionToken(email, options);
 }
 

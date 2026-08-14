@@ -289,6 +289,59 @@ exports.Prisma.RevenueTaskScalarFieldEnum = {
   liveExecutionAllowed: 'liveExecutionAllowed'
 };
 
+exports.Prisma.PropertyOpportunityScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  canonicalAddress: 'canonicalAddress',
+  propertyAddress: 'propertyAddress',
+  city: 'city',
+  state: 'state',
+  zipCode: 'zipCode',
+  county: 'county',
+  parcelId: 'parcelId',
+  ownerName: 'ownerName',
+  mailingAddress: 'mailingAddress',
+  source: 'source',
+  sourceDetail: 'sourceDetail',
+  evidence: 'evidence',
+  distressIndicators: 'distressIndicators',
+  observations: 'observations',
+  photoMetadata: 'photoMetadata',
+  opportunityScore: 'opportunityScore',
+  opportunityPriority: 'opportunityPriority',
+  confidence: 'confidence',
+  duplicateKey: 'duplicateKey',
+  duplicateRisk: 'duplicateRisk',
+  missingEvidence: 'missingEvidence',
+  recommendedAction: 'recommendedAction',
+  safetyFlags: 'safetyFlags',
+  providerCalled: 'providerCalled',
+  sent: 'sent',
+  published: 'published',
+  crmMutated: 'crmMutated',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PropertyOpportunitySavedFilterScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  filterKey: 'filterKey',
+  criteria: 'criteria',
+  safetyFlags: 'safetyFlags',
+  providerCalled: 'providerCalled',
+  sent: 'sent',
+  published: 'published',
+  crmMutated: 'crmMutated',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.RevenuePipelineEventScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -1368,6 +1421,7 @@ exports.Prisma.MarketingCanvaAssetAssistScalarFieldEnum = {
 
 exports.Prisma.MarketingSalesAttributionScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   leadId: 'leadId',
   marketingDraftId: 'marketingDraftId',
   canvaAssetAssistId: 'canvaAssetAssistId',
@@ -1384,6 +1438,7 @@ exports.Prisma.MarketingSalesAttributionScalarFieldEnum = {
 
 exports.Prisma.SalesConversionAssistScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   leadId: 'leadId',
   assistType: 'assistType',
   nextSalesAction: 'nextSalesAction',
@@ -1401,6 +1456,7 @@ exports.Prisma.SalesConversionAssistScalarFieldEnum = {
 
 exports.Prisma.FinanceEntryScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   entryType: 'entryType',
   category: 'category',
   source: 'source',
@@ -1622,6 +1678,39 @@ exports.Prisma.ProfessionalCaseEventScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.SecurityRateBucketScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  purpose: 'purpose',
+  identifierHash: 'identifierHash',
+  count: 'count',
+  windowStartedAt: 'windowStartedAt',
+  blockedUntil: 'blockedUntil',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SecurityEventScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  eventType: 'eventType',
+  outcome: 'outcome',
+  identifierHash: 'identifierHash',
+  requestId: 'requestId',
+  reasonCodes: 'reasonCodes',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.WebhookReceiptScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  provider: 'provider',
+  messageIdHash: 'messageIdHash',
+  status: 'status',
+  receivedAt: 'receivedAt',
+  processedAt: 'processedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1689,6 +1778,8 @@ exports.Prisma.ModelName = {
   ReferralAttributionEvent: 'ReferralAttributionEvent',
   RevenueLeadScore: 'RevenueLeadScore',
   RevenueTask: 'RevenueTask',
+  PropertyOpportunity: 'PropertyOpportunity',
+  PropertyOpportunitySavedFilter: 'PropertyOpportunitySavedFilter',
   RevenuePipelineEvent: 'RevenuePipelineEvent',
   RevenueCommunicationEvent: 'RevenueCommunicationEvent',
   RevenueDecisionLog: 'RevenueDecisionLog',
@@ -1763,7 +1854,10 @@ exports.Prisma.ModelName = {
   ProfessionalReview: 'ProfessionalReview',
   ProfessionalDecision: 'ProfessionalDecision',
   ProfessionalOutcome: 'ProfessionalOutcome',
-  ProfessionalCaseEvent: 'ProfessionalCaseEvent'
+  ProfessionalCaseEvent: 'ProfessionalCaseEvent',
+  SecurityRateBucket: 'SecurityRateBucket',
+  SecurityEvent: 'SecurityEvent',
+  WebhookReceipt: 'WebhookReceipt'
 };
 
 /**

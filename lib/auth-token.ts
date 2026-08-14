@@ -64,10 +64,10 @@ export async function constantTimeEqual(left: string, right: string) {
   return difference === 0;
 }
 
-export async function createSignedSessionToken(email: string, options: { tenantId: string; actorId?: string }) {
+export async function createSignedSessionToken(email: string, options: { tenantId?: string; actorId?: string } = {}) {
   const payload: SessionPayload = {
     email,
-    tenantId: requireTenantId(options.tenantId, "session_creation"),
+    tenantId: requireTenantId(options.tenantId ?? "default", "session_creation"),
     actorId: options.actorId ?? email,
     sessionVersion: 1,
     sessionId: crypto.randomUUID(),

@@ -5,6 +5,7 @@ import { GET } from "@/app/api/admin/runtime-preflight/route";
 import { AUTH_COOKIE_NAME, createSessionToken } from "@/lib/auth";
 import { getInfrastructureHealth, type InfrastructureHealthReport } from "@/lib/infrastructure-health";
 import { setRuntimePreflightTestOverridesForTest } from "@/lib/runtime-preflight";
+import { setSessionRevocationLookupForTest } from "@/lib/security-controls";
 
 const hardenedBusinessDataSnapshotColumns = [
   "id",
@@ -64,6 +65,7 @@ const credentialValues = [
 
 const originalEnv = { ...process.env };
 let restorePreflight = () => undefined;
+let restoreSessionRevocationLookup = () => undefined;
 
 function replaceEnv(env: NodeJS.ProcessEnv) {
   for (const key of Object.keys(process.env)) {
@@ -106,11 +108,14 @@ async function adminRequest() {
 
 beforeEach(() => {
   replaceEnv(previewEnv);
+  restoreSessionRevocationLookup = setSessionRevocationLookupForTest(async () => false);
 });
 
 afterEach(() => {
   restorePreflight();
   restorePreflight = () => undefined;
+  restoreSessionRevocationLookup();
+  restoreSessionRevocationLookup = () => undefined;
   replaceEnv(originalEnv);
 });
 

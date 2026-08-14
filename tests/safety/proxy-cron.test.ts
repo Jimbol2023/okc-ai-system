@@ -3,12 +3,15 @@ import { describe, it } from "node:test";
 import { NextRequest } from "next/server";
 
 import { createSessionToken } from "@/lib/auth";
+import { setSessionRevocationLookupForTest } from "@/lib/security-controls";
 import { isGovernedCronRequest, proxy } from "@/proxy";
 
 const previousEnv = { ...process.env };
+const previousFetch = globalThis.fetch;
 
 function restoreEnv() {
   process.env = { ...previousEnv };
+  globalThis.fetch = previousFetch;
 }
 
 function request(path: string, headers: HeadersInit = {}) {
@@ -55,6 +58,8 @@ describe("proxy cron boundary", () => {
   });
 
   it("keeps normal browser session auth unchanged", async () => {
+    const restoreSessionRevocationLookup = setSessionRevocationLookupForTest(async () => false);
+    globalThis.fetch = async () => new Response(null, { status: 204 });
     process.env.AUTH_SECRET = "test-auth-secret-at-least-32-characters";
     process.env.ADMIN_EMAIL = "admin@jcapital.test";
     process.env.ADMIN_PASSWORD = "password-at-least-12";
@@ -64,6 +69,7 @@ describe("proxy cron boundary", () => {
     }));
 
     assert.equal(response.status, 200);
+    restoreSessionRevocationLookup();
     restoreEnv();
   });
 });
