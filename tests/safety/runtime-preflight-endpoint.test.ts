@@ -26,8 +26,18 @@ const previewEnv: NodeJS.ProcessEnv = {
   VERCEL_PROJECT_PRODUCTION_URL: "jcapitalpropertygroup.com",
   VERCEL_GIT_COMMIT_REF: "vercel-preview",
   VERCEL_GIT_COMMIT_SHA: "abc123runtimepreflight",
-  DATABASE_URL: "postgresql://preview_user:preview_password@ep-summer-star-72148368-pooler.us-east-2.aws.neon.tech/jcapital_preview",
-  DIRECT_URL: "postgresql://preview_user:preview_password@ep-summer-star-72148368.us-east-2.aws.neon.tech/jcapital_preview",
+  DATABASE_URL: "postgresql://preview_user:preview_password@ep-shiny-glitter-at7sr22n-pooler.us-east-2.aws.neon.tech/jcapital_preview",
+  DIRECT_URL: "postgresql://preview_user:preview_password@ep-shiny-glitter-at7sr22n.us-east-2.aws.neon.tech/jcapital_preview",
+  UEIP_PREVIEW_NEON_PROJECT_ID: "summer-star-72148368",
+  UEIP_PREVIEW_NEON_BRANCH_ID: "br-vercel-preview-123456",
+  UEIP_PREVIEW_NEON_BRANCH_NAME: "vercel-preview",
+  UEIP_PREVIEW_NEON_ENDPOINT_ID: "ep-shiny-glitter-at7sr22n",
+  UEIP_PREVIEW_NEON_DATABASE_NAME: "jcapital_preview",
+  UEIP_PREVIEW_NEON_REGION: "us-east-2",
+  UEIP_PREVIEW_ENVIRONMENT_ID: "preview",
+  UEIP_PREVIEW_FINGERPRINT_V2: "preview-fingerprint-v2",
+  UEIP_PRODUCTION_NEON_ENDPOINT_ID: "ep-production-main-123456",
+  UEIP_PRODUCTION_FINGERPRINT_V2: "production-fingerprint-v2",
   AUTH_SECRET: "preview-auth-secret-at-least-32-chars",
   ADMIN_EMAIL: "admin@jcapital.test",
   ADMIN_PASSWORD: "preview-admin-password",
@@ -72,7 +82,7 @@ async function createReport(env: NodeJS.ProcessEnv, databaseOk = true): Promise<
   });
 }
 
-function observedEndpointIdentity(endpointId = "ep-summer-star-72148368") {
+function observedEndpointIdentity(endpointId = "ep-shiny-glitter-at7sr22n") {
   return {
     observedServerIdentity: endpointId,
     observedDatabaseName: "jcapital_preview",
@@ -176,7 +186,7 @@ describe("admin runtime preflight endpoint", () => {
     assert.equal(credentialValues.some((value) => serialized.includes(value)), false);
   });
 
-  it("accepts the governed Preview Neon endpoint identity", async () => {
+  it("accepts the governed Preview Neon identity when explicit metadata agrees", async () => {
     restorePreflight = setRuntimePreflightTestOverridesForTest({
       infrastructureReport: await createReport(process.env),
       databaseIdentityQuery: async () => observedEndpointIdentity(),
@@ -191,14 +201,21 @@ describe("admin runtime preflight endpoint", () => {
         expectedNeonProjectMatched: boolean;
         databaseNameMatches: boolean;
         diagnostics: {
-          observedServerIdentity: string;
-          normalizedEndpointId: string;
-          normalizedProjectIdentity: string;
+          configuredProjectId: string;
+          configuredEndpointId: string;
+          observedEndpointId: string;
+          configuredBranchId: string;
+          configuredBranchName: string;
+          configuredDatabaseName: string;
           expectedProjectIdentity: string;
           expectedEndpointIdentity: string;
+          projectIdentitySource: string;
+          endpointIdentitySource: string[];
           projectMatch: boolean;
           endpointMatch: boolean;
           databaseNameMatch: boolean;
+          directPooledAgreement: boolean;
+          previewDistinctFromProduction: boolean;
           ambiguityDetected: boolean;
           branchEvidenceAvailable: boolean;
           branchMatch: boolean;
@@ -213,14 +230,26 @@ describe("admin runtime preflight endpoint", () => {
     assert.equal(body.databaseIdentity.status, "PREVIEW_DATABASE_IDENTITY_CERTIFIED");
     assert.equal(body.databaseIdentity.expectedNeonProjectMatched, true);
     assert.equal(body.databaseIdentity.databaseNameMatches, true);
-    assert.equal(body.databaseIdentity.diagnostics.observedServerIdentity, "ep-summer-star-72148368");
-    assert.equal(body.databaseIdentity.diagnostics.normalizedEndpointId, "ep-summer-star-72148368");
-    assert.equal(body.databaseIdentity.diagnostics.normalizedProjectIdentity, "summer-star-72148368");
+    assert.equal(body.databaseIdentity.diagnostics.configuredProjectId, "summer-star-72148368");
+    assert.equal(body.databaseIdentity.diagnostics.configuredEndpointId, "ep-shiny-glitter-at7sr22n");
+    assert.equal(body.databaseIdentity.diagnostics.observedEndpointId, "ep-shiny-glitter-at7sr22n");
+    assert.equal(body.databaseIdentity.diagnostics.configuredBranchId, "br-vercel-preview-123456");
+    assert.equal(body.databaseIdentity.diagnostics.configuredBranchName, "vercel-preview");
+    assert.equal(body.databaseIdentity.diagnostics.configuredDatabaseName, "jcapital_preview");
     assert.equal(body.databaseIdentity.diagnostics.expectedProjectIdentity, "summer-star-72148368");
-    assert.equal(body.databaseIdentity.diagnostics.expectedEndpointIdentity, "ep-summer-star-72148368");
+    assert.equal(body.databaseIdentity.diagnostics.expectedEndpointIdentity, "ep-shiny-glitter-at7sr22n");
+    assert.equal(body.databaseIdentity.diagnostics.projectIdentitySource, "UEIP_PREVIEW_NEON_PROJECT_ID");
+    assert.deepEqual(body.databaseIdentity.diagnostics.endpointIdentitySource, [
+      "UEIP_PREVIEW_NEON_ENDPOINT_ID",
+      "databaseUrlHost",
+      "directUrlHost",
+      "postgresServerIdentity",
+    ]);
     assert.equal(body.databaseIdentity.diagnostics.projectMatch, true);
     assert.equal(body.databaseIdentity.diagnostics.endpointMatch, true);
     assert.equal(body.databaseIdentity.diagnostics.databaseNameMatch, true);
+    assert.equal(body.databaseIdentity.diagnostics.directPooledAgreement, true);
+    assert.equal(body.databaseIdentity.diagnostics.previewDistinctFromProduction, true);
     assert.equal(body.databaseIdentity.diagnostics.ambiguityDetected, false);
     assert.equal(body.databaseIdentity.diagnostics.branchEvidenceAvailable, true);
     assert.equal(body.databaseIdentity.diagnostics.branchMatch, true);
@@ -228,43 +257,32 @@ describe("admin runtime preflight endpoint", () => {
     assert.equal(body.liveExecutionAllowed, false);
   });
 
-  it("accepts the actual governed Preview runtime shape when PostgreSQL exposes the endpoint identity", async () => {
+  it("rejects when endpoint ID would only pass by being synthesized from the project ID", async () => {
     replaceEnv({
       ...previewEnv,
-      DATABASE_URL: "postgresql://preview_user:preview_password@preview-db.internal/jcapital_preview",
-      DIRECT_URL: "postgresql://preview_user:preview_password@preview-db-direct.internal/jcapital_preview",
+      DATABASE_URL: "postgresql://preview_user:preview_password@ep-summer-star-72148368-pooler.us-east-2.aws.neon.tech/jcapital_preview",
+      DIRECT_URL: "postgresql://preview_user:preview_password@ep-summer-star-72148368.us-east-2.aws.neon.tech/jcapital_preview",
+      UEIP_PREVIEW_NEON_ENDPOINT_ID: "ep-summer-star-72148368",
     });
     restorePreflight = setRuntimePreflightTestOverridesForTest({
       infrastructureReport: await createReport(process.env),
-      databaseIdentityQuery: async () => observedEndpointIdentity(),
+      databaseIdentityQuery: async () => observedEndpointIdentity("ep-summer-star-72148368"),
       auditEvidenceResult: { available: true, status: "available", requiredTablesPresent: true },
     });
 
     const response = await GET(await adminRequest());
     const body = await response.json() as {
       readinessState: string;
-      databaseIdentity: {
-        status: string;
-        expectedNeonProjectMatched: boolean;
-        diagnostics: {
-          observedServerIdentity: string;
-          normalizedEndpointId: string;
-          normalizedProjectIdentity: string;
-          projectIdentitySource: string[];
-          endpointIdentitySource: string[];
-        };
-      };
+      databaseIdentity: { status: string; diagnostics: { endpointMatch: boolean; projectMatch: boolean } };
+      blockers: string[];
     };
 
     assert.equal(response.status, 200);
-    assert.equal(body.readinessState, "RUNTIME_READY");
-    assert.equal(body.databaseIdentity.status, "PREVIEW_DATABASE_IDENTITY_CERTIFIED");
-    assert.equal(body.databaseIdentity.expectedNeonProjectMatched, true);
-    assert.equal(body.databaseIdentity.diagnostics.observedServerIdentity, "ep-summer-star-72148368");
-    assert.equal(body.databaseIdentity.diagnostics.normalizedEndpointId, "ep-summer-star-72148368");
-    assert.equal(body.databaseIdentity.diagnostics.normalizedProjectIdentity, "summer-star-72148368");
-    assert.deepEqual(body.databaseIdentity.diagnostics.projectIdentitySource, ["postgresServerIdentity"]);
-    assert.deepEqual(body.databaseIdentity.diagnostics.endpointIdentitySource, ["postgresServerIdentity"]);
+    assert.equal(body.readinessState, "RUNTIME_BLOCKED");
+    assert.equal(body.databaseIdentity.status, "PREVIEW_DATABASE_IDENTITY_BLOCKED");
+    assert.equal(body.databaseIdentity.diagnostics.projectMatch, true);
+    assert.equal(body.databaseIdentity.diagnostics.endpointMatch, false);
+    assert.ok(body.blockers.some((blocker) => blocker.includes("configured_preview_neon_endpoint_mismatch")));
   });
 
   it("rejects a Production Neon endpoint identity in Preview", async () => {
@@ -272,6 +290,7 @@ describe("admin runtime preflight endpoint", () => {
       ...previewEnv,
       DATABASE_URL: "postgresql://preview_user:preview_password@production-db.internal/jcapital_preview",
       DIRECT_URL: "postgresql://preview_user:preview_password@production-db-direct.internal/jcapital_preview",
+      UEIP_PREVIEW_NEON_ENDPOINT_ID: "ep-production-main-123456",
     });
     restorePreflight = setRuntimePreflightTestOverridesForTest({
       infrastructureReport: await createReport(process.env),
@@ -296,12 +315,11 @@ describe("admin runtime preflight endpoint", () => {
   it("rejects a wrong structured Neon project identity", async () => {
     replaceEnv({
       ...previewEnv,
-      DATABASE_URL: "postgresql://preview_user:preview_password@wrong-db.internal/jcapital_preview",
-      DIRECT_URL: "postgresql://preview_user:preview_password@wrong-db-direct.internal/jcapital_preview",
+      UEIP_PREVIEW_NEON_PROJECT_ID: "wrong-project-123456",
     });
     restorePreflight = setRuntimePreflightTestOverridesForTest({
       infrastructureReport: await createReport(process.env),
-      databaseIdentityQuery: async () => observedEndpointIdentity("ep-wrong-project-123456"),
+      databaseIdentityQuery: async () => observedEndpointIdentity(),
       auditEvidenceResult: { available: true, status: "available", requiredTablesPresent: true },
     });
 
@@ -315,15 +333,14 @@ describe("admin runtime preflight endpoint", () => {
     assert.equal(response.status, 200);
     assert.equal(body.readinessState, "RUNTIME_BLOCKED");
     assert.equal(body.databaseIdentity.expectedNeonProjectMatched, false);
-    assert.ok(body.blockers.some((blocker) => blocker.includes("expected_preview_neon_project_not_detected")));
+    assert.ok(body.blockers.some((blocker) => blocker.includes("configured_preview_neon_project_mismatch")));
   });
 
   it("rejects a wrong explicit Neon endpoint identity", async () => {
     replaceEnv({
       ...previewEnv,
-      DATABASE_URL: "postgresql://preview_user:preview_password@preview-db.internal/jcapital_preview",
-      DIRECT_URL: "postgresql://preview_user:preview_password@preview-db-direct.internal/jcapital_preview",
       NEON_ENDPOINT_ID: "ep-wrong-project-123456",
+      UEIP_PREVIEW_NEON_ENDPOINT_ID: "ep-wrong-endpoint-123456",
     });
     restorePreflight = setRuntimePreflightTestOverridesForTest({
       infrastructureReport: await createReport(process.env),
@@ -342,6 +359,80 @@ describe("admin runtime preflight endpoint", () => {
     assert.equal(body.readinessState, "RUNTIME_BLOCKED");
     assert.equal(body.databaseIdentity.expectedNeonProjectMatched, false);
     assert.ok(body.blockers.some((blocker) => blocker.includes("preview_neon_identity_ambiguous")));
+  });
+
+  it("rejects a branch mismatch", async () => {
+    replaceEnv({
+      ...previewEnv,
+      UEIP_PREVIEW_NEON_BRANCH_NAME: "main",
+    });
+    restorePreflight = setRuntimePreflightTestOverridesForTest({
+      infrastructureReport: await createReport(process.env),
+      databaseIdentityQuery: async () => observedEndpointIdentity(),
+      auditEvidenceResult: { available: true, status: "available", requiredTablesPresent: true },
+    });
+
+    const response = await GET(await adminRequest());
+    const body = await response.json() as {
+      readinessState: string;
+      databaseIdentity: { diagnostics: { branchMatch: boolean } };
+      blockers: string[];
+    };
+
+    assert.equal(response.status, 200);
+    assert.equal(body.readinessState, "RUNTIME_BLOCKED");
+    assert.equal(body.databaseIdentity.diagnostics.branchMatch, false);
+    assert.ok(body.blockers.some((blocker) => blocker.includes("configured_preview_neon_branch_mismatch")));
+  });
+
+  it("rejects DATABASE_URL and DIRECT_URL endpoint disagreement", async () => {
+    replaceEnv({
+      ...previewEnv,
+      DIRECT_URL: "postgresql://preview_user:preview_password@ep-other-preview-123456.us-east-2.aws.neon.tech/jcapital_preview",
+    });
+    restorePreflight = setRuntimePreflightTestOverridesForTest({
+      infrastructureReport: await createReport(process.env),
+      databaseIdentityQuery: async () => observedEndpointIdentity(),
+      auditEvidenceResult: { available: true, status: "available", requiredTablesPresent: true },
+    });
+
+    const response = await GET(await adminRequest());
+    const body = await response.json() as {
+      readinessState: string;
+      databaseIdentity: { diagnostics: { directPooledAgreement: boolean; ambiguityDetected: boolean } };
+      blockers: string[];
+    };
+
+    assert.equal(response.status, 200);
+    assert.equal(body.readinessState, "RUNTIME_BLOCKED");
+    assert.equal(body.databaseIdentity.diagnostics.directPooledAgreement, false);
+    assert.equal(body.databaseIdentity.diagnostics.ambiguityDetected, true);
+    assert.ok(body.blockers.some((blocker) => blocker.includes("database_url_and_direct_url_endpoint_mismatch")));
+  });
+
+  it("does not infer project ID from endpoint text", async () => {
+    const missingProjectEnv = { ...previewEnv };
+    delete missingProjectEnv.UEIP_PREVIEW_NEON_PROJECT_ID;
+    replaceEnv(missingProjectEnv);
+    restorePreflight = setRuntimePreflightTestOverridesForTest({
+      infrastructureReport: await createReport(process.env),
+      databaseIdentityQuery: async () => observedEndpointIdentity(),
+      auditEvidenceResult: { available: true, status: "available", requiredTablesPresent: true },
+    });
+
+    const response = await GET(await adminRequest());
+    const body = await response.json() as {
+      readinessState: string;
+      databaseIdentity: { diagnostics: { configuredProjectId: null; projectMatch: boolean; endpointMatch: boolean } };
+      blockers: string[];
+    };
+
+    assert.equal(response.status, 200);
+    assert.equal(body.readinessState, "RUNTIME_BLOCKED");
+    assert.equal(body.databaseIdentity.diagnostics.configuredProjectId, null);
+    assert.equal(body.databaseIdentity.diagnostics.projectMatch, false);
+    assert.equal(body.databaseIdentity.diagnostics.endpointMatch, true);
+    assert.ok(body.blockers.some((blocker) => blocker.includes("preview_neon_identity_missing")));
   });
 
   it("rejects malformed Neon identity evidence", async () => {
