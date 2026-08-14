@@ -273,10 +273,8 @@ function evaluateExpectedNeonProjectMatch(
     configuredIdentity.endpointId === expectedEndpointId &&
     observedEndpointId === configuredIdentity.endpointId &&
     directPooledAgreement;
-  const branchEvidenceAvailable = Boolean(configuredIdentity.branchName || configuredIdentity.branchId || env.VERCEL_GIT_COMMIT_REF);
-  const branchMatch =
-    configuredIdentity.branchName === expectedPreviewBranch &&
-    (!env.VERCEL_GIT_COMMIT_REF || env.VERCEL_GIT_COMMIT_REF === expectedPreviewBranch);
+  const branchEvidenceAvailable = Boolean(configuredIdentity.branchName || configuredIdentity.branchId);
+  const branchMatch = configuredIdentity.branchName === expectedPreviewBranch;
   const databaseNameMatch =
     Boolean(configuredIdentity.databaseName && databaseUrl && directUrl) &&
     (databaseUrl?.databaseName ?? null) === configuredIdentity.databaseName &&
@@ -439,13 +437,13 @@ function applyRuntimeBlockers(
   return blockers.length > 0 || readinessState === "RUNTIME_BLOCKED" ? "RUNTIME_BLOCKED" : readinessState;
 }
 
-function getFallbackDatabaseIdentityDiagnostics(databaseIdentity: DatabaseIdentityResult, env: NodeJS.ProcessEnv): DatabaseIdentityDiagnostics {
+function getFallbackDatabaseIdentityDiagnostics(databaseIdentity: DatabaseIdentityResult): DatabaseIdentityDiagnostics {
   return {
     configuredProjectId: databaseIdentity.expectedNeonProjectMatched ? expectedPreviewNeonProject : null,
     configuredEndpointId: null,
     observedEndpointId: null,
     configuredBranchId: null,
-    configuredBranchName: env.VERCEL_GIT_COMMIT_REF ?? null,
+    configuredBranchName: null,
     configuredDatabaseName: null,
     expectedProjectIdentity: expectedPreviewNeonProject,
     expectedEndpointIdentity: expectedPreviewNeonEndpoint,
@@ -457,8 +455,8 @@ function getFallbackDatabaseIdentityDiagnostics(databaseIdentity: DatabaseIdenti
     directPooledAgreement: false,
     previewDistinctFromProduction: false,
     ambiguityDetected: false,
-    branchEvidenceAvailable: Boolean(env.VERCEL_GIT_COMMIT_REF),
-    branchMatch: env.VERCEL_GIT_COMMIT_REF === expectedPreviewBranch,
+    branchEvidenceAvailable: false,
+    branchMatch: false,
   };
 }
 
@@ -488,8 +486,11 @@ export async function runRuntimePreflightCertification(options: RuntimePreflight
   if (options.requirePreview && env.VERCEL_ENV !== "preview") {
     blockers.push("VERCEL_ENV must be preview for the runtime-preflight certification endpoint.");
   }
-  if (options.requirePreview && env.VERCEL_GIT_COMMIT_REF !== expectedPreviewBranch) {
-    blockers.push(`Preview runtime-preflight must run from ${expectedPreviewBranch}.`);
+  if (options.requirePreview && env.VERCEL !== "1") {
+    blockers.push("Preview runtime-preflight must run inside Vercel.");
+  }
+  if (options.requirePreview && !hasValue(env.VERCEL_GIT_COMMIT_SHA)) {
+    blockers.push("Preview runtime-preflight requires an immutable Vercel Git commit SHA.");
   }
   if (!databaseIdentity.certified) {
     blockers.push(...databaseIdentity.reasons.map((reason) => `Preview database identity: ${reason}.`));
@@ -534,7 +535,7 @@ export async function runRuntimePreflightCertification(options: RuntimePreflight
       expectedNeonProject: expectedPreviewNeonProject,
       databaseNameMatches: databaseIdentity.databaseNameMatches,
       expectedNeonProjectMatched: databaseIdentity.expectedNeonProjectMatched,
-      diagnostics: databaseIdentity.diagnostics ?? getFallbackDatabaseIdentityDiagnostics(databaseIdentity, env),
+      diagnostics: databaseIdentity.diagnostics ?? getFallbackDatabaseIdentityDiagnostics(databaseIdentity),
     },
     auditTrail: auditEvidence.status,
     readinessState: applyRuntimeBlockers(report.readinessState, blockers),
