@@ -24,7 +24,7 @@ type RuntimePreflightOptions = {
   infrastructureReport?: InfrastructureHealthReport;
   databaseIdentityResult?: DatabaseIdentityResult;
   auditEvidenceResult?: AuditEvidenceResult;
-  databaseIdentityQuery?: () => Promise<void>;
+  databaseIdentityQuery?: () => Promise<DatabaseIdentityQueryResult>;
 };
 
 type DatabaseIdentityResult = {
@@ -33,6 +33,7 @@ type DatabaseIdentityResult = {
   reasons: string[];
   databaseNameMatches: boolean;
   expectedNeonProjectMatched: boolean;
+  diagnostics?: DatabaseIdentityDiagnostics;
 };
 
 type ParsedDatabaseUrl = {
@@ -45,12 +46,35 @@ type NeonUrlIdentity = {
   endpointId: string | null;
   projectId: string | null;
   malformed: boolean;
+  source: string;
 };
 
 type AuditEvidenceResult = {
   available: boolean;
   status: "available" | "blocked";
   requiredTablesPresent: boolean;
+};
+
+type DatabaseIdentityQueryResult = {
+  observedServerIdentity: string | null;
+  observedDatabaseName: string | null;
+  observedBranchIdentity: string | null;
+};
+
+type DatabaseIdentityDiagnostics = {
+  observedServerIdentity: string | null;
+  normalizedEndpointId: string | null;
+  normalizedProjectIdentity: string | null;
+  expectedProjectIdentity: typeof expectedPreviewNeonProject;
+  expectedEndpointIdentity: `ep-${typeof expectedPreviewNeonProject}`;
+  projectIdentitySource: string[];
+  endpointIdentitySource: string[];
+  projectMatch: boolean;
+  endpointMatch: boolean;
+  databaseNameMatch: boolean;
+  ambiguityDetected: boolean;
+  branchEvidenceAvailable: boolean;
+  branchMatch: boolean;
 };
 
 export type RuntimePreflightCertification = {
@@ -81,6 +105,7 @@ export type RuntimePreflightCertification = {
     expectedNeonProject: typeof expectedPreviewNeonProject;
     databaseNameMatches: boolean;
     expectedNeonProjectMatched: boolean;
+    diagnostics: DatabaseIdentityDiagnostics;
   };
   auditTrail: "available" | "blocked" | "not_checked";
   readinessState: InfrastructureReadinessState;
@@ -117,7 +142,7 @@ function normalizeNeonEndpointId(value: string | undefined) {
   return normalized && /^ep-[a-z0-9]+(?:-[a-z0-9]+)*$/.test(normalized) ? normalized : null;
 }
 
-function parseNeonUrlIdentity(host: string): NeonUrlIdentity | null {
+function parseNeonUrlIdentity(host: string, source: string): NeonUrlIdentity | null {
   const normalizedHost = host.toLowerCase();
 
   if (!normalizedHost.endsWith(".neon.tech")) {
@@ -135,55 +160,121 @@ function parseNeonUrlIdentity(host: string): NeonUrlIdentity | null {
     endpointId,
     projectId: endpointId?.replace(/^ep-/, "") ?? null,
     malformed: !endpointId,
+    source,
   };
 }
 
-function parseDatabaseUrl(value: string | undefined): ParsedDatabaseUrl | null {
+function parseDatabaseUrl(value: string | undefined, source: string): ParsedDatabaseUrl | null {
   if (!value) return null;
 
   try {
     const url = new URL(value);
     return {
       databaseName: url.pathname.replace(/^\//, ""),
-      neon: parseNeonUrlIdentity(url.hostname),
+      neon: parseNeonUrlIdentity(url.hostname, source),
     };
   } catch {
     return null;
   }
 }
 
-function evaluateExpectedNeonProjectMatch(databaseUrl: ParsedDatabaseUrl | null, directUrl: ParsedDatabaseUrl | null, env: NodeJS.ProcessEnv) {
-  const expectedProjectId = normalizeNeonProjectId(expectedPreviewNeonProject);
-  const explicitProjectIds = [env.NEON_PROJECT_ID, env.NEON_PROJECT_NAME]
-    .map(normalizeNeonProjectId)
-    .filter((value): value is string => Boolean(value));
-  const explicitEndpointIds = [env.NEON_ENDPOINT_ID, env.NEON_DATABASE_ENDPOINT_ID]
-    .map(normalizeNeonEndpointId)
-    .filter((value): value is string => Boolean(value));
-  const parsedIdentities = [databaseUrl?.neon, directUrl?.neon].filter((value): value is NeonUrlIdentity => Boolean(value));
-  const projectCandidates = new Set<string>([
-    ...explicitProjectIds,
-    ...explicitEndpointIds.map((endpointId) => endpointId.replace(/^ep-/, "")),
-    ...parsedIdentities.map((identity) => identity.projectId).filter((value): value is string => Boolean(value)),
-  ]);
-  const endpointCandidates = new Set<string>([
-    ...explicitEndpointIds,
-    ...parsedIdentities.map((identity) => identity.endpointId).filter((value): value is string => Boolean(value)),
-  ]);
-  const malformed = parsedIdentities.some((identity) => identity.malformed);
-  const ambiguous = projectCandidates.size > 1 || endpointCandidates.size > 1;
+function normalizeObservedServerIdentity(value: string | null): NeonUrlIdentity | null {
+  const endpointId = normalizeNeonEndpointId(value ?? undefined);
+  if (!value || !endpointId) return null;
 
   return {
-    matched: Boolean(expectedProjectId && projectCandidates.size === 1 && projectCandidates.has(expectedProjectId) && !malformed && !ambiguous),
+    host: "postgresql_server_identity",
+    endpointId,
+    projectId: endpointId.replace(/^ep-/, ""),
+    malformed: false,
+    source: "postgresServerIdentity",
+  };
+}
+
+function evaluateExpectedNeonProjectMatch(
+  databaseUrl: ParsedDatabaseUrl | null,
+  directUrl: ParsedDatabaseUrl | null,
+  env: NodeJS.ProcessEnv,
+  queryResult: DatabaseIdentityQueryResult | null,
+  databaseNameMatches: boolean,
+) {
+  const expectedProjectId = normalizeNeonProjectId(expectedPreviewNeonProject);
+  const expectedProjectIdentity: typeof expectedPreviewNeonProject = expectedPreviewNeonProject;
+  const expectedEndpointId = `ep-${expectedPreviewNeonProject}` as const;
+  const projectCandidates = new Map<string, string[]>();
+  const endpointCandidates = new Map<string, string[]>();
+  const malformedExplicitProject =
+    (hasValue(env.NEON_PROJECT_ID) && !normalizeNeonProjectId(env.NEON_PROJECT_ID)) ||
+    (hasValue(env.NEON_PROJECT_NAME) && !normalizeNeonProjectId(env.NEON_PROJECT_NAME));
+  const malformedExplicitEndpoint =
+    (hasValue(env.NEON_ENDPOINT_ID) && !normalizeNeonEndpointId(env.NEON_ENDPOINT_ID)) ||
+    (hasValue(env.NEON_DATABASE_ENDPOINT_ID) && !normalizeNeonEndpointId(env.NEON_DATABASE_ENDPOINT_ID));
+  const parsedIdentities = [
+    databaseUrl?.neon,
+    directUrl?.neon,
+    normalizeObservedServerIdentity(queryResult?.observedServerIdentity ?? null),
+  ].filter((value): value is NeonUrlIdentity => Boolean(value));
+
+  function addCandidate(candidates: Map<string, string[]>, value: string | null, source: string) {
+    if (!value) return;
+
+    candidates.set(value, [...(candidates.get(value) ?? []), source]);
+  }
+
+  addCandidate(projectCandidates, normalizeNeonProjectId(env.NEON_PROJECT_ID), "NEON_PROJECT_ID");
+  addCandidate(projectCandidates, normalizeNeonProjectId(env.NEON_PROJECT_NAME), "NEON_PROJECT_NAME");
+  addCandidate(endpointCandidates, normalizeNeonEndpointId(env.NEON_ENDPOINT_ID), "NEON_ENDPOINT_ID");
+  addCandidate(endpointCandidates, normalizeNeonEndpointId(env.NEON_DATABASE_ENDPOINT_ID), "NEON_DATABASE_ENDPOINT_ID");
+
+  for (const endpointId of endpointCandidates.keys()) {
+    addCandidate(projectCandidates, endpointId.replace(/^ep-/, ""), "endpointEnv");
+  }
+
+  for (const identity of parsedIdentities) {
+    addCandidate(projectCandidates, identity.projectId, identity.source);
+    addCandidate(endpointCandidates, identity.endpointId, identity.source);
+  }
+
+  const malformed = malformedExplicitProject || malformedExplicitEndpoint || parsedIdentities.some((identity) => identity.malformed);
+  const ambiguous = projectCandidates.size > 1 || endpointCandidates.size > 1;
+  const normalizedProjectIdentity = projectCandidates.size === 1 ? [...projectCandidates.keys()][0] : null;
+  const normalizedEndpointId = endpointCandidates.size === 1 ? [...endpointCandidates.keys()][0] : null;
+  const projectMatch = Boolean(expectedProjectId && normalizedProjectIdentity === expectedProjectId);
+  const endpointMatch = normalizedEndpointId === expectedEndpointId;
+  const branchIdentity = normalizeNeonProjectId(queryResult?.observedBranchIdentity ?? undefined);
+  const explicitBranchIdentity = normalizeNeonProjectId(env.NEON_BRANCH_NAME);
+  const branchEvidenceAvailable = Boolean(branchIdentity || explicitBranchIdentity || env.VERCEL_GIT_COMMIT_REF);
+  const branchMatch =
+    branchIdentity === expectedPreviewBranch ||
+    explicitBranchIdentity === expectedPreviewBranch ||
+    env.VERCEL_GIT_COMMIT_REF === expectedPreviewBranch;
+
+  return {
+    matched: Boolean(projectMatch && (!normalizedEndpointId || endpointMatch) && !malformed && !ambiguous),
     malformed,
     ambiguous,
     hasStructuredEvidence: projectCandidates.size > 0 || endpointCandidates.size > 0,
+    diagnostics: {
+      observedServerIdentity: queryResult?.observedServerIdentity ?? null,
+      normalizedEndpointId,
+      normalizedProjectIdentity,
+      expectedProjectIdentity,
+      expectedEndpointIdentity: expectedEndpointId,
+      projectIdentitySource: normalizedProjectIdentity ? projectCandidates.get(normalizedProjectIdentity) ?? [] : [],
+      endpointIdentitySource: normalizedEndpointId ? endpointCandidates.get(normalizedEndpointId) ?? [] : [],
+      projectMatch,
+      endpointMatch,
+      databaseNameMatch: databaseNameMatches,
+      ambiguityDetected: ambiguous,
+      branchEvidenceAvailable,
+      branchMatch,
+    },
   };
 }
 
 async function checkRuntimeDatabaseIdentity(env: NodeJS.ProcessEnv, identityQuery = runDatabaseIdentityQuery): Promise<DatabaseIdentityResult> {
-  const databaseUrl = parseDatabaseUrl(env.DATABASE_URL);
-  const directUrl = parseDatabaseUrl(env.DIRECT_URL);
+  const databaseUrl = parseDatabaseUrl(env.DATABASE_URL, "databaseUrlHost");
+  const directUrl = parseDatabaseUrl(env.DIRECT_URL, "directUrlHost");
   const reasons: string[] = [];
 
   if (!databaseUrl) reasons.push("database_url_missing_or_invalid");
@@ -192,20 +283,21 @@ async function checkRuntimeDatabaseIdentity(env: NodeJS.ProcessEnv, identityQuer
   const databaseNameMatches = Boolean(databaseUrl && directUrl && databaseUrl.databaseName === directUrl.databaseName);
   if (!databaseNameMatches) reasons.push("database_url_and_direct_url_database_name_mismatch");
 
-  const neonProjectMatch = evaluateExpectedNeonProjectMatch(databaseUrl, directUrl, env);
+  let queryResult: DatabaseIdentityQueryResult | null = null;
+  if (databaseUrl && directUrl && databaseNameMatches) {
+    try {
+      queryResult = await identityQuery();
+    } catch {
+      reasons.push("database_identity_query_failed");
+    }
+  }
+
+  const neonProjectMatch = evaluateExpectedNeonProjectMatch(databaseUrl, directUrl, env, queryResult, databaseNameMatches);
   const expectedNeonProjectMatched = neonProjectMatch.matched;
   if (neonProjectMatch.malformed) reasons.push("preview_neon_identity_malformed");
   if (neonProjectMatch.ambiguous) reasons.push("preview_neon_identity_ambiguous");
   if (!neonProjectMatch.hasStructuredEvidence) reasons.push("preview_neon_identity_missing");
   if (!expectedNeonProjectMatched) reasons.push("expected_preview_neon_project_not_detected");
-
-  if (reasons.length === 0) {
-    try {
-      await identityQuery();
-    } catch {
-      reasons.push("database_identity_query_failed");
-    }
-  }
 
   return {
     certified: reasons.length === 0,
@@ -213,13 +305,37 @@ async function checkRuntimeDatabaseIdentity(env: NodeJS.ProcessEnv, identityQuer
     reasons,
     databaseNameMatches,
     expectedNeonProjectMatched,
+    diagnostics: neonProjectMatch.diagnostics,
   };
 }
 
-async function runDatabaseIdentityQuery() {
-  await prisma.$queryRaw<Array<{ current_database: string; current_user: string }>>`
-    SELECT current_database(), current_user
+async function runDatabaseIdentityQuery(): Promise<DatabaseIdentityQueryResult> {
+  const rows = await prisma.$queryRaw<Array<{
+    current_database: string;
+    neon_endpoint_id: string | null;
+    neon_compute_id: string | null;
+    neon_project_id: string | null;
+    neon_branch_name: string | null;
+  }>>`
+    SELECT
+      current_database(),
+      NULLIF(current_setting('neon.endpoint_id', true), '') AS neon_endpoint_id,
+      NULLIF(current_setting('neon.compute_id', true), '') AS neon_compute_id,
+      NULLIF(current_setting('neon.project_id', true), '') AS neon_project_id,
+      NULLIF(current_setting('neon.branch_name', true), '') AS neon_branch_name
   `;
+  const observedServerIdentity =
+    normalizeNeonEndpointId(rows[0]?.neon_endpoint_id ?? undefined) ??
+    normalizeNeonEndpointId(rows[0]?.neon_compute_id ?? undefined) ??
+    (normalizeNeonProjectId(rows[0]?.neon_project_id ?? undefined)
+      ? `ep-${normalizeNeonProjectId(rows[0]?.neon_project_id ?? undefined)}`
+      : null);
+
+  return {
+    observedServerIdentity,
+    observedDatabaseName: rows[0]?.current_database ?? null,
+    observedBranchIdentity: rows[0]?.neon_branch_name ?? null,
+  };
 }
 
 async function checkAuditEvidenceAvailability(databaseReady: boolean): Promise<AuditEvidenceResult> {
@@ -263,6 +379,26 @@ function applyRuntimeBlockers(
   blockers: string[],
 ): InfrastructureReadinessState {
   return blockers.length > 0 || readinessState === "RUNTIME_BLOCKED" ? "RUNTIME_BLOCKED" : readinessState;
+}
+
+function getFallbackDatabaseIdentityDiagnostics(databaseIdentity: DatabaseIdentityResult, env: NodeJS.ProcessEnv): DatabaseIdentityDiagnostics {
+  const expectedEndpointIdentity = `ep-${expectedPreviewNeonProject}` as const;
+
+  return {
+    observedServerIdentity: null,
+    normalizedEndpointId: null,
+    normalizedProjectIdentity: databaseIdentity.expectedNeonProjectMatched ? expectedPreviewNeonProject : null,
+    expectedProjectIdentity: expectedPreviewNeonProject,
+    expectedEndpointIdentity,
+    projectIdentitySource: databaseIdentity.expectedNeonProjectMatched ? ["testOverride"] : [],
+    endpointIdentitySource: [],
+    projectMatch: databaseIdentity.expectedNeonProjectMatched,
+    endpointMatch: false,
+    databaseNameMatch: databaseIdentity.databaseNameMatches,
+    ambiguityDetected: false,
+    branchEvidenceAvailable: Boolean(env.VERCEL_GIT_COMMIT_REF),
+    branchMatch: env.VERCEL_GIT_COMMIT_REF === expectedPreviewBranch,
+  };
 }
 
 export async function runRuntimePreflightCertification(options: RuntimePreflightOptions = {}): Promise<RuntimePreflightCertification> {
@@ -337,6 +473,7 @@ export async function runRuntimePreflightCertification(options: RuntimePreflight
       expectedNeonProject: expectedPreviewNeonProject,
       databaseNameMatches: databaseIdentity.databaseNameMatches,
       expectedNeonProjectMatched: databaseIdentity.expectedNeonProjectMatched,
+      diagnostics: databaseIdentity.diagnostics ?? getFallbackDatabaseIdentityDiagnostics(databaseIdentity, env),
     },
     auditTrail: auditEvidence.status,
     readinessState: applyRuntimeBlockers(report.readinessState, blockers),
