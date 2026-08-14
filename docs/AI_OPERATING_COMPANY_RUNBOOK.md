@@ -74,18 +74,21 @@ Use these diagnostics instead of ad hoc secret checks:
 - `npm run diagnose`: redacted local diagnostic snapshot.
 - `npm run diagnose:infra`: redacted infrastructure and database posture.
 - `npm run diagnose:connectors`: connector readiness without provider calls unless explicitly enabled.
-- `npm run verify:predeploy`: predeployment blocker check.
+- `npm run infra:preflight`: configuration readiness only; `CONFIGURATION_READY_RUNTIME_NOT_VERIFIED` is not operational health.
+- `npm run infra:runtime-preflight`: runtime certification with database-backed audit visibility.
+- `npm run verify:predeploy`: runtime predeployment blocker check.
 
 Never use `vercel env pull` or `vercel env ls` as proof that sensitive secret values are present or absent.
 
 ## Deployment Flow
 
-1. Run `npm run infra:preflight`.
-2. Run `npm test`.
-3. Run `npm run build`.
-4. Deploy Preview only unless Production deploy is explicitly authorized.
-5. Use `vercel curl` for protected Preview diagnostics.
-6. Promote or deploy Production only after the runtime health gate is clean.
+1. Run `npm run infra:preflight` for build-safe configuration readiness.
+2. Run `npm run infra:runtime-preflight` before Production promotion or runtime certification.
+3. Run `npm test`.
+4. Run `npm run build`.
+5. Deploy Preview only unless Production deploy is explicitly authorized.
+6. Use `vercel curl` for protected Preview diagnostics.
+7. Promote or deploy Production only after the runtime health gate is clean.
 
 ### Two-Tier Production Gate
 

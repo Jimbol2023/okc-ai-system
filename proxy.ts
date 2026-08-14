@@ -16,6 +16,20 @@ async function hasActiveSession(request: NextRequest) {
   }
 }
 
+const governedCronRoutes = new Set([
+  "/api/company/executive-autonomy/daily-startup",
+  "/api/operations/read-only-sync",
+]);
+
+export function isGovernedCronRequest(request: NextRequest) {
+  const configuredSecret = process.env.CRON_SECRET?.trim();
+  const authorization = request.headers.get("authorization") || "";
+
+  return Boolean(configuredSecret) &&
+    governedCronRoutes.has(request.nextUrl.pathname) &&
+    authorization === `Bearer ${configuredSecret}`;
+}
+
 export async function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
   const method = request.method.toUpperCase();

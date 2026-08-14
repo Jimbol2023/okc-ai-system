@@ -146,10 +146,47 @@ describe("infrastructure health", () => {
     const readiness = report.schemaReadiness.businessDataSnapshot;
 
     assert.equal(report.ok, true);
+    assert.equal(report.certificationScope, "configuration");
+    assert.equal(report.readinessState, "CONFIGURATION_READY_RUNTIME_NOT_VERIFIED");
     assert.equal(readiness.status, "not_checked");
     assert.equal(readiness.pendingMigration, false);
     assert.equal(readiness.safety.providerCalled, false);
     assert.equal(readiness.safety.liveExecutionAllowed, false);
+    assert.equal(report.auditTrail.status, "not_checked");
+    assert.equal(report.auditTrail.engineeringException, false);
+  });
+
+  it("reports runtime readiness only when database-backed audit visibility is available", async () => {
+    const report = await getInfrastructureHealth({
+      env: createBaseEnv(),
+      includeDatabase: true,
+      includeSchemaReadiness: true,
+      includeOAuth: false,
+      databaseCheckResult: { checked: true, ok: true, status: "ok" },
+      businessDataSnapshotColumns: hardenedBusinessDataSnapshotColumns,
+    });
+
+    assert.equal(report.certificationScope, "runtime");
+    assert.equal(report.readinessState, "RUNTIME_READY");
+    assert.equal(report.auditTrail.status, "available");
+    assert.equal(report.auditTrail.requiredForOperationalHealth, true);
+    assert.equal(report.auditTrail.engineeringException, false);
+  });
+
+  it("fails closed to an engineering exception when audit evidence is required but unavailable", async () => {
+    const report = await getInfrastructureHealth({
+      env: createBaseEnv(),
+      includeDatabase: true,
+      includeSchemaReadiness: true,
+      includeOAuth: false,
+    });
+
+    if (report.database.ok) return;
+
+    assert.equal(report.certificationScope, "runtime");
+    assert.equal(report.readinessState, "RUNTIME_BLOCKED");
+    assert.equal(report.auditTrail.status, "blocked");
+    assert.equal(report.auditTrail.engineeringException, true);
   });
 
   it("refreshes Google OAuth with a redacted success result", async () => {

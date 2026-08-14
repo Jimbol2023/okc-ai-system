@@ -52,7 +52,9 @@ async function main() {
   const payload = {
     mode,
     ok: report.ok,
-    status: report.status,
+    status: report.readinessState,
+    legacyStatus: report.status,
+    certificationScope: report.certificationScope,
     environment: report.environment,
     generatedAt: report.generatedAt,
     blockers: report.blockers,

@@ -9,9 +9,12 @@ async function main() {
   });
   const summary = {
     environment: report.environment,
-    status: report.status,
+    certificationScope: report.certificationScope,
+    readinessState: report.readinessState,
     blockers: report.blockers,
     warnings: report.warnings,
+    database: report.database,
+    auditTrail: report.auditTrail,
     operatorActions: report.operatorActions,
     providerCalled: report.providerCalled,
     liveExecutionAllowed: report.liveExecutionAllowed,

@@ -2,6 +2,13 @@ import { prisma } from "@/lib/prisma";
 
 export type RuntimeEnvironment = "development" | "preview" | "production";
 export type InfrastructureStatus = "healthy" | "warning" | "blocked";
+export type InfrastructureReadinessState =
+  | "CONFIGURATION_READY_RUNTIME_NOT_VERIFIED"
+  | "CONFIGURATION_WARNING_RUNTIME_NOT_VERIFIED"
+  | "CONFIGURATION_BLOCKED_RUNTIME_NOT_VERIFIED"
+  | "RUNTIME_READY"
+  | "RUNTIME_WARNING"
+  | "RUNTIME_BLOCKED";
 export type EnvRequirementLevel = "critical" | "connector" | "optional";
 export type EnvKeyStatus = "present" | "empty" | "missing" | "placeholder";
 export type OAuthErrorType = "missing_configuration" | "provider_rejected" | "network_error";
@@ -68,6 +75,8 @@ export type BusinessDataSnapshotSchemaReadiness = {
 export type InfrastructureHealthReport = {
   ok: boolean;
   status: InfrastructureStatus;
+  readinessState: InfrastructureReadinessState;
+  certificationScope: "configuration" | "runtime";
   environment: RuntimeEnvironment;
   generatedAt: string;
   env: {
@@ -98,6 +107,8 @@ export type InfrastructureHealthReport = {
     checked: boolean;
     status: "available" | "blocked" | "not_checked";
     message: string;
+    requiredForOperationalHealth: boolean;
+    engineeringException: boolean;
     rawSecretsLogged: false;
   };
   build: {
@@ -133,6 +144,11 @@ type InfrastructureHealthOptions = {
   includeOAuth?: boolean;
   fetcher?: typeof fetch;
   businessDataSnapshotColumns?: string[];
+  databaseCheckResult?: {
+    checked: boolean;
+    ok: boolean | null;
+    status: "ok" | "error" | "not_checked";
+  };
 };
 
 const placeholderFragments = [
@@ -496,6 +512,22 @@ function createOperatorActions(blockers: string[], warnings: string[]) {
   return Array.from(actions);
 }
 
+function createReadinessState(input: {
+  blockers: string[];
+  warnings: string[];
+  databaseChecked: boolean;
+}): InfrastructureReadinessState {
+  if (!input.databaseChecked) {
+    if (input.blockers.length > 0) return "CONFIGURATION_BLOCKED_RUNTIME_NOT_VERIFIED";
+    if (input.warnings.length > 0) return "CONFIGURATION_WARNING_RUNTIME_NOT_VERIFIED";
+    return "CONFIGURATION_READY_RUNTIME_NOT_VERIFIED";
+  }
+
+  if (input.blockers.length > 0) return "RUNTIME_BLOCKED";
+  if (input.warnings.length > 0) return "RUNTIME_WARNING";
+  return "RUNTIME_READY";
+}
+
 export async function getInfrastructureHealth(options: InfrastructureHealthOptions = {}): Promise<InfrastructureHealthReport> {
   const env = options.env ?? process.env;
   const runtime = getRuntimeEnvironment(env);
@@ -509,7 +541,7 @@ export async function getInfrastructureHealth(options: InfrastructureHealthOptio
   safetyGates.approvedExecutionExternalReady = safetyGates.approvedExecutionEnabled && safetyGates.approvedExecutionProductionSmokePassed;
 
   const [database, googleOAuth] = await Promise.all([
-    checkDatabase(options.includeDatabase ?? true),
+    options.databaseCheckResult ?? checkDatabase(options.includeDatabase ?? true),
     checkGoogleOAuthReadiness(env, {
       includeOAuth: options.includeOAuth ?? true,
       fetcher: options.fetcher,
@@ -548,11 +580,18 @@ export async function getInfrastructureHealth(options: InfrastructureHealthOptio
   }
 
   const status: InfrastructureStatus = blockers.length > 0 ? "blocked" : warnings.length > 0 ? "warning" : "healthy";
+  const readinessState = createReadinessState({
+    blockers,
+    warnings,
+    databaseChecked: database.checked,
+  });
   const operatorActions = createOperatorActions(blockers, warnings);
 
   return {
     ok: blockers.length === 0,
     status,
+    readinessState,
+    certificationScope: database.checked ? "runtime" : "configuration",
     environment: runtime,
     generatedAt: new Date().toISOString(),
     env: envHealth,
@@ -573,6 +612,8 @@ export async function getInfrastructureHealth(options: InfrastructureHealthOptio
           ? "Database-backed audit and operating-loop records can be checked by runtime workflows."
           : "Database-backed audit visibility is blocked until database connectivity is restored."
         : "Audit persistence was not checked by this diagnostic mode.",
+      requiredForOperationalHealth: database.checked,
+      engineeringException: database.checked && !database.ok,
       rawSecretsLogged: false,
     },
     build: {

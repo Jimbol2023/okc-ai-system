@@ -8,6 +8,7 @@ Standard validation commands:
 npm.cmd run prisma:generate
 .\node_modules\.bin\tsc.cmd --noEmit
 npm.cmd run infra:preflight
+npm.cmd run infra:runtime-preflight
 npm.cmd run lint
 npm.cmd run build
 ```
@@ -46,11 +47,21 @@ vercel curl /api/admin/infrastructure-health --deployment https://<preview-url> 
 
 If app admin authentication is required, sign in through `/api/auth/login` with a temporary cookie jar and then call the endpoint with that cookie. Do not print credentials or secret values in terminal output.
 
-`npm run infra:preflight` runs before `npm run build`.
+`npm run infra:preflight` runs before `npm run build` and certifies configuration only.
 
-- Development and Preview report warnings without failing the build.
-- Production fails the build when critical blockers exist.
+- Its success state is `CONFIGURATION_READY_RUNTIME_NOT_VERIFIED`; it must not be used as runtime health proof.
+- Development and Preview report warnings without failing build-only workflows.
+- Production promotion and runtime certification require `npm run infra:runtime-preflight`.
+- `infra:runtime-preflight` checks governed database connectivity, audit visibility, schema readiness, and runtime-critical dependencies. It fails closed when database-backed audit evidence is unavailable.
 - Provider token exchange checks run only when `INFRA_PREFLIGHT_PROVIDER_CHECKS=true`.
+
+## Execution Capability Wording
+
+CONTROLLED EXECUTION IMPLEMENTED means provider-capable paths may exist in code behind feature flags, exact approvals, connector configuration, smoke evidence, audit logging, and Safe Auto Mode checks.
+
+LIVE EXECUTION AUTHORIZED means a specific governed policy has authorized one exact external action at runtime.
+
+The default Production posture remains provider/external execution disabled. Provider-capable code paths do not authorize Gmail, Calendar, Drive, webhooks, SMS, publishing, outreach, ads, scraping, or CRM mutations by themselves.
 
 ## Production Operating Runbook
 
