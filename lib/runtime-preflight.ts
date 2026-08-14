@@ -24,6 +24,7 @@ type RuntimePreflightOptions = {
   infrastructureReport?: InfrastructureHealthReport;
   databaseIdentityResult?: DatabaseIdentityResult;
   auditEvidenceResult?: AuditEvidenceResult;
+  databaseIdentityQuery?: () => Promise<void>;
 };
 
 type DatabaseIdentityResult = {
@@ -32,6 +33,18 @@ type DatabaseIdentityResult = {
   reasons: string[];
   databaseNameMatches: boolean;
   expectedNeonProjectMatched: boolean;
+};
+
+type ParsedDatabaseUrl = {
+  databaseName: string;
+  neon: NeonUrlIdentity | null;
+};
+
+type NeonUrlIdentity = {
+  host: string;
+  endpointId: string | null;
+  projectId: string | null;
+  malformed: boolean;
 };
 
 type AuditEvidenceResult = {
@@ -92,24 +105,83 @@ function hasValue(value: string | undefined) {
   return Boolean(value?.trim());
 }
 
-function parseDatabaseUrl(value: string | undefined) {
+function normalizeNeonProjectId(value: string | undefined) {
+  const normalized = value?.trim().toLowerCase();
+
+  return normalized && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(normalized) ? normalized : null;
+}
+
+function normalizeNeonEndpointId(value: string | undefined) {
+  const normalized = value?.trim().toLowerCase();
+
+  return normalized && /^ep-[a-z0-9]+(?:-[a-z0-9]+)*$/.test(normalized) ? normalized : null;
+}
+
+function parseNeonUrlIdentity(host: string): NeonUrlIdentity | null {
+  const normalizedHost = host.toLowerCase();
+
+  if (!normalizedHost.endsWith(".neon.tech")) {
+    return null;
+  }
+
+  const primaryLabel = normalizedHost.split(".")[0];
+  const endpointLabel = primaryLabel.endsWith("-pooler")
+    ? primaryLabel.slice(0, -"-pooler".length)
+    : primaryLabel;
+  const endpointId = normalizeNeonEndpointId(endpointLabel);
+
+  return {
+    host: normalizedHost,
+    endpointId,
+    projectId: endpointId?.replace(/^ep-/, "") ?? null,
+    malformed: !endpointId,
+  };
+}
+
+function parseDatabaseUrl(value: string | undefined): ParsedDatabaseUrl | null {
   if (!value) return null;
 
   try {
     const url = new URL(value);
     return {
       databaseName: url.pathname.replace(/^\//, ""),
+      neon: parseNeonUrlIdentity(url.hostname),
     };
   } catch {
     return null;
   }
 }
 
-function containsExpectedPreviewProject(value: string | undefined) {
-  return Boolean(value?.toLowerCase().includes(expectedPreviewNeonProject));
+function evaluateExpectedNeonProjectMatch(databaseUrl: ParsedDatabaseUrl | null, directUrl: ParsedDatabaseUrl | null, env: NodeJS.ProcessEnv) {
+  const expectedProjectId = normalizeNeonProjectId(expectedPreviewNeonProject);
+  const explicitProjectIds = [env.NEON_PROJECT_ID, env.NEON_PROJECT_NAME]
+    .map(normalizeNeonProjectId)
+    .filter((value): value is string => Boolean(value));
+  const explicitEndpointIds = [env.NEON_ENDPOINT_ID, env.NEON_DATABASE_ENDPOINT_ID]
+    .map(normalizeNeonEndpointId)
+    .filter((value): value is string => Boolean(value));
+  const parsedIdentities = [databaseUrl?.neon, directUrl?.neon].filter((value): value is NeonUrlIdentity => Boolean(value));
+  const projectCandidates = new Set<string>([
+    ...explicitProjectIds,
+    ...explicitEndpointIds.map((endpointId) => endpointId.replace(/^ep-/, "")),
+    ...parsedIdentities.map((identity) => identity.projectId).filter((value): value is string => Boolean(value)),
+  ]);
+  const endpointCandidates = new Set<string>([
+    ...explicitEndpointIds,
+    ...parsedIdentities.map((identity) => identity.endpointId).filter((value): value is string => Boolean(value)),
+  ]);
+  const malformed = parsedIdentities.some((identity) => identity.malformed);
+  const ambiguous = projectCandidates.size > 1 || endpointCandidates.size > 1;
+
+  return {
+    matched: Boolean(expectedProjectId && projectCandidates.size === 1 && projectCandidates.has(expectedProjectId) && !malformed && !ambiguous),
+    malformed,
+    ambiguous,
+    hasStructuredEvidence: projectCandidates.size > 0 || endpointCandidates.size > 0,
+  };
 }
 
-async function checkRuntimeDatabaseIdentity(env: NodeJS.ProcessEnv): Promise<DatabaseIdentityResult> {
+async function checkRuntimeDatabaseIdentity(env: NodeJS.ProcessEnv, identityQuery = runDatabaseIdentityQuery): Promise<DatabaseIdentityResult> {
   const databaseUrl = parseDatabaseUrl(env.DATABASE_URL);
   const directUrl = parseDatabaseUrl(env.DIRECT_URL);
   const reasons: string[] = [];
@@ -120,18 +192,16 @@ async function checkRuntimeDatabaseIdentity(env: NodeJS.ProcessEnv): Promise<Dat
   const databaseNameMatches = Boolean(databaseUrl && directUrl && databaseUrl.databaseName === directUrl.databaseName);
   if (!databaseNameMatches) reasons.push("database_url_and_direct_url_database_name_mismatch");
 
-  const expectedNeonProjectMatched =
-    containsExpectedPreviewProject(env.DATABASE_URL) ||
-    containsExpectedPreviewProject(env.DIRECT_URL) ||
-    env.NEON_PROJECT_ID === expectedPreviewNeonProject ||
-    env.NEON_PROJECT_NAME === expectedPreviewNeonProject;
+  const neonProjectMatch = evaluateExpectedNeonProjectMatch(databaseUrl, directUrl, env);
+  const expectedNeonProjectMatched = neonProjectMatch.matched;
+  if (neonProjectMatch.malformed) reasons.push("preview_neon_identity_malformed");
+  if (neonProjectMatch.ambiguous) reasons.push("preview_neon_identity_ambiguous");
+  if (!neonProjectMatch.hasStructuredEvidence) reasons.push("preview_neon_identity_missing");
   if (!expectedNeonProjectMatched) reasons.push("expected_preview_neon_project_not_detected");
 
   if (reasons.length === 0) {
     try {
-      await prisma.$queryRaw<Array<{ current_database: string; current_user: string }>>`
-        SELECT current_database(), current_user
-      `;
+      await identityQuery();
     } catch {
       reasons.push("database_identity_query_failed");
     }
@@ -144,6 +214,12 @@ async function checkRuntimeDatabaseIdentity(env: NodeJS.ProcessEnv): Promise<Dat
     databaseNameMatches,
     expectedNeonProjectMatched,
   };
+}
+
+async function runDatabaseIdentityQuery() {
+  await prisma.$queryRaw<Array<{ current_database: string; current_user: string }>>`
+    SELECT current_database(), current_user
+  `;
 }
 
 async function checkAuditEvidenceAvailability(databaseReady: boolean): Promise<AuditEvidenceResult> {
@@ -205,7 +281,7 @@ export async function runRuntimePreflightCertification(options: RuntimePreflight
   const databaseIdentity =
     options.databaseIdentityResult ??
     activeOverrides.databaseIdentityResult ??
-    await checkRuntimeDatabaseIdentity(env);
+    await checkRuntimeDatabaseIdentity(env, options.databaseIdentityQuery ?? activeOverrides.databaseIdentityQuery);
   const auditEvidence =
     options.auditEvidenceResult ??
     activeOverrides.auditEvidenceResult ??

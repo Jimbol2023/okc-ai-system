@@ -26,8 +26,8 @@ const previewEnv: NodeJS.ProcessEnv = {
   VERCEL_PROJECT_PRODUCTION_URL: "jcapitalpropertygroup.com",
   VERCEL_GIT_COMMIT_REF: "vercel-preview",
   VERCEL_GIT_COMMIT_SHA: "abc123runtimepreflight",
-  DATABASE_URL: "postgresql://preview_user:preview_password@summer-star-72148368-pooler.neon.tech/jcapital_preview",
-  DIRECT_URL: "postgresql://preview_user:preview_password@summer-star-72148368.neon.tech/jcapital_preview",
+  DATABASE_URL: "postgresql://preview_user:preview_password@ep-summer-star-72148368-pooler.us-east-2.aws.neon.tech/jcapital_preview",
+  DIRECT_URL: "postgresql://preview_user:preview_password@ep-summer-star-72148368.us-east-2.aws.neon.tech/jcapital_preview",
   AUTH_SECRET: "preview-auth-secret-at-least-32-chars",
   ADMIN_EMAIL: "admin@jcapital.test",
   ADMIN_PASSWORD: "preview-admin-password",
@@ -166,6 +166,130 @@ describe("admin runtime preflight endpoint", () => {
     assert.equal(body.providerCalled, false);
     assert.equal(body.liveExecutionAllowed, false);
     assert.equal(credentialValues.some((value) => serialized.includes(value)), false);
+  });
+
+  it("accepts the governed Preview Neon endpoint identity", async () => {
+    restorePreflight = setRuntimePreflightTestOverridesForTest({
+      infrastructureReport: await createReport(process.env),
+      databaseIdentityQuery: async () => undefined,
+      auditEvidenceResult: { available: true, status: "available", requiredTablesPresent: true },
+    });
+
+    const response = await GET(await adminRequest());
+    const body = await response.json() as {
+      readinessState: string;
+      databaseIdentity: { status: string; expectedNeonProjectMatched: boolean; databaseNameMatches: boolean };
+      providerCalled: boolean;
+      liveExecutionAllowed: boolean;
+    };
+
+    assert.equal(response.status, 200);
+    assert.equal(body.readinessState, "RUNTIME_READY");
+    assert.equal(body.databaseIdentity.status, "PREVIEW_DATABASE_IDENTITY_CERTIFIED");
+    assert.equal(body.databaseIdentity.expectedNeonProjectMatched, true);
+    assert.equal(body.databaseIdentity.databaseNameMatches, true);
+    assert.equal(body.providerCalled, false);
+    assert.equal(body.liveExecutionAllowed, false);
+  });
+
+  it("rejects a Production Neon endpoint identity in Preview", async () => {
+    replaceEnv({
+      ...previewEnv,
+      DATABASE_URL: "postgresql://preview_user:preview_password@ep-production-main-123456-pooler.us-east-2.aws.neon.tech/jcapital_preview",
+      DIRECT_URL: "postgresql://preview_user:preview_password@ep-production-main-123456.us-east-2.aws.neon.tech/jcapital_preview",
+    });
+    restorePreflight = setRuntimePreflightTestOverridesForTest({
+      infrastructureReport: await createReport(process.env),
+      databaseIdentityQuery: async () => undefined,
+      auditEvidenceResult: { available: true, status: "available", requiredTablesPresent: true },
+    });
+
+    const response = await GET(await adminRequest());
+    const body = await response.json() as {
+      readinessState: string;
+      databaseIdentity: { status: string; expectedNeonProjectMatched: boolean };
+      blockers: string[];
+    };
+
+    assert.equal(response.status, 200);
+    assert.equal(body.readinessState, "RUNTIME_BLOCKED");
+    assert.equal(body.databaseIdentity.status, "PREVIEW_DATABASE_IDENTITY_BLOCKED");
+    assert.equal(body.databaseIdentity.expectedNeonProjectMatched, false);
+    assert.ok(body.blockers.some((blocker) => blocker.includes("expected_preview_neon_project_not_detected")));
+  });
+
+  it("rejects a wrong structured Neon project identity", async () => {
+    replaceEnv({
+      ...previewEnv,
+      NEON_PROJECT_ID: "wrong-project-123456",
+    });
+    restorePreflight = setRuntimePreflightTestOverridesForTest({
+      infrastructureReport: await createReport(process.env),
+      databaseIdentityQuery: async () => undefined,
+      auditEvidenceResult: { available: true, status: "available", requiredTablesPresent: true },
+    });
+
+    const response = await GET(await adminRequest());
+    const body = await response.json() as {
+      readinessState: string;
+      databaseIdentity: { expectedNeonProjectMatched: boolean };
+      blockers: string[];
+    };
+
+    assert.equal(response.status, 200);
+    assert.equal(body.readinessState, "RUNTIME_BLOCKED");
+    assert.equal(body.databaseIdentity.expectedNeonProjectMatched, false);
+    assert.ok(body.blockers.some((blocker) => blocker.includes("preview_neon_identity_ambiguous")));
+  });
+
+  it("rejects malformed Neon identity evidence", async () => {
+    replaceEnv({
+      ...previewEnv,
+      DATABASE_URL: "postgresql://preview_user:preview_password@summer-star-72148368-pooler.us-east-2.aws.neon.tech/jcapital_preview",
+      DIRECT_URL: "postgresql://preview_user:preview_password@summer-star-72148368.us-east-2.aws.neon.tech/jcapital_preview",
+    });
+    restorePreflight = setRuntimePreflightTestOverridesForTest({
+      infrastructureReport: await createReport(process.env),
+      databaseIdentityQuery: async () => undefined,
+      auditEvidenceResult: { available: true, status: "available", requiredTablesPresent: true },
+    });
+
+    const response = await GET(await adminRequest());
+    const body = await response.json() as {
+      readinessState: string;
+      databaseIdentity: { expectedNeonProjectMatched: boolean };
+      blockers: string[];
+    };
+
+    assert.equal(response.status, 200);
+    assert.equal(body.readinessState, "RUNTIME_BLOCKED");
+    assert.equal(body.databaseIdentity.expectedNeonProjectMatched, false);
+    assert.ok(body.blockers.some((blocker) => blocker.includes("preview_neon_identity_malformed")));
+  });
+
+  it("rejects ambiguous Neon identity evidence", async () => {
+    replaceEnv({
+      ...previewEnv,
+      DATABASE_URL: "postgresql://preview_user:preview_password@ep-summer-star-72148368-pooler.us-east-2.aws.neon.tech/jcapital_preview",
+      DIRECT_URL: "postgresql://preview_user:preview_password@ep-other-preview-123456.us-east-2.aws.neon.tech/jcapital_preview",
+    });
+    restorePreflight = setRuntimePreflightTestOverridesForTest({
+      infrastructureReport: await createReport(process.env),
+      databaseIdentityQuery: async () => undefined,
+      auditEvidenceResult: { available: true, status: "available", requiredTablesPresent: true },
+    });
+
+    const response = await GET(await adminRequest());
+    const body = await response.json() as {
+      readinessState: string;
+      databaseIdentity: { expectedNeonProjectMatched: boolean };
+      blockers: string[];
+    };
+
+    assert.equal(response.status, 200);
+    assert.equal(body.readinessState, "RUNTIME_BLOCKED");
+    assert.equal(body.databaseIdentity.expectedNeonProjectMatched, false);
+    assert.ok(body.blockers.some((blocker) => blocker.includes("preview_neon_identity_ambiguous")));
   });
 
   it("reports RUNTIME_BLOCKED when the database is unavailable", async () => {
