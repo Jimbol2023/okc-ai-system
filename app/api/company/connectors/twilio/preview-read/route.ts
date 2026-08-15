@@ -1,0 +1,18 @@
+import { NextResponse } from "next/server";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse } from "@/lib/auth";
+import { readBoundedJsonBody } from "@/lib/request-security";
+import { runTwilioDiagnosticPreviewRead } from "@/lib/twilio-diagnostic-connector";
+import { assertTwilioDiagnosticCapability } from "@/lib/twilio-diagnostic-adapter";
+
+export const runtime = "nodejs";
+export async function POST(request: Request) {
+  const actor = await getAuthenticatedRequestContext(request);
+  if (!actor) return getUnauthorizedApiResponse();
+  const body = await readBoundedJsonBody(request, 8 * 1024);
+  if (!body.ok) return NextResponse.json({ ok: false, error: "Invalid request." }, { status: body.status, headers: { "Cache-Control": "no-store" } });
+  const input = body.value as { confirmation?: string; capability?: string; nonce?: string; phoneNumberSid?: string; tenantId?: string };
+  const capability = input.capability ?? "";
+  try { assertTwilioDiagnosticCapability(capability); } catch { return NextResponse.json({ status: "blocked", reasonCodes: ["capability_not_allowed"] }, { status: 400, headers: { "Cache-Control": "no-store" } }); }
+  const result = await runTwilioDiagnosticPreviewRead({ actor: { tenantId: actor.tenantId, actorId: actor.actorId }, confirmation: input.confirmation ?? "", capability, nonce: input.nonce, phoneNumberSid: input.phoneNumberSid });
+  return NextResponse.json(result, { headers: { "Cache-Control": "no-store, max-age=0" } });
+}

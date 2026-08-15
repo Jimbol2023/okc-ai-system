@@ -10344,6 +10344,28 @@
       }
     },
     {
+      "path": "lib/twilio-diagnostic-adapter.test.ts",
+      "category": "safety",
+      "framework": "node:test",
+      "owner": "Platform Security",
+      "execution": "npm test",
+      "databaseRequirement": "none",
+      "providerRequirement": "provider calls forbidden; mocks/fixtures only",
+      "mutationPolicy": "repository and external systems read-only",
+      "timeoutClass": "standard"
+    },
+    {
+      "path": "lib/twilio-diagnostic-connector.test.ts",
+      "category": "safety",
+      "framework": "node:test",
+      "owner": "Platform Security",
+      "execution": "npm test",
+      "databaseRequirement": "mocked UEIP persistence only",
+      "providerRequirement": "provider calls forbidden; mocks/fixtures only",
+      "mutationPolicy": "repository and external systems read-only",
+      "timeoutClass": "standard"
+    },
+    {
       "path": "lib/twilio-webhook-security.test.ts",
       "category": "safety",
       "framework": "node:test",
