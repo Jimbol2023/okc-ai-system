@@ -7,6 +7,46 @@ import { useCallback, useEffect, useState } from "react";
 import { DashboardCard, ErrorState, LoadingState, SafetyBadge, StatusBadge } from "@/components/dashboard/dashboard-ui";
 import { getDashboardStatusColor } from "@/lib/dashboard-ui-status";
 
+type CeoExceptionInboxItem = {
+  canonicalKey: string;
+  exceptionType: "acquisition_review" | "dnc_governance_review" | "evidence_blocker" | "exact_external_action" | "fresh_business_draft";
+  priority: "critical" | "high" | "medium" | "normal";
+  riskLevel: string;
+  sourceRecordType: string;
+  sourceRecordId: string;
+  decisionRequested: string;
+  businessReason: string;
+  recommendedDecision: string;
+  missingEvidence: string[];
+  contactPosture: Record<string, unknown>;
+  auditStatus: string;
+  reviewHref: string;
+  reviewMinutes: number;
+  prohibitedActions: string[];
+  externalActionAuthorized: false;
+};
+
+type CeoExceptionInboxResponse = {
+  ok: true;
+  generatedAt: string;
+  tenantId: string;
+  status: "action_required" | "no_action_required";
+  estimatedReviewMinutes: number;
+  items: CeoExceptionInboxItem[];
+  excludedCounts: Record<string, number>;
+  safety: {
+    readOnly: true;
+    authenticatedContextRequired: true;
+    providerCalled: false;
+    outreach: false;
+    sent: false;
+    published: false;
+    crmMutation: false;
+    externalExecutionAllowed: false;
+    liveExecutionAllowed: false;
+  };
+};
+
 type ExecutiveWidget = {
   id: string;
   label: string;
@@ -1151,6 +1191,75 @@ function OperationStatusPill({
   );
 }
 
+function CeoExceptionInboxPanel({ inbox }: { inbox: CeoExceptionInboxResponse }) {
+  const noAction = inbox.status === "no_action_required";
+  return (
+    <section aria-labelledby="ceo-exception-inbox-heading" className={`rounded-xl border p-5 md:p-6 ${noAction ? "border-emerald-200 bg-emerald-50" : "border-amber-200 bg-amber-50"}`}>
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-muted">Low-Touch CEO Operations</p>
+          <h1 id="ceo-exception-inbox-heading" className="mt-1 text-3xl font-semibold text-primary md:text-4xl">CEO Exception Inbox</h1>
+          <p className="mt-2 max-w-4xl text-sm leading-6 text-muted">
+            {noAction
+              ? "No CEO action required. Scheduled internal work completed, and no legitimate record-specific exception is pending."
+              : `${inbox.items.length} record-specific decision(s) require review within an estimated ${inbox.estimatedReviewMinutes} minute agenda.`}
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.08em]">
+          <SafetyBadge>readOnly:{String(inbox.safety.readOnly)}</SafetyBadge>
+          <SafetyBadge>providerCalled:{String(inbox.safety.providerCalled)}</SafetyBadge>
+          <SafetyBadge tone="urgent">externalExecution:{String(inbox.safety.externalExecutionAllowed)}</SafetyBadge>
+          <SafetyBadge>{inbox.estimatedReviewMinutes} minute review</SafetyBadge>
+        </div>
+      </div>
+
+      {!noAction ? (
+        <div className="mt-5 grid gap-3">
+          {inbox.items.map((item, index) => {
+            const posture = item.contactPosture;
+            return (
+              <details key={item.canonicalKey} open={index < 3} className="rounded-lg border border-border bg-white p-4">
+                <summary className="cursor-pointer list-none">
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">{item.exceptionType.replaceAll("_", " ")}</p>
+                      <h2 className="mt-1 text-lg font-semibold text-primary">{item.decisionRequested}</h2>
+                    </div>
+                    <div className="flex flex-wrap gap-2 text-xs font-semibold">
+                      <span className="rounded border border-amber-200 bg-amber-50 px-2 py-1 text-amber-950">{item.priority} priority</span>
+                      <span className="rounded border border-border px-2 py-1 text-muted">{item.reviewMinutes} min</span>
+                      <span className={`rounded border px-2 py-1 ${item.externalActionAuthorized === false ? "border-emerald-200 bg-emerald-50 text-emerald-950" : "border-red-300 bg-red-50 text-red-950"}`}>
+                        {item.externalActionAuthorized === false
+                          ? "External action authorized: false"
+                          : "Safety contract error: external action authority is not false"}
+                      </span>
+                    </div>
+                  </div>
+                </summary>
+                <div className="mt-4 grid gap-4 lg:grid-cols-2">
+                  <div className="space-y-3 text-sm leading-6">
+                    <p><strong>Source:</strong> {item.sourceRecordType} / <span className="break-all">{item.sourceRecordId}</span></p>
+                    <p><strong>Why now:</strong> {item.businessReason}</p>
+                    <p><strong>Recommended internal decision:</strong> {item.recommendedDecision}</p>
+                    <p><strong>Risk / audit:</strong> {item.riskLevel} / {item.auditStatus}</p>
+                  </div>
+                  <div className="space-y-3 text-sm leading-6">
+                    <p><strong>Contact posture:</strong> {String(posture.contactPermission ?? "internal_review_only")} / DNC {String(posture.doNotContact ?? false)} / consent {String(posture.consentStatus ?? "unknown")}</p>
+                    <div><strong>Missing evidence:</strong>{item.missingEvidence.length ? <ul className="mt-1 list-disc pl-5 text-muted">{item.missingEvidence.map((value) => <li key={value}>{value}</li>)}</ul> : <span className="ml-1 text-muted">None recorded.</span>}</div>
+                    <p className="text-xs font-semibold text-red-800">Prohibited: {item.prohibitedActions.join(", ")}. Approval does not authorize execution.</p>
+                    <Link href={item.reviewHref as Route} className="inline-flex rounded-md bg-primary px-3 py-2 text-xs font-bold uppercase tracking-[0.08em] text-white">Review record</Link>
+                  </div>
+                </div>
+              </details>
+            );
+          })}
+        </div>
+      ) : null}
+      {inbox.excludedCounts.reviewBudgetDeferred > 0 ? <p className="mt-4 text-xs font-semibold text-muted">{inbox.excludedCounts.reviewBudgetDeferred} lower-priority decision(s) remain queued outside today&apos;s seven-minute budget.</p> : null}
+    </section>
+  );
+}
+
 function ExecutiveAutonomyLevel1Panel({
   status,
   morningBrief,
@@ -1307,8 +1416,9 @@ function ExecutiveAutonomyLevel1Panel({
           </div>
         </div>
 
-        <div className="rounded-lg border border-emerald-100 bg-white p-4">
-          <h3 className="break-words text-lg font-semibold text-emerald-950">Secondary Controls</h3>
+        <details className="rounded-lg border border-emerald-100 bg-white p-4">
+          <summary className="cursor-pointer break-words text-lg font-semibold text-emerald-950">Operations/Admin controls</summary>
+          <p className="mt-2 text-xs leading-5 text-emerald-900">Recovery and operator controls remain available but are not part of the normal CEO agenda.</p>
           <div className="mt-3 flex flex-wrap gap-2">
             <button
               type="button"
@@ -1337,7 +1447,7 @@ function ExecutiveAutonomyLevel1Panel({
           </div>
           {message ? <p className="mt-3 rounded-md border border-emerald-200 bg-emerald-50 p-3 text-xs font-semibold text-emerald-950">{message}</p> : null}
           {error ? <p className="mt-3 rounded-md border border-red-200 bg-red-50 p-3 text-xs font-semibold text-red-950">{error}</p> : null}
-        </div>
+        </details>
       </div>
     </section>
   );
@@ -2874,6 +2984,7 @@ function ProductionDryRunPanel({ readinessCommand }: { readinessCommand: Product
 }
 
 export function ExecutiveDashboardClient() {
+  const [ceoExceptionInbox, setCeoExceptionInbox] = useState<CeoExceptionInboxResponse | null>(null);
   const [productionReadinessCommand, setProductionReadinessCommand] = useState<ProductionReadinessCommand | null>(null);
   const [dailyStartup, setDailyStartup] = useState<DailyStartup | null>(null);
   const [revenueCommandCenter, setRevenueCommandCenter] = useState<RevenueCommandCenter | null>(null);
@@ -2899,7 +3010,7 @@ export function ExecutiveDashboardClient() {
   const loadDashboard = useCallback(async () => {
     try {
       setLoading(true);
-      const [response, autonomyResponse] = await Promise.all([
+      const [response, autonomyResponse, exceptionInboxResponse] = await Promise.all([
         fetch("/api/executive-dashboard", {
           cache: "no-store",
           headers: {
@@ -2912,14 +3023,21 @@ export function ExecutiveDashboardClient() {
             Accept: "application/json",
           },
         }),
+        fetch("/api/company/ceo-exception-inbox", {
+          cache: "no-store",
+          headers: { Accept: "application/json" },
+        }),
       ]);
       const data = await readJsonResponse<ExecutiveDashboardResponse>(response);
       const autonomyData = await readJsonResponse<ExecutiveAutonomyLevel1Status>(autonomyResponse);
+      const exceptionInboxData = await readJsonResponse<CeoExceptionInboxResponse & { error?: string }>(exceptionInboxResponse);
 
       if (!response.ok || !data.ok || !data.widgets) {
         throw new Error(data.error || "Failed to load executive dashboard.");
       }
+      if (!exceptionInboxResponse.ok || !exceptionInboxData.ok) throw new Error(exceptionInboxData.error || "Failed to load CEO Exception Inbox.");
 
+      setCeoExceptionInbox(exceptionInboxData);
       setProductionReadinessCommand(data.productionReadinessCommand ?? null);
       setDailyStartup(data.dailyStartup ?? null);
       setRevenueCommandCenter(data.revenueCommandCenter ?? null);
@@ -2959,6 +3077,7 @@ export function ExecutiveDashboardClient() {
       {loading ? <LoadingState label="Loading executive dashboard..." /> : null}
       {error ? <ErrorState message={error} /> : null}
 
+      {ceoExceptionInbox ? <CeoExceptionInboxPanel inbox={ceoExceptionInbox} /> : null}
       <ExecutiveAutonomyLevel1Panel
         status={executiveAutonomyStatus}
         morningBrief={morningBrief}
