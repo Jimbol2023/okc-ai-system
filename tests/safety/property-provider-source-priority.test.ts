@@ -150,7 +150,8 @@ test("report advertises the next integration without changing safety posture", (
     generatedAt: new Date("2026-08-07T14:00:00.000Z"),
   });
 
-  assert.equal(report.exactRecommendedNextImplementation, "IMPLEMENT_COUNTY_RECORD_IMPORT_WORKBENCH_AND_PROVIDER_DECISION_GATE");
+  assert.equal(report.exactRecommendedNextImplementation, "IMPLEMENT_PREVIEW_ONLY_GEOCODE_PROVIDER_AUTHORIZATION_GATE_AND_WORKBENCH_API_CERTIFICATION");
+  assert.ok(report.operatingDoctrine.some((line) => /Preview-only certification lane/.test(line)));
   assert.ok(report.operatingDoctrine.some((line) => /DealMachine is not integrated in V1/.test(line)));
   assert.ok(report.sourcePriority.some((item) => item.gap === "condition_media" && item.sourcePriority[0] === "manual_dfd"));
   assert.ok(report.morningBriefSignals.every((item) => item.providerCalled === false && item.liveExecutionAllowed === false));
