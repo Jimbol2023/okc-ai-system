@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { getAuthenticatedRequestContext, getUnauthorizedApiResponse } from "@/lib/auth";
+import { runAutonomousLeadQualification } from "@/lib/autonomous-lead-qualification";
 import { createDbLead, listDbLeads, parseLeadIntakePayload } from "@/lib/leads-db";
 import { leadIntakeToStoredLead } from "@/lib/lead-record";
 import {
@@ -35,6 +36,17 @@ function buildInitialAutomationFields(lead?: { doNotContact?: boolean | null; ap
     automationStatus: "scheduled",
     followUpCount: 0
   };
+}
+
+async function runLeadAutonomyHandoff(input: { tenantId: string; created: boolean; lead: Parameters<typeof runAutonomousLeadQualification>[0]["lead"]; triggeredBy: string }) {
+  if (!input.created) return null;
+  try {
+    const result = await runAutonomousLeadQualification({ tenantId: input.tenantId, lead: input.lead, triggeredBy: input.triggeredBy });
+    return { lane: result.lane, decision: result.decision, reason: result.reason, taskId: result.taskId, outcomeEventId: result.outcomeEventId, providerCalled: false, outreach: false, liveExecutionAllowed: false };
+  } catch (error) {
+    securityLog("error", "level2_autonomy.handoff_failed_closed", { tenantId: input.tenantId, error });
+    return null;
+  }
 }
 
 export async function GET(request: Request) {
@@ -131,11 +143,13 @@ export async function POST(request: Request) {
           referer: request.headers.get("referer")
         })
       });
+      const autonomy = await runLeadAutonomyHandoff({ tenantId, created: result.created, lead: result.lead, triggeredBy: "public_website_intake" });
 
       return NextResponse.json({
         ok: true,
         leadId: result.lead.id,
-        created: result.created
+        created: result.created,
+        autonomy
       });
     }
 
@@ -166,6 +180,7 @@ export async function POST(request: Request) {
           })
         )
       );
+      const autonomy = await Promise.all(results.map((result) => runLeadAutonomyHandoff({ tenantId: actor.tenantId, created: result.created, lead: result.lead, triggeredBy: "authenticated_lead_batch" })));
       await Promise.all(
         results.map((result, index) =>
           attachReferralAttributionToLead({
@@ -187,7 +202,8 @@ export async function POST(request: Request) {
         leads: results.map((result) => result.lead),
         addedLeads: results.filter((result) => result.created).map((result) => result.lead),
         addedCount: results.filter((result) => result.created).length,
-        skippedCount: results.filter((result) => !result.created).length
+        skippedCount: results.filter((result) => !result.created).length,
+        autonomy
       });
     }
 
@@ -218,12 +234,14 @@ export async function POST(request: Request) {
         referralLandingPage: parsedLead.data.referralLandingPage
       }
     });
+    const autonomy = await runLeadAutonomyHandoff({ tenantId: actor.tenantId, created: result.created, lead: result.lead, triggeredBy: "authenticated_lead_create" });
 
     return NextResponse.json({
       ok: true,
       lead: result.lead,
       leadId: result.lead.id,
-      created: result.created
+      created: result.created,
+      autonomy
     });
   } catch (error) {
     securityLog("error", "public_lead.processing_failed", { error });

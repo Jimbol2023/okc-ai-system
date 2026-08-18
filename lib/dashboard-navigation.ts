@@ -9,6 +9,7 @@ export const dashboardNavigationItems: DashboardNavigationItem[] = [
   { href: "/dashboard/revenue", label: "Revenue", keywords: ["revenue", "unified inbox", "lead scoring", "audit", "source attribution", "follow up"] },
   { href: "/dashboard/acquisitions", label: "Acquisitions", keywords: ["offers", "pipeline", "seller", "deal"] },
   { href: "/dashboard/operations", label: "Operations", keywords: ["workflow", "process", "manual review"] },
+  { href: "/dashboard/autonomy", label: "Autonomy", keywords: ["autonomy", "level 2", "ceo exception", "internal task", "policy"] },
   { href: "/dashboard/finance", label: "Finance", keywords: ["cash", "roi", "cost per lead", "cost per acquisition"] },
   { href: "/dashboard/knowledge", label: "Knowledge", keywords: ["sop", "playbook", "probate", "search"] },
   { href: "/dashboard/leads", label: "Leads", keywords: ["crm", "follow up", "seller", "source"] },

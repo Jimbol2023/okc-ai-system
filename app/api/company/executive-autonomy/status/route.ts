@@ -1,28 +1,11 @@
 import { NextResponse } from "next/server";
 
 import { getAuthenticatedRequestContext, getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
-import { getExecutiveAutonomyLevel1Status } from "@/lib/executive-autonomy-level-1";
 import { requireTenantId } from "@/lib/tenant-context";
+import { getExecutiveAutonomyStatusRouteDeps } from "./route-support";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
-
-type StatusRouteDeps = {
-  getStatus: typeof getExecutiveAutonomyLevel1Status;
-};
-
-let routeDeps: StatusRouteDeps = {
-  getStatus: getExecutiveAutonomyLevel1Status,
-};
-
-export function setExecutiveAutonomyStatusRouteDepsForTest(testDeps: Partial<StatusRouteDeps>) {
-  const previous = routeDeps;
-  routeDeps = { ...routeDeps, ...testDeps };
-
-  return () => {
-    routeDeps = previous;
-  };
-}
 
 export async function GET(request: Request) {
   try {
@@ -31,6 +14,7 @@ export async function GET(request: Request) {
     }
 
     const auth = await getAuthenticatedRequestContext(request);
+    const routeDeps = getExecutiveAutonomyStatusRouteDeps();
     const status = await routeDeps.getStatus({ tenantId: requireTenantId(auth?.tenantId, "executive_autonomy_status") });
 
     return NextResponse.json(status);

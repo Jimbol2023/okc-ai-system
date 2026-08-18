@@ -19,6 +19,31 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type Lead = $Result.DefaultSelection<Prisma.$LeadPayload>
 /**
+ * Model AutonomyPolicy
+ *
+ */
+export type AutonomyPolicy = $Result.DefaultSelection<Prisma.$AutonomyPolicyPayload>
+/**
+ * Model ConnectorExecutionAttempt
+ *
+ */
+export type ConnectorExecutionAttempt = $Result.DefaultSelection<Prisma.$ConnectorExecutionAttemptPayload>
+/**
+ * Model BusinessOutcomeEvent
+ *
+ */
+export type BusinessOutcomeEvent = $Result.DefaultSelection<Prisma.$BusinessOutcomeEventPayload>
+/**
+ * Model AutonomousRunRecord
+ *
+ */
+export type AutonomousRunRecord = $Result.DefaultSelection<Prisma.$AutonomousRunRecordPayload>
+/**
+ * Model DepartmentSLA
+ *
+ */
+export type DepartmentSLA = $Result.DefaultSelection<Prisma.$DepartmentSLAPayload>
+/**
  * Model RevenueAuditEvent
  *
  */
@@ -636,6 +661,56 @@ export class PrismaClient<
     * ```
     */
   get lead(): Prisma.LeadDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.autonomyPolicy`: Exposes CRUD operations for the **AutonomyPolicy** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AutonomyPolicies
+    * const autonomyPolicies = await prisma.autonomyPolicy.findMany()
+    * ```
+    */
+  get autonomyPolicy(): Prisma.AutonomyPolicyDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.connectorExecutionAttempt`: Exposes CRUD operations for the **ConnectorExecutionAttempt** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ConnectorExecutionAttempts
+    * const connectorExecutionAttempts = await prisma.connectorExecutionAttempt.findMany()
+    * ```
+    */
+  get connectorExecutionAttempt(): Prisma.ConnectorExecutionAttemptDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.businessOutcomeEvent`: Exposes CRUD operations for the **BusinessOutcomeEvent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more BusinessOutcomeEvents
+    * const businessOutcomeEvents = await prisma.businessOutcomeEvent.findMany()
+    * ```
+    */
+  get businessOutcomeEvent(): Prisma.BusinessOutcomeEventDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.autonomousRunRecord`: Exposes CRUD operations for the **AutonomousRunRecord** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AutonomousRunRecords
+    * const autonomousRunRecords = await prisma.autonomousRunRecord.findMany()
+    * ```
+    */
+  get autonomousRunRecord(): Prisma.AutonomousRunRecordDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.departmentSLA`: Exposes CRUD operations for the **DepartmentSLA** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DepartmentSLAS
+    * const departmentSLAS = await prisma.departmentSLA.findMany()
+    * ```
+    */
+  get departmentSLA(): Prisma.DepartmentSLADelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.revenueAuditEvent`: Exposes CRUD operations for the **RevenueAuditEvent** model.
@@ -1948,6 +2023,11 @@ export namespace Prisma {
 
   export const ModelName: {
     Lead: 'Lead',
+    AutonomyPolicy: 'AutonomyPolicy',
+    ConnectorExecutionAttempt: 'ConnectorExecutionAttempt',
+    BusinessOutcomeEvent: 'BusinessOutcomeEvent',
+    AutonomousRunRecord: 'AutonomousRunRecord',
+    DepartmentSLA: 'DepartmentSLA',
     RevenueAuditEvent: 'RevenueAuditEvent',
     RevenueLeadSource: 'RevenueLeadSource',
     ReferralPartner: 'ReferralPartner',
@@ -2053,7 +2133,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "lead" | "revenueAuditEvent" | "revenueLeadSource" | "referralPartner" | "referralLink" | "referralAttributionEvent" | "revenueLeadScore" | "revenueTask" | "propertyOpportunity" | "propertyOpportunitySavedFilter" | "revenuePipelineEvent" | "revenueCommunicationEvent" | "revenueDecisionLog" | "connectorDefinition" | "enterpriseConnectorRegistry" | "enterpriseConnectorHealthEvent" | "enterpriseConnectorLifecycleEvent" | "enterpriseConnectorExecutionDecision" | "featureFlagRecord" | "marketIntelligenceSignal" | "demandDiscoveryOpportunity" | "growthEngineDraft" | "executiveBriefingSnapshot" | "connectorInstallationState" | "connectorCredentialReference" | "connectorTestResult" | "ueipGatewayAuditEvent" | "ueipEnvironmentIdentity" | "ueipPilotAuthorization" | "ueipPilotControlEvent" | "aiPermissionPolicy" | "unifiedApprovalItem" | "unifiedApprovalDecision" | "aiCompanyExecutiveDirective" | "aiCompanyWorkAssignment" | "aiCompanyDraftQueueItem" | "aiCompanyDraftRevision" | "aiCompanyDecisionLog" | "aiDepartmentMemoryEvent" | "aiDepartmentIntelligenceSnapshot" | "businessDataSnapshot" | "socialContentSource" | "socialContentDraft" | "socialContentVariant" | "socialSchedulePlan" | "socialExecutionPlan" | "socialPerformanceSnapshot" | "automationPolicyRecord" | "automationRunRecord" | "notificationRecord" | "learningOutcomeEvent" | "dailyBriefingSnapshot" | "operationsTimelineEvent" | "manualLeadIntake" | "publicIntakeRateLimit" | "sellerCallOutcome" | "aiPerformanceMetric" | "aiJob" | "aiJobAction" | "aiJobLog" | "aiMemoryEvent" | "aiLearningRecommendation" | "buyer" | "buyerActivity" | "marketingDraft" | "marketingApproval" | "marketingAccountConnection" | "marketingPublishAssist" | "marketingCanvaAssetAssist" | "marketingSalesAttribution" | "salesConversionAssist" | "financeEntry" | "knowledgeItem" | "knowledgeSearchEmbedding" | "epcAssessmentRecord" | "epcCertificationRecord" | "epcOutcomeEvent" | "epcGovernanceEvent" | "professionalCase" | "professionalAssignment" | "professionalContribution" | "professionalReview" | "professionalDecision" | "professionalOutcome" | "professionalCaseEvent" | "securityRateBucket" | "securityEvent" | "webhookReceipt"
+      modelProps: "lead" | "autonomyPolicy" | "connectorExecutionAttempt" | "businessOutcomeEvent" | "autonomousRunRecord" | "departmentSLA" | "revenueAuditEvent" | "revenueLeadSource" | "referralPartner" | "referralLink" | "referralAttributionEvent" | "revenueLeadScore" | "revenueTask" | "propertyOpportunity" | "propertyOpportunitySavedFilter" | "revenuePipelineEvent" | "revenueCommunicationEvent" | "revenueDecisionLog" | "connectorDefinition" | "enterpriseConnectorRegistry" | "enterpriseConnectorHealthEvent" | "enterpriseConnectorLifecycleEvent" | "enterpriseConnectorExecutionDecision" | "featureFlagRecord" | "marketIntelligenceSignal" | "demandDiscoveryOpportunity" | "growthEngineDraft" | "executiveBriefingSnapshot" | "connectorInstallationState" | "connectorCredentialReference" | "connectorTestResult" | "ueipGatewayAuditEvent" | "ueipEnvironmentIdentity" | "ueipPilotAuthorization" | "ueipPilotControlEvent" | "aiPermissionPolicy" | "unifiedApprovalItem" | "unifiedApprovalDecision" | "aiCompanyExecutiveDirective" | "aiCompanyWorkAssignment" | "aiCompanyDraftQueueItem" | "aiCompanyDraftRevision" | "aiCompanyDecisionLog" | "aiDepartmentMemoryEvent" | "aiDepartmentIntelligenceSnapshot" | "businessDataSnapshot" | "socialContentSource" | "socialContentDraft" | "socialContentVariant" | "socialSchedulePlan" | "socialExecutionPlan" | "socialPerformanceSnapshot" | "automationPolicyRecord" | "automationRunRecord" | "notificationRecord" | "learningOutcomeEvent" | "dailyBriefingSnapshot" | "operationsTimelineEvent" | "manualLeadIntake" | "publicIntakeRateLimit" | "sellerCallOutcome" | "aiPerformanceMetric" | "aiJob" | "aiJobAction" | "aiJobLog" | "aiMemoryEvent" | "aiLearningRecommendation" | "buyer" | "buyerActivity" | "marketingDraft" | "marketingApproval" | "marketingAccountConnection" | "marketingPublishAssist" | "marketingCanvaAssetAssist" | "marketingSalesAttribution" | "salesConversionAssist" | "financeEntry" | "knowledgeItem" | "knowledgeSearchEmbedding" | "epcAssessmentRecord" | "epcCertificationRecord" | "epcOutcomeEvent" | "epcGovernanceEvent" | "professionalCase" | "professionalAssignment" | "professionalContribution" | "professionalReview" | "professionalDecision" | "professionalOutcome" | "professionalCaseEvent" | "securityRateBucket" | "securityEvent" | "webhookReceipt"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2128,6 +2208,376 @@ export namespace Prisma {
           count: {
             args: Prisma.LeadCountArgs<ExtArgs>
             result: $Utils.Optional<LeadCountAggregateOutputType> | number
+          }
+        }
+      }
+      AutonomyPolicy: {
+        payload: Prisma.$AutonomyPolicyPayload<ExtArgs>
+        fields: Prisma.AutonomyPolicyFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AutonomyPolicyFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutonomyPolicyPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AutonomyPolicyFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutonomyPolicyPayload>
+          }
+          findFirst: {
+            args: Prisma.AutonomyPolicyFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutonomyPolicyPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AutonomyPolicyFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutonomyPolicyPayload>
+          }
+          findMany: {
+            args: Prisma.AutonomyPolicyFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutonomyPolicyPayload>[]
+          }
+          create: {
+            args: Prisma.AutonomyPolicyCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutonomyPolicyPayload>
+          }
+          createMany: {
+            args: Prisma.AutonomyPolicyCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AutonomyPolicyCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutonomyPolicyPayload>[]
+          }
+          delete: {
+            args: Prisma.AutonomyPolicyDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutonomyPolicyPayload>
+          }
+          update: {
+            args: Prisma.AutonomyPolicyUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutonomyPolicyPayload>
+          }
+          deleteMany: {
+            args: Prisma.AutonomyPolicyDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AutonomyPolicyUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AutonomyPolicyUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutonomyPolicyPayload>[]
+          }
+          upsert: {
+            args: Prisma.AutonomyPolicyUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutonomyPolicyPayload>
+          }
+          aggregate: {
+            args: Prisma.AutonomyPolicyAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAutonomyPolicy>
+          }
+          groupBy: {
+            args: Prisma.AutonomyPolicyGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AutonomyPolicyGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AutonomyPolicyCountArgs<ExtArgs>
+            result: $Utils.Optional<AutonomyPolicyCountAggregateOutputType> | number
+          }
+        }
+      }
+      ConnectorExecutionAttempt: {
+        payload: Prisma.$ConnectorExecutionAttemptPayload<ExtArgs>
+        fields: Prisma.ConnectorExecutionAttemptFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ConnectorExecutionAttemptFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConnectorExecutionAttemptPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ConnectorExecutionAttemptFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConnectorExecutionAttemptPayload>
+          }
+          findFirst: {
+            args: Prisma.ConnectorExecutionAttemptFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConnectorExecutionAttemptPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ConnectorExecutionAttemptFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConnectorExecutionAttemptPayload>
+          }
+          findMany: {
+            args: Prisma.ConnectorExecutionAttemptFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConnectorExecutionAttemptPayload>[]
+          }
+          create: {
+            args: Prisma.ConnectorExecutionAttemptCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConnectorExecutionAttemptPayload>
+          }
+          createMany: {
+            args: Prisma.ConnectorExecutionAttemptCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ConnectorExecutionAttemptCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConnectorExecutionAttemptPayload>[]
+          }
+          delete: {
+            args: Prisma.ConnectorExecutionAttemptDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConnectorExecutionAttemptPayload>
+          }
+          update: {
+            args: Prisma.ConnectorExecutionAttemptUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConnectorExecutionAttemptPayload>
+          }
+          deleteMany: {
+            args: Prisma.ConnectorExecutionAttemptDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ConnectorExecutionAttemptUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ConnectorExecutionAttemptUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConnectorExecutionAttemptPayload>[]
+          }
+          upsert: {
+            args: Prisma.ConnectorExecutionAttemptUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConnectorExecutionAttemptPayload>
+          }
+          aggregate: {
+            args: Prisma.ConnectorExecutionAttemptAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateConnectorExecutionAttempt>
+          }
+          groupBy: {
+            args: Prisma.ConnectorExecutionAttemptGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ConnectorExecutionAttemptGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ConnectorExecutionAttemptCountArgs<ExtArgs>
+            result: $Utils.Optional<ConnectorExecutionAttemptCountAggregateOutputType> | number
+          }
+        }
+      }
+      BusinessOutcomeEvent: {
+        payload: Prisma.$BusinessOutcomeEventPayload<ExtArgs>
+        fields: Prisma.BusinessOutcomeEventFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.BusinessOutcomeEventFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BusinessOutcomeEventPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.BusinessOutcomeEventFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BusinessOutcomeEventPayload>
+          }
+          findFirst: {
+            args: Prisma.BusinessOutcomeEventFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BusinessOutcomeEventPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.BusinessOutcomeEventFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BusinessOutcomeEventPayload>
+          }
+          findMany: {
+            args: Prisma.BusinessOutcomeEventFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BusinessOutcomeEventPayload>[]
+          }
+          create: {
+            args: Prisma.BusinessOutcomeEventCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BusinessOutcomeEventPayload>
+          }
+          createMany: {
+            args: Prisma.BusinessOutcomeEventCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.BusinessOutcomeEventCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BusinessOutcomeEventPayload>[]
+          }
+          delete: {
+            args: Prisma.BusinessOutcomeEventDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BusinessOutcomeEventPayload>
+          }
+          update: {
+            args: Prisma.BusinessOutcomeEventUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BusinessOutcomeEventPayload>
+          }
+          deleteMany: {
+            args: Prisma.BusinessOutcomeEventDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.BusinessOutcomeEventUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.BusinessOutcomeEventUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BusinessOutcomeEventPayload>[]
+          }
+          upsert: {
+            args: Prisma.BusinessOutcomeEventUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BusinessOutcomeEventPayload>
+          }
+          aggregate: {
+            args: Prisma.BusinessOutcomeEventAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateBusinessOutcomeEvent>
+          }
+          groupBy: {
+            args: Prisma.BusinessOutcomeEventGroupByArgs<ExtArgs>
+            result: $Utils.Optional<BusinessOutcomeEventGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.BusinessOutcomeEventCountArgs<ExtArgs>
+            result: $Utils.Optional<BusinessOutcomeEventCountAggregateOutputType> | number
+          }
+        }
+      }
+      AutonomousRunRecord: {
+        payload: Prisma.$AutonomousRunRecordPayload<ExtArgs>
+        fields: Prisma.AutonomousRunRecordFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AutonomousRunRecordFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutonomousRunRecordPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AutonomousRunRecordFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutonomousRunRecordPayload>
+          }
+          findFirst: {
+            args: Prisma.AutonomousRunRecordFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutonomousRunRecordPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AutonomousRunRecordFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutonomousRunRecordPayload>
+          }
+          findMany: {
+            args: Prisma.AutonomousRunRecordFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutonomousRunRecordPayload>[]
+          }
+          create: {
+            args: Prisma.AutonomousRunRecordCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutonomousRunRecordPayload>
+          }
+          createMany: {
+            args: Prisma.AutonomousRunRecordCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AutonomousRunRecordCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutonomousRunRecordPayload>[]
+          }
+          delete: {
+            args: Prisma.AutonomousRunRecordDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutonomousRunRecordPayload>
+          }
+          update: {
+            args: Prisma.AutonomousRunRecordUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutonomousRunRecordPayload>
+          }
+          deleteMany: {
+            args: Prisma.AutonomousRunRecordDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AutonomousRunRecordUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AutonomousRunRecordUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutonomousRunRecordPayload>[]
+          }
+          upsert: {
+            args: Prisma.AutonomousRunRecordUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AutonomousRunRecordPayload>
+          }
+          aggregate: {
+            args: Prisma.AutonomousRunRecordAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAutonomousRunRecord>
+          }
+          groupBy: {
+            args: Prisma.AutonomousRunRecordGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AutonomousRunRecordGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AutonomousRunRecordCountArgs<ExtArgs>
+            result: $Utils.Optional<AutonomousRunRecordCountAggregateOutputType> | number
+          }
+        }
+      }
+      DepartmentSLA: {
+        payload: Prisma.$DepartmentSLAPayload<ExtArgs>
+        fields: Prisma.DepartmentSLAFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DepartmentSLAFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DepartmentSLAPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DepartmentSLAFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DepartmentSLAPayload>
+          }
+          findFirst: {
+            args: Prisma.DepartmentSLAFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DepartmentSLAPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DepartmentSLAFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DepartmentSLAPayload>
+          }
+          findMany: {
+            args: Prisma.DepartmentSLAFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DepartmentSLAPayload>[]
+          }
+          create: {
+            args: Prisma.DepartmentSLACreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DepartmentSLAPayload>
+          }
+          createMany: {
+            args: Prisma.DepartmentSLACreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DepartmentSLACreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DepartmentSLAPayload>[]
+          }
+          delete: {
+            args: Prisma.DepartmentSLADeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DepartmentSLAPayload>
+          }
+          update: {
+            args: Prisma.DepartmentSLAUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DepartmentSLAPayload>
+          }
+          deleteMany: {
+            args: Prisma.DepartmentSLADeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DepartmentSLAUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DepartmentSLAUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DepartmentSLAPayload>[]
+          }
+          upsert: {
+            args: Prisma.DepartmentSLAUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DepartmentSLAPayload>
+          }
+          aggregate: {
+            args: Prisma.DepartmentSLAAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDepartmentSLA>
+          }
+          groupBy: {
+            args: Prisma.DepartmentSLAGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DepartmentSLAGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DepartmentSLACountArgs<ExtArgs>
+            result: $Utils.Optional<DepartmentSLACountAggregateOutputType> | number
           }
         }
       }
@@ -8666,6 +9116,11 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     lead?: LeadOmit
+    autonomyPolicy?: AutonomyPolicyOmit
+    connectorExecutionAttempt?: ConnectorExecutionAttemptOmit
+    businessOutcomeEvent?: BusinessOutcomeEventOmit
+    autonomousRunRecord?: AutonomousRunRecordOmit
+    departmentSLA?: DepartmentSLAOmit
     revenueAuditEvent?: RevenueAuditEventOmit
     revenueLeadSource?: RevenueLeadSourceOmit
     referralPartner?: ReferralPartnerOmit
@@ -11287,6 +11742,6099 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: LeadInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AutonomyPolicy
+   */
+
+  export type AggregateAutonomyPolicy = {
+    _count: AutonomyPolicyCountAggregateOutputType | null
+    _avg: AutonomyPolicyAvgAggregateOutputType | null
+    _sum: AutonomyPolicySumAggregateOutputType | null
+    _min: AutonomyPolicyMinAggregateOutputType | null
+    _max: AutonomyPolicyMaxAggregateOutputType | null
+  }
+
+  export type AutonomyPolicyAvgAggregateOutputType = {
+    maxAutonomyLevel: number | null
+    quotaPerDay: number | null
+  }
+
+  export type AutonomyPolicySumAggregateOutputType = {
+    maxAutonomyLevel: number | null
+    quotaPerDay: number | null
+  }
+
+  export type AutonomyPolicyMinAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    policyKey: string | null
+    lane: string | null
+    subjectType: string | null
+    subjectKey: string | null
+    actionKey: string | null
+    maxAutonomyLevel: number | null
+    effect: string | null
+    approvalRequired: boolean | null
+    quotaPerDay: number | null
+    killSwitchEnabled: boolean | null
+    safetyNotes: string | null
+    providerCalled: boolean | null
+    sent: boolean | null
+    published: boolean | null
+    liveExecutionAllowed: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AutonomyPolicyMaxAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    policyKey: string | null
+    lane: string | null
+    subjectType: string | null
+    subjectKey: string | null
+    actionKey: string | null
+    maxAutonomyLevel: number | null
+    effect: string | null
+    approvalRequired: boolean | null
+    quotaPerDay: number | null
+    killSwitchEnabled: boolean | null
+    safetyNotes: string | null
+    providerCalled: boolean | null
+    sent: boolean | null
+    published: boolean | null
+    liveExecutionAllowed: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AutonomyPolicyCountAggregateOutputType = {
+    id: number
+    tenantId: number
+    policyKey: number
+    lane: number
+    subjectType: number
+    subjectKey: number
+    actionKey: number
+    maxAutonomyLevel: number
+    effect: number
+    approvalRequired: number
+    quotaPerDay: number
+    killSwitchEnabled: number
+    allowedActions: number
+    blockedActions: number
+    requiredEvidence: number
+    escalationRules: number
+    safetyNotes: number
+    providerCalled: number
+    sent: number
+    published: number
+    liveExecutionAllowed: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AutonomyPolicyAvgAggregateInputType = {
+    maxAutonomyLevel?: true
+    quotaPerDay?: true
+  }
+
+  export type AutonomyPolicySumAggregateInputType = {
+    maxAutonomyLevel?: true
+    quotaPerDay?: true
+  }
+
+  export type AutonomyPolicyMinAggregateInputType = {
+    id?: true
+    tenantId?: true
+    policyKey?: true
+    lane?: true
+    subjectType?: true
+    subjectKey?: true
+    actionKey?: true
+    maxAutonomyLevel?: true
+    effect?: true
+    approvalRequired?: true
+    quotaPerDay?: true
+    killSwitchEnabled?: true
+    safetyNotes?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AutonomyPolicyMaxAggregateInputType = {
+    id?: true
+    tenantId?: true
+    policyKey?: true
+    lane?: true
+    subjectType?: true
+    subjectKey?: true
+    actionKey?: true
+    maxAutonomyLevel?: true
+    effect?: true
+    approvalRequired?: true
+    quotaPerDay?: true
+    killSwitchEnabled?: true
+    safetyNotes?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AutonomyPolicyCountAggregateInputType = {
+    id?: true
+    tenantId?: true
+    policyKey?: true
+    lane?: true
+    subjectType?: true
+    subjectKey?: true
+    actionKey?: true
+    maxAutonomyLevel?: true
+    effect?: true
+    approvalRequired?: true
+    quotaPerDay?: true
+    killSwitchEnabled?: true
+    allowedActions?: true
+    blockedActions?: true
+    requiredEvidence?: true
+    escalationRules?: true
+    safetyNotes?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AutonomyPolicyAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AutonomyPolicy to aggregate.
+     */
+    where?: AutonomyPolicyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of AutonomyPolicies to fetch.
+     */
+    orderBy?: AutonomyPolicyOrderByWithRelationInput | AutonomyPolicyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: AutonomyPolicyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` AutonomyPolicies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` AutonomyPolicies.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned AutonomyPolicies
+    **/
+    _count?: true | AutonomyPolicyCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to average
+    **/
+    _avg?: AutonomyPolicyAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: AutonomyPolicySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: AutonomyPolicyMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: AutonomyPolicyMaxAggregateInputType
+  }
+
+  export type GetAutonomyPolicyAggregateType<T extends AutonomyPolicyAggregateArgs> = {
+        [P in keyof T & keyof AggregateAutonomyPolicy]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAutonomyPolicy[P]>
+      : GetScalarType<T[P], AggregateAutonomyPolicy[P]>
+  }
+
+
+
+
+  export type AutonomyPolicyGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AutonomyPolicyWhereInput
+    orderBy?: AutonomyPolicyOrderByWithAggregationInput | AutonomyPolicyOrderByWithAggregationInput[]
+    by: AutonomyPolicyScalarFieldEnum[] | AutonomyPolicyScalarFieldEnum
+    having?: AutonomyPolicyScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AutonomyPolicyCountAggregateInputType | true
+    _avg?: AutonomyPolicyAvgAggregateInputType
+    _sum?: AutonomyPolicySumAggregateInputType
+    _min?: AutonomyPolicyMinAggregateInputType
+    _max?: AutonomyPolicyMaxAggregateInputType
+  }
+
+  export type AutonomyPolicyGroupByOutputType = {
+    id: string
+    tenantId: string
+    policyKey: string
+    lane: string
+    subjectType: string
+    subjectKey: string
+    actionKey: string
+    maxAutonomyLevel: number
+    effect: string
+    approvalRequired: boolean
+    quotaPerDay: number | null
+    killSwitchEnabled: boolean
+    allowedActions: JsonValue
+    blockedActions: JsonValue
+    requiredEvidence: JsonValue
+    escalationRules: JsonValue
+    safetyNotes: string
+    providerCalled: boolean
+    sent: boolean
+    published: boolean
+    liveExecutionAllowed: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: AutonomyPolicyCountAggregateOutputType | null
+    _avg: AutonomyPolicyAvgAggregateOutputType | null
+    _sum: AutonomyPolicySumAggregateOutputType | null
+    _min: AutonomyPolicyMinAggregateOutputType | null
+    _max: AutonomyPolicyMaxAggregateOutputType | null
+  }
+
+  type GetAutonomyPolicyGroupByPayload<T extends AutonomyPolicyGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AutonomyPolicyGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AutonomyPolicyGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AutonomyPolicyGroupByOutputType[P]>
+            : GetScalarType<T[P], AutonomyPolicyGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AutonomyPolicySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    policyKey?: boolean
+    lane?: boolean
+    subjectType?: boolean
+    subjectKey?: boolean
+    actionKey?: boolean
+    maxAutonomyLevel?: boolean
+    effect?: boolean
+    approvalRequired?: boolean
+    quotaPerDay?: boolean
+    killSwitchEnabled?: boolean
+    allowedActions?: boolean
+    blockedActions?: boolean
+    requiredEvidence?: boolean
+    escalationRules?: boolean
+    safetyNotes?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["autonomyPolicy"]>
+
+  export type AutonomyPolicySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    policyKey?: boolean
+    lane?: boolean
+    subjectType?: boolean
+    subjectKey?: boolean
+    actionKey?: boolean
+    maxAutonomyLevel?: boolean
+    effect?: boolean
+    approvalRequired?: boolean
+    quotaPerDay?: boolean
+    killSwitchEnabled?: boolean
+    allowedActions?: boolean
+    blockedActions?: boolean
+    requiredEvidence?: boolean
+    escalationRules?: boolean
+    safetyNotes?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["autonomyPolicy"]>
+
+  export type AutonomyPolicySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    policyKey?: boolean
+    lane?: boolean
+    subjectType?: boolean
+    subjectKey?: boolean
+    actionKey?: boolean
+    maxAutonomyLevel?: boolean
+    effect?: boolean
+    approvalRequired?: boolean
+    quotaPerDay?: boolean
+    killSwitchEnabled?: boolean
+    allowedActions?: boolean
+    blockedActions?: boolean
+    requiredEvidence?: boolean
+    escalationRules?: boolean
+    safetyNotes?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["autonomyPolicy"]>
+
+  export type AutonomyPolicySelectScalar = {
+    id?: boolean
+    tenantId?: boolean
+    policyKey?: boolean
+    lane?: boolean
+    subjectType?: boolean
+    subjectKey?: boolean
+    actionKey?: boolean
+    maxAutonomyLevel?: boolean
+    effect?: boolean
+    approvalRequired?: boolean
+    quotaPerDay?: boolean
+    killSwitchEnabled?: boolean
+    allowedActions?: boolean
+    blockedActions?: boolean
+    requiredEvidence?: boolean
+    escalationRules?: boolean
+    safetyNotes?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AutonomyPolicyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "policyKey" | "lane" | "subjectType" | "subjectKey" | "actionKey" | "maxAutonomyLevel" | "effect" | "approvalRequired" | "quotaPerDay" | "killSwitchEnabled" | "allowedActions" | "blockedActions" | "requiredEvidence" | "escalationRules" | "safetyNotes" | "providerCalled" | "sent" | "published" | "liveExecutionAllowed" | "createdAt" | "updatedAt", ExtArgs["result"]["autonomyPolicy"]>
+
+  export type $AutonomyPolicyPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AutonomyPolicy"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenantId: string
+      policyKey: string
+      lane: string
+      subjectType: string
+      subjectKey: string
+      actionKey: string
+      maxAutonomyLevel: number
+      effect: string
+      approvalRequired: boolean
+      quotaPerDay: number | null
+      killSwitchEnabled: boolean
+      allowedActions: Prisma.JsonValue
+      blockedActions: Prisma.JsonValue
+      requiredEvidence: Prisma.JsonValue
+      escalationRules: Prisma.JsonValue
+      safetyNotes: string
+      providerCalled: boolean
+      sent: boolean
+      published: boolean
+      liveExecutionAllowed: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["autonomyPolicy"]>
+    composites: {}
+  }
+
+  type AutonomyPolicyGetPayload<S extends boolean | null | undefined | AutonomyPolicyDefaultArgs> = $Result.GetResult<Prisma.$AutonomyPolicyPayload, S>
+
+  type AutonomyPolicyCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AutonomyPolicyFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AutonomyPolicyCountAggregateInputType | true
+    }
+
+  export interface AutonomyPolicyDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AutonomyPolicy'], meta: { name: 'AutonomyPolicy' } }
+    /**
+     * Find zero or one AutonomyPolicy that matches the filter.
+     * @param {AutonomyPolicyFindUniqueArgs} args - Arguments to find a AutonomyPolicy
+     * @example
+     * // Get one AutonomyPolicy
+     * const autonomyPolicy = await prisma.autonomyPolicy.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AutonomyPolicyFindUniqueArgs>(args: SelectSubset<T, AutonomyPolicyFindUniqueArgs<ExtArgs>>): Prisma__AutonomyPolicyClient<$Result.GetResult<Prisma.$AutonomyPolicyPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AutonomyPolicy that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AutonomyPolicyFindUniqueOrThrowArgs} args - Arguments to find a AutonomyPolicy
+     * @example
+     * // Get one AutonomyPolicy
+     * const autonomyPolicy = await prisma.autonomyPolicy.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AutonomyPolicyFindUniqueOrThrowArgs>(args: SelectSubset<T, AutonomyPolicyFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AutonomyPolicyClient<$Result.GetResult<Prisma.$AutonomyPolicyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AutonomyPolicy that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutonomyPolicyFindFirstArgs} args - Arguments to find a AutonomyPolicy
+     * @example
+     * // Get one AutonomyPolicy
+     * const autonomyPolicy = await prisma.autonomyPolicy.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AutonomyPolicyFindFirstArgs>(args?: SelectSubset<T, AutonomyPolicyFindFirstArgs<ExtArgs>>): Prisma__AutonomyPolicyClient<$Result.GetResult<Prisma.$AutonomyPolicyPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AutonomyPolicy that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutonomyPolicyFindFirstOrThrowArgs} args - Arguments to find a AutonomyPolicy
+     * @example
+     * // Get one AutonomyPolicy
+     * const autonomyPolicy = await prisma.autonomyPolicy.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AutonomyPolicyFindFirstOrThrowArgs>(args?: SelectSubset<T, AutonomyPolicyFindFirstOrThrowArgs<ExtArgs>>): Prisma__AutonomyPolicyClient<$Result.GetResult<Prisma.$AutonomyPolicyPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AutonomyPolicies that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutonomyPolicyFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AutonomyPolicies
+     * const autonomyPolicies = await prisma.autonomyPolicy.findMany()
+     *
+     * // Get first 10 AutonomyPolicies
+     * const autonomyPolicies = await prisma.autonomyPolicy.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const autonomyPolicyWithIdOnly = await prisma.autonomyPolicy.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends AutonomyPolicyFindManyArgs>(args?: SelectSubset<T, AutonomyPolicyFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutonomyPolicyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AutonomyPolicy.
+     * @param {AutonomyPolicyCreateArgs} args - Arguments to create a AutonomyPolicy.
+     * @example
+     * // Create one AutonomyPolicy
+     * const AutonomyPolicy = await prisma.autonomyPolicy.create({
+     *   data: {
+     *     // ... data to create a AutonomyPolicy
+     *   }
+     * })
+     *
+     */
+    create<T extends AutonomyPolicyCreateArgs>(args: SelectSubset<T, AutonomyPolicyCreateArgs<ExtArgs>>): Prisma__AutonomyPolicyClient<$Result.GetResult<Prisma.$AutonomyPolicyPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AutonomyPolicies.
+     * @param {AutonomyPolicyCreateManyArgs} args - Arguments to create many AutonomyPolicies.
+     * @example
+     * // Create many AutonomyPolicies
+     * const autonomyPolicy = await prisma.autonomyPolicy.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends AutonomyPolicyCreateManyArgs>(args?: SelectSubset<T, AutonomyPolicyCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AutonomyPolicies and returns the data saved in the database.
+     * @param {AutonomyPolicyCreateManyAndReturnArgs} args - Arguments to create many AutonomyPolicies.
+     * @example
+     * // Create many AutonomyPolicies
+     * const autonomyPolicy = await prisma.autonomyPolicy.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many AutonomyPolicies and only return the `id`
+     * const autonomyPolicyWithIdOnly = await prisma.autonomyPolicy.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends AutonomyPolicyCreateManyAndReturnArgs>(args?: SelectSubset<T, AutonomyPolicyCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutonomyPolicyPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AutonomyPolicy.
+     * @param {AutonomyPolicyDeleteArgs} args - Arguments to delete one AutonomyPolicy.
+     * @example
+     * // Delete one AutonomyPolicy
+     * const AutonomyPolicy = await prisma.autonomyPolicy.delete({
+     *   where: {
+     *     // ... filter to delete one AutonomyPolicy
+     *   }
+     * })
+     *
+     */
+    delete<T extends AutonomyPolicyDeleteArgs>(args: SelectSubset<T, AutonomyPolicyDeleteArgs<ExtArgs>>): Prisma__AutonomyPolicyClient<$Result.GetResult<Prisma.$AutonomyPolicyPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AutonomyPolicy.
+     * @param {AutonomyPolicyUpdateArgs} args - Arguments to update one AutonomyPolicy.
+     * @example
+     * // Update one AutonomyPolicy
+     * const autonomyPolicy = await prisma.autonomyPolicy.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends AutonomyPolicyUpdateArgs>(args: SelectSubset<T, AutonomyPolicyUpdateArgs<ExtArgs>>): Prisma__AutonomyPolicyClient<$Result.GetResult<Prisma.$AutonomyPolicyPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AutonomyPolicies.
+     * @param {AutonomyPolicyDeleteManyArgs} args - Arguments to filter AutonomyPolicies to delete.
+     * @example
+     * // Delete a few AutonomyPolicies
+     * const { count } = await prisma.autonomyPolicy.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends AutonomyPolicyDeleteManyArgs>(args?: SelectSubset<T, AutonomyPolicyDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AutonomyPolicies.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutonomyPolicyUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AutonomyPolicies
+     * const autonomyPolicy = await prisma.autonomyPolicy.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends AutonomyPolicyUpdateManyArgs>(args: SelectSubset<T, AutonomyPolicyUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AutonomyPolicies and returns the data updated in the database.
+     * @param {AutonomyPolicyUpdateManyAndReturnArgs} args - Arguments to update many AutonomyPolicies.
+     * @example
+     * // Update many AutonomyPolicies
+     * const autonomyPolicy = await prisma.autonomyPolicy.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more AutonomyPolicies and only return the `id`
+     * const autonomyPolicyWithIdOnly = await prisma.autonomyPolicy.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends AutonomyPolicyUpdateManyAndReturnArgs>(args: SelectSubset<T, AutonomyPolicyUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutonomyPolicyPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AutonomyPolicy.
+     * @param {AutonomyPolicyUpsertArgs} args - Arguments to update or create a AutonomyPolicy.
+     * @example
+     * // Update or create a AutonomyPolicy
+     * const autonomyPolicy = await prisma.autonomyPolicy.upsert({
+     *   create: {
+     *     // ... data to create a AutonomyPolicy
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AutonomyPolicy we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AutonomyPolicyUpsertArgs>(args: SelectSubset<T, AutonomyPolicyUpsertArgs<ExtArgs>>): Prisma__AutonomyPolicyClient<$Result.GetResult<Prisma.$AutonomyPolicyPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AutonomyPolicies.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutonomyPolicyCountArgs} args - Arguments to filter AutonomyPolicies to count.
+     * @example
+     * // Count the number of AutonomyPolicies
+     * const count = await prisma.autonomyPolicy.count({
+     *   where: {
+     *     // ... the filter for the AutonomyPolicies we want to count
+     *   }
+     * })
+    **/
+    count<T extends AutonomyPolicyCountArgs>(
+      args?: Subset<T, AutonomyPolicyCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AutonomyPolicyCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AutonomyPolicy.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutonomyPolicyAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AutonomyPolicyAggregateArgs>(args: Subset<T, AutonomyPolicyAggregateArgs>): Prisma.PrismaPromise<GetAutonomyPolicyAggregateType<T>>
+
+    /**
+     * Group by AutonomyPolicy.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutonomyPolicyGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<
+      T extends AutonomyPolicyGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AutonomyPolicyGroupByArgs['orderBy'] }
+        : { orderBy?: AutonomyPolicyGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AutonomyPolicyGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAutonomyPolicyGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AutonomyPolicy model
+   */
+  readonly fields: AutonomyPolicyFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AutonomyPolicy.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AutonomyPolicyClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AutonomyPolicy model
+   */
+  interface AutonomyPolicyFieldRefs {
+    readonly id: FieldRef<"AutonomyPolicy", 'String'>
+    readonly tenantId: FieldRef<"AutonomyPolicy", 'String'>
+    readonly policyKey: FieldRef<"AutonomyPolicy", 'String'>
+    readonly lane: FieldRef<"AutonomyPolicy", 'String'>
+    readonly subjectType: FieldRef<"AutonomyPolicy", 'String'>
+    readonly subjectKey: FieldRef<"AutonomyPolicy", 'String'>
+    readonly actionKey: FieldRef<"AutonomyPolicy", 'String'>
+    readonly maxAutonomyLevel: FieldRef<"AutonomyPolicy", 'Int'>
+    readonly effect: FieldRef<"AutonomyPolicy", 'String'>
+    readonly approvalRequired: FieldRef<"AutonomyPolicy", 'Boolean'>
+    readonly quotaPerDay: FieldRef<"AutonomyPolicy", 'Int'>
+    readonly killSwitchEnabled: FieldRef<"AutonomyPolicy", 'Boolean'>
+    readonly allowedActions: FieldRef<"AutonomyPolicy", 'Json'>
+    readonly blockedActions: FieldRef<"AutonomyPolicy", 'Json'>
+    readonly requiredEvidence: FieldRef<"AutonomyPolicy", 'Json'>
+    readonly escalationRules: FieldRef<"AutonomyPolicy", 'Json'>
+    readonly safetyNotes: FieldRef<"AutonomyPolicy", 'String'>
+    readonly providerCalled: FieldRef<"AutonomyPolicy", 'Boolean'>
+    readonly sent: FieldRef<"AutonomyPolicy", 'Boolean'>
+    readonly published: FieldRef<"AutonomyPolicy", 'Boolean'>
+    readonly liveExecutionAllowed: FieldRef<"AutonomyPolicy", 'Boolean'>
+    readonly createdAt: FieldRef<"AutonomyPolicy", 'DateTime'>
+    readonly updatedAt: FieldRef<"AutonomyPolicy", 'DateTime'>
+  }
+
+
+  // Custom InputTypes
+  /**
+   * AutonomyPolicy findUnique
+   */
+  export type AutonomyPolicyFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutonomyPolicy
+     */
+    select?: AutonomyPolicySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutonomyPolicy
+     */
+    omit?: AutonomyPolicyOmit<ExtArgs> | null
+    /**
+     * Filter, which AutonomyPolicy to fetch.
+     */
+    where: AutonomyPolicyWhereUniqueInput
+  }
+
+  /**
+   * AutonomyPolicy findUniqueOrThrow
+   */
+  export type AutonomyPolicyFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutonomyPolicy
+     */
+    select?: AutonomyPolicySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutonomyPolicy
+     */
+    omit?: AutonomyPolicyOmit<ExtArgs> | null
+    /**
+     * Filter, which AutonomyPolicy to fetch.
+     */
+    where: AutonomyPolicyWhereUniqueInput
+  }
+
+  /**
+   * AutonomyPolicy findFirst
+   */
+  export type AutonomyPolicyFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutonomyPolicy
+     */
+    select?: AutonomyPolicySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutonomyPolicy
+     */
+    omit?: AutonomyPolicyOmit<ExtArgs> | null
+    /**
+     * Filter, which AutonomyPolicy to fetch.
+     */
+    where?: AutonomyPolicyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of AutonomyPolicies to fetch.
+     */
+    orderBy?: AutonomyPolicyOrderByWithRelationInput | AutonomyPolicyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for AutonomyPolicies.
+     */
+    cursor?: AutonomyPolicyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` AutonomyPolicies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` AutonomyPolicies.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of AutonomyPolicies.
+     */
+    distinct?: AutonomyPolicyScalarFieldEnum | AutonomyPolicyScalarFieldEnum[]
+  }
+
+  /**
+   * AutonomyPolicy findFirstOrThrow
+   */
+  export type AutonomyPolicyFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutonomyPolicy
+     */
+    select?: AutonomyPolicySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutonomyPolicy
+     */
+    omit?: AutonomyPolicyOmit<ExtArgs> | null
+    /**
+     * Filter, which AutonomyPolicy to fetch.
+     */
+    where?: AutonomyPolicyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of AutonomyPolicies to fetch.
+     */
+    orderBy?: AutonomyPolicyOrderByWithRelationInput | AutonomyPolicyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for AutonomyPolicies.
+     */
+    cursor?: AutonomyPolicyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` AutonomyPolicies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` AutonomyPolicies.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of AutonomyPolicies.
+     */
+    distinct?: AutonomyPolicyScalarFieldEnum | AutonomyPolicyScalarFieldEnum[]
+  }
+
+  /**
+   * AutonomyPolicy findMany
+   */
+  export type AutonomyPolicyFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutonomyPolicy
+     */
+    select?: AutonomyPolicySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutonomyPolicy
+     */
+    omit?: AutonomyPolicyOmit<ExtArgs> | null
+    /**
+     * Filter, which AutonomyPolicies to fetch.
+     */
+    where?: AutonomyPolicyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of AutonomyPolicies to fetch.
+     */
+    orderBy?: AutonomyPolicyOrderByWithRelationInput | AutonomyPolicyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing AutonomyPolicies.
+     */
+    cursor?: AutonomyPolicyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` AutonomyPolicies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` AutonomyPolicies.
+     */
+    skip?: number
+    distinct?: AutonomyPolicyScalarFieldEnum | AutonomyPolicyScalarFieldEnum[]
+  }
+
+  /**
+   * AutonomyPolicy create
+   */
+  export type AutonomyPolicyCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutonomyPolicy
+     */
+    select?: AutonomyPolicySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutonomyPolicy
+     */
+    omit?: AutonomyPolicyOmit<ExtArgs> | null
+    /**
+     * The data needed to create a AutonomyPolicy.
+     */
+    data: XOR<AutonomyPolicyCreateInput, AutonomyPolicyUncheckedCreateInput>
+  }
+
+  /**
+   * AutonomyPolicy createMany
+   */
+  export type AutonomyPolicyCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AutonomyPolicies.
+     */
+    data: AutonomyPolicyCreateManyInput | AutonomyPolicyCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AutonomyPolicy createManyAndReturn
+   */
+  export type AutonomyPolicyCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutonomyPolicy
+     */
+    select?: AutonomyPolicySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutonomyPolicy
+     */
+    omit?: AutonomyPolicyOmit<ExtArgs> | null
+    /**
+     * The data used to create many AutonomyPolicies.
+     */
+    data: AutonomyPolicyCreateManyInput | AutonomyPolicyCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AutonomyPolicy update
+   */
+  export type AutonomyPolicyUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutonomyPolicy
+     */
+    select?: AutonomyPolicySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutonomyPolicy
+     */
+    omit?: AutonomyPolicyOmit<ExtArgs> | null
+    /**
+     * The data needed to update a AutonomyPolicy.
+     */
+    data: XOR<AutonomyPolicyUpdateInput, AutonomyPolicyUncheckedUpdateInput>
+    /**
+     * Choose, which AutonomyPolicy to update.
+     */
+    where: AutonomyPolicyWhereUniqueInput
+  }
+
+  /**
+   * AutonomyPolicy updateMany
+   */
+  export type AutonomyPolicyUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AutonomyPolicies.
+     */
+    data: XOR<AutonomyPolicyUpdateManyMutationInput, AutonomyPolicyUncheckedUpdateManyInput>
+    /**
+     * Filter which AutonomyPolicies to update
+     */
+    where?: AutonomyPolicyWhereInput
+    /**
+     * Limit how many AutonomyPolicies to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AutonomyPolicy updateManyAndReturn
+   */
+  export type AutonomyPolicyUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutonomyPolicy
+     */
+    select?: AutonomyPolicySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutonomyPolicy
+     */
+    omit?: AutonomyPolicyOmit<ExtArgs> | null
+    /**
+     * The data used to update AutonomyPolicies.
+     */
+    data: XOR<AutonomyPolicyUpdateManyMutationInput, AutonomyPolicyUncheckedUpdateManyInput>
+    /**
+     * Filter which AutonomyPolicies to update
+     */
+    where?: AutonomyPolicyWhereInput
+    /**
+     * Limit how many AutonomyPolicies to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AutonomyPolicy upsert
+   */
+  export type AutonomyPolicyUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutonomyPolicy
+     */
+    select?: AutonomyPolicySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutonomyPolicy
+     */
+    omit?: AutonomyPolicyOmit<ExtArgs> | null
+    /**
+     * The filter to search for the AutonomyPolicy to update in case it exists.
+     */
+    where: AutonomyPolicyWhereUniqueInput
+    /**
+     * In case the AutonomyPolicy found by the `where` argument doesn't exist, create a new AutonomyPolicy with this data.
+     */
+    create: XOR<AutonomyPolicyCreateInput, AutonomyPolicyUncheckedCreateInput>
+    /**
+     * In case the AutonomyPolicy was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AutonomyPolicyUpdateInput, AutonomyPolicyUncheckedUpdateInput>
+  }
+
+  /**
+   * AutonomyPolicy delete
+   */
+  export type AutonomyPolicyDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutonomyPolicy
+     */
+    select?: AutonomyPolicySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutonomyPolicy
+     */
+    omit?: AutonomyPolicyOmit<ExtArgs> | null
+    /**
+     * Filter which AutonomyPolicy to delete.
+     */
+    where: AutonomyPolicyWhereUniqueInput
+  }
+
+  /**
+   * AutonomyPolicy deleteMany
+   */
+  export type AutonomyPolicyDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AutonomyPolicies to delete
+     */
+    where?: AutonomyPolicyWhereInput
+    /**
+     * Limit how many AutonomyPolicies to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AutonomyPolicy without action
+   */
+  export type AutonomyPolicyDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutonomyPolicy
+     */
+    select?: AutonomyPolicySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutonomyPolicy
+     */
+    omit?: AutonomyPolicyOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ConnectorExecutionAttempt
+   */
+
+  export type AggregateConnectorExecutionAttempt = {
+    _count: ConnectorExecutionAttemptCountAggregateOutputType | null
+    _min: ConnectorExecutionAttemptMinAggregateOutputType | null
+    _max: ConnectorExecutionAttemptMaxAggregateOutputType | null
+  }
+
+  export type ConnectorExecutionAttemptMinAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    traceId: string | null
+    connectorId: string | null
+    capabilityKey: string | null
+    actionKey: string | null
+    actorId: string | null
+    requestingModule: string | null
+    policyDecision: string | null
+    reason: string | null
+    redactionApplied: boolean | null
+    auditEventId: string | null
+    outcomeEventId: string | null
+    providerCalled: boolean | null
+    providerWrite: boolean | null
+    sent: boolean | null
+    published: boolean | null
+    liveExecutionAllowed: boolean | null
+    createdAt: Date | null
+  }
+
+  export type ConnectorExecutionAttemptMaxAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    traceId: string | null
+    connectorId: string | null
+    capabilityKey: string | null
+    actionKey: string | null
+    actorId: string | null
+    requestingModule: string | null
+    policyDecision: string | null
+    reason: string | null
+    redactionApplied: boolean | null
+    auditEventId: string | null
+    outcomeEventId: string | null
+    providerCalled: boolean | null
+    providerWrite: boolean | null
+    sent: boolean | null
+    published: boolean | null
+    liveExecutionAllowed: boolean | null
+    createdAt: Date | null
+  }
+
+  export type ConnectorExecutionAttemptCountAggregateOutputType = {
+    id: number
+    tenantId: number
+    traceId: number
+    connectorId: number
+    capabilityKey: number
+    actionKey: number
+    actorId: number
+    requestingModule: number
+    policyDecision: number
+    reason: number
+    normalizedResult: number
+    redactionApplied: number
+    auditEventId: number
+    outcomeEventId: number
+    providerCalled: number
+    providerWrite: number
+    sent: number
+    published: number
+    liveExecutionAllowed: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ConnectorExecutionAttemptMinAggregateInputType = {
+    id?: true
+    tenantId?: true
+    traceId?: true
+    connectorId?: true
+    capabilityKey?: true
+    actionKey?: true
+    actorId?: true
+    requestingModule?: true
+    policyDecision?: true
+    reason?: true
+    redactionApplied?: true
+    auditEventId?: true
+    outcomeEventId?: true
+    providerCalled?: true
+    providerWrite?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+  }
+
+  export type ConnectorExecutionAttemptMaxAggregateInputType = {
+    id?: true
+    tenantId?: true
+    traceId?: true
+    connectorId?: true
+    capabilityKey?: true
+    actionKey?: true
+    actorId?: true
+    requestingModule?: true
+    policyDecision?: true
+    reason?: true
+    redactionApplied?: true
+    auditEventId?: true
+    outcomeEventId?: true
+    providerCalled?: true
+    providerWrite?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+  }
+
+  export type ConnectorExecutionAttemptCountAggregateInputType = {
+    id?: true
+    tenantId?: true
+    traceId?: true
+    connectorId?: true
+    capabilityKey?: true
+    actionKey?: true
+    actorId?: true
+    requestingModule?: true
+    policyDecision?: true
+    reason?: true
+    normalizedResult?: true
+    redactionApplied?: true
+    auditEventId?: true
+    outcomeEventId?: true
+    providerCalled?: true
+    providerWrite?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ConnectorExecutionAttemptAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ConnectorExecutionAttempt to aggregate.
+     */
+    where?: ConnectorExecutionAttemptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of ConnectorExecutionAttempts to fetch.
+     */
+    orderBy?: ConnectorExecutionAttemptOrderByWithRelationInput | ConnectorExecutionAttemptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: ConnectorExecutionAttemptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` ConnectorExecutionAttempts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` ConnectorExecutionAttempts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned ConnectorExecutionAttempts
+    **/
+    _count?: true | ConnectorExecutionAttemptCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: ConnectorExecutionAttemptMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: ConnectorExecutionAttemptMaxAggregateInputType
+  }
+
+  export type GetConnectorExecutionAttemptAggregateType<T extends ConnectorExecutionAttemptAggregateArgs> = {
+        [P in keyof T & keyof AggregateConnectorExecutionAttempt]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateConnectorExecutionAttempt[P]>
+      : GetScalarType<T[P], AggregateConnectorExecutionAttempt[P]>
+  }
+
+
+
+
+  export type ConnectorExecutionAttemptGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ConnectorExecutionAttemptWhereInput
+    orderBy?: ConnectorExecutionAttemptOrderByWithAggregationInput | ConnectorExecutionAttemptOrderByWithAggregationInput[]
+    by: ConnectorExecutionAttemptScalarFieldEnum[] | ConnectorExecutionAttemptScalarFieldEnum
+    having?: ConnectorExecutionAttemptScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ConnectorExecutionAttemptCountAggregateInputType | true
+    _min?: ConnectorExecutionAttemptMinAggregateInputType
+    _max?: ConnectorExecutionAttemptMaxAggregateInputType
+  }
+
+  export type ConnectorExecutionAttemptGroupByOutputType = {
+    id: string
+    tenantId: string
+    traceId: string
+    connectorId: string
+    capabilityKey: string
+    actionKey: string
+    actorId: string
+    requestingModule: string
+    policyDecision: string
+    reason: string
+    normalizedResult: JsonValue | null
+    redactionApplied: boolean
+    auditEventId: string | null
+    outcomeEventId: string | null
+    providerCalled: boolean
+    providerWrite: boolean
+    sent: boolean
+    published: boolean
+    liveExecutionAllowed: boolean
+    createdAt: Date
+    _count: ConnectorExecutionAttemptCountAggregateOutputType | null
+    _min: ConnectorExecutionAttemptMinAggregateOutputType | null
+    _max: ConnectorExecutionAttemptMaxAggregateOutputType | null
+  }
+
+  type GetConnectorExecutionAttemptGroupByPayload<T extends ConnectorExecutionAttemptGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ConnectorExecutionAttemptGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ConnectorExecutionAttemptGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ConnectorExecutionAttemptGroupByOutputType[P]>
+            : GetScalarType<T[P], ConnectorExecutionAttemptGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ConnectorExecutionAttemptSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    traceId?: boolean
+    connectorId?: boolean
+    capabilityKey?: boolean
+    actionKey?: boolean
+    actorId?: boolean
+    requestingModule?: boolean
+    policyDecision?: boolean
+    reason?: boolean
+    normalizedResult?: boolean
+    redactionApplied?: boolean
+    auditEventId?: boolean
+    outcomeEventId?: boolean
+    providerCalled?: boolean
+    providerWrite?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["connectorExecutionAttempt"]>
+
+  export type ConnectorExecutionAttemptSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    traceId?: boolean
+    connectorId?: boolean
+    capabilityKey?: boolean
+    actionKey?: boolean
+    actorId?: boolean
+    requestingModule?: boolean
+    policyDecision?: boolean
+    reason?: boolean
+    normalizedResult?: boolean
+    redactionApplied?: boolean
+    auditEventId?: boolean
+    outcomeEventId?: boolean
+    providerCalled?: boolean
+    providerWrite?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["connectorExecutionAttempt"]>
+
+  export type ConnectorExecutionAttemptSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    traceId?: boolean
+    connectorId?: boolean
+    capabilityKey?: boolean
+    actionKey?: boolean
+    actorId?: boolean
+    requestingModule?: boolean
+    policyDecision?: boolean
+    reason?: boolean
+    normalizedResult?: boolean
+    redactionApplied?: boolean
+    auditEventId?: boolean
+    outcomeEventId?: boolean
+    providerCalled?: boolean
+    providerWrite?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["connectorExecutionAttempt"]>
+
+  export type ConnectorExecutionAttemptSelectScalar = {
+    id?: boolean
+    tenantId?: boolean
+    traceId?: boolean
+    connectorId?: boolean
+    capabilityKey?: boolean
+    actionKey?: boolean
+    actorId?: boolean
+    requestingModule?: boolean
+    policyDecision?: boolean
+    reason?: boolean
+    normalizedResult?: boolean
+    redactionApplied?: boolean
+    auditEventId?: boolean
+    outcomeEventId?: boolean
+    providerCalled?: boolean
+    providerWrite?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+  }
+
+  export type ConnectorExecutionAttemptOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "traceId" | "connectorId" | "capabilityKey" | "actionKey" | "actorId" | "requestingModule" | "policyDecision" | "reason" | "normalizedResult" | "redactionApplied" | "auditEventId" | "outcomeEventId" | "providerCalled" | "providerWrite" | "sent" | "published" | "liveExecutionAllowed" | "createdAt", ExtArgs["result"]["connectorExecutionAttempt"]>
+
+  export type $ConnectorExecutionAttemptPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ConnectorExecutionAttempt"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenantId: string
+      traceId: string
+      connectorId: string
+      capabilityKey: string
+      actionKey: string
+      actorId: string
+      requestingModule: string
+      policyDecision: string
+      reason: string
+      normalizedResult: Prisma.JsonValue | null
+      redactionApplied: boolean
+      auditEventId: string | null
+      outcomeEventId: string | null
+      providerCalled: boolean
+      providerWrite: boolean
+      sent: boolean
+      published: boolean
+      liveExecutionAllowed: boolean
+      createdAt: Date
+    }, ExtArgs["result"]["connectorExecutionAttempt"]>
+    composites: {}
+  }
+
+  type ConnectorExecutionAttemptGetPayload<S extends boolean | null | undefined | ConnectorExecutionAttemptDefaultArgs> = $Result.GetResult<Prisma.$ConnectorExecutionAttemptPayload, S>
+
+  type ConnectorExecutionAttemptCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ConnectorExecutionAttemptFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ConnectorExecutionAttemptCountAggregateInputType | true
+    }
+
+  export interface ConnectorExecutionAttemptDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ConnectorExecutionAttempt'], meta: { name: 'ConnectorExecutionAttempt' } }
+    /**
+     * Find zero or one ConnectorExecutionAttempt that matches the filter.
+     * @param {ConnectorExecutionAttemptFindUniqueArgs} args - Arguments to find a ConnectorExecutionAttempt
+     * @example
+     * // Get one ConnectorExecutionAttempt
+     * const connectorExecutionAttempt = await prisma.connectorExecutionAttempt.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ConnectorExecutionAttemptFindUniqueArgs>(args: SelectSubset<T, ConnectorExecutionAttemptFindUniqueArgs<ExtArgs>>): Prisma__ConnectorExecutionAttemptClient<$Result.GetResult<Prisma.$ConnectorExecutionAttemptPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ConnectorExecutionAttempt that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ConnectorExecutionAttemptFindUniqueOrThrowArgs} args - Arguments to find a ConnectorExecutionAttempt
+     * @example
+     * // Get one ConnectorExecutionAttempt
+     * const connectorExecutionAttempt = await prisma.connectorExecutionAttempt.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ConnectorExecutionAttemptFindUniqueOrThrowArgs>(args: SelectSubset<T, ConnectorExecutionAttemptFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ConnectorExecutionAttemptClient<$Result.GetResult<Prisma.$ConnectorExecutionAttemptPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ConnectorExecutionAttempt that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectorExecutionAttemptFindFirstArgs} args - Arguments to find a ConnectorExecutionAttempt
+     * @example
+     * // Get one ConnectorExecutionAttempt
+     * const connectorExecutionAttempt = await prisma.connectorExecutionAttempt.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ConnectorExecutionAttemptFindFirstArgs>(args?: SelectSubset<T, ConnectorExecutionAttemptFindFirstArgs<ExtArgs>>): Prisma__ConnectorExecutionAttemptClient<$Result.GetResult<Prisma.$ConnectorExecutionAttemptPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ConnectorExecutionAttempt that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectorExecutionAttemptFindFirstOrThrowArgs} args - Arguments to find a ConnectorExecutionAttempt
+     * @example
+     * // Get one ConnectorExecutionAttempt
+     * const connectorExecutionAttempt = await prisma.connectorExecutionAttempt.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ConnectorExecutionAttemptFindFirstOrThrowArgs>(args?: SelectSubset<T, ConnectorExecutionAttemptFindFirstOrThrowArgs<ExtArgs>>): Prisma__ConnectorExecutionAttemptClient<$Result.GetResult<Prisma.$ConnectorExecutionAttemptPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ConnectorExecutionAttempts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectorExecutionAttemptFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ConnectorExecutionAttempts
+     * const connectorExecutionAttempts = await prisma.connectorExecutionAttempt.findMany()
+     *
+     * // Get first 10 ConnectorExecutionAttempts
+     * const connectorExecutionAttempts = await prisma.connectorExecutionAttempt.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const connectorExecutionAttemptWithIdOnly = await prisma.connectorExecutionAttempt.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends ConnectorExecutionAttemptFindManyArgs>(args?: SelectSubset<T, ConnectorExecutionAttemptFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConnectorExecutionAttemptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ConnectorExecutionAttempt.
+     * @param {ConnectorExecutionAttemptCreateArgs} args - Arguments to create a ConnectorExecutionAttempt.
+     * @example
+     * // Create one ConnectorExecutionAttempt
+     * const ConnectorExecutionAttempt = await prisma.connectorExecutionAttempt.create({
+     *   data: {
+     *     // ... data to create a ConnectorExecutionAttempt
+     *   }
+     * })
+     *
+     */
+    create<T extends ConnectorExecutionAttemptCreateArgs>(args: SelectSubset<T, ConnectorExecutionAttemptCreateArgs<ExtArgs>>): Prisma__ConnectorExecutionAttemptClient<$Result.GetResult<Prisma.$ConnectorExecutionAttemptPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ConnectorExecutionAttempts.
+     * @param {ConnectorExecutionAttemptCreateManyArgs} args - Arguments to create many ConnectorExecutionAttempts.
+     * @example
+     * // Create many ConnectorExecutionAttempts
+     * const connectorExecutionAttempt = await prisma.connectorExecutionAttempt.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends ConnectorExecutionAttemptCreateManyArgs>(args?: SelectSubset<T, ConnectorExecutionAttemptCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ConnectorExecutionAttempts and returns the data saved in the database.
+     * @param {ConnectorExecutionAttemptCreateManyAndReturnArgs} args - Arguments to create many ConnectorExecutionAttempts.
+     * @example
+     * // Create many ConnectorExecutionAttempts
+     * const connectorExecutionAttempt = await prisma.connectorExecutionAttempt.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many ConnectorExecutionAttempts and only return the `id`
+     * const connectorExecutionAttemptWithIdOnly = await prisma.connectorExecutionAttempt.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends ConnectorExecutionAttemptCreateManyAndReturnArgs>(args?: SelectSubset<T, ConnectorExecutionAttemptCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConnectorExecutionAttemptPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ConnectorExecutionAttempt.
+     * @param {ConnectorExecutionAttemptDeleteArgs} args - Arguments to delete one ConnectorExecutionAttempt.
+     * @example
+     * // Delete one ConnectorExecutionAttempt
+     * const ConnectorExecutionAttempt = await prisma.connectorExecutionAttempt.delete({
+     *   where: {
+     *     // ... filter to delete one ConnectorExecutionAttempt
+     *   }
+     * })
+     *
+     */
+    delete<T extends ConnectorExecutionAttemptDeleteArgs>(args: SelectSubset<T, ConnectorExecutionAttemptDeleteArgs<ExtArgs>>): Prisma__ConnectorExecutionAttemptClient<$Result.GetResult<Prisma.$ConnectorExecutionAttemptPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ConnectorExecutionAttempt.
+     * @param {ConnectorExecutionAttemptUpdateArgs} args - Arguments to update one ConnectorExecutionAttempt.
+     * @example
+     * // Update one ConnectorExecutionAttempt
+     * const connectorExecutionAttempt = await prisma.connectorExecutionAttempt.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends ConnectorExecutionAttemptUpdateArgs>(args: SelectSubset<T, ConnectorExecutionAttemptUpdateArgs<ExtArgs>>): Prisma__ConnectorExecutionAttemptClient<$Result.GetResult<Prisma.$ConnectorExecutionAttemptPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ConnectorExecutionAttempts.
+     * @param {ConnectorExecutionAttemptDeleteManyArgs} args - Arguments to filter ConnectorExecutionAttempts to delete.
+     * @example
+     * // Delete a few ConnectorExecutionAttempts
+     * const { count } = await prisma.connectorExecutionAttempt.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends ConnectorExecutionAttemptDeleteManyArgs>(args?: SelectSubset<T, ConnectorExecutionAttemptDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ConnectorExecutionAttempts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectorExecutionAttemptUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ConnectorExecutionAttempts
+     * const connectorExecutionAttempt = await prisma.connectorExecutionAttempt.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends ConnectorExecutionAttemptUpdateManyArgs>(args: SelectSubset<T, ConnectorExecutionAttemptUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ConnectorExecutionAttempts and returns the data updated in the database.
+     * @param {ConnectorExecutionAttemptUpdateManyAndReturnArgs} args - Arguments to update many ConnectorExecutionAttempts.
+     * @example
+     * // Update many ConnectorExecutionAttempts
+     * const connectorExecutionAttempt = await prisma.connectorExecutionAttempt.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more ConnectorExecutionAttempts and only return the `id`
+     * const connectorExecutionAttemptWithIdOnly = await prisma.connectorExecutionAttempt.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends ConnectorExecutionAttemptUpdateManyAndReturnArgs>(args: SelectSubset<T, ConnectorExecutionAttemptUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConnectorExecutionAttemptPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ConnectorExecutionAttempt.
+     * @param {ConnectorExecutionAttemptUpsertArgs} args - Arguments to update or create a ConnectorExecutionAttempt.
+     * @example
+     * // Update or create a ConnectorExecutionAttempt
+     * const connectorExecutionAttempt = await prisma.connectorExecutionAttempt.upsert({
+     *   create: {
+     *     // ... data to create a ConnectorExecutionAttempt
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ConnectorExecutionAttempt we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ConnectorExecutionAttemptUpsertArgs>(args: SelectSubset<T, ConnectorExecutionAttemptUpsertArgs<ExtArgs>>): Prisma__ConnectorExecutionAttemptClient<$Result.GetResult<Prisma.$ConnectorExecutionAttemptPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ConnectorExecutionAttempts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectorExecutionAttemptCountArgs} args - Arguments to filter ConnectorExecutionAttempts to count.
+     * @example
+     * // Count the number of ConnectorExecutionAttempts
+     * const count = await prisma.connectorExecutionAttempt.count({
+     *   where: {
+     *     // ... the filter for the ConnectorExecutionAttempts we want to count
+     *   }
+     * })
+    **/
+    count<T extends ConnectorExecutionAttemptCountArgs>(
+      args?: Subset<T, ConnectorExecutionAttemptCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ConnectorExecutionAttemptCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ConnectorExecutionAttempt.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectorExecutionAttemptAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ConnectorExecutionAttemptAggregateArgs>(args: Subset<T, ConnectorExecutionAttemptAggregateArgs>): Prisma.PrismaPromise<GetConnectorExecutionAttemptAggregateType<T>>
+
+    /**
+     * Group by ConnectorExecutionAttempt.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectorExecutionAttemptGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<
+      T extends ConnectorExecutionAttemptGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ConnectorExecutionAttemptGroupByArgs['orderBy'] }
+        : { orderBy?: ConnectorExecutionAttemptGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ConnectorExecutionAttemptGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetConnectorExecutionAttemptGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ConnectorExecutionAttempt model
+   */
+  readonly fields: ConnectorExecutionAttemptFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ConnectorExecutionAttempt.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ConnectorExecutionAttemptClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ConnectorExecutionAttempt model
+   */
+  interface ConnectorExecutionAttemptFieldRefs {
+    readonly id: FieldRef<"ConnectorExecutionAttempt", 'String'>
+    readonly tenantId: FieldRef<"ConnectorExecutionAttempt", 'String'>
+    readonly traceId: FieldRef<"ConnectorExecutionAttempt", 'String'>
+    readonly connectorId: FieldRef<"ConnectorExecutionAttempt", 'String'>
+    readonly capabilityKey: FieldRef<"ConnectorExecutionAttempt", 'String'>
+    readonly actionKey: FieldRef<"ConnectorExecutionAttempt", 'String'>
+    readonly actorId: FieldRef<"ConnectorExecutionAttempt", 'String'>
+    readonly requestingModule: FieldRef<"ConnectorExecutionAttempt", 'String'>
+    readonly policyDecision: FieldRef<"ConnectorExecutionAttempt", 'String'>
+    readonly reason: FieldRef<"ConnectorExecutionAttempt", 'String'>
+    readonly normalizedResult: FieldRef<"ConnectorExecutionAttempt", 'Json'>
+    readonly redactionApplied: FieldRef<"ConnectorExecutionAttempt", 'Boolean'>
+    readonly auditEventId: FieldRef<"ConnectorExecutionAttempt", 'String'>
+    readonly outcomeEventId: FieldRef<"ConnectorExecutionAttempt", 'String'>
+    readonly providerCalled: FieldRef<"ConnectorExecutionAttempt", 'Boolean'>
+    readonly providerWrite: FieldRef<"ConnectorExecutionAttempt", 'Boolean'>
+    readonly sent: FieldRef<"ConnectorExecutionAttempt", 'Boolean'>
+    readonly published: FieldRef<"ConnectorExecutionAttempt", 'Boolean'>
+    readonly liveExecutionAllowed: FieldRef<"ConnectorExecutionAttempt", 'Boolean'>
+    readonly createdAt: FieldRef<"ConnectorExecutionAttempt", 'DateTime'>
+  }
+
+
+  // Custom InputTypes
+  /**
+   * ConnectorExecutionAttempt findUnique
+   */
+  export type ConnectorExecutionAttemptFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectorExecutionAttempt
+     */
+    select?: ConnectorExecutionAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConnectorExecutionAttempt
+     */
+    omit?: ConnectorExecutionAttemptOmit<ExtArgs> | null
+    /**
+     * Filter, which ConnectorExecutionAttempt to fetch.
+     */
+    where: ConnectorExecutionAttemptWhereUniqueInput
+  }
+
+  /**
+   * ConnectorExecutionAttempt findUniqueOrThrow
+   */
+  export type ConnectorExecutionAttemptFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectorExecutionAttempt
+     */
+    select?: ConnectorExecutionAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConnectorExecutionAttempt
+     */
+    omit?: ConnectorExecutionAttemptOmit<ExtArgs> | null
+    /**
+     * Filter, which ConnectorExecutionAttempt to fetch.
+     */
+    where: ConnectorExecutionAttemptWhereUniqueInput
+  }
+
+  /**
+   * ConnectorExecutionAttempt findFirst
+   */
+  export type ConnectorExecutionAttemptFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectorExecutionAttempt
+     */
+    select?: ConnectorExecutionAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConnectorExecutionAttempt
+     */
+    omit?: ConnectorExecutionAttemptOmit<ExtArgs> | null
+    /**
+     * Filter, which ConnectorExecutionAttempt to fetch.
+     */
+    where?: ConnectorExecutionAttemptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of ConnectorExecutionAttempts to fetch.
+     */
+    orderBy?: ConnectorExecutionAttemptOrderByWithRelationInput | ConnectorExecutionAttemptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for ConnectorExecutionAttempts.
+     */
+    cursor?: ConnectorExecutionAttemptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` ConnectorExecutionAttempts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` ConnectorExecutionAttempts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of ConnectorExecutionAttempts.
+     */
+    distinct?: ConnectorExecutionAttemptScalarFieldEnum | ConnectorExecutionAttemptScalarFieldEnum[]
+  }
+
+  /**
+   * ConnectorExecutionAttempt findFirstOrThrow
+   */
+  export type ConnectorExecutionAttemptFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectorExecutionAttempt
+     */
+    select?: ConnectorExecutionAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConnectorExecutionAttempt
+     */
+    omit?: ConnectorExecutionAttemptOmit<ExtArgs> | null
+    /**
+     * Filter, which ConnectorExecutionAttempt to fetch.
+     */
+    where?: ConnectorExecutionAttemptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of ConnectorExecutionAttempts to fetch.
+     */
+    orderBy?: ConnectorExecutionAttemptOrderByWithRelationInput | ConnectorExecutionAttemptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for ConnectorExecutionAttempts.
+     */
+    cursor?: ConnectorExecutionAttemptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` ConnectorExecutionAttempts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` ConnectorExecutionAttempts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of ConnectorExecutionAttempts.
+     */
+    distinct?: ConnectorExecutionAttemptScalarFieldEnum | ConnectorExecutionAttemptScalarFieldEnum[]
+  }
+
+  /**
+   * ConnectorExecutionAttempt findMany
+   */
+  export type ConnectorExecutionAttemptFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectorExecutionAttempt
+     */
+    select?: ConnectorExecutionAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConnectorExecutionAttempt
+     */
+    omit?: ConnectorExecutionAttemptOmit<ExtArgs> | null
+    /**
+     * Filter, which ConnectorExecutionAttempts to fetch.
+     */
+    where?: ConnectorExecutionAttemptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of ConnectorExecutionAttempts to fetch.
+     */
+    orderBy?: ConnectorExecutionAttemptOrderByWithRelationInput | ConnectorExecutionAttemptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing ConnectorExecutionAttempts.
+     */
+    cursor?: ConnectorExecutionAttemptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` ConnectorExecutionAttempts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` ConnectorExecutionAttempts.
+     */
+    skip?: number
+    distinct?: ConnectorExecutionAttemptScalarFieldEnum | ConnectorExecutionAttemptScalarFieldEnum[]
+  }
+
+  /**
+   * ConnectorExecutionAttempt create
+   */
+  export type ConnectorExecutionAttemptCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectorExecutionAttempt
+     */
+    select?: ConnectorExecutionAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConnectorExecutionAttempt
+     */
+    omit?: ConnectorExecutionAttemptOmit<ExtArgs> | null
+    /**
+     * The data needed to create a ConnectorExecutionAttempt.
+     */
+    data: XOR<ConnectorExecutionAttemptCreateInput, ConnectorExecutionAttemptUncheckedCreateInput>
+  }
+
+  /**
+   * ConnectorExecutionAttempt createMany
+   */
+  export type ConnectorExecutionAttemptCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ConnectorExecutionAttempts.
+     */
+    data: ConnectorExecutionAttemptCreateManyInput | ConnectorExecutionAttemptCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ConnectorExecutionAttempt createManyAndReturn
+   */
+  export type ConnectorExecutionAttemptCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectorExecutionAttempt
+     */
+    select?: ConnectorExecutionAttemptSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConnectorExecutionAttempt
+     */
+    omit?: ConnectorExecutionAttemptOmit<ExtArgs> | null
+    /**
+     * The data used to create many ConnectorExecutionAttempts.
+     */
+    data: ConnectorExecutionAttemptCreateManyInput | ConnectorExecutionAttemptCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ConnectorExecutionAttempt update
+   */
+  export type ConnectorExecutionAttemptUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectorExecutionAttempt
+     */
+    select?: ConnectorExecutionAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConnectorExecutionAttempt
+     */
+    omit?: ConnectorExecutionAttemptOmit<ExtArgs> | null
+    /**
+     * The data needed to update a ConnectorExecutionAttempt.
+     */
+    data: XOR<ConnectorExecutionAttemptUpdateInput, ConnectorExecutionAttemptUncheckedUpdateInput>
+    /**
+     * Choose, which ConnectorExecutionAttempt to update.
+     */
+    where: ConnectorExecutionAttemptWhereUniqueInput
+  }
+
+  /**
+   * ConnectorExecutionAttempt updateMany
+   */
+  export type ConnectorExecutionAttemptUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ConnectorExecutionAttempts.
+     */
+    data: XOR<ConnectorExecutionAttemptUpdateManyMutationInput, ConnectorExecutionAttemptUncheckedUpdateManyInput>
+    /**
+     * Filter which ConnectorExecutionAttempts to update
+     */
+    where?: ConnectorExecutionAttemptWhereInput
+    /**
+     * Limit how many ConnectorExecutionAttempts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ConnectorExecutionAttempt updateManyAndReturn
+   */
+  export type ConnectorExecutionAttemptUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectorExecutionAttempt
+     */
+    select?: ConnectorExecutionAttemptSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConnectorExecutionAttempt
+     */
+    omit?: ConnectorExecutionAttemptOmit<ExtArgs> | null
+    /**
+     * The data used to update ConnectorExecutionAttempts.
+     */
+    data: XOR<ConnectorExecutionAttemptUpdateManyMutationInput, ConnectorExecutionAttemptUncheckedUpdateManyInput>
+    /**
+     * Filter which ConnectorExecutionAttempts to update
+     */
+    where?: ConnectorExecutionAttemptWhereInput
+    /**
+     * Limit how many ConnectorExecutionAttempts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ConnectorExecutionAttempt upsert
+   */
+  export type ConnectorExecutionAttemptUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectorExecutionAttempt
+     */
+    select?: ConnectorExecutionAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConnectorExecutionAttempt
+     */
+    omit?: ConnectorExecutionAttemptOmit<ExtArgs> | null
+    /**
+     * The filter to search for the ConnectorExecutionAttempt to update in case it exists.
+     */
+    where: ConnectorExecutionAttemptWhereUniqueInput
+    /**
+     * In case the ConnectorExecutionAttempt found by the `where` argument doesn't exist, create a new ConnectorExecutionAttempt with this data.
+     */
+    create: XOR<ConnectorExecutionAttemptCreateInput, ConnectorExecutionAttemptUncheckedCreateInput>
+    /**
+     * In case the ConnectorExecutionAttempt was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ConnectorExecutionAttemptUpdateInput, ConnectorExecutionAttemptUncheckedUpdateInput>
+  }
+
+  /**
+   * ConnectorExecutionAttempt delete
+   */
+  export type ConnectorExecutionAttemptDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectorExecutionAttempt
+     */
+    select?: ConnectorExecutionAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConnectorExecutionAttempt
+     */
+    omit?: ConnectorExecutionAttemptOmit<ExtArgs> | null
+    /**
+     * Filter which ConnectorExecutionAttempt to delete.
+     */
+    where: ConnectorExecutionAttemptWhereUniqueInput
+  }
+
+  /**
+   * ConnectorExecutionAttempt deleteMany
+   */
+  export type ConnectorExecutionAttemptDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ConnectorExecutionAttempts to delete
+     */
+    where?: ConnectorExecutionAttemptWhereInput
+    /**
+     * Limit how many ConnectorExecutionAttempts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ConnectorExecutionAttempt without action
+   */
+  export type ConnectorExecutionAttemptDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectorExecutionAttempt
+     */
+    select?: ConnectorExecutionAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConnectorExecutionAttempt
+     */
+    omit?: ConnectorExecutionAttemptOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model BusinessOutcomeEvent
+   */
+
+  export type AggregateBusinessOutcomeEvent = {
+    _count: BusinessOutcomeEventCountAggregateOutputType | null
+    _avg: BusinessOutcomeEventAvgAggregateOutputType | null
+    _sum: BusinessOutcomeEventSumAggregateOutputType | null
+    _min: BusinessOutcomeEventMinAggregateOutputType | null
+    _max: BusinessOutcomeEventMaxAggregateOutputType | null
+  }
+
+  export type BusinessOutcomeEventAvgAggregateOutputType = {
+    confidence: number | null
+  }
+
+  export type BusinessOutcomeEventSumAggregateOutputType = {
+    confidence: number | null
+  }
+
+  export type BusinessOutcomeEventMinAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    outcomeKey: string | null
+    sourceType: string | null
+    sourceId: string | null
+    leadId: string | null
+    taskId: string | null
+    runId: string | null
+    actionKey: string | null
+    expectedOutcome: string | null
+    actualOutcome: string | null
+    revenueImpactEstimate: string | null
+    confidence: number | null
+    nextRecommendation: string | null
+    providerCalled: boolean | null
+    sent: boolean | null
+    published: boolean | null
+    liveExecutionAllowed: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BusinessOutcomeEventMaxAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    outcomeKey: string | null
+    sourceType: string | null
+    sourceId: string | null
+    leadId: string | null
+    taskId: string | null
+    runId: string | null
+    actionKey: string | null
+    expectedOutcome: string | null
+    actualOutcome: string | null
+    revenueImpactEstimate: string | null
+    confidence: number | null
+    nextRecommendation: string | null
+    providerCalled: boolean | null
+    sent: boolean | null
+    published: boolean | null
+    liveExecutionAllowed: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BusinessOutcomeEventCountAggregateOutputType = {
+    id: number
+    tenantId: number
+    outcomeKey: number
+    sourceType: number
+    sourceId: number
+    leadId: number
+    taskId: number
+    runId: number
+    actionKey: number
+    expectedOutcome: number
+    actualOutcome: number
+    kpiAffected: number
+    revenueImpactEstimate: number
+    confidence: number
+    nextRecommendation: number
+    safeMetadata: number
+    providerCalled: number
+    sent: number
+    published: number
+    liveExecutionAllowed: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type BusinessOutcomeEventAvgAggregateInputType = {
+    confidence?: true
+  }
+
+  export type BusinessOutcomeEventSumAggregateInputType = {
+    confidence?: true
+  }
+
+  export type BusinessOutcomeEventMinAggregateInputType = {
+    id?: true
+    tenantId?: true
+    outcomeKey?: true
+    sourceType?: true
+    sourceId?: true
+    leadId?: true
+    taskId?: true
+    runId?: true
+    actionKey?: true
+    expectedOutcome?: true
+    actualOutcome?: true
+    revenueImpactEstimate?: true
+    confidence?: true
+    nextRecommendation?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BusinessOutcomeEventMaxAggregateInputType = {
+    id?: true
+    tenantId?: true
+    outcomeKey?: true
+    sourceType?: true
+    sourceId?: true
+    leadId?: true
+    taskId?: true
+    runId?: true
+    actionKey?: true
+    expectedOutcome?: true
+    actualOutcome?: true
+    revenueImpactEstimate?: true
+    confidence?: true
+    nextRecommendation?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BusinessOutcomeEventCountAggregateInputType = {
+    id?: true
+    tenantId?: true
+    outcomeKey?: true
+    sourceType?: true
+    sourceId?: true
+    leadId?: true
+    taskId?: true
+    runId?: true
+    actionKey?: true
+    expectedOutcome?: true
+    actualOutcome?: true
+    kpiAffected?: true
+    revenueImpactEstimate?: true
+    confidence?: true
+    nextRecommendation?: true
+    safeMetadata?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type BusinessOutcomeEventAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BusinessOutcomeEvent to aggregate.
+     */
+    where?: BusinessOutcomeEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of BusinessOutcomeEvents to fetch.
+     */
+    orderBy?: BusinessOutcomeEventOrderByWithRelationInput | BusinessOutcomeEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: BusinessOutcomeEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` BusinessOutcomeEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` BusinessOutcomeEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned BusinessOutcomeEvents
+    **/
+    _count?: true | BusinessOutcomeEventCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to average
+    **/
+    _avg?: BusinessOutcomeEventAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: BusinessOutcomeEventSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: BusinessOutcomeEventMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: BusinessOutcomeEventMaxAggregateInputType
+  }
+
+  export type GetBusinessOutcomeEventAggregateType<T extends BusinessOutcomeEventAggregateArgs> = {
+        [P in keyof T & keyof AggregateBusinessOutcomeEvent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateBusinessOutcomeEvent[P]>
+      : GetScalarType<T[P], AggregateBusinessOutcomeEvent[P]>
+  }
+
+
+
+
+  export type BusinessOutcomeEventGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BusinessOutcomeEventWhereInput
+    orderBy?: BusinessOutcomeEventOrderByWithAggregationInput | BusinessOutcomeEventOrderByWithAggregationInput[]
+    by: BusinessOutcomeEventScalarFieldEnum[] | BusinessOutcomeEventScalarFieldEnum
+    having?: BusinessOutcomeEventScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: BusinessOutcomeEventCountAggregateInputType | true
+    _avg?: BusinessOutcomeEventAvgAggregateInputType
+    _sum?: BusinessOutcomeEventSumAggregateInputType
+    _min?: BusinessOutcomeEventMinAggregateInputType
+    _max?: BusinessOutcomeEventMaxAggregateInputType
+  }
+
+  export type BusinessOutcomeEventGroupByOutputType = {
+    id: string
+    tenantId: string
+    outcomeKey: string
+    sourceType: string
+    sourceId: string | null
+    leadId: string | null
+    taskId: string | null
+    runId: string | null
+    actionKey: string
+    expectedOutcome: string
+    actualOutcome: string
+    kpiAffected: JsonValue
+    revenueImpactEstimate: string | null
+    confidence: number
+    nextRecommendation: string
+    safeMetadata: JsonValue | null
+    providerCalled: boolean
+    sent: boolean
+    published: boolean
+    liveExecutionAllowed: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: BusinessOutcomeEventCountAggregateOutputType | null
+    _avg: BusinessOutcomeEventAvgAggregateOutputType | null
+    _sum: BusinessOutcomeEventSumAggregateOutputType | null
+    _min: BusinessOutcomeEventMinAggregateOutputType | null
+    _max: BusinessOutcomeEventMaxAggregateOutputType | null
+  }
+
+  type GetBusinessOutcomeEventGroupByPayload<T extends BusinessOutcomeEventGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<BusinessOutcomeEventGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof BusinessOutcomeEventGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], BusinessOutcomeEventGroupByOutputType[P]>
+            : GetScalarType<T[P], BusinessOutcomeEventGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type BusinessOutcomeEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    outcomeKey?: boolean
+    sourceType?: boolean
+    sourceId?: boolean
+    leadId?: boolean
+    taskId?: boolean
+    runId?: boolean
+    actionKey?: boolean
+    expectedOutcome?: boolean
+    actualOutcome?: boolean
+    kpiAffected?: boolean
+    revenueImpactEstimate?: boolean
+    confidence?: boolean
+    nextRecommendation?: boolean
+    safeMetadata?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["businessOutcomeEvent"]>
+
+  export type BusinessOutcomeEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    outcomeKey?: boolean
+    sourceType?: boolean
+    sourceId?: boolean
+    leadId?: boolean
+    taskId?: boolean
+    runId?: boolean
+    actionKey?: boolean
+    expectedOutcome?: boolean
+    actualOutcome?: boolean
+    kpiAffected?: boolean
+    revenueImpactEstimate?: boolean
+    confidence?: boolean
+    nextRecommendation?: boolean
+    safeMetadata?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["businessOutcomeEvent"]>
+
+  export type BusinessOutcomeEventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    outcomeKey?: boolean
+    sourceType?: boolean
+    sourceId?: boolean
+    leadId?: boolean
+    taskId?: boolean
+    runId?: boolean
+    actionKey?: boolean
+    expectedOutcome?: boolean
+    actualOutcome?: boolean
+    kpiAffected?: boolean
+    revenueImpactEstimate?: boolean
+    confidence?: boolean
+    nextRecommendation?: boolean
+    safeMetadata?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["businessOutcomeEvent"]>
+
+  export type BusinessOutcomeEventSelectScalar = {
+    id?: boolean
+    tenantId?: boolean
+    outcomeKey?: boolean
+    sourceType?: boolean
+    sourceId?: boolean
+    leadId?: boolean
+    taskId?: boolean
+    runId?: boolean
+    actionKey?: boolean
+    expectedOutcome?: boolean
+    actualOutcome?: boolean
+    kpiAffected?: boolean
+    revenueImpactEstimate?: boolean
+    confidence?: boolean
+    nextRecommendation?: boolean
+    safeMetadata?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type BusinessOutcomeEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "outcomeKey" | "sourceType" | "sourceId" | "leadId" | "taskId" | "runId" | "actionKey" | "expectedOutcome" | "actualOutcome" | "kpiAffected" | "revenueImpactEstimate" | "confidence" | "nextRecommendation" | "safeMetadata" | "providerCalled" | "sent" | "published" | "liveExecutionAllowed" | "createdAt" | "updatedAt", ExtArgs["result"]["businessOutcomeEvent"]>
+
+  export type $BusinessOutcomeEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "BusinessOutcomeEvent"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenantId: string
+      outcomeKey: string
+      sourceType: string
+      sourceId: string | null
+      leadId: string | null
+      taskId: string | null
+      runId: string | null
+      actionKey: string
+      expectedOutcome: string
+      actualOutcome: string
+      kpiAffected: Prisma.JsonValue
+      revenueImpactEstimate: string | null
+      confidence: number
+      nextRecommendation: string
+      safeMetadata: Prisma.JsonValue | null
+      providerCalled: boolean
+      sent: boolean
+      published: boolean
+      liveExecutionAllowed: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["businessOutcomeEvent"]>
+    composites: {}
+  }
+
+  type BusinessOutcomeEventGetPayload<S extends boolean | null | undefined | BusinessOutcomeEventDefaultArgs> = $Result.GetResult<Prisma.$BusinessOutcomeEventPayload, S>
+
+  type BusinessOutcomeEventCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<BusinessOutcomeEventFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: BusinessOutcomeEventCountAggregateInputType | true
+    }
+
+  export interface BusinessOutcomeEventDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['BusinessOutcomeEvent'], meta: { name: 'BusinessOutcomeEvent' } }
+    /**
+     * Find zero or one BusinessOutcomeEvent that matches the filter.
+     * @param {BusinessOutcomeEventFindUniqueArgs} args - Arguments to find a BusinessOutcomeEvent
+     * @example
+     * // Get one BusinessOutcomeEvent
+     * const businessOutcomeEvent = await prisma.businessOutcomeEvent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends BusinessOutcomeEventFindUniqueArgs>(args: SelectSubset<T, BusinessOutcomeEventFindUniqueArgs<ExtArgs>>): Prisma__BusinessOutcomeEventClient<$Result.GetResult<Prisma.$BusinessOutcomeEventPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one BusinessOutcomeEvent that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {BusinessOutcomeEventFindUniqueOrThrowArgs} args - Arguments to find a BusinessOutcomeEvent
+     * @example
+     * // Get one BusinessOutcomeEvent
+     * const businessOutcomeEvent = await prisma.businessOutcomeEvent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends BusinessOutcomeEventFindUniqueOrThrowArgs>(args: SelectSubset<T, BusinessOutcomeEventFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BusinessOutcomeEventClient<$Result.GetResult<Prisma.$BusinessOutcomeEventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BusinessOutcomeEvent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BusinessOutcomeEventFindFirstArgs} args - Arguments to find a BusinessOutcomeEvent
+     * @example
+     * // Get one BusinessOutcomeEvent
+     * const businessOutcomeEvent = await prisma.businessOutcomeEvent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends BusinessOutcomeEventFindFirstArgs>(args?: SelectSubset<T, BusinessOutcomeEventFindFirstArgs<ExtArgs>>): Prisma__BusinessOutcomeEventClient<$Result.GetResult<Prisma.$BusinessOutcomeEventPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BusinessOutcomeEvent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BusinessOutcomeEventFindFirstOrThrowArgs} args - Arguments to find a BusinessOutcomeEvent
+     * @example
+     * // Get one BusinessOutcomeEvent
+     * const businessOutcomeEvent = await prisma.businessOutcomeEvent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends BusinessOutcomeEventFindFirstOrThrowArgs>(args?: SelectSubset<T, BusinessOutcomeEventFindFirstOrThrowArgs<ExtArgs>>): Prisma__BusinessOutcomeEventClient<$Result.GetResult<Prisma.$BusinessOutcomeEventPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more BusinessOutcomeEvents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BusinessOutcomeEventFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all BusinessOutcomeEvents
+     * const businessOutcomeEvents = await prisma.businessOutcomeEvent.findMany()
+     *
+     * // Get first 10 BusinessOutcomeEvents
+     * const businessOutcomeEvents = await prisma.businessOutcomeEvent.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const businessOutcomeEventWithIdOnly = await prisma.businessOutcomeEvent.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends BusinessOutcomeEventFindManyArgs>(args?: SelectSubset<T, BusinessOutcomeEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BusinessOutcomeEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a BusinessOutcomeEvent.
+     * @param {BusinessOutcomeEventCreateArgs} args - Arguments to create a BusinessOutcomeEvent.
+     * @example
+     * // Create one BusinessOutcomeEvent
+     * const BusinessOutcomeEvent = await prisma.businessOutcomeEvent.create({
+     *   data: {
+     *     // ... data to create a BusinessOutcomeEvent
+     *   }
+     * })
+     *
+     */
+    create<T extends BusinessOutcomeEventCreateArgs>(args: SelectSubset<T, BusinessOutcomeEventCreateArgs<ExtArgs>>): Prisma__BusinessOutcomeEventClient<$Result.GetResult<Prisma.$BusinessOutcomeEventPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many BusinessOutcomeEvents.
+     * @param {BusinessOutcomeEventCreateManyArgs} args - Arguments to create many BusinessOutcomeEvents.
+     * @example
+     * // Create many BusinessOutcomeEvents
+     * const businessOutcomeEvent = await prisma.businessOutcomeEvent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends BusinessOutcomeEventCreateManyArgs>(args?: SelectSubset<T, BusinessOutcomeEventCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many BusinessOutcomeEvents and returns the data saved in the database.
+     * @param {BusinessOutcomeEventCreateManyAndReturnArgs} args - Arguments to create many BusinessOutcomeEvents.
+     * @example
+     * // Create many BusinessOutcomeEvents
+     * const businessOutcomeEvent = await prisma.businessOutcomeEvent.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many BusinessOutcomeEvents and only return the `id`
+     * const businessOutcomeEventWithIdOnly = await prisma.businessOutcomeEvent.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends BusinessOutcomeEventCreateManyAndReturnArgs>(args?: SelectSubset<T, BusinessOutcomeEventCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BusinessOutcomeEventPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a BusinessOutcomeEvent.
+     * @param {BusinessOutcomeEventDeleteArgs} args - Arguments to delete one BusinessOutcomeEvent.
+     * @example
+     * // Delete one BusinessOutcomeEvent
+     * const BusinessOutcomeEvent = await prisma.businessOutcomeEvent.delete({
+     *   where: {
+     *     // ... filter to delete one BusinessOutcomeEvent
+     *   }
+     * })
+     *
+     */
+    delete<T extends BusinessOutcomeEventDeleteArgs>(args: SelectSubset<T, BusinessOutcomeEventDeleteArgs<ExtArgs>>): Prisma__BusinessOutcomeEventClient<$Result.GetResult<Prisma.$BusinessOutcomeEventPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one BusinessOutcomeEvent.
+     * @param {BusinessOutcomeEventUpdateArgs} args - Arguments to update one BusinessOutcomeEvent.
+     * @example
+     * // Update one BusinessOutcomeEvent
+     * const businessOutcomeEvent = await prisma.businessOutcomeEvent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends BusinessOutcomeEventUpdateArgs>(args: SelectSubset<T, BusinessOutcomeEventUpdateArgs<ExtArgs>>): Prisma__BusinessOutcomeEventClient<$Result.GetResult<Prisma.$BusinessOutcomeEventPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more BusinessOutcomeEvents.
+     * @param {BusinessOutcomeEventDeleteManyArgs} args - Arguments to filter BusinessOutcomeEvents to delete.
+     * @example
+     * // Delete a few BusinessOutcomeEvents
+     * const { count } = await prisma.businessOutcomeEvent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends BusinessOutcomeEventDeleteManyArgs>(args?: SelectSubset<T, BusinessOutcomeEventDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BusinessOutcomeEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BusinessOutcomeEventUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many BusinessOutcomeEvents
+     * const businessOutcomeEvent = await prisma.businessOutcomeEvent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends BusinessOutcomeEventUpdateManyArgs>(args: SelectSubset<T, BusinessOutcomeEventUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BusinessOutcomeEvents and returns the data updated in the database.
+     * @param {BusinessOutcomeEventUpdateManyAndReturnArgs} args - Arguments to update many BusinessOutcomeEvents.
+     * @example
+     * // Update many BusinessOutcomeEvents
+     * const businessOutcomeEvent = await prisma.businessOutcomeEvent.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more BusinessOutcomeEvents and only return the `id`
+     * const businessOutcomeEventWithIdOnly = await prisma.businessOutcomeEvent.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends BusinessOutcomeEventUpdateManyAndReturnArgs>(args: SelectSubset<T, BusinessOutcomeEventUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BusinessOutcomeEventPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one BusinessOutcomeEvent.
+     * @param {BusinessOutcomeEventUpsertArgs} args - Arguments to update or create a BusinessOutcomeEvent.
+     * @example
+     * // Update or create a BusinessOutcomeEvent
+     * const businessOutcomeEvent = await prisma.businessOutcomeEvent.upsert({
+     *   create: {
+     *     // ... data to create a BusinessOutcomeEvent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the BusinessOutcomeEvent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends BusinessOutcomeEventUpsertArgs>(args: SelectSubset<T, BusinessOutcomeEventUpsertArgs<ExtArgs>>): Prisma__BusinessOutcomeEventClient<$Result.GetResult<Prisma.$BusinessOutcomeEventPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of BusinessOutcomeEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BusinessOutcomeEventCountArgs} args - Arguments to filter BusinessOutcomeEvents to count.
+     * @example
+     * // Count the number of BusinessOutcomeEvents
+     * const count = await prisma.businessOutcomeEvent.count({
+     *   where: {
+     *     // ... the filter for the BusinessOutcomeEvents we want to count
+     *   }
+     * })
+    **/
+    count<T extends BusinessOutcomeEventCountArgs>(
+      args?: Subset<T, BusinessOutcomeEventCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], BusinessOutcomeEventCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a BusinessOutcomeEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BusinessOutcomeEventAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends BusinessOutcomeEventAggregateArgs>(args: Subset<T, BusinessOutcomeEventAggregateArgs>): Prisma.PrismaPromise<GetBusinessOutcomeEventAggregateType<T>>
+
+    /**
+     * Group by BusinessOutcomeEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BusinessOutcomeEventGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<
+      T extends BusinessOutcomeEventGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: BusinessOutcomeEventGroupByArgs['orderBy'] }
+        : { orderBy?: BusinessOutcomeEventGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, BusinessOutcomeEventGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBusinessOutcomeEventGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the BusinessOutcomeEvent model
+   */
+  readonly fields: BusinessOutcomeEventFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for BusinessOutcomeEvent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__BusinessOutcomeEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the BusinessOutcomeEvent model
+   */
+  interface BusinessOutcomeEventFieldRefs {
+    readonly id: FieldRef<"BusinessOutcomeEvent", 'String'>
+    readonly tenantId: FieldRef<"BusinessOutcomeEvent", 'String'>
+    readonly outcomeKey: FieldRef<"BusinessOutcomeEvent", 'String'>
+    readonly sourceType: FieldRef<"BusinessOutcomeEvent", 'String'>
+    readonly sourceId: FieldRef<"BusinessOutcomeEvent", 'String'>
+    readonly leadId: FieldRef<"BusinessOutcomeEvent", 'String'>
+    readonly taskId: FieldRef<"BusinessOutcomeEvent", 'String'>
+    readonly runId: FieldRef<"BusinessOutcomeEvent", 'String'>
+    readonly actionKey: FieldRef<"BusinessOutcomeEvent", 'String'>
+    readonly expectedOutcome: FieldRef<"BusinessOutcomeEvent", 'String'>
+    readonly actualOutcome: FieldRef<"BusinessOutcomeEvent", 'String'>
+    readonly kpiAffected: FieldRef<"BusinessOutcomeEvent", 'Json'>
+    readonly revenueImpactEstimate: FieldRef<"BusinessOutcomeEvent", 'String'>
+    readonly confidence: FieldRef<"BusinessOutcomeEvent", 'Int'>
+    readonly nextRecommendation: FieldRef<"BusinessOutcomeEvent", 'String'>
+    readonly safeMetadata: FieldRef<"BusinessOutcomeEvent", 'Json'>
+    readonly providerCalled: FieldRef<"BusinessOutcomeEvent", 'Boolean'>
+    readonly sent: FieldRef<"BusinessOutcomeEvent", 'Boolean'>
+    readonly published: FieldRef<"BusinessOutcomeEvent", 'Boolean'>
+    readonly liveExecutionAllowed: FieldRef<"BusinessOutcomeEvent", 'Boolean'>
+    readonly createdAt: FieldRef<"BusinessOutcomeEvent", 'DateTime'>
+    readonly updatedAt: FieldRef<"BusinessOutcomeEvent", 'DateTime'>
+  }
+
+
+  // Custom InputTypes
+  /**
+   * BusinessOutcomeEvent findUnique
+   */
+  export type BusinessOutcomeEventFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BusinessOutcomeEvent
+     */
+    select?: BusinessOutcomeEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BusinessOutcomeEvent
+     */
+    omit?: BusinessOutcomeEventOmit<ExtArgs> | null
+    /**
+     * Filter, which BusinessOutcomeEvent to fetch.
+     */
+    where: BusinessOutcomeEventWhereUniqueInput
+  }
+
+  /**
+   * BusinessOutcomeEvent findUniqueOrThrow
+   */
+  export type BusinessOutcomeEventFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BusinessOutcomeEvent
+     */
+    select?: BusinessOutcomeEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BusinessOutcomeEvent
+     */
+    omit?: BusinessOutcomeEventOmit<ExtArgs> | null
+    /**
+     * Filter, which BusinessOutcomeEvent to fetch.
+     */
+    where: BusinessOutcomeEventWhereUniqueInput
+  }
+
+  /**
+   * BusinessOutcomeEvent findFirst
+   */
+  export type BusinessOutcomeEventFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BusinessOutcomeEvent
+     */
+    select?: BusinessOutcomeEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BusinessOutcomeEvent
+     */
+    omit?: BusinessOutcomeEventOmit<ExtArgs> | null
+    /**
+     * Filter, which BusinessOutcomeEvent to fetch.
+     */
+    where?: BusinessOutcomeEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of BusinessOutcomeEvents to fetch.
+     */
+    orderBy?: BusinessOutcomeEventOrderByWithRelationInput | BusinessOutcomeEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for BusinessOutcomeEvents.
+     */
+    cursor?: BusinessOutcomeEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` BusinessOutcomeEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` BusinessOutcomeEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of BusinessOutcomeEvents.
+     */
+    distinct?: BusinessOutcomeEventScalarFieldEnum | BusinessOutcomeEventScalarFieldEnum[]
+  }
+
+  /**
+   * BusinessOutcomeEvent findFirstOrThrow
+   */
+  export type BusinessOutcomeEventFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BusinessOutcomeEvent
+     */
+    select?: BusinessOutcomeEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BusinessOutcomeEvent
+     */
+    omit?: BusinessOutcomeEventOmit<ExtArgs> | null
+    /**
+     * Filter, which BusinessOutcomeEvent to fetch.
+     */
+    where?: BusinessOutcomeEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of BusinessOutcomeEvents to fetch.
+     */
+    orderBy?: BusinessOutcomeEventOrderByWithRelationInput | BusinessOutcomeEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for BusinessOutcomeEvents.
+     */
+    cursor?: BusinessOutcomeEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` BusinessOutcomeEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` BusinessOutcomeEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of BusinessOutcomeEvents.
+     */
+    distinct?: BusinessOutcomeEventScalarFieldEnum | BusinessOutcomeEventScalarFieldEnum[]
+  }
+
+  /**
+   * BusinessOutcomeEvent findMany
+   */
+  export type BusinessOutcomeEventFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BusinessOutcomeEvent
+     */
+    select?: BusinessOutcomeEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BusinessOutcomeEvent
+     */
+    omit?: BusinessOutcomeEventOmit<ExtArgs> | null
+    /**
+     * Filter, which BusinessOutcomeEvents to fetch.
+     */
+    where?: BusinessOutcomeEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of BusinessOutcomeEvents to fetch.
+     */
+    orderBy?: BusinessOutcomeEventOrderByWithRelationInput | BusinessOutcomeEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing BusinessOutcomeEvents.
+     */
+    cursor?: BusinessOutcomeEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` BusinessOutcomeEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` BusinessOutcomeEvents.
+     */
+    skip?: number
+    distinct?: BusinessOutcomeEventScalarFieldEnum | BusinessOutcomeEventScalarFieldEnum[]
+  }
+
+  /**
+   * BusinessOutcomeEvent create
+   */
+  export type BusinessOutcomeEventCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BusinessOutcomeEvent
+     */
+    select?: BusinessOutcomeEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BusinessOutcomeEvent
+     */
+    omit?: BusinessOutcomeEventOmit<ExtArgs> | null
+    /**
+     * The data needed to create a BusinessOutcomeEvent.
+     */
+    data: XOR<BusinessOutcomeEventCreateInput, BusinessOutcomeEventUncheckedCreateInput>
+  }
+
+  /**
+   * BusinessOutcomeEvent createMany
+   */
+  export type BusinessOutcomeEventCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many BusinessOutcomeEvents.
+     */
+    data: BusinessOutcomeEventCreateManyInput | BusinessOutcomeEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * BusinessOutcomeEvent createManyAndReturn
+   */
+  export type BusinessOutcomeEventCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BusinessOutcomeEvent
+     */
+    select?: BusinessOutcomeEventSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BusinessOutcomeEvent
+     */
+    omit?: BusinessOutcomeEventOmit<ExtArgs> | null
+    /**
+     * The data used to create many BusinessOutcomeEvents.
+     */
+    data: BusinessOutcomeEventCreateManyInput | BusinessOutcomeEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * BusinessOutcomeEvent update
+   */
+  export type BusinessOutcomeEventUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BusinessOutcomeEvent
+     */
+    select?: BusinessOutcomeEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BusinessOutcomeEvent
+     */
+    omit?: BusinessOutcomeEventOmit<ExtArgs> | null
+    /**
+     * The data needed to update a BusinessOutcomeEvent.
+     */
+    data: XOR<BusinessOutcomeEventUpdateInput, BusinessOutcomeEventUncheckedUpdateInput>
+    /**
+     * Choose, which BusinessOutcomeEvent to update.
+     */
+    where: BusinessOutcomeEventWhereUniqueInput
+  }
+
+  /**
+   * BusinessOutcomeEvent updateMany
+   */
+  export type BusinessOutcomeEventUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update BusinessOutcomeEvents.
+     */
+    data: XOR<BusinessOutcomeEventUpdateManyMutationInput, BusinessOutcomeEventUncheckedUpdateManyInput>
+    /**
+     * Filter which BusinessOutcomeEvents to update
+     */
+    where?: BusinessOutcomeEventWhereInput
+    /**
+     * Limit how many BusinessOutcomeEvents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * BusinessOutcomeEvent updateManyAndReturn
+   */
+  export type BusinessOutcomeEventUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BusinessOutcomeEvent
+     */
+    select?: BusinessOutcomeEventSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BusinessOutcomeEvent
+     */
+    omit?: BusinessOutcomeEventOmit<ExtArgs> | null
+    /**
+     * The data used to update BusinessOutcomeEvents.
+     */
+    data: XOR<BusinessOutcomeEventUpdateManyMutationInput, BusinessOutcomeEventUncheckedUpdateManyInput>
+    /**
+     * Filter which BusinessOutcomeEvents to update
+     */
+    where?: BusinessOutcomeEventWhereInput
+    /**
+     * Limit how many BusinessOutcomeEvents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * BusinessOutcomeEvent upsert
+   */
+  export type BusinessOutcomeEventUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BusinessOutcomeEvent
+     */
+    select?: BusinessOutcomeEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BusinessOutcomeEvent
+     */
+    omit?: BusinessOutcomeEventOmit<ExtArgs> | null
+    /**
+     * The filter to search for the BusinessOutcomeEvent to update in case it exists.
+     */
+    where: BusinessOutcomeEventWhereUniqueInput
+    /**
+     * In case the BusinessOutcomeEvent found by the `where` argument doesn't exist, create a new BusinessOutcomeEvent with this data.
+     */
+    create: XOR<BusinessOutcomeEventCreateInput, BusinessOutcomeEventUncheckedCreateInput>
+    /**
+     * In case the BusinessOutcomeEvent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<BusinessOutcomeEventUpdateInput, BusinessOutcomeEventUncheckedUpdateInput>
+  }
+
+  /**
+   * BusinessOutcomeEvent delete
+   */
+  export type BusinessOutcomeEventDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BusinessOutcomeEvent
+     */
+    select?: BusinessOutcomeEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BusinessOutcomeEvent
+     */
+    omit?: BusinessOutcomeEventOmit<ExtArgs> | null
+    /**
+     * Filter which BusinessOutcomeEvent to delete.
+     */
+    where: BusinessOutcomeEventWhereUniqueInput
+  }
+
+  /**
+   * BusinessOutcomeEvent deleteMany
+   */
+  export type BusinessOutcomeEventDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BusinessOutcomeEvents to delete
+     */
+    where?: BusinessOutcomeEventWhereInput
+    /**
+     * Limit how many BusinessOutcomeEvents to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * BusinessOutcomeEvent without action
+   */
+  export type BusinessOutcomeEventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BusinessOutcomeEvent
+     */
+    select?: BusinessOutcomeEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BusinessOutcomeEvent
+     */
+    omit?: BusinessOutcomeEventOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AutonomousRunRecord
+   */
+
+  export type AggregateAutonomousRunRecord = {
+    _count: AutonomousRunRecordCountAggregateOutputType | null
+    _avg: AutonomousRunRecordAvgAggregateOutputType | null
+    _sum: AutonomousRunRecordSumAggregateOutputType | null
+    _min: AutonomousRunRecordMinAggregateOutputType | null
+    _max: AutonomousRunRecordMaxAggregateOutputType | null
+  }
+
+  export type AutonomousRunRecordAvgAggregateOutputType = {
+    workCreated: number | null
+    workExecuted: number | null
+    workSkipped: number | null
+  }
+
+  export type AutonomousRunRecordSumAggregateOutputType = {
+    workCreated: number | null
+    workExecuted: number | null
+    workSkipped: number | null
+  }
+
+  export type AutonomousRunRecordMinAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    runKey: string | null
+    businessDate: string | null
+    pipelineVersion: string | null
+    lane: string | null
+    triggeredBy: string | null
+    state: string | null
+    workCreated: number | null
+    workExecuted: number | null
+    workSkipped: number | null
+    healthCertified: boolean | null
+    providerCalled: boolean | null
+    sent: boolean | null
+    published: boolean | null
+    liveExecutionAllowed: boolean | null
+    startedAt: Date | null
+    completedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AutonomousRunRecordMaxAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    runKey: string | null
+    businessDate: string | null
+    pipelineVersion: string | null
+    lane: string | null
+    triggeredBy: string | null
+    state: string | null
+    workCreated: number | null
+    workExecuted: number | null
+    workSkipped: number | null
+    healthCertified: boolean | null
+    providerCalled: boolean | null
+    sent: boolean | null
+    published: boolean | null
+    liveExecutionAllowed: boolean | null
+    startedAt: Date | null
+    completedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AutonomousRunRecordCountAggregateOutputType = {
+    id: number
+    tenantId: number
+    runKey: number
+    businessDate: number
+    pipelineVersion: number
+    lane: number
+    triggeredBy: number
+    state: number
+    phaseSummary: number
+    workCreated: number
+    workExecuted: number
+    workSkipped: number
+    exceptions: number
+    safetyFlags: number
+    healthCertified: number
+    providerCalled: number
+    sent: number
+    published: number
+    liveExecutionAllowed: number
+    startedAt: number
+    completedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AutonomousRunRecordAvgAggregateInputType = {
+    workCreated?: true
+    workExecuted?: true
+    workSkipped?: true
+  }
+
+  export type AutonomousRunRecordSumAggregateInputType = {
+    workCreated?: true
+    workExecuted?: true
+    workSkipped?: true
+  }
+
+  export type AutonomousRunRecordMinAggregateInputType = {
+    id?: true
+    tenantId?: true
+    runKey?: true
+    businessDate?: true
+    pipelineVersion?: true
+    lane?: true
+    triggeredBy?: true
+    state?: true
+    workCreated?: true
+    workExecuted?: true
+    workSkipped?: true
+    healthCertified?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    startedAt?: true
+    completedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AutonomousRunRecordMaxAggregateInputType = {
+    id?: true
+    tenantId?: true
+    runKey?: true
+    businessDate?: true
+    pipelineVersion?: true
+    lane?: true
+    triggeredBy?: true
+    state?: true
+    workCreated?: true
+    workExecuted?: true
+    workSkipped?: true
+    healthCertified?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    startedAt?: true
+    completedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AutonomousRunRecordCountAggregateInputType = {
+    id?: true
+    tenantId?: true
+    runKey?: true
+    businessDate?: true
+    pipelineVersion?: true
+    lane?: true
+    triggeredBy?: true
+    state?: true
+    phaseSummary?: true
+    workCreated?: true
+    workExecuted?: true
+    workSkipped?: true
+    exceptions?: true
+    safetyFlags?: true
+    healthCertified?: true
+    providerCalled?: true
+    sent?: true
+    published?: true
+    liveExecutionAllowed?: true
+    startedAt?: true
+    completedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AutonomousRunRecordAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AutonomousRunRecord to aggregate.
+     */
+    where?: AutonomousRunRecordWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of AutonomousRunRecords to fetch.
+     */
+    orderBy?: AutonomousRunRecordOrderByWithRelationInput | AutonomousRunRecordOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: AutonomousRunRecordWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` AutonomousRunRecords from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` AutonomousRunRecords.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned AutonomousRunRecords
+    **/
+    _count?: true | AutonomousRunRecordCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to average
+    **/
+    _avg?: AutonomousRunRecordAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: AutonomousRunRecordSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: AutonomousRunRecordMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: AutonomousRunRecordMaxAggregateInputType
+  }
+
+  export type GetAutonomousRunRecordAggregateType<T extends AutonomousRunRecordAggregateArgs> = {
+        [P in keyof T & keyof AggregateAutonomousRunRecord]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAutonomousRunRecord[P]>
+      : GetScalarType<T[P], AggregateAutonomousRunRecord[P]>
+  }
+
+
+
+
+  export type AutonomousRunRecordGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AutonomousRunRecordWhereInput
+    orderBy?: AutonomousRunRecordOrderByWithAggregationInput | AutonomousRunRecordOrderByWithAggregationInput[]
+    by: AutonomousRunRecordScalarFieldEnum[] | AutonomousRunRecordScalarFieldEnum
+    having?: AutonomousRunRecordScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AutonomousRunRecordCountAggregateInputType | true
+    _avg?: AutonomousRunRecordAvgAggregateInputType
+    _sum?: AutonomousRunRecordSumAggregateInputType
+    _min?: AutonomousRunRecordMinAggregateInputType
+    _max?: AutonomousRunRecordMaxAggregateInputType
+  }
+
+  export type AutonomousRunRecordGroupByOutputType = {
+    id: string
+    tenantId: string
+    runKey: string
+    businessDate: string
+    pipelineVersion: string
+    lane: string
+    triggeredBy: string
+    state: string
+    phaseSummary: JsonValue
+    workCreated: number
+    workExecuted: number
+    workSkipped: number
+    exceptions: JsonValue
+    safetyFlags: JsonValue
+    healthCertified: boolean
+    providerCalled: boolean
+    sent: boolean
+    published: boolean
+    liveExecutionAllowed: boolean
+    startedAt: Date
+    completedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: AutonomousRunRecordCountAggregateOutputType | null
+    _avg: AutonomousRunRecordAvgAggregateOutputType | null
+    _sum: AutonomousRunRecordSumAggregateOutputType | null
+    _min: AutonomousRunRecordMinAggregateOutputType | null
+    _max: AutonomousRunRecordMaxAggregateOutputType | null
+  }
+
+  type GetAutonomousRunRecordGroupByPayload<T extends AutonomousRunRecordGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AutonomousRunRecordGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AutonomousRunRecordGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AutonomousRunRecordGroupByOutputType[P]>
+            : GetScalarType<T[P], AutonomousRunRecordGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AutonomousRunRecordSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    runKey?: boolean
+    businessDate?: boolean
+    pipelineVersion?: boolean
+    lane?: boolean
+    triggeredBy?: boolean
+    state?: boolean
+    phaseSummary?: boolean
+    workCreated?: boolean
+    workExecuted?: boolean
+    workSkipped?: boolean
+    exceptions?: boolean
+    safetyFlags?: boolean
+    healthCertified?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["autonomousRunRecord"]>
+
+  export type AutonomousRunRecordSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    runKey?: boolean
+    businessDate?: boolean
+    pipelineVersion?: boolean
+    lane?: boolean
+    triggeredBy?: boolean
+    state?: boolean
+    phaseSummary?: boolean
+    workCreated?: boolean
+    workExecuted?: boolean
+    workSkipped?: boolean
+    exceptions?: boolean
+    safetyFlags?: boolean
+    healthCertified?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["autonomousRunRecord"]>
+
+  export type AutonomousRunRecordSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    runKey?: boolean
+    businessDate?: boolean
+    pipelineVersion?: boolean
+    lane?: boolean
+    triggeredBy?: boolean
+    state?: boolean
+    phaseSummary?: boolean
+    workCreated?: boolean
+    workExecuted?: boolean
+    workSkipped?: boolean
+    exceptions?: boolean
+    safetyFlags?: boolean
+    healthCertified?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["autonomousRunRecord"]>
+
+  export type AutonomousRunRecordSelectScalar = {
+    id?: boolean
+    tenantId?: boolean
+    runKey?: boolean
+    businessDate?: boolean
+    pipelineVersion?: boolean
+    lane?: boolean
+    triggeredBy?: boolean
+    state?: boolean
+    phaseSummary?: boolean
+    workCreated?: boolean
+    workExecuted?: boolean
+    workSkipped?: boolean
+    exceptions?: boolean
+    safetyFlags?: boolean
+    healthCertified?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AutonomousRunRecordOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "runKey" | "businessDate" | "pipelineVersion" | "lane" | "triggeredBy" | "state" | "phaseSummary" | "workCreated" | "workExecuted" | "workSkipped" | "exceptions" | "safetyFlags" | "healthCertified" | "providerCalled" | "sent" | "published" | "liveExecutionAllowed" | "startedAt" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["autonomousRunRecord"]>
+
+  export type $AutonomousRunRecordPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AutonomousRunRecord"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenantId: string
+      runKey: string
+      businessDate: string
+      pipelineVersion: string
+      lane: string
+      triggeredBy: string
+      state: string
+      phaseSummary: Prisma.JsonValue
+      workCreated: number
+      workExecuted: number
+      workSkipped: number
+      exceptions: Prisma.JsonValue
+      safetyFlags: Prisma.JsonValue
+      healthCertified: boolean
+      providerCalled: boolean
+      sent: boolean
+      published: boolean
+      liveExecutionAllowed: boolean
+      startedAt: Date
+      completedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["autonomousRunRecord"]>
+    composites: {}
+  }
+
+  type AutonomousRunRecordGetPayload<S extends boolean | null | undefined | AutonomousRunRecordDefaultArgs> = $Result.GetResult<Prisma.$AutonomousRunRecordPayload, S>
+
+  type AutonomousRunRecordCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AutonomousRunRecordFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AutonomousRunRecordCountAggregateInputType | true
+    }
+
+  export interface AutonomousRunRecordDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AutonomousRunRecord'], meta: { name: 'AutonomousRunRecord' } }
+    /**
+     * Find zero or one AutonomousRunRecord that matches the filter.
+     * @param {AutonomousRunRecordFindUniqueArgs} args - Arguments to find a AutonomousRunRecord
+     * @example
+     * // Get one AutonomousRunRecord
+     * const autonomousRunRecord = await prisma.autonomousRunRecord.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AutonomousRunRecordFindUniqueArgs>(args: SelectSubset<T, AutonomousRunRecordFindUniqueArgs<ExtArgs>>): Prisma__AutonomousRunRecordClient<$Result.GetResult<Prisma.$AutonomousRunRecordPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AutonomousRunRecord that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AutonomousRunRecordFindUniqueOrThrowArgs} args - Arguments to find a AutonomousRunRecord
+     * @example
+     * // Get one AutonomousRunRecord
+     * const autonomousRunRecord = await prisma.autonomousRunRecord.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AutonomousRunRecordFindUniqueOrThrowArgs>(args: SelectSubset<T, AutonomousRunRecordFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AutonomousRunRecordClient<$Result.GetResult<Prisma.$AutonomousRunRecordPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AutonomousRunRecord that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutonomousRunRecordFindFirstArgs} args - Arguments to find a AutonomousRunRecord
+     * @example
+     * // Get one AutonomousRunRecord
+     * const autonomousRunRecord = await prisma.autonomousRunRecord.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AutonomousRunRecordFindFirstArgs>(args?: SelectSubset<T, AutonomousRunRecordFindFirstArgs<ExtArgs>>): Prisma__AutonomousRunRecordClient<$Result.GetResult<Prisma.$AutonomousRunRecordPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AutonomousRunRecord that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutonomousRunRecordFindFirstOrThrowArgs} args - Arguments to find a AutonomousRunRecord
+     * @example
+     * // Get one AutonomousRunRecord
+     * const autonomousRunRecord = await prisma.autonomousRunRecord.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AutonomousRunRecordFindFirstOrThrowArgs>(args?: SelectSubset<T, AutonomousRunRecordFindFirstOrThrowArgs<ExtArgs>>): Prisma__AutonomousRunRecordClient<$Result.GetResult<Prisma.$AutonomousRunRecordPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AutonomousRunRecords that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutonomousRunRecordFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AutonomousRunRecords
+     * const autonomousRunRecords = await prisma.autonomousRunRecord.findMany()
+     *
+     * // Get first 10 AutonomousRunRecords
+     * const autonomousRunRecords = await prisma.autonomousRunRecord.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const autonomousRunRecordWithIdOnly = await prisma.autonomousRunRecord.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends AutonomousRunRecordFindManyArgs>(args?: SelectSubset<T, AutonomousRunRecordFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutonomousRunRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AutonomousRunRecord.
+     * @param {AutonomousRunRecordCreateArgs} args - Arguments to create a AutonomousRunRecord.
+     * @example
+     * // Create one AutonomousRunRecord
+     * const AutonomousRunRecord = await prisma.autonomousRunRecord.create({
+     *   data: {
+     *     // ... data to create a AutonomousRunRecord
+     *   }
+     * })
+     *
+     */
+    create<T extends AutonomousRunRecordCreateArgs>(args: SelectSubset<T, AutonomousRunRecordCreateArgs<ExtArgs>>): Prisma__AutonomousRunRecordClient<$Result.GetResult<Prisma.$AutonomousRunRecordPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AutonomousRunRecords.
+     * @param {AutonomousRunRecordCreateManyArgs} args - Arguments to create many AutonomousRunRecords.
+     * @example
+     * // Create many AutonomousRunRecords
+     * const autonomousRunRecord = await prisma.autonomousRunRecord.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends AutonomousRunRecordCreateManyArgs>(args?: SelectSubset<T, AutonomousRunRecordCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AutonomousRunRecords and returns the data saved in the database.
+     * @param {AutonomousRunRecordCreateManyAndReturnArgs} args - Arguments to create many AutonomousRunRecords.
+     * @example
+     * // Create many AutonomousRunRecords
+     * const autonomousRunRecord = await prisma.autonomousRunRecord.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many AutonomousRunRecords and only return the `id`
+     * const autonomousRunRecordWithIdOnly = await prisma.autonomousRunRecord.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends AutonomousRunRecordCreateManyAndReturnArgs>(args?: SelectSubset<T, AutonomousRunRecordCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutonomousRunRecordPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AutonomousRunRecord.
+     * @param {AutonomousRunRecordDeleteArgs} args - Arguments to delete one AutonomousRunRecord.
+     * @example
+     * // Delete one AutonomousRunRecord
+     * const AutonomousRunRecord = await prisma.autonomousRunRecord.delete({
+     *   where: {
+     *     // ... filter to delete one AutonomousRunRecord
+     *   }
+     * })
+     *
+     */
+    delete<T extends AutonomousRunRecordDeleteArgs>(args: SelectSubset<T, AutonomousRunRecordDeleteArgs<ExtArgs>>): Prisma__AutonomousRunRecordClient<$Result.GetResult<Prisma.$AutonomousRunRecordPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AutonomousRunRecord.
+     * @param {AutonomousRunRecordUpdateArgs} args - Arguments to update one AutonomousRunRecord.
+     * @example
+     * // Update one AutonomousRunRecord
+     * const autonomousRunRecord = await prisma.autonomousRunRecord.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends AutonomousRunRecordUpdateArgs>(args: SelectSubset<T, AutonomousRunRecordUpdateArgs<ExtArgs>>): Prisma__AutonomousRunRecordClient<$Result.GetResult<Prisma.$AutonomousRunRecordPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AutonomousRunRecords.
+     * @param {AutonomousRunRecordDeleteManyArgs} args - Arguments to filter AutonomousRunRecords to delete.
+     * @example
+     * // Delete a few AutonomousRunRecords
+     * const { count } = await prisma.autonomousRunRecord.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends AutonomousRunRecordDeleteManyArgs>(args?: SelectSubset<T, AutonomousRunRecordDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AutonomousRunRecords.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutonomousRunRecordUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AutonomousRunRecords
+     * const autonomousRunRecord = await prisma.autonomousRunRecord.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends AutonomousRunRecordUpdateManyArgs>(args: SelectSubset<T, AutonomousRunRecordUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AutonomousRunRecords and returns the data updated in the database.
+     * @param {AutonomousRunRecordUpdateManyAndReturnArgs} args - Arguments to update many AutonomousRunRecords.
+     * @example
+     * // Update many AutonomousRunRecords
+     * const autonomousRunRecord = await prisma.autonomousRunRecord.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more AutonomousRunRecords and only return the `id`
+     * const autonomousRunRecordWithIdOnly = await prisma.autonomousRunRecord.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends AutonomousRunRecordUpdateManyAndReturnArgs>(args: SelectSubset<T, AutonomousRunRecordUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutonomousRunRecordPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AutonomousRunRecord.
+     * @param {AutonomousRunRecordUpsertArgs} args - Arguments to update or create a AutonomousRunRecord.
+     * @example
+     * // Update or create a AutonomousRunRecord
+     * const autonomousRunRecord = await prisma.autonomousRunRecord.upsert({
+     *   create: {
+     *     // ... data to create a AutonomousRunRecord
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AutonomousRunRecord we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AutonomousRunRecordUpsertArgs>(args: SelectSubset<T, AutonomousRunRecordUpsertArgs<ExtArgs>>): Prisma__AutonomousRunRecordClient<$Result.GetResult<Prisma.$AutonomousRunRecordPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AutonomousRunRecords.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutonomousRunRecordCountArgs} args - Arguments to filter AutonomousRunRecords to count.
+     * @example
+     * // Count the number of AutonomousRunRecords
+     * const count = await prisma.autonomousRunRecord.count({
+     *   where: {
+     *     // ... the filter for the AutonomousRunRecords we want to count
+     *   }
+     * })
+    **/
+    count<T extends AutonomousRunRecordCountArgs>(
+      args?: Subset<T, AutonomousRunRecordCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AutonomousRunRecordCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AutonomousRunRecord.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutonomousRunRecordAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AutonomousRunRecordAggregateArgs>(args: Subset<T, AutonomousRunRecordAggregateArgs>): Prisma.PrismaPromise<GetAutonomousRunRecordAggregateType<T>>
+
+    /**
+     * Group by AutonomousRunRecord.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AutonomousRunRecordGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<
+      T extends AutonomousRunRecordGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AutonomousRunRecordGroupByArgs['orderBy'] }
+        : { orderBy?: AutonomousRunRecordGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AutonomousRunRecordGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAutonomousRunRecordGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AutonomousRunRecord model
+   */
+  readonly fields: AutonomousRunRecordFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AutonomousRunRecord.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AutonomousRunRecordClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AutonomousRunRecord model
+   */
+  interface AutonomousRunRecordFieldRefs {
+    readonly id: FieldRef<"AutonomousRunRecord", 'String'>
+    readonly tenantId: FieldRef<"AutonomousRunRecord", 'String'>
+    readonly runKey: FieldRef<"AutonomousRunRecord", 'String'>
+    readonly businessDate: FieldRef<"AutonomousRunRecord", 'String'>
+    readonly pipelineVersion: FieldRef<"AutonomousRunRecord", 'String'>
+    readonly lane: FieldRef<"AutonomousRunRecord", 'String'>
+    readonly triggeredBy: FieldRef<"AutonomousRunRecord", 'String'>
+    readonly state: FieldRef<"AutonomousRunRecord", 'String'>
+    readonly phaseSummary: FieldRef<"AutonomousRunRecord", 'Json'>
+    readonly workCreated: FieldRef<"AutonomousRunRecord", 'Int'>
+    readonly workExecuted: FieldRef<"AutonomousRunRecord", 'Int'>
+    readonly workSkipped: FieldRef<"AutonomousRunRecord", 'Int'>
+    readonly exceptions: FieldRef<"AutonomousRunRecord", 'Json'>
+    readonly safetyFlags: FieldRef<"AutonomousRunRecord", 'Json'>
+    readonly healthCertified: FieldRef<"AutonomousRunRecord", 'Boolean'>
+    readonly providerCalled: FieldRef<"AutonomousRunRecord", 'Boolean'>
+    readonly sent: FieldRef<"AutonomousRunRecord", 'Boolean'>
+    readonly published: FieldRef<"AutonomousRunRecord", 'Boolean'>
+    readonly liveExecutionAllowed: FieldRef<"AutonomousRunRecord", 'Boolean'>
+    readonly startedAt: FieldRef<"AutonomousRunRecord", 'DateTime'>
+    readonly completedAt: FieldRef<"AutonomousRunRecord", 'DateTime'>
+    readonly createdAt: FieldRef<"AutonomousRunRecord", 'DateTime'>
+    readonly updatedAt: FieldRef<"AutonomousRunRecord", 'DateTime'>
+  }
+
+
+  // Custom InputTypes
+  /**
+   * AutonomousRunRecord findUnique
+   */
+  export type AutonomousRunRecordFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutonomousRunRecord
+     */
+    select?: AutonomousRunRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutonomousRunRecord
+     */
+    omit?: AutonomousRunRecordOmit<ExtArgs> | null
+    /**
+     * Filter, which AutonomousRunRecord to fetch.
+     */
+    where: AutonomousRunRecordWhereUniqueInput
+  }
+
+  /**
+   * AutonomousRunRecord findUniqueOrThrow
+   */
+  export type AutonomousRunRecordFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutonomousRunRecord
+     */
+    select?: AutonomousRunRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutonomousRunRecord
+     */
+    omit?: AutonomousRunRecordOmit<ExtArgs> | null
+    /**
+     * Filter, which AutonomousRunRecord to fetch.
+     */
+    where: AutonomousRunRecordWhereUniqueInput
+  }
+
+  /**
+   * AutonomousRunRecord findFirst
+   */
+  export type AutonomousRunRecordFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutonomousRunRecord
+     */
+    select?: AutonomousRunRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutonomousRunRecord
+     */
+    omit?: AutonomousRunRecordOmit<ExtArgs> | null
+    /**
+     * Filter, which AutonomousRunRecord to fetch.
+     */
+    where?: AutonomousRunRecordWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of AutonomousRunRecords to fetch.
+     */
+    orderBy?: AutonomousRunRecordOrderByWithRelationInput | AutonomousRunRecordOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for AutonomousRunRecords.
+     */
+    cursor?: AutonomousRunRecordWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` AutonomousRunRecords from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` AutonomousRunRecords.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of AutonomousRunRecords.
+     */
+    distinct?: AutonomousRunRecordScalarFieldEnum | AutonomousRunRecordScalarFieldEnum[]
+  }
+
+  /**
+   * AutonomousRunRecord findFirstOrThrow
+   */
+  export type AutonomousRunRecordFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutonomousRunRecord
+     */
+    select?: AutonomousRunRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutonomousRunRecord
+     */
+    omit?: AutonomousRunRecordOmit<ExtArgs> | null
+    /**
+     * Filter, which AutonomousRunRecord to fetch.
+     */
+    where?: AutonomousRunRecordWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of AutonomousRunRecords to fetch.
+     */
+    orderBy?: AutonomousRunRecordOrderByWithRelationInput | AutonomousRunRecordOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for AutonomousRunRecords.
+     */
+    cursor?: AutonomousRunRecordWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` AutonomousRunRecords from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` AutonomousRunRecords.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of AutonomousRunRecords.
+     */
+    distinct?: AutonomousRunRecordScalarFieldEnum | AutonomousRunRecordScalarFieldEnum[]
+  }
+
+  /**
+   * AutonomousRunRecord findMany
+   */
+  export type AutonomousRunRecordFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutonomousRunRecord
+     */
+    select?: AutonomousRunRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutonomousRunRecord
+     */
+    omit?: AutonomousRunRecordOmit<ExtArgs> | null
+    /**
+     * Filter, which AutonomousRunRecords to fetch.
+     */
+    where?: AutonomousRunRecordWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of AutonomousRunRecords to fetch.
+     */
+    orderBy?: AutonomousRunRecordOrderByWithRelationInput | AutonomousRunRecordOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing AutonomousRunRecords.
+     */
+    cursor?: AutonomousRunRecordWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` AutonomousRunRecords from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` AutonomousRunRecords.
+     */
+    skip?: number
+    distinct?: AutonomousRunRecordScalarFieldEnum | AutonomousRunRecordScalarFieldEnum[]
+  }
+
+  /**
+   * AutonomousRunRecord create
+   */
+  export type AutonomousRunRecordCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutonomousRunRecord
+     */
+    select?: AutonomousRunRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutonomousRunRecord
+     */
+    omit?: AutonomousRunRecordOmit<ExtArgs> | null
+    /**
+     * The data needed to create a AutonomousRunRecord.
+     */
+    data: XOR<AutonomousRunRecordCreateInput, AutonomousRunRecordUncheckedCreateInput>
+  }
+
+  /**
+   * AutonomousRunRecord createMany
+   */
+  export type AutonomousRunRecordCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AutonomousRunRecords.
+     */
+    data: AutonomousRunRecordCreateManyInput | AutonomousRunRecordCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AutonomousRunRecord createManyAndReturn
+   */
+  export type AutonomousRunRecordCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutonomousRunRecord
+     */
+    select?: AutonomousRunRecordSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutonomousRunRecord
+     */
+    omit?: AutonomousRunRecordOmit<ExtArgs> | null
+    /**
+     * The data used to create many AutonomousRunRecords.
+     */
+    data: AutonomousRunRecordCreateManyInput | AutonomousRunRecordCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AutonomousRunRecord update
+   */
+  export type AutonomousRunRecordUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutonomousRunRecord
+     */
+    select?: AutonomousRunRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutonomousRunRecord
+     */
+    omit?: AutonomousRunRecordOmit<ExtArgs> | null
+    /**
+     * The data needed to update a AutonomousRunRecord.
+     */
+    data: XOR<AutonomousRunRecordUpdateInput, AutonomousRunRecordUncheckedUpdateInput>
+    /**
+     * Choose, which AutonomousRunRecord to update.
+     */
+    where: AutonomousRunRecordWhereUniqueInput
+  }
+
+  /**
+   * AutonomousRunRecord updateMany
+   */
+  export type AutonomousRunRecordUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AutonomousRunRecords.
+     */
+    data: XOR<AutonomousRunRecordUpdateManyMutationInput, AutonomousRunRecordUncheckedUpdateManyInput>
+    /**
+     * Filter which AutonomousRunRecords to update
+     */
+    where?: AutonomousRunRecordWhereInput
+    /**
+     * Limit how many AutonomousRunRecords to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AutonomousRunRecord updateManyAndReturn
+   */
+  export type AutonomousRunRecordUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutonomousRunRecord
+     */
+    select?: AutonomousRunRecordSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutonomousRunRecord
+     */
+    omit?: AutonomousRunRecordOmit<ExtArgs> | null
+    /**
+     * The data used to update AutonomousRunRecords.
+     */
+    data: XOR<AutonomousRunRecordUpdateManyMutationInput, AutonomousRunRecordUncheckedUpdateManyInput>
+    /**
+     * Filter which AutonomousRunRecords to update
+     */
+    where?: AutonomousRunRecordWhereInput
+    /**
+     * Limit how many AutonomousRunRecords to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AutonomousRunRecord upsert
+   */
+  export type AutonomousRunRecordUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutonomousRunRecord
+     */
+    select?: AutonomousRunRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutonomousRunRecord
+     */
+    omit?: AutonomousRunRecordOmit<ExtArgs> | null
+    /**
+     * The filter to search for the AutonomousRunRecord to update in case it exists.
+     */
+    where: AutonomousRunRecordWhereUniqueInput
+    /**
+     * In case the AutonomousRunRecord found by the `where` argument doesn't exist, create a new AutonomousRunRecord with this data.
+     */
+    create: XOR<AutonomousRunRecordCreateInput, AutonomousRunRecordUncheckedCreateInput>
+    /**
+     * In case the AutonomousRunRecord was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AutonomousRunRecordUpdateInput, AutonomousRunRecordUncheckedUpdateInput>
+  }
+
+  /**
+   * AutonomousRunRecord delete
+   */
+  export type AutonomousRunRecordDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutonomousRunRecord
+     */
+    select?: AutonomousRunRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutonomousRunRecord
+     */
+    omit?: AutonomousRunRecordOmit<ExtArgs> | null
+    /**
+     * Filter which AutonomousRunRecord to delete.
+     */
+    where: AutonomousRunRecordWhereUniqueInput
+  }
+
+  /**
+   * AutonomousRunRecord deleteMany
+   */
+  export type AutonomousRunRecordDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AutonomousRunRecords to delete
+     */
+    where?: AutonomousRunRecordWhereInput
+    /**
+     * Limit how many AutonomousRunRecords to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AutonomousRunRecord without action
+   */
+  export type AutonomousRunRecordDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutonomousRunRecord
+     */
+    select?: AutonomousRunRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutonomousRunRecord
+     */
+    omit?: AutonomousRunRecordOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DepartmentSLA
+   */
+
+  export type AggregateDepartmentSLA = {
+    _count: DepartmentSLACountAggregateOutputType | null
+    _avg: DepartmentSLAAvgAggregateOutputType | null
+    _sum: DepartmentSLASumAggregateOutputType | null
+    _min: DepartmentSLAMinAggregateOutputType | null
+    _max: DepartmentSLAMaxAggregateOutputType | null
+  }
+
+  export type DepartmentSLAAvgAggregateOutputType = {
+    maxAutonomyLevel: number | null
+    staleAfterHours: number | null
+  }
+
+  export type DepartmentSLASumAggregateOutputType = {
+    maxAutonomyLevel: number | null
+    staleAfterHours: number | null
+  }
+
+  export type DepartmentSLAMinAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    department: string | null
+    owner: string | null
+    lane: string | null
+    maxAutonomyLevel: number | null
+    staleAfterHours: number | null
+    escalationTarget: string | null
+    safetyNotes: string | null
+    providerCalled: boolean | null
+    liveExecutionAllowed: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DepartmentSLAMaxAggregateOutputType = {
+    id: string | null
+    tenantId: string | null
+    department: string | null
+    owner: string | null
+    lane: string | null
+    maxAutonomyLevel: number | null
+    staleAfterHours: number | null
+    escalationTarget: string | null
+    safetyNotes: string | null
+    providerCalled: boolean | null
+    liveExecutionAllowed: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DepartmentSLACountAggregateOutputType = {
+    id: number
+    tenantId: number
+    department: number
+    owner: number
+    lane: number
+    maxAutonomyLevel: number
+    staleAfterHours: number
+    expectedDailyOutputs: number
+    escalationTarget: number
+    blockingConditions: number
+    safetyNotes: number
+    providerCalled: number
+    liveExecutionAllowed: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type DepartmentSLAAvgAggregateInputType = {
+    maxAutonomyLevel?: true
+    staleAfterHours?: true
+  }
+
+  export type DepartmentSLASumAggregateInputType = {
+    maxAutonomyLevel?: true
+    staleAfterHours?: true
+  }
+
+  export type DepartmentSLAMinAggregateInputType = {
+    id?: true
+    tenantId?: true
+    department?: true
+    owner?: true
+    lane?: true
+    maxAutonomyLevel?: true
+    staleAfterHours?: true
+    escalationTarget?: true
+    safetyNotes?: true
+    providerCalled?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DepartmentSLAMaxAggregateInputType = {
+    id?: true
+    tenantId?: true
+    department?: true
+    owner?: true
+    lane?: true
+    maxAutonomyLevel?: true
+    staleAfterHours?: true
+    escalationTarget?: true
+    safetyNotes?: true
+    providerCalled?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DepartmentSLACountAggregateInputType = {
+    id?: true
+    tenantId?: true
+    department?: true
+    owner?: true
+    lane?: true
+    maxAutonomyLevel?: true
+    staleAfterHours?: true
+    expectedDailyOutputs?: true
+    escalationTarget?: true
+    blockingConditions?: true
+    safetyNotes?: true
+    providerCalled?: true
+    liveExecutionAllowed?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type DepartmentSLAAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DepartmentSLA to aggregate.
+     */
+    where?: DepartmentSLAWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of DepartmentSLAS to fetch.
+     */
+    orderBy?: DepartmentSLAOrderByWithRelationInput | DepartmentSLAOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: DepartmentSLAWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` DepartmentSLAS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` DepartmentSLAS.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned DepartmentSLAS
+    **/
+    _count?: true | DepartmentSLACountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to average
+    **/
+    _avg?: DepartmentSLAAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: DepartmentSLASumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: DepartmentSLAMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: DepartmentSLAMaxAggregateInputType
+  }
+
+  export type GetDepartmentSLAAggregateType<T extends DepartmentSLAAggregateArgs> = {
+        [P in keyof T & keyof AggregateDepartmentSLA]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDepartmentSLA[P]>
+      : GetScalarType<T[P], AggregateDepartmentSLA[P]>
+  }
+
+
+
+
+  export type DepartmentSLAGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DepartmentSLAWhereInput
+    orderBy?: DepartmentSLAOrderByWithAggregationInput | DepartmentSLAOrderByWithAggregationInput[]
+    by: DepartmentSLAScalarFieldEnum[] | DepartmentSLAScalarFieldEnum
+    having?: DepartmentSLAScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DepartmentSLACountAggregateInputType | true
+    _avg?: DepartmentSLAAvgAggregateInputType
+    _sum?: DepartmentSLASumAggregateInputType
+    _min?: DepartmentSLAMinAggregateInputType
+    _max?: DepartmentSLAMaxAggregateInputType
+  }
+
+  export type DepartmentSLAGroupByOutputType = {
+    id: string
+    tenantId: string
+    department: string
+    owner: string
+    lane: string
+    maxAutonomyLevel: number
+    staleAfterHours: number
+    expectedDailyOutputs: JsonValue
+    escalationTarget: string
+    blockingConditions: JsonValue
+    safetyNotes: string
+    providerCalled: boolean
+    liveExecutionAllowed: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: DepartmentSLACountAggregateOutputType | null
+    _avg: DepartmentSLAAvgAggregateOutputType | null
+    _sum: DepartmentSLASumAggregateOutputType | null
+    _min: DepartmentSLAMinAggregateOutputType | null
+    _max: DepartmentSLAMaxAggregateOutputType | null
+  }
+
+  type GetDepartmentSLAGroupByPayload<T extends DepartmentSLAGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DepartmentSLAGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DepartmentSLAGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DepartmentSLAGroupByOutputType[P]>
+            : GetScalarType<T[P], DepartmentSLAGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DepartmentSLASelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    department?: boolean
+    owner?: boolean
+    lane?: boolean
+    maxAutonomyLevel?: boolean
+    staleAfterHours?: boolean
+    expectedDailyOutputs?: boolean
+    escalationTarget?: boolean
+    blockingConditions?: boolean
+    safetyNotes?: boolean
+    providerCalled?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["departmentSLA"]>
+
+  export type DepartmentSLASelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    department?: boolean
+    owner?: boolean
+    lane?: boolean
+    maxAutonomyLevel?: boolean
+    staleAfterHours?: boolean
+    expectedDailyOutputs?: boolean
+    escalationTarget?: boolean
+    blockingConditions?: boolean
+    safetyNotes?: boolean
+    providerCalled?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["departmentSLA"]>
+
+  export type DepartmentSLASelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenantId?: boolean
+    department?: boolean
+    owner?: boolean
+    lane?: boolean
+    maxAutonomyLevel?: boolean
+    staleAfterHours?: boolean
+    expectedDailyOutputs?: boolean
+    escalationTarget?: boolean
+    blockingConditions?: boolean
+    safetyNotes?: boolean
+    providerCalled?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["departmentSLA"]>
+
+  export type DepartmentSLASelectScalar = {
+    id?: boolean
+    tenantId?: boolean
+    department?: boolean
+    owner?: boolean
+    lane?: boolean
+    maxAutonomyLevel?: boolean
+    staleAfterHours?: boolean
+    expectedDailyOutputs?: boolean
+    escalationTarget?: boolean
+    blockingConditions?: boolean
+    safetyNotes?: boolean
+    providerCalled?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type DepartmentSLAOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenantId" | "department" | "owner" | "lane" | "maxAutonomyLevel" | "staleAfterHours" | "expectedDailyOutputs" | "escalationTarget" | "blockingConditions" | "safetyNotes" | "providerCalled" | "liveExecutionAllowed" | "createdAt" | "updatedAt", ExtArgs["result"]["departmentSLA"]>
+
+  export type $DepartmentSLAPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DepartmentSLA"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenantId: string
+      department: string
+      owner: string
+      lane: string
+      maxAutonomyLevel: number
+      staleAfterHours: number
+      expectedDailyOutputs: Prisma.JsonValue
+      escalationTarget: string
+      blockingConditions: Prisma.JsonValue
+      safetyNotes: string
+      providerCalled: boolean
+      liveExecutionAllowed: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["departmentSLA"]>
+    composites: {}
+  }
+
+  type DepartmentSLAGetPayload<S extends boolean | null | undefined | DepartmentSLADefaultArgs> = $Result.GetResult<Prisma.$DepartmentSLAPayload, S>
+
+  type DepartmentSLACountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DepartmentSLAFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DepartmentSLACountAggregateInputType | true
+    }
+
+  export interface DepartmentSLADelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DepartmentSLA'], meta: { name: 'DepartmentSLA' } }
+    /**
+     * Find zero or one DepartmentSLA that matches the filter.
+     * @param {DepartmentSLAFindUniqueArgs} args - Arguments to find a DepartmentSLA
+     * @example
+     * // Get one DepartmentSLA
+     * const departmentSLA = await prisma.departmentSLA.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DepartmentSLAFindUniqueArgs>(args: SelectSubset<T, DepartmentSLAFindUniqueArgs<ExtArgs>>): Prisma__DepartmentSLAClient<$Result.GetResult<Prisma.$DepartmentSLAPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DepartmentSLA that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DepartmentSLAFindUniqueOrThrowArgs} args - Arguments to find a DepartmentSLA
+     * @example
+     * // Get one DepartmentSLA
+     * const departmentSLA = await prisma.departmentSLA.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DepartmentSLAFindUniqueOrThrowArgs>(args: SelectSubset<T, DepartmentSLAFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DepartmentSLAClient<$Result.GetResult<Prisma.$DepartmentSLAPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DepartmentSLA that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DepartmentSLAFindFirstArgs} args - Arguments to find a DepartmentSLA
+     * @example
+     * // Get one DepartmentSLA
+     * const departmentSLA = await prisma.departmentSLA.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DepartmentSLAFindFirstArgs>(args?: SelectSubset<T, DepartmentSLAFindFirstArgs<ExtArgs>>): Prisma__DepartmentSLAClient<$Result.GetResult<Prisma.$DepartmentSLAPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DepartmentSLA that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DepartmentSLAFindFirstOrThrowArgs} args - Arguments to find a DepartmentSLA
+     * @example
+     * // Get one DepartmentSLA
+     * const departmentSLA = await prisma.departmentSLA.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DepartmentSLAFindFirstOrThrowArgs>(args?: SelectSubset<T, DepartmentSLAFindFirstOrThrowArgs<ExtArgs>>): Prisma__DepartmentSLAClient<$Result.GetResult<Prisma.$DepartmentSLAPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DepartmentSLAS that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DepartmentSLAFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DepartmentSLAS
+     * const departmentSLAS = await prisma.departmentSLA.findMany()
+     *
+     * // Get first 10 DepartmentSLAS
+     * const departmentSLAS = await prisma.departmentSLA.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const departmentSLAWithIdOnly = await prisma.departmentSLA.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends DepartmentSLAFindManyArgs>(args?: SelectSubset<T, DepartmentSLAFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DepartmentSLAPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DepartmentSLA.
+     * @param {DepartmentSLACreateArgs} args - Arguments to create a DepartmentSLA.
+     * @example
+     * // Create one DepartmentSLA
+     * const DepartmentSLA = await prisma.departmentSLA.create({
+     *   data: {
+     *     // ... data to create a DepartmentSLA
+     *   }
+     * })
+     *
+     */
+    create<T extends DepartmentSLACreateArgs>(args: SelectSubset<T, DepartmentSLACreateArgs<ExtArgs>>): Prisma__DepartmentSLAClient<$Result.GetResult<Prisma.$DepartmentSLAPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DepartmentSLAS.
+     * @param {DepartmentSLACreateManyArgs} args - Arguments to create many DepartmentSLAS.
+     * @example
+     * // Create many DepartmentSLAS
+     * const departmentSLA = await prisma.departmentSLA.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends DepartmentSLACreateManyArgs>(args?: SelectSubset<T, DepartmentSLACreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DepartmentSLAS and returns the data saved in the database.
+     * @param {DepartmentSLACreateManyAndReturnArgs} args - Arguments to create many DepartmentSLAS.
+     * @example
+     * // Create many DepartmentSLAS
+     * const departmentSLA = await prisma.departmentSLA.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many DepartmentSLAS and only return the `id`
+     * const departmentSLAWithIdOnly = await prisma.departmentSLA.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends DepartmentSLACreateManyAndReturnArgs>(args?: SelectSubset<T, DepartmentSLACreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DepartmentSLAPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DepartmentSLA.
+     * @param {DepartmentSLADeleteArgs} args - Arguments to delete one DepartmentSLA.
+     * @example
+     * // Delete one DepartmentSLA
+     * const DepartmentSLA = await prisma.departmentSLA.delete({
+     *   where: {
+     *     // ... filter to delete one DepartmentSLA
+     *   }
+     * })
+     *
+     */
+    delete<T extends DepartmentSLADeleteArgs>(args: SelectSubset<T, DepartmentSLADeleteArgs<ExtArgs>>): Prisma__DepartmentSLAClient<$Result.GetResult<Prisma.$DepartmentSLAPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DepartmentSLA.
+     * @param {DepartmentSLAUpdateArgs} args - Arguments to update one DepartmentSLA.
+     * @example
+     * // Update one DepartmentSLA
+     * const departmentSLA = await prisma.departmentSLA.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends DepartmentSLAUpdateArgs>(args: SelectSubset<T, DepartmentSLAUpdateArgs<ExtArgs>>): Prisma__DepartmentSLAClient<$Result.GetResult<Prisma.$DepartmentSLAPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DepartmentSLAS.
+     * @param {DepartmentSLADeleteManyArgs} args - Arguments to filter DepartmentSLAS to delete.
+     * @example
+     * // Delete a few DepartmentSLAS
+     * const { count } = await prisma.departmentSLA.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends DepartmentSLADeleteManyArgs>(args?: SelectSubset<T, DepartmentSLADeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DepartmentSLAS.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DepartmentSLAUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DepartmentSLAS
+     * const departmentSLA = await prisma.departmentSLA.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends DepartmentSLAUpdateManyArgs>(args: SelectSubset<T, DepartmentSLAUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DepartmentSLAS and returns the data updated in the database.
+     * @param {DepartmentSLAUpdateManyAndReturnArgs} args - Arguments to update many DepartmentSLAS.
+     * @example
+     * // Update many DepartmentSLAS
+     * const departmentSLA = await prisma.departmentSLA.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more DepartmentSLAS and only return the `id`
+     * const departmentSLAWithIdOnly = await prisma.departmentSLA.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends DepartmentSLAUpdateManyAndReturnArgs>(args: SelectSubset<T, DepartmentSLAUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DepartmentSLAPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DepartmentSLA.
+     * @param {DepartmentSLAUpsertArgs} args - Arguments to update or create a DepartmentSLA.
+     * @example
+     * // Update or create a DepartmentSLA
+     * const departmentSLA = await prisma.departmentSLA.upsert({
+     *   create: {
+     *     // ... data to create a DepartmentSLA
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DepartmentSLA we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DepartmentSLAUpsertArgs>(args: SelectSubset<T, DepartmentSLAUpsertArgs<ExtArgs>>): Prisma__DepartmentSLAClient<$Result.GetResult<Prisma.$DepartmentSLAPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DepartmentSLAS.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DepartmentSLACountArgs} args - Arguments to filter DepartmentSLAS to count.
+     * @example
+     * // Count the number of DepartmentSLAS
+     * const count = await prisma.departmentSLA.count({
+     *   where: {
+     *     // ... the filter for the DepartmentSLAS we want to count
+     *   }
+     * })
+    **/
+    count<T extends DepartmentSLACountArgs>(
+      args?: Subset<T, DepartmentSLACountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DepartmentSLACountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DepartmentSLA.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DepartmentSLAAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DepartmentSLAAggregateArgs>(args: Subset<T, DepartmentSLAAggregateArgs>): Prisma.PrismaPromise<GetDepartmentSLAAggregateType<T>>
+
+    /**
+     * Group by DepartmentSLA.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DepartmentSLAGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<
+      T extends DepartmentSLAGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DepartmentSLAGroupByArgs['orderBy'] }
+        : { orderBy?: DepartmentSLAGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DepartmentSLAGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDepartmentSLAGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DepartmentSLA model
+   */
+  readonly fields: DepartmentSLAFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DepartmentSLA.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DepartmentSLAClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DepartmentSLA model
+   */
+  interface DepartmentSLAFieldRefs {
+    readonly id: FieldRef<"DepartmentSLA", 'String'>
+    readonly tenantId: FieldRef<"DepartmentSLA", 'String'>
+    readonly department: FieldRef<"DepartmentSLA", 'String'>
+    readonly owner: FieldRef<"DepartmentSLA", 'String'>
+    readonly lane: FieldRef<"DepartmentSLA", 'String'>
+    readonly maxAutonomyLevel: FieldRef<"DepartmentSLA", 'Int'>
+    readonly staleAfterHours: FieldRef<"DepartmentSLA", 'Int'>
+    readonly expectedDailyOutputs: FieldRef<"DepartmentSLA", 'Json'>
+    readonly escalationTarget: FieldRef<"DepartmentSLA", 'String'>
+    readonly blockingConditions: FieldRef<"DepartmentSLA", 'Json'>
+    readonly safetyNotes: FieldRef<"DepartmentSLA", 'String'>
+    readonly providerCalled: FieldRef<"DepartmentSLA", 'Boolean'>
+    readonly liveExecutionAllowed: FieldRef<"DepartmentSLA", 'Boolean'>
+    readonly createdAt: FieldRef<"DepartmentSLA", 'DateTime'>
+    readonly updatedAt: FieldRef<"DepartmentSLA", 'DateTime'>
+  }
+
+
+  // Custom InputTypes
+  /**
+   * DepartmentSLA findUnique
+   */
+  export type DepartmentSLAFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DepartmentSLA
+     */
+    select?: DepartmentSLASelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DepartmentSLA
+     */
+    omit?: DepartmentSLAOmit<ExtArgs> | null
+    /**
+     * Filter, which DepartmentSLA to fetch.
+     */
+    where: DepartmentSLAWhereUniqueInput
+  }
+
+  /**
+   * DepartmentSLA findUniqueOrThrow
+   */
+  export type DepartmentSLAFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DepartmentSLA
+     */
+    select?: DepartmentSLASelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DepartmentSLA
+     */
+    omit?: DepartmentSLAOmit<ExtArgs> | null
+    /**
+     * Filter, which DepartmentSLA to fetch.
+     */
+    where: DepartmentSLAWhereUniqueInput
+  }
+
+  /**
+   * DepartmentSLA findFirst
+   */
+  export type DepartmentSLAFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DepartmentSLA
+     */
+    select?: DepartmentSLASelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DepartmentSLA
+     */
+    omit?: DepartmentSLAOmit<ExtArgs> | null
+    /**
+     * Filter, which DepartmentSLA to fetch.
+     */
+    where?: DepartmentSLAWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of DepartmentSLAS to fetch.
+     */
+    orderBy?: DepartmentSLAOrderByWithRelationInput | DepartmentSLAOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for DepartmentSLAS.
+     */
+    cursor?: DepartmentSLAWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` DepartmentSLAS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` DepartmentSLAS.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of DepartmentSLAS.
+     */
+    distinct?: DepartmentSLAScalarFieldEnum | DepartmentSLAScalarFieldEnum[]
+  }
+
+  /**
+   * DepartmentSLA findFirstOrThrow
+   */
+  export type DepartmentSLAFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DepartmentSLA
+     */
+    select?: DepartmentSLASelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DepartmentSLA
+     */
+    omit?: DepartmentSLAOmit<ExtArgs> | null
+    /**
+     * Filter, which DepartmentSLA to fetch.
+     */
+    where?: DepartmentSLAWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of DepartmentSLAS to fetch.
+     */
+    orderBy?: DepartmentSLAOrderByWithRelationInput | DepartmentSLAOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for DepartmentSLAS.
+     */
+    cursor?: DepartmentSLAWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` DepartmentSLAS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` DepartmentSLAS.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of DepartmentSLAS.
+     */
+    distinct?: DepartmentSLAScalarFieldEnum | DepartmentSLAScalarFieldEnum[]
+  }
+
+  /**
+   * DepartmentSLA findMany
+   */
+  export type DepartmentSLAFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DepartmentSLA
+     */
+    select?: DepartmentSLASelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DepartmentSLA
+     */
+    omit?: DepartmentSLAOmit<ExtArgs> | null
+    /**
+     * Filter, which DepartmentSLAS to fetch.
+     */
+    where?: DepartmentSLAWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of DepartmentSLAS to fetch.
+     */
+    orderBy?: DepartmentSLAOrderByWithRelationInput | DepartmentSLAOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing DepartmentSLAS.
+     */
+    cursor?: DepartmentSLAWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` DepartmentSLAS from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` DepartmentSLAS.
+     */
+    skip?: number
+    distinct?: DepartmentSLAScalarFieldEnum | DepartmentSLAScalarFieldEnum[]
+  }
+
+  /**
+   * DepartmentSLA create
+   */
+  export type DepartmentSLACreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DepartmentSLA
+     */
+    select?: DepartmentSLASelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DepartmentSLA
+     */
+    omit?: DepartmentSLAOmit<ExtArgs> | null
+    /**
+     * The data needed to create a DepartmentSLA.
+     */
+    data: XOR<DepartmentSLACreateInput, DepartmentSLAUncheckedCreateInput>
+  }
+
+  /**
+   * DepartmentSLA createMany
+   */
+  export type DepartmentSLACreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DepartmentSLAS.
+     */
+    data: DepartmentSLACreateManyInput | DepartmentSLACreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DepartmentSLA createManyAndReturn
+   */
+  export type DepartmentSLACreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DepartmentSLA
+     */
+    select?: DepartmentSLASelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DepartmentSLA
+     */
+    omit?: DepartmentSLAOmit<ExtArgs> | null
+    /**
+     * The data used to create many DepartmentSLAS.
+     */
+    data: DepartmentSLACreateManyInput | DepartmentSLACreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DepartmentSLA update
+   */
+  export type DepartmentSLAUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DepartmentSLA
+     */
+    select?: DepartmentSLASelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DepartmentSLA
+     */
+    omit?: DepartmentSLAOmit<ExtArgs> | null
+    /**
+     * The data needed to update a DepartmentSLA.
+     */
+    data: XOR<DepartmentSLAUpdateInput, DepartmentSLAUncheckedUpdateInput>
+    /**
+     * Choose, which DepartmentSLA to update.
+     */
+    where: DepartmentSLAWhereUniqueInput
+  }
+
+  /**
+   * DepartmentSLA updateMany
+   */
+  export type DepartmentSLAUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DepartmentSLAS.
+     */
+    data: XOR<DepartmentSLAUpdateManyMutationInput, DepartmentSLAUncheckedUpdateManyInput>
+    /**
+     * Filter which DepartmentSLAS to update
+     */
+    where?: DepartmentSLAWhereInput
+    /**
+     * Limit how many DepartmentSLAS to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DepartmentSLA updateManyAndReturn
+   */
+  export type DepartmentSLAUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DepartmentSLA
+     */
+    select?: DepartmentSLASelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DepartmentSLA
+     */
+    omit?: DepartmentSLAOmit<ExtArgs> | null
+    /**
+     * The data used to update DepartmentSLAS.
+     */
+    data: XOR<DepartmentSLAUpdateManyMutationInput, DepartmentSLAUncheckedUpdateManyInput>
+    /**
+     * Filter which DepartmentSLAS to update
+     */
+    where?: DepartmentSLAWhereInput
+    /**
+     * Limit how many DepartmentSLAS to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DepartmentSLA upsert
+   */
+  export type DepartmentSLAUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DepartmentSLA
+     */
+    select?: DepartmentSLASelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DepartmentSLA
+     */
+    omit?: DepartmentSLAOmit<ExtArgs> | null
+    /**
+     * The filter to search for the DepartmentSLA to update in case it exists.
+     */
+    where: DepartmentSLAWhereUniqueInput
+    /**
+     * In case the DepartmentSLA found by the `where` argument doesn't exist, create a new DepartmentSLA with this data.
+     */
+    create: XOR<DepartmentSLACreateInput, DepartmentSLAUncheckedCreateInput>
+    /**
+     * In case the DepartmentSLA was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DepartmentSLAUpdateInput, DepartmentSLAUncheckedUpdateInput>
+  }
+
+  /**
+   * DepartmentSLA delete
+   */
+  export type DepartmentSLADeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DepartmentSLA
+     */
+    select?: DepartmentSLASelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DepartmentSLA
+     */
+    omit?: DepartmentSLAOmit<ExtArgs> | null
+    /**
+     * Filter which DepartmentSLA to delete.
+     */
+    where: DepartmentSLAWhereUniqueInput
+  }
+
+  /**
+   * DepartmentSLA deleteMany
+   */
+  export type DepartmentSLADeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DepartmentSLAS to delete
+     */
+    where?: DepartmentSLAWhereInput
+    /**
+     * Limit how many DepartmentSLAS to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DepartmentSLA without action
+   */
+  export type DepartmentSLADefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DepartmentSLA
+     */
+    select?: DepartmentSLASelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DepartmentSLA
+     */
+    omit?: DepartmentSLAOmit<ExtArgs> | null
   }
 
 
@@ -113766,6 +120314,139 @@ export namespace Prisma {
   export type LeadScalarFieldEnum = (typeof LeadScalarFieldEnum)[keyof typeof LeadScalarFieldEnum]
 
 
+  export const AutonomyPolicyScalarFieldEnum: {
+    id: 'id',
+    tenantId: 'tenantId',
+    policyKey: 'policyKey',
+    lane: 'lane',
+    subjectType: 'subjectType',
+    subjectKey: 'subjectKey',
+    actionKey: 'actionKey',
+    maxAutonomyLevel: 'maxAutonomyLevel',
+    effect: 'effect',
+    approvalRequired: 'approvalRequired',
+    quotaPerDay: 'quotaPerDay',
+    killSwitchEnabled: 'killSwitchEnabled',
+    allowedActions: 'allowedActions',
+    blockedActions: 'blockedActions',
+    requiredEvidence: 'requiredEvidence',
+    escalationRules: 'escalationRules',
+    safetyNotes: 'safetyNotes',
+    providerCalled: 'providerCalled',
+    sent: 'sent',
+    published: 'published',
+    liveExecutionAllowed: 'liveExecutionAllowed',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AutonomyPolicyScalarFieldEnum = (typeof AutonomyPolicyScalarFieldEnum)[keyof typeof AutonomyPolicyScalarFieldEnum]
+
+
+  export const ConnectorExecutionAttemptScalarFieldEnum: {
+    id: 'id',
+    tenantId: 'tenantId',
+    traceId: 'traceId',
+    connectorId: 'connectorId',
+    capabilityKey: 'capabilityKey',
+    actionKey: 'actionKey',
+    actorId: 'actorId',
+    requestingModule: 'requestingModule',
+    policyDecision: 'policyDecision',
+    reason: 'reason',
+    normalizedResult: 'normalizedResult',
+    redactionApplied: 'redactionApplied',
+    auditEventId: 'auditEventId',
+    outcomeEventId: 'outcomeEventId',
+    providerCalled: 'providerCalled',
+    providerWrite: 'providerWrite',
+    sent: 'sent',
+    published: 'published',
+    liveExecutionAllowed: 'liveExecutionAllowed',
+    createdAt: 'createdAt'
+  };
+
+  export type ConnectorExecutionAttemptScalarFieldEnum = (typeof ConnectorExecutionAttemptScalarFieldEnum)[keyof typeof ConnectorExecutionAttemptScalarFieldEnum]
+
+
+  export const BusinessOutcomeEventScalarFieldEnum: {
+    id: 'id',
+    tenantId: 'tenantId',
+    outcomeKey: 'outcomeKey',
+    sourceType: 'sourceType',
+    sourceId: 'sourceId',
+    leadId: 'leadId',
+    taskId: 'taskId',
+    runId: 'runId',
+    actionKey: 'actionKey',
+    expectedOutcome: 'expectedOutcome',
+    actualOutcome: 'actualOutcome',
+    kpiAffected: 'kpiAffected',
+    revenueImpactEstimate: 'revenueImpactEstimate',
+    confidence: 'confidence',
+    nextRecommendation: 'nextRecommendation',
+    safeMetadata: 'safeMetadata',
+    providerCalled: 'providerCalled',
+    sent: 'sent',
+    published: 'published',
+    liveExecutionAllowed: 'liveExecutionAllowed',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type BusinessOutcomeEventScalarFieldEnum = (typeof BusinessOutcomeEventScalarFieldEnum)[keyof typeof BusinessOutcomeEventScalarFieldEnum]
+
+
+  export const AutonomousRunRecordScalarFieldEnum: {
+    id: 'id',
+    tenantId: 'tenantId',
+    runKey: 'runKey',
+    businessDate: 'businessDate',
+    pipelineVersion: 'pipelineVersion',
+    lane: 'lane',
+    triggeredBy: 'triggeredBy',
+    state: 'state',
+    phaseSummary: 'phaseSummary',
+    workCreated: 'workCreated',
+    workExecuted: 'workExecuted',
+    workSkipped: 'workSkipped',
+    exceptions: 'exceptions',
+    safetyFlags: 'safetyFlags',
+    healthCertified: 'healthCertified',
+    providerCalled: 'providerCalled',
+    sent: 'sent',
+    published: 'published',
+    liveExecutionAllowed: 'liveExecutionAllowed',
+    startedAt: 'startedAt',
+    completedAt: 'completedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AutonomousRunRecordScalarFieldEnum = (typeof AutonomousRunRecordScalarFieldEnum)[keyof typeof AutonomousRunRecordScalarFieldEnum]
+
+
+  export const DepartmentSLAScalarFieldEnum: {
+    id: 'id',
+    tenantId: 'tenantId',
+    department: 'department',
+    owner: 'owner',
+    lane: 'lane',
+    maxAutonomyLevel: 'maxAutonomyLevel',
+    staleAfterHours: 'staleAfterHours',
+    expectedDailyOutputs: 'expectedDailyOutputs',
+    escalationTarget: 'escalationTarget',
+    blockingConditions: 'blockingConditions',
+    safetyNotes: 'safetyNotes',
+    providerCalled: 'providerCalled',
+    liveExecutionAllowed: 'liveExecutionAllowed',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type DepartmentSLAScalarFieldEnum = (typeof DepartmentSLAScalarFieldEnum)[keyof typeof DepartmentSLAScalarFieldEnum]
+
+
   export const RevenueAuditEventScalarFieldEnum: {
     id: 'id',
     tenantId: 'tenantId',
@@ -115589,19 +122270,19 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+  export const JsonNullValueInput: {
+    JsonNull: typeof JsonNull
+  };
+
+  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
   export const NullableJsonNullValueInput: {
     DbNull: typeof DbNull,
     JsonNull: typeof JsonNull
   };
 
   export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
-
-
-  export const JsonNullValueInput: {
-    JsonNull: typeof JsonNull
-  };
-
-  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
   export const QueryMode: {
@@ -115980,6 +122661,669 @@ export namespace Prisma {
     consentAt?: DateTimeNullableWithAggregatesFilter<"Lead"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Lead"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Lead"> | Date | string
+  }
+
+  export type AutonomyPolicyWhereInput = {
+    AND?: AutonomyPolicyWhereInput | AutonomyPolicyWhereInput[]
+    OR?: AutonomyPolicyWhereInput[]
+    NOT?: AutonomyPolicyWhereInput | AutonomyPolicyWhereInput[]
+    id?: StringFilter<"AutonomyPolicy"> | string
+    tenantId?: StringFilter<"AutonomyPolicy"> | string
+    policyKey?: StringFilter<"AutonomyPolicy"> | string
+    lane?: StringFilter<"AutonomyPolicy"> | string
+    subjectType?: StringFilter<"AutonomyPolicy"> | string
+    subjectKey?: StringFilter<"AutonomyPolicy"> | string
+    actionKey?: StringFilter<"AutonomyPolicy"> | string
+    maxAutonomyLevel?: IntFilter<"AutonomyPolicy"> | number
+    effect?: StringFilter<"AutonomyPolicy"> | string
+    approvalRequired?: BoolFilter<"AutonomyPolicy"> | boolean
+    quotaPerDay?: IntNullableFilter<"AutonomyPolicy"> | number | null
+    killSwitchEnabled?: BoolFilter<"AutonomyPolicy"> | boolean
+    allowedActions?: JsonFilter<"AutonomyPolicy">
+    blockedActions?: JsonFilter<"AutonomyPolicy">
+    requiredEvidence?: JsonFilter<"AutonomyPolicy">
+    escalationRules?: JsonFilter<"AutonomyPolicy">
+    safetyNotes?: StringFilter<"AutonomyPolicy"> | string
+    providerCalled?: BoolFilter<"AutonomyPolicy"> | boolean
+    sent?: BoolFilter<"AutonomyPolicy"> | boolean
+    published?: BoolFilter<"AutonomyPolicy"> | boolean
+    liveExecutionAllowed?: BoolFilter<"AutonomyPolicy"> | boolean
+    createdAt?: DateTimeFilter<"AutonomyPolicy"> | Date | string
+    updatedAt?: DateTimeFilter<"AutonomyPolicy"> | Date | string
+  }
+
+  export type AutonomyPolicyOrderByWithRelationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    policyKey?: SortOrder
+    lane?: SortOrder
+    subjectType?: SortOrder
+    subjectKey?: SortOrder
+    actionKey?: SortOrder
+    maxAutonomyLevel?: SortOrder
+    effect?: SortOrder
+    approvalRequired?: SortOrder
+    quotaPerDay?: SortOrderInput | SortOrder
+    killSwitchEnabled?: SortOrder
+    allowedActions?: SortOrder
+    blockedActions?: SortOrder
+    requiredEvidence?: SortOrder
+    escalationRules?: SortOrder
+    safetyNotes?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AutonomyPolicyWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    tenantId_policyKey?: AutonomyPolicyTenantIdPolicyKeyCompoundUniqueInput
+    AND?: AutonomyPolicyWhereInput | AutonomyPolicyWhereInput[]
+    OR?: AutonomyPolicyWhereInput[]
+    NOT?: AutonomyPolicyWhereInput | AutonomyPolicyWhereInput[]
+    tenantId?: StringFilter<"AutonomyPolicy"> | string
+    policyKey?: StringFilter<"AutonomyPolicy"> | string
+    lane?: StringFilter<"AutonomyPolicy"> | string
+    subjectType?: StringFilter<"AutonomyPolicy"> | string
+    subjectKey?: StringFilter<"AutonomyPolicy"> | string
+    actionKey?: StringFilter<"AutonomyPolicy"> | string
+    maxAutonomyLevel?: IntFilter<"AutonomyPolicy"> | number
+    effect?: StringFilter<"AutonomyPolicy"> | string
+    approvalRequired?: BoolFilter<"AutonomyPolicy"> | boolean
+    quotaPerDay?: IntNullableFilter<"AutonomyPolicy"> | number | null
+    killSwitchEnabled?: BoolFilter<"AutonomyPolicy"> | boolean
+    allowedActions?: JsonFilter<"AutonomyPolicy">
+    blockedActions?: JsonFilter<"AutonomyPolicy">
+    requiredEvidence?: JsonFilter<"AutonomyPolicy">
+    escalationRules?: JsonFilter<"AutonomyPolicy">
+    safetyNotes?: StringFilter<"AutonomyPolicy"> | string
+    providerCalled?: BoolFilter<"AutonomyPolicy"> | boolean
+    sent?: BoolFilter<"AutonomyPolicy"> | boolean
+    published?: BoolFilter<"AutonomyPolicy"> | boolean
+    liveExecutionAllowed?: BoolFilter<"AutonomyPolicy"> | boolean
+    createdAt?: DateTimeFilter<"AutonomyPolicy"> | Date | string
+    updatedAt?: DateTimeFilter<"AutonomyPolicy"> | Date | string
+  }, "id" | "tenantId_policyKey">
+
+  export type AutonomyPolicyOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    policyKey?: SortOrder
+    lane?: SortOrder
+    subjectType?: SortOrder
+    subjectKey?: SortOrder
+    actionKey?: SortOrder
+    maxAutonomyLevel?: SortOrder
+    effect?: SortOrder
+    approvalRequired?: SortOrder
+    quotaPerDay?: SortOrderInput | SortOrder
+    killSwitchEnabled?: SortOrder
+    allowedActions?: SortOrder
+    blockedActions?: SortOrder
+    requiredEvidence?: SortOrder
+    escalationRules?: SortOrder
+    safetyNotes?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AutonomyPolicyCountOrderByAggregateInput
+    _avg?: AutonomyPolicyAvgOrderByAggregateInput
+    _max?: AutonomyPolicyMaxOrderByAggregateInput
+    _min?: AutonomyPolicyMinOrderByAggregateInput
+    _sum?: AutonomyPolicySumOrderByAggregateInput
+  }
+
+  export type AutonomyPolicyScalarWhereWithAggregatesInput = {
+    AND?: AutonomyPolicyScalarWhereWithAggregatesInput | AutonomyPolicyScalarWhereWithAggregatesInput[]
+    OR?: AutonomyPolicyScalarWhereWithAggregatesInput[]
+    NOT?: AutonomyPolicyScalarWhereWithAggregatesInput | AutonomyPolicyScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AutonomyPolicy"> | string
+    tenantId?: StringWithAggregatesFilter<"AutonomyPolicy"> | string
+    policyKey?: StringWithAggregatesFilter<"AutonomyPolicy"> | string
+    lane?: StringWithAggregatesFilter<"AutonomyPolicy"> | string
+    subjectType?: StringWithAggregatesFilter<"AutonomyPolicy"> | string
+    subjectKey?: StringWithAggregatesFilter<"AutonomyPolicy"> | string
+    actionKey?: StringWithAggregatesFilter<"AutonomyPolicy"> | string
+    maxAutonomyLevel?: IntWithAggregatesFilter<"AutonomyPolicy"> | number
+    effect?: StringWithAggregatesFilter<"AutonomyPolicy"> | string
+    approvalRequired?: BoolWithAggregatesFilter<"AutonomyPolicy"> | boolean
+    quotaPerDay?: IntNullableWithAggregatesFilter<"AutonomyPolicy"> | number | null
+    killSwitchEnabled?: BoolWithAggregatesFilter<"AutonomyPolicy"> | boolean
+    allowedActions?: JsonWithAggregatesFilter<"AutonomyPolicy">
+    blockedActions?: JsonWithAggregatesFilter<"AutonomyPolicy">
+    requiredEvidence?: JsonWithAggregatesFilter<"AutonomyPolicy">
+    escalationRules?: JsonWithAggregatesFilter<"AutonomyPolicy">
+    safetyNotes?: StringWithAggregatesFilter<"AutonomyPolicy"> | string
+    providerCalled?: BoolWithAggregatesFilter<"AutonomyPolicy"> | boolean
+    sent?: BoolWithAggregatesFilter<"AutonomyPolicy"> | boolean
+    published?: BoolWithAggregatesFilter<"AutonomyPolicy"> | boolean
+    liveExecutionAllowed?: BoolWithAggregatesFilter<"AutonomyPolicy"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"AutonomyPolicy"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AutonomyPolicy"> | Date | string
+  }
+
+  export type ConnectorExecutionAttemptWhereInput = {
+    AND?: ConnectorExecutionAttemptWhereInput | ConnectorExecutionAttemptWhereInput[]
+    OR?: ConnectorExecutionAttemptWhereInput[]
+    NOT?: ConnectorExecutionAttemptWhereInput | ConnectorExecutionAttemptWhereInput[]
+    id?: StringFilter<"ConnectorExecutionAttempt"> | string
+    tenantId?: StringFilter<"ConnectorExecutionAttempt"> | string
+    traceId?: StringFilter<"ConnectorExecutionAttempt"> | string
+    connectorId?: StringFilter<"ConnectorExecutionAttempt"> | string
+    capabilityKey?: StringFilter<"ConnectorExecutionAttempt"> | string
+    actionKey?: StringFilter<"ConnectorExecutionAttempt"> | string
+    actorId?: StringFilter<"ConnectorExecutionAttempt"> | string
+    requestingModule?: StringFilter<"ConnectorExecutionAttempt"> | string
+    policyDecision?: StringFilter<"ConnectorExecutionAttempt"> | string
+    reason?: StringFilter<"ConnectorExecutionAttempt"> | string
+    normalizedResult?: JsonNullableFilter<"ConnectorExecutionAttempt">
+    redactionApplied?: BoolFilter<"ConnectorExecutionAttempt"> | boolean
+    auditEventId?: StringNullableFilter<"ConnectorExecutionAttempt"> | string | null
+    outcomeEventId?: StringNullableFilter<"ConnectorExecutionAttempt"> | string | null
+    providerCalled?: BoolFilter<"ConnectorExecutionAttempt"> | boolean
+    providerWrite?: BoolFilter<"ConnectorExecutionAttempt"> | boolean
+    sent?: BoolFilter<"ConnectorExecutionAttempt"> | boolean
+    published?: BoolFilter<"ConnectorExecutionAttempt"> | boolean
+    liveExecutionAllowed?: BoolFilter<"ConnectorExecutionAttempt"> | boolean
+    createdAt?: DateTimeFilter<"ConnectorExecutionAttempt"> | Date | string
+  }
+
+  export type ConnectorExecutionAttemptOrderByWithRelationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    traceId?: SortOrder
+    connectorId?: SortOrder
+    capabilityKey?: SortOrder
+    actionKey?: SortOrder
+    actorId?: SortOrder
+    requestingModule?: SortOrder
+    policyDecision?: SortOrder
+    reason?: SortOrder
+    normalizedResult?: SortOrderInput | SortOrder
+    redactionApplied?: SortOrder
+    auditEventId?: SortOrderInput | SortOrder
+    outcomeEventId?: SortOrderInput | SortOrder
+    providerCalled?: SortOrder
+    providerWrite?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ConnectorExecutionAttemptWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    tenantId_traceId?: ConnectorExecutionAttemptTenantIdTraceIdCompoundUniqueInput
+    AND?: ConnectorExecutionAttemptWhereInput | ConnectorExecutionAttemptWhereInput[]
+    OR?: ConnectorExecutionAttemptWhereInput[]
+    NOT?: ConnectorExecutionAttemptWhereInput | ConnectorExecutionAttemptWhereInput[]
+    tenantId?: StringFilter<"ConnectorExecutionAttempt"> | string
+    traceId?: StringFilter<"ConnectorExecutionAttempt"> | string
+    connectorId?: StringFilter<"ConnectorExecutionAttempt"> | string
+    capabilityKey?: StringFilter<"ConnectorExecutionAttempt"> | string
+    actionKey?: StringFilter<"ConnectorExecutionAttempt"> | string
+    actorId?: StringFilter<"ConnectorExecutionAttempt"> | string
+    requestingModule?: StringFilter<"ConnectorExecutionAttempt"> | string
+    policyDecision?: StringFilter<"ConnectorExecutionAttempt"> | string
+    reason?: StringFilter<"ConnectorExecutionAttempt"> | string
+    normalizedResult?: JsonNullableFilter<"ConnectorExecutionAttempt">
+    redactionApplied?: BoolFilter<"ConnectorExecutionAttempt"> | boolean
+    auditEventId?: StringNullableFilter<"ConnectorExecutionAttempt"> | string | null
+    outcomeEventId?: StringNullableFilter<"ConnectorExecutionAttempt"> | string | null
+    providerCalled?: BoolFilter<"ConnectorExecutionAttempt"> | boolean
+    providerWrite?: BoolFilter<"ConnectorExecutionAttempt"> | boolean
+    sent?: BoolFilter<"ConnectorExecutionAttempt"> | boolean
+    published?: BoolFilter<"ConnectorExecutionAttempt"> | boolean
+    liveExecutionAllowed?: BoolFilter<"ConnectorExecutionAttempt"> | boolean
+    createdAt?: DateTimeFilter<"ConnectorExecutionAttempt"> | Date | string
+  }, "id" | "tenantId_traceId">
+
+  export type ConnectorExecutionAttemptOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    traceId?: SortOrder
+    connectorId?: SortOrder
+    capabilityKey?: SortOrder
+    actionKey?: SortOrder
+    actorId?: SortOrder
+    requestingModule?: SortOrder
+    policyDecision?: SortOrder
+    reason?: SortOrder
+    normalizedResult?: SortOrderInput | SortOrder
+    redactionApplied?: SortOrder
+    auditEventId?: SortOrderInput | SortOrder
+    outcomeEventId?: SortOrderInput | SortOrder
+    providerCalled?: SortOrder
+    providerWrite?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    _count?: ConnectorExecutionAttemptCountOrderByAggregateInput
+    _max?: ConnectorExecutionAttemptMaxOrderByAggregateInput
+    _min?: ConnectorExecutionAttemptMinOrderByAggregateInput
+  }
+
+  export type ConnectorExecutionAttemptScalarWhereWithAggregatesInput = {
+    AND?: ConnectorExecutionAttemptScalarWhereWithAggregatesInput | ConnectorExecutionAttemptScalarWhereWithAggregatesInput[]
+    OR?: ConnectorExecutionAttemptScalarWhereWithAggregatesInput[]
+    NOT?: ConnectorExecutionAttemptScalarWhereWithAggregatesInput | ConnectorExecutionAttemptScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ConnectorExecutionAttempt"> | string
+    tenantId?: StringWithAggregatesFilter<"ConnectorExecutionAttempt"> | string
+    traceId?: StringWithAggregatesFilter<"ConnectorExecutionAttempt"> | string
+    connectorId?: StringWithAggregatesFilter<"ConnectorExecutionAttempt"> | string
+    capabilityKey?: StringWithAggregatesFilter<"ConnectorExecutionAttempt"> | string
+    actionKey?: StringWithAggregatesFilter<"ConnectorExecutionAttempt"> | string
+    actorId?: StringWithAggregatesFilter<"ConnectorExecutionAttempt"> | string
+    requestingModule?: StringWithAggregatesFilter<"ConnectorExecutionAttempt"> | string
+    policyDecision?: StringWithAggregatesFilter<"ConnectorExecutionAttempt"> | string
+    reason?: StringWithAggregatesFilter<"ConnectorExecutionAttempt"> | string
+    normalizedResult?: JsonNullableWithAggregatesFilter<"ConnectorExecutionAttempt">
+    redactionApplied?: BoolWithAggregatesFilter<"ConnectorExecutionAttempt"> | boolean
+    auditEventId?: StringNullableWithAggregatesFilter<"ConnectorExecutionAttempt"> | string | null
+    outcomeEventId?: StringNullableWithAggregatesFilter<"ConnectorExecutionAttempt"> | string | null
+    providerCalled?: BoolWithAggregatesFilter<"ConnectorExecutionAttempt"> | boolean
+    providerWrite?: BoolWithAggregatesFilter<"ConnectorExecutionAttempt"> | boolean
+    sent?: BoolWithAggregatesFilter<"ConnectorExecutionAttempt"> | boolean
+    published?: BoolWithAggregatesFilter<"ConnectorExecutionAttempt"> | boolean
+    liveExecutionAllowed?: BoolWithAggregatesFilter<"ConnectorExecutionAttempt"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"ConnectorExecutionAttempt"> | Date | string
+  }
+
+  export type BusinessOutcomeEventWhereInput = {
+    AND?: BusinessOutcomeEventWhereInput | BusinessOutcomeEventWhereInput[]
+    OR?: BusinessOutcomeEventWhereInput[]
+    NOT?: BusinessOutcomeEventWhereInput | BusinessOutcomeEventWhereInput[]
+    id?: StringFilter<"BusinessOutcomeEvent"> | string
+    tenantId?: StringFilter<"BusinessOutcomeEvent"> | string
+    outcomeKey?: StringFilter<"BusinessOutcomeEvent"> | string
+    sourceType?: StringFilter<"BusinessOutcomeEvent"> | string
+    sourceId?: StringNullableFilter<"BusinessOutcomeEvent"> | string | null
+    leadId?: StringNullableFilter<"BusinessOutcomeEvent"> | string | null
+    taskId?: StringNullableFilter<"BusinessOutcomeEvent"> | string | null
+    runId?: StringNullableFilter<"BusinessOutcomeEvent"> | string | null
+    actionKey?: StringFilter<"BusinessOutcomeEvent"> | string
+    expectedOutcome?: StringFilter<"BusinessOutcomeEvent"> | string
+    actualOutcome?: StringFilter<"BusinessOutcomeEvent"> | string
+    kpiAffected?: JsonFilter<"BusinessOutcomeEvent">
+    revenueImpactEstimate?: StringNullableFilter<"BusinessOutcomeEvent"> | string | null
+    confidence?: IntFilter<"BusinessOutcomeEvent"> | number
+    nextRecommendation?: StringFilter<"BusinessOutcomeEvent"> | string
+    safeMetadata?: JsonNullableFilter<"BusinessOutcomeEvent">
+    providerCalled?: BoolFilter<"BusinessOutcomeEvent"> | boolean
+    sent?: BoolFilter<"BusinessOutcomeEvent"> | boolean
+    published?: BoolFilter<"BusinessOutcomeEvent"> | boolean
+    liveExecutionAllowed?: BoolFilter<"BusinessOutcomeEvent"> | boolean
+    createdAt?: DateTimeFilter<"BusinessOutcomeEvent"> | Date | string
+    updatedAt?: DateTimeFilter<"BusinessOutcomeEvent"> | Date | string
+  }
+
+  export type BusinessOutcomeEventOrderByWithRelationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    outcomeKey?: SortOrder
+    sourceType?: SortOrder
+    sourceId?: SortOrderInput | SortOrder
+    leadId?: SortOrderInput | SortOrder
+    taskId?: SortOrderInput | SortOrder
+    runId?: SortOrderInput | SortOrder
+    actionKey?: SortOrder
+    expectedOutcome?: SortOrder
+    actualOutcome?: SortOrder
+    kpiAffected?: SortOrder
+    revenueImpactEstimate?: SortOrderInput | SortOrder
+    confidence?: SortOrder
+    nextRecommendation?: SortOrder
+    safeMetadata?: SortOrderInput | SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BusinessOutcomeEventWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    tenantId_outcomeKey?: BusinessOutcomeEventTenantIdOutcomeKeyCompoundUniqueInput
+    AND?: BusinessOutcomeEventWhereInput | BusinessOutcomeEventWhereInput[]
+    OR?: BusinessOutcomeEventWhereInput[]
+    NOT?: BusinessOutcomeEventWhereInput | BusinessOutcomeEventWhereInput[]
+    tenantId?: StringFilter<"BusinessOutcomeEvent"> | string
+    outcomeKey?: StringFilter<"BusinessOutcomeEvent"> | string
+    sourceType?: StringFilter<"BusinessOutcomeEvent"> | string
+    sourceId?: StringNullableFilter<"BusinessOutcomeEvent"> | string | null
+    leadId?: StringNullableFilter<"BusinessOutcomeEvent"> | string | null
+    taskId?: StringNullableFilter<"BusinessOutcomeEvent"> | string | null
+    runId?: StringNullableFilter<"BusinessOutcomeEvent"> | string | null
+    actionKey?: StringFilter<"BusinessOutcomeEvent"> | string
+    expectedOutcome?: StringFilter<"BusinessOutcomeEvent"> | string
+    actualOutcome?: StringFilter<"BusinessOutcomeEvent"> | string
+    kpiAffected?: JsonFilter<"BusinessOutcomeEvent">
+    revenueImpactEstimate?: StringNullableFilter<"BusinessOutcomeEvent"> | string | null
+    confidence?: IntFilter<"BusinessOutcomeEvent"> | number
+    nextRecommendation?: StringFilter<"BusinessOutcomeEvent"> | string
+    safeMetadata?: JsonNullableFilter<"BusinessOutcomeEvent">
+    providerCalled?: BoolFilter<"BusinessOutcomeEvent"> | boolean
+    sent?: BoolFilter<"BusinessOutcomeEvent"> | boolean
+    published?: BoolFilter<"BusinessOutcomeEvent"> | boolean
+    liveExecutionAllowed?: BoolFilter<"BusinessOutcomeEvent"> | boolean
+    createdAt?: DateTimeFilter<"BusinessOutcomeEvent"> | Date | string
+    updatedAt?: DateTimeFilter<"BusinessOutcomeEvent"> | Date | string
+  }, "id" | "tenantId_outcomeKey">
+
+  export type BusinessOutcomeEventOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    outcomeKey?: SortOrder
+    sourceType?: SortOrder
+    sourceId?: SortOrderInput | SortOrder
+    leadId?: SortOrderInput | SortOrder
+    taskId?: SortOrderInput | SortOrder
+    runId?: SortOrderInput | SortOrder
+    actionKey?: SortOrder
+    expectedOutcome?: SortOrder
+    actualOutcome?: SortOrder
+    kpiAffected?: SortOrder
+    revenueImpactEstimate?: SortOrderInput | SortOrder
+    confidence?: SortOrder
+    nextRecommendation?: SortOrder
+    safeMetadata?: SortOrderInput | SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: BusinessOutcomeEventCountOrderByAggregateInput
+    _avg?: BusinessOutcomeEventAvgOrderByAggregateInput
+    _max?: BusinessOutcomeEventMaxOrderByAggregateInput
+    _min?: BusinessOutcomeEventMinOrderByAggregateInput
+    _sum?: BusinessOutcomeEventSumOrderByAggregateInput
+  }
+
+  export type BusinessOutcomeEventScalarWhereWithAggregatesInput = {
+    AND?: BusinessOutcomeEventScalarWhereWithAggregatesInput | BusinessOutcomeEventScalarWhereWithAggregatesInput[]
+    OR?: BusinessOutcomeEventScalarWhereWithAggregatesInput[]
+    NOT?: BusinessOutcomeEventScalarWhereWithAggregatesInput | BusinessOutcomeEventScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"BusinessOutcomeEvent"> | string
+    tenantId?: StringWithAggregatesFilter<"BusinessOutcomeEvent"> | string
+    outcomeKey?: StringWithAggregatesFilter<"BusinessOutcomeEvent"> | string
+    sourceType?: StringWithAggregatesFilter<"BusinessOutcomeEvent"> | string
+    sourceId?: StringNullableWithAggregatesFilter<"BusinessOutcomeEvent"> | string | null
+    leadId?: StringNullableWithAggregatesFilter<"BusinessOutcomeEvent"> | string | null
+    taskId?: StringNullableWithAggregatesFilter<"BusinessOutcomeEvent"> | string | null
+    runId?: StringNullableWithAggregatesFilter<"BusinessOutcomeEvent"> | string | null
+    actionKey?: StringWithAggregatesFilter<"BusinessOutcomeEvent"> | string
+    expectedOutcome?: StringWithAggregatesFilter<"BusinessOutcomeEvent"> | string
+    actualOutcome?: StringWithAggregatesFilter<"BusinessOutcomeEvent"> | string
+    kpiAffected?: JsonWithAggregatesFilter<"BusinessOutcomeEvent">
+    revenueImpactEstimate?: StringNullableWithAggregatesFilter<"BusinessOutcomeEvent"> | string | null
+    confidence?: IntWithAggregatesFilter<"BusinessOutcomeEvent"> | number
+    nextRecommendation?: StringWithAggregatesFilter<"BusinessOutcomeEvent"> | string
+    safeMetadata?: JsonNullableWithAggregatesFilter<"BusinessOutcomeEvent">
+    providerCalled?: BoolWithAggregatesFilter<"BusinessOutcomeEvent"> | boolean
+    sent?: BoolWithAggregatesFilter<"BusinessOutcomeEvent"> | boolean
+    published?: BoolWithAggregatesFilter<"BusinessOutcomeEvent"> | boolean
+    liveExecutionAllowed?: BoolWithAggregatesFilter<"BusinessOutcomeEvent"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"BusinessOutcomeEvent"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"BusinessOutcomeEvent"> | Date | string
+  }
+
+  export type AutonomousRunRecordWhereInput = {
+    AND?: AutonomousRunRecordWhereInput | AutonomousRunRecordWhereInput[]
+    OR?: AutonomousRunRecordWhereInput[]
+    NOT?: AutonomousRunRecordWhereInput | AutonomousRunRecordWhereInput[]
+    id?: StringFilter<"AutonomousRunRecord"> | string
+    tenantId?: StringFilter<"AutonomousRunRecord"> | string
+    runKey?: StringFilter<"AutonomousRunRecord"> | string
+    businessDate?: StringFilter<"AutonomousRunRecord"> | string
+    pipelineVersion?: StringFilter<"AutonomousRunRecord"> | string
+    lane?: StringFilter<"AutonomousRunRecord"> | string
+    triggeredBy?: StringFilter<"AutonomousRunRecord"> | string
+    state?: StringFilter<"AutonomousRunRecord"> | string
+    phaseSummary?: JsonFilter<"AutonomousRunRecord">
+    workCreated?: IntFilter<"AutonomousRunRecord"> | number
+    workExecuted?: IntFilter<"AutonomousRunRecord"> | number
+    workSkipped?: IntFilter<"AutonomousRunRecord"> | number
+    exceptions?: JsonFilter<"AutonomousRunRecord">
+    safetyFlags?: JsonFilter<"AutonomousRunRecord">
+    healthCertified?: BoolFilter<"AutonomousRunRecord"> | boolean
+    providerCalled?: BoolFilter<"AutonomousRunRecord"> | boolean
+    sent?: BoolFilter<"AutonomousRunRecord"> | boolean
+    published?: BoolFilter<"AutonomousRunRecord"> | boolean
+    liveExecutionAllowed?: BoolFilter<"AutonomousRunRecord"> | boolean
+    startedAt?: DateTimeFilter<"AutonomousRunRecord"> | Date | string
+    completedAt?: DateTimeNullableFilter<"AutonomousRunRecord"> | Date | string | null
+    createdAt?: DateTimeFilter<"AutonomousRunRecord"> | Date | string
+    updatedAt?: DateTimeFilter<"AutonomousRunRecord"> | Date | string
+  }
+
+  export type AutonomousRunRecordOrderByWithRelationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    runKey?: SortOrder
+    businessDate?: SortOrder
+    pipelineVersion?: SortOrder
+    lane?: SortOrder
+    triggeredBy?: SortOrder
+    state?: SortOrder
+    phaseSummary?: SortOrder
+    workCreated?: SortOrder
+    workExecuted?: SortOrder
+    workSkipped?: SortOrder
+    exceptions?: SortOrder
+    safetyFlags?: SortOrder
+    healthCertified?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    startedAt?: SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AutonomousRunRecordWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    tenantId_runKey?: AutonomousRunRecordTenantIdRunKeyCompoundUniqueInput
+    AND?: AutonomousRunRecordWhereInput | AutonomousRunRecordWhereInput[]
+    OR?: AutonomousRunRecordWhereInput[]
+    NOT?: AutonomousRunRecordWhereInput | AutonomousRunRecordWhereInput[]
+    tenantId?: StringFilter<"AutonomousRunRecord"> | string
+    runKey?: StringFilter<"AutonomousRunRecord"> | string
+    businessDate?: StringFilter<"AutonomousRunRecord"> | string
+    pipelineVersion?: StringFilter<"AutonomousRunRecord"> | string
+    lane?: StringFilter<"AutonomousRunRecord"> | string
+    triggeredBy?: StringFilter<"AutonomousRunRecord"> | string
+    state?: StringFilter<"AutonomousRunRecord"> | string
+    phaseSummary?: JsonFilter<"AutonomousRunRecord">
+    workCreated?: IntFilter<"AutonomousRunRecord"> | number
+    workExecuted?: IntFilter<"AutonomousRunRecord"> | number
+    workSkipped?: IntFilter<"AutonomousRunRecord"> | number
+    exceptions?: JsonFilter<"AutonomousRunRecord">
+    safetyFlags?: JsonFilter<"AutonomousRunRecord">
+    healthCertified?: BoolFilter<"AutonomousRunRecord"> | boolean
+    providerCalled?: BoolFilter<"AutonomousRunRecord"> | boolean
+    sent?: BoolFilter<"AutonomousRunRecord"> | boolean
+    published?: BoolFilter<"AutonomousRunRecord"> | boolean
+    liveExecutionAllowed?: BoolFilter<"AutonomousRunRecord"> | boolean
+    startedAt?: DateTimeFilter<"AutonomousRunRecord"> | Date | string
+    completedAt?: DateTimeNullableFilter<"AutonomousRunRecord"> | Date | string | null
+    createdAt?: DateTimeFilter<"AutonomousRunRecord"> | Date | string
+    updatedAt?: DateTimeFilter<"AutonomousRunRecord"> | Date | string
+  }, "id" | "tenantId_runKey">
+
+  export type AutonomousRunRecordOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    runKey?: SortOrder
+    businessDate?: SortOrder
+    pipelineVersion?: SortOrder
+    lane?: SortOrder
+    triggeredBy?: SortOrder
+    state?: SortOrder
+    phaseSummary?: SortOrder
+    workCreated?: SortOrder
+    workExecuted?: SortOrder
+    workSkipped?: SortOrder
+    exceptions?: SortOrder
+    safetyFlags?: SortOrder
+    healthCertified?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    startedAt?: SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AutonomousRunRecordCountOrderByAggregateInput
+    _avg?: AutonomousRunRecordAvgOrderByAggregateInput
+    _max?: AutonomousRunRecordMaxOrderByAggregateInput
+    _min?: AutonomousRunRecordMinOrderByAggregateInput
+    _sum?: AutonomousRunRecordSumOrderByAggregateInput
+  }
+
+  export type AutonomousRunRecordScalarWhereWithAggregatesInput = {
+    AND?: AutonomousRunRecordScalarWhereWithAggregatesInput | AutonomousRunRecordScalarWhereWithAggregatesInput[]
+    OR?: AutonomousRunRecordScalarWhereWithAggregatesInput[]
+    NOT?: AutonomousRunRecordScalarWhereWithAggregatesInput | AutonomousRunRecordScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AutonomousRunRecord"> | string
+    tenantId?: StringWithAggregatesFilter<"AutonomousRunRecord"> | string
+    runKey?: StringWithAggregatesFilter<"AutonomousRunRecord"> | string
+    businessDate?: StringWithAggregatesFilter<"AutonomousRunRecord"> | string
+    pipelineVersion?: StringWithAggregatesFilter<"AutonomousRunRecord"> | string
+    lane?: StringWithAggregatesFilter<"AutonomousRunRecord"> | string
+    triggeredBy?: StringWithAggregatesFilter<"AutonomousRunRecord"> | string
+    state?: StringWithAggregatesFilter<"AutonomousRunRecord"> | string
+    phaseSummary?: JsonWithAggregatesFilter<"AutonomousRunRecord">
+    workCreated?: IntWithAggregatesFilter<"AutonomousRunRecord"> | number
+    workExecuted?: IntWithAggregatesFilter<"AutonomousRunRecord"> | number
+    workSkipped?: IntWithAggregatesFilter<"AutonomousRunRecord"> | number
+    exceptions?: JsonWithAggregatesFilter<"AutonomousRunRecord">
+    safetyFlags?: JsonWithAggregatesFilter<"AutonomousRunRecord">
+    healthCertified?: BoolWithAggregatesFilter<"AutonomousRunRecord"> | boolean
+    providerCalled?: BoolWithAggregatesFilter<"AutonomousRunRecord"> | boolean
+    sent?: BoolWithAggregatesFilter<"AutonomousRunRecord"> | boolean
+    published?: BoolWithAggregatesFilter<"AutonomousRunRecord"> | boolean
+    liveExecutionAllowed?: BoolWithAggregatesFilter<"AutonomousRunRecord"> | boolean
+    startedAt?: DateTimeWithAggregatesFilter<"AutonomousRunRecord"> | Date | string
+    completedAt?: DateTimeNullableWithAggregatesFilter<"AutonomousRunRecord"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"AutonomousRunRecord"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AutonomousRunRecord"> | Date | string
+  }
+
+  export type DepartmentSLAWhereInput = {
+    AND?: DepartmentSLAWhereInput | DepartmentSLAWhereInput[]
+    OR?: DepartmentSLAWhereInput[]
+    NOT?: DepartmentSLAWhereInput | DepartmentSLAWhereInput[]
+    id?: StringFilter<"DepartmentSLA"> | string
+    tenantId?: StringFilter<"DepartmentSLA"> | string
+    department?: StringFilter<"DepartmentSLA"> | string
+    owner?: StringFilter<"DepartmentSLA"> | string
+    lane?: StringFilter<"DepartmentSLA"> | string
+    maxAutonomyLevel?: IntFilter<"DepartmentSLA"> | number
+    staleAfterHours?: IntFilter<"DepartmentSLA"> | number
+    expectedDailyOutputs?: JsonFilter<"DepartmentSLA">
+    escalationTarget?: StringFilter<"DepartmentSLA"> | string
+    blockingConditions?: JsonFilter<"DepartmentSLA">
+    safetyNotes?: StringFilter<"DepartmentSLA"> | string
+    providerCalled?: BoolFilter<"DepartmentSLA"> | boolean
+    liveExecutionAllowed?: BoolFilter<"DepartmentSLA"> | boolean
+    createdAt?: DateTimeFilter<"DepartmentSLA"> | Date | string
+    updatedAt?: DateTimeFilter<"DepartmentSLA"> | Date | string
+  }
+
+  export type DepartmentSLAOrderByWithRelationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    department?: SortOrder
+    owner?: SortOrder
+    lane?: SortOrder
+    maxAutonomyLevel?: SortOrder
+    staleAfterHours?: SortOrder
+    expectedDailyOutputs?: SortOrder
+    escalationTarget?: SortOrder
+    blockingConditions?: SortOrder
+    safetyNotes?: SortOrder
+    providerCalled?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DepartmentSLAWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    tenantId_department?: DepartmentSLATenantIdDepartmentCompoundUniqueInput
+    AND?: DepartmentSLAWhereInput | DepartmentSLAWhereInput[]
+    OR?: DepartmentSLAWhereInput[]
+    NOT?: DepartmentSLAWhereInput | DepartmentSLAWhereInput[]
+    tenantId?: StringFilter<"DepartmentSLA"> | string
+    department?: StringFilter<"DepartmentSLA"> | string
+    owner?: StringFilter<"DepartmentSLA"> | string
+    lane?: StringFilter<"DepartmentSLA"> | string
+    maxAutonomyLevel?: IntFilter<"DepartmentSLA"> | number
+    staleAfterHours?: IntFilter<"DepartmentSLA"> | number
+    expectedDailyOutputs?: JsonFilter<"DepartmentSLA">
+    escalationTarget?: StringFilter<"DepartmentSLA"> | string
+    blockingConditions?: JsonFilter<"DepartmentSLA">
+    safetyNotes?: StringFilter<"DepartmentSLA"> | string
+    providerCalled?: BoolFilter<"DepartmentSLA"> | boolean
+    liveExecutionAllowed?: BoolFilter<"DepartmentSLA"> | boolean
+    createdAt?: DateTimeFilter<"DepartmentSLA"> | Date | string
+    updatedAt?: DateTimeFilter<"DepartmentSLA"> | Date | string
+  }, "id" | "tenantId_department">
+
+  export type DepartmentSLAOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    department?: SortOrder
+    owner?: SortOrder
+    lane?: SortOrder
+    maxAutonomyLevel?: SortOrder
+    staleAfterHours?: SortOrder
+    expectedDailyOutputs?: SortOrder
+    escalationTarget?: SortOrder
+    blockingConditions?: SortOrder
+    safetyNotes?: SortOrder
+    providerCalled?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: DepartmentSLACountOrderByAggregateInput
+    _avg?: DepartmentSLAAvgOrderByAggregateInput
+    _max?: DepartmentSLAMaxOrderByAggregateInput
+    _min?: DepartmentSLAMinOrderByAggregateInput
+    _sum?: DepartmentSLASumOrderByAggregateInput
+  }
+
+  export type DepartmentSLAScalarWhereWithAggregatesInput = {
+    AND?: DepartmentSLAScalarWhereWithAggregatesInput | DepartmentSLAScalarWhereWithAggregatesInput[]
+    OR?: DepartmentSLAScalarWhereWithAggregatesInput[]
+    NOT?: DepartmentSLAScalarWhereWithAggregatesInput | DepartmentSLAScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DepartmentSLA"> | string
+    tenantId?: StringWithAggregatesFilter<"DepartmentSLA"> | string
+    department?: StringWithAggregatesFilter<"DepartmentSLA"> | string
+    owner?: StringWithAggregatesFilter<"DepartmentSLA"> | string
+    lane?: StringWithAggregatesFilter<"DepartmentSLA"> | string
+    maxAutonomyLevel?: IntWithAggregatesFilter<"DepartmentSLA"> | number
+    staleAfterHours?: IntWithAggregatesFilter<"DepartmentSLA"> | number
+    expectedDailyOutputs?: JsonWithAggregatesFilter<"DepartmentSLA">
+    escalationTarget?: StringWithAggregatesFilter<"DepartmentSLA"> | string
+    blockingConditions?: JsonWithAggregatesFilter<"DepartmentSLA">
+    safetyNotes?: StringWithAggregatesFilter<"DepartmentSLA"> | string
+    providerCalled?: BoolWithAggregatesFilter<"DepartmentSLA"> | boolean
+    liveExecutionAllowed?: BoolWithAggregatesFilter<"DepartmentSLA"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"DepartmentSLA"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"DepartmentSLA"> | Date | string
   }
 
   export type RevenueAuditEventWhereInput = {
@@ -125403,6 +132747,832 @@ export namespace Prisma {
     contactPermission?: StringFieldUpdateOperationsInput | string
     consentSource?: NullableStringFieldUpdateOperationsInput | string | null
     consentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AutonomyPolicyCreateInput = {
+    id?: string
+    tenantId: string
+    policyKey: string
+    lane: string
+    subjectType: string
+    subjectKey: string
+    actionKey: string
+    maxAutonomyLevel?: number
+    effect?: string
+    approvalRequired?: boolean
+    quotaPerDay?: number | null
+    killSwitchEnabled?: boolean
+    allowedActions?: JsonNullValueInput | InputJsonValue
+    blockedActions?: JsonNullValueInput | InputJsonValue
+    requiredEvidence?: JsonNullValueInput | InputJsonValue
+    escalationRules?: JsonNullValueInput | InputJsonValue
+    safetyNotes: string
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AutonomyPolicyUncheckedCreateInput = {
+    id?: string
+    tenantId: string
+    policyKey: string
+    lane: string
+    subjectType: string
+    subjectKey: string
+    actionKey: string
+    maxAutonomyLevel?: number
+    effect?: string
+    approvalRequired?: boolean
+    quotaPerDay?: number | null
+    killSwitchEnabled?: boolean
+    allowedActions?: JsonNullValueInput | InputJsonValue
+    blockedActions?: JsonNullValueInput | InputJsonValue
+    requiredEvidence?: JsonNullValueInput | InputJsonValue
+    escalationRules?: JsonNullValueInput | InputJsonValue
+    safetyNotes: string
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AutonomyPolicyUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    policyKey?: StringFieldUpdateOperationsInput | string
+    lane?: StringFieldUpdateOperationsInput | string
+    subjectType?: StringFieldUpdateOperationsInput | string
+    subjectKey?: StringFieldUpdateOperationsInput | string
+    actionKey?: StringFieldUpdateOperationsInput | string
+    maxAutonomyLevel?: IntFieldUpdateOperationsInput | number
+    effect?: StringFieldUpdateOperationsInput | string
+    approvalRequired?: BoolFieldUpdateOperationsInput | boolean
+    quotaPerDay?: NullableIntFieldUpdateOperationsInput | number | null
+    killSwitchEnabled?: BoolFieldUpdateOperationsInput | boolean
+    allowedActions?: JsonNullValueInput | InputJsonValue
+    blockedActions?: JsonNullValueInput | InputJsonValue
+    requiredEvidence?: JsonNullValueInput | InputJsonValue
+    escalationRules?: JsonNullValueInput | InputJsonValue
+    safetyNotes?: StringFieldUpdateOperationsInput | string
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AutonomyPolicyUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    policyKey?: StringFieldUpdateOperationsInput | string
+    lane?: StringFieldUpdateOperationsInput | string
+    subjectType?: StringFieldUpdateOperationsInput | string
+    subjectKey?: StringFieldUpdateOperationsInput | string
+    actionKey?: StringFieldUpdateOperationsInput | string
+    maxAutonomyLevel?: IntFieldUpdateOperationsInput | number
+    effect?: StringFieldUpdateOperationsInput | string
+    approvalRequired?: BoolFieldUpdateOperationsInput | boolean
+    quotaPerDay?: NullableIntFieldUpdateOperationsInput | number | null
+    killSwitchEnabled?: BoolFieldUpdateOperationsInput | boolean
+    allowedActions?: JsonNullValueInput | InputJsonValue
+    blockedActions?: JsonNullValueInput | InputJsonValue
+    requiredEvidence?: JsonNullValueInput | InputJsonValue
+    escalationRules?: JsonNullValueInput | InputJsonValue
+    safetyNotes?: StringFieldUpdateOperationsInput | string
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AutonomyPolicyCreateManyInput = {
+    id?: string
+    tenantId: string
+    policyKey: string
+    lane: string
+    subjectType: string
+    subjectKey: string
+    actionKey: string
+    maxAutonomyLevel?: number
+    effect?: string
+    approvalRequired?: boolean
+    quotaPerDay?: number | null
+    killSwitchEnabled?: boolean
+    allowedActions?: JsonNullValueInput | InputJsonValue
+    blockedActions?: JsonNullValueInput | InputJsonValue
+    requiredEvidence?: JsonNullValueInput | InputJsonValue
+    escalationRules?: JsonNullValueInput | InputJsonValue
+    safetyNotes: string
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AutonomyPolicyUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    policyKey?: StringFieldUpdateOperationsInput | string
+    lane?: StringFieldUpdateOperationsInput | string
+    subjectType?: StringFieldUpdateOperationsInput | string
+    subjectKey?: StringFieldUpdateOperationsInput | string
+    actionKey?: StringFieldUpdateOperationsInput | string
+    maxAutonomyLevel?: IntFieldUpdateOperationsInput | number
+    effect?: StringFieldUpdateOperationsInput | string
+    approvalRequired?: BoolFieldUpdateOperationsInput | boolean
+    quotaPerDay?: NullableIntFieldUpdateOperationsInput | number | null
+    killSwitchEnabled?: BoolFieldUpdateOperationsInput | boolean
+    allowedActions?: JsonNullValueInput | InputJsonValue
+    blockedActions?: JsonNullValueInput | InputJsonValue
+    requiredEvidence?: JsonNullValueInput | InputJsonValue
+    escalationRules?: JsonNullValueInput | InputJsonValue
+    safetyNotes?: StringFieldUpdateOperationsInput | string
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AutonomyPolicyUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    policyKey?: StringFieldUpdateOperationsInput | string
+    lane?: StringFieldUpdateOperationsInput | string
+    subjectType?: StringFieldUpdateOperationsInput | string
+    subjectKey?: StringFieldUpdateOperationsInput | string
+    actionKey?: StringFieldUpdateOperationsInput | string
+    maxAutonomyLevel?: IntFieldUpdateOperationsInput | number
+    effect?: StringFieldUpdateOperationsInput | string
+    approvalRequired?: BoolFieldUpdateOperationsInput | boolean
+    quotaPerDay?: NullableIntFieldUpdateOperationsInput | number | null
+    killSwitchEnabled?: BoolFieldUpdateOperationsInput | boolean
+    allowedActions?: JsonNullValueInput | InputJsonValue
+    blockedActions?: JsonNullValueInput | InputJsonValue
+    requiredEvidence?: JsonNullValueInput | InputJsonValue
+    escalationRules?: JsonNullValueInput | InputJsonValue
+    safetyNotes?: StringFieldUpdateOperationsInput | string
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConnectorExecutionAttemptCreateInput = {
+    id?: string
+    tenantId: string
+    traceId: string
+    connectorId: string
+    capabilityKey: string
+    actionKey: string
+    actorId: string
+    requestingModule: string
+    policyDecision: string
+    reason: string
+    normalizedResult?: NullableJsonNullValueInput | InputJsonValue
+    redactionApplied?: boolean
+    auditEventId?: string | null
+    outcomeEventId?: string | null
+    providerCalled?: boolean
+    providerWrite?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+  }
+
+  export type ConnectorExecutionAttemptUncheckedCreateInput = {
+    id?: string
+    tenantId: string
+    traceId: string
+    connectorId: string
+    capabilityKey: string
+    actionKey: string
+    actorId: string
+    requestingModule: string
+    policyDecision: string
+    reason: string
+    normalizedResult?: NullableJsonNullValueInput | InputJsonValue
+    redactionApplied?: boolean
+    auditEventId?: string | null
+    outcomeEventId?: string | null
+    providerCalled?: boolean
+    providerWrite?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+  }
+
+  export type ConnectorExecutionAttemptUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    traceId?: StringFieldUpdateOperationsInput | string
+    connectorId?: StringFieldUpdateOperationsInput | string
+    capabilityKey?: StringFieldUpdateOperationsInput | string
+    actionKey?: StringFieldUpdateOperationsInput | string
+    actorId?: StringFieldUpdateOperationsInput | string
+    requestingModule?: StringFieldUpdateOperationsInput | string
+    policyDecision?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    normalizedResult?: NullableJsonNullValueInput | InputJsonValue
+    redactionApplied?: BoolFieldUpdateOperationsInput | boolean
+    auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    outcomeEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    providerWrite?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConnectorExecutionAttemptUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    traceId?: StringFieldUpdateOperationsInput | string
+    connectorId?: StringFieldUpdateOperationsInput | string
+    capabilityKey?: StringFieldUpdateOperationsInput | string
+    actionKey?: StringFieldUpdateOperationsInput | string
+    actorId?: StringFieldUpdateOperationsInput | string
+    requestingModule?: StringFieldUpdateOperationsInput | string
+    policyDecision?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    normalizedResult?: NullableJsonNullValueInput | InputJsonValue
+    redactionApplied?: BoolFieldUpdateOperationsInput | boolean
+    auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    outcomeEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    providerWrite?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConnectorExecutionAttemptCreateManyInput = {
+    id?: string
+    tenantId: string
+    traceId: string
+    connectorId: string
+    capabilityKey: string
+    actionKey: string
+    actorId: string
+    requestingModule: string
+    policyDecision: string
+    reason: string
+    normalizedResult?: NullableJsonNullValueInput | InputJsonValue
+    redactionApplied?: boolean
+    auditEventId?: string | null
+    outcomeEventId?: string | null
+    providerCalled?: boolean
+    providerWrite?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+  }
+
+  export type ConnectorExecutionAttemptUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    traceId?: StringFieldUpdateOperationsInput | string
+    connectorId?: StringFieldUpdateOperationsInput | string
+    capabilityKey?: StringFieldUpdateOperationsInput | string
+    actionKey?: StringFieldUpdateOperationsInput | string
+    actorId?: StringFieldUpdateOperationsInput | string
+    requestingModule?: StringFieldUpdateOperationsInput | string
+    policyDecision?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    normalizedResult?: NullableJsonNullValueInput | InputJsonValue
+    redactionApplied?: BoolFieldUpdateOperationsInput | boolean
+    auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    outcomeEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    providerWrite?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConnectorExecutionAttemptUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    traceId?: StringFieldUpdateOperationsInput | string
+    connectorId?: StringFieldUpdateOperationsInput | string
+    capabilityKey?: StringFieldUpdateOperationsInput | string
+    actionKey?: StringFieldUpdateOperationsInput | string
+    actorId?: StringFieldUpdateOperationsInput | string
+    requestingModule?: StringFieldUpdateOperationsInput | string
+    policyDecision?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    normalizedResult?: NullableJsonNullValueInput | InputJsonValue
+    redactionApplied?: BoolFieldUpdateOperationsInput | boolean
+    auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    outcomeEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    providerWrite?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BusinessOutcomeEventCreateInput = {
+    id?: string
+    tenantId: string
+    outcomeKey: string
+    sourceType: string
+    sourceId?: string | null
+    leadId?: string | null
+    taskId?: string | null
+    runId?: string | null
+    actionKey: string
+    expectedOutcome: string
+    actualOutcome?: string
+    kpiAffected?: JsonNullValueInput | InputJsonValue
+    revenueImpactEstimate?: string | null
+    confidence?: number
+    nextRecommendation: string
+    safeMetadata?: NullableJsonNullValueInput | InputJsonValue
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BusinessOutcomeEventUncheckedCreateInput = {
+    id?: string
+    tenantId: string
+    outcomeKey: string
+    sourceType: string
+    sourceId?: string | null
+    leadId?: string | null
+    taskId?: string | null
+    runId?: string | null
+    actionKey: string
+    expectedOutcome: string
+    actualOutcome?: string
+    kpiAffected?: JsonNullValueInput | InputJsonValue
+    revenueImpactEstimate?: string | null
+    confidence?: number
+    nextRecommendation: string
+    safeMetadata?: NullableJsonNullValueInput | InputJsonValue
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BusinessOutcomeEventUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    outcomeKey?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    leadId?: NullableStringFieldUpdateOperationsInput | string | null
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    runId?: NullableStringFieldUpdateOperationsInput | string | null
+    actionKey?: StringFieldUpdateOperationsInput | string
+    expectedOutcome?: StringFieldUpdateOperationsInput | string
+    actualOutcome?: StringFieldUpdateOperationsInput | string
+    kpiAffected?: JsonNullValueInput | InputJsonValue
+    revenueImpactEstimate?: NullableStringFieldUpdateOperationsInput | string | null
+    confidence?: IntFieldUpdateOperationsInput | number
+    nextRecommendation?: StringFieldUpdateOperationsInput | string
+    safeMetadata?: NullableJsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BusinessOutcomeEventUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    outcomeKey?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    leadId?: NullableStringFieldUpdateOperationsInput | string | null
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    runId?: NullableStringFieldUpdateOperationsInput | string | null
+    actionKey?: StringFieldUpdateOperationsInput | string
+    expectedOutcome?: StringFieldUpdateOperationsInput | string
+    actualOutcome?: StringFieldUpdateOperationsInput | string
+    kpiAffected?: JsonNullValueInput | InputJsonValue
+    revenueImpactEstimate?: NullableStringFieldUpdateOperationsInput | string | null
+    confidence?: IntFieldUpdateOperationsInput | number
+    nextRecommendation?: StringFieldUpdateOperationsInput | string
+    safeMetadata?: NullableJsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BusinessOutcomeEventCreateManyInput = {
+    id?: string
+    tenantId: string
+    outcomeKey: string
+    sourceType: string
+    sourceId?: string | null
+    leadId?: string | null
+    taskId?: string | null
+    runId?: string | null
+    actionKey: string
+    expectedOutcome: string
+    actualOutcome?: string
+    kpiAffected?: JsonNullValueInput | InputJsonValue
+    revenueImpactEstimate?: string | null
+    confidence?: number
+    nextRecommendation: string
+    safeMetadata?: NullableJsonNullValueInput | InputJsonValue
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BusinessOutcomeEventUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    outcomeKey?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    leadId?: NullableStringFieldUpdateOperationsInput | string | null
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    runId?: NullableStringFieldUpdateOperationsInput | string | null
+    actionKey?: StringFieldUpdateOperationsInput | string
+    expectedOutcome?: StringFieldUpdateOperationsInput | string
+    actualOutcome?: StringFieldUpdateOperationsInput | string
+    kpiAffected?: JsonNullValueInput | InputJsonValue
+    revenueImpactEstimate?: NullableStringFieldUpdateOperationsInput | string | null
+    confidence?: IntFieldUpdateOperationsInput | number
+    nextRecommendation?: StringFieldUpdateOperationsInput | string
+    safeMetadata?: NullableJsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BusinessOutcomeEventUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    outcomeKey?: StringFieldUpdateOperationsInput | string
+    sourceType?: StringFieldUpdateOperationsInput | string
+    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    leadId?: NullableStringFieldUpdateOperationsInput | string | null
+    taskId?: NullableStringFieldUpdateOperationsInput | string | null
+    runId?: NullableStringFieldUpdateOperationsInput | string | null
+    actionKey?: StringFieldUpdateOperationsInput | string
+    expectedOutcome?: StringFieldUpdateOperationsInput | string
+    actualOutcome?: StringFieldUpdateOperationsInput | string
+    kpiAffected?: JsonNullValueInput | InputJsonValue
+    revenueImpactEstimate?: NullableStringFieldUpdateOperationsInput | string | null
+    confidence?: IntFieldUpdateOperationsInput | number
+    nextRecommendation?: StringFieldUpdateOperationsInput | string
+    safeMetadata?: NullableJsonNullValueInput | InputJsonValue
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AutonomousRunRecordCreateInput = {
+    id?: string
+    tenantId: string
+    runKey: string
+    businessDate: string
+    pipelineVersion: string
+    lane: string
+    triggeredBy: string
+    state?: string
+    phaseSummary?: JsonNullValueInput | InputJsonValue
+    workCreated?: number
+    workExecuted?: number
+    workSkipped?: number
+    exceptions?: JsonNullValueInput | InputJsonValue
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    healthCertified?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    startedAt?: Date | string
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AutonomousRunRecordUncheckedCreateInput = {
+    id?: string
+    tenantId: string
+    runKey: string
+    businessDate: string
+    pipelineVersion: string
+    lane: string
+    triggeredBy: string
+    state?: string
+    phaseSummary?: JsonNullValueInput | InputJsonValue
+    workCreated?: number
+    workExecuted?: number
+    workSkipped?: number
+    exceptions?: JsonNullValueInput | InputJsonValue
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    healthCertified?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    startedAt?: Date | string
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AutonomousRunRecordUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    runKey?: StringFieldUpdateOperationsInput | string
+    businessDate?: StringFieldUpdateOperationsInput | string
+    pipelineVersion?: StringFieldUpdateOperationsInput | string
+    lane?: StringFieldUpdateOperationsInput | string
+    triggeredBy?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    phaseSummary?: JsonNullValueInput | InputJsonValue
+    workCreated?: IntFieldUpdateOperationsInput | number
+    workExecuted?: IntFieldUpdateOperationsInput | number
+    workSkipped?: IntFieldUpdateOperationsInput | number
+    exceptions?: JsonNullValueInput | InputJsonValue
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    healthCertified?: BoolFieldUpdateOperationsInput | boolean
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AutonomousRunRecordUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    runKey?: StringFieldUpdateOperationsInput | string
+    businessDate?: StringFieldUpdateOperationsInput | string
+    pipelineVersion?: StringFieldUpdateOperationsInput | string
+    lane?: StringFieldUpdateOperationsInput | string
+    triggeredBy?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    phaseSummary?: JsonNullValueInput | InputJsonValue
+    workCreated?: IntFieldUpdateOperationsInput | number
+    workExecuted?: IntFieldUpdateOperationsInput | number
+    workSkipped?: IntFieldUpdateOperationsInput | number
+    exceptions?: JsonNullValueInput | InputJsonValue
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    healthCertified?: BoolFieldUpdateOperationsInput | boolean
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AutonomousRunRecordCreateManyInput = {
+    id?: string
+    tenantId: string
+    runKey: string
+    businessDate: string
+    pipelineVersion: string
+    lane: string
+    triggeredBy: string
+    state?: string
+    phaseSummary?: JsonNullValueInput | InputJsonValue
+    workCreated?: number
+    workExecuted?: number
+    workSkipped?: number
+    exceptions?: JsonNullValueInput | InputJsonValue
+    safetyFlags: JsonNullValueInput | InputJsonValue
+    healthCertified?: boolean
+    providerCalled?: boolean
+    sent?: boolean
+    published?: boolean
+    liveExecutionAllowed?: boolean
+    startedAt?: Date | string
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AutonomousRunRecordUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    runKey?: StringFieldUpdateOperationsInput | string
+    businessDate?: StringFieldUpdateOperationsInput | string
+    pipelineVersion?: StringFieldUpdateOperationsInput | string
+    lane?: StringFieldUpdateOperationsInput | string
+    triggeredBy?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    phaseSummary?: JsonNullValueInput | InputJsonValue
+    workCreated?: IntFieldUpdateOperationsInput | number
+    workExecuted?: IntFieldUpdateOperationsInput | number
+    workSkipped?: IntFieldUpdateOperationsInput | number
+    exceptions?: JsonNullValueInput | InputJsonValue
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    healthCertified?: BoolFieldUpdateOperationsInput | boolean
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AutonomousRunRecordUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    runKey?: StringFieldUpdateOperationsInput | string
+    businessDate?: StringFieldUpdateOperationsInput | string
+    pipelineVersion?: StringFieldUpdateOperationsInput | string
+    lane?: StringFieldUpdateOperationsInput | string
+    triggeredBy?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    phaseSummary?: JsonNullValueInput | InputJsonValue
+    workCreated?: IntFieldUpdateOperationsInput | number
+    workExecuted?: IntFieldUpdateOperationsInput | number
+    workSkipped?: IntFieldUpdateOperationsInput | number
+    exceptions?: JsonNullValueInput | InputJsonValue
+    safetyFlags?: JsonNullValueInput | InputJsonValue
+    healthCertified?: BoolFieldUpdateOperationsInput | boolean
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    sent?: BoolFieldUpdateOperationsInput | boolean
+    published?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DepartmentSLACreateInput = {
+    id?: string
+    tenantId: string
+    department: string
+    owner: string
+    lane: string
+    maxAutonomyLevel?: number
+    staleAfterHours?: number
+    expectedDailyOutputs?: JsonNullValueInput | InputJsonValue
+    escalationTarget: string
+    blockingConditions?: JsonNullValueInput | InputJsonValue
+    safetyNotes: string
+    providerCalled?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DepartmentSLAUncheckedCreateInput = {
+    id?: string
+    tenantId: string
+    department: string
+    owner: string
+    lane: string
+    maxAutonomyLevel?: number
+    staleAfterHours?: number
+    expectedDailyOutputs?: JsonNullValueInput | InputJsonValue
+    escalationTarget: string
+    blockingConditions?: JsonNullValueInput | InputJsonValue
+    safetyNotes: string
+    providerCalled?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DepartmentSLAUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    owner?: StringFieldUpdateOperationsInput | string
+    lane?: StringFieldUpdateOperationsInput | string
+    maxAutonomyLevel?: IntFieldUpdateOperationsInput | number
+    staleAfterHours?: IntFieldUpdateOperationsInput | number
+    expectedDailyOutputs?: JsonNullValueInput | InputJsonValue
+    escalationTarget?: StringFieldUpdateOperationsInput | string
+    blockingConditions?: JsonNullValueInput | InputJsonValue
+    safetyNotes?: StringFieldUpdateOperationsInput | string
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DepartmentSLAUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    owner?: StringFieldUpdateOperationsInput | string
+    lane?: StringFieldUpdateOperationsInput | string
+    maxAutonomyLevel?: IntFieldUpdateOperationsInput | number
+    staleAfterHours?: IntFieldUpdateOperationsInput | number
+    expectedDailyOutputs?: JsonNullValueInput | InputJsonValue
+    escalationTarget?: StringFieldUpdateOperationsInput | string
+    blockingConditions?: JsonNullValueInput | InputJsonValue
+    safetyNotes?: StringFieldUpdateOperationsInput | string
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DepartmentSLACreateManyInput = {
+    id?: string
+    tenantId: string
+    department: string
+    owner: string
+    lane: string
+    maxAutonomyLevel?: number
+    staleAfterHours?: number
+    expectedDailyOutputs?: JsonNullValueInput | InputJsonValue
+    escalationTarget: string
+    blockingConditions?: JsonNullValueInput | InputJsonValue
+    safetyNotes: string
+    providerCalled?: boolean
+    liveExecutionAllowed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DepartmentSLAUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    owner?: StringFieldUpdateOperationsInput | string
+    lane?: StringFieldUpdateOperationsInput | string
+    maxAutonomyLevel?: IntFieldUpdateOperationsInput | number
+    staleAfterHours?: IntFieldUpdateOperationsInput | number
+    expectedDailyOutputs?: JsonNullValueInput | InputJsonValue
+    escalationTarget?: StringFieldUpdateOperationsInput | string
+    blockingConditions?: JsonNullValueInput | InputJsonValue
+    safetyNotes?: StringFieldUpdateOperationsInput | string
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DepartmentSLAUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenantId?: StringFieldUpdateOperationsInput | string
+    department?: StringFieldUpdateOperationsInput | string
+    owner?: StringFieldUpdateOperationsInput | string
+    lane?: StringFieldUpdateOperationsInput | string
+    maxAutonomyLevel?: IntFieldUpdateOperationsInput | number
+    staleAfterHours?: IntFieldUpdateOperationsInput | number
+    expectedDailyOutputs?: JsonNullValueInput | InputJsonValue
+    escalationTarget?: StringFieldUpdateOperationsInput | string
+    blockingConditions?: JsonNullValueInput | InputJsonValue
+    safetyNotes?: StringFieldUpdateOperationsInput | string
+    providerCalled?: BoolFieldUpdateOperationsInput | boolean
+    liveExecutionAllowed?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -136776,6 +144946,167 @@ export namespace Prisma {
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+  export type JsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type AutonomyPolicyTenantIdPolicyKeyCompoundUniqueInput = {
+    tenantId: string
+    policyKey: string
+  }
+
+  export type AutonomyPolicyCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    policyKey?: SortOrder
+    lane?: SortOrder
+    subjectType?: SortOrder
+    subjectKey?: SortOrder
+    actionKey?: SortOrder
+    maxAutonomyLevel?: SortOrder
+    effect?: SortOrder
+    approvalRequired?: SortOrder
+    quotaPerDay?: SortOrder
+    killSwitchEnabled?: SortOrder
+    allowedActions?: SortOrder
+    blockedActions?: SortOrder
+    requiredEvidence?: SortOrder
+    escalationRules?: SortOrder
+    safetyNotes?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AutonomyPolicyAvgOrderByAggregateInput = {
+    maxAutonomyLevel?: SortOrder
+    quotaPerDay?: SortOrder
+  }
+
+  export type AutonomyPolicyMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    policyKey?: SortOrder
+    lane?: SortOrder
+    subjectType?: SortOrder
+    subjectKey?: SortOrder
+    actionKey?: SortOrder
+    maxAutonomyLevel?: SortOrder
+    effect?: SortOrder
+    approvalRequired?: SortOrder
+    quotaPerDay?: SortOrder
+    killSwitchEnabled?: SortOrder
+    safetyNotes?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AutonomyPolicyMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    policyKey?: SortOrder
+    lane?: SortOrder
+    subjectType?: SortOrder
+    subjectKey?: SortOrder
+    actionKey?: SortOrder
+    maxAutonomyLevel?: SortOrder
+    effect?: SortOrder
+    approvalRequired?: SortOrder
+    quotaPerDay?: SortOrder
+    killSwitchEnabled?: SortOrder
+    safetyNotes?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AutonomyPolicySumOrderByAggregateInput = {
+    maxAutonomyLevel?: SortOrder
+    quotaPerDay?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+  export type JsonWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedJsonFilter<$PrismaModel>
+    _max?: NestedJsonFilter<$PrismaModel>
+  }
   export type JsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
@@ -136798,6 +145129,342 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type ConnectorExecutionAttemptTenantIdTraceIdCompoundUniqueInput = {
+    tenantId: string
+    traceId: string
+  }
+
+  export type ConnectorExecutionAttemptCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    traceId?: SortOrder
+    connectorId?: SortOrder
+    capabilityKey?: SortOrder
+    actionKey?: SortOrder
+    actorId?: SortOrder
+    requestingModule?: SortOrder
+    policyDecision?: SortOrder
+    reason?: SortOrder
+    normalizedResult?: SortOrder
+    redactionApplied?: SortOrder
+    auditEventId?: SortOrder
+    outcomeEventId?: SortOrder
+    providerCalled?: SortOrder
+    providerWrite?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ConnectorExecutionAttemptMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    traceId?: SortOrder
+    connectorId?: SortOrder
+    capabilityKey?: SortOrder
+    actionKey?: SortOrder
+    actorId?: SortOrder
+    requestingModule?: SortOrder
+    policyDecision?: SortOrder
+    reason?: SortOrder
+    redactionApplied?: SortOrder
+    auditEventId?: SortOrder
+    outcomeEventId?: SortOrder
+    providerCalled?: SortOrder
+    providerWrite?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ConnectorExecutionAttemptMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    traceId?: SortOrder
+    connectorId?: SortOrder
+    capabilityKey?: SortOrder
+    actionKey?: SortOrder
+    actorId?: SortOrder
+    requestingModule?: SortOrder
+    policyDecision?: SortOrder
+    reason?: SortOrder
+    redactionApplied?: SortOrder
+    auditEventId?: SortOrder
+    outcomeEventId?: SortOrder
+    providerCalled?: SortOrder
+    providerWrite?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
+  }
+
+  export type BusinessOutcomeEventTenantIdOutcomeKeyCompoundUniqueInput = {
+    tenantId: string
+    outcomeKey: string
+  }
+
+  export type BusinessOutcomeEventCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    outcomeKey?: SortOrder
+    sourceType?: SortOrder
+    sourceId?: SortOrder
+    leadId?: SortOrder
+    taskId?: SortOrder
+    runId?: SortOrder
+    actionKey?: SortOrder
+    expectedOutcome?: SortOrder
+    actualOutcome?: SortOrder
+    kpiAffected?: SortOrder
+    revenueImpactEstimate?: SortOrder
+    confidence?: SortOrder
+    nextRecommendation?: SortOrder
+    safeMetadata?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BusinessOutcomeEventAvgOrderByAggregateInput = {
+    confidence?: SortOrder
+  }
+
+  export type BusinessOutcomeEventMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    outcomeKey?: SortOrder
+    sourceType?: SortOrder
+    sourceId?: SortOrder
+    leadId?: SortOrder
+    taskId?: SortOrder
+    runId?: SortOrder
+    actionKey?: SortOrder
+    expectedOutcome?: SortOrder
+    actualOutcome?: SortOrder
+    revenueImpactEstimate?: SortOrder
+    confidence?: SortOrder
+    nextRecommendation?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BusinessOutcomeEventMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    outcomeKey?: SortOrder
+    sourceType?: SortOrder
+    sourceId?: SortOrder
+    leadId?: SortOrder
+    taskId?: SortOrder
+    runId?: SortOrder
+    actionKey?: SortOrder
+    expectedOutcome?: SortOrder
+    actualOutcome?: SortOrder
+    revenueImpactEstimate?: SortOrder
+    confidence?: SortOrder
+    nextRecommendation?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BusinessOutcomeEventSumOrderByAggregateInput = {
+    confidence?: SortOrder
+  }
+
+  export type AutonomousRunRecordTenantIdRunKeyCompoundUniqueInput = {
+    tenantId: string
+    runKey: string
+  }
+
+  export type AutonomousRunRecordCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    runKey?: SortOrder
+    businessDate?: SortOrder
+    pipelineVersion?: SortOrder
+    lane?: SortOrder
+    triggeredBy?: SortOrder
+    state?: SortOrder
+    phaseSummary?: SortOrder
+    workCreated?: SortOrder
+    workExecuted?: SortOrder
+    workSkipped?: SortOrder
+    exceptions?: SortOrder
+    safetyFlags?: SortOrder
+    healthCertified?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    startedAt?: SortOrder
+    completedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AutonomousRunRecordAvgOrderByAggregateInput = {
+    workCreated?: SortOrder
+    workExecuted?: SortOrder
+    workSkipped?: SortOrder
+  }
+
+  export type AutonomousRunRecordMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    runKey?: SortOrder
+    businessDate?: SortOrder
+    pipelineVersion?: SortOrder
+    lane?: SortOrder
+    triggeredBy?: SortOrder
+    state?: SortOrder
+    workCreated?: SortOrder
+    workExecuted?: SortOrder
+    workSkipped?: SortOrder
+    healthCertified?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    startedAt?: SortOrder
+    completedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AutonomousRunRecordMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    runKey?: SortOrder
+    businessDate?: SortOrder
+    pipelineVersion?: SortOrder
+    lane?: SortOrder
+    triggeredBy?: SortOrder
+    state?: SortOrder
+    workCreated?: SortOrder
+    workExecuted?: SortOrder
+    workSkipped?: SortOrder
+    healthCertified?: SortOrder
+    providerCalled?: SortOrder
+    sent?: SortOrder
+    published?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    startedAt?: SortOrder
+    completedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AutonomousRunRecordSumOrderByAggregateInput = {
+    workCreated?: SortOrder
+    workExecuted?: SortOrder
+    workSkipped?: SortOrder
+  }
+
+  export type DepartmentSLATenantIdDepartmentCompoundUniqueInput = {
+    tenantId: string
+    department: string
+  }
+
+  export type DepartmentSLACountOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    department?: SortOrder
+    owner?: SortOrder
+    lane?: SortOrder
+    maxAutonomyLevel?: SortOrder
+    staleAfterHours?: SortOrder
+    expectedDailyOutputs?: SortOrder
+    escalationTarget?: SortOrder
+    blockingConditions?: SortOrder
+    safetyNotes?: SortOrder
+    providerCalled?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DepartmentSLAAvgOrderByAggregateInput = {
+    maxAutonomyLevel?: SortOrder
+    staleAfterHours?: SortOrder
+  }
+
+  export type DepartmentSLAMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    department?: SortOrder
+    owner?: SortOrder
+    lane?: SortOrder
+    maxAutonomyLevel?: SortOrder
+    staleAfterHours?: SortOrder
+    escalationTarget?: SortOrder
+    safetyNotes?: SortOrder
+    providerCalled?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DepartmentSLAMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenantId?: SortOrder
+    department?: SortOrder
+    owner?: SortOrder
+    lane?: SortOrder
+    maxAutonomyLevel?: SortOrder
+    staleAfterHours?: SortOrder
+    escalationTarget?: SortOrder
+    safetyNotes?: SortOrder
+    providerCalled?: SortOrder
+    liveExecutionAllowed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DepartmentSLASumOrderByAggregateInput = {
+    maxAutonomyLevel?: SortOrder
+    staleAfterHours?: SortOrder
   }
 
   export type RevenueAuditEventCountOrderByAggregateInput = {
@@ -136838,43 +145505,6 @@ export namespace Prisma {
     source?: SortOrder
     result?: SortOrder
     createdAt?: SortOrder
-  }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedJsonNullableFilter<$PrismaModel>
-    _max?: NestedJsonNullableFilter<$PrismaModel>
-  }
-
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type LeadScalarRelationFilter = {
@@ -136950,22 +145580,6 @@ export namespace Prisma {
   export type RevenueLeadSourceSumOrderByAggregateInput = {
     costCents?: SortOrder
     confidence?: SortOrder
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type ReferralLinkListRelationFilter = {
@@ -137151,29 +145765,6 @@ export namespace Prisma {
     liveExecutionAllowed?: SortOrder
     createdAt?: SortOrder
   }
-  export type JsonFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
 
   export type RevenueLeadScoreCountOrderByAggregateInput = {
     id?: SortOrder
@@ -137226,32 +145817,6 @@ export namespace Prisma {
   export type RevenueLeadScoreSumOrderByAggregateInput = {
     score?: SortOrder
     confidence?: SortOrder
-  }
-  export type JsonWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedJsonFilter<$PrismaModel>
-    _max?: NestedJsonFilter<$PrismaModel>
   }
 
   export type RevenueTaskTenantIdIdempotencyKeyCompoundUniqueInput = {
@@ -142670,18 +151235,18 @@ export namespace Prisma {
     deleteMany?: ReferralAttributionEventScalarWhereInput | ReferralAttributionEventScalarWhereInput[]
   }
 
-  export type LeadCreateNestedOneWithoutRevenueLeadSourcesInput = {
-    create?: XOR<LeadCreateWithoutRevenueLeadSourcesInput, LeadUncheckedCreateWithoutRevenueLeadSourcesInput>
-    connectOrCreate?: LeadCreateOrConnectWithoutRevenueLeadSourcesInput
-    connect?: LeadWhereUniqueInput
-  }
-
   export type NullableIntFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type LeadCreateNestedOneWithoutRevenueLeadSourcesInput = {
+    create?: XOR<LeadCreateWithoutRevenueLeadSourcesInput, LeadUncheckedCreateWithoutRevenueLeadSourcesInput>
+    connectOrCreate?: LeadCreateOrConnectWithoutRevenueLeadSourcesInput
+    connect?: LeadWhereUniqueInput
   }
 
   export type LeadUpdateOneRequiredWithoutRevenueLeadSourcesNestedInput = {
@@ -144869,29 +153434,6 @@ export namespace Prisma {
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
-  export type NestedJsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
@@ -144916,6 +153458,29 @@ export namespace Prisma {
     | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
 
   export type NestedJsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
     equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
     path?: string[]
     mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>

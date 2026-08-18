@@ -17,6 +17,7 @@
     "adobe:preview-credential-probe": "node --import tsx scripts/adobe-preview-credential-probe.ts",
     "preview:db-fingerprint-diagnose": "node --import tsx scripts/preview-database-fingerprint-diagnosis.ts",
     "preview:live-dry-run": "node --import tsx scripts/preview-live-dry-run-test.ts",
+    "preview:level2-setup": "node --import tsx scripts/setup-level2-autonomy-preview.ts",
     "accessibility:certify": "node --import tsx scripts/accessibility-certification.ts",
     "test:e2e:accessibility": "playwright test tests/e2e/accessibility-certification.spec.ts tests/e2e/accessibility-toolbar.spec.ts",
     "verify:predeploy": "npm run infra:runtime-preflight",

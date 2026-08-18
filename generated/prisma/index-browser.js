@@ -157,6 +157,124 @@ exports.Prisma.LeadScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.AutonomyPolicyScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  policyKey: 'policyKey',
+  lane: 'lane',
+  subjectType: 'subjectType',
+  subjectKey: 'subjectKey',
+  actionKey: 'actionKey',
+  maxAutonomyLevel: 'maxAutonomyLevel',
+  effect: 'effect',
+  approvalRequired: 'approvalRequired',
+  quotaPerDay: 'quotaPerDay',
+  killSwitchEnabled: 'killSwitchEnabled',
+  allowedActions: 'allowedActions',
+  blockedActions: 'blockedActions',
+  requiredEvidence: 'requiredEvidence',
+  escalationRules: 'escalationRules',
+  safetyNotes: 'safetyNotes',
+  providerCalled: 'providerCalled',
+  sent: 'sent',
+  published: 'published',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ConnectorExecutionAttemptScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  traceId: 'traceId',
+  connectorId: 'connectorId',
+  capabilityKey: 'capabilityKey',
+  actionKey: 'actionKey',
+  actorId: 'actorId',
+  requestingModule: 'requestingModule',
+  policyDecision: 'policyDecision',
+  reason: 'reason',
+  normalizedResult: 'normalizedResult',
+  redactionApplied: 'redactionApplied',
+  auditEventId: 'auditEventId',
+  outcomeEventId: 'outcomeEventId',
+  providerCalled: 'providerCalled',
+  providerWrite: 'providerWrite',
+  sent: 'sent',
+  published: 'published',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.BusinessOutcomeEventScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  outcomeKey: 'outcomeKey',
+  sourceType: 'sourceType',
+  sourceId: 'sourceId',
+  leadId: 'leadId',
+  taskId: 'taskId',
+  runId: 'runId',
+  actionKey: 'actionKey',
+  expectedOutcome: 'expectedOutcome',
+  actualOutcome: 'actualOutcome',
+  kpiAffected: 'kpiAffected',
+  revenueImpactEstimate: 'revenueImpactEstimate',
+  confidence: 'confidence',
+  nextRecommendation: 'nextRecommendation',
+  safeMetadata: 'safeMetadata',
+  providerCalled: 'providerCalled',
+  sent: 'sent',
+  published: 'published',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AutonomousRunRecordScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  runKey: 'runKey',
+  businessDate: 'businessDate',
+  pipelineVersion: 'pipelineVersion',
+  lane: 'lane',
+  triggeredBy: 'triggeredBy',
+  state: 'state',
+  phaseSummary: 'phaseSummary',
+  workCreated: 'workCreated',
+  workExecuted: 'workExecuted',
+  workSkipped: 'workSkipped',
+  exceptions: 'exceptions',
+  safetyFlags: 'safetyFlags',
+  healthCertified: 'healthCertified',
+  providerCalled: 'providerCalled',
+  sent: 'sent',
+  published: 'published',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.DepartmentSLAScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  department: 'department',
+  owner: 'owner',
+  lane: 'lane',
+  maxAutonomyLevel: 'maxAutonomyLevel',
+  staleAfterHours: 'staleAfterHours',
+  expectedDailyOutputs: 'expectedDailyOutputs',
+  escalationTarget: 'escalationTarget',
+  blockingConditions: 'blockingConditions',
+  safetyNotes: 'safetyNotes',
+  providerCalled: 'providerCalled',
+  liveExecutionAllowed: 'liveExecutionAllowed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.RevenueAuditEventScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -1716,12 +1834,12 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.NullableJsonNullValueInput = {
-  DbNull: Prisma.DbNull,
+exports.Prisma.JsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
-exports.Prisma.JsonNullValueInput = {
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull
 };
 
@@ -1771,6 +1889,11 @@ exports.BuyerActivityEventType = exports.$Enums.BuyerActivityEventType = {
 
 exports.Prisma.ModelName = {
   Lead: 'Lead',
+  AutonomyPolicy: 'AutonomyPolicy',
+  ConnectorExecutionAttempt: 'ConnectorExecutionAttempt',
+  BusinessOutcomeEvent: 'BusinessOutcomeEvent',
+  AutonomousRunRecord: 'AutonomousRunRecord',
+  DepartmentSLA: 'DepartmentSLA',
   RevenueAuditEvent: 'RevenueAuditEvent',
   RevenueLeadSource: 'RevenueLeadSource',
   ReferralPartner: 'ReferralPartner',

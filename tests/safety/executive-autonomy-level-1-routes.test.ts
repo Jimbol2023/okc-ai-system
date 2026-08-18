@@ -1,8 +1,10 @@
 import assert from "node:assert/strict";
 import { afterEach, beforeEach, describe, it } from "node:test";
 
-import { GET as GET_DAILY_STARTUP, POST, setExecutiveAutonomyDailyStartupRouteDepsForTest } from "@/app/api/company/executive-autonomy/daily-startup/route";
-import { GET, setExecutiveAutonomyStatusRouteDepsForTest } from "@/app/api/company/executive-autonomy/status/route";
+import { GET as GET_DAILY_STARTUP, POST } from "@/app/api/company/executive-autonomy/daily-startup/route";
+import { setExecutiveAutonomyDailyStartupRouteDepsForTest } from "@/app/api/company/executive-autonomy/daily-startup/route-support";
+import { GET } from "@/app/api/company/executive-autonomy/status/route";
+import { setExecutiveAutonomyStatusRouteDepsForTest } from "@/app/api/company/executive-autonomy/status/route-support";
 import { executiveAutonomyLevel1SafetyProof } from "@/lib/executive-autonomy-level-1";
 
 const restores: Array<() => void> = [];

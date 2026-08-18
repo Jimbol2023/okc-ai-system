@@ -87,6 +87,156 @@ model Lead {
   @@index([lastSellerReplyIntent])
 }
 
+model AutonomyPolicy {
+  id                   String   @id @default(uuid())
+  tenantId             String
+  policyKey            String
+  lane                 String
+  subjectType          String
+  subjectKey           String
+  actionKey            String
+  maxAutonomyLevel     Int      @default(0)
+  effect               String   @default("deny")
+  approvalRequired     Boolean  @default(true)
+  quotaPerDay          Int?
+  killSwitchEnabled    Boolean  @default(true)
+  allowedActions       Json     @default("[]")
+  blockedActions       Json     @default("[]")
+  requiredEvidence     Json     @default("[]")
+  escalationRules      Json     @default("[]")
+  safetyNotes          String
+  providerCalled       Boolean  @default(false)
+  sent                 Boolean  @default(false)
+  published            Boolean  @default(false)
+  liveExecutionAllowed Boolean  @default(false)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@unique([tenantId, policyKey])
+  @@index([tenantId])
+  @@index([tenantId, lane, actionKey])
+  @@index([maxAutonomyLevel])
+  @@index([effect])
+  @@index([killSwitchEnabled])
+}
+
+model ConnectorExecutionAttempt {
+  id                   String   @id @default(uuid())
+  tenantId             String
+  traceId              String
+  connectorId          String
+  capabilityKey        String
+  actionKey            String
+  actorId              String
+  requestingModule     String
+  policyDecision       String
+  reason               String
+  normalizedResult     Json?
+  redactionApplied     Boolean  @default(true)
+  auditEventId         String?
+  outcomeEventId       String?
+  providerCalled       Boolean  @default(false)
+  providerWrite        Boolean  @default(false)
+  sent                 Boolean  @default(false)
+  published            Boolean  @default(false)
+  liveExecutionAllowed Boolean  @default(false)
+  createdAt            DateTime @default(now())
+
+  @@unique([tenantId, traceId])
+  @@index([tenantId])
+  @@index([tenantId, actionKey, createdAt])
+  @@index([policyDecision])
+  @@index([providerCalled])
+  @@index([liveExecutionAllowed])
+}
+
+model BusinessOutcomeEvent {
+  id                    String   @id @default(uuid())
+  tenantId              String
+  outcomeKey            String
+  sourceType            String
+  sourceId              String?
+  leadId                String?
+  taskId                String?
+  runId                 String?
+  actionKey             String
+  expectedOutcome       String
+  actualOutcome         String   @default("pending")
+  kpiAffected           Json     @default("[]")
+  revenueImpactEstimate String?
+  confidence            Int      @default(70)
+  nextRecommendation    String
+  safeMetadata          Json?
+  providerCalled        Boolean  @default(false)
+  sent                  Boolean  @default(false)
+  published             Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@unique([tenantId, outcomeKey])
+  @@index([tenantId])
+  @@index([tenantId, actualOutcome, createdAt])
+  @@index([leadId])
+  @@index([runId])
+  @@index([actionKey])
+}
+
+model AutonomousRunRecord {
+  id                   String    @id @default(uuid())
+  tenantId             String
+  runKey               String
+  businessDate         String
+  pipelineVersion      String
+  lane                 String
+  triggeredBy          String
+  state                String    @default("started")
+  phaseSummary         Json      @default("[]")
+  workCreated          Int       @default(0)
+  workExecuted         Int       @default(0)
+  workSkipped          Int       @default(0)
+  exceptions           Json      @default("[]")
+  safetyFlags          Json
+  healthCertified      Boolean   @default(false)
+  providerCalled       Boolean   @default(false)
+  sent                 Boolean   @default(false)
+  published            Boolean   @default(false)
+  liveExecutionAllowed Boolean   @default(false)
+  startedAt            DateTime  @default(now())
+  completedAt          DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  @@unique([tenantId, runKey])
+  @@index([tenantId])
+  @@index([tenantId, lane, createdAt])
+  @@index([state])
+  @@index([healthCertified])
+}
+
+model DepartmentSLA {
+  id                   String   @id @default(uuid())
+  tenantId             String
+  department           String
+  owner                String
+  lane                 String
+  maxAutonomyLevel     Int      @default(1)
+  staleAfterHours      Int      @default(24)
+  expectedDailyOutputs Json     @default("[]")
+  escalationTarget     String
+  blockingConditions   Json     @default("[]")
+  safetyNotes          String
+  providerCalled       Boolean  @default(false)
+  liveExecutionAllowed Boolean  @default(false)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@unique([tenantId, department])
+  @@index([tenantId])
+  @@index([tenantId, lane])
+  @@index([maxAutonomyLevel])
+}
+
 model RevenueAuditEvent {
   id           String   @id @default(uuid())
   tenantId     String   @default("default")

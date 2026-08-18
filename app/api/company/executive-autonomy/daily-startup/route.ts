@@ -1,32 +1,12 @@
 import { NextResponse } from "next/server";
 
 import { getAuthenticatedRequestContext, getUnauthorizedApiResponse, isAdminRequest, isCronAuthorizedRequest } from "@/lib/auth";
-import { runExecutiveDailyStartup } from "@/lib/executive-autonomy-level-1";
-import { week1Level1ReadOnlyCategories } from "@/lib/read-only-business-connections";
 import { clearServerCacheKey } from "@/lib/server-cache";
 import { requireTenantId } from "@/lib/tenant-context";
+import { getExecutiveAutonomyDailyStartupRouteDeps } from "./route-support";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
-
-type DailyStartupRouteDeps = {
-  runDailyStartup: typeof runExecutiveDailyStartup;
-};
-
-let routeDeps: DailyStartupRouteDeps = {
-  runDailyStartup: runExecutiveDailyStartup,
-};
-
-export const dailyStartupInternalCategories = week1Level1ReadOnlyCategories;
-
-export function setExecutiveAutonomyDailyStartupRouteDepsForTest(testDeps: Partial<DailyStartupRouteDeps>) {
-  const previous = routeDeps;
-  routeDeps = { ...routeDeps, ...testDeps };
-
-  return () => {
-    routeDeps = previous;
-  };
-}
 
 async function runDailyStartupRequest(request: Request, allowAdminSession: boolean) {
   try {
@@ -37,6 +17,7 @@ async function runDailyStartupRequest(request: Request, allowAdminSession: boole
 
     const auth = cron ? null : await getAuthenticatedRequestContext(request);
     const tenantId = requireTenantId(auth?.tenantId ?? process.env.CRON_TENANT_ID, cron ? "cron_configuration" : "admin_session");
+    const routeDeps = getExecutiveAutonomyDailyStartupRouteDeps();
     const result = await routeDeps.runDailyStartup({
       tenantId,
       triggeredBy: cron ? "cron" : "manual",
