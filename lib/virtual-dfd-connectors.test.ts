@@ -169,7 +169,7 @@ test("review boundary keeps certification candidate new until governed review", 
 });
 
 test("cost controls default to zero budget and fail closed", () => {
-  const gate = evaluateVirtualDfdCostGate({ connectorId: "google_geocoding", requestedQueries: 1 });
+  const gate = evaluateVirtualDfdCostGate({ connectorId: "google_geocode", requestedQueries: 1 });
 
   assert.equal(gate.allowed, false);
   assert.ok(gate.blockedReasons.includes("circuit_breaker_open"));
@@ -179,7 +179,7 @@ test("cost controls default to zero budget and fail closed", () => {
 });
 
 test("UEIP registry and autonomy keep Level 3 provider reads disabled", () => {
-  assert.ok(getEnterpriseConnector("google_geocoding"));
+  assert.ok(getEnterpriseConnector("google_geocode"));
   assert.ok(getEnterpriseConnector("dealmachine_property_search"));
   const connectorPlan = evaluateConnectorAction({ connectorId: "dealmachine_property_search", actionKey: "search_property_candidates", module: "Property Intelligence" });
   const policy = defaultAutonomyPolicies.find((item) => item.subjectKey === "dealmachine_property_search");
@@ -232,7 +232,7 @@ test("foundation report declares reused architecture and disabled Preview-only s
   const report = createVirtualDfdConnectorFoundationReport();
 
   assert.equal(report.existingArchitectureReused, "20260816210000_add_property_candidate_foundation");
-  assert.equal(report.costControls.google_geocoding.dailyDollarLimitCents, 0);
+  assert.equal(report.costControls.google_geocode.dailyDollarLimitCents, 0);
   assert.ok(report.disabledFlags.includes("virtual_dfd_connectors"));
   assert.equal(report.safetyState.providerCalled, false);
   assert.equal(getNormalizedAddressForDraft(draft), "1 test way, oklahoma city, ok, usa");

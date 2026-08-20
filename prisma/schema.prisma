@@ -1787,6 +1787,7 @@ model ConnectorExecutionAttempt {
   id                   String   @id @default(uuid())
   tenantId             String   @default("default")
   traceId              String
+  idempotencyKey       String?
   connectorId          String
   capabilityKey        String
   actionKey            String
@@ -1794,6 +1795,10 @@ model ConnectorExecutionAttempt {
   requestingModule     String
   policyDecision       String
   reason               String
+  resultClassification String   @default("pending")
+  queryCount           Int      @default(0)
+  costCents            Int      @default(0)
+  creditsUsed          Int      @default(0)
   normalizedResult     Json?
   redactionApplied     Boolean  @default(true)
   auditEventId         String?
@@ -1803,16 +1808,23 @@ model ConnectorExecutionAttempt {
   sent                 Boolean  @default(false)
   published            Boolean  @default(false)
   liveExecutionAllowed Boolean  @default(false)
+  startedAt            DateTime @default(now())
+  completedAt          DateTime?
   createdAt            DateTime @default(now())
 
   @@unique([tenantId, traceId])
+  @@unique([tenantId, idempotencyKey])
   @@index([tenantId])
+  @@index([idempotencyKey])
   @@index([connectorId])
   @@index([capabilityKey])
   @@index([actionKey])
   @@index([policyDecision])
+  @@index([resultClassification])
   @@index([providerCalled])
   @@index([liveExecutionAllowed])
+  @@index([startedAt])
+  @@index([completedAt])
   @@index([createdAt])
 }
 

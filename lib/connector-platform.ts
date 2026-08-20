@@ -690,7 +690,7 @@ export const enterpriseConnectors: EnterpriseConnector[] = [
     lifecycleState: "disabled",
   },
   {
-    connectorId: "google_geocoding",
+    connectorId: "google_geocode",
     displayName: "Google Geocoding",
     category: "property_data",
     provider: "Google Maps Platform",
@@ -700,9 +700,9 @@ export const enterpriseConnectors: EnterpriseConnector[] = [
     requiredPermissions: ["Google Maps Platform Geocoding API key or maps-platform.geocode.address OAuth scope"],
     supportedActions: [
       {
-        actionKey: "normalize_property_address",
+        actionKey: "provider_read_geocode",
         capabilityKey: "property.address.geocode.read",
-        label: "Normalize property address",
+        label: "Provider read geocode",
         type: "read",
         risk: "medium",
         approvalRequired: true,

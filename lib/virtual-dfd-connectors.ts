@@ -18,7 +18,7 @@ export const virtualDfdSafetyFlags = Object.freeze({
   scraping: false,
 });
 
-export type VirtualDfdConnectorId = "google_geocoding" | "dealmachine_property_search";
+export type VirtualDfdConnectorId = "google_geocode" | "dealmachine_property_search";
 export type VirtualDfdProviderSource = "google_geocode" | "dealmachine_property_search";
 export type VirtualDfdCandidateSource = VirtualDfdProviderSource | "virtual_dfd_internal_certification";
 export type VirtualDfdDuplicateEntityType = "PropertyCandidate" | "Lead" | "PropertyOpportunity";
@@ -91,7 +91,7 @@ export const dealMachinePropertySchema = z.object({
 });
 
 export const defaultVirtualDfdCostControls: Record<VirtualDfdConnectorId, VirtualDfdCostControls> = {
-  google_geocoding: {
+  google_geocode: {
     dailyQueryLimit: 0,
     dailyCreditLimit: 0,
     dailyDollarLimitCents: 0,
@@ -408,7 +408,7 @@ export function createVirtualDfdConnectorFoundationReport() {
     dealMachineApiCapabilityConfirmed: "official API quickstart confirms REST API property search, count, credits, fields, filters, lists, exports, and bearer API key auth; account-specific scopes remain blocked until credential review",
     ueipIntegration: ["tenant", "AutonomyPolicy", "connector health", "credential scope", "feature flag", "quota", "cost budget", "kill switch", "audit", "idempotency"],
     authModel: {
-      google_geocoding: "api_key_or_oauth_geocode_address_scope_reference_only",
+      google_geocode: "api_key_or_oauth_geocode_address_scope_reference_only",
       dealmachine_property_search: "bearer_api_key_reference_only",
     },
     costControls: defaultVirtualDfdCostControls,
