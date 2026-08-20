@@ -1,8 +1,11 @@
 import Link from "next/link";
 
 import { DashboardCard, SafetyBadge, StatusBadge } from "@/components/dashboard/dashboard-ui";
+import { RevenueOutcomeRecorder } from "@/components/dashboard/revenue-outcome-recorder";
 import { listDbLeads } from "@/lib/leads-db";
+import { createRevenueAttributionLedgerReportFromDb, type RevenueAttributionLedgerReport } from "@/lib/revenue-attribution-ledger";
 import { createRevenueCommandCenter, ensureConnectorDefinitions, type RevenueCommandCenterReport } from "@/lib/revenue-spine";
+import { createTodaysRevenueWork } from "@/lib/todays-revenue-work";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -27,9 +30,41 @@ function getStatus(score: number) {
   return "missing";
 }
 
+function formatMoney(cents: number | null | undefined) {
+  if (cents === null || cents === undefined) return "Insufficient";
+
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  }).format(cents / 100);
+}
+
+function formatRatio(value: number | null | undefined) {
+  if (value === null || value === undefined) return "Insufficient";
+
+  return `${Math.round(value * 100)}%`;
+}
+
 export default async function RevenueCommandCenterPage() {
   await ensureConnectorDefinitions();
-  const report: RevenueCommandCenterReport = await createRevenueCommandCenter(await listDbLeads());
+  const leads = await listDbLeads();
+  const report: RevenueCommandCenterReport = await createRevenueCommandCenter(leads);
+  const ledger: RevenueAttributionLedgerReport = await createRevenueAttributionLedgerReportFromDb({
+    tenantId: process.env.PUBLIC_TENANT_ID?.trim() || "default",
+    window: "all_time",
+  });
+  const todaysRevenueWork = createTodaysRevenueWork({ leads, ledger });
+  const topLedgerRows = ledger.rows.slice(0, 6);
+  const leadOptions = leads.slice(0, 100).map((lead) => ({
+    id: lead.id,
+    label: `${lead.firstName} ${lead.lastName}`.trim() || lead.propertyAddress || "Unnamed lead",
+    propertyAddress: lead.propertyAddress,
+    source: lead.source,
+    referralCode: lead.referralCode,
+    referralCampaign: lead.referralCampaign,
+    referralLandingPage: lead.referralLandingPage,
+  }));
 
   return (
     <main className="space-y-6">
@@ -146,6 +181,121 @@ export default async function RevenueCommandCenterPage() {
               </div>
             ))}
             {report.sourcePerformance.length === 0 ? <p className="text-sm text-muted">No source performance yet.</p> : null}
+          </div>
+        </DashboardCard>
+      </section>
+
+      <section className="grid gap-4 xl:grid-cols-[1fr_1.1fr]">
+        <DashboardCard>
+          <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Revenue Attribution</p>
+              <h2 className="mt-2 text-lg font-bold text-primary">Lead ROI Ledger</h2>
+              <p className="mt-2 text-sm leading-6 text-muted">
+                Read-only source and campaign ROI from verified spend, appointment, contract, closing, and realized revenue outcomes.
+              </p>
+            </div>
+            <SafetyBadge tone="good">read-only</SafetyBadge>
+          </div>
+          <div className="mt-4 grid gap-3 md:grid-cols-2">
+            <div className="rounded border border-border bg-white p-3">
+              <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Top Revenue Source</p>
+              <p className="mt-2 text-lg font-bold text-primary">{ledger.summary.topRevenueSource ?? "Insufficient data"}</p>
+            </div>
+            <div className="rounded border border-border bg-white p-3">
+              <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Best ROI Source</p>
+              <p className="mt-2 text-lg font-bold text-primary">{ledger.summary.bestRoiSource ?? "Insufficient data"}</p>
+            </div>
+            <div className="rounded border border-border bg-white p-3">
+              <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Lowest Cost / Contract</p>
+              <p className="mt-2 text-lg font-bold text-primary">{ledger.summary.lowestCostPerContractSource ?? "Insufficient data"}</p>
+            </div>
+            <div className="rounded border border-border bg-white p-3">
+              <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Highest Close Rate</p>
+              <p className="mt-2 text-lg font-bold text-primary">{ledger.summary.highestCloseRateSource ?? "Insufficient data"}</p>
+            </div>
+          </div>
+          <div className="mt-4 rounded border border-border bg-white p-3">
+            <p className="text-sm font-bold text-primary">Current Baseline</p>
+            <p className="mt-2 text-sm leading-6 text-muted">
+              {ledger.summary.baselineState === "REAL_OUTCOME_DATA_AVAILABLE"
+                ? `${ledger.summary.totalClosedDeals} closed deal(s), ${formatMoney(ledger.summary.totalNetRevenueCents)} net revenue, ${formatMoney(ledger.summary.totalSpendCents)} verified spend.`
+                : "INSUFFICIENT_REAL_OUTCOME_DATA. The ledger is ready for the first verified real outcome without manufacturing ROI."}
+            </p>
+          </div>
+        </DashboardCard>
+
+        <DashboardCard>
+          <h2 className="text-lg font-bold text-primary">Source ROI Rows</h2>
+          <div className="mt-4 space-y-3">
+            {topLedgerRows.map((row) => (
+              <div key={`${row.source}:${row.campaign ?? "none"}`} className="rounded border border-border bg-white p-3">
+                <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+                  <div className="min-w-0">
+                    <p className="break-words text-sm font-bold text-primary">{row.source}</p>
+                    <p className="mt-1 text-xs text-muted">Campaign: {row.campaign ?? "none"}</p>
+                  </div>
+                  <SafetyBadge tone={row.dataQuality === "VERIFIED" ? "good" : "watch"}>{row.dataQuality}</SafetyBadge>
+                </div>
+                <div className="mt-3 grid gap-2 text-xs text-muted sm:grid-cols-3">
+                  <p>Spend: {formatMoney(row.spendCents)}</p>
+                  <p>Contracts: {row.contractCount}</p>
+                  <p>Closed: {row.closedDealCount}</p>
+                  <p>Gross: {formatMoney(row.grossRevenueCents)}</p>
+                  <p>Net: {formatMoney(row.netRevenueCents)}</p>
+                  <p>ROI: {formatRatio(row.roi)}</p>
+                </div>
+                <p className="mt-2 text-xs text-muted">
+                  Sample size {row.sampleSize}; cost per contract {formatMoney(row.costPerContractCents)}; last outcome {row.lastOutcomeDate ? formatDate(row.lastOutcomeDate) : "not recorded"}.
+                </p>
+              </div>
+            ))}
+            {topLedgerRows.length === 0 ? <p className="text-sm text-muted">No verified revenue attribution rows yet.</p> : null}
+          </div>
+        </DashboardCard>
+      </section>
+
+      <section className="grid gap-4 xl:grid-cols-[0.95fr_1.05fr]">
+        <DashboardCard>
+          <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Internal Recording</p>
+              <h2 className="mt-2 text-lg font-bold text-primary">Record Business Outcome</h2>
+              <p className="mt-2 text-sm leading-6 text-muted">Authenticated manual outcome capture for source spend, lead, appointment, contract, and verified closed revenue records.</p>
+            </div>
+            <SafetyBadge tone="watch">admin write</SafetyBadge>
+          </div>
+          <div className="mt-4">
+            <RevenueOutcomeRecorder leads={leadOptions} />
+          </div>
+        </DashboardCard>
+
+        <DashboardCard>
+          <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.08em] text-muted">Today&apos;s Revenue Work</p>
+              <h2 className="mt-2 text-lg font-bold text-primary">Read-Only Operating Queue</h2>
+              <p className="mt-2 text-sm leading-6 text-muted">Highest-priority human review work from lead age, follow-up timing, missing evidence, and source spend gaps.</p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <StatusBadge status={todaysRevenueWork.summary.urgent > 0 ? "urgent" : "good"} label={`${todaysRevenueWork.summary.urgent} urgent`} />
+              <SafetyBadge tone="good">no outreach</SafetyBadge>
+            </div>
+          </div>
+          <div className="mt-4 space-y-3">
+            {todaysRevenueWork.items.map((item) => (
+              <div key={item.id} className="rounded border border-border bg-white p-3">
+                <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+                  <div className="min-w-0">
+                    <p className="break-words text-sm font-bold text-primary">{item.label}</p>
+                    <p className="mt-1 text-xs text-muted">{item.category.replaceAll("_", " ")}</p>
+                  </div>
+                  <StatusBadge status={item.priority} label={item.priority} />
+                </div>
+                <p className="mt-2 text-sm leading-6 text-muted">{item.detail}</p>
+              </div>
+            ))}
+            {todaysRevenueWork.items.length === 0 ? <p className="text-sm text-muted">No urgent revenue work is currently queued.</p> : null}
           </div>
         </DashboardCard>
       </section>

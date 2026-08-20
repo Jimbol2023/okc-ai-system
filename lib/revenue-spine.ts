@@ -68,6 +68,15 @@ export type RevenueSourcePerformance = {
   qualified: number;
   avgScore: number;
   conversionSignal: number;
+  appointmentCount: number;
+  contractCount: number;
+  closedDealCount: number;
+  totalSpendCents: number | null;
+  grossRevenueCents: number | null;
+  netRevenueCents: number | null;
+  costPerContractCents: number | null;
+  roi: number | null;
+  outcomeDataQuality: "INSUFFICIENT_DATA";
 };
 export type RevenueReferralPerformance = {
   referralCode: string;
@@ -863,6 +872,15 @@ export async function createRevenueCommandCenter(leads: StoredLead[]): Promise<R
       ...source,
       avgScore: source.leads > 0 ? Math.round(source.avgScore / source.leads) : 0,
       conversionSignal: source.leads > 0 ? Math.round((source.qualified / source.leads) * 100) : 0,
+      appointmentCount: 0,
+      contractCount: 0,
+      closedDealCount: 0,
+      totalSpendCents: null,
+      grossRevenueCents: null,
+      netRevenueCents: null,
+      costPerContractCents: null,
+      roi: null,
+      outcomeDataQuality: "INSUFFICIENT_DATA" as const,
     }))
     .sort((a, b) => b.qualified - a.qualified || b.avgScore - a.avgScore);
   const referralPerformance = referralLinks.map((link) => ({

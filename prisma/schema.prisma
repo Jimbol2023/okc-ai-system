@@ -66,6 +66,10 @@ model Lead {
   revenuePipelineEvents      RevenuePipelineEvent[]
   revenueCommunicationEvents RevenueCommunicationEvent[]
   referralAttributionEvents  ReferralAttributionEvent[]
+  leadOutcomeEvents          LeadOutcomeEvent[]
+  appointmentOutcomeEvents   AppointmentOutcomeEvent[]
+  contractOutcomeEvents      ContractOutcomeEvent[]
+  closedRevenueOutcomeEvents ClosedRevenueOutcomeEvent[]
 
   // INDEXES
   @@unique([propertyAddress, phone])
@@ -265,6 +269,275 @@ model RevenueTask {
   @@index([createdAt])
 }
 
+model PropertyOpportunity {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  canonicalAddress      String
+  propertyAddress       String
+  city                  String?
+  state                 String?
+  zipCode               String?
+  county                String?
+  parcelId              String?
+  ownerName             String?
+  mailingAddress        String?
+  source                String
+  sourceDetail          String?
+  evidence              Json
+  distressIndicators    Json
+  observations          Json
+  photoMetadata         Json
+  opportunityScore      Int
+  opportunityPriority   String
+  confidence            Int
+  duplicateKey          String
+  duplicateRisk         Boolean  @default(false)
+  missingEvidence       Json
+  recommendedAction     String
+  safetyFlags           Json
+  providerCalled        Boolean  @default(false)
+  sent                  Boolean  @default(false)
+  published             Boolean  @default(false)
+  crmMutated            Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdBy             String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@unique([tenantId, duplicateKey])
+  @@index([tenantId])
+  @@index([canonicalAddress])
+  @@index([parcelId])
+  @@index([source])
+  @@index([opportunityScore])
+  @@index([opportunityPriority])
+  @@index([duplicateRisk])
+  @@index([providerCalled])
+  @@index([sent])
+  @@index([published])
+  @@index([crmMutated])
+  @@index([liveExecutionAllowed])
+  @@index([createdAt])
+}
+
+model PropertyOpportunitySavedFilter {
+  id                  String   @id @default(uuid())
+  tenantId            String   @default("default")
+  name                String
+  filterKey           String
+  criteria            Json
+  safetyFlags         Json
+  providerCalled      Boolean  @default(false)
+  sent                Boolean  @default(false)
+  published           Boolean  @default(false)
+  crmMutated          Boolean  @default(false)
+  liveExecutionAllowed Boolean @default(false)
+  createdBy           String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@unique([tenantId, filterKey])
+  @@index([tenantId])
+  @@index([filterKey])
+  @@index([providerCalled])
+  @@index([sent])
+  @@index([published])
+  @@index([crmMutated])
+  @@index([liveExecutionAllowed])
+  @@index([createdAt])
+}
+
+model VisualAsset {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  sourceType            String
+  sourceRef             String
+  sourceEntityType      String
+  sourceEntityId        String
+  sourceLinkVersion     Int      @default(1)
+  blobPathname          String
+  mimeType              String
+  byteSize              Int
+  evidenceHash          String
+  containsPII           Boolean  @default(false)
+  sensitivity           String   @default("internal")
+  retentionState        String   @default("active")
+  uploadedBy            String
+  purpose               String
+  quarantineState       String   @default("clear")
+  quarantineReviewedAt  DateTime?
+  quarantineReviewedBy  String?
+  securityReviewStatus  String   @default("pending")
+  fileSafetyState       String   @default("QUARANTINED")
+  scannerStatus         String   @default("unavailable")
+  decoderStatus         String   @default("not_checked")
+  imageWidth            Int?
+  imageHeight           Int?
+  sensitivityKinds      Json     @default("[]")
+  redactedFromAssetId   String?
+  redactedByAssetId     String?
+  retentionExpiresAt    DateTime?
+  deletedAt             DateTime?
+  createdAt             DateTime @default(now())
+
+  observations VisualObservation[]
+  auditEvents  VisualObservationAuditEvent[]
+  scanJobs     VisualScanJob[]
+
+  @@unique([tenantId, evidenceHash, sourceType, sourceRef])
+  @@index([tenantId, createdAt])
+  @@index([tenantId, sourceType, sourceRef])
+  @@index([tenantId, sourceEntityType, sourceEntityId])
+  @@index([tenantId, quarantineState])
+  @@index([tenantId, securityReviewStatus])
+  @@index([tenantId, retentionExpiresAt])
+  @@index([tenantId, redactedFromAssetId])
+  @@index([retentionState])
+}
+
+model VisualScanJob {
+  id                         String    @id @default(uuid())
+  tenantId                   String    @default("default")
+  assetId                    String
+  blobRef                    String
+  evidenceHash               String
+  requestedAt                DateTime
+  attempt                    Int       @default(1)
+  scannerVersion             String
+  decoderVersion             String
+  status                     String    @default("queued")
+  nextAttemptAt              DateTime?
+  claimedBy                  String?
+  claimedAt                  DateTime?
+  completedAt                DateTime?
+  lastReasonCodes            Json      @default("[]")
+  signedVerdict              Json?
+  engineeringExceptionNeeded Boolean   @default(false)
+  providerCalled             Boolean   @default(false)
+  providerWrite              Boolean   @default(false)
+  aiProviderCalled           Boolean   @default(false)
+  aiProviderWrite            Boolean   @default(false)
+  sent                       Boolean   @default(false)
+  published                  Boolean   @default(false)
+  outreach                   Boolean   @default(false)
+  externalExecutionAllowed   Boolean   @default(false)
+  downstreamActionOccurred   Boolean   @default(false)
+  downstreamBusinessMutation Boolean   @default(false)
+  externalExecution          Boolean   @default(false)
+  createdAt                  DateTime  @default(now())
+  updatedAt                  DateTime  @updatedAt
+
+  asset VisualAsset @relation(fields: [assetId], references: [id], onDelete: Restrict)
+
+  @@index([tenantId])
+  @@index([assetId])
+  @@index([tenantId, status, nextAttemptAt])
+  @@index([tenantId, evidenceHash])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model VisualObservation {
+  id                         String   @id @default(uuid())
+  tenantId                   String   @default("default")
+  assetId                    String
+  sourceType                 String
+  sourceRef                  String
+  sourceEntityType           String
+  sourceEntityId             String
+  sourceLinkVersion          Int      @default(1)
+  observedAt                 DateTime
+  observerAgent              String
+  observerActorId            String
+  purpose                    String
+  observationCategory        String
+  structuredFindings         Json
+  confidence                 String
+  uncertainties              Json
+  requiresHumanVerification  Boolean  @default(true)
+  containsPII                Boolean  @default(false)
+  safetyClassification       String
+  evidenceHash               String
+  traceId                    String
+  contractVersion            String
+  promptVersion              String?
+  reviewStatus               String   @default("pending_review")
+  reviewedAt                 DateTime?
+  reviewedBy                 String?
+  providerCalled             Boolean  @default(false)
+  providerWrite              Boolean  @default(false)
+  aiProviderCalled           Boolean  @default(false)
+  aiProviderWrite            Boolean  @default(false)
+  sent                       Boolean  @default(false)
+  published                  Boolean  @default(false)
+  outreach                   Boolean  @default(false)
+  externalExecutionAllowed   Boolean  @default(false)
+  downstreamActionOccurred   Boolean  @default(false)
+  downstreamBusinessMutation Boolean @default(false)
+  externalExecution          Boolean @default(false)
+  storageWrite               Boolean  @default(false)
+  storageProvider            String?
+  scannerCalled              Boolean  @default(false)
+  scannerVerdict             Boolean  @default(false)
+  decoderCalled              Boolean  @default(false)
+  createdAt                  DateTime @default(now())
+
+  asset       VisualAsset                    @relation(fields: [assetId], references: [id], onDelete: Restrict)
+  auditEvents VisualObservationAuditEvent[]
+
+  @@unique([tenantId, traceId])
+  @@index([tenantId, createdAt])
+  @@index([tenantId, reviewStatus])
+  @@index([assetId])
+  @@index([sourceType, sourceRef])
+  @@index([tenantId, sourceEntityType, sourceEntityId])
+  @@index([observerAgent])
+}
+
+model VisualObservationAuditEvent {
+  id                         String   @id @default(uuid())
+  tenantId                   String   @default("default")
+  assetId                    String?
+  observationId              String?
+  actorId                    String
+  agentId                    String?
+  purpose                    String
+  eventType                  String
+  decision                   String
+  reasonCodes                Json
+  safeMetadata               Json?
+  evidenceHash               String?
+  traceId                    String
+  contractVersion            String?
+  promptVersion              String?
+  providerCalled             Boolean  @default(false)
+  providerWrite              Boolean  @default(false)
+  aiProviderCalled           Boolean  @default(false)
+  aiProviderWrite            Boolean  @default(false)
+  sent                       Boolean  @default(false)
+  published                  Boolean  @default(false)
+  outreach                   Boolean  @default(false)
+  externalExecutionAllowed   Boolean  @default(false)
+  downstreamActionOccurred   Boolean  @default(false)
+  downstreamBusinessMutation Boolean @default(false)
+  externalExecution          Boolean @default(false)
+  storageWrite               Boolean  @default(false)
+  storageProvider            String?
+  scannerCalled              Boolean  @default(false)
+  scannerVerdict             Boolean  @default(false)
+  decoderCalled              Boolean  @default(false)
+  createdAt                  DateTime @default(now())
+
+  asset       VisualAsset?       @relation(fields: [assetId], references: [id], onDelete: SetNull)
+  observation VisualObservation? @relation(fields: [observationId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId, createdAt])
+  @@index([assetId])
+  @@index([observationId])
+  @@index([eventType])
+  @@index([traceId])
+}
+
 model RevenuePipelineEvent {
   id             String   @id @default(uuid())
   tenantId       String   @default("default")
@@ -311,6 +584,287 @@ model RevenueCommunicationEvent {
   @@index([approvalStatus])
   @@index([providerCalled])
   @@index([createdAt])
+}
+
+model RevenueAttributionChain {
+  id                     String   @id @default(uuid())
+  tenantId               String   @default("default")
+  chainKey               String
+  sourceType             String
+  sourceDetail           String
+  campaignId             String?
+  referralCode           String?
+  landingPage            String?
+  leadId                 String?
+  propertyCandidateId    String?
+  propertyOpportunityId  String?
+  appointmentReference   String?
+  contractReference      String?
+  closingReference       String?
+  financeEntryId         String?
+  businessOutcomeEventId String?
+  attributionStatus      String   @default("active")
+  dataQualityStatus      String   @default("PARTIAL")
+  evidenceSource         String
+  createdBy              String
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  @@unique([tenantId, chainKey])
+  @@index([tenantId])
+  @@index([sourceType])
+  @@index([sourceDetail])
+  @@index([campaignId])
+  @@index([referralCode])
+  @@index([landingPage])
+  @@index([leadId])
+  @@index([propertyCandidateId])
+  @@index([propertyOpportunityId])
+  @@index([appointmentReference])
+  @@index([contractReference])
+  @@index([closingReference])
+  @@index([financeEntryId])
+  @@index([businessOutcomeEventId])
+  @@index([attributionStatus])
+  @@index([dataQualityStatus])
+  @@index([createdAt])
+}
+
+model SourceSpend {
+  id                String   @id @default(uuid())
+  tenantId          String   @default("default")
+  idempotencyKey    String
+  source            String
+  campaign          String?
+  periodStart       DateTime
+  periodEnd         DateTime
+  spendCents        Int      @default(0)
+  creditsConsumed   Int      @default(0)
+  providerFeesCents Int      @default(0)
+  mailSpendCents    Int      @default(0)
+  adSpendCents      Int      @default(0)
+  otherSpendCents   Int      @default(0)
+  currency          String   @default("USD")
+  recordedBy        String
+  evidenceSource    String
+  verificationStatus String  @default("PARTIAL")
+  businessContext   String   @default("real_business")
+  isTestRecord      Boolean  @default(false)
+  correctedById     String?
+  correctionReason  String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([tenantId, idempotencyKey])
+  @@unique([tenantId, source, campaign, periodStart, periodEnd, evidenceSource])
+  @@index([tenantId])
+  @@index([source])
+  @@index([campaign])
+  @@index([periodStart, periodEnd])
+  @@index([verificationStatus])
+  @@index([businessContext])
+  @@index([isTestRecord])
+  @@index([createdAt])
+}
+
+model LeadOutcomeEvent {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  idempotencyKey        String
+  leadId                String
+  propertyCandidateId   String?
+  propertyOpportunityId String?
+  outcome               String
+  occurredAt            DateTime
+  actorId               String
+  evidence              Json
+  sourceType            String
+  sourceDetail          String
+  campaignId            String?
+  referralCode          String?
+  landingPage           String?
+  attributionChainKey   String
+  businessOutcomeEventId String?
+  verificationStatus    String   @default("PARTIAL")
+  businessContext       String   @default("real_business")
+  isTestRecord          Boolean  @default(false)
+  correctedById         String?
+  correctionReason      String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, idempotencyKey])
+  @@index([tenantId])
+  @@index([leadId])
+  @@index([propertyCandidateId])
+  @@index([propertyOpportunityId])
+  @@index([outcome])
+  @@index([occurredAt])
+  @@index([sourceType])
+  @@index([sourceDetail])
+  @@index([campaignId])
+  @@index([referralCode])
+  @@index([landingPage])
+  @@index([attributionChainKey])
+  @@index([businessOutcomeEventId])
+  @@index([verificationStatus])
+  @@index([businessContext])
+  @@index([isTestRecord])
+}
+
+model AppointmentOutcomeEvent {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  idempotencyKey        String
+  leadId                String
+  propertyOpportunityId String?
+  appointmentReference  String
+  scheduledAt           DateTime?
+  completedAt           DateTime?
+  outcome               String
+  actorId               String
+  evidence              Json
+  sourceType            String
+  sourceDetail          String
+  campaignId            String?
+  referralCode          String?
+  landingPage           String?
+  attributionChainKey   String
+  businessOutcomeEventId String?
+  verificationStatus    String   @default("PARTIAL")
+  businessContext       String   @default("real_business")
+  isTestRecord          Boolean  @default(false)
+  correctedById         String?
+  correctionReason      String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, idempotencyKey])
+  @@unique([tenantId, appointmentReference, outcome])
+  @@index([tenantId])
+  @@index([leadId])
+  @@index([propertyOpportunityId])
+  @@index([appointmentReference])
+  @@index([scheduledAt])
+  @@index([completedAt])
+  @@index([outcome])
+  @@index([sourceType])
+  @@index([sourceDetail])
+  @@index([campaignId])
+  @@index([referralCode])
+  @@index([landingPage])
+  @@index([attributionChainKey])
+  @@index([businessOutcomeEventId])
+  @@index([verificationStatus])
+  @@index([businessContext])
+  @@index([isTestRecord])
+}
+
+model ContractOutcomeEvent {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  idempotencyKey        String
+  leadId                String
+  propertyOpportunityId String?
+  contractReference     String
+  outcome               String
+  signedAt              DateTime?
+  expectedValueCents    Int?
+  actorId               String
+  evidence              Json
+  sourceType            String
+  sourceDetail          String
+  campaignId            String?
+  referralCode          String?
+  landingPage           String?
+  attributionChainKey   String
+  businessOutcomeEventId String?
+  verificationStatus    String   @default("PARTIAL")
+  businessContext       String   @default("real_business")
+  isTestRecord          Boolean  @default(false)
+  correctedById         String?
+  correctionReason      String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, idempotencyKey])
+  @@unique([tenantId, contractReference, outcome])
+  @@index([tenantId])
+  @@index([leadId])
+  @@index([propertyOpportunityId])
+  @@index([contractReference])
+  @@index([outcome])
+  @@index([signedAt])
+  @@index([sourceType])
+  @@index([sourceDetail])
+  @@index([campaignId])
+  @@index([referralCode])
+  @@index([landingPage])
+  @@index([attributionChainKey])
+  @@index([businessOutcomeEventId])
+  @@index([verificationStatus])
+  @@index([businessContext])
+  @@index([isTestRecord])
+}
+
+model ClosedRevenueOutcomeEvent {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  idempotencyKey        String
+  leadId                String?
+  propertyOpportunityId String?
+  contractReference     String?
+  closingReference      String
+  revenueType           String
+  grossRevenueCents     Int
+  directCostCents       Int      @default(0)
+  netRevenueCents       Int
+  closedAt              DateTime
+  verificationSource    String
+  financeEntryId        String?
+  businessOutcomeEventId String?
+  sourceType            String
+  sourceDetail          String
+  campaignId            String?
+  referralCode          String?
+  landingPage           String?
+  attributionChainKey   String
+  verificationStatus    String   @default("VERIFIED")
+  businessContext       String   @default("real_business")
+  isTestRecord          Boolean  @default(false)
+  correctedById         String?
+  correctionReason      String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  lead Lead? @relation(fields: [leadId], references: [id], onDelete: SetNull)
+
+  @@unique([tenantId, idempotencyKey])
+  @@unique([tenantId, closingReference, revenueType])
+  @@index([tenantId])
+  @@index([leadId])
+  @@index([propertyOpportunityId])
+  @@index([contractReference])
+  @@index([closingReference])
+  @@index([revenueType])
+  @@index([closedAt])
+  @@index([financeEntryId])
+  @@index([businessOutcomeEventId])
+  @@index([sourceType])
+  @@index([sourceDetail])
+  @@index([campaignId])
+  @@index([referralCode])
+  @@index([landingPage])
+  @@index([attributionChainKey])
+  @@index([verificationStatus])
+  @@index([businessContext])
+  @@index([isTestRecord])
 }
 
 model RevenueDecisionLog {
@@ -960,6 +1514,19 @@ model AiCompanyWorkAssignment {
   requestedOutputs     Json
   status               String   @default("pending_internal_work")
   blocker              String?
+  runtimeState         String   @default("queued")
+  runtimeLane          String?
+  runtimeCheckpoint    String   @default("intake_pending")
+  runtimeVersion       String   @default("autonomous-operations/1.1.0")
+  attemptCount         Int      @default(0)
+  maxAttempts          Int      @default(3)
+  leaseOwner           String?
+  leasedAt             DateTime?
+  leaseExpiresAt       DateTime?
+  nextAttemptAt        DateTime?
+  lastHeartbeatAt      DateTime?
+  lastErrorCode        String?
+  completedAt          DateTime?
   approvalRequired     Boolean  @default(true)
   providerCalled       Boolean  @default(false)
   sent                 Boolean  @default(false)
@@ -976,6 +1543,10 @@ model AiCompanyWorkAssignment {
   @@index([department])
   @@index([status])
   @@index([approvalRequired])
+  @@index([tenantId, runtimeState, nextAttemptAt])
+  @@index([tenantId, leaseExpiresAt])
+  @@index([runtimeLane])
+  @@index([runtimeCheckpoint])
 }
 
 model AiCompanyDraftQueueItem {
@@ -1110,6 +1681,175 @@ model AiDepartmentMemoryEvent {
   @@index([providerCalled])
   @@index([liveExecutionAllowed])
   @@index([createdAt])
+}
+
+model AutonomyPolicy {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  policyKey             String
+  lane                  String
+  subjectType           String
+  subjectKey            String
+  actionKey             String
+  maxAutonomyLevel      Int      @default(0)
+  effect                String   @default("deny")
+  approvalRequired      Boolean  @default(true)
+  quotaPerDay           Int?
+  killSwitchEnabled     Boolean  @default(false)
+  allowedActions        Json     @default("[]")
+  blockedActions        Json     @default("[]")
+  requiredEvidence      Json     @default("[]")
+  escalationRules       Json     @default("[]")
+  safetyNotes           String
+  providerCalled        Boolean  @default(false)
+  sent                  Boolean  @default(false)
+  published             Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@unique([tenantId, policyKey])
+  @@index([tenantId])
+  @@index([lane])
+  @@index([subjectType, subjectKey])
+  @@index([actionKey])
+  @@index([maxAutonomyLevel])
+  @@index([effect])
+  @@index([killSwitchEnabled])
+}
+
+model ConnectorExecutionAttempt {
+  id                   String   @id @default(uuid())
+  tenantId             String   @default("default")
+  traceId              String
+  connectorId          String
+  capabilityKey        String
+  actionKey            String
+  actorId              String
+  requestingModule     String
+  policyDecision       String
+  reason               String
+  normalizedResult     Json?
+  redactionApplied     Boolean  @default(true)
+  auditEventId         String?
+  outcomeEventId       String?
+  providerCalled       Boolean  @default(false)
+  providerWrite        Boolean  @default(false)
+  sent                 Boolean  @default(false)
+  published            Boolean  @default(false)
+  liveExecutionAllowed Boolean  @default(false)
+  createdAt            DateTime @default(now())
+
+  @@unique([tenantId, traceId])
+  @@index([tenantId])
+  @@index([connectorId])
+  @@index([capabilityKey])
+  @@index([actionKey])
+  @@index([policyDecision])
+  @@index([providerCalled])
+  @@index([liveExecutionAllowed])
+  @@index([createdAt])
+}
+
+model BusinessOutcomeEvent {
+  id                    String   @id @default(uuid())
+  tenantId              String   @default("default")
+  outcomeKey            String
+  sourceType            String
+  sourceId              String?
+  leadId                String?
+  taskId                String?
+  runId                 String?
+  actionKey             String
+  expectedOutcome       String
+  actualOutcome         String   @default("pending")
+  kpiAffected           Json     @default("[]")
+  revenueImpactEstimate String?
+  confidence            Int      @default(70)
+  nextRecommendation    String
+  safeMetadata          Json?
+  providerCalled        Boolean  @default(false)
+  sent                  Boolean  @default(false)
+  published             Boolean  @default(false)
+  liveExecutionAllowed  Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@unique([tenantId, outcomeKey])
+  @@index([tenantId])
+  @@index([sourceType])
+  @@index([sourceId])
+  @@index([leadId])
+  @@index([taskId])
+  @@index([runId])
+  @@index([actionKey])
+  @@index([actualOutcome])
+  @@index([providerCalled])
+  @@index([liveExecutionAllowed])
+  @@index([createdAt])
+}
+
+model AutonomousRunRecord {
+  id                   String   @id @default(uuid())
+  tenantId             String   @default("default")
+  runKey               String
+  businessDate         String
+  pipelineVersion      String
+  lane                 String
+  triggeredBy          String
+  state                String   @default("started")
+  phaseSummary         Json     @default("[]")
+  workCreated          Int      @default(0)
+  workExecuted         Int      @default(0)
+  workSkipped          Int      @default(0)
+  exceptions           Json     @default("[]")
+  safetyFlags          Json
+  healthCertified      Boolean  @default(false)
+  providerCalled       Boolean  @default(false)
+  sent                 Boolean  @default(false)
+  published            Boolean  @default(false)
+  liveExecutionAllowed Boolean  @default(false)
+  startedAt            DateTime @default(now())
+  completedAt          DateTime?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@unique([tenantId, runKey])
+  @@index([tenantId])
+  @@index([businessDate])
+  @@index([pipelineVersion])
+  @@index([lane])
+  @@index([triggeredBy])
+  @@index([state])
+  @@index([healthCertified])
+  @@index([providerCalled])
+  @@index([liveExecutionAllowed])
+  @@index([createdAt])
+}
+
+model DepartmentSLA {
+  id                   String   @id @default(uuid())
+  tenantId             String   @default("default")
+  department           String
+  owner                String
+  lane                 String
+  maxAutonomyLevel     Int      @default(1)
+  staleAfterHours      Int      @default(24)
+  expectedDailyOutputs Json     @default("[]")
+  escalationTarget     String
+  blockingConditions   Json     @default("[]")
+  safetyNotes          String
+  providerCalled       Boolean  @default(false)
+  liveExecutionAllowed Boolean  @default(false)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@unique([tenantId, department])
+  @@index([tenantId])
+  @@index([department])
+  @@index([owner])
+  @@index([lane])
+  @@index([maxAutonomyLevel])
 }
 
 model AiDepartmentIntelligenceSnapshot {
@@ -2206,4 +2946,47 @@ model ProfessionalCaseEvent {
   @@unique([tenantId, idempotencyKey])
   @@index([tenantId, caseId, createdAt])
   @@index([tenantId, eventType, createdAt])
+}
+
+model SecurityRateBucket {
+  id              String    @id @default(uuid())
+  tenantId        String
+  purpose         String
+  identifierHash  String
+  count           Int       @default(0)
+  windowStartedAt DateTime
+  blockedUntil    DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@unique([tenantId, purpose, identifierHash])
+  @@index([purpose, blockedUntil])
+  @@index([updatedAt])
+}
+
+model SecurityEvent {
+  id             String   @id @default(uuid())
+  tenantId       String
+  eventType      String
+  outcome        String
+  identifierHash String?
+  requestId      String?
+  reasonCodes    Json
+  createdAt      DateTime @default(now())
+
+  @@index([tenantId, eventType, createdAt])
+  @@index([createdAt])
+}
+
+model WebhookReceipt {
+  id            String    @id @default(uuid())
+  tenantId      String
+  provider      String
+  messageIdHash String    @unique
+  status        String    @default("received")
+  receivedAt    DateTime  @default(now())
+  processedAt   DateTime?
+
+  @@index([tenantId, provider, receivedAt])
+  @@index([receivedAt])
 }
