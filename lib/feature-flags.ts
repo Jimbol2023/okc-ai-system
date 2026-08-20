@@ -7,6 +7,9 @@ export type FeatureFlagKey =
   | "connector_marketing"
   | "connector_communication"
   | "connector_property_data"
+  | "virtual_dfd_connectors"
+  | "google_geocoding_runtime"
+  | "dealmachine_property_search_runtime"
   | "market_intelligence"
   | "demand_discovery"
   | "personal_brand"
@@ -169,6 +172,27 @@ export const phase2FeatureFlags: FeatureFlag[] = [
     enabled: false,
     category: "connector",
     description: "Enables property data connector readiness beyond manual/public source review.",
+    requiresAdminApproval: true,
+  },
+  {
+    key: "virtual_dfd_connectors",
+    enabled: false,
+    category: "connector",
+    description: "Gates the Virtual DFD PropertyCandidate connector foundation. Disabled until Preview certification, provider scopes, and hard cost budgets are approved.",
+    requiresAdminApproval: true,
+  },
+  {
+    key: "google_geocoding_runtime",
+    enabled: false,
+    category: "connector",
+    description: "Gates bounded Google Geocoding read-only address normalization through UEIP. Disabled by default and never authorizes scraping or property-condition inference.",
+    requiresAdminApproval: true,
+  },
+  {
+    key: "dealmachine_property_search_runtime",
+    enabled: false,
+    category: "connector",
+    description: "Gates bounded DealMachine property search/count reads through UEIP. Disabled by default and never authorizes skip tracing, mail, SMS, email, or seller outreach.",
     requiresAdminApproval: true,
   },
   {

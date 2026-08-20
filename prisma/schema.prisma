@@ -320,6 +320,71 @@ model PropertyOpportunity {
   @@index([createdAt])
 }
 
+model PropertyCandidate {
+  id                       String   @id @default(uuid())
+  tenantId                 String   @default("default")
+  source                   String
+  sourceDetail             String?
+  sourceRecordId           String?
+  propertyAddress          String
+  normalizedAddress        String
+  city                     String?
+  state                    String?
+  zipCode                  String?
+  county                   String?
+  parcelId                 String?
+  latitude                 Float?
+  longitude                Float?
+  coordinateSource         String?
+  ownerName                String?
+  mailingAddress           String?
+  sourceEvidence           Json
+  observations             Json
+  distressIndicators       Json
+  confidence               Int      @default(50)
+  duplicateKey             String
+  duplicateStatus          String   @default("unique")
+  providerName             String?
+  providerRequestId        String?
+  retrievedAt              DateTime?
+  costCents                Int      @default(0)
+  creditsUsed              Int      @default(0)
+  reviewStatus             String   @default("new")
+  createdBy                String?
+  providerCalled           Boolean  @default(false)
+  providerWrite            Boolean  @default(false)
+  sent                     Boolean  @default(false)
+  published                Boolean  @default(false)
+  outreach                 Boolean  @default(false)
+  crmMutated               Boolean  @default(false)
+  skipTracePerformed       Boolean  @default(false)
+  directMailSent           Boolean  @default(false)
+  externalExecutionAllowed Boolean  @default(false)
+  liveExecutionAllowed     Boolean  @default(false)
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([tenantId, duplicateKey])
+  @@index([tenantId, reviewStatus])
+  @@index([tenantId, duplicateStatus])
+  @@index([source])
+  @@index([normalizedAddress])
+  @@index([parcelId])
+  @@index([county])
+  @@index([providerCalled])
+  @@index([providerWrite])
+  @@index([sent])
+  @@index([published])
+  @@index([outreach])
+  @@index([crmMutated])
+  @@index([skipTracePerformed])
+  @@index([directMailSent])
+  @@index([externalExecutionAllowed])
+  @@index([liveExecutionAllowed])
+  @@index([createdAt])
+}
+
 model PropertyOpportunitySavedFilter {
   id                  String   @id @default(uuid())
   tenantId            String   @default("default")
