@@ -224,29 +224,6 @@ function createLeadId() {
   return `lead-${Date.now()}`;
 }
 
-function normalizePhone(phone: string) {
-  return phone.replace(/\D/g, "");
-}
-
-function normalizeAddress(address: string) {
-  return address.trim().toLowerCase();
-}
-
-function isDuplicateLead(existingLeads: StoredLead[], lead: { propertyAddress: string; phone: string }) {
-  const normalizedAddress = normalizeAddress(lead.propertyAddress);
-  const normalizedPhone = normalizePhone(lead.phone);
-
-  if (!normalizedAddress || !normalizedPhone) {
-    return false;
-  }
-
-  return existingLeads.some(
-    (existingLead) =>
-      normalizeAddress(existingLead.propertyAddress) === normalizedAddress &&
-      normalizePhone(existingLead.phone) === normalizedPhone
-  );
-}
-
 export function createStoredLead({
   firstName,
   lastName,

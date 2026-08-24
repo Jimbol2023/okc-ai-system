@@ -17,7 +17,7 @@ function storedLead(id: string, address: string): StoredLead {
   return {
     id,
     timestamp: "2026-08-04T12:00:00.000Z",
-    firstName: "Synthetic",
+    firstName: "Operator",
     lastName: id,
     email: `${id}@example.invalid`,
     phone: "4055550100",
@@ -25,12 +25,13 @@ function storedLead(id: string, address: string): StoredLead {
     city: "Oklahoma City",
     state: "OK",
     zipCode: "73102",
-    ownerName: "Synthetic Owner",
+    ownerName: "Recorded Owner",
     mailingAddress: address,
     county: "Oklahoma",
     parcelId: `parcel-${id}`,
-    situationDetails: "Synthetic isolation fixture",
-    source: "synthetic_test",
+    situationDetails: "Tenant isolation fixture with provenance-complete operational shape.",
+    source: "manual_intake",
+    sourceDetail: `manual operator capture | ${id}`,
     status: "new",
     notes: [],
     followUps: [],
@@ -48,7 +49,7 @@ function storedLead(id: string, address: string): StoredLead {
     opportunityScore: "Low",
     score: 10,
     priority: "Low",
-    scoreBreakdown: "synthetic",
+    scoreBreakdown: "tenant isolation test fixture",
   };
 }
 

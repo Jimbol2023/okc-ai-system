@@ -1,5 +1,7 @@
 export const operationalEvidenceStates = ["real", "synthetic", "demo", "test", "certification"] as const;
 export const operationalVerificationStates = ["verified", "unverified", "rejected"] as const;
+export const operationalEvidenceEffects = ["lead_persistence", "lead_mutation", "revenue_materialization", "automation_inventory", "property_opportunity", "outreach"] as const;
+export type OperationalEvidenceEffect = (typeof operationalEvidenceEffects)[number];
 
 export type OperationalEvidence = {
   tenantId: string | null | undefined;
@@ -27,6 +29,18 @@ export type OperationalEvidenceDecision = {
   externalExecutionAllowed: false;
   liveExecutionAllowed: false;
 };
+
+export class OperationalEvidenceBlockedError extends Error {
+  readonly effect: OperationalEvidenceEffect;
+  readonly decision: OperationalEvidenceDecision;
+
+  constructor(effect: OperationalEvidenceEffect, decision: OperationalEvidenceDecision) {
+    super(`operational_evidence_blocked:${effect}:${decision.reasonCodes.join(",")}`);
+    this.name = "OperationalEvidenceBlockedError";
+    this.effect = effect;
+    this.decision = decision;
+  }
+}
 
 const prohibitedSource = /jsonplaceholder(?:\.typicode)?\.com|jsonplaceholder|ai[-_\s]?generated|lead[-_\s]?generator|faker|fixture|placeholder|mock[-_\s]?provider|demo[-_\s]?provider/i;
 const prohibitedIdentity = /\b(leanne graham|ervin howell|clementine bauch|patricia leblanc|chelsey dietrich|mrs\. dennis schulist|kurtis weissnat|nicholas runolfsdottir|glenna reichert|clementina dubuque|kulas light|victor plains|douglas extension|hoeger mall|skiles walk|norberto crossing|rex trail|dayna park)\b/i;
@@ -70,6 +84,34 @@ export function evaluateOperationalEvidence(input: OperationalEvidence): Operati
     crmMutated: false,
     externalExecutionAllowed: false,
     liveExecutionAllowed: false,
+  };
+}
+
+export function assertOperationalEvidenceAllowed(input: OperationalEvidence, effect: OperationalEvidenceEffect) {
+  const decision = evaluateOperationalEvidence(input);
+  if (!decision.allowed) throw new OperationalEvidenceBlockedError(effect, decision);
+  return decision;
+}
+
+export function operationalEvidenceFromStoredLead(tenantId: string, lead: {
+  id: string;
+  timestamp: Date | string;
+  source: string;
+  sourceDetail?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+  ownerName?: string | null;
+  propertyAddress?: string | null;
+}): OperationalEvidence {
+  return {
+    tenantId,
+    source: lead.source,
+    sourceType: lead.source,
+    sourceReference: lead.sourceDetail?.trim() || `internal_lead:${lead.id}`,
+    observedAt: lead.timestamp,
+    evidenceState: "real",
+    verificationState: "unverified",
+    identityValues: [lead.id, lead.firstName, lead.lastName, lead.ownerName, lead.propertyAddress, lead.sourceDetail],
   };
 }
 

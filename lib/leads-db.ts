@@ -5,6 +5,7 @@ import {
   storedLeadToDbData
 } from "@/lib/lead-record";
 import { prisma } from "@/lib/prisma";
+import { assertOperationalEvidenceAllowed, operationalEvidenceFromLead, operationalEvidenceFromStoredLead } from "@/lib/operational-evidence-guard";
 import { logRevenueAuditEvent, syncLeadRevenueSpine } from "@/lib/revenue-spine";
 import type { ImportedLeadDraft } from "@/lib/list-importer";
 import type { LeadStatus, StoredLead } from "@/lib/leads-storage";
@@ -101,6 +102,8 @@ export async function getDbLeadById(context: TenantIdentity, leadId: string) {
 
 export async function createDbLead(context: TenantIdentity, storedLead: StoredLead) {
   const tenantId = requireTenantId(context.tenantId, "lead_create");
+  const evidence = operationalEvidenceFromStoredLead(tenantId, storedLead);
+  assertOperationalEvidenceAllowed(evidence, "lead_persistence");
   const existingLead = await findExistingLead({ tenantId }, storedLead);
 
   if (existingLead) {
@@ -143,13 +146,25 @@ export async function createDbLead(context: TenantIdentity, storedLead: StoredLe
         followUpCount: leadWithAutomation.followUpCount ?? 0,
         lastFollowUpMessage: leadWithAutomation.lastFollowUpMessage ?? null,
         automationStatus: leadWithAutomation.automationStatus ?? "scheduled",
-        isHot: leadWithAutomation.isHot ?? false
+        isHot: leadWithAutomation.isHot ?? false,
+        revenueLeadSources: {
+          create: {
+            tenantId,
+            source: storedLead.source,
+            sourceType: storedLead.source,
+            sourceDetail: String(evidence.sourceReference),
+            sourceRecordId: storedLead.id,
+            confidence: 60,
+            verified: false,
+            importedBy: "lead_create",
+          }
+        }
       }
     });
 
     const storedCreatedLead = dbLeadToStoredLead(createdLead);
 
-    await leadRevenueSync({
+  await leadRevenueSync({
       tenantId,
       lead: storedCreatedLead,
       action: "lead_created",
@@ -210,6 +225,7 @@ export async function createManyDbLeads(context: TenantIdentity, leads: StoredLe
 
 export async function updateDbLead(context: TenantIdentity, storedLead: StoredLead) {
   const tenantId = requireTenantId(context.tenantId, "lead_update");
+  assertOperationalEvidenceAllowed(operationalEvidenceFromStoredLead(tenantId, storedLead), "lead_mutation");
   const ownedLead = await leadDb.lead.findFirst({ where: { id: storedLead.id, tenantId } });
   if (!ownedLead) throw new Error("tenant_scoped_lead_not_found");
   const dbData = storedLeadToDbData(storedLead);
@@ -272,9 +288,11 @@ export async function updateDbLeadStatus(context: TenantIdentity, leadId: string
     where: {
       id: leadId,
       tenantId,
-    }
+    },
+    include: { revenueLeadSources: { orderBy: [{ createdAt: "desc" }, { id: "desc" }], take: 1 } },
   });
   if (!currentLead) throw new Error("tenant_scoped_lead_not_found");
+  assertOperationalEvidenceAllowed(operationalEvidenceFromLead(currentLead), "lead_mutation");
   const updatedLead = await leadDb.lead.update({
     where: {
       id_tenantId: { id: leadId, tenantId }
