@@ -15,4 +15,12 @@ describe("build wrapper platform selection", () => {
   it("allows explicit Webpack override without changing Linux defaults", () => {
     assert.ok(getNextBuildArgs("linux", { NEXT_BUILD_FORCE_WEBPACK: "true" }).includes("--webpack"));
   });
+
+  it("uses Webpack for Vercel builds to avoid Turbopack whole-project Prisma tracing", () => {
+    assert.ok(getNextBuildArgs("linux", { VERCEL: "1" }).includes("--webpack"));
+  });
+
+  it("allows an explicit Turbopack override for controlled diagnostics", () => {
+    assert.ok(!getNextBuildArgs("linux", { VERCEL: "1", NEXT_BUILD_FORCE_TURBOPACK: "true" }).includes("--webpack"));
+  });
 });
