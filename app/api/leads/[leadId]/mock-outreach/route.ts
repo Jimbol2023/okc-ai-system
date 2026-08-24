@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 
-import { getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
+import { getAuthenticatedRequestContext, getUnauthorizedApiResponse, isAuthenticatedRequest } from "@/lib/auth";
 import { dbLeadToStoredLead } from "@/lib/lead-record";
 import { simulateMockOutreach, type MockOutreachHistoryItem } from "@/lib/mock-outreach";
 import { prisma } from "@/lib/prisma";
+import { evaluateOperationalEvidence, operationalEvidenceFromLead } from "@/lib/operational-evidence-guard";
 
 type RouteContext = {
   params: Promise<{
@@ -38,10 +39,11 @@ export async function POST(request: Request, context: RouteContext) {
   }
 
   const { leadId } = await context.params;
-  const dbLead = await prisma.lead.findUnique({
-    where: {
-      id: leadId,
-    },
+  const actor = await getAuthenticatedRequestContext(request);
+  if (!actor) return getUnauthorizedApiResponse();
+  const dbLead = await prisma.lead.findFirst({
+    where: { id: leadId, tenantId: actor.tenantId },
+    include: { revenueLeadSources: { orderBy: [{ createdAt: "desc" }, { id: "desc" }], take: 1 } },
   });
 
   if (!dbLead) {
@@ -51,6 +53,24 @@ export async function POST(request: Request, context: RouteContext) {
         error: "Lead not found.",
       },
       { status: 404 },
+    );
+  }
+
+  const evidenceDecision = evaluateOperationalEvidence(operationalEvidenceFromLead(dbLead));
+  if (!evidenceDecision.allowed) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: "Operational evidence rejected.",
+        reasonCodes: evidenceDecision.reasonCodes,
+        sent: false,
+        providerCalled: false,
+        providerWrite: false,
+        outreach: false,
+        crmMutated: false,
+        liveExecutionAllowed: false,
+      },
+      { status: 422 },
     );
   }
 

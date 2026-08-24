@@ -1,8 +1,7 @@
 "use client";
 
-import { createStoredLead, deleteLeadFromLocalStorage, replaceLeadsInLocalStorage, type StoredLead, upsertLeadInLocalStorage } from "@/lib/leads-storage";
+import { deleteLeadFromLocalStorage, replaceLeadsInLocalStorage, type StoredLead, upsertLeadInLocalStorage } from "@/lib/leads-storage";
 import { importedLeadToStoredLead } from "@/lib/lead-record";
-import type { GeneratedLeadInput } from "@/lib/lead-generator";
 import {
   getImportedLeadImportBlockers,
   sanitizeImportedLeadPhone,
@@ -71,25 +70,6 @@ export async function createStoredLeadRecord(lead: StoredLead) {
   upsertLeadInLocalStorage(result.lead);
 
   return result;
-}
-
-export async function createGeneratedLeads(generatedLeads: GeneratedLeadInput[]) {
-  const payload = generatedLeads.map((lead) =>
-    createStoredLead({
-      firstName: lead.firstName,
-      lastName: lead.lastName,
-      email: "",
-      phone: lead.phone,
-      propertyAddress: lead.propertyAddress,
-      city: lead.city,
-      state: lead.state,
-      zipCode: lead.zipCode,
-      situationDetails: lead.situationDetails,
-      source: lead.source
-    })
-  );
-
-  return createLeadBatch(payload);
 }
 
 export async function createImportedLeads(importedLeads: ImportedLeadDraft[]) {

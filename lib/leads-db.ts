@@ -1,13 +1,11 @@
 import {
   dbLeadToStoredLead,
-  generatedLeadToStoredLead,
   importedLeadToStoredLead,
   leadIntakeToStoredLead,
   storedLeadToDbData
 } from "@/lib/lead-record";
 import { prisma } from "@/lib/prisma";
 import { logRevenueAuditEvent, syncLeadRevenueSpine } from "@/lib/revenue-spine";
-import type { GeneratedLeadInput } from "@/lib/lead-generator";
 import type { ImportedLeadDraft } from "@/lib/list-importer";
 import type { LeadStatus, StoredLead } from "@/lib/leads-storage";
 import { requireTenantId, type TenantIdentity } from "@/lib/tenant-context";
@@ -192,10 +190,6 @@ export async function createDbLead(context: TenantIdentity, storedLead: StoredLe
 
 export async function createDbLeadFromIntake(context: TenantIdentity, leadIntake: LeadIntakeInput) {
   return createDbLead(context, leadIntakeToStoredLead(leadIntake));
-}
-
-export async function createDbLeadFromGenerated(context: TenantIdentity, lead: GeneratedLeadInput) {
-  return createDbLead(context, generatedLeadToStoredLead(lead));
 }
 
 export async function createDbLeadFromImport(context: TenantIdentity, lead: ImportedLeadDraft) {

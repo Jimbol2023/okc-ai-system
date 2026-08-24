@@ -1,7 +1,6 @@
 import type { Lead as PrismaLead } from "@/generated/prisma";
 
 import type { DistressFlags } from "@/lib/distress-flags";
-import type { GeneratedLeadInput } from "@/lib/lead-generator";
 import type { ImportedLeadDraft } from "@/lib/list-importer";
 import type { LeadNote, StoredLead } from "@/lib/leads-storage";
 import type { LeadIntakeInput } from "@/lib/validations/lead";
@@ -200,42 +199,6 @@ export function leadIntakeToStoredLead(lead: LeadIntakeInput): StoredLead {
     referralCampaign: lead.referralCampaign || null,
     referralSource: lead.referralSource || null,
     referralLandingPage: lead.referralLandingPage || null
-  };
-}
-
-export function generatedLeadToStoredLead(lead: GeneratedLeadInput): StoredLead {
-  const [firstName = "", ...rest] = `${lead.firstName} ${lead.lastName}`.trim().split(" ");
-
-  return {
-    id: createLeadId(),
-    timestamp: new Date().toISOString(),
-    firstName,
-    lastName: rest.join(" "),
-    email: "",
-    phone: lead.phone,
-    propertyAddress: lead.propertyAddress,
-    city: lead.city,
-    state: lead.state,
-    zipCode: lead.zipCode,
-    ownerName: "",
-    mailingAddress: "",
-    county: "",
-    parcelId: "",
-    situationDetails: lead.situationDetails,
-    source: lead.source,
-    status: "new",
-    notes: [],
-    followUps: [],
-    analyzer: {
-      arv: "",
-      estimatedRepairs: "",
-      desiredProfit: "20000"
-    },
-    distressFlags: emptyDistressFlags(),
-    opportunityScore: "Low",
-    score: 0,
-    priority: "Low",
-    scoreBreakdown: ""
   };
 }
 
