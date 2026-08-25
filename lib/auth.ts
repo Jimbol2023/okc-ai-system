@@ -20,6 +20,12 @@ function getAuthConfig() {
   };
 }
 
+function getConfiguredAdminTenantId() {
+  return process.env.ADMIN_TENANT_ID
+    ? requireTenantId(process.env.ADMIN_TENANT_ID, "admin_session_configuration")
+    : null;
+}
+
 export async function createSessionToken(email: string, options: { tenantId?: string; actorId?: string } = {}) {
   return createSignedSessionToken(email, options);
 }
@@ -33,11 +39,15 @@ export async function verifySessionToken(token: string | undefined) {
     const payload = await verifySessionTokenClaims(token);
     if (!payload) return null;
 
-    if (await isSessionRevoked(payload.tenantId, payload.sessionId)) return null;
+    const tenantId = requireTenantId(payload.tenantId, "session_payload");
+    const configuredTenantId = getConfiguredAdminTenantId();
+    if (configuredTenantId && tenantId !== configuredTenantId) return null;
+
+    if (await isSessionRevoked(tenantId, payload.sessionId)) return null;
 
     return {
       ...payload,
-      tenantId: requireTenantId(payload.tenantId, "session_payload"),
+      tenantId,
       actorId: payload.actorId || payload.email,
       sessionVersion: payload.sessionVersion ?? 1,
     };
