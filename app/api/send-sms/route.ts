@@ -10,6 +10,7 @@ import type { LiveTestAllowlistMode } from "@/lib/live-test-allowlist-policy";
 import { executeControlledLiveSms } from "@/lib/phase4-production";
 import type { ProviderMode } from "@/lib/provider-boundary";
 import { prisma } from "@/lib/prisma";
+import { evaluateOperationalEvidence, operationalEvidenceFromLead } from "@/lib/operational-evidence-guard";
 
 export const runtime = "nodejs";
 
@@ -134,14 +135,41 @@ export async function POST(request: Request) {
         },
         select: {
           id: true,
+          tenantId: true,
+          name: true,
+          propertyAddress: true,
+          source: true,
+          createdAt: true,
           approvalStatus: true,
           doNotContact: true,
           optOutReason: true,
+          revenueLeadSources: {
+            orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+            take: 1,
+          },
         },
       });
 
       if (!lead) {
         return invalidPayload("Lead was not found for controlled live SMS.");
+      }
+
+      const evidenceDecision = evaluateOperationalEvidence(operationalEvidenceFromLead(lead));
+      if (!evidenceDecision.allowed) {
+        return NextResponse.json(
+          {
+            ok: false,
+            success: false,
+            sent: false,
+            providerCalled: false,
+            providerWrite: false,
+            outreach: false,
+            liveExecutionAllowed: false,
+            reason: "operational_evidence_rejected",
+            reasonCodes: evidenceDecision.reasonCodes,
+          },
+          { status: 422 },
+        );
       }
 
       const liveResult = await executeControlledLiveSms({

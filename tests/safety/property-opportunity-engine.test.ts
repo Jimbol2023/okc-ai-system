@@ -167,6 +167,7 @@ function storedLead(overrides: Partial<StoredLead> = {}): StoredLead {
     parcelId: "P-123",
     situationDetails: "Imported property-first record with visible distress.",
     source: "county_list",
+    sourceDetail: "Oklahoma County tax list source row P-123.",
     status: "new",
     notes: [],
     followUps: [],

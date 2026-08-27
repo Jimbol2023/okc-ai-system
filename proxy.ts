@@ -1,19 +1,11 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-import { getRequestAuthToken, isCronAuthorizedRequest, verifySessionTokenClaims } from "@/lib/auth-token";
+import { verifySessionToken } from "@/lib/auth";
+import { getRequestAuthToken, isCronAuthorizedRequest } from "@/lib/auth-token";
 import { isSameOriginBrowserRequest } from "@/lib/request-security";
 
 async function hasActiveSession(request: NextRequest) {
-  if (!(await verifySessionTokenClaims(getRequestAuthToken(request)))) return false;
-  try {
-    const response = await fetch(new URL("/api/auth/session/validate", request.url), {
-      headers: { cookie: request.headers.get("cookie") ?? "" },
-      cache: "no-store",
-    });
-    return response.status === 204;
-  } catch {
-    return false;
-  }
+  return Boolean(await verifySessionToken(getRequestAuthToken(request)));
 }
 
 const governedCronRoutes = new Set([

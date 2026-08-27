@@ -10,9 +10,10 @@ const staleAfterMs = 10 * 60 * 1000;
 export function getNextBuildArgs(platform = process.platform, env = process.env) {
   const forceWebpack = env.NEXT_BUILD_FORCE_WEBPACK === "true" || env.NEXT_BUILD_FORCE_WEBPACK === "1";
   const forceTurbopack = env.NEXT_BUILD_FORCE_TURBOPACK === "true" || env.NEXT_BUILD_FORCE_TURBOPACK === "1";
+  const isVercelBuild = env.VERCEL === "1" || env.VERCEL === "true";
   const args = [resolve("node_modules/next/dist/bin/next"), "build"];
 
-  if (!forceTurbopack && (forceWebpack || platform === "win32")) {
+  if (!forceTurbopack && (forceWebpack || isVercelBuild || platform === "win32")) {
     args.push("--webpack");
   }
 

@@ -1,15 +1,6 @@
-import { generateLeads } from "@/lib/lead-generator";
-import { createDbLeadFromGenerated } from "@/lib/leads-db";
+import { evaluateOperationalEvidence, operationalEvidenceFromLead } from "@/lib/operational-evidence-guard";
 import { prisma } from "@/lib/prisma";
-import { fetchRealLeads } from "@/lib/real-leads";
-
-// =====================================================
-// STEP 2B.4 — OUTREACH SAFETY + THROTTLE AGENT
-// =====================================================
-
-const MAX_OUTREACH_PER_CYCLE = 5;
-const MIN_HOURS_BETWEEN_CONTACT = 12;
-const MAX_FOLLOW_UP_ATTEMPTS = 4;
+import { requireTenantId } from "@/lib/tenant-context";
 
 export type AutomationCycleResult = {
   ranAt: string;
@@ -25,314 +16,36 @@ export type AutomationCycleResult = {
   summary: string;
 };
 
-type SmsResult = {
-  success: boolean;
-  mocked?: boolean;
-  sentCount: number;
-  failedCount: number;
-};
-
-type FollowUpLead = Awaited<ReturnType<typeof findOverdueFollowUpLeads>>[number];
-
-// =====================================================
-// STEP 2B.1 — FIND OVERDUE FOLLOW-UP LEADS
-// =====================================================
-
-export async function findOverdueFollowUpLeads() {
-  const now = new Date();
-
+export async function findOverdueFollowUpLeads(tenantIdValue: string) {
+  const tenantId = requireTenantId(tenantIdValue, "automation_follow_up_inventory");
   return prisma.lead.findMany({
-    where: {
-      automationStatus: "scheduled",
-      doNotContact: false,
-      nextFollowUpAt: {
-        lte: now
-      }
-    },
-    orderBy: {
-      nextFollowUpAt: "asc"
-    },
-    take: 25
+    where: { tenantId, automationStatus: "scheduled", doNotContact: false, nextFollowUpAt: { lte: new Date() } },
+    include: { revenueLeadSources: { orderBy: [{ createdAt: "desc" }, { id: "desc" }], take: 1 } },
+    orderBy: { nextFollowUpAt: "asc" },
+    take: 25,
   });
 }
 
-// =====================================================
-// SAFETY HELPERS
-// =====================================================
-
-function isValidPhone(phone: string | null) {
-  if (!phone) return false;
-  return /^\+\d{10,15}$/.test(phone);
-}
-
-function wasContactedTooRecently(lastContactedAt: Date | string | null) {
-  if (!lastContactedAt) return false;
-
-  const now = new Date();
-  const lastContactedDate =
-    lastContactedAt instanceof Date ? lastContactedAt : new Date(lastContactedAt);
-
-  if (Number.isNaN(lastContactedDate.getTime())) return false;
-
-  const hoursSinceLastContact =
-    (now.getTime() - lastContactedDate.getTime()) / (1000 * 60 * 60);
-
-  return hoursSinceLastContact < MIN_HOURS_BETWEEN_CONTACT;
-}
-
-function filterSafeLeads(leads: FollowUpLead[]) {
-  return leads.filter((lead) => {
-    if (!isValidPhone(lead.phone)) return false;
-    if (lead.doNotContact === true) return false;
-    if (wasContactedTooRecently(lead.lastContactedAt)) return false;
-    if ((lead.followUpCount ?? 0) >= MAX_FOLLOW_UP_ATTEMPTS) return false;
-
-    return true;
-  });
-}
-
-// =====================================================
-// STEP 2B.5 — MULTI-STAGE MESSAGE ENGINE
-// =====================================================
-
-function buildFollowUpMessage(lead: {
-  name: string | null;
-  propertyAddress: string;
-  followUpCount?: number | null;
-}) {
-  const firstName = lead.name?.split(" ")[0] || "";
-  const followUpCount = lead.followUpCount ?? 0;
-
-  if (followUpCount >= MAX_FOLLOW_UP_ATTEMPTS) return null;
-
-  if (followUpCount === 0) {
-    return `Hi ${firstName}, I came across your property at ${lead.propertyAddress}. Would you consider an offer if it made sense?`;
-  }
-
-  if (followUpCount === 1) {
-    return `Hey ${firstName}, just following up on ${lead.propertyAddress}. Let me know if you'd be open to discussing a possible offer.`;
-  }
-
-  if (followUpCount === 2) {
-    return `Hi ${firstName}, I wanted to reach out again about ${lead.propertyAddress}. I can put together a quick offer if you're even slightly considering selling.`;
-  }
-
-  if (followUpCount === 3) {
-    return `Hey ${firstName}, I haven’t heard back regarding ${lead.propertyAddress}, so I’ll assume it’s not a good time. If anything changes, feel free to reach out anytime.`;
-  }
-
-  return null;
-}
-
-// =====================================================
-// SMS SENDER — TWILIO REST API SAFE VERSION
-// No Twilio npm package. Prevents Vercel fs build error.
-// =====================================================
-
-async function sendSms({
-  phone,
-  message
-}: {
-  phone: string;
-  message: string;
-}): Promise<SmsResult> {
-  if (!phone || !isValidPhone(phone)) {
-    return { success: false, sentCount: 0, failedCount: 1 };
-  }
-
-  const accountSid = process.env.TWILIO_ACCOUNT_SID;
-  const authToken = process.env.TWILIO_AUTH_TOKEN;
-  const fromNumber = process.env.TWILIO_PHONE_NUMBER;
-
-  if (!accountSid || !authToken || !fromNumber) {
-    console.log("Mock-safe SMS prepared:", { phone, message });
-
-    return {
-      success: true,
-      mocked: true,
-      sentCount: 1,
-      failedCount: 0
-    };
-  }
-
-  try {
-    const auth = Buffer.from(`${accountSid}:${authToken}`).toString("base64");
-
-    const response = await fetch(
-      `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Basic ${auth}`,
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: new URLSearchParams({
-          From: fromNumber,
-          To: phone,
-          Body: message
-        })
-      }
-    );
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Twilio REST SMS failed:", errorText);
-
-      return {
-        success: false,
-        mocked: false,
-        sentCount: 0,
-        failedCount: 1
-      };
-    }
-
-    console.log("Twilio REST SMS sent:", { phone });
-
-    return {
-      success: true,
-      mocked: false,
-      sentCount: 1,
-      failedCount: 0
-    };
-  } catch (error) {
-    console.error("Twilio REST SMS error:", error);
-
-    return {
-      success: false,
-      mocked: false,
-      sentCount: 0,
-      failedCount: 1
-    };
-  }
-}
-
-// =====================================================
-// STEP 2B.2 — PROCESS OVERDUE LEADS SAFELY
-// =====================================================
-
-async function processOverdueLeads() {
-  const now = new Date();
-
-  const overdueLeads = await findOverdueFollowUpLeads();
-  const safeLeads = filterSafeLeads(overdueLeads);
-  const leadsToProcess = safeLeads.slice(0, MAX_OUTREACH_PER_CYCLE);
-
-  let processedCount = 0;
-  let smsSentCount = 0;
-  let smsFailedCount = 0;
-
-  for (const lead of leadsToProcess) {
-    await prisma.lead.update({
-      where: { id: lead.id },
-      data: { automationStatus: "processing" }
-    });
-
-    const message = buildFollowUpMessage({
-      name: lead.name,
-      propertyAddress: lead.propertyAddress,
-      followUpCount: lead.followUpCount
-    });
-
-    if (!message) {
-      await prisma.lead.update({
-        where: { id: lead.id },
-        data: { automationStatus: "idle" }
-      });
-
-      continue;
-    }
-
-    const smsResult = await sendSms({
-      phone: lead.phone,
-      message
-    });
-
-    smsSentCount += smsResult.sentCount;
-    smsFailedCount += smsResult.failedCount;
-
-    const nextFollowUpAt = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-
-    await prisma.lead.update({
-      where: { id: lead.id },
-      data: {
-        lastContactedAt: now,
-        nextFollowUpAt,
-        followUpCount: {
-          increment: 1
-        },
-        lastFollowUpMessage: message,
-        automationStatus: "scheduled"
-      }
-    });
-
-    processedCount++;
-  }
-
-  return {
-    overdueFollowUpCount: overdueLeads.length,
-    safeFollowUpCount: safeLeads.length,
-    skippedUnsafeFollowUpCount: overdueLeads.length - safeLeads.length,
-    processedCount,
-    smsSentCount,
-    smsFailedCount
-  };
-}
-
-// =====================================================
-// MAIN AUTOMATION CYCLE
-// =====================================================
-
-export async function runAutomationCycle(tenantId: string): Promise<AutomationCycleResult> {
-  const generatedLeads = generateLeads();
-  let externalLeads: ReturnType<typeof generateLeads> = [];
-
-  try {
-    externalLeads = await fetchRealLeads();
-  } catch {
-    externalLeads = [];
-  }
-
-  const allLeads = [...generatedLeads, ...externalLeads];
-
-  const results = await Promise.all(allLeads.map((lead) => createDbLeadFromGenerated({ tenantId }, lead)));
-
-  const addedLeads = results.filter((result) => result.created).map((result) => result.lead);
-  const addedCount = results.filter((result) => result.created).length;
-  const skippedCount = results.filter((result) => !result.created).length;
-  const highPriorityCount = addedLeads.filter((lead) => lead.priority === "High").length;
-
-  const {
-    overdueFollowUpCount,
-    safeFollowUpCount,
-    skippedUnsafeFollowUpCount,
-    processedCount,
-    smsSentCount,
-    smsFailedCount
-  } = await processOverdueLeads();
-
-  const summaryParts = [
-    `${addedCount} leads added`,
-    `${skippedCount} duplicates skipped`,
-    `${highPriorityCount} high-priority opportunities found`,
-    `${overdueFollowUpCount} overdue follow-ups detected`,
-    `${safeFollowUpCount} safe follow-ups eligible`,
-    `${skippedUnsafeFollowUpCount} unsafe follow-ups skipped`,
-    `${processedCount} follow-ups processed`,
-    `${smsSentCount} SMS messages sent or prepared`,
-    `${smsFailedCount} SMS messages failed`
-  ];
-
-  return {
+export async function runAutomationCycle(tenantIdValue: string): Promise<AutomationCycleResult> {
+  const tenantId = requireTenantId(tenantIdValue, "automation_cycle");
+  const overdueLeads = await findOverdueFollowUpLeads(tenantId);
+  const eligibleLeads = overdueLeads.filter((lead) =>
+    evaluateOperationalEvidence(operationalEvidenceFromLead(lead)).allowed,
+  );
+  const result = {
     ranAt: new Date().toISOString(),
-    addedCount,
-    skippedCount,
-    highPriorityCount,
-    overdueFollowUpCount,
-    safeFollowUpCount,
-    skippedUnsafeFollowUpCount,
-    processedFollowUpCount: processedCount,
-    smsSentCount,
-    smsFailedCount,
-    summary: summaryParts.join(". ") + "."
+    addedCount: 0,
+    skippedCount: 0,
+    highPriorityCount: eligibleLeads.filter((lead) => lead.priority === "High").length,
+    overdueFollowUpCount: overdueLeads.length,
+    safeFollowUpCount: eligibleLeads.length,
+    skippedUnsafeFollowUpCount: overdueLeads.length - eligibleLeads.length,
+    processedFollowUpCount: 0,
+    smsSentCount: 0,
+    smsFailedCount: 0,
+  };
+  return {
+    ...result,
+    summary: `${result.overdueFollowUpCount} overdue follow-ups reviewed. ${result.safeFollowUpCount} provenance-complete leads eligible for human review. ${result.skippedUnsafeFollowUpCount} unsafe leads excluded. No leads created and no outreach executed.`,
   };
 }

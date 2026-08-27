@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { getActiveDistressFlags, normalizeDistressFlags, type DistressFlags } from "@/lib/distress-flags";
 import type { StoredLead } from "@/lib/leads-storage";
+import { evaluateOperationalEvidence } from "@/lib/operational-evidence-guard";
 import { createDashboardPropertyRecords } from "@/lib/property-records";
 
 export const propertyOpportunitySafetyFlags = {
@@ -243,7 +244,7 @@ export type ExistingLeadAdaptationDryRun = {
 
 const realLeadSourcePattern = /(?:^|[_\s-])(website|website_form|referral|manual|manual_dfd|driving_for_dollars|county|county_list|public_record|assessor|treasurer|clerk|crm|inbound|phone_call|google_business_profile|facebook_message|instagram_dm|tiktok|linkedin|offline|door_knocking_offline)(?:$|[_\s-])/i;
 
-export function classifyLeadProvenance(lead: Pick<StoredLead, "id" | "source" | "sourceDetail" | "propertyAddress" | "city" | "state" | "zipCode" | "parcelId" | "county">): LeadOpportunityEligibility {
+export function classifyLeadProvenance(lead: Pick<StoredLead, "id" | "timestamp" | "source" | "sourceDetail" | "propertyAddress" | "city" | "state" | "zipCode" | "parcelId" | "county">): LeadOpportunityEligibility {
   const provenance = `${lead.source} ${lead.sourceDetail ?? ""}`.trim().toLowerCase();
   let classification: LeadProvenanceClassification = "ambiguous";
 
@@ -251,7 +252,18 @@ export function classifyLeadProvenance(lead: Pick<StoredLead, "id" | "source" | 
   else if (/\b(?:test|fixture|acceptance)\b/.test(provenance)) classification = "test";
   else if (/\bdemo\b/.test(provenance)) classification = "demo";
   else if (/\bcertification\b|cert[_\s-]?record/.test(provenance)) classification = "certification";
-  else if (realLeadSourcePattern.test(` ${provenance} `)) classification = "real";
+  else if (realLeadSourcePattern.test(` ${provenance} `)) {
+    const evidenceDecision = evaluateOperationalEvidence({
+      tenantId: "tenant_scoped_by_adapter",
+      source: lead.source,
+      sourceType: lead.source,
+      sourceReference: lead.sourceDetail,
+      observedAt: lead.timestamp,
+      evidenceState: "real",
+      verificationState: "unverified",
+    });
+    if (evidenceDecision.allowed) classification = "real";
+  }
 
   const reasonCodes = [
     classification !== "real" ? `provenance_${classification}` : "",

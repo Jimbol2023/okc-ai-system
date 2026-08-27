@@ -9,7 +9,6 @@ import {
   normalizeDistressFlags,
   type DistressFlags
 } from "@/lib/distress-flags";
-import type { GeneratedLeadInput } from "@/lib/lead-generator";
 import type { ImportedLeadDraft } from "@/lib/lead-import-types";
 import type { LeadIntakeInput } from "@/lib/validations/lead";
 
@@ -223,29 +222,6 @@ function createLeadId() {
   }
 
   return `lead-${Date.now()}`;
-}
-
-function normalizePhone(phone: string) {
-  return phone.replace(/\D/g, "");
-}
-
-function normalizeAddress(address: string) {
-  return address.trim().toLowerCase();
-}
-
-function isDuplicateLead(existingLeads: StoredLead[], lead: { propertyAddress: string; phone: string }) {
-  const normalizedAddress = normalizeAddress(lead.propertyAddress);
-  const normalizedPhone = normalizePhone(lead.phone);
-
-  if (!normalizedAddress || !normalizedPhone) {
-    return false;
-  }
-
-  return existingLeads.some(
-    (existingLead) =>
-      normalizeAddress(existingLead.propertyAddress) === normalizedAddress &&
-      normalizePhone(existingLead.phone) === normalizedPhone
-  );
 }
 
 export function createStoredLead({
@@ -513,32 +489,4 @@ export function importLeadsToLocalStorage(importedLeads: ImportedLeadDraft[]) {
   ];
 
   return writeStoredLeads(nextLeads);
-}
-
-export function addGeneratedLeadsToLocalStorage(generatedLeads: GeneratedLeadInput[]) {
-  const existingLeads = readStoredLeads();
-  const uniqueGeneratedLeads = generatedLeads.filter((lead) => !isDuplicateLead(existingLeads, lead));
-  const addedLeads = uniqueGeneratedLeads.map((lead) =>
-    createStoredLead({
-      firstName: lead.firstName,
-      lastName: lead.lastName,
-      email: "",
-      phone: lead.phone,
-      propertyAddress: lead.propertyAddress,
-      city: lead.city,
-      state: lead.state,
-      zipCode: lead.zipCode,
-      situationDetails: lead.situationDetails,
-      source: lead.source
-    })
-  );
-  const nextLeads = [...existingLeads, ...addedLeads];
-
-  writeStoredLeads(nextLeads);
-  return {
-    leads: nextLeads,
-    addedLeads,
-    addedCount: uniqueGeneratedLeads.length,
-    skippedCount: generatedLeads.length - uniqueGeneratedLeads.length
-  };
 }

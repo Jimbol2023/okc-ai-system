@@ -3,6 +3,7 @@ import type { Prisma } from "@/generated/prisma";
 import { getActiveDistressFlags } from "@/lib/distress-flags";
 import type { LeadStatus, StoredLead } from "@/lib/leads-storage";
 import { prisma } from "@/lib/prisma";
+import { assertOperationalEvidenceAllowed, operationalEvidenceFromStoredLead } from "@/lib/operational-evidence-guard";
 import { requireTenantId } from "@/lib/tenant-context";
 
 const SECRET_FIELD_PATTERN = /(secret|token|password|credential|api[_-]?key|auth|cookie|session|provider[_-]?response|raw[_-]?response|message[_-]?body|sms[_-]?body|email[_-]?body|phone|recipient)/i;
@@ -615,9 +616,11 @@ export async function syncLeadRevenueSpine({
   source?: string;
 }) {
   const tenantId = requireTenantId(rawTenantId, "revenue_spine");
+  const evidence = operationalEvidenceFromStoredLead(tenantId, lead);
+  assertOperationalEvidenceAllowed(evidence, "revenue_materialization");
   const score = calculateRevenueLeadScore(lead);
   const sourceType = inferSourceType(lead.source);
-  const sourceDetail = lead.sourceDetail?.trim() || lead.source.trim() || "unknown_source";
+  const sourceDetail = String(evidence.sourceReference);
 
   await prisma.revenueLeadSource.upsert({
     where: {

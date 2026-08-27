@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
 import { afterEach, beforeEach, describe, it } from "node:test";
 
-import { GET as GET_DAILY_STARTUP, POST, setExecutiveAutonomyDailyStartupRouteDepsForTest } from "@/app/api/company/executive-autonomy/daily-startup/route";
-import { GET, setExecutiveAutonomyStatusRouteDepsForTest } from "@/app/api/company/executive-autonomy/status/route";
+import { GET as GET_DAILY_STARTUP, POST } from "@/app/api/company/executive-autonomy/daily-startup/route";
+import { GET } from "@/app/api/company/executive-autonomy/status/route";
 import { executiveAutonomyLevel1SafetyProof } from "@/lib/executive-autonomy-level-1";
+import { setExecutiveAutonomyDailyStartupRouteDepsForTest, setExecutiveAutonomyStatusRouteDepsForTest } from "@/lib/executive-autonomy-route-dependencies";
 
 const restores: Array<() => void> = [];
 let previousCronSecret: string | undefined;
